@@ -1,52 +1,47 @@
-import React from 'react';
-import Link from 'next/link';
+﻿import React from 'react';
 import { Metadata } from 'next';
-import { ShieldCheck, ChevronLeft } from 'lucide-react';
+import { serverDB } from '@/lib/db';
+import { PageRecord } from '@/lib/types';
+import CmsPageRenderer from '@/components/CmsPageRenderer';
+
+export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'গোপনীয়তা নীতিমালা (Privacy Policy) | চাকরি সেবা',
   description: 'প্রার্থীদের এনআইডি, ছবি ও ব্যক্তিগত তথ্যের সর্বোচ্চ ব্যাংকিং গ্রেড নিরাপত্তা।',
 };
 
-export default function PolicyPage() {
-  return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 text-slate-800">
-      <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-500">
-        <Link href="/" className="hover:text-emerald-700 transition-colors">হোম</Link>
-        <span>/</span>
-        <span className="text-slate-900 font-bold">গোপনীয়তা নীতিমালা (Privacy Policy)</span>
+export default function PrivacyPolicyPage() {
+  const page = serverDB.getPageById('privacy-policy') as unknown as PageRecord || { id: 'privacy-policy', slug: '/privacy-policy', title: 'privacy-policy', metaTitle: '', metaDescription: '', status: 'published', version: 1, sections: [], updatedAt: '', publishedAt: '' } as unknown as PageRecord;
+
+  const fallback = (
+    <div className="space-y-6">
+      <div className="space-y-2">
+        <h2 className="text-lg font-bold text-slate-900 border-l-4 border-emerald-600 pl-3">
+          ১. তথ্য সংগ্রহ ও ব্যবহার
+        </h2>
+        <p className="text-sm sm:text-base text-slate-700 leading-relaxed pl-4">
+          চাকরি সেবা প্ল্যাটফর্মে অনলাইন আবেদন সেবার প্রয়োজনে প্রার্থীদের জীবনবৃত্তান্ত, শিক্ষাগত যোগ্যতার সনদ, জাতীয় পরিচয়পত্র (NID) নম্বর ও ছবি নিরাপদে সংরক্ষণ করা হয়। এই তথ্য তৃতীয় কোনো অননুমোদিত পক্ষের সাথে বাণিজ্যিক উদ্দেশ্যে শেয়ার বা বিক্রি করা হয় না।
+        </p>
       </div>
-
-      <div className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-10 space-y-6 shadow-sm">
-        <div className="space-y-2 border-b border-slate-100 pb-4">
-          <span className="bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-bold px-3 py-1 rounded-full inline-block">
-            অফিশিয়াল ডকুমেন্ট ও নীতিমালা
-          </span>
-          <h1 className="text-2xl sm:text-3xl font-black text-slate-900">
-            ব্যবহারকারীর ব্যক্তিগত তথ্যের গোপনীয়তা নীতিমালা
-          </h1>
-          <p className="text-xs text-slate-500">সর্বশেষ সংস্করণ: অক্টোবর ২০২৬ • চাকরি সেবা কমপ্লায়েন্স টিম</p>
-        </div>
-
-        <div className="space-y-6">
-        <div className="space-y-2">
-          <h2 className="text-lg font-bold text-slate-900 border-l-4 border-emerald-600 pl-3">
-            তথ্য সংগ্রহ ও ব্যবহার
-          </h2>
-          <p className="text-sm sm:text-base text-slate-700 leading-relaxed pl-4">
-            আমরা শুধুমাত্র সরকারি ও ব্যাংক চাকরির ফর্ম পূরণের প্রয়োজনীয় তথ্য (নাম, পিতা-মাতার নাম, শিক্ষাগত যোগ্যতা, এনআইডি ও ছবি) সংগ্রহ করি।
-          </p>
-        </div>
-        <div className="space-y-2">
-          <h2 className="text-lg font-bold text-slate-900 border-l-4 border-emerald-600 pl-3">
-            তথ্য সুরক্ষা ও এনক্রিপশন
-          </h2>
-          <p className="text-sm sm:text-base text-slate-700 leading-relaxed pl-4">
-            ব্যবহারকারীর সকল মাস্টার ডকুমেন্ট আধুনিক SSL ও ডাটাবেজ এনক্রিপশনের মাধ্যমে সংরক্ষিত থাকে। কোনো অবস্থাতেই তৃতীয় কোনো পক্ষের কাছে প্রার্থীর তথ্য বিক্রি বা শেয়ার করা হয় না।
-          </p>
-        </div>
-        </div>
+      <div className="space-y-2">
+        <h2 className="text-lg font-bold text-slate-900 border-l-4 border-emerald-600 pl-3">
+          ২. তথ্যের নিরাপত্তা ও এনক্রিপশন
+        </h2>
+        <p className="text-sm sm:text-base text-slate-700 leading-relaxed pl-4">
+          আমাদের সার্ভারে প্রার্থীদের সকল তথ্য ব্যাংকিং গ্রেড AES-256 বিট এনক্রিপশনে সংরক্ষিত থাকে। প্রার্থীর সুস্পষ্ট সম্মতি ছাড়া শুধুমাত্র সংশ্লিষ্ট নিয়োগকারী প্রতিষ্ঠান বা সরকারি পোর্টালের নির্ধারিত ফরম পূরণে এই তথ্য ব্যবহার করা হয়।
+        </p>
+      </div>
+      <div className="space-y-2">
+        <h2 className="text-lg font-bold text-slate-900 border-l-4 border-emerald-600 pl-3">
+          ৩. তথ্য মুছে ফেলার অধিকার (Right to be Forgotten)
+        </h2>
+        <p className="text-sm sm:text-base text-slate-700 leading-relaxed pl-4">
+          যেকোনো প্রার্থী চাইলে তাদের প্রোফাইল সেটিংস থেকে আপলোডকৃত যেকোনো ডকুমেন্ট তাৎক্ষণিকভাবে মুছে ফেলতে পারেন। আমাদের হেল্পলাইনে অনুরোধের ভিত্তিতে প্রার্থীর সকল ডাটা সম্পূর্ণভাবে স্থায়ীভাবে অপসারিত করা হয়।
+        </p>
       </div>
     </div>
   );
+
+  return <CmsPageRenderer page={page} fallbackContent={fallback} />;
 }

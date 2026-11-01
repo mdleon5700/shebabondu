@@ -43,7 +43,7 @@ export default function Footer() {
               </span>
             </div>
             <p className="text-[14px] text-slate-400 leading-relaxed">
-              বাংলাদেশের চাকরিপ্রার্থীদের বিশ্বস্ত ডিজিটাল প্ল্যাটফর্ম। ঘরে বসেই সকল সরকারি, ব্যাংক ও শীর্ষ বেসরকারি চাকরির শতভাগ যাচাইকৃত বিজ্ঞপ্তি ও সঠিক নিয়মে অনলাইন আবেদন সহায়তা।
+              {aboutText}
             </p>
             <div className="pt-1">
               <span className="text-xs font-semibold text-slate-400 block mb-2">আমাদের সাথে যুক্ত থাকুন:</span>

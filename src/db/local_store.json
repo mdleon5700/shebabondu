@@ -14847,6 +14847,34 @@
   "adminAuditLogs": [
     {
       "adminId": "ADMIN-SUPER",
+      "action": "job_edit",
+      "targetId": "test-job-dl-1",
+      "targetType": "order",
+      "changes": {
+        "job": {
+          "new": "সহকারী কমিশনার নিয়োগ ২০২৬"
+        }
+      },
+      "notes": "Job circular updated: সহকারী কমিশনার নিয়োগ ২০২৬",
+      "id": "AUDIT-1793540916032-IBJN9",
+      "timestamp": "2026-11-01T13:48:36.032Z"
+    },
+    {
+      "adminId": "ADMIN-SUPER",
+      "action": "job_edit",
+      "targetId": "test-job-dl-1",
+      "targetType": "order",
+      "changes": {
+        "job": {
+          "new": "সহকারী কমিশনার নিয়োগ ২০২৬"
+        }
+      },
+      "notes": "Job circular updated: সহকারী কমিশনার নিয়োগ ২০২৬",
+      "id": "AUDIT-1793540915518-R0NIU",
+      "timestamp": "2026-11-01T13:48:35.518Z"
+    },
+    {
+      "adminId": "ADMIN-SUPER",
       "action": "source_create",
       "targetId": "teletalk-alljobs",
       "targetType": "source",
@@ -71627,8 +71655,24 @@
           "minEducation": "স্নাতক বা সমমান"
         }
       ],
-      "updatedAt": "2026-11-01T07:03:32.433Z",
+      "updatedAt": "2026-11-01T13:48:35.922Z",
       "revisionHistory": [
+        {
+          "timestamp": "2026-11-01T13:48:35.922Z",
+          "adminId": "ADMIN-SUPER",
+          "action": "no_change",
+          "changedFields": [],
+          "summary": "à¦•à§‹à¦¨à§‹ à¦ªà¦°à¦¿à¦¬à¦°à§à¦¤à¦¨ à¦¹à§Ÿà¦¨à¦¿"
+        },
+        {
+          "timestamp": "2026-11-01T13:48:35.420Z",
+          "adminId": "ADMIN-SUPER",
+          "action": "update",
+          "changedFields": [
+            "vacancies"
+          ],
+          "summary": "1à¦Ÿà¦¿ à¦«à¦¿à¦²à§à¦¡ à¦ªà¦°à¦¿à¦¬à¦°à§à¦¤à¦¿à¦¤ à¦¹à§Ÿà§‡à¦›à§‡ (vacancies)"
+        },
         {
           "timestamp": "2026-11-01T07:03:32.433Z",
           "adminId": "ADMIN-SUPER",
@@ -71676,7 +71720,8 @@
           "summary": "1à¦Ÿà¦¿ à¦«à¦¿à¦²à§à¦¡ à¦ªà¦°à¦¿à¦¬à¦°à§à¦¤à¦¿à¦¤ à¦¹à§Ÿà§‡à¦›à§‡ (daysRemaining)"
         }
       ],
-      "status": "published"
+      "status": "published",
+      "vacancies": null
     },
     "job-pub-test-7234": {
       "id": "job-pub-test-7234",

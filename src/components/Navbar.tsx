@@ -112,7 +112,7 @@ export default function Navbar() {
   };
 
   // Navigation Menu Configuration in exact required order
-  const navItems: NavMenuItem[] = [
+  const DEFAULT_NAV_ITEMS: NavMenuItem[] = [
     {
       id: 'home',
       label: 'হোম',
@@ -195,6 +195,11 @@ export default function Navbar() {
       ]
     }
   ];
+
+  const navItems: NavMenuItem[] = (platformSettings?.general?.headerMenuItems && platformSettings.general.headerMenuItems.length > 0)
+    ? platformSettings.general.headerMenuItems
+    : DEFAULT_NAV_ITEMS;
+
 
   return (
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm w-full max-w-full" ref={navRef}>
@@ -385,20 +390,36 @@ export default function Navbar() {
                       {auth.role === 'candidate' ? (
                         <>
                           <Link
-                            href="/dashboard"
+                            href="/dashboard/profile"
                             onClick={() => setProfileDropdownOpen(false)}
-                            className="flex items-center gap-2 px-4 py-2 hover:bg-slate-50 text-slate-700 font-medium"
+                            className="flex items-center gap-2 px-4 py-2 hover:bg-slate-50 text-slate-700 font-medium text-xs"
                           >
                             <UserCheck className="w-4 h-4 text-emerald-600" />
-                            <span>মাস্টার ডকুমেন্ট ভল্ট</span>
+                            <span>আমার প্রোফাইল</span>
                           </Link>
                           <Link
-                            href="/dashboard"
+                            href="/dashboard/applications"
                             onClick={() => setProfileDropdownOpen(false)}
-                            className="flex items-center gap-2 px-4 py-2 hover:bg-slate-50 text-slate-700 font-medium"
+                            className="flex items-center gap-2 px-4 py-2 hover:bg-slate-50 text-slate-700 font-medium text-xs"
                           >
                             <FileText className="w-4 h-4 text-emerald-600" />
                             <span>আমার আবেদন ও ট্র্যাকিং</span>
+                          </Link>
+                          <Link
+                            href="/dashboard/vault"
+                            onClick={() => setProfileDropdownOpen(false)}
+                            className="flex items-center gap-2 px-4 py-2 hover:bg-slate-50 text-slate-700 font-medium text-xs"
+                          >
+                            <ShieldCheck className="w-4 h-4 text-emerald-600" />
+                            <span>মাস্টার ডকুমেন্ট ভল্ট</span>
+                          </Link>
+                          <Link
+                            href="/dashboard/wallet"
+                            onClick={() => setProfileDropdownOpen(false)}
+                            className="flex items-center gap-2 px-4 py-2 hover:bg-slate-50 text-slate-700 font-medium text-xs"
+                          >
+                            <Wallet className="w-4 h-4 text-emerald-600" />
+                            <span>ডিজিটাল ওয়ালেট</span>
                           </Link>
                         </>
                       ) : (

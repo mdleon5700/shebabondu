@@ -184,7 +184,7 @@ export default function Navbar() {
   ];
 
   return (
-    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm w-full max-w-full overflow-hidden" ref={navRef}>
+    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm w-full max-w-full" ref={navRef}>
       
       {/* 1. TOP ANNOUNCEMENT TICKER (Preserved Dark Navy Bar) */}
       <div className="bg-gradient-to-r from-slate-950 via-emerald-950 to-slate-900 text-white text-[11px] sm:text-xs py-1.5 px-4 border-b border-emerald-900/40">
@@ -444,7 +444,7 @@ export default function Navbar() {
 
       {/* 3. TABLET & MOBILE ACCORDION DRAWER */}
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-white border-b border-slate-200 px-4 pt-3 pb-6 space-y-3 max-h-[85vh] overflow-y-auto">
+        <div className="xl:hidden bg-white border-b border-slate-200 px-4 pt-3 pb-6 space-y-3 max-h-[85vh] overflow-y-auto">
           <nav className="space-y-1 text-[16px] font-bold text-slate-800">
             {navItems.map((item) => {
               const hasDropdown = Boolean(item.dropdown && item.dropdown.length > 0);
@@ -452,27 +452,28 @@ export default function Navbar() {
 
               return (
                 <div key={item.id} className="border-b border-slate-100 pb-1">
-                  <div className="flex items-center justify-between">
-                    <Link
-                      href={item.href}
-                      onClick={() => !hasDropdown && setMobileMenuOpen(false)}
-                      className="block flex-1 py-2.5 px-2 rounded-xl hover:bg-emerald-50 text-slate-900"
-                    >
-                      {item.label}
-                    </Link>
-
-                    {hasDropdown && (
+                                    <div className="flex items-center justify-between">
+                    {hasDropdown ? (
                       <button
+                        type="button"
                         onClick={() => toggleMobileAccordion(item.id)}
-                        className="p-2 text-slate-500 hover:text-emerald-700 rounded-lg"
-                        aria-label={`${item.label} সাবমেনু খুলুন`}
+                        className="w-full flex items-center justify-between py-2.5 px-2 rounded-xl hover:bg-emerald-50 text-slate-900 font-bold text-left transition-colors"
                       >
+                        <span>{item.label}</span>
                         <ChevronDown 
-                          className={`w-4 h-4 transition-transform duration-200 ${
+                          className={`w-4 h-4 transition-transform duration-200 text-slate-500 ${
                             isExpanded ? 'rotate-180 text-emerald-700' : ''
                           }`} 
                         />
                       </button>
+                    ) : (
+                      <Link
+                        href={item.href}
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="block w-full py-2.5 px-2 rounded-xl hover:bg-emerald-50 text-slate-900 font-bold"
+                      >
+                        {item.label}
+                      </Link>
                     )}
                   </div>
 

@@ -209,9 +209,11 @@ export default function UniversalJobWorkspace({
     setSaveSuccessToast(null);
 
     try {
-      const payload: Partial<JobCircular> = {
+      const finalStatus = overrideStatus || formData.status || 'published';
+      const payload: Partial<JobCircular> & { publicationStatus?: string } = {
         ...formData,
-        status: overrideStatus || formData.status || 'published',
+        status: finalStatus,
+        publicationStatus: (finalStatus === 'EXPIRED' || finalStatus === 'draft') ? 'UNPUBLISHED' : 'PUBLISHED',
         updatedAt: new Date().toISOString()
       };
 

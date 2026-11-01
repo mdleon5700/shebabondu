@@ -43,7 +43,7 @@ export async function PATCH(req: Request) {
       if (body.general.supportEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(body.general.supportEmail)) {
         return NextResponse.json({ error: 'অকার্যকর সাপোর্ট ইমেইল ঠিকানা' }, { status: 400 });
       }
-      if (body.general.supportPhone && String(body.general.supportPhone).replace(/\D/g, '').length < 10) {
+      if (body.general.supportPhone && String(body.general.supportPhone).replace(/[^\d০-৯]/g, '').length < 10) {
         return NextResponse.json({ error: 'অকার্যকর সাপোর্ট ফোন নম্বর' }, { status: 400 });
       }
     }

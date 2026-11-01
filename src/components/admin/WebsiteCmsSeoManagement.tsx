@@ -1,9 +1,14 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { 
   Layers, 
+  Layout,
+  Phone,
+  Mail,
+  MapPin,
+  Megaphone, 
   Search, 
   History, 
   Globe, 
@@ -166,7 +171,7 @@ export default function WebsiteCmsSeoManagement({
   onTabChange
 }: WebsiteCmsSeoManagementProps) {
   // Navigation tabs
-  const [currentSubTab, setCurrentSubTab] = useState<'pages-sections' | 'seo-meta' | 'revisions'>(
+  const [currentSubTab, setCurrentSubTab] = useState<'pages-sections' | 'seo-meta' | 'header-footer' | 'revisions'>(
     activeTab === 'seo-meta' ? 'seo-meta' :
     activeTab === 'revisions' ? 'revisions' : 'pages-sections'
   );
@@ -177,7 +182,7 @@ export default function WebsiteCmsSeoManagement({
     }
   }, [activeTab]);
 
-  const handleSubTabSwitch = (tab: 'pages-sections' | 'seo-meta' | 'revisions') => {
+  const handleSubTabSwitch = (tab: 'pages-sections' | 'seo-meta' | 'header-footer' | 'revisions') => {
     setCurrentSubTab(tab);
     if (onTabChange) onTabChange(tab);
   };
@@ -196,13 +201,117 @@ export default function WebsiteCmsSeoManagement({
   const [enableJsonLd, setEnableJsonLd] = useState(true);
   const [seoSavedToast, setSeoSavedToast] = useState<string | null>(null);
 
-  // 3. Revisions State
+  // 3. Header & Footer Settings State
+  const [announcementText, setAnnouncementText] = useState('আজকে ৩টি নতুন সরকারি চাকরির আবেদন শুরু হয়েছে! শেষ সময় হওয়ার আগেই আবেদন বুকিং দিন।');
+  const [announcementUrl, setAnnouncementUrl] = useState('/jobs');
+  const [announcementEnabled, setAnnouncementEnabled] = useState(true);
+  const [supportPhone, setSupportPhone] = useState('+৮৮০ ১৭৭৪-৩৬৬৬৪৩');
+  const [supportEmail, setSupportEmail] = useState('support@chakrisheba.com');
+  const [whatsappNumber, setWhatsappNumber] = useState('8801774366643');
+  const [officeAddress, setOfficeAddress] = useState('ধানমন্ডি ৩২, ঢাকা-১২০৯, বাংলাদেশ');
+  const [footerAboutText, setFooterAboutText] = useState('বাংলাদেশের চাকরিপ্রার্থীদের বিশ্বস্ত ডিজিটাল প্ল্যাটফর্ম। ঘরে বসেই সকল সরকারি, ব্যাংক ও শীর্ষ বেসরকারি চাকরির শতভাগ যাচাইকৃত বিজ্ঞপ্তি ও সঠিক নিয়মে অনলাইন আবেদন সহায়তা।');
+  const [facebookUrl, setFacebookUrl] = useState('https://facebook.com/chakrisheba.bd');
+  const [telegramUrl, setTelegramUrl] = useState('https://t.me/chakrisheba');
+  const [youtubeUrl, setYoutubeUrl] = useState('https://youtube.com/@chakrisheba');
+  const [isSaving, setIsSaving] = useState(false);
+
+  // 4. Revisions State
   const [revisions, setRevisions] = useState<RevisionItem[]>(INITIAL_REVISIONS);
   const [rollbackSuccess, setRollbackSuccess] = useState<string | null>(null);
 
+  // Load server settings on mount
+  useEffect(() => {
+    fetch('/api/admin/settings', {
+      headers: { 'x-admin-secret': 'CHAKRISEBA_SECURE_ADMIN_2026' }
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success && data.settings) {
+          const s = data.settings;
+          if (s.general) {
+            if (s.general.siteDescription) setSiteDescription(s.general.siteDescription);
+            if (s.general.supportPhone) setSupportPhone(s.general.supportPhone);
+            if (s.general.supportEmail) setSupportEmail(s.general.supportEmail);
+            if (s.general.whatsappNumber) setWhatsappNumber(s.general.whatsappNumber);
+            if (s.general.officeAddress) setOfficeAddress(s.general.officeAddress);
+            if (s.general.announcementText) setAnnouncementText(s.general.announcementText);
+            if (s.general.announcementUrl) setAnnouncementUrl(s.general.announcementUrl);
+            if (s.general.announcementEnabled !== undefined) setAnnouncementEnabled(s.general.announcementEnabled);
+            if (s.general.footerAboutText) setFooterAboutText(s.general.footerAboutText);
+            if (s.general.facebookUrl) setFacebookUrl(s.general.facebookUrl);
+            if (s.general.telegramUrl) setTelegramUrl(s.general.telegramUrl);
+            if (s.general.youtubeUrl) setYoutubeUrl(s.general.youtubeUrl);
+          }
+          if (s.seo) {
+            if (s.seo.defaultTitle) setSiteTitle(s.seo.defaultTitle);
+            if (s.seo.defaultDescription) setSiteDescription(s.seo.defaultDescription);
+            if (Array.isArray(s.seo.defaultKeywords)) setKeywords(s.seo.defaultKeywords.join(', '));
+            if (s.seo.defaultOgImage) setOgImageUrl(s.seo.defaultOgImage);
+            if (s.seo.googleSiteVerification) setGscVerification(s.seo.googleSiteVerification);
+          }
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  const handleSaveAllSettings = async () => {
+    setIsSaving(true);
+    setSeoSavedToast(null);
+
+    try {
+      const payload = {
+        general: {
+          siteName: 'চাকরি সেবা (Chakri Sheba)',
+          siteDescription,
+          supportPhone,
+          supportEmail,
+          officeAddress,
+          whatsappNumber,
+          announcementText,
+          announcementUrl,
+          announcementEnabled,
+          footerAboutText,
+          facebookUrl,
+          telegramUrl,
+          youtubeUrl
+        },
+        seo: {
+          defaultTitle: siteTitle,
+          defaultDescription: siteDescription,
+          defaultKeywords: keywords.split(',').map(s => s.trim()).filter(Boolean),
+          defaultOgImage: ogImageUrl,
+          googleSiteVerification: gscVerification
+        }
+      };
+
+      const res = await fetch('/api/admin/settings', {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-admin-secret': 'CHAKRISEBA_SECURE_ADMIN_2026'
+        },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setSeoSavedToast('প্ল্যাটফর্মের হেডার, ফুটার এবং গ্লোবাল এসইও সফলভাবে সংরক্ষিত হয়েছে!');
+        if (typeof window !== 'undefined') {
+          window.dispatchEvent(new Event('cs_settings_changed'));
+        }
+        setTimeout(() => setSeoSavedToast(null), 4000);
+      } else {
+        alert(data.error || 'সেটিংস সংরক্ষণে ব্যর্থ হয়েছে');
+      }
+    } catch (e: any) {
+      alert('নেটওয়ার্ক ত্রুটি: ' + e.message);
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
   const handleSaveSeo = () => {
-    setSeoSavedToast('গ্লোবাল এসইও মেটাডাটা ও ট্র্যাকিং কোড সফলভাবে হালনাগাদ করা হয়েছে!');
-    setTimeout(() => setSeoSavedToast(null), 4000);
+    handleSaveAllSettings();
   };
 
   const handleRollback = (rev: RevisionItem) => {
@@ -249,6 +358,19 @@ export default function WebsiteCmsSeoManagement({
           >
             <Layers className="w-3.5 h-3.5" />
             <span>পেইজ ও সেকশন</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => handleSubTabSwitch('header-footer')}
+            className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 ${
+              currentSubTab === 'header-footer' 
+                ? 'bg-white text-emerald-800 shadow-2xs' 
+                : 'text-slate-600 hover:text-slate-900'
+            }`}
+          >
+            <Layout className="w-3.5 h-3.5" />
+            <span>হেডার ও ফুটার ডিজাইন</span>
           </button>
 
           <button
@@ -366,6 +488,255 @@ export default function WebsiteCmsSeoManagement({
                 </tbody>
               </table>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* SUBTAB: HEADER & FOOTER DESIGN & ANNOUNCEMENTS */}
+      {currentSubTab === 'header-footer' && (
+        <div className="space-y-6">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            
+            {/* Left Form: Header & Footer Controls (7 cols) */}
+            <div className="lg:col-span-7 space-y-6">
+              
+              {/* Card 1: Top Announcement Bar */}
+              <div className="bg-white rounded-2xl border border-slate-200/90 shadow-2xs p-5 space-y-4">
+                <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+                  <div className="flex items-center gap-2">
+                    <Megaphone className="w-4 h-4 text-emerald-700" />
+                    <h3 className="font-black text-sm text-slate-900">হেডার জরুরি নোটিশ ব্যানার</h3>
+                  </div>
+                  <label className="flex items-center gap-2 cursor-pointer text-xs font-bold text-slate-700">
+                    <span>ব্যানার চালু:</span>
+                    <input
+                      type="checkbox"
+                      checked={announcementEnabled}
+                      onChange={(e) => setAnnouncementEnabled(e.target.checked)}
+                      className="w-4 h-4 text-emerald-600 rounded"
+                    />
+                  </label>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">ব্যানার টেক্সট</label>
+                  <textarea
+                    rows={2}
+                    value={announcementText}
+                    onChange={(e) => setAnnouncementText(e.target.value)}
+                    placeholder="জরুরি নোটিশ টেক্সট লিখুন..."
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">ক্লিক করার লিংক / গন্তব্য ইউআরএল</label>
+                  <input
+                    type="text"
+                    value={announcementUrl}
+                    onChange={(e) => setAnnouncementUrl(e.target.value)}
+                    placeholder="/jobs অথবা https://..."
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs font-mono text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                  />
+                </div>
+              </div>
+
+              {/* Card 2: Contact, Helpline & Office */}
+              <div className="bg-white rounded-2xl border border-slate-200/90 shadow-2xs p-5 space-y-4">
+                <div className="flex items-center gap-2 pb-3 border-b border-slate-100">
+                  <Phone className="w-4 h-4 text-emerald-700" />
+                  <h3 className="font-black text-sm text-slate-900">লাইভ হেল্পলাইন ও অফিসিয়াল যোগাযোগ তথ্য</h3>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 mb-1">সাপোর্ট ফোন নম্বর (হেডার ও ফুটার)</label>
+                    <input
+                      type="text"
+                      value={supportPhone}
+                      onChange={(e) => setSupportPhone(e.target.value)}
+                      placeholder="+৮৮০ ১৭৭৪-৩৬৬৬৪৩"
+                      className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 mb-1">হোয়াটসঅ্যাপ নম্বর (আন্তর্জাতিক ফরম্যাট)</label>
+                    <input
+                      type="text"
+                      value={whatsappNumber}
+                      onChange={(e) => setWhatsappNumber(e.target.value)}
+                      placeholder="8801774366643"
+                      className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs font-mono text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 mb-1">অফিসিয়াল ইমেইল</label>
+                    <input
+                      type="email"
+                      value={supportEmail}
+                      onChange={(e) => setSupportEmail(e.target.value)}
+                      placeholder="support@chakrisheba.com"
+                      className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 mb-1">অফিস ঠিকানা</label>
+                    <input
+                      type="text"
+                      value={officeAddress}
+                      onChange={(e) => setOfficeAddress(e.target.value)}
+                      placeholder="ধানমন্ডি ৩২, ঢাকা-১২০৯, বাংলাদেশ"
+                      className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Card 3: Footer About & Social Links */}
+              <div className="bg-white rounded-2xl border border-slate-200/90 shadow-2xs p-5 space-y-4">
+                <div className="flex items-center gap-2 pb-3 border-b border-slate-100">
+                  <Layout className="w-4 h-4 text-emerald-700" />
+                  <h3 className="font-black text-sm text-slate-900">ফুটার বিবরণ ও সোশ্যাল মিডিয়া লিংক</h3>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">ফুটার পরিচিতি বক্তব্য (About Us)</label>
+                  <textarea
+                    rows={3}
+                    value={footerAboutText}
+                    onChange={(e) => setFooterAboutText(e.target.value)}
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 leading-relaxed font-medium"
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 mb-1">ফেসবুক পেজ লিংক</label>
+                    <input
+                      type="text"
+                      value={facebookUrl}
+                      onChange={(e) => setFacebookUrl(e.target.value)}
+                      placeholder="https://facebook.com/..."
+                      className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs font-mono text-slate-800"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 mb-1">টেলিগ্রাম চ্যানেল লিংক</label>
+                    <input
+                      type="text"
+                      value={telegramUrl}
+                      onChange={(e) => setTelegramUrl(e.target.value)}
+                      placeholder="https://t.me/..."
+                      className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs font-mono text-slate-800"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 mb-1">ইউটিউব চ্যানেল লিংক</label>
+                    <input
+                      type="text"
+                      value={youtubeUrl}
+                      onChange={(e) => setYoutubeUrl(e.target.value)}
+                      placeholder="https://youtube.com/@..."
+                      className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs font-mono text-slate-800"
+                    />
+                  </div>
+                </div>
+
+                <div className="pt-3 flex justify-end">
+                  <button
+                    type="button"
+                    onClick={handleSaveAllSettings}
+                    disabled={isSaving}
+                    className="px-6 py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-bold shadow-sm transition-all flex items-center gap-1.5 disabled:opacity-50"
+                  >
+                    {isSaving ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Check className="w-4 h-4" />}
+                    <span>হেডার ও ফুটার ডিজাইন পরিবর্তন সংরক্ষণ করুন</span>
+                  </button>
+                </div>
+              </div>
+
+            </div>
+
+            {/* Right: Live Visual Preview of Header & Footer (5 cols) */}
+            <div className="lg:col-span-5 space-y-6">
+              
+              {/* Header Preview */}
+              <div className="bg-white rounded-2xl border border-slate-200/90 shadow-2xs p-5 space-y-3">
+                <div className="flex items-center gap-2 pb-2 border-b border-slate-100">
+                  <Monitor className="w-4 h-4 text-emerald-700" />
+                  <h3 className="font-black text-xs uppercase tracking-wider text-slate-700">হেডার লাইভ প্রিভিউ</h3>
+                </div>
+
+                {announcementEnabled && (
+                  <div className="bg-gradient-to-r from-slate-950 via-emerald-950 to-slate-900 text-white text-[11px] p-2.5 rounded-xl border border-emerald-900/40 space-y-1">
+                    <div className="flex items-center gap-1.5">
+                      <span className="bg-red-600 text-white px-1.5 py-0.2 rounded text-[10px] font-black uppercase">
+                        জরুরি
+                      </span>
+                      <span className="truncate text-slate-200 font-medium">{announcementText}</span>
+                    </div>
+                    <div className="flex items-center justify-between text-[10px] text-slate-400 pt-1 border-t border-slate-800">
+                      <span>হোয়াটসঅ্যাপ: {supportPhone}</span>
+                      <span className="text-emerald-400 font-bold">সকাল ৯টা - রাত ১০টা</span>
+                    </div>
+                  </div>
+                )}
+
+                <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <div className="w-7 h-7 rounded-lg bg-emerald-700 text-white flex items-center justify-center font-bold text-xs">
+                      চসে
+                    </div>
+                    <div>
+                      <div className="font-black text-xs text-slate-900">চাকরি<span className="text-emerald-700">সেবা</span> BD</div>
+                      <div className="text-[9px] text-slate-400">নিউজ ও আবেদন পোর্টাল</div>
+                    </div>
+                  </div>
+                  <div className="text-[10px] text-slate-500 font-bold">
+                    হোম • সার্কুলার • আবেদন • রেজাল্ট
+                  </div>
+                </div>
+              </div>
+
+              {/* Footer Preview */}
+              <div className="bg-slate-900 text-slate-300 rounded-2xl border border-slate-800 shadow-2xs p-5 space-y-3">
+                <div className="flex items-center gap-2 pb-2 border-b border-slate-800 text-white">
+                  <Layout className="w-4 h-4 text-emerald-400" />
+                  <h3 className="font-black text-xs uppercase tracking-wider">ফুটার লাইভ প্রিভিউ</h3>
+                </div>
+
+                <div className="text-xs space-y-2">
+                  <div className="font-black text-white text-sm">চাকরি<span className="text-emerald-400">সেবা</span></div>
+                  <p className="text-[11px] text-slate-400 leading-relaxed line-clamp-3">
+                    {footerAboutText}
+                  </p>
+                  
+                  <div className="pt-2 border-t border-slate-800 space-y-1 text-[11px]">
+                    <div className="flex items-center gap-1.5 text-emerald-400 font-bold">
+                      <Phone className="w-3.5 h-3.5" />
+                      <span>{supportPhone}</span>
+                    </div>
+                    <div className="text-slate-400 flex items-center gap-1.5">
+                      <Mail className="w-3.5 h-3.5 text-slate-500" />
+                      <span>{supportEmail}</span>
+                    </div>
+                    <div className="text-slate-400 flex items-center gap-1.5">
+                      <MapPin className="w-3.5 h-3.5 text-slate-500" />
+                      <span>{officeAddress}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
           </div>
         </div>
       )}

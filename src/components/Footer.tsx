@@ -1,8 +1,32 @@
-import React from 'react';
+'use client';
+import React, { useState, useEffect } from 'react';
+
 import Link from 'next/link';
 import { Briefcase, Phone, MessageSquare, Send, ShieldCheck, CheckCircle2, Facebook, Youtube } from 'lucide-react';
 
 export default function Footer() {
+  const [settings, setSettings] = useState<any>(null);
+
+  useEffect(() => {
+    const load = () => {
+      fetch('/api/platform/settings')
+        .then(r => r.json())
+        .then(d => {
+          if (d.success && d.settings) setSettings(d.settings);
+        })
+        .catch(() => {});
+    };
+    load();
+    window.addEventListener('cs_settings_changed', load);
+    return () => window.removeEventListener('cs_settings_changed', load);
+  }, []);
+
+  const phone = settings?.general?.supportPhone || '+৮৮০ ১৭৭৪-৩৬৬৬৪৩';
+  const whatsapp = settings?.general?.whatsappNumber || '8801774366643';
+  const aboutText = settings?.general?.footerAboutText || 'বাংলাদেশের চাকরিপ্রার্থীদের বিশ্বস্ত ডিজিটাল প্ল্যাটফর্ম। ঘরে বসেই সকল সরকারি, ব্যাংক ও শীর্ষ বেসরকারি চাকরির শতভাগ যাচাইকৃত বিজ্ঞপ্তি ও সঠিক নিয়মে অনলাইন আবেদন সহায়তা।';
+  const fbUrl = settings?.general?.facebookUrl || 'https://facebook.com/chakrisheba.bd';
+  const tgUrl = settings?.general?.telegramUrl || 'https://t.me/chakrisheba';
+  const ytUrl = settings?.general?.youtubeUrl || 'https://youtube.com/@chakrisheba';
   return (
     <footer className="bg-slate-900 text-slate-300 border-t border-slate-800 text-sm mt-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -25,7 +49,7 @@ export default function Footer() {
               <span className="text-xs font-semibold text-slate-400 block mb-2">আমাদের সাথে যুক্ত থাকুন:</span>
               <div className="flex items-center gap-2">
                 <a 
-                  href="https://facebook.com/chakrisheba.bd" 
+                  href={fbUrl} 
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-8 h-8 rounded-full bg-slate-800 hover:bg-[#1877F2] text-slate-300 hover:text-white flex items-center justify-center transition-all shadow-sm hover:scale-105"
@@ -34,7 +58,7 @@ export default function Footer() {
                   <Facebook className="w-4 h-4" />
                 </a>
                 <a 
-                  href="https://t.me/chakrisheba" 
+                  href={tgUrl} 
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-8 h-8 rounded-full bg-slate-800 hover:bg-[#229ED9] text-slate-300 hover:text-white flex items-center justify-center transition-all shadow-sm hover:scale-105"
@@ -43,7 +67,7 @@ export default function Footer() {
                   <Send className="w-4 h-4" />
                 </a>
                 <a 
-                  href="https://wa.me/8801700000000" 
+                  href={`https://wa.me/${whatsapp}`} 
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-8 h-8 rounded-full bg-slate-800 hover:bg-[#25D366] text-slate-300 hover:text-white flex items-center justify-center transition-all shadow-sm hover:scale-105"
@@ -52,7 +76,7 @@ export default function Footer() {
                   <MessageSquare className="w-4 h-4" />
                 </a>
                 <a 
-                  href="https://youtube.com/@chakrisheba" 
+                  href={ytUrl} 
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-8 h-8 rounded-full bg-slate-800 hover:bg-[#FF0000] text-slate-300 hover:text-white flex items-center justify-center transition-all shadow-sm hover:scale-105"
@@ -67,7 +91,7 @@ export default function Footer() {
               <div className="bg-slate-800/80 p-3 rounded-xl border border-slate-700/60 text-xs text-slate-400 space-y-1">
                 <div className="text-emerald-400 font-bold flex items-center gap-1.5">
                   <Phone className="w-3.5 h-3.5" />
-                  <span>+৮৮০ ১৭০০-০০০০০০</span>
+                  <span>{phone}</span>
                 </div>
                 <div>সকাল ৯:০০টা - রাত ১১:০০টা (প্রতিদিন)</div>
               </div>

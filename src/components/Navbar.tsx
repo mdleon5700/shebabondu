@@ -39,6 +39,7 @@ export default function Navbar() {
   const [auth, setAuth] = useState<AuthState>({ isLoggedIn: false, role: null, name: '' });
   const [walletBalance, setWalletBalance] = useState<number>(450);
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
+  const [platformSettings, setPlatformSettings] = useState<any>(null);
   const navRef = useRef<HTMLDivElement>(null);
 
   // Sync auth and user state
@@ -49,10 +50,22 @@ export default function Navbar() {
     const handleAuthChange = () => setAuth(storage.getAuth());
     const handleUserChange = () => setWalletBalance(storage.getUser().walletBalance);
 
+    const fetchSettings = () => {
+      fetch('/api/platform/settings')
+        .then(res => res.json())
+        .then(d => {
+          if (d.success && d.settings) setPlatformSettings(d.settings);
+        })
+        .catch(() => {});
+    };
+    fetchSettings();
+    window.addEventListener('cs_settings_changed', fetchSettings);
+
     window.addEventListener('cs_auth_changed', handleAuthChange);
     window.addEventListener('cs_user_changed', handleUserChange);
 
     return () => {
+      window.removeEventListener('cs_settings_changed', fetchSettings);
       window.removeEventListener('cs_auth_changed', handleAuthChange);
       window.removeEventListener('cs_user_changed', handleUserChange);
     };
@@ -186,33 +199,38 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm w-full max-w-full" ref={navRef}>
       
-      {/* 1. TOP ANNOUNCEMENT TICKER (Preserved Dark Navy Bar) */}
-      <div className="bg-gradient-to-r from-slate-950 via-emerald-950 to-slate-900 text-white text-[11px] sm:text-xs py-1.5 px-4 border-b border-emerald-900/40">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-2 overflow-hidden">
-            <span className="bg-red-600 text-white px-2 py-0.5 rounded-full text-[12px] sm:text-[13px] font-black uppercase tracking-wider animate-pulse flex-shrink-0">
-              জরুরি নোটিশ
-            </span>
-            <span className="truncate text-slate-300">
-              আজকে ৩টি নতুন সরকারি চাকরির আবেদন শুরু হয়েছে! শেষ সময় হওয়ার আগেই আবেদন বুকিং দিন।
-            </span>
-          </div>
+      {/* 1. TOP ANNOUNCEMENT TICKER (Dynamic from Admin CMS) */}
+      {(platformSettings?.general?.announcementEnabled !== false) && (
+        <div className="bg-gradient-to-r from-slate-950 via-emerald-950 to-slate-900 text-white text-[11px] sm:text-xs py-1.5 px-4 border-b border-emerald-900/40">
+          <div className="max-w-7xl mx-auto flex items-center justify-between">
+            <div className="flex items-center gap-2 overflow-hidden">
+              <span className="bg-red-600 text-white px-2 py-0.5 rounded-full text-[12px] sm:text-[13px] font-black uppercase tracking-wider animate-pulse flex-shrink-0">
+                জরুরি নোটিশ
+              </span>
+              <Link 
+                href={platformSettings?.general?.announcementUrl || '/jobs'}
+                className="truncate text-slate-300 hover:text-emerald-300 transition-colors"
+              >
+                {platformSettings?.general?.announcementText || 'আজকে ৩টি নতুন সরকারি চাকরির আবেদন শুরু হয়েছে! শেষ সময় হওয়ার আগেই আবেদন বুকিং দিন।'}
+              </Link>
+            </div>
 
-          <div className="hidden sm:flex items-center gap-4 text-slate-300 flex-shrink-0 text-[14px]">
-            <a 
-              href="https://wa.me/8801700000000" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="hover:text-emerald-400 flex items-center gap-1 font-semibold"
-            >
-              <MessageSquare className="w-3.5 h-3.5 text-emerald-400" />
-              <span>হোয়াটসঅ্যাপ: ০১৮৯৪-০০০০০০</span>
-            </a>
-            <span className="text-slate-600">|</span>
-            <span className="text-emerald-400 font-bold">সকাল ৯টা - রাত ১০টা</span>
+            <div className="hidden sm:flex items-center gap-4 text-slate-300 flex-shrink-0 text-[14px]">
+              <a 
+                href={`https://wa.me/${platformSettings?.general?.whatsappNumber || '8801774366643'}`}
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="hover:text-emerald-400 flex items-center gap-1 font-semibold"
+              >
+                <MessageSquare className="w-3.5 h-3.5 text-emerald-400" />
+                <span>হোয়াটসঅ্যাপ: {platformSettings?.general?.supportPhone || '+৮৮০ ১৭৭৪-৩৬৬৬৪৩'}</span>
+              </a>
+              <span className="text-slate-600">|</span>
+              <span className="text-emerald-400 font-bold">সকাল ৯টা - রাত ১০টা</span>
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/* 2. MAIN HEADER NAVIGATION BAR */}
       <div className="max-w-[1400px] mx-auto px-3 sm:px-6 lg:px-6">

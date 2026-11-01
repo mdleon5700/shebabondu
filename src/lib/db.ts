@@ -2753,7 +2753,34 @@ export const serverDB = {
       return SyntheticUserManager.getApplications(candidateId);
     }
     const db = loadDB();
-    return db.applications[candidateId] || [];
+    const map = new Map<string, ApplicationRequest>();
+    
+    // 1. Direct candidateId bucket
+    const directList = db.applications[candidateId] || [];
+    for (const app of directList) {
+      if (app && app.id) map.set(app.id, app);
+    }
+
+    // 2. Candidate phone cross-linking (for guest/unregistered applications linked by phone)
+    const cand = db.candidates ? db.candidates[candidateId] : null;
+    const cleanCandPhone = cand?.phone ? cand.phone.replace(/\D/g, '') : null;
+
+    for (const list of Object.values(db.applications)) {
+      if (!Array.isArray(list)) continue;
+      for (const app of list) {
+        if (!app || !app.id) continue;
+        if (app.candidateId === candidateId) {
+          map.set(app.id, app);
+        } else if (cleanCandPhone && app.candidatePhone) {
+          const appPhone = app.candidatePhone.replace(/\D/g, '');
+          if (appPhone && (appPhone === cleanCandPhone || appPhone.endsWith(cleanCandPhone) || cleanCandPhone.endsWith(appPhone))) {
+            map.set(app.id, app);
+          }
+        }
+      }
+    }
+
+    return Array.from(map.values()).sort((a, b) => (b.id > a.id ? 1 : -1));
   },
 
   addApplication(candidateId: string, app: ApplicationRequest): ApplicationRequest[] {
@@ -4278,7 +4305,7 @@ export const serverDB = {
 
       const now = new Date();
 
-      const bnDigits = ['à§¦', 'à§§', 'à§¨', 'à§©', 'à§ª', 'à§«', 'à§¬', 'à§­', 'à§®', 'à§¯'];
+      const bnDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
 
       const d = String(now.getDate()).padStart(2, '0').split('').map(ch => bnDigits[+ch]).join('');
 

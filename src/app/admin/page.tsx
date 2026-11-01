@@ -52,6 +52,7 @@ import {
   DollarSign, 
   Gift, 
   Layers, 
+  Layout, 
   Bell, 
   MessageSquare, 
   Mail, 
@@ -387,8 +388,10 @@ function AdminContent() {
         return false;
       }
       if (jobStatusFilter !== 'ALL') {
-        const st = (job as any).status || (job.daysRemaining > 0 ? 'OPEN' : 'EXPIRED');
-        if (st !== jobStatusFilter) return false;
+        const rawSt = String((job as any).status || (job as any).lifecycleStatus || ((job.daysRemaining || 0) > 0 ? 'OPEN' : 'EXPIRED')).toUpperCase();
+        const isOpen = ['OPEN', 'PUBLISHED', 'ACTIVE'].includes(rawSt);
+        if (jobStatusFilter === 'OPEN' && !isOpen) return false;
+        if (jobStatusFilter === 'EXPIRED' && isOpen) return false;
       }
       return true;
     }).sort((a, b) => {
@@ -1484,6 +1487,7 @@ function AdminContent() {
         { id: 'content-studio', label: 'কন্টেন্ট ও এসইও স্টুডিও', icon: PenTool, badge: 'Studio', badgeColor: 'bg-indigo-600 text-white' },
         { id: 'builder', label: 'ভিজ্যুয়াল পেইজ বিল্ডার', icon: Globe, badge: null },
         { id: 'media-library', label: 'মিডিয়া লাইব্রেরি ও ফাইল ম্যানেজার', icon: HardDrive, badge: 'Media', badgeColor: 'bg-purple-600 text-white' },
+        { id: 'header-footer', label: 'হেডার ও ফুটার ডিজাইন', icon: Layout, badge: 'Live', badgeColor: 'bg-emerald-600 text-white' },
         { id: 'pages-sections', label: 'পেইজ ও সেকশন ম্যানেজমেন্ট', icon: Layers, badge: null },
         { id: 'seo-meta', label: 'এসইও মেটাডাটা ও সিএমএস', icon: Search, badge: null },
         { id: 'revisions', label: 'রিভিশন ও হিস্ট্রি রিকভারি', icon: History, badge: null }
@@ -4825,7 +4829,9 @@ function AdminContent() {
                         </tr>
                       ) : (
                         filteredJobs.map((job) => {
-                          const status = (job as any).status || (job.daysRemaining > 0 ? 'OPEN' : 'EXPIRED');
+                          const rawSt = String((job as any).status || (job as any).lifecycleStatus || ((job.daysRemaining || 0) > 0 ? 'OPEN' : 'EXPIRED')).toUpperCase();
+                          const isJobOpen = ['OPEN', 'PUBLISHED', 'ACTIVE'].includes(rawSt);
+                          const status = isJobOpen ? 'OPEN' : (rawSt === 'UPCOMING' ? 'UPCOMING' : 'EXPIRED');
                           const hasPositions = job.positions && job.positions.length > 0;
                           return (
                             <tr key={job.id} className="hover:bg-slate-50/80 transition-colors">
@@ -4951,6 +4957,7 @@ function AdminContent() {
                                   >
                                     <Edit3 className="w-3 h-3 text-emerald-700" />
                                     <span>এডিট</span>
+                                  </button>
 
                                   {/* Visual Content Studio Quick Bridge */}
                                   <button
@@ -4964,7 +4971,6 @@ function AdminContent() {
                                   >
                                     <PenTool className="w-3 h-3 text-indigo-700" />
                                     <span>কন্টেন্ট</span>
-                                  </button>
                                   </button>
 
                                   {/* Delete Button */}
@@ -6060,7 +6066,7 @@ function AdminContent() {
           )}
 
           {/* TAB 11.1: WEBSITE CMS & SEO MANAGEMENT */}
-          {(activeTab === 'pages-sections' || activeTab === 'seo-meta' || activeTab === 'revisions') && (
+          {(activeTab === 'pages-sections' || activeTab === 'seo-meta' || activeTab === 'header-footer' || activeTab === 'revisions') && (
             <div className="space-y-4">
               <WebsiteCmsSeoManagement 
                 activeTab={activeTab} 

@@ -60,7 +60,7 @@ export class SyntheticJobManager {
       if ((j as any).targetPublishTimeUtc && new Date((j as any).targetPublishTimeUtc).getTime() > Date.now()) {
         return false;
       }
-      return st === 'PUBLISHED' || pubStatus === 'PUBLISHED' || pubStatus === 'PUBLISHED_WITH_WARNINGS';
+      return st === 'PUBLISHED' || st === 'OPEN' || st === 'ACTIVE' || pubStatus === 'PUBLISHED' || pubStatus === 'PUBLISHED_WITH_WARNINGS';
     });
   }
 

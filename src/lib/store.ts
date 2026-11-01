@@ -358,23 +358,24 @@ export const storage = {
 
   // Applications (Scoped by User)
   getApplications(targetUserId?: string): ApplicationRequest[] {
-    if (typeof window === 'undefined') return mockApplications;
+    if (typeof window === 'undefined') return [];
     const key = getScopedKey('cs_apps_data', targetUserId);
     const saved = localStorage.getItem(key);
     if (!saved) {
-      // Check legacy for default
       const legacy = localStorage.getItem('cs_apps_data');
       if (legacy && getUserScope() === 'default') {
-        localStorage.setItem(key, legacy);
-        try { return JSON.parse(legacy); } catch { return mockApplications; }
+        try { 
+          const parsed = JSON.parse(legacy);
+          if (Array.isArray(parsed)) return parsed;
+        } catch {}
       }
-      localStorage.setItem(key, JSON.stringify(mockApplications));
-      return mockApplications;
+      return [];
     }
     try {
-      return JSON.parse(saved);
+      const parsed = JSON.parse(saved);
+      return Array.isArray(parsed) ? parsed : [];
     } catch {
-      return mockApplications;
+      return [];
     }
   },
   addApplication(app: ApplicationRequest, targetUserId?: string) {

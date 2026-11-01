@@ -50,25 +50,41 @@ export default function ApplicationsPage() {
 
   const currentPrefix = selectedApp ? getSmsPrefix(selectedApp.jobId) : 'JOB';
 
-  // Live Sync with Server API on Mount
+  // Live Sync with Server API on Mount & Window Focus
   useEffect(() => {
     const loadApps = async () => {
       // 1. Initial fast local state
       const localApps = storage.getApplications();
-      setApplications(localApps);
-      if (localApps.length > 0) setSelectedApp(localApps[0]);
+      if (localApps.length > 0) {
+        setApplications(localApps);
+        setSelectedApp(prev => prev || localApps[0]);
+      }
 
       // 2. Fetch live applications from authenticated backend API
       try {
-        const res = await fetch('/api/applications');
-        const data = await res.json();
-        if (data.success && data.applications && Array.isArray(data.applications)) {
-          setApplications(data.applications);
-          if (data.applications.length > 0) {
-            setSelectedApp(data.applications[0]);
-          }
-          if (typeof window !== 'undefined') {
-            localStorage.setItem('cs_apps_data', JSON.stringify(data.applications));
+        const res = await fetch('/api/applications', {
+          headers: { 'Cache-Control': 'no-cache' }
+        });
+        if (res.ok) {
+          const data = await res.json();
+          if (data.success && Array.isArray(data.applications)) {
+            setApplications(data.applications);
+            if (data.applications.length > 0) {
+              setSelectedApp(prev => {
+                if (!prev) return data.applications[0];
+                const matching = data.applications.find((a: any) => a.id === prev.id);
+                return matching || data.applications[0];
+              });
+            }
+            if (typeof window !== 'undefined') {
+              try {
+                localStorage.setItem('cs_apps_data', JSON.stringify(data.applications));
+                const user = storage.getUser();
+                if (user && user.id) {
+                  localStorage.setItem('cs_apps_data_' + user.id, JSON.stringify(data.applications));
+                }
+              } catch {}
+            }
           }
         }
       } catch (err) {
@@ -81,11 +97,19 @@ export default function ApplicationsPage() {
     const handleSync = () => {
       const updated = storage.getApplications();
       setApplications(updated);
-      if (updated.length > 0) setSelectedApp(updated[0]);
+      if (updated.length > 0) setSelectedApp(prev => prev || updated[0]);
+    };
+
+    const handleFocus = () => {
+      loadApps();
     };
 
     window.addEventListener('cs_apps_changed', handleSync);
-    return () => window.removeEventListener('cs_apps_changed', handleSync);
+    window.addEventListener('focus', handleFocus);
+    return () => {
+      window.removeEventListener('cs_apps_changed', handleSync);
+      window.removeEventListener('focus', handleFocus);
+    };
   }, []);
 
   const handleCopySms1 = (userId: string) => {

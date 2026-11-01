@@ -60,8 +60,11 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
       updatedAt: new Date().toISOString()
     };
 
-    if (jobData.slug) {
-      payload.slug = jobData.slug.toLowerCase().replace(/[^a-z0-9-]/g, '');
+    if (jobData.slug && typeof jobData.slug === 'string') {
+      const sanitized = jobData.slug.trim().toLowerCase().replace(new RegExp('[^\\\\p{L}\\\\p{N}-]+', 'gu'), '-').replace(/^-+|-+$/g, '');
+      if (sanitized) {
+        payload.slug = sanitized;
+      }
     }
 
     const saved = serverDB.saveJob(payload, session.candidateId || 'ADMIN');

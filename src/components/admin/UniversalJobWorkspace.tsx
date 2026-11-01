@@ -212,7 +212,7 @@ export default function UniversalJobWorkspace({
       const payload: Partial<JobCircular> & { publicationStatus?: string } = {
         ...formData,
         status: finalStatus,
-        publicationStatus: (finalStatus === 'EXPIRED' || finalStatus === 'draft') ? 'UNPUBLISHED' : 'PUBLISHED',
+        publicationStatus: (finalStatus === 'draft' || finalStatus === 'archived') ? 'UNPUBLISHED' : 'PUBLISHED',
         updatedAt: new Date().toISOString()
       };
 

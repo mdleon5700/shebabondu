@@ -22,6 +22,7 @@ export async function GET() {
         announcementUrl: (settings.general as any)?.announcementUrl || '/jobs',
         announcementEnabled: (settings.general as any)?.announcementEnabled !== false,
         headerMenuItems: (settings.general as any)?.headerMenuItems || null,
+        footerColumns: (settings.general as any)?.footerColumns || null,
         footerAboutText: (settings.general as any)?.footerAboutText || 'বাংলাদেশের চাকরিপ্রার্থীদের বিশ্বস্ত ডিজিটাল প্ল্যাটফর্ম। ঘরে বসেই সকল সরকারি, ব্যাংক ও শীর্ষ বেসরকারি চাকরির শতভাগ যাচাইকৃত বিজ্ঞপ্তি ও সঠিক নিয়মে অনলাইন আবেদন সহায়তা।',
         facebookUrl: (settings.general as any)?.facebookUrl || 'https://facebook.com/chakrisheba.bd',
         telegramUrl: (settings.general as any)?.telegramUrl || 'https://t.me/chakrisheba',

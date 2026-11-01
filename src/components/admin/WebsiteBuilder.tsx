@@ -23,6 +23,10 @@ import {
   AlignRight,
   ExternalLink,
   Layers,
+  HelpCircle,
+  Code,
+  Settings,
+  FileText,
   Sparkles
 } from 'lucide-react';
 import { PageRecord, PageSection, SectionType, PageRevision } from '@/lib/types';
@@ -43,6 +47,7 @@ export default function WebsiteBuilder() {
   const [showNewPageModal, setShowNewPageModal] = useState<boolean>(false);
   const [newPageTitle, setNewPageTitle] = useState<string>('');
   const [newPageSlug, setNewPageSlug] = useState<string>('');
+  const [showPageSettingsModal, setShowPageSettingsModal] = useState<boolean>(false);
 
   useEffect(() => {
     fetchPages();
@@ -119,8 +124,9 @@ export default function WebsiteBuilder() {
              type === 'features' ? 'আমাদের প্রধান সেবাসমূহ' :
              type === 'cta' ? 'আজই চাকরির আবেদন সম্পন্ন করুন' :
              type === 'stats' ? 'প্ল্যাটফর্মের মাইলফলক ও পরিসংখ্যান' :
+             type === 'faq' ? 'সচরাচর জিজ্ঞাসিত প্রশ্নাবলী (FAQ)' :
              'নতুন অনুচ্ছেদ ও বিষয়বস্তু',
-      subtitle: 'এখানে আপনার পছন্দের বিবরণ লিখুন।',
+      subtitle: type === 'faq' ? 'চাকরি আবেদন ও নিয়মাবলী সংক্রান্ত সাধারণ প্রশ্নোত্তর' : 'এখানে আপনার পছন্দের বিবরণ লিখুন।',
       content: type === 'features' ? {
         items: [
           { title: 'ফিচার ১', desc: 'সংক্ষিপ্ত তথ্য এখানে লিখুন।' },
@@ -526,7 +532,8 @@ export default function WebsiteBuilder() {
                     <button onClick={() => handleAddSection('features')} className="px-3 py-1.5 bg-white border border-slate-300 hover:border-emerald-500 rounded-xl text-xs font-bold text-slate-800 transition-all">+ ফিচার গ্রিড (Cards)</button>
                     <button onClick={() => handleAddSection('cta')} className="px-3 py-1.5 bg-white border border-slate-300 hover:border-emerald-500 rounded-xl text-xs font-bold text-slate-800 transition-all">+ কল টু অ্যাকশন</button>
                     <button onClick={() => handleAddSection('stats')} className="px-3 py-1.5 bg-white border border-slate-300 hover:border-emerald-500 rounded-xl text-xs font-bold text-slate-800 transition-all">+ পরিসংখ্যান</button>
-                    <button onClick={() => handleAddSection('text')} className="px-3 py-1.5 bg-white border border-slate-300 hover:border-emerald-500 rounded-xl text-xs font-bold text-slate-800 transition-all">+ অনুচ্ছেদ</button>
+                    <button onClick={() => handleAddSection('text')} className="px-3 py-1.5 bg-white border border-slate-300 hover:border-emerald-500 rounded-xl text-xs font-bold text-slate-800 transition-all">+ অনুচ্ছেদ / বডি টেক্সট</button>
+                    <button onClick={() => handleAddSection('faq')} className="px-3 py-1.5 bg-white border border-slate-300 hover:border-emerald-500 rounded-xl text-xs font-bold text-slate-800 transition-all">+ সাধারণ জিজ্ঞাসা (FAQ)</button>
                   </div>
                 </div>
               )}
@@ -583,6 +590,292 @@ export default function WebsiteBuilder() {
                   className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs text-slate-900 focus:ring-2 focus:ring-emerald-500"
                 />
               </div>
+
+              {/* TEXT SECTION: FULL MULTI-PARAGRAPH BODY TEXT & HTML */}
+              {activeSection.type === 'text' && (
+                <div className="space-y-3 pt-2 border-t border-slate-100">
+                  <div className="flex items-center justify-between">
+                    <label className="text-[11px] font-bold text-slate-700 flex items-center gap-1.5">
+                      <FileText className="w-3.5 h-3.5 text-emerald-600" />
+                      <span>পূর্ণাঙ্গ বডি কনটেন্ট (আর্টিকেল / পলিসি টেক্সট)</span>
+                    </label>
+                  </div>
+
+                  {/* Rich Snippet Helpers */}
+                  <div className="flex flex-wrap items-center gap-1.5 bg-slate-50 p-1.5 rounded-xl border border-slate-200">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const cur = activeSection.content?.bodyText || '';
+                        const nxt = cur ? cur + '\n\n• নতুন পয়েন্ট এখানে লিখুন' : '• নতুন পয়েন্ট এখানে লিখুন';
+                        updateCurrentPage(p => ({
+                          ...p,
+                          sections: p.sections.map(s => s.id === activeSection.id ? {
+                            ...s,
+                            content: { ...s.content, bodyText: nxt }
+                          } : s)
+                        }));
+                      }}
+                      className="px-2 py-1 bg-white hover:bg-slate-100 text-slate-700 rounded-lg text-[10px] font-bold border border-slate-200"
+                    >
+                      + বুলেট পয়েন্ট
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const cur = activeSection.content?.bodyText || '';
+                        const nxt = cur ? cur + '\n\n[বিশেষ দ্রষ্টব্য]: এখানে জরুরি তথ্য বা সতর্কবার্তা লিখুন।' : '[বিশেষ দ্রষ্টব্য]: এখানে জরুরি তথ্য বা সতর্কবার্তা লিখুন।';
+                        updateCurrentPage(p => ({
+                          ...p,
+                          sections: p.sections.map(s => s.id === activeSection.id ? {
+                            ...s,
+                            content: { ...s.content, bodyText: nxt }
+                          } : s)
+                        }));
+                      }}
+                      className="px-2 py-1 bg-white hover:bg-slate-100 text-slate-700 rounded-lg text-[10px] font-bold border border-slate-200"
+                    >
+                      + নোট বক্স
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const cur = activeSection.content?.bodyText || '';
+                        const nxt = cur ? cur + '\n\nএখানে নতুন একটি অনুচ্ছেদ লিখুন।' : 'এখানে নতুন একটি অনুচ্ছেদ লিখুন।';
+                        updateCurrentPage(p => ({
+                          ...p,
+                          sections: p.sections.map(s => s.id === activeSection.id ? {
+                            ...s,
+                            content: { ...s.content, bodyText: nxt }
+                          } : s)
+                        }));
+                      }}
+                      className="px-2 py-1 bg-white hover:bg-slate-100 text-slate-700 rounded-lg text-[10px] font-bold border border-slate-200"
+                    >
+                      + নতুন অনুচ্ছেদ
+                    </button>
+                  </div>
+
+                  <textarea
+                    rows={8}
+                    value={activeSection.content?.bodyText || ''}
+                    onChange={(e) => {
+                      const bodyText = e.target.value;
+                      updateCurrentPage(p => ({
+                        ...p,
+                        sections: p.sections.map(s => s.id === activeSection.id ? {
+                          ...s,
+                          content: { ...s.content, bodyText }
+                        } : s)
+                      }));
+                    }}
+                    placeholder="এখানে আপনার পূর্ণাঙ্গ আর্টিকেল, শর্তাবলী, নীতিমালা বা পেইজের মূল বিষয়বস্তু লিখুন..."
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs text-slate-900 focus:ring-2 focus:ring-emerald-500 leading-relaxed font-sans"
+                  />
+
+                  {/* Optional Raw HTML Editor */}
+                  <div className="pt-2">
+                    <label className="text-[10px] font-bold text-slate-500 flex items-center gap-1 mb-1">
+                      <Code className="w-3 h-3" />
+                      <span>এডভান্সড HTML কোড (ঐচ্ছিক):</span>
+                    </label>
+                    <textarea
+                      rows={4}
+                      value={activeSection.content?.bodyHtml || ''}
+                      onChange={(e) => {
+                        const bodyHtml = e.target.value;
+                        updateCurrentPage(p => ({
+                          ...p,
+                          sections: p.sections.map(s => s.id === activeSection.id ? {
+                            ...s,
+                            content: { ...s.content, bodyHtml }
+                          } : s)
+                        }));
+                      }}
+                      placeholder="<p>কাস্টম এইচটিএমএল বা টেবিল এখানে পেস্ট করতে পারেন...</p>"
+                      className="w-full px-3 py-1.5 bg-slate-900 text-emerald-400 font-mono text-[11px] rounded-xl border border-slate-800"
+                    />
+                  </div>
+                </div>
+              )}
+
+              {/* FAQ SPECIFIC */}
+              {activeSection.type === 'faq' && (
+                <div className="space-y-3 pt-2 border-t border-slate-100">
+                  <div className="flex items-center justify-between">
+                    <label className="text-[11px] font-bold text-slate-700 flex items-center gap-1.5">
+                      <HelpCircle className="w-3.5 h-3.5 text-emerald-600" />
+                      <span>প্রশ্নোত্তর তালিকা ({((activeSection.content?.faqs || activeSection.content?.items) || []).length}টি)</span>
+                    </label>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const cur = (activeSection.content?.faqs || activeSection.content?.items) || [];
+                        const faqs = [...cur, { q: 'নতুন প্রশ্ন লিখুন?', a: 'এখানে বিস্তারিত উত্তর লিখুন।' }];
+                        updateCurrentPage(p => ({
+                          ...p,
+                          sections: p.sections.map(s => s.id === activeSection.id ? {
+                            ...s,
+                            content: { ...s.content, faqs, items: faqs }
+                          } : s)
+                        }));
+                      }}
+                      className="text-[10px] font-bold text-emerald-700 hover:text-emerald-900 bg-emerald-50 px-2 py-1 rounded-lg"
+                    >
+                      + প্রশ্ন যোগ করুন
+                    </button>
+                  </div>
+
+                  <div className="space-y-2.5 max-h-60 overflow-y-auto pr-1">
+                    {((activeSection.content?.faqs || activeSection.content?.items) || []).map((faq: any, idx: number) => (
+                      <div key={idx} className="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-1.5">
+                        <div className="flex items-center justify-between">
+                          <span className="text-[10px] font-bold text-slate-500">প্রশ্ন #{idx + 1}</span>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const cur = (activeSection.content?.faqs || activeSection.content?.items) || [];
+                              const faqs = cur.filter((_: any, i: number) => i !== idx);
+                              updateCurrentPage(p => ({
+                                ...p,
+                                sections: p.sections.map(s => s.id === activeSection.id ? {
+                                  ...s,
+                                  content: { ...s.content, faqs, items: faqs }
+                                } : s)
+                              }));
+                            }}
+                            className="text-red-500 hover:text-red-700 text-[10px] font-bold"
+                          >
+                            মুছুন
+                          </button>
+                        </div>
+                        <input
+                          type="text"
+                          value={faq.q || faq.question || faq.title || ''}
+                          onChange={(e) => {
+                            const cur = [...((activeSection.content?.faqs || activeSection.content?.items) || [])];
+                            cur[idx] = { ...cur[idx], q: e.target.value, question: e.target.value };
+                            updateCurrentPage(p => ({
+                              ...p,
+                              sections: p.sections.map(s => s.id === activeSection.id ? {
+                                ...s,
+                                content: { ...s.content, faqs: cur, items: cur }
+                              } : s)
+                            }));
+                          }}
+                          placeholder="প্রশ্ন..."
+                          className="w-full px-2.5 py-1 bg-white border border-slate-200 rounded-lg text-xs font-bold"
+                        />
+                        <textarea
+                          rows={2}
+                          value={faq.a || faq.answer || faq.desc || ''}
+                          onChange={(e) => {
+                            const cur = [...((activeSection.content?.faqs || activeSection.content?.items) || [])];
+                            cur[idx] = { ...cur[idx], a: e.target.value, answer: e.target.value };
+                            updateCurrentPage(p => ({
+                              ...p,
+                              sections: p.sections.map(s => s.id === activeSection.id ? {
+                                ...s,
+                                content: { ...s.content, faqs: cur, items: cur }
+                              } : s)
+                            }));
+                          }}
+                          placeholder="উত্তর..."
+                          className="w-full px-2.5 py-1 bg-white border border-slate-200 rounded-lg text-xs text-slate-700"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* STATS SPECIFIC */}
+              {activeSection.type === 'stats' && (
+                <div className="space-y-3 pt-2 border-t border-slate-100">
+                  <div className="flex items-center justify-between">
+                    <label className="text-[11px] font-bold text-slate-700">পরিসংখ্যান আইটেম</label>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const items = [...(activeSection.content?.items || []), { value: '১০০+', label: 'নতুন অর্জন' }];
+                        updateCurrentPage(p => ({
+                          ...p,
+                          sections: p.sections.map(s => s.id === activeSection.id ? {
+                            ...s,
+                            content: { ...s.content, items }
+                          } : s)
+                        }));
+                      }}
+                      className="text-[10px] font-bold text-emerald-700 hover:text-emerald-900 bg-emerald-50 px-2 py-1 rounded-lg"
+                    >
+                      + আইটেম যোগ করুন
+                    </button>
+                  </div>
+
+                  <div className="space-y-2 max-h-48 overflow-y-auto pr-1">
+                    {(activeSection.content?.items || []).map((item: any, idx: number) => (
+                      <div key={idx} className="p-2 bg-slate-50 border border-slate-200 rounded-xl grid grid-cols-12 gap-2 items-center">
+                        <div className="col-span-5">
+                          <input
+                            type="text"
+                            value={item.value || ''}
+                            onChange={(e) => {
+                              const items = [...(activeSection.content?.items || [])];
+                              items[idx] = { ...items[idx], value: e.target.value };
+                              updateCurrentPage(p => ({
+                                ...p,
+                                sections: p.sections.map(s => s.id === activeSection.id ? {
+                                  ...s,
+                                  content: { ...s.content, items }
+                                } : s)
+                              }));
+                            }}
+                            placeholder="সংখ্যা (উদা: ৫০,০০০+)"
+                            className="w-full px-2 py-1 bg-white border border-slate-200 rounded-lg text-xs font-black"
+                          />
+                        </div>
+                        <div className="col-span-6">
+                          <input
+                            type="text"
+                            value={item.label || ''}
+                            onChange={(e) => {
+                              const items = [...(activeSection.content?.items || [])];
+                              items[idx] = { ...items[idx], label: e.target.value };
+                              updateCurrentPage(p => ({
+                                ...p,
+                                sections: p.sections.map(s => s.id === activeSection.id ? {
+                                  ...s,
+                                  content: { ...s.content, items }
+                                } : s)
+                              }));
+                            }}
+                            placeholder="লেবেল (উদা: সফল আবেদন)"
+                            className="w-full px-2 py-1 bg-white border border-slate-200 rounded-lg text-xs"
+                          />
+                        </div>
+                        <div className="col-span-1 text-right">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const items = (activeSection.content?.items || []).filter((_: any, i: number) => i !== idx);
+                              updateCurrentPage(p => ({
+                                ...p,
+                                sections: p.sections.map(s => s.id === activeSection.id ? {
+                                  ...s,
+                                  content: { ...s.content, items }
+                                } : s)
+                              }));
+                            }}
+                            className="text-red-500 hover:text-red-700 text-xs font-bold"
+                          >
+                            ✕
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               {/* Hero Specific */}
               {activeSection.type === 'hero' && (
@@ -916,6 +1209,89 @@ export default function WebsiteBuilder() {
         )}
 
       </div>
+
+      {/* PAGE SETTINGS & SEO MODAL */}
+      {showPageSettingsModal && currentPage && (
+        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl p-6 max-w-lg w-full space-y-4 shadow-2xl">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+              <div className="flex items-center gap-2">
+                <Settings className="w-5 h-5 text-emerald-700" />
+                <h3 className="text-base font-black text-slate-900">পৃষ্ঠার সেটিংস ও এসইও মেটাডাটা</h3>
+              </div>
+              <button onClick={() => setShowPageSettingsModal(false)} className="text-slate-400 hover:text-slate-600 text-sm font-bold">✕</button>
+            </div>
+
+            <div className="space-y-3 text-xs">
+              <div>
+                <label className="font-bold text-slate-700 block mb-1">পৃষ্ঠার শিরোনাম</label>
+                <input
+                  type="text"
+                  value={currentPage.title}
+                  onChange={(e) => updateCurrentPage(p => ({ ...p, title: e.target.value }))}
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl font-bold text-slate-900"
+                />
+              </div>
+
+              <div>
+                <label className="font-bold text-slate-700 block mb-1">স্লাগ / URL পাথ</label>
+                <input
+                  type="text"
+                  disabled={currentPage.isSystemPage}
+                  value={currentPage.slug}
+                  onChange={(e) => updateCurrentPage(p => ({ ...p, slug: e.target.value }))}
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl font-mono text-slate-900 disabled:opacity-50"
+                />
+                {currentPage.isSystemPage && <span className="text-[10px] text-slate-400">সিস্টেম পৃষ্ঠার মূল পাথ পরিবর্তনযোগ্য নয়।</span>}
+              </div>
+
+              <div>
+                <label className="font-bold text-slate-700 block mb-1">এসইও মেটা টাইটেল (Title Tag)</label>
+                <input
+                  type="text"
+                  value={currentPage.metaTitle || ''}
+                  onChange={(e) => updateCurrentPage(p => ({ ...p, metaTitle: e.target.value }))}
+                  placeholder="গুগল সার্চ ফলাফলের টাইটেল..."
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900"
+                />
+              </div>
+
+              <div>
+                <label className="font-bold text-slate-700 block mb-1">এসইও মেটা ডিসক্রিপশন (Meta Description)</label>
+                <textarea
+                  rows={3}
+                  value={currentPage.metaDescription || ''}
+                  onChange={(e) => updateCurrentPage(p => ({ ...p, metaDescription: e.target.value }))}
+                  placeholder="গুগল সার্চ ফলাফলের নিচে প্রদর্শিত বিবরণ..."
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900"
+                />
+              </div>
+
+              <div className="flex items-center justify-between pt-2">
+                <label className="flex items-center gap-2 font-bold text-slate-700 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={currentPage.status === 'published'}
+                    onChange={(e) => updateCurrentPage(p => ({ ...p, status: e.target.checked ? 'published' : 'draft' }))}
+                    className="w-4 h-4 text-emerald-600 rounded"
+                  />
+                  <span>লাইভ ওয়েবসাইটে সক্রিয় রাখুন (Published)</span>
+                </label>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-end gap-2 pt-3 border-t border-slate-100">
+              <button
+                type="button"
+                onClick={() => setShowPageSettingsModal(false)}
+                className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-bold text-xs"
+              >
+                সম্পন্ন
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* REVISION HISTORY MODAL */}
       {showHistoryModal && (

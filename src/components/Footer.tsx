@@ -4,6 +4,63 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Briefcase, Phone, MessageSquare, Send, ShieldCheck, CheckCircle2, Facebook, Youtube } from 'lucide-react';
 
+
+export interface FooterColumnLink {
+  label: string;
+  url: string;
+}
+
+export interface FooterColumnItem {
+  id: string;
+  title: string;
+  links: FooterColumnLink[];
+}
+
+export const DEFAULT_FOOTER_COLUMNS: FooterColumnItem[] = [
+  {
+    id: 'col-jobs',
+    title: 'চাকরি ও পরীক্ষা',
+    links: [
+      { label: 'চলমান সকল চাকরি', url: '/jobs' },
+      { label: 'সরকারি চাকরির বিজ্ঞপ্তি', url: '/government-jobs' },
+      { label: 'বেসরকারি ও কোম্পানি জবস', url: '/private-jobs' },
+      { label: 'ব্যাংক ও ফাইন্যান্স চাকরি', url: '/bank-jobs' },
+      { label: 'আবেদনের শেষ সময় কাছাকাছি', url: '/deadline-approaching' },
+      { label: 'পরীক্ষার নোটিশ ও সময়সূচি', url: '/exam-notices' },
+      { label: 'প্রবেশপত্র / অ্যাডমিট কার্ড', url: '/admit-cards' },
+      { label: 'বিগত বছরের প্রশ্ন ও সমাধান', url: '/previous-year-questions' },
+      { label: 'অনলাইন মডেল টেস্ট', url: '/model-tests' }
+    ]
+  },
+  {
+    id: 'col-guides',
+    title: 'ক্যারিয়ার গাইড ও সার্ভিস',
+    links: [
+      { label: 'সকল চাকরির ক্যাটাগরি', url: '/job-categories' },
+      { label: 'সকল নিয়োগকারী প্রতিষ্ঠান', url: '/organizations' },
+      { label: 'ক্যারিয়ার গাইড হাব', url: '/career-guides' },
+      { label: 'সিভি লেখার সঠিক নিয়ম', url: '/career-guides/cv-writing' },
+      { label: 'অনলাইনে চাকরির আবেদন গাইড', url: '/career-guides/online-job-application' },
+      { label: 'ইন্টারভিউ ও ভাইভা প্রস্তুতি', url: '/career-guides/interview-preparation' },
+      { label: 'সব ব্লগ ও ক্যারিয়ার আর্টিকেল', url: '/blog' },
+      { label: 'ফ্রি জব এলার্ট নোটিফিকেশন', url: '/job-alerts' }
+    ]
+  },
+  {
+    id: 'col-policies',
+    title: 'নীতিমালা ও সহায়তা',
+    links: [
+      { label: 'আমাদের সম্পর্কে (About Us)', url: '/about-us' },
+      { label: 'যোগাযোগ করুন (Contact)', url: '/contact-us' },
+      { label: 'সাধারণ জিজ্ঞাসা (FAQ)', url: '/faq' },
+      { label: 'সম্পাদকীয় নীতিমালা', url: '/editorial-policy' },
+      { label: 'চাকরি যাচাই নীতিমালা', url: '/job-verification-policy' },
+      { label: 'ভুল তথ্য সংশোধন নীতিমালা', url: '/corrections-policy' },
+      { label: 'ভুল বিজ্ঞপ্তি রিপোর্ট করুন', url: '/report-a-job' }
+    ]
+  }
+];
+
 export default function Footer() {
   const [settings, setSettings] = useState<any>(null);
 
@@ -27,6 +84,9 @@ export default function Footer() {
   const fbUrl = settings?.general?.facebookUrl || 'https://facebook.com/chakrisheba.bd';
   const tgUrl = settings?.general?.telegramUrl || 'https://t.me/chakrisheba';
   const ytUrl = settings?.general?.youtubeUrl || 'https://youtube.com/@chakrisheba';
+  const footerCols: FooterColumnItem[] = (settings?.general?.footerColumns && Array.isArray(settings.general.footerColumns) && settings.general.footerColumns.length > 0)
+    ? settings.general.footerColumns
+    : DEFAULT_FOOTER_COLUMNS;
   return (
     <footer className="bg-slate-900 text-slate-300 border-t border-slate-800 text-sm mt-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -98,186 +158,35 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Col 2: Jobs & Exams */}
-          <div>
-            <h4 className="text-white font-bold text-base mb-3.5 border-b border-slate-800 pb-2">
-              চাকরি ও পরীক্ষা
-            </h4>
-            <ul className="space-y-2 text-[14px] text-slate-400">
-              <li>
-                <Link href="/jobs" className="hover:text-emerald-400 transition-colors flex items-center gap-1.5">
-                  <span className="text-emerald-500">›</span>
-                  <span>চলমান সকল চাকরি</span>
-                </Link>
-              </li>
-              <li>
-                <Link href="/government-jobs" className="hover:text-emerald-400 transition-colors flex items-center gap-1.5">
-                  <span className="text-emerald-500">›</span>
-                  <span>সরকারি চাকরির বিজ্ঞপ্তি</span>
-                </Link>
-              </li>
-              <li>
-                <Link href="/private-jobs" className="hover:text-emerald-400 transition-colors flex items-center gap-1.5">
-                  <span className="text-emerald-500">›</span>
-                  <span>বেসরকারি ও কোম্পানি জবস</span>
-                </Link>
-              </li>
-              <li>
-                <Link href="/bank-jobs" className="hover:text-emerald-400 transition-colors flex items-center gap-1.5">
-                  <span className="text-emerald-500">›</span>
-                  <span>ব্যাংক ও ফাইন্যান্স চাকরি</span>
-                </Link>
-              </li>
-              <li>
-                <Link href="/deadline-approaching" className="hover:text-emerald-400 transition-colors flex items-center gap-1.5">
-                  <span className="text-emerald-500">›</span>
-                  <span>আবেদনের শেষ সময় কাছাকাছি</span>
-                </Link>
-              </li>
-              <li>
-                <Link href="/exam-notices" className="hover:text-emerald-400 transition-colors flex items-center gap-1.5">
-                  <span className="text-emerald-500">›</span>
-                  <span>পরীক্ষার নোটিশ ও সময়সূচি</span>
-                </Link>
-              </li>
-              <li>
-                <Link href="/admit-cards" className="hover:text-emerald-400 transition-colors flex items-center gap-1.5">
-                  <span className="text-emerald-500">›</span>
-                  <span>প্রবেশপত্র / অ্যাডমিট কার্ড</span>
-                </Link>
-              </li>
-              <li>
-                <Link href="/previous-year-questions" className="hover:text-emerald-400 transition-colors flex items-center gap-1.5">
-                  <span className="text-emerald-500">›</span>
-                  <span>বিগত বছরের প্রশ্ন ও সমাধান</span>
-                </Link>
-              </li>
-              <li>
-                <Link href="/model-tests" className="hover:text-emerald-400 transition-colors flex items-center gap-1.5">
-                  <span className="text-emerald-500">›</span>
-                  <span>অনলাইন মডেল টেস্ট</span>
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Col 3: Career Guides & Directories */}
-          <div>
-            <h4 className="text-white font-bold text-base mb-3.5 border-b border-slate-800 pb-2">
-              ক্যারিয়ার গাইড ও সার্ভিস
-            </h4>
-            <ul className="space-y-2 text-[14px] text-slate-400">
-              <li>
-                <Link href="/job-categories" className="hover:text-emerald-400 transition-colors flex items-center gap-1.5">
-                  <span className="text-emerald-500">›</span>
-                  <span>সকল চাকরির ক্যাটাগরি</span>
-                </Link>
-              </li>
-              <li>
-                <Link href="/organizations" className="hover:text-emerald-400 transition-colors flex items-center gap-1.5">
-                  <span className="text-emerald-500">›</span>
-                  <span>সকল নিয়োগকারী প্রতিষ্ঠান</span>
-                </Link>
-              </li>
-              <li>
-                <Link href="/career-guides" className="hover:text-emerald-400 transition-colors flex items-center gap-1.5">
-                  <span className="text-emerald-500">›</span>
-                  <span>ক্যারিয়ার গাইড হাব</span>
-                </Link>
-              </li>
-              <li>
-                <Link href="/career-guides/cv-writing" className="hover:text-emerald-400 transition-colors flex items-center gap-1.5">
-                  <span className="text-emerald-500">›</span>
-                  <span>সিভি লেখার সঠিক নিয়ম</span>
-                </Link>
-              </li>
-              <li>
-                <Link href="/career-guides/online-job-application" className="hover:text-emerald-400 transition-colors flex items-center gap-1.5">
-                  <span className="text-emerald-500">›</span>
-                  <span>অনলাইনে চাকরির আবেদন গাইড</span>
-                </Link>
-              </li>
-              <li>
-                <Link href="/career-guides/interview-preparation" className="hover:text-emerald-400 transition-colors flex items-center gap-1.5">
-                  <span className="text-emerald-500">›</span>
-                  <span>ইন্টারভিউ ও ভাইভা প্রস্তুতি</span>
-                </Link>
-              </li>
-              <li>
-                <Link href="/blog" className="hover:text-emerald-400 transition-colors flex items-center gap-1.5">
-                  <span className="text-emerald-500">›</span>
-                  <span>সব ব্লগ ও ক্যারিয়ার আর্টিকেল</span>
-                </Link>
-              </li>
-              <li>
-                <Link href="/job-alerts" className="hover:text-emerald-400 transition-colors flex items-center gap-1.5">
-                  <span className="text-emerald-500">›</span>
-                  <span>ফ্রি জব এলার্ট নোটিফিকেশন</span>
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Col 4: Organization & Policy Links */}
-          <div>
-            <h4 className="text-white font-bold text-base mb-3.5 border-b border-slate-800 pb-2">
-              নীতিমালা ও সহায়তা
-            </h4>
-            <ul className="space-y-2 text-[14px] text-slate-400">
-              <li>
-                <Link href="/about-us" className="hover:text-emerald-400 transition-colors flex items-center gap-1.5">
-                  <span className="text-emerald-500">›</span>
-                  <span>আমাদের সম্পর্কে (About Us)</span>
-                </Link>
-              </li>
-              <li>
-                <Link href="/contact-us" className="hover:text-emerald-400 transition-colors flex items-center gap-1.5">
-                  <span className="text-emerald-500">›</span>
-                  <span>যোগাযোগ করুন (Contact)</span>
-                </Link>
-              </li>
-              <li>
-                <Link href="/faq" className="hover:text-emerald-400 transition-colors flex items-center gap-1.5">
-                  <span className="text-emerald-500">›</span>
-                  <span>সাধারণ জিজ্ঞাসা (FAQ)</span>
-                </Link>
-              </li>
-              <li>
-                <Link href="/editorial-policy" className="hover:text-emerald-400 transition-colors flex items-center gap-1.5">
-                  <span className="text-emerald-500">›</span>
-                  <span>সম্পাদকীয় নীতিমালা</span>
-                </Link>
-              </li>
-              <li>
-                <Link href="/job-verification-policy" className="hover:text-emerald-400 transition-colors flex items-center gap-1.5">
-                  <span className="text-emerald-500">›</span>
-                  <span>চাকরি যাচাই নীতিমালা</span>
-                </Link>
-              </li>
-              <li>
-                <Link href="/corrections-policy" className="hover:text-emerald-400 transition-colors flex items-center gap-1.5">
-                  <span className="text-emerald-500">›</span>
-                  <span>ভুল তথ্য সংশোধন নীতিমালা</span>
-                </Link>
-              </li>
-              <li>
-                <Link href="/report-a-job" className="hover:text-rose-400 transition-colors flex items-center gap-1.5 font-semibold text-rose-300">
-                  <span className="text-rose-400">›</span>
-                  <span>ভুল বিজ্ঞপ্তি রিপোর্ট করুন</span>
-                </Link>
-              </li>
-              <li className="pt-2">
-                <Link 
-                  href="/register" 
-                  className="inline-flex items-center gap-1 px-3 py-1.5 bg-emerald-600/30 hover:bg-emerald-600/50 text-emerald-300 rounded-lg text-xs font-bold transition-colors border border-emerald-500/30"
-                >
-                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-                  <span>বিনামূল্যে অ্যাকাউন্ট খুলুন</span>
-                </Link>
-              </li>
-            </ul>
-          </div>
-
+          {/* Dynamic Footer Link Columns (Col 2, 3, 4) */}
+          {footerCols.map((col, idx) => (
+            <div key={col.id || idx}>
+              <h4 className="text-white font-bold text-base mb-3.5 border-b border-slate-800 pb-2">
+                {col.title}
+              </h4>
+              <ul className="space-y-2 text-[14px] text-slate-400">
+                {(col.links || []).map((link, lIdx) => (
+                  <li key={lIdx}>
+                    <Link href={link.url} className="hover:text-emerald-400 transition-colors flex items-center gap-1.5">
+                      <span className="text-emerald-500">›</span>
+                      <span>{link.label}</span>
+                    </Link>
+                  </li>
+                ))}
+                {idx === footerCols.length - 1 && (
+                  <li className="pt-2">
+                    <Link 
+                      href="/register" 
+                      className="inline-flex items-center gap-1 px-3 py-1.5 bg-emerald-600/30 hover:bg-emerald-600/50 text-emerald-300 rounded-lg text-xs font-bold transition-colors border border-emerald-500/30"
+                    >
+                      <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                      <span>বিনামূল্যে অ্যাকাউন্ট খুলুন</span>
+                    </Link>
+                  </li>
+                )}
+              </ul>
+            </div>
+          ))}
         </div>
 
         {/* Real Payment Partners Badges & Security Strip */}

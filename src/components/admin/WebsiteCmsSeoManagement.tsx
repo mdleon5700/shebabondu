@@ -24,7 +24,13 @@ import {
   Code2, 
   Smartphone, 
   Monitor,
-  RotateCcw
+  RotateCcw,
+  Plus,
+  Trash2,
+  ArrowUp,
+  ArrowDown,
+  List,
+  ChevronDown
 } from 'lucide-react';
 
 interface WebsiteCmsSeoManagementProps {
@@ -166,19 +172,78 @@ const INITIAL_REVISIONS: RevisionItem[] = [
   }
 ];
 
+
+const DEFAULT_HEADER_ITEMS = [
+  { id: 'home', label: 'হোম', href: '/' },
+  { id: 'all-jobs', label: 'সকল চাকরি', href: '/jobs', badge: 'হট' },
+  { id: 'govt-jobs', label: 'সরকারি চাকরি', href: '/government-jobs' },
+  { id: 'bank-jobs', label: 'ব্যাংক ও আর্থিক', href: '/bank-jobs' },
+  { id: 'private-jobs', label: 'বেসরকারি চাকরি', href: '/private-jobs' },
+  { id: 'categories', label: 'চাকরির ক্যাটাগরি', href: '/job-categories' },
+  { id: 'organizations', label: 'নিয়োগকারী প্রতিষ্ঠান', href: '/organizations' },
+  { id: 'guides', label: 'ক্যারিয়ার গাইড', href: '/career-guides' },
+  { id: 'about', label: 'আমাদের সম্পর্কে', href: '/about-us' }
+];
+
+const DEFAULT_FOOTER_COLS = [
+  {
+    id: 'col-jobs',
+    title: 'চাকরি ও পরীক্ষা',
+    links: [
+      { label: 'চলমান সকল চাকরি', url: '/jobs' },
+      { label: 'সরকারি চাকরির বিজ্ঞপ্তি', url: '/government-jobs' },
+      { label: 'বেসরকারি ও কোম্পানি জবস', url: '/private-jobs' },
+      { label: 'ব্যাংক ও ফাইন্যান্স চাকরি', url: '/bank-jobs' },
+      { label: 'আবেদনের শেষ সময় কাছাকাছি', url: '/deadline-approaching' },
+      { label: 'পরীক্ষার নোটিশ ও সময়সূচি', url: '/exam-notices' },
+      { label: 'প্রবেশপত্র / অ্যাডমিট কার্ড', url: '/admit-cards' },
+      { label: 'বিগত বছরের প্রশ্ন ও সমাধান', url: '/previous-year-questions' },
+      { label: 'অনলাইন মডেল টেস্ট', url: '/model-tests' }
+    ]
+  },
+  {
+    id: 'col-guides',
+    title: 'ক্যারিয়ার গাইড ও সার্ভিস',
+    links: [
+      { label: 'সকল চাকরির ক্যাটাগরি', url: '/job-categories' },
+      { label: 'সকল নিয়োগকারী প্রতিষ্ঠান', url: '/organizations' },
+      { label: 'ক্যারিয়ার গাইড হাব', url: '/career-guides' },
+      { label: 'সিভি লেখার সঠিক নিয়ম', url: '/career-guides/cv-writing' },
+      { label: 'অনলাইনে চাকরির আবেদন গাইড', url: '/career-guides/online-job-application' },
+      { label: 'ইন্টারভিউ ও ভাইভা প্রস্তুতি', url: '/career-guides/interview-preparation' },
+      { label: 'সব ব্লগ ও ক্যারিয়ার আর্টিকেল', url: '/blog' },
+      { label: 'ফ্রি জব এলার্ট নোটিফিকেশন', url: '/job-alerts' }
+    ]
+  },
+  {
+    id: 'col-policies',
+    title: 'নীতিমালা ও সহায়তা',
+    links: [
+      { label: 'আমাদের সম্পর্কে (About Us)', url: '/about-us' },
+      { label: 'যোগাযোগ করুন (Contact)', url: '/contact-us' },
+      { label: 'সাধারণ জিজ্ঞাসা (FAQ)', url: '/faq' },
+      { label: 'সম্পাদকীয় নীতিমালা', url: '/editorial-policy' },
+      { label: 'চাকরি যাচাই নীতিমালা', url: '/job-verification-policy' },
+      { label: 'ভুল তথ্য সংশোধন নীতিমালা', url: '/corrections-policy' },
+      { label: 'ভুল বিজ্ঞপ্তি রিপোর্ট করুন', url: '/report-a-job' }
+    ]
+  }
+];
+
 export default function WebsiteCmsSeoManagement({
   activeTab = 'pages-sections',
   onTabChange
 }: WebsiteCmsSeoManagementProps) {
   // Navigation tabs
   const [currentSubTab, setCurrentSubTab] = useState<'pages-sections' | 'seo-meta' | 'header-footer' | 'revisions'>(
+    activeTab === 'header-footer' ? 'header-footer' :
     activeTab === 'seo-meta' ? 'seo-meta' :
     activeTab === 'revisions' ? 'revisions' : 'pages-sections'
   );
 
   React.useEffect(() => {
-    if (activeTab === 'pages-sections' || activeTab === 'seo-meta' || activeTab === 'revisions') {
-      setCurrentSubTab(activeTab);
+    if (activeTab === 'pages-sections' || activeTab === 'seo-meta' || activeTab === 'header-footer' || activeTab === 'revisions') {
+      setCurrentSubTab(activeTab as any);
     }
   }, [activeTab]);
 
@@ -214,6 +279,8 @@ export default function WebsiteCmsSeoManagement({
   const [telegramUrl, setTelegramUrl] = useState('https://t.me/chakrisheba');
   const [youtubeUrl, setYoutubeUrl] = useState('https://youtube.com/@chakrisheba');
   const [isSaving, setIsSaving] = useState(false);
+  const [headerMenuItems, setHeaderMenuItems] = useState<any[]>(DEFAULT_HEADER_ITEMS);
+  const [footerColumns, setFooterColumns] = useState<any[]>(DEFAULT_FOOTER_COLS);
 
   // 4. Revisions State
   const [revisions, setRevisions] = useState<RevisionItem[]>(INITIAL_REVISIONS);
@@ -241,6 +308,12 @@ export default function WebsiteCmsSeoManagement({
             if (s.general.facebookUrl) setFacebookUrl(s.general.facebookUrl);
             if (s.general.telegramUrl) setTelegramUrl(s.general.telegramUrl);
             if (s.general.youtubeUrl) setYoutubeUrl(s.general.youtubeUrl);
+            if (s.general.headerMenuItems && Array.isArray(s.general.headerMenuItems) && s.general.headerMenuItems.length > 0) {
+              setHeaderMenuItems(s.general.headerMenuItems);
+            }
+            if (s.general.footerColumns && Array.isArray(s.general.footerColumns) && s.general.footerColumns.length > 0) {
+              setFooterColumns(s.general.footerColumns);
+            }
           }
           if (s.seo) {
             if (s.seo.defaultTitle) setSiteTitle(s.seo.defaultTitle);
@@ -270,6 +343,8 @@ export default function WebsiteCmsSeoManagement({
           announcementText,
           announcementUrl,
           announcementEnabled,
+          headerMenuItems,
+          footerColumns,
           footerAboutText,
           facebookUrl,
           telegramUrl,
@@ -657,6 +732,247 @@ export default function WebsiteCmsSeoManagement({
                   >
                     {isSaving ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Check className="w-4 h-4" />}
                     <span>হেডার ও ফুটার ডিজাইন পরিবর্তন সংরক্ষণ করুন</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Card 4: Header Navigation Menu Builder */}
+              <div className="bg-white rounded-2xl border border-slate-200/90 shadow-2xs p-5 space-y-4">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-slate-100">
+                  <div className="flex items-center gap-2">
+                    <List className="w-4 h-4 text-emerald-700" />
+                    <div>
+                      <h3 className="font-black text-sm text-slate-900">হেডার প্রধান নেভিগেশন মেনু বিল্ডার</h3>
+                      <p className="text-[11px] text-slate-500">মূল ওয়েবসাইটের টপ নেভিগেশন বার লিংক ও ড্রপডাউন পরিচালনা করুন</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setHeaderMenuItems(DEFAULT_HEADER_ITEMS)}
+                      className="text-[11px] font-bold text-slate-500 hover:text-slate-800 px-2.5 py-1 bg-slate-100 rounded-lg"
+                    >
+                      ডিফল্ট রিস্টোর
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const newItem = { id: 'nav-' + Date.now(), label: 'নতুন লিংক', href: '/jobs' };
+                        setHeaderMenuItems(prev => [...prev, newItem]);
+                      }}
+                      className="text-[11px] font-bold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 px-3 py-1 rounded-lg border border-emerald-300 flex items-center gap-1"
+                    >
+                      <Plus className="w-3 h-3" />
+                      <span>+ মেনু লিংক যোগ</span>
+                    </button>
+                  </div>
+                </div>
+
+                <div className="space-y-2 max-h-96 overflow-y-auto pr-1">
+                  {headerMenuItems.map((item, idx) => (
+                    <div key={item.id || idx} className="p-3 bg-slate-50 border border-slate-200/90 rounded-xl space-y-2">
+                      <div className="flex items-center justify-between">
+                        <span className="text-[10px] font-bold text-slate-500 font-mono">#{idx + 1} মেনু আইটেম</span>
+                        <div className="flex items-center gap-1">
+                          <button
+                            type="button"
+                            disabled={idx === 0}
+                            onClick={() => {
+                              const arr = [...headerMenuItems];
+                              const temp = arr[idx];
+                              arr[idx] = arr[idx - 1];
+                              arr[idx - 1] = temp;
+                              setHeaderMenuItems(arr);
+                            }}
+                            className="p-1 text-slate-500 hover:text-slate-800 disabled:opacity-20"
+                            title="উপরে নিন"
+                          >
+                            <ArrowUp className="w-3 h-3" />
+                          </button>
+                          <button
+                            type="button"
+                            disabled={idx === headerMenuItems.length - 1}
+                            onClick={() => {
+                              const arr = [...headerMenuItems];
+                              const temp = arr[idx];
+                              arr[idx] = arr[idx + 1];
+                              arr[idx + 1] = temp;
+                              setHeaderMenuItems(arr);
+                            }}
+                            className="p-1 text-slate-500 hover:text-slate-800 disabled:opacity-20"
+                            title="নিচে নিন"
+                          >
+                            <ArrowDown className="w-3 h-3" />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setHeaderMenuItems(prev => prev.filter((_, i) => i !== idx));
+                            }}
+                            className="p-1 text-red-500 hover:text-red-700"
+                            title="মুছে ফেলুন"
+                          >
+                            <Trash2 className="w-3 h-3" />
+                          </button>
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-12 gap-2">
+                        <div className="sm:col-span-4">
+                          <label className="text-[10px] font-bold text-slate-500 block mb-0.5">মেনু লেবেল (টেক্সট)</label>
+                          <input
+                            type="text"
+                            value={item.label}
+                            onChange={(e) => {
+                              const arr = [...headerMenuItems];
+                              arr[idx] = { ...arr[idx], label: e.target.value };
+                              setHeaderMenuItems(arr);
+                            }}
+                            className="w-full px-2.5 py-1 bg-white border border-slate-300 rounded-lg text-xs font-bold text-slate-800"
+                          />
+                        </div>
+                        <div className="sm:col-span-5">
+                          <label className="text-[10px] font-bold text-slate-500 block mb-0.5">লিংক ইউআরএল (URL)</label>
+                          <input
+                            type="text"
+                            value={item.href}
+                            onChange={(e) => {
+                              const arr = [...headerMenuItems];
+                              arr[idx] = { ...arr[idx], href: e.target.value };
+                              setHeaderMenuItems(arr);
+                            }}
+                            placeholder="/jobs অথবা /p/custom"
+                            className="w-full px-2.5 py-1 bg-white border border-slate-300 rounded-lg text-xs font-mono text-slate-800"
+                          />
+                        </div>
+                        <div className="sm:col-span-3">
+                          <label className="text-[10px] font-bold text-slate-500 block mb-0.5">টপ ব্যাজ (ঐচ্ছিক)</label>
+                          <input
+                            type="text"
+                            value={item.badge || ''}
+                            onChange={(e) => {
+                              const arr = [...headerMenuItems];
+                              arr[idx] = { ...arr[idx], badge: e.target.value };
+                              setHeaderMenuItems(arr);
+                            }}
+                            placeholder="উদা: হট / নতুন"
+                            className="w-full px-2.5 py-1 bg-white border border-slate-300 rounded-lg text-xs font-bold text-emerald-800"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Card 5: Footer Link Columns Builder */}
+              <div className="bg-white rounded-2xl border border-slate-200/90 shadow-2xs p-5 space-y-4">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-slate-100">
+                  <div className="flex items-center gap-2">
+                    <Layout className="w-4 h-4 text-emerald-700" />
+                    <div>
+                      <h3 className="font-black text-sm text-slate-900">ফুটার লিংক কলাম বিল্ডার</h3>
+                      <p className="text-[11px] text-slate-500">ফুটারের কলাম শিরোনাম এবং প্রতিটি কলামের লিংকসমূহ সম্পাদন করুন</p>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setFooterColumns(DEFAULT_FOOTER_COLS)}
+                    className="text-[11px] font-bold text-slate-500 hover:text-slate-800 px-2.5 py-1 bg-slate-100 rounded-lg"
+                  >
+                    ডিফল্ট কলাম রিস্টোর
+                  </button>
+                </div>
+
+                <div className="space-y-4">
+                  {footerColumns.map((col, cIdx) => (
+                    <div key={col.id || cIdx} className="p-3.5 bg-slate-50 border border-slate-200/90 rounded-2xl space-y-3">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs font-black text-slate-900">কলাম #{cIdx + 1} শিরোনাম:</span>
+                          <input
+                            type="text"
+                            value={col.title}
+                            onChange={(e) => {
+                              const cols = [...footerColumns];
+                              cols[cIdx] = { ...cols[cIdx], title: e.target.value };
+                              setFooterColumns(cols);
+                            }}
+                            className="px-2.5 py-1 bg-white border border-slate-300 rounded-lg text-xs font-bold text-slate-900 w-44"
+                          />
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const cols = [...footerColumns];
+                            cols[cIdx].links = [...(cols[cIdx].links || []), { label: 'নতুন লিংক', url: '/jobs' }];
+                            setFooterColumns(cols);
+                          }}
+                          className="text-[10px] font-bold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 px-2.5 py-1 rounded-lg border border-emerald-300 flex items-center gap-1"
+                        >
+                          <Plus className="w-3 h-3" />
+                          <span>+ লিংক যোগ</span>
+                        </button>
+                      </div>
+
+                      <div className="space-y-1.5 max-h-48 overflow-y-auto pr-1">
+                        {(col.links || []).map((link: any, lIdx: number) => (
+                          <div key={lIdx} className="p-2 bg-white border border-slate-200 rounded-xl grid grid-cols-12 gap-2 items-center">
+                            <div className="col-span-5">
+                              <input
+                                type="text"
+                                value={link.label}
+                                onChange={(e) => {
+                                  const cols = [...footerColumns];
+                                  cols[cIdx].links[lIdx] = { ...cols[cIdx].links[lIdx], label: e.target.value };
+                                  setFooterColumns(cols);
+                                }}
+                                placeholder="লেবেল..."
+                                className="w-full px-2 py-0.5 bg-slate-50 border border-slate-200 rounded text-xs font-bold"
+                              />
+                            </div>
+                            <div className="col-span-6">
+                              <input
+                                type="text"
+                                value={link.url}
+                                onChange={(e) => {
+                                  const cols = [...footerColumns];
+                                  cols[cIdx].links[lIdx] = { ...cols[cIdx].links[lIdx], url: e.target.value };
+                                  setFooterColumns(cols);
+                                }}
+                                placeholder="/path..."
+                                className="w-full px-2 py-0.5 bg-slate-50 border border-slate-200 rounded text-xs font-mono"
+                              />
+                            </div>
+                            <div className="col-span-1 text-right">
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  const cols = [...footerColumns];
+                                  cols[cIdx].links = cols[cIdx].links.filter((_: any, i: number) => i !== lIdx);
+                                  setFooterColumns(cols);
+                                }}
+                                className="text-red-500 hover:text-red-700 text-xs font-bold"
+                              >
+                                ✕
+                              </button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="pt-2 flex justify-end">
+                  <button
+                    type="button"
+                    onClick={handleSaveAllSettings}
+                    disabled={isSaving}
+                    className="px-6 py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-bold shadow-sm transition-all flex items-center gap-1.5 disabled:opacity-50"
+                  >
+                    {isSaving ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Check className="w-4 h-4" />}
+                    <span>সকল হেডার ও ফুটার মেনু পরিবর্তন সংরক্ষণ করুন</span>
                   </button>
                 </div>
               </div>

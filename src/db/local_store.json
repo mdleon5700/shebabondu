@@ -14739,6 +14739,41 @@
       "candidateId": "ADMIN-SUPER",
       "role": "admin",
       "expiresAt": "2026-11-08T07:29:29.226Z"
+    },
+    "b0d4b3353196bd0e96efd527fa6a5aaa34a9671d5c071eafd52e412c86b510f4": {
+      "candidateId": "ADMIN-SUPER",
+      "role": "admin",
+      "expiresAt": "2026-11-08T14:22:24.133Z"
+    },
+    "a55d64e34c925a7bb43abc1416506f7c503957e50bbbf966a592172a0320f141": {
+      "candidateId": "ADMIN-SUPER",
+      "role": "admin",
+      "expiresAt": "2026-11-08T14:37:35.311Z"
+    },
+    "ff517b86b57f8a114a0ffd55cae0fe797c88b0ab275e64476f9594b42920c5a0": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-08T14:38:01.885Z"
+    },
+    "9c50091274c5face6f37ce272475d7ecf1d1a160eedc17baf12fc52e3b3a23d6": {
+      "candidateId": "ADMIN-SUPER",
+      "role": "admin",
+      "expiresAt": "2026-11-08T14:39:07.004Z"
+    },
+    "b14a5bd0d3007ce77423435feb247d24f06fbe5a5d5f73a859fe9ff7bf9eeabb": {
+      "candidateId": "ADMIN-SUPER",
+      "role": "admin",
+      "expiresAt": "2026-11-08T14:39:07.199Z"
+    },
+    "0fda3fb8498c8daaae91415bf774608e435c38f3d1df8c7a1525309a81a6fadd": {
+      "candidateId": "ADMIN-SUPER",
+      "role": "admin",
+      "expiresAt": "2026-11-08T14:39:07.393Z"
+    },
+    "4b5baa072f55398d5572eded8c2db217d847383d267b4d2d46305386f7ad01d7": {
+      "candidateId": "ADMIN-SUPER",
+      "role": "admin",
+      "expiresAt": "2026-11-08T14:40:06.832Z"
     }
   },
   "coupons": {

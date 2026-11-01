@@ -118,7 +118,7 @@ export default function JobListingView({
       // Custom filter based on type string
       switch (filterType) {
         case 'latest':
-          if (!(job.featured || job.daysRemaining > 15 || job.publishedDate.includes('অক্টোবর'))) return false;
+          const isRecent = !job.publishedDate || job.publishedDate.includes('নভেম্বর') || job.publishedDate.includes('অক্টোবর') || (job.daysRemaining && job.daysRemaining > 0); if (!(job.featured || isRecent || (job.daysRemaining && job.daysRemaining > 15))) return false;
           break;
         case 'deadline':
           if (job.daysRemaining > 5) return false;

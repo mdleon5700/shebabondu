@@ -987,12 +987,12 @@ export default function SourceRegistryManagement() {
                             <div className="flex items-center gap-1.5 font-mono text-[11px]">
                               <span className="text-emerald-700 font-bold">+{run.newDraftsCreated} নতুন ড্রাফট</span>
                               <span className="text-slate-300">/</span>
-                              <span className="text-slate-500">{run.jobsDiscovered} ???</span>
+                              <span className="text-slate-500">{run.jobsDiscovered} টি</span>
                             </div>
                           </td>
 
                           <td className="py-3.5 px-4 whitespace-nowrap font-mono text-[10px] text-slate-600">
-                            <div>PDF: {run.pdfsDownloaded} ??</div>
+                            <div>PDF: {run.pdfsDownloaded} টি</div>
                             <div>ডুপ্লিকেট: {run.duplicatesDetected} টি</div>
                           </td>
 
@@ -1005,7 +1005,7 @@ export default function SourceRegistryManagement() {
                               })}
                             </div>
                             <div className="text-[10px] text-slate-400">
-                              {(run.durationMs / 1000).toFixed(1)}s ???
+                              {(run.durationMs / 1000).toFixed(1)} সে.
                             </div>
                           </td>
 

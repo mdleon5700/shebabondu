@@ -7,6 +7,7 @@ import { serverDB } from '../db';
 import { OperationalExpenseManager } from '../operations/expenseManager';
 import { AdminGovernanceRbac } from './rbac';
 import { PlatformOverviewMetrics, ActivityEventItem } from './types';
+import { BangladeshDateHelper } from '../feeds/timezone';
 
 export const PlatformOverviewEngine = {
   /**
@@ -18,18 +19,21 @@ export const PlatformOverviewEngine = {
     const nowMs = now.getTime();
     const nowIso = now.toISOString();
 
-    // Timeframe cutoff calculations (UTC reference aligned with Asia/Dhaka)
-    const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+    // Timeframe cutoff calculations aligned with Asia/Dhaka (BST)
+    const todayInfo = BangladeshDateHelper.getBangladeshTodayDate(now);
+    const todayIso = todayInfo.isoDate;
+    const todayStart = todayInfo.startOfDayUtc.getTime();
     const sevenDaysAgo = nowMs - (7 * 24 * 60 * 60 * 1000);
     const thirtyDaysAgo = nowMs - (30 * 24 * 60 * 60 * 1000);
     const ninetyDaysAgo = nowMs - (90 * 24 * 60 * 60 * 1000);
 
     const isWithinTimeframe = (dateStr?: string): boolean => {
       if (!dateStr) return false;
-      const t = new Date(dateStr).getTime();
+      const iso = BangladeshDateHelper.parseToIsoDate(dateStr) || dateStr.split('T')[0];
+      const t = new Date(`${iso}T00:00:00Z`).getTime();
       if (isNaN(t)) return false;
       switch (timeframe) {
-        case 'today': return t >= todayStart;
+        case 'today': return iso === todayIso;
         case '7d': return t >= sevenDaysAgo;
         case '30d': return t >= thirtyDaysAgo;
         case '90d': return t >= ninetyDaysAgo;
@@ -64,21 +68,24 @@ export const PlatformOverviewEngine = {
       : publishedJobs.filter(j => isWithinTimeframe(j.publishedDate || (j as any).createdAt || ''));
 
     const publishedTodayCount = publishedJobs.filter(j => {
-      const t = new Date(j.publishedDate || (j as any).createdAt || '').getTime();
-      return !isNaN(t) && t >= todayStart;
+      const pubIso = BangladeshDateHelper.parseToIsoDate(j.publishedDate) || (j as any).createdAt?.split('T')[0];
+      return pubIso === todayIso;
     }).length;
 
     const publishedThisWeekCount = publishedJobs.filter(j => {
-      const t = new Date(j.publishedDate || (j as any).createdAt || '').getTime();
+      const pubIso = BangladeshDateHelper.parseToIsoDate(j.publishedDate) || (j as any).createdAt?.split('T')[0];
+      if (!pubIso) return false;
+      const t = new Date(`${pubIso}T00:00:00Z`).getTime();
       return !isNaN(t) && t >= sevenDaysAgo;
     }).length;
 
-    // Expiring soon: Deadline within next 3 days and in the future
-    const threeDaysAhead = nowMs + (3 * 24 * 60 * 60 * 1000);
+    // Expiring soon: Deadline within today and next 3 days in Asia/Dhaka (0 to 3 days remaining)
     const expiringSoonCount = publishedJobs.filter(j => {
       if (!j.deadline) return false;
-      const dl = new Date(j.deadline).getTime();
-      return !isNaN(dl) && dl >= nowMs && dl <= threeDaysAhead;
+      const dlIso = BangladeshDateHelper.parseToIsoDate(j.deadline);
+      if (!dlIso) return false;
+      const diffDays = Math.round((new Date(`${dlIso}T00:00:00Z`).getTime() - new Date(`${todayIso}T00:00:00Z`).getTime()) / (1000 * 60 * 60 * 24));
+      return diffDays >= 0 && diffDays <= 3;
     }).length;
 
     // Drafts

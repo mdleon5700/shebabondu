@@ -252,15 +252,22 @@
       "totalAmount": 200,
       "id": "APP-98044",
       "verificationType": "user_reported",
-      "status": "pending_payment",
+      "status": "processing",
       "date": "১/১১/২০২৬",
       "statusHistory": [
         {
           "status": "pending_payment",
           "date": "2026-11-01T03:03:27.915Z",
           "notes": "অনলাইন আবেদন দাখিল হয়েছে। যোগ্যতা যাচাই সম্পন্ন"
+        },
+        {
+          "status": "processing",
+          "date": "2026-11-01T12:44:39.992Z",
+          "notes": "পেমেন্ট অনুমোদিত হয়েছে এবং টেলিটক অটো-ফিল কিউতে পাঠানো হয়েছে।",
+          "updatedBy": "Admin (ADMIN-SUPER)"
         }
-      ]
+      ],
+      "notes": "পেমেন্ট অনুমোদিত হয়েছে এবং টেলিটক অটো-ফিল কিউতে পাঠানো হয়েছে।"
     },
     {
       "jobId": "SYNTH-JOB-POST-KHULNA-DIFF-1793502167779",
@@ -760,15 +767,22 @@
       "totalAmount": 150,
       "id": "APP-78936",
       "verificationType": "user_reported",
-      "status": "pending_payment",
+      "status": "processing",
       "date": "১/১১/২০২৬",
       "statusHistory": [
         {
           "status": "pending_payment",
           "date": "2026-11-01T03:13:45.355Z",
           "notes": "অনলাইন আবেদন দাখিল হয়েছে। যোগ্যতা যাচাই সম্পন্ন"
+        },
+        {
+          "status": "processing",
+          "date": "2026-11-01T12:44:52.695Z",
+          "notes": "পেমেন্ট অনুমোদিত হয়েছে এবং টেলিটক অটো-ফিল কিউতে পাঠানো হয়েছে।",
+          "updatedBy": "Admin (ADMIN-SUPER)"
         }
-      ]
+      ],
+      "notes": "পেমেন্ট অনুমোদিত হয়েছে এবং টেলিটক অটো-ফিল কিউতে পাঠানো হয়েছে।"
     },
     {
       "jobId": "JOB-RESILIENCE-TEST-01",

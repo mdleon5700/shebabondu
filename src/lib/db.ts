@@ -2304,34 +2304,51 @@ export function parseBengaliDateScore(dateStr?: string): number {
 
 
 export function sortJobsChronologically(jobs: JobCircular[]): JobCircular[] {
+  const now = new Date();
+  const bstOffset = 6 * 60 * 60 * 1000;
+  const todayIso = new Date(now.getTime() + bstOffset).toISOString().split('T')[0];
+
+  const isJobExpired = (job: JobCircular): boolean => {
+    if ((job as any).status === 'EXPIRED' || (job as any).status === 'CLOSED') return true;
+    if (job.deadline) {
+      const d = job.deadline;
+      if (d.includes('সমাপ্ত') || d.includes('শেষ') || d.toLowerCase().includes('expired') || d.toLowerCase().includes('closed')) return true;
+      // Convert to ISO if possible
+      let s = d.trim();
+      const bn = ['০','১','২','৩','৪','৫','৬','৭','৮','৯'];
+      const en = ['0','1','2','3','4','5','6','7','8','9'];
+      bn.forEach((digit, idx) => { s = s.split(digit).join(en[idx]); });
+      const slash = s.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/);
+      let iso: string | null = null;
+      if (slash) {
+        iso = slash[3] + '-' + slash[2].padStart(2, '0') + '-' + slash[1].padStart(2, '0');
+      } else {
+        const words = s.split(/\s+/);
+        if (words.length >= 2) {
+          const day = words[0].replace(/[^0-9]/g, '').padStart(2, '0');
+          const year = (words[2] ? words[2].replace(/[^0-9]/g, '') : '') || '2026';
+          const mStr = words[1].toLowerCase();
+          const months: Record<string, string> = {
+            'জানুয়ারি': '01', 'জানুয়ারি': '01', 'ফেব্রুয়ারি': '02', 'ফেব্রুয়ারি': '02',
+            'মার্চ': '03', 'এপ্রিল': '04', 'মে': '05', 'জুন': '06', 'জুলাই': '07',
+            'আগস্ট': '08', 'সেপ্টেম্বর': '09', 'অক্টোবর': '10', 'নভেম্বর': '11', 'ডিসেম্বর': '12'
+          };
+          for (const [k, v] of Object.entries(months)) {
+            if (mStr.includes(k)) { iso = year + '-' + v + '-' + day; break; }
+          }
+        }
+      }
+      if (iso) {
+        const diffDays = Math.round((new Date(iso + 'T00:00:00Z').getTime() - new Date(todayIso + 'T00:00:00Z').getTime()) / (1000 * 60 * 60 * 24));
+        return diffDays < 0; // Only past deadlines are expired; 0 is open today!
+      }
+    }
+    return Boolean(job.daysRemaining !== undefined && job.daysRemaining !== null && job.daysRemaining < 0);
+  };
 
   return [...jobs].sort((a, b) => {
-
-    const aExpired = Boolean(
-
-      (a.daysRemaining !== undefined && a.daysRemaining !== null && a.daysRemaining <= 0) || 
-
-      (a as any).status === 'EXPIRED' || 
-
-      (a as any).status === 'CLOSED' ||
-
-      (a.deadline && (a.deadline.includes('à¦¸à¦®à¦¾à¦ªà§à¦¤') || a.deadline.includes('à¦¶à§‡à¦·')))
-
-    );
-
-    const bExpired = Boolean(
-
-      (b.daysRemaining !== undefined && b.daysRemaining !== null && b.daysRemaining <= 0) || 
-
-      (b as any).status === 'EXPIRED' || 
-
-      (b as any).status === 'CLOSED' ||
-
-      (b.deadline && (b.deadline.includes('à¦¸à¦®à¦¾à¦ªà§à¦¤') || b.deadline.includes('à¦¶à§‡à¦·')))
-
-    );
-
-
+    const aExpired = isJobExpired(a);
+    const bExpired = isJobExpired(b);
 
     // Rule 1: Active jobs ALWAYS come before Expired / Closed jobs
 
@@ -7002,7 +7019,7 @@ export const serverDB = {
 
       totalPosts: draft.vacancies || 1,
 
-      salary: draft.salary || 'à§¨à§¨,à§¦à§¦à§¦ - à§«à§©,à§¦à§¬à§¦ à¦Ÿà¦¾à¦•à¦¾',
+      salary: draft.salary || '২২,০০০ - ৫৩,০৬০ টাকা',
 
       minEducation: draft.minEducation || 'à¦¸à§à¦¨à¦¾à¦¤à¦• à¦¬à¦¾ à¦¸à¦®à¦®à¦¾à¦¨',
 
@@ -7010,7 +7027,7 @@ export const serverDB = {
 
       maxAge: 32,
 
-      districts: 'à¦¸à¦•à¦² à¦œà§‡à¦²à¦¾',
+      districts: 'সকল জেলা',
 
       deadline: draft.deadline || 'à§©à§¦ à¦¨à¦­à§‡à¦®à§à¦¬à¦° à§¨à§¦à§¨à§¬',
 

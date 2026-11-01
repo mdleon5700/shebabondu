@@ -11,7 +11,7 @@ export async function GET(
       return NextResponse.json({ success: false, error: 'Job ID is required' }, { status: 400 });
     }
 
-    const job = serverDB.getJobById(id);
+    const job = serverDB.getPublicJobById(id);
     if (!job) {
       return NextResponse.json({ success: false, error: 'Job not found' }, { status: 404 });
     }
@@ -21,7 +21,7 @@ export async function GET(
       job
     }, {
       headers: {
-        'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=120'
+        'Cache-Control': 'no-store'
       }
     });
   } catch (error: any) {

@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { Calendar, ChevronRight, Sparkles, Clock, ArrowRight, Layers } from 'lucide-react';
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 const toBn = (n: number | string) => String(n).replace(/\d/g, d => '০১২৩৪৫৬৭৮৯'[+d]);
 
 export default function DailyJobsDirectoryPage() {
-  const jobs = serverDB.getJobs();
+  const jobs = serverDB.getPublicJobs();
   const archives = JobFeedEngine.getDailyArchiveDates(jobs, 30);
   const todayInfo = BangladeshDateHelper.getBangladeshTodayDate();
 

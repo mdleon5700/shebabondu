@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import React, { useState, useEffect, useMemo, Suspense } from 'react';
 import Link from 'next/link';
@@ -118,7 +118,7 @@ const normalizePaymentMethod = (m?: string | null): 'bKash' | 'Nagad' | 'Wallet'
   return 'bKash';
 };
 
-const ADMIN_REQ_HEADERS = { 'Content-Type': 'application/json', 'x-admin-secret': 'CHAKRISEBA_SECURE_ADMIN_2026' };
+const ADMIN_REQ_HEADERS = { 'Content-Type': 'application/json', };
 function AdminContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -245,7 +245,7 @@ function AdminContent() {
     for (const ep of endpoints) {
       const t0 = performance.now();
       try {
-        const res = await fetch(ep.url, { headers: { 'x-admin-secret': 'CHAKRISEBA_SECURE_ADMIN_2026' } });
+        const res = await fetch(ep.url, { headers: { } });
         const t1 = performance.now();
         const latency = Math.round(t1 - t0);
         totalLatency += latency;
@@ -494,17 +494,7 @@ function AdminContent() {
           return true;
         }
       }
-      for (const pin of ['CHAKRISEBA_SECURE_ADMIN_2026', '1234']) {
-        const loginRes = await fetch('/api/auth/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ role: 'admin', adminPin: pin })
-        });
-        if (loginRes.ok) {
-          const d = await loginRes.json();
-          if (d.success) return true;
-        }
-      }
+
     } catch (e) {
       console.error('Session sync error:', e);
     }
@@ -515,11 +505,13 @@ function AdminContent() {
     setIsLoading(true);
     try {
       // 1. Ensure admin session cookie is active
-      await ensureAdminSession();
+      if (!await ensureAdminSession()) {
+        setIsAdminAuthenticated(false);
+        return;
+      }
 
       const adminHeaders = {
-        'x-admin-secret': 'CHAKRISEBA_SECURE_ADMIN_2026'
-      };
+        };
 
       // 2. Fetch stats FIRST to immediately populate all count badges in <100ms
       try {
@@ -588,21 +580,10 @@ function AdminContent() {
 
   useEffect(() => {
     const checkAdminAuth = async () => {
-      const savedPin = localStorage.getItem('cs_admin_auth');
-      if (savedPin === 'verified') {
-        const hasSession = await ensureAdminSession();
-        if (hasSession) {
-          setIsAdminAuthenticated(true);
-          fetchAllAdminData();
-          return;
-        } else {
-          localStorage.removeItem('cs_admin_auth');
-          setIsAdminAuthenticated(false);
-          setIsLoading(false);
-        }
-      } else {
-        setIsLoading(false);
-      }
+      const hasSession = await ensureAdminSession();
+      setIsAdminAuthenticated(hasSession);
+      if (hasSession) await fetchAllAdminData();
+      else setIsLoading(false);
     };
     checkAdminAuth();
   }, []);
@@ -1049,7 +1030,7 @@ function AdminContent() {
     try {
       const res = await fetch('/api/admin/upload-applicant-copy', {
         method: 'POST',
-        headers: { 'x-admin-secret': 'CHAKRISEBA_SECURE_ADMIN_2026' },
+        headers: { },
         body: formData
       });
       const data = await res.json();
@@ -1146,8 +1127,7 @@ function AdminContent() {
       const res = await fetch('/api/admin/upload-applicant-copy', {
         method: 'POST',
         headers: {
-          'x-admin-secret': 'CHAKRISEBA_SECURE_ADMIN_2026'
-        },
+          },
         body: formData
       });
 
@@ -1348,8 +1328,7 @@ function AdminContent() {
         method: 'PATCH',
         headers: { 
           'Content-Type': 'application/json',
-          'x-admin-secret': 'CHAKRISEBA_SECURE_ADMIN_2026'
-        },
+          },
         body: JSON.stringify({
           applicationId: inspectingApp.id,
           status: 'completed',

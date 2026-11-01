@@ -3276,6 +3276,15 @@ export interface PageRevision {
 
 
 export interface PageRecord {
+  publishedContent?: {
+    useOnCanonicalPath?: boolean;
+    slug: string;
+    title: string;
+    metaTitle: string;
+    metaDescription: string;
+    sections: PageSection[];
+    publishedAt: string;
+  };
 
 
 

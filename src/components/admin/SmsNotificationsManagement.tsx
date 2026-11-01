@@ -215,7 +215,7 @@ export default function SmsNotificationsManagement({
     try {
       const res = await fetch('/api/admin/notifications/send', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'x-admin-secret': 'CHAKRISEBA_SECURE_ADMIN_2026' },
+        headers: { 'Content-Type': 'application/json', },
         body: JSON.stringify({
           recipientPhone: recipientNumber.trim(),
           message: messageBody.trim(),
@@ -257,7 +257,7 @@ export default function SmsNotificationsManagement({
     try {
       const res = await fetch('/api/admin/notifications/send', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'x-admin-secret': 'CHAKRISEBA_SECURE_ADMIN_2026' },
+        headers: { 'Content-Type': 'application/json', },
         body: JSON.stringify({
           title: broadcastTitle.trim(),
           message: broadcastBody.trim(),

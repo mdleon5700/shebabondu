@@ -1,8 +1,10 @@
-﻿import { NextResponse } from 'next/server';
-import { getServerSession, generateSessionToken, createSessionCookie, hashPassword } from '@/lib/auth';
+import { randomUUID } from 'crypto';
+import { calculateOrderDiscounts } from '@/lib/discounts';
+import { CentralDeadlineEngine } from '@/lib/deadlines/engine';
+import { NextResponse } from 'next/server';
+import { getServerSession } from '@/lib/auth';
 import { serverDB } from '@/lib/db';
 import { storage } from '@/lib/store';
-import { mockUserProfile } from '@/data/mockJobs';
 import { ApplicationRequest } from '@/lib/types';
 
 export async function GET(req: Request) {
@@ -53,6 +55,7 @@ export async function GET(req: Request) {
 
 export async function POST(req: Request) {
   const session = getServerSession(req);
+  if (!session) return NextResponse.json({ error: 'Login required to apply.' }, { status: 401 });
 
   try {
     const appData: ApplicationRequest = await req.json();
@@ -60,48 +63,16 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'চাকরির আইডি ও পদের নাম আবশ্যক' }, { status: 400 });
     }
 
-    let candidateId = session?.candidateId;
-    let candidate = candidateId ? serverDB.getCandidateById(candidateId) : null;
-    let newSessionToken: string | null = null;
-
-    if (!candidate) {
-      const rawPhone = (appData.candidatePhone || '').trim();
-      const cleanPhone = rawPhone.replace(/\D/g, '');
-      if (!cleanPhone || cleanPhone.length < 10) {
-        return NextResponse.json({ error: 'সঠিক মোবাইল নম্বর প্রদান করা আবশ্যক' }, { status: 400 });
-      }
-
-      const existingCandidate = serverDB.getCandidateByPhone(cleanPhone) || serverDB.getCandidateByPhone(rawPhone);
-      if (existingCandidate) {
-        candidate = existingCandidate;
-        candidateId = existingCandidate.id;
-      } else {
-        const genCandId = 'USR-' + (cleanPhone.startsWith('88') ? cleanPhone.slice(2) : cleanPhone);
-        candidate = serverDB.createCandidate({
-          ...mockUserProfile,
-          id: genCandId,
-          name: appData.candidateName || 'আবেদনকারী',
-          nameBn: appData.candidateName || 'আবেদনকারী',
-          phone: rawPhone,
-          email: `${cleanPhone}@candidate.chakrisheba.com`,
-          district: appData.candidateDistrict || 'ঢাকা',
-          role: 'candidate',
-          passwordHash: hashPassword('ChakriShebaGuest2026!'),
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString()
-        });
-        candidateId = candidate.id;
-      }
-
-      newSessionToken = generateSessionToken();
-      serverDB.createSession(newSessionToken, candidateId, 'candidate');
-    }
+    const candidateId = session.candidateId;
+    const candidate = serverDB.getCandidateById(candidateId);
+    if (!candidate) return NextResponse.json({ error: 'Candidate not found' }, { status: 404 });
 
     // 1. Verify Job Status and Deadline
-    const job = serverDB.getJobById(appData.jobId);
+    const job = serverDB.getPublicJobById(appData.jobId);
+    if (!job) return NextResponse.json({ error: 'Job not found' }, { status: 404 });
     if (job) {
       const jobStatus = (job as any).status;
-      if (jobStatus === 'EXPIRED' || jobStatus === 'CLOSED' || job.daysRemaining <= 0) {
+      if (jobStatus === 'EXPIRED' || jobStatus === 'CLOSED' || CentralDeadlineEngine.evaluateDeadline(job).isClosed) {
         return NextResponse.json({ 
           error: 'JOB_CLOSED: এই চাকরির আবেদনের সময়সীমা শেষ হয়েছে। নতুন আবেদন গ্রহণ সম্ভব নয়।' 
         }, { status: 400 });
@@ -129,41 +100,46 @@ export async function POST(req: Request) {
       }, { status: 409 });
     }
 
-    const genAppId = appData.id || ('APP-' + Math.floor(10000 + Math.random() * 90000));
+    const genAppId = 'APP-' + randomUUID();
     const isWalletPay = appData.paymentMethod === 'Wallet';
-    const computedStatus = isWalletPay ? 'processing' : (appData.status || 'pending_payment');
+    const computedStatus = isWalletPay ? 'processing' : 'pending_payment';
 
-    if (isWalletPay) {
-      if (!candidate) {
-        return NextResponse.json({ 
-          error: 'WALLET_AUTH_REQUIRED: ওয়ালেট পেমেন্টের জন্য প্রার্থী হিসেবে লগইন করা আবশ্যক।' 
-        }, { status: 401 });
+    const position = job.positions?.find(position => position.title === appData.postName || `${position.title} (${position.grade})` === appData.postName);
+    if (job.positions?.length && !position) return NextResponse.json({ error: 'Invalid job position' }, { status: 400 });
+    const couponCode = appData.financialSnapshot?.appliedCouponCode;
+    const raffleId = appData.financialSnapshot?.appliedRaffleCampaignId;
+    const coupon = couponCode ? serverDB.getCouponByCode(couponCode) : null;
+    const raffle = raffleId ? serverDB.getRaffleCampaignById(raffleId) : null;
+    if ((couponCode && !coupon) || (raffleId && !raffle)) return NextResponse.json({ error: 'Invalid discount' }, { status: 400 });
+    const calculation = calculateOrderDiscounts({
+      governmentFee: position?.govtFee ?? job.govtFee ?? 0,
+      serviceCharge: job.serviceFee ?? 0, coupon, raffleCampaign: raffle,
+      candidateContext: {
+        candidateId, isNewCandidate: existing.length === 0, existingOrdersCount: existing.length,
+        candidateCouponRedemptionsCount: coupon ? serverDB.getCouponRedemptions(candidateId, coupon.id).length : 0
       }
-      const currentBal = candidate.walletBalance || 0;
-      const deduct = appData.totalAmount || 0;
-      if (currentBal < deduct) {
-        return NextResponse.json({ 
-          error: `INSUFFICIENT_WALLET_BALANCE: অপর্যাপ্ত ওয়ালেট ব্যালেন্স! আপনার বর্তমান ওয়ালেট ব্যালেন্স ৳${currentBal}, কিন্তু এই আবেদনের মোট ফি ৳${deduct}। অনুগ্রহ করে বিকাশ বা নগদ দিয়ে আবেদন করুন অথবা ওয়ালেটে টাকা রিচার্জ করুন।` 
-        }, { status: 400 });
-      }
-      const newBal = currentBal - deduct;
-      serverDB.updateCandidate(candidateId!, { walletBalance: newBal });
-      const walletTx = {
-        id: `TXN-${Date.now().toString().slice(-6)}`,
-        date: new Date().toLocaleString('bn-BD'),
-        amount: deduct,
-        type: 'fee_deduction' as const,
-        description: `চাকরির আবেদন ফি (${appData.jobTitle || 'সরকারি চাকরি'} - ${appData.postName})`,
-        method: 'Wallet' as const,
-        trxId: appData.trxId || `WLT-APP-${Date.now().toString().slice(-6)}`,
-        status: 'completed' as const
-      };
-      serverDB.addTransaction(candidateId!, walletTx);
+    });
+    if (!calculation.success) return NextResponse.json({ error: calculation.error }, { status: 400 });
+    if (typeof appData.totalAmount !== 'number' || !Number.isFinite(appData.totalAmount) || Math.abs(appData.totalAmount - calculation.snapshot.totalPayable) > 0.01) {
+      return NextResponse.json({ error: 'The application fee has changed. Please refresh and try again.' }, { status: 400 });
     }
+    if (!['Wallet', 'bKash', 'Nagad'].includes(appData.paymentMethod)) return NextResponse.json({ error: 'Invalid payment method' }, { status: 400 });
+    if (!isWalletPay && !appData.trxId?.trim()) return NextResponse.json({ error: 'Payment transaction ID required' }, { status: 400 });
 
     const newApp: ApplicationRequest = {
       ...appData,
       id: genAppId,
+      candidateId,
+      jobTitle: job.title,
+      organization: job.organization,
+      totalAmount: calculation.snapshot.totalPayable,
+      governmentFee: calculation.snapshot.governmentApplicationFee,
+      serviceCharge: calculation.snapshot.serviceCharge,
+      financialSnapshot: calculation.snapshot,
+      couponDiscount: calculation.snapshot.couponDiscount,
+      raffleDiscount: calculation.snapshot.raffleBonusDiscount,
+      walletDeduction: isWalletPay ? calculation.snapshot.totalPayable : 0,
+      cashPaid: isWalletPay ? 0 : calculation.snapshot.totalPayable,
       candidateName: candidate.name || appData.candidateName || 'আবেদনকারী',
       candidatePhone: candidate.phone || appData.candidatePhone || '',
       verificationType: isWalletPay ? 'officially_verified' : 'user_reported',
@@ -180,17 +156,15 @@ export async function POST(req: Request) {
       ]
     };
 
-    const updated = serverDB.addApplication(candidateId!, newApp);
+    const result = serverDB.submitApplication(candidateId, newApp, isWalletPay);
+    if (!result.success) return NextResponse.json({ error: result.error }, { status: 409 });
+    const updated = result.applications;
     const res = NextResponse.json({ success: true, applications: updated, createdApp: newApp }, {
       headers: {
         'Cache-Control': 'private, no-cache, no-store, must-revalidate'
       }
     });
 
-    if (newSessionToken) {
-      const cookie = createSessionCookie(newSessionToken);
-      res.cookies.set(cookie.name, cookie.value, cookie);
-    }
 
     return res;
   } catch (err: any) {

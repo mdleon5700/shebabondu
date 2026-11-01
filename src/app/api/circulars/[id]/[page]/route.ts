@@ -27,7 +27,7 @@ export async function GET(
   const { id, page } = params;
   const isPage2 = page.includes('2');
 
-  const job = serverDB.getJobById(id);
+  const job = serverDB.getPublicJobById(id);
   if (!job) {
     return new NextResponse(
       `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400"><text x="400" y="200" text-anchor="middle" font-size="20" fill="#dc2626">বিজ্ঞপ্তি খুঁজে পাওয়া যায়নি</text></svg>`,

@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { serverDB } from '@/lib/db';
 import { hashPassword, generateSessionToken, createSessionCookie } from '@/lib/auth';
-import { mockUserProfile } from '@/data/mockJobs';
+import { emptyCandidateProfile } from '@/lib/candidate-defaults';
 
 export async function POST(req: Request) {
   try {
@@ -12,7 +12,9 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'নাম, মোবাইল নম্বর ও পাসওয়ার্ড প্রদান করুন।' }, { status: 400 });
     }
 
-    const cleanPhone = phone.trim();
+    if (typeof password !== 'string' || password.length < 6) return NextResponse.json({ error: 'Password must contain at least 6 characters.' }, { status: 400 });
+    const cleanPhone = String(phone).replace(/[০-৯]/g, digit => String('০১২৩৪৫৬৭৮৯'.indexOf(digit))).replace(/\D/g, '').replace(/^880/, '0');
+    if (!/^01[3-9]\d{8}$/.test(cleanPhone)) return NextResponse.json({ error: 'A valid Bangladesh mobile number is required.' }, { status: 400 });
     const existingPhone = serverDB.getCandidateByPhone(cleanPhone);
     if (existingPhone) {
       return NextResponse.json({ error: 'এই মোবাইল নম্বর দিয়ে ইতিমধ্যে অ্যাকাউন্ট রয়েছে। সরাসরি লগইন করুন।' }, { status: 409 });
@@ -31,8 +33,9 @@ export async function POST(req: Request) {
       ? username.trim().toLowerCase() 
       : (email ? email.split('@')[0].replace(/[^a-zA-Z0-9]/g, '') : 'user') + Math.floor(100 + Math.random() * 900);
 
+    if (serverDB.getCandidateByIdentifier(generatedUsername)) return NextResponse.json({ error: 'Username already exists.' }, { status: 409 });
     const newCandidate = serverDB.createCandidate({
-      ...mockUserProfile,
+      ...structuredClone(emptyCandidateProfile),
       id: candidateId,
       phone: cleanPhone,
       email: email ? email.trim().toLowerCase() : '',

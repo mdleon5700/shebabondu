@@ -8,6 +8,7 @@ import {
   verifyAdminSecret,
   checkLoginRateLimit,
   recordFailedLogin,
+  isTestAuthEnabled,
   resetLoginRateLimit
 } from '@/lib/auth';
 import { mockUserProfile } from '@/data/mockJobs';
@@ -22,7 +23,7 @@ export async function POST(req: Request) {
     const clientIp = forwardedHeader ? forwardedHeader.split(',')[0].trim() : '127.0.0.1';
     const rateLimitKey = clientIp + '_' + (role === 'admin' ? 'admin' : (loginId || 'unknown'));
 
-    const isSyntheticLogin = loginId.startsWith('01889') || loginId.includes('synth');
+    const isSyntheticLogin = isTestAuthEnabled() && (loginId.startsWith('01889') || loginId.includes('synth'));
     if (!isSyntheticLogin) {
       const rateStatus = checkLoginRateLimit(rateLimitKey);
       if (!rateStatus.allowed) {
@@ -37,6 +38,9 @@ export async function POST(req: Request) {
     }
 
     if (role === 'admin') {
+      if (!process.env.ADMIN_SECRET_KEY) {
+        return NextResponse.json({ error: 'Admin login is not configured. Set ADMIN_SECRET_KEY on the server.' }, { status: 503 });
+      }
       if (!adminPin || !verifyAdminSecret(adminPin)) {
         recordFailedLogin(rateLimitKey);
         return NextResponse.json({ error: 'ভুল অ্যাডমিন সিক্রেট পিন!' }, { status: 401 });
@@ -68,7 +72,7 @@ export async function POST(req: Request) {
                      lowerId === 'tanvir2026' ||
                      lowerId === '01712-345678';
                      
-      if (isDemo) {
+      if (isDemo && isTestAuthEnabled()) {
         candidate = serverDB.createCandidate({
           ...mockUserProfile,
           id: 'USR-01712345678',
@@ -89,9 +93,7 @@ export async function POST(req: Request) {
       }
     }
 
-    // Verify password (allowing default demo password 123456 for demo user)
-    const isDemoUser = candidate.id === 'USR-01712345678' || candidate.phone === '01712-345678';
-    const isPasswordValid = verifyPassword(password, candidate.passwordHash) || (isDemoUser && password === '123456');
+    const isPasswordValid = verifyPassword(password, candidate.passwordHash);
 
     if (!isPasswordValid) {
       recordFailedLogin(rateLimitKey);

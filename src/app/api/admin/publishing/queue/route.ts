@@ -1,8 +1,13 @@
+import { getServerSession } from '@/lib/auth';
 import { NextResponse } from 'next/server';
 import { serverDB } from '@/lib/db';
 import { createPublishingQueueItem, enqueuePublishingItem } from '@/lib/publishing/queue';
 
 export async function GET(req: Request) {
+  const session = getServerSession(req);
+  if (!session || session.role !== 'admin') {
+    return NextResponse.json({ error: 'FORBIDDEN: Admin privileges required.' }, { status: 403 });
+  }
   try {
     const queue = serverDB.getPublishingQueue ? serverDB.getPublishingQueue() : {};
     const items = Object.values(queue).sort(
@@ -20,6 +25,10 @@ export async function GET(req: Request) {
 }
 
 export async function POST(req: Request) {
+  const session = getServerSession(req);
+  if (!session || session.role !== 'admin') {
+    return NextResponse.json({ error: 'FORBIDDEN: Admin privileges required.' }, { status: 403 });
+  }
   try {
     const body = await req.json();
     const { jobId, draftId, revisionId, action, targetPublishTimeUtc, targetPublishTimeBst, adminId, priority } = body;

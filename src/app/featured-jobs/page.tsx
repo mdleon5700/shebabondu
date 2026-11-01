@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { Metadata } from 'next';
 import { serverDB } from '@/lib/db';
 import { JobFeedEngine } from '@/lib/feeds/engine';
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
 };
 
 export default function FeaturedJobsPage() {
-  const jobs = serverDB.getJobs();
+  const jobs = serverDB.getPublicJobs();
   const placements = serverDB.getFeaturedPlacements();
   const categories = serverDB.getCategories().filter(c => c.is_active).map(c => ({
     id: c.id,

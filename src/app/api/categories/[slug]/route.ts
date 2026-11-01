@@ -1,4 +1,4 @@
-﻿import { NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { serverDB } from '@/lib/db';
 import { JobTaxonomyClassifier } from '@/lib/taxonomy/classifier';
 
@@ -20,7 +20,7 @@ export async function GET(
       .sort((a, b) => (a.display_order || 0) - (b.display_order || 0));
 
     // Calculate job count
-    const eligibleJobs = serverDB.getJobs().filter((j) => {
+    const eligibleJobs = serverDB.getPublicJobs().filter((j) => {
       if (j.id?.startsWith('draft-')) return false;
       const status = ((j as any).status || '').toLowerCase();
       const pubStatus = ((j as any).publicationStatus || '').toUpperCase();

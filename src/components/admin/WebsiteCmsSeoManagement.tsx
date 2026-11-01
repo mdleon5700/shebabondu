@@ -222,7 +222,7 @@ export default function WebsiteCmsSeoManagement({
   // Load server settings on mount
   useEffect(() => {
     fetch('/api/admin/settings', {
-      headers: { 'x-admin-secret': 'CHAKRISEBA_SECURE_ADMIN_2026' }
+      headers: { }
     })
       .then(res => res.json())
       .then(data => {
@@ -288,8 +288,7 @@ export default function WebsiteCmsSeoManagement({
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
-          'x-admin-secret': 'CHAKRISEBA_SECURE_ADMIN_2026'
-        },
+          },
         body: JSON.stringify(payload)
       });
 

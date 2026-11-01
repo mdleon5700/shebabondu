@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import { serverDB } from '@/lib/db';
@@ -12,7 +12,7 @@ interface Props {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const cleanSlug = params.slug.replace(/^_/, '');
-  const pages = serverDB.getPages();
+  const pages = serverDB.getPages().map(page => serverDB.getPublishedPageById(page.id)).filter((page): page is NonNullable<typeof page> => page !== null);
   const page = pages.find(p => p.id === params.slug || p.id === cleanSlug || p.id === `_${cleanSlug}` || p.slug === `/${params.slug}` || p.slug === `/${cleanSlug}`);
 
   if (!page) {
@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default function DynamicCmsPage({ params }: Props) {
   const cleanSlug = params.slug.replace(/^_/, '');
-  const pages = serverDB.getPages();
+  const pages = serverDB.getPages().map(page => serverDB.getPublishedPageById(page.id)).filter((page): page is NonNullable<typeof page> => page !== null);
   const page = pages.find(p => p.id === params.slug || p.id === cleanSlug || p.id === `_${cleanSlug}` || p.slug === `/${params.slug}` || p.slug === `/${cleanSlug}`);
 
   if (!page) {

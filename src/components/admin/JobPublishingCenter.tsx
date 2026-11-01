@@ -60,7 +60,7 @@ export default function JobPublishingCenter() {
     try {
       // 1. Fetch published jobs
       const resJobs = await fetch('/api/admin/jobs?type=published', {
-        headers: { 'x-admin-secret': 'CHAKRISEBA_SECURE_ADMIN_2026' }
+        headers: { }
       });
       if (resJobs.ok) {
         const data = await resJobs.json();
@@ -69,7 +69,7 @@ export default function JobPublishingCenter() {
 
       // 2. Fetch publishing queue
       const resQueue = await fetch('/api/admin/publishing/queue', {
-        headers: { 'x-admin-secret': 'CHAKRISEBA_SECURE_ADMIN_2026' }
+        headers: { }
       });
       if (resQueue.ok) {
         const data = await resQueue.json();
@@ -78,7 +78,7 @@ export default function JobPublishingCenter() {
 
       // 3. Fetch analytics
       const resAnalytics = await fetch('/api/admin/publishing/analytics', {
-        headers: { 'x-admin-secret': 'CHAKRISEBA_SECURE_ADMIN_2026' }
+        headers: { }
       });
       if (resAnalytics.ok) {
         const data = await resAnalytics.json();
@@ -87,7 +87,7 @@ export default function JobPublishingCenter() {
 
       // 4. Fetch redirects
       const resRedir = await fetch('/api/admin/publishing/redirects', {
-        headers: { 'x-admin-secret': 'CHAKRISEBA_SECURE_ADMIN_2026' }
+        headers: { }
       });
       if (resRedir.ok) {
         const data = await resRedir.json();
@@ -107,7 +107,7 @@ export default function JobPublishingCenter() {
     try {
       const res = await fetch('/api/admin/publishing/unpublish', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'x-admin-secret': 'CHAKRISEBA_SECURE_ADMIN_2026' },
+        headers: { 'Content-Type': 'application/json', },
         body: JSON.stringify({
           jobId: jobToUnpublish.id,
           reason: unpublishReason || 'প্রশাসনিক প্রয়োজনে অপ্রকাশ',
@@ -138,7 +138,7 @@ export default function JobPublishingCenter() {
     try {
       const res = await fetch('/api/admin/publishing/archive', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'x-admin-secret': 'CHAKRISEBA_SECURE_ADMIN_2026' },
+        headers: { 'Content-Type': 'application/json', },
         body: JSON.stringify({ jobId: job.id, adminId: 'ADMIN' })
       });
       if (res.ok) {
@@ -158,7 +158,7 @@ export default function JobPublishingCenter() {
     try {
       const res = await fetch('/api/admin/publishing/restore', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'x-admin-secret': 'CHAKRISEBA_SECURE_ADMIN_2026' },
+        headers: { 'Content-Type': 'application/json', },
         body: JSON.stringify({ jobId: job.id, adminId: 'ADMIN' })
       });
       if (res.ok) {
@@ -179,7 +179,7 @@ export default function JobPublishingCenter() {
     try {
       const res = await fetch('/api/admin/publishing/cancel-schedule', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'x-admin-secret': 'CHAKRISEBA_SECURE_ADMIN_2026' },
+        headers: { 'Content-Type': 'application/json', },
         body: JSON.stringify({ queueId, adminId: 'ADMIN' })
       });
       if (res.ok) {
@@ -199,7 +199,7 @@ export default function JobPublishingCenter() {
     try {
       const res = await fetch('/api/admin/publishing/retry', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'x-admin-secret': 'CHAKRISEBA_SECURE_ADMIN_2026' },
+        headers: { 'Content-Type': 'application/json', },
         body: JSON.stringify({ queueId, adminId: 'ADMIN' })
       });
       const data = await res.json();
@@ -224,7 +224,7 @@ export default function JobPublishingCenter() {
     try {
       const res = await fetch('/api/admin/publishing/redirects', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'x-admin-secret': 'CHAKRISEBA_SECURE_ADMIN_2026' },
+        headers: { 'Content-Type': 'application/json', },
         body: JSON.stringify({
           sourcePath: newRedirectSource,
           targetPath: newRedirectTarget,
@@ -254,7 +254,7 @@ export default function JobPublishingCenter() {
     setIsLoading(true);
     try {
       const res = await fetch(`/api/admin/publishing/history/${job.id}`, {
-        headers: { 'x-admin-secret': 'CHAKRISEBA_SECURE_ADMIN_2026' }
+        headers: { }
       });
       if (res.ok) {
         const data = await res.json();

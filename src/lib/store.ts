@@ -1,3 +1,4 @@
+import { emptyCandidateProfile } from './candidate-defaults';
 import { 
   JobCircular, 
   CandidateProfile, 
@@ -275,16 +276,12 @@ export const storage = {
 
   // Jobs (Global)
   getJobs(): JobCircular[] {
-    if (typeof window === 'undefined') return mockJobs;
-    const saved = localStorage.getItem(JOBS_KEY);
-    if (!saved) {
-      localStorage.setItem(JOBS_KEY, JSON.stringify(mockJobs));
-      return mockJobs;
-    }
+    if (typeof window === 'undefined') return [];
     try {
-      return JSON.parse(saved);
+      const jobs = JSON.parse(localStorage.getItem(JOBS_KEY) || '[]');
+      return Array.isArray(jobs) ? jobs : [];
     } catch {
-      return mockJobs;
+      return [];
     }
   },
   addJob(job: JobCircular) {
@@ -299,7 +296,7 @@ export const storage = {
 
   // User Profile (Scoped by Authenticated User)
   getUser(targetUserId?: string): CandidateProfile {
-    if (typeof window === 'undefined') return mockUserProfile;
+    if (typeof window === 'undefined') return structuredClone(emptyCandidateProfile);
     const currentAuth = this.getAuth();
     
     // Authorization Check: prevent cross-user profile access unless admin
@@ -313,10 +310,10 @@ export const storage = {
     if (!saved) {
       // If unauthenticated guest, return read-only fallback without injecting mock user to storage
       if (!currentAuth.isLoggedIn) {
-        return mockUserProfile;
+        return structuredClone(emptyCandidateProfile);
       }
       const initialProfile: CandidateProfile = {
-        ...mockUserProfile,
+        ...structuredClone(emptyCandidateProfile),
         id: currentAuth.userId || 'USR-NEW',
         name: currentAuth.name || '',
         phone: currentAuth.phone || '',
@@ -338,7 +335,7 @@ export const storage = {
       }
       return res;
     } catch {
-      return mockUserProfile;
+      return structuredClone(emptyCandidateProfile);
     }
   },
   updateUser(profile: CandidateProfile, targetUserId?: string) {
@@ -411,11 +408,11 @@ export const storage = {
 
   // Saved Jobs (Scoped)
   getSavedJobIds(targetUserId?: string): string[] {
-    if (typeof window === 'undefined') return ['bb-ad-2026', 'sonali-senior-officer-2026'];
+    if (typeof window === 'undefined') return [];
     const key = getScopedKey('cs_saved_jobs', targetUserId);
     const saved = localStorage.getItem(key);
     if (!saved) {
-      const initial = ['bb-ad-2026', 'sonali-senior-officer-2026'];
+      const initial: string[] = [];
       localStorage.setItem(key, JSON.stringify(initial));
       return initial;
     }
@@ -424,6 +421,11 @@ export const storage = {
     } catch {
       return [];
     }
+  },
+  replaceSavedJobIds(ids: string[]) {
+    if (typeof window === 'undefined') return;
+    localStorage.setItem(getScopedKey('cs_saved_jobs'), JSON.stringify(ids));
+    window.dispatchEvent(new Event('cs_saved_changed'));
   },
   isJobSaved(id: string): boolean {
     return this.getSavedJobIds().includes(id);
@@ -450,22 +452,22 @@ export const storage = {
 
   // Document Vault (Scoped by User)
   getDocuments(targetUserId?: string): CandidateDocument[] {
-    if (typeof window === 'undefined') return initialDocs;
+    if (typeof window === 'undefined') return [];
     const key = getScopedKey('cs_documents_data', targetUserId);
     const saved = localStorage.getItem(key);
     if (!saved) {
       const legacy = localStorage.getItem('cs_documents_data');
       if (legacy && getUserScope() === 'default') {
         localStorage.setItem(key, legacy);
-        try { return JSON.parse(legacy); } catch { return initialDocs; }
+        try { return JSON.parse(legacy); } catch { return []; }
       }
-      localStorage.setItem(key, JSON.stringify(initialDocs));
-      return initialDocs;
+      localStorage.setItem(key, JSON.stringify([]));
+      return [];
     }
     try {
       return JSON.parse(saved);
     } catch {
-      return initialDocs;
+      return [];
     }
   },
   saveDocument(doc: CandidateDocument, targetUserId?: string) {
@@ -491,22 +493,22 @@ export const storage = {
 
   // Wallet Transactions (Scoped with Duplicate Rejection)
   getTransactions(targetUserId?: string): WalletTransaction[] {
-    if (typeof window === 'undefined') return initialTxs;
+    if (typeof window === 'undefined') return [];
     const key = getScopedKey('cs_txs_data', targetUserId);
     const saved = localStorage.getItem(key);
     if (!saved) {
       const legacy = localStorage.getItem('cs_txs_data');
       if (legacy && getUserScope() === 'default') {
         localStorage.setItem(key, legacy);
-        try { return JSON.parse(legacy); } catch { return initialTxs; }
+        try { return JSON.parse(legacy); } catch { return []; }
       }
-      localStorage.setItem(key, JSON.stringify(initialTxs));
-      return initialTxs;
+      localStorage.setItem(key, JSON.stringify([]));
+      return [];
     }
     try {
       return JSON.parse(saved);
     } catch {
-      return initialTxs;
+      return [];
     }
   },
   addTransaction(tx: WalletTransaction, targetUserId?: string) {
@@ -528,17 +530,17 @@ export const storage = {
 
   // Notifications (Scoped)
   getNotifications(targetUserId?: string): NotificationItem[] {
-    if (typeof window === 'undefined') return initialNotifs;
+    if (typeof window === 'undefined') return [];
     const key = getScopedKey('cs_notifs_data', targetUserId);
     const saved = localStorage.getItem(key);
     if (!saved) {
-      localStorage.setItem(key, JSON.stringify(initialNotifs));
-      return initialNotifs;
+      localStorage.setItem(key, JSON.stringify([]));
+      return [];
     }
     try {
       return JSON.parse(saved);
     } catch {
-      return initialNotifs;
+      return [];
     }
   },
   markNotificationRead(id: string, targetUserId?: string) {

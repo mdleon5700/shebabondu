@@ -1,4 +1,5 @@
-﻿import { NextResponse } from 'next/server';
+import { findPrivateUpload } from '@/lib/private-uploads';
+import { NextResponse } from 'next/server';
 import { getServerSession } from '@/lib/auth';
 import { AdminGovernanceRbac } from '@/lib/governance';
 import { serverDB } from '@/lib/db';
@@ -50,7 +51,7 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
     // 3. File existence check and mime mapping
     const uploadDir = path.join(process.cwd(), 'public', 'uploads', 'candidate-documents');
     const safeFileName = path.basename(targetDoc.fileName || '');
-    const fullFilePath = path.join(uploadDir, safeFileName);
+    const fullFilePath = findPrivateUpload('candidate-documents', safeFileName);
 
     if (!fs.existsSync(fullFilePath)) {
       // If physical file not found on disk, return document metadata safely
@@ -79,7 +80,7 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
         'Content-Type': contentType,
         'Content-Disposition': `inline; filename="${safeFileName}"`,
         'X-Content-Type-Options': 'nosniff',
-        'Cache-Control': 'private, max-age=3600'
+        'Cache-Control': 'private, no-store'
       }
     });
   } catch (error: any) {

@@ -79,7 +79,7 @@ export class CentralDeadlineEngine {
     let hasExplicitTime = false;
 
     // Pattern: বিকাল ৫:০০, সন্ধ্যা ৬টা, রাত ১১:৫৯, সকাল ১০:৩০
-    const timeMatch24 = trimmed.match(/(\d{1,2}):(\d{2})/);
+    const timeMatch24 = BangladeshDateHelper.toEnDigits(trimmed).match(/(\d{1,2}):(\d{2})/);
     const timeMatchBn = trimmed.match(/(সকাল|দুপুর|বিকাল|সন্ধ্যা|রাত)\s*([০-৯\d]{1,2})(?::([০-৯\d]{2}))?/);
 
     if (timeMatchBn) {
@@ -106,6 +106,10 @@ export class CentralDeadlineEngine {
 
     // 3. Extract ISO Date (YYYY-MM-DD)
     let isoDate = BangladeshDateHelper.parseToIsoDate(trimmed);
+    if (!isoDate) {
+      const embeddedIso = BangladeshDateHelper.toEnDigits(trimmed).match(/\b\d{4}-\d{2}-\d{2}\b/);
+      if (embeddedIso) isoDate = BangladeshDateHelper.parseToIsoDate(embeddedIso[0]);
+    }
     if (!isoDate) {
       // If direct parse failed, attempt to extract embedded date substring
       const slashSub = trimmed.match(/([০-৯\d]{1,2})[\/\-]([০-৯\d]{1,2})[\/\-]([০-৯\d]{4})/);

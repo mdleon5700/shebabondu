@@ -1,3 +1,4 @@
+import { CentralDeadlineEngine } from '@/lib/deadlines/engine';
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 ﻿import { NextResponse } from 'next/server';
@@ -11,10 +12,10 @@ export async function GET(req: Request) {
     const search = (searchParams.get('search') || searchParams.get('q'))?.toLowerCase().trim();
     const status = searchParams.get('status');
     const grade = searchParams.get('grade');
-    const limit = parseInt(searchParams.get('limit') || '50', 10);
-    const page = parseInt(searchParams.get('page') || '1', 10);
+    const limit = Math.min(100, Math.max(1, parseInt(searchParams.get('limit') || '50', 10) || 50));
+    const page = Math.max(1, parseInt(searchParams.get('page') || '1', 10) || 1);
 
-    let jobs: JobCircular[] = serverDB.getJobs();
+    let jobs: JobCircular[] = serverDB.getPublicJobs();
 
     // 1. Search Filter
     if (search) {
@@ -42,9 +43,9 @@ export async function GET(req: Request) {
     // 3. Status Filter (open, upcoming, closed, expired)
     if (status && status !== 'all') {
       if (status === 'open') {
-        jobs = jobs.filter(j => (j as any).status === 'OPEN' || j.daysRemaining > 0);
+        jobs = jobs.filter(j => !CentralDeadlineEngine.evaluateDeadline(j).isClosed);
       } else if (status === 'closed' || status === 'expired') {
-        jobs = jobs.filter(j => (j as any).status === 'CLOSED' || (j as any).status === 'EXPIRED' || j.daysRemaining <= 0);
+        jobs = jobs.filter(j => CentralDeadlineEngine.evaluateDeadline(j).isClosed);
       } else if (status === 'upcoming') {
         jobs = jobs.filter(j => (j as any).status === 'UPCOMING');
       }

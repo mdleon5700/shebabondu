@@ -1,4 +1,4 @@
-﻿import { NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { serverDB } from '@/lib/db';
 import { JobTaxonomyClassifier } from '@/lib/taxonomy/classifier';
 import { CategoryRecord } from '@/lib/taxonomy/types';
@@ -7,7 +7,7 @@ export async function GET() {
   try {
     const allCategories = serverDB.getCategories().filter((c) => c.is_active);
 
-    const eligibleJobs = serverDB.getJobs().filter((j) => {
+    const eligibleJobs = serverDB.getPublicJobs().filter((j) => {
       if (j.id?.startsWith('draft-')) return false;
       const status = ((j as any).status || '').toLowerCase();
       const pubStatus = ((j as any).publicationStatus || '').toUpperCase();

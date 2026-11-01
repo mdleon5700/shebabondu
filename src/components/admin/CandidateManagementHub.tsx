@@ -184,7 +184,7 @@ export default function CandidateManagementHub({
     try {
       const res = await fetch(`/api/admin/candidates/${candidate.id}`, {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json', 'x-admin-secret': 'CHAKRISEBA_SECURE_ADMIN_2026' },
+        headers: { 'Content-Type': 'application/json', },
         body: JSON.stringify({ isVerified: nextStatus, reason: `ভেরিফিকেশন স্ট্যাটাস পরিবর্তন: ${nextStatus ? 'অনুমোদিত' : 'প্রত্যাহার'}` })
       });
       if (res.ok) {
@@ -207,7 +207,7 @@ export default function CandidateManagementHub({
     try {
       const res = await fetch(`/api/admin/candidates/${candidate.id}`, {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json', 'x-admin-secret': 'CHAKRISEBA_SECURE_ADMIN_2026' },
+        headers: { 'Content-Type': 'application/json', },
         body: JSON.stringify({ status: nextStatus, reason: `অ্যাডমিন মডারেশন: ${nextStatus}` })
       });
       if (res.ok) {
@@ -230,7 +230,7 @@ export default function CandidateManagementHub({
     try {
       const res = await fetch(`/api/admin/candidates/${candidate.id}`, {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json', 'x-admin-secret': 'CHAKRISEBA_SECURE_ADMIN_2026' },
+        headers: { 'Content-Type': 'application/json', },
         body: JSON.stringify({ newPassword: tempPass, reason: 'অ্যাডমিন পাসওয়ার্ড রিসেট' })
       });
       if (res.ok) {

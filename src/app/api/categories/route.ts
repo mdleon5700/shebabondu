@@ -15,7 +15,7 @@ export async function GET(req: Request) {
     }
 
     // Compute live job counts for each category from eligible published jobs
-    const eligibleJobs = serverDB.getJobs().filter((j) => {
+    const eligibleJobs = serverDB.getPublicJobs().filter((j) => {
       if (j.id?.startsWith('draft-')) return false;
       const status = ((j as any).status || '').toLowerCase();
       const pubStatus = ((j as any).publicationStatus || '').toUpperCase();

@@ -1,3 +1,4 @@
+import { CentralDeadlineEngine } from '@/lib/deadlines/engine';
 import React from 'react';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
@@ -9,7 +10,7 @@ interface Props {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const job = serverDB.getJobById(params.id);
+  const job = serverDB.getPublicJobById(params.id);
   if (!job || job.id.startsWith('draft-') || (job as any).status === 'UNPUBLISHED') {
     return {
       title: 'আবেদন | চাকরি সেবা',
@@ -18,7 +19,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   const isExpired = Boolean(
-    job.daysRemaining <= 0 || 
+    CentralDeadlineEngine.evaluateDeadline(job).isClosed ||
     (job as any).status === 'EXPIRED' || 
     (job as any).status === 'CLOSED' ||
     (job.deadline && (job.deadline.includes('সমাপ্ত') || job.deadline.includes('শেষ')))
@@ -33,7 +34,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default function ApplyPage({ params }: Props) {
-  const job = serverDB.getJobById(params.id);
+  const job = serverDB.getPublicJobById(params.id);
 
   if (!job || job.id.startsWith('draft-') || (job as any).status === 'UNPUBLISHED') {
     notFound();

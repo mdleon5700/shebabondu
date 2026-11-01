@@ -2,7 +2,8 @@ import { NextResponse } from 'next/server';
 import { scrapeAllSources, isScrapingActive, getScrapeLockStatus } from '@/lib/collector';
 
 function verifyCronAuth(req: Request): boolean {
-  const configuredSecret = process.env.CRON_SECRET || 'CHAKRISEBA_SECURE_CRON_2026';
+  const configuredSecret = process.env.CRON_SECRET;
+  if (!configuredSecret) return false;
 
   // 1. Header: x-cron-secret
   const headerSecret = req.headers.get('x-cron-secret');

@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
@@ -70,7 +70,7 @@ export default function JobCategorySearchManager() {
     setCategoryError(null);
     try {
       const res = await fetch('/api/admin/categories', {
-        headers: { 'x-admin-secret': 'CHAKRISEBA_SECURE_ADMIN_2026' }
+        headers: { }
       });
       if (res.ok) {
         const data = await res.json();
@@ -107,7 +107,7 @@ export default function JobCategorySearchManager() {
     setIsLoadingAnalytics(true);
     try {
       const res = await fetch('/api/admin/search/analytics', {
-        headers: { 'x-admin-secret': 'CHAKRISEBA_SECURE_ADMIN_2026' }
+        headers: { }
       });
       if (res.ok) {
         const data = await res.json();
@@ -146,8 +146,7 @@ export default function JobCategorySearchManager() {
         method,
         headers: {
           'Content-Type': 'application/json',
-          'x-admin-secret': 'CHAKRISEBA_SECURE_ADMIN_2026'
-        },
+          },
         body: JSON.stringify(editingCategory)
       });
 
@@ -178,7 +177,7 @@ export default function JobCategorySearchManager() {
 
       const res = await fetch(`/api/admin/categories/${deletingCategory.id}?${sp.toString()}`, {
         method: 'DELETE',
-        headers: { 'x-admin-secret': 'CHAKRISEBA_SECURE_ADMIN_2026' }
+        headers: { }
       });
 
       const data = await res.json();
@@ -207,8 +206,7 @@ export default function JobCategorySearchManager() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'x-admin-secret': 'CHAKRISEBA_SECURE_ADMIN_2026'
-        },
+          },
         body: JSON.stringify({
           jobIds: selectedJobIds,
           targetCategoryId: bulkTargetCategory

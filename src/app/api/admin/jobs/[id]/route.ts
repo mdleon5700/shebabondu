@@ -33,6 +33,8 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
   }
 
   try {
+    const existing = serverDB.getJobByIdOrSlug(params.id);
+    if (!existing) return NextResponse.json({ error: 'Job not found' }, { status: 404 });
     const jobData: Partial<JobCircular> = await req.json();
 
     if (jobData.title !== undefined && !jobData.title?.trim()) {
@@ -54,7 +56,7 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
 
     const payload: Partial<JobCircular> & { id: string } = {
       ...jobData,
-      id: params.id,
+      id: existing.id,
       updatedAt: new Date().toISOString()
     };
 

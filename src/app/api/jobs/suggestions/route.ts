@@ -1,4 +1,4 @@
-﻿import { NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { serverDB } from '@/lib/db';
 import { SearchSuggestionsEngine } from '@/lib/search/suggestions';
 
@@ -11,7 +11,7 @@ export async function GET(req: Request) {
       return NextResponse.json({ success: true, suggestions: [] });
     }
 
-    const jobs = serverDB.getJobs();
+    const jobs = serverDB.getPublicJobs();
     const categories = serverDB.getCategories();
 
     const suggestions = SearchSuggestionsEngine.getSuggestions(query, jobs, categories);
@@ -22,7 +22,7 @@ export async function GET(req: Request) {
       suggestions
     }, {
       headers: {
-        'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=120'
+        'Cache-Control': 'no-store'
       }
     });
   } catch (error: any) {

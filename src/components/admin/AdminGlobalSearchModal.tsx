@@ -43,8 +43,7 @@ export default function AdminGlobalSearchModal({
       try {
         const res = await fetch(`/api/admin/governance/search?q=${encodeURIComponent(query.trim())}`, {
           headers: {
-            'x-admin-secret': 'CHAKRISEBA_SECURE_ADMIN_2026'
-          }
+            }
         });
         const data = await res.json();
         if (data.success && Array.isArray(data.results)) {

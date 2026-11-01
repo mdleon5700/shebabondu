@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import React, { useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -111,7 +111,8 @@ function LoginForm() {
 
       setSuccessMsg('লগইন সফল হয়েছে! ড্যাশবোর্ডে প্রবেশ করা হচ্ছে...');
       setTimeout(() => {
-        router.push('/dashboard');
+        const target = searchParams.get('redirect');
+        router.push(target && /^\/(?!\/)/.test(target) ? target : '/dashboard');
       }, 700);
     } catch {
       setError('সার্ভার সংযোগে সমস্যা হয়েছে। অনুগ্রহ করে পুনরায় চেষ্টা করুন।');
@@ -365,7 +366,8 @@ function LoginForm() {
       setForgotMessage('পাসওয়ার্ড সফলভাবে পরিবর্তিত হয়েছে! ড্যাশবোর্ডে প্রবেশ করা হচ্ছে...');
       setTimeout(() => {
         setShowForgotModal(false);
-        router.push('/dashboard');
+        const target = searchParams.get('redirect');
+        router.push(target && /^\/(?!\/)/.test(target) ? target : '/dashboard');
       }, 900);
     } catch {
       setForgotError('পাসওয়ার্ড পরিবর্তনের সময় সমস্যা হয়েছে।');

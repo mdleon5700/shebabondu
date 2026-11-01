@@ -32,6 +32,7 @@ export async function GET(req: Request) {
 export async function POST(req: Request) {
   const session = getServerSession(req);
   if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  if (session.role !== 'admin') return NextResponse.json({ error: 'Wallet credits require admin payment verification.' }, { status: 403 });
 
   try {
     const body = await req.json();
@@ -54,7 +55,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Candidate not found' }, { status: 404 });
     }
 
-    if (!amount || Number(amount) <= 0) {
+    if (!Number.isFinite(Number(amount)) || Number(amount) <= 0) {
       return NextResponse.json({ error: 'সঠিক টাকার পরিমাণ দিন' }, { status: 400 });
     }
 

@@ -1,10 +1,12 @@
+import { CentralDeadlineEngine } from '@/lib/deadlines/engine';
 import { NextResponse } from 'next/server';
 import { processDueScheduledPublications } from '@/lib/publishing/scheduler';
 import { expireJob } from '@/lib/publishing/lifecycle';
 import { serverDB } from '@/lib/db';
 
 function verifyCronAuth(req: Request): boolean {
-  const configuredSecret = process.env.CRON_SECRET || 'CHAKRISEBA_SECURE_CRON_2026';
+  const configuredSecret = process.env.CRON_SECRET;
+  if (!configuredSecret) return false;
 
   const headerSecret = req.headers.get('x-cron-secret');
   if (headerSecret && headerSecret === configuredSecret) return true;
@@ -51,7 +53,7 @@ async function handleCronRun(req: Request) {
   allJobs.forEach(job => {
     const pubStatus = (job as any).publicationStatus || 'PUBLISHED';
     if (pubStatus === 'PUBLISHED' || pubStatus === 'PUBLISHED_WITH_WARNINGS') {
-      if (job.daysRemaining <= 0 || (job.deadline && (job.deadline.includes('সমাপ্ত') || job.deadline.includes('শেষ')))) {
+      if (CentralDeadlineEngine.evaluateDeadline(job).isClosed || (job.deadline && (job.deadline.includes('সমাপ্ত') || job.deadline.includes('শেষ')))) {
         expireJob(job.id, 'CRON_AUTO_EXPIRE');
         autoExpiredCount++;
       }

@@ -1,4 +1,4 @@
-﻿import { NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { serverDB } from '@/lib/db';
 import { CentralDeadlineEngine } from '@/lib/deadlines/engine';
 import { BangladeshDateHelper } from '@/lib/feeds/timezone';
@@ -11,7 +11,7 @@ export async function GET(req: Request) {
     const category = searchParams.get('category');
     const limit = Math.min(100, Math.max(1, Number(searchParams.get('limit') || '50')));
 
-    const allJobs = serverDB.getJobs();
+    const allJobs = serverDB.getPublicJobs();
     const todayJobs: any[] = [];
 
     for (const job of allJobs) {

@@ -31,7 +31,7 @@ import {
 } from 'lucide-react';
 import { storage } from '@/lib/store';
 import { CandidateProfile } from '@/lib/types';
-import { mockUserProfile } from '@/data/mockJobs';
+import { emptyCandidateProfile as mockUserProfile } from '@/lib/candidate-defaults';
 
 interface SidebarNavItem {
   title: string;
@@ -96,26 +96,20 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   useEffect(() => {
     setIsMounted(true);
-    const auth = storage.getAuth();
-    if (!auth.isLoggedIn) {
-      router.push('/login?redirect=' + encodeURIComponent(pathname));
-      return;
-    }
-
-    const user = storage.getUser();
-    setProfile(user);
-    setCompletion(storage.calculateProfileCompletion(user));
-
-    fetch('/api/profile')
-      .then(res => res.ok ? res.json() : null)
-      .then(data => {
-        if (data?.profile) {
-          storage.updateUser(data.profile);
-          setProfile(data.profile);
-          setCompletion(storage.calculateProfileCompletion(data.profile));
-        }
+    fetch('/api/auth/me', { cache: 'no-store' })
+      .then(async res => {
+        if (!res.ok) throw new Error('Session expired');
+        const data = await res.json();
+        if (!data.isLoggedIn || data.role !== 'candidate') throw new Error('Candidate login required');
+        storage.setAuth({ isLoggedIn: true, role: 'candidate', userId: data.user.id, name: data.user.name, phone: data.user.phone });
+        storage.updateUser(data.user);
+        setProfile(data.user);
+        setCompletion(storage.calculateProfileCompletion(data.user));
       })
-      .catch(() => {});
+      .catch(() => {
+        storage.logout();
+        router.replace('/login?redirect=' + encodeURIComponent(pathname));
+      });
 
     const handleUserChange = () => {
       const u = storage.getUser();
@@ -186,7 +180,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             <div className="w-12 h-6 bg-slate-800 rounded animate-pulse" />
           )}
           <Link href="/dashboard/profile">
-            <img src={isMounted ? profile.photoUrl : mockUserProfile.photoUrl} alt="" className="w-7 h-7 rounded-full border border-emerald-400 object-cover" />
+            <img src={(isMounted ? profile.photoUrl : '') || '/images/avatar-placeholder.png'} alt="" className="w-7 h-7 rounded-full border border-emerald-400 object-cover" />
           </Link>
         </div>
       </div>
@@ -210,7 +204,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             <div className="flex items-center gap-3">
               <div className="relative flex-shrink-0">
                 <img 
-                  src={isMounted ? profile.photoUrl : mockUserProfile.photoUrl} 
+                  src={(isMounted ? profile.photoUrl : '') || '/images/avatar-placeholder.png'}
                   alt={isMounted ? profile.name : "প্রোফাইল ছবি"} 
                   className="w-12 h-12 rounded-2xl object-cover border-2 border-emerald-500 shadow-sm"
                 />

@@ -1,4 +1,6 @@
 'use client';
+import { CentralDeadlineEngine } from '@/lib/deadlines/engine';
+
 
 import React, { useState } from 'react';
 import Link from 'next/link';
@@ -42,7 +44,7 @@ export default function JobCard({ job }: JobCardProps) {
   };
 
   const isExpired = Boolean(
-    job.daysRemaining <= 0 || 
+    CentralDeadlineEngine.evaluateDeadline(job).isClosed ||
     (job as any).status === 'EXPIRED' || 
     (job as any).status === 'CLOSED' ||
     (job.deadline && (job.deadline.includes('সমাপ্ত') || job.deadline.includes('শেষ')))

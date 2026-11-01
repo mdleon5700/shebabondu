@@ -42,10 +42,10 @@ export default function PlatformGovernanceOverview({ onNavigate }: PlatformGover
     try {
       const [overviewRes, healthRes] = await Promise.all([
         fetch(`/api/admin/governance/overview?timeframe=${selectedTimeframe}`, {
-          headers: { 'x-admin-secret': 'CHAKRISEBA_SECURE_ADMIN_2026' }
+          headers: { }
         }),
         fetch('/api/admin/governance/health', {
-          headers: { 'x-admin-secret': 'CHAKRISEBA_SECURE_ADMIN_2026' }
+          headers: { }
         })
       ]);
 

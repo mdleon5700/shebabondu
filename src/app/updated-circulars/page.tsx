@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { Sparkles, Clock, ArrowRight, Building2, Calendar, FileText, CheckCircle2 } from 'lucide-react';
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
 };
 
 export default function UpdatedCircularsPage() {
-  const allJobs = serverDB.getJobs();
+  const allJobs = serverDB.getPublicJobs();
   const updatedList: any[] = [];
 
   for (const job of allJobs) {

@@ -10,7 +10,7 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   const jobId = params.id;
-  const job = serverDB.getJobById(jobId);
+  const job = serverDB.getPublicJobById(jobId);
 
   if (!job) {
     return NextResponse.json({ error: 'বিজ্ঞপ্তি খুঁজে পাওয়া যায়নি।' }, { status: 404 });

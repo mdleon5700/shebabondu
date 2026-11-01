@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { 
@@ -57,10 +57,10 @@ export default function JobFeedManager() {
     setIsLoading(true);
     try {
       const [feedRes, featRes, jobsRes, auditRes] = await Promise.all([
-        fetch('/api/admin/job-feeds', { headers: { 'x-admin-secret': 'chakri-sheba-secret-2026' } }),
-        fetch('/api/admin/featured-jobs', { headers: { 'x-admin-secret': 'chakri-sheba-secret-2026' } }),
+        fetch('/api/admin/job-feeds', { headers: { } }),
+        fetch('/api/admin/featured-jobs', { headers: { } }),
         fetch('/api/jobs?limit=200'),
-        fetch('/api/admin/audit-logs', { headers: { 'x-admin-secret': 'chakri-sheba-secret-2026' } }).catch(() => null)
+        fetch('/api/admin/audit-logs', { headers: { } }).catch(() => null)
       ]);
 
       if (feedRes.ok) {
@@ -119,7 +119,7 @@ export default function JobFeedManager() {
     try {
       const res = await fetch('/api/admin/job-feeds/revalidate', {
         method: 'POST',
-        headers: { 'x-admin-secret': 'chakri-sheba-secret-2026' }
+        headers: { }
       });
       const data = await res.json();
       if (data.success) {
@@ -147,8 +147,7 @@ export default function JobFeedManager() {
           method: 'PATCH',
           headers: {
             'Content-Type': 'application/json',
-            'x-admin-secret': 'chakri-sheba-secret-2026'
-          },
+            },
           body: JSON.stringify({
             placement: selectedPlacementTarget,
             priority: priorityVal,
@@ -168,8 +167,7 @@ export default function JobFeedManager() {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'x-admin-secret': 'chakri-sheba-secret-2026'
-          },
+            },
           body: JSON.stringify({
             jobId: selectedJobId,
             placement: selectedPlacementTarget,
@@ -201,7 +199,7 @@ export default function JobFeedManager() {
     try {
       const res = await fetch(`/api/admin/featured-jobs/${id}`, {
         method: 'DELETE',
-        headers: { 'x-admin-secret': 'chakri-sheba-secret-2026' }
+        headers: { }
       });
       const data = await res.json();
       if (data.success) {
@@ -220,8 +218,7 @@ export default function JobFeedManager() {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
-          'x-admin-secret': 'chakri-sheba-secret-2026'
-        },
+          },
         body: JSON.stringify(config)
       });
       const data = await res.json();

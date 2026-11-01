@@ -1,3 +1,4 @@
+import { privateUploadDirectory } from '@/lib/private-uploads';
 import { NextResponse } from 'next/server';
 import { getServerSession } from '@/lib/auth';
 import { serverDB } from '@/lib/db';
@@ -9,6 +10,7 @@ import crypto from 'crypto';
 export async function POST(req: Request) {
   try {
     const session = getServerSession(req);
+    if (!session) return NextResponse.json({ error: 'Login required' }, { status: 401 });
     const formData = await req.formData();
     const file = formData.get('file') as File | null;
     const docType = (formData.get('docType') as string) || 'custom';
@@ -45,7 +47,7 @@ export async function POST(req: Request) {
     const cleanDocType = docType.replace(/[^a-zA-Z0-9_-]/g, '_');
     const cleanFileName = candidateId.replace(/[^a-zA-Z0-9_-]/g, '_') + '_' + cleanDocType + '_' + timestamp + fileExt;
 
-    const uploadDir = path.join(process.cwd(), 'public', 'uploads', 'candidate-documents');
+    const uploadDir = privateUploadDirectory('candidate-documents');
     if (!fs.existsSync(uploadDir)) {
       fs.mkdirSync(uploadDir, { recursive: true });
     }

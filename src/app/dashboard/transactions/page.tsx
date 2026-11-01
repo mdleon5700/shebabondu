@@ -12,6 +12,9 @@ export default function TransactionsPage() {
   useEffect(() => {
     setIsMounted(true);
     setTxs(storage.getTransactions());
+    fetch('/api/wallet/transactions', { cache: 'no-store' }).then(res => res.ok ? res.json() : null).then(data => {
+      if (Array.isArray(data?.transactions)) setTxs(data.transactions);
+    }).catch(() => {});
   }, []);
 
   if (!isMounted) {

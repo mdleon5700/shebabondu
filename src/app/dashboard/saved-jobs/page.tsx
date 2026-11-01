@@ -1,4 +1,5 @@
 'use client';
+import { fetchPublicJobs } from '@/lib/public-jobs-client';
 
 import DeadlineCountdown from '@/components/deadlines/DeadlineCountdown';
 import React, { useState, useEffect, useMemo } from 'react';
@@ -43,14 +44,8 @@ export default function SavedJobsPage() {
         if (res.ok) {
           const data = await res.json();
           if (data.success && Array.isArray(data.savedJobs)) {
-            const merged = Array.from(new Set([...data.savedJobs, ...localSaved]));
-            setSavedIds(merged);
-            // Sync local storage if server has additional saved items
-            merged.forEach(id => {
-              if (!localSaved.includes(id)) {
-                storage.toggleSaveJob(id);
-              }
-            });
+            setSavedIds(data.savedJobs);
+            storage.replaceSavedJobIds(data.savedJobs);
           }
         }
       } catch {
@@ -59,13 +54,7 @@ export default function SavedJobsPage() {
 
       // Fetch canonical jobs from API to ensure full catalog is available
       try {
-        const jobsRes = await fetch('/api/jobs');
-        if (jobsRes.ok) {
-          const jData = await jobsRes.json();
-          if (jData.jobs && Array.isArray(jData.jobs) && jData.jobs.length > 0) {
-            setJobs(jData.jobs);
-          }
-        }
+        setJobs(await fetchPublicJobs());
       } catch {
         // Keep storage.getJobs()
       } finally {

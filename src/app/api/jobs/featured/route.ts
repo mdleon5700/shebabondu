@@ -1,4 +1,4 @@
-﻿import { NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { serverDB } from '@/lib/db';
 import { JobFeedEngine } from '@/lib/feeds/engine';
 import { FeedQueryOptions } from '@/lib/feeds/types';
@@ -12,7 +12,7 @@ export async function GET(req: Request) {
     const page = parseInt(searchParams.get('page') || '1', 10);
     const limit = parseInt(searchParams.get('limit') || '9', 10);
 
-    const jobs = serverDB.getJobs();
+    const jobs = serverDB.getPublicJobs();
     const placements = serverDB.getFeaturedPlacements();
 
     const options: FeedQueryOptions = {
@@ -27,7 +27,7 @@ export async function GET(req: Request) {
 
     return NextResponse.json(result, {
       headers: {
-        'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=120'
+        'Cache-Control': 'no-store'
       }
     });
   } catch (error: any) {

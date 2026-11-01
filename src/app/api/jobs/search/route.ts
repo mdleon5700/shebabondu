@@ -28,7 +28,7 @@ export async function GET(req: Request) {
       limit: parseInt(searchParams.get('limit') || '20', 10)
     };
 
-    const allJobs = serverDB.getJobs();
+    const allJobs = serverDB.getPublicJobs();
     const categories = serverDB.getCategories();
 
     const result = SearchEngine.search(allJobs, categories, params);

@@ -1,4 +1,4 @@
-﻿import { NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { serverDB } from '@/lib/db';
 import { JobFeedEngine } from '@/lib/feeds/engine';
 import { BangladeshDateHelper } from '@/lib/feeds/timezone';
@@ -10,7 +10,7 @@ export async function GET(req: Request) {
     const { searchParams } = new URL(req.url);
     const daysBack = parseInt(searchParams.get('days') || '30', 10);
 
-    const jobs = serverDB.getJobs();
+    const jobs = serverDB.getPublicJobs();
     const archives = JobFeedEngine.getDailyArchiveDates(jobs, daysBack);
     const todayInfo = BangladeshDateHelper.getBangladeshTodayDate();
 

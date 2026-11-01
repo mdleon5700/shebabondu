@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { Metadata } from 'next';
 import { serverDB } from '@/lib/db';
 import { PageRecord } from '@/lib/types';
@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 };
 
 export default function PrivacyPolicyPage() {
-  const page = serverDB.getPageById('privacy-policy') as unknown as PageRecord || { id: 'privacy-policy', slug: '/privacy-policy', title: 'privacy-policy', metaTitle: '', metaDescription: '', status: 'published', version: 1, sections: [], updatedAt: '', publishedAt: '' } as unknown as PageRecord;
+  const page = serverDB.getPublishedPageById('privacy-policy') as unknown as PageRecord || { id: 'privacy-policy', slug: '/privacy-policy', title: 'privacy-policy', metaTitle: '', metaDescription: '', status: 'published', version: 1, sections: [], updatedAt: '', publishedAt: '' } as unknown as PageRecord;
 
   const fallback = (
     <div className="space-y-6">

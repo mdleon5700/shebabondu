@@ -1,4 +1,4 @@
-﻿import { NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { serverDB } from '@/lib/db';
 import { CentralDeadlineEngine } from '@/lib/deadlines/engine';
 import { DeadlineAlertsEngine } from '@/lib/deadlines/alerts';
@@ -8,7 +8,7 @@ export const dynamic = 'force-dynamic';
 
 export async function GET(req: Request, { params }: { params: { id: string } }) {
   try {
-    const job = serverDB.getJobById(params.id);
+    const job = serverDB.getPublicJobById(params.id);
     if (!job || job.id.startsWith('draft-') || (job as any).publicationStatus === 'UNPUBLISHED') {
       return NextResponse.json({ error: 'বিজ্ঞপ্তি খুঁজে পাওয়া যায়নি' }, { status: 404 });
     }

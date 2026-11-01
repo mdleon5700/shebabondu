@@ -1,4 +1,5 @@
-﻿import { NextResponse } from 'next/server';
+import { findPrivateUpload } from '@/lib/private-uploads';
+import { NextResponse } from 'next/server';
 import { getServerSession } from '@/lib/auth';
 import { AdminGovernanceRbac } from '@/lib/governance';
 import { serverDB } from '@/lib/db';
@@ -57,10 +58,7 @@ export async function GET(
     // Authorization Guard
     const session = getServerSession(req);
     const adminAuth = AdminGovernanceRbac.authorizeRequest(req, 'certificates.review');
-    const adminKeyHeader = req.headers.get('x-admin-key');
-    const isSecretAdmin = adminKeyHeader === (process.env.ADMIN_SECRET_KEY || 'CHAKRISEBA_SECURE_ADMIN_2026');
-
-    const isAdmin = adminAuth.authorized || isSecretAdmin;
+    const isAdmin = adminAuth.authorized;
     const isOwner = session && session.candidateId && (session.candidateId === ownerCandidateId);
 
     if (!isAdmin && !isOwner) {
@@ -70,7 +68,7 @@ export async function GET(
       );
     }
 
-    const filePath = path.join(process.cwd(), 'public', 'uploads', 'candidate-documents', filename);
+    const filePath = findPrivateUpload('candidate-documents', filename);
     if (!fs.existsSync(filePath)) {
       return NextResponse.json({ error: 'Document file not found' }, { status: 404 });
     }

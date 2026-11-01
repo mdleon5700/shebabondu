@@ -1,4 +1,4 @@
-﻿import { NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { getServerSession } from '@/lib/auth';
 import { serverDB } from '@/lib/db';
 import { CandidateDocument } from '@/lib/types';
@@ -37,7 +37,7 @@ export async function POST(req: Request) {
       ...doc,
       id: genDocId,
       uploadDate: doc.uploadDate || new Date().toLocaleDateString('bn-BD'),
-      isVerified: doc.isVerified ?? false
+      isVerified: false
     };
     const updated = serverDB.saveDocument(session.candidateId, newDoc);
     return NextResponse.json({ success: true, documents: updated, savedDoc: newDoc });

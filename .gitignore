@@ -37,3 +37,4 @@ test-evidence/
 .DS_Store
 Thumbs.db
 *.pem
+/private/uploads/

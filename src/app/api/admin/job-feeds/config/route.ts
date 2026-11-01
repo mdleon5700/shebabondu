@@ -1,10 +1,15 @@
-﻿import { NextResponse } from 'next/server';
+import { getServerSession } from '@/lib/auth';
+import { NextResponse } from 'next/server';
 import { serverDB } from '@/lib/db';
 import { GlobalFeedConfig } from '@/lib/feeds/types';
 
 export const dynamic = 'force-dynamic';
 
 export async function GET(req: Request) {
+  const session = getServerSession(req);
+  if (!session || session.role !== 'admin') {
+    return NextResponse.json({ error: 'FORBIDDEN: Admin privileges required.' }, { status: 403 });
+  }
   try {
     const config = serverDB.getFeedConfig();
     return NextResponse.json({ success: true, config });
@@ -17,6 +22,10 @@ export async function GET(req: Request) {
 }
 
 export async function PATCH(req: Request) {
+  const session = getServerSession(req);
+  if (!session || session.role !== 'admin') {
+    return NextResponse.json({ error: 'FORBIDDEN: Admin privileges required.' }, { status: 403 });
+  }
   try {
     const body = await req.json();
 

@@ -149,7 +149,7 @@ export default function SystemSettingsDiagnostics({
     const fetchPlatformSettings = async () => {
       try {
         const res = await fetch('/api/admin/settings', {
-          headers: { 'Content-Type': 'application/json', 'x-admin-secret': 'CHAKRISEBA_SECURE_ADMIN_2026' }
+          headers: { 'Content-Type': 'application/json', }
         });
         if (res.ok) {
           const d = await res.json();
@@ -270,7 +270,7 @@ export default function SystemSettingsDiagnostics({
     try {
       const res = await fetch('/api/admin/settings', {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json', 'x-admin-secret': 'CHAKRISEBA_SECURE_ADMIN_2026' },
+        headers: { 'Content-Type': 'application/json', },
         body: JSON.stringify({
           general: {
             siteName: platformName,

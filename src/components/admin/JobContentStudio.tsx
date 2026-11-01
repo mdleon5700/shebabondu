@@ -51,8 +51,7 @@ import { createNewBlock, blocksToMarkdown } from '@/lib/content_studio/blocks_co
 
 const ADMIN_REQ_HEADERS: HeadersInit = {
   'Content-Type': 'application/json',
-  'x-admin-secret': 'CHAKRISEBA_SECURE_ADMIN_2026'
-};
+  };
 
 export default function JobContentStudio({ initialDraftId }: { initialDraftId?: string }) {
   // State

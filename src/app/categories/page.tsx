@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import Link from 'next/link';
 import { Metadata } from 'next';
 import { 
@@ -65,7 +65,7 @@ const ICON_MAP: Record<string, any> = {
 
 export default function CategoriesDirectoryPage() {
   const categories = serverDB.getCategories().filter((c) => !c.parent_id && c.is_active);
-  const eligibleJobs = serverDB.getJobs().filter((j) => {
+  const eligibleJobs = serverDB.getPublicJobs().filter((j) => {
     if (j.id?.startsWith('draft-')) return false;
     const status = ((j as any).status || '').toLowerCase();
     const pubStatus = ((j as any).publicationStatus || '').toUpperCase();

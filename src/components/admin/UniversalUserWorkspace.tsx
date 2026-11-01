@@ -48,8 +48,7 @@ import { BD_DIVISIONS_EN } from '@/lib/constants';
 
 const ADMIN_REQ_HEADERS: HeadersInit = {
   'Content-Type': 'application/json',
-  'x-admin-secret': 'CHAKRISEBA_SECURE_ADMIN_2026'
-};
+  };
 
 export interface UniversalUserWorkspaceProps {
   candidateId: string | null;

@@ -19,12 +19,12 @@
 @tailwind utilities;
 
 :root {
-  --font-solaiman: 'SolaimanLipi', Arial, sans-serif;
-  --font-hind: 'SolaimanLipi', Arial, sans-serif;
+  --font-solaiman: 'SolaimanLipi';
+  --font-hind: 'SolaimanLipi';
 }
 
 html, body {
-  font-family: 'SolaimanLipi', Arial, sans-serif !important;
+  font-family: 'SolaimanLipi' !important;
   line-height: 1.6;
   background-color: #f8fafc;
   color: #0f172a;
@@ -54,7 +54,7 @@ table, th, td,
 .font-body,
 .font-sans,
 .font-bangla {
-  font-family: 'SolaimanLipi', Arial, sans-serif !important;
+  font-family: 'SolaimanLipi' !important;
 }
 
 /* Custom Scrollbar */
@@ -128,12 +128,13 @@ a[class*="rounded-2xl"][class*="bg-"] {
   font-size: 17px;
 }
 
-/* Explicit font size overrides when requested */
-.text-\[15px\],
-[class*="text-[15px]"],
-.share-action-btn,
-.share-action-btn span {
-  font-size: 15px !important;
+p, li, label, input, select, textarea, .text-body {
+  font-size: 16px !important;
+}
+button, button *, [role="button"], .btn, input[type="button"], input[type="submit"],
+a[class*="rounded"][class*="bg-"], a[class*="rounded"][class*="bg-"] *,
+.share-action-btn, .share-action-btn span {
+  font-size: 17px !important;
 }
 
 /* Infinite Auto-Scrolling Testimonial Marquee */

@@ -1,3 +1,4 @@
+import { privateUploadDirectory } from '@/lib/private-uploads';
 import { NextResponse } from 'next/server';
 import { getServerSession } from '@/lib/auth';
 import { serverDB } from '@/lib/db';
@@ -14,6 +15,7 @@ export async function POST(req: Request) {
     const formData = await req.formData();
     const file = formData.get('file') as File | null;
     const appId = (formData.get('appId') as string || '').trim();
+    if (appId && !/^[a-zA-Z0-9_-]+$/.test(appId)) return NextResponse.json({ error: 'Invalid application ID' }, { status: 400 });
 
     if (!file) {
       return NextResponse.json({ error: 'কোনো ফাইল পাওয়া যায়নি।' }, { status: 400 });
@@ -32,7 +34,7 @@ export async function POST(req: Request) {
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
-    const uploadDir = path.join(process.cwd(), 'public', 'uploads', 'applicant-copies');
+    const uploadDir = privateUploadDirectory('applicant-copies');
     if (!fs.existsSync(uploadDir)) {
       fs.mkdirSync(uploadDir, { recursive: true });
     }

@@ -24,8 +24,11 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'পৃষ্ঠার শিরোনাম ও স্লাগ আবশ্যক।' }, { status: 400 });
     }
 
-    const cleanSlug = body.slug.startsWith('/') ? body.slug : '/' + body.slug;
+    const cleanSlug = '/' + String(body.slug).replace(/^\/+|\/+$/g, '');
+    if (/^\/(admin|dashboard|api|login|register|apply)(\/|$)/.test(cleanSlug) || /[?#\\]/.test(cleanSlug)) return NextResponse.json({ error: 'Invalid or reserved page path.' }, { status: 400 });
     const pageId = body.id || cleanSlug.replace(/[^a-zA-Z0-9_-]/g, '_');
+
+    if (serverDB.getPages().some(page => page.id === pageId || page.slug === cleanSlug)) return NextResponse.json({ error: 'A page with this path already exists.' }, { status: 409 });
 
     const newPage: PageRecord = {
       id: pageId,

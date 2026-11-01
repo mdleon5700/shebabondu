@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
@@ -58,7 +58,7 @@ export default async function CategoryLandingPage({ params, searchParams }: Prop
     .filter((c) => !c.parent_id && c.id !== category.id)
     .slice(0, 4);
 
-  const allJobs = serverDB.getJobs();
+  const allJobs = serverDB.getPublicJobs();
 
   // Initial server-side search evaluation for this category
   const initialResult = SearchEngine.search(allJobs, allCategories, {

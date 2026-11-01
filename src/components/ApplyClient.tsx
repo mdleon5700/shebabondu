@@ -1,15 +1,18 @@
 'use client';
+import { CentralDeadlineEngine } from '@/lib/deadlines/engine';
+
+import { emptyCandidateProfile } from '@/lib/candidate-defaults';
 
 import React, { useState, useEffect, useMemo, Suspense } from 'react';
 import Link from 'next/link';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
-import { 
-  Building2, 
-  ShieldCheck, 
-  UserCheck, 
-  Wallet, 
-  CheckCircle2, 
-  ArrowRight, 
+import {
+  Building2,
+  ShieldCheck,
+  UserCheck,
+  Wallet,
+  CheckCircle2,
+  ArrowRight,
   ChevronLeft,
   CreditCard,
   AlertCircle,
@@ -30,7 +33,7 @@ import {
   Award,
   ExternalLink
 } from 'lucide-react';
-import { mockJobs, mockUserProfile } from '@/data/mockJobs';
+
 import { storage } from '@/lib/store';
 import { FinancialSnapshot, JobPosition, CandidateDocument, EducationRecord } from '@/lib/types';
 
@@ -99,14 +102,14 @@ function ApplyFormContent({ initialJob }: ApplyClientProps) {
   const [selectedPosition, setSelectedPosition] = useState<JobPosition>(initialPosition);
   const [paymentMethod, setPaymentMethod] = useState<'bKash' | 'Nagad' | 'Wallet'>('bKash');
   const [trxId, setTrxId] = useState('');
-  const [userProfile, setUserProfile] = useState<any>(mockUserProfile);
+  const [userProfile, setUserProfile] = useState<any>(emptyCandidateProfile);
   const [vaultDocs, setVaultDocs] = useState<CandidateDocument[]>([]);
   const [selectedEduLevels, setSelectedEduLevels] = useState<string[]>(['SSC', 'HSC', 'Honours', 'Masters', 'Diploma']);
   const [selectedDocIds, setSelectedDocIds] = useState<string[]>([]);
 
-  const [senderPhone, setSenderPhone] = useState(mockUserProfile.phone);
-  const [candidateName, setCandidateName] = useState(mockUserProfile.name);
-  const [candidateDistrict, setCandidateDistrict] = useState(mockUserProfile.district);
+  const [senderPhone, setSenderPhone] = useState(emptyCandidateProfile.phone);
+  const [candidateName, setCandidateName] = useState(emptyCandidateProfile.name);
+  const [candidateDistrict, setCandidateDistrict] = useState(emptyCandidateProfile.district);
   const [useWalletSplit, setUseWalletSplit] = useState(false);
   const [paymentScreenshotUrl, setPaymentScreenshotUrl] = useState<string | null>(null);
   const [isUploadingScreenshot, setIsUploadingScreenshot] = useState(false);
@@ -206,8 +209,8 @@ function ApplyFormContent({ initialJob }: ApplyClientProps) {
   };
   const [isSubmitting, setIsSubmitting] = useState(false);
   const isExpired = Boolean(
-    job.daysRemaining <= 0 || 
-    job.status === 'EXPIRED' || 
+    CentralDeadlineEngine.evaluateDeadline(job).isClosed ||
+    job.status === 'EXPIRED' ||
     job.status === 'CLOSED' ||
     (job.deadline && (job.deadline.includes('সমাপ্ত') || job.deadline.includes('শেষ')))
   );
@@ -331,6 +334,11 @@ function ApplyFormContent({ initialJob }: ApplyClientProps) {
 
     setIsSubmitting(true);
     try {
+      const me = await fetch('/api/auth/me', { cache: 'no-store' });
+      if (!me.ok) {
+        router.push('/login?redirect=' + encodeURIComponent(window.location.pathname + window.location.search));
+        return;
+      }
       const res = await fetch('/api/applications', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -339,9 +347,9 @@ function ApplyFormContent({ initialJob }: ApplyClientProps) {
           jobTitle: job.title,
           organization: job.organization,
           postName: `${selectedPosition.title} (${selectedPosition.grade})`,
-          candidateName: candidateName || mockUserProfile.name,
-          candidatePhone: senderPhone || mockUserProfile.phone,
-          candidateDistrict: candidateDistrict || mockUserProfile.district,
+          candidateName: candidateName || emptyCandidateProfile.name,
+          candidatePhone: senderPhone || emptyCandidateProfile.phone,
+          candidateDistrict: candidateDistrict || emptyCandidateProfile.district,
           totalAmount: totalFee,
           paymentMethod: paymentMethod,
           trxId: trxId || (paymentMethod === 'Wallet' ? 'WALLET-AUTO-DEBIT' : 'CASH-VERIFICATION'),
@@ -355,7 +363,7 @@ function ApplyFormContent({ initialJob }: ApplyClientProps) {
           couponDiscount: effectiveCouponDiscount,
           raffleDiscount: effectiveRaffleDiscount,
           financialSnapshot: appliedSnapshot || undefined,
-          submittedEducation: (userProfile.education || mockUserProfile.education || []).filter((e: any) => selectedEduLevels.includes(e.level)),
+          submittedEducation: (userProfile.education || emptyCandidateProfile.education || []).filter((e: any) => selectedEduLevels.includes(e.level)),
           submittedEducationLevels: selectedEduLevels,
           attachedDocuments: vaultDocs
             .filter(d => selectedDocIds.includes(d.id))
@@ -387,7 +395,7 @@ function ApplyFormContent({ initialJob }: ApplyClientProps) {
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-      
+
       {/* Back button */}
       <Link href={`/jobs/${job.id}`} className="inline-flex items-center gap-1 text-xs font-semibold text-slate-500 hover:text-emerald-700 transition-colors">
         <ChevronLeft className="w-4 h-4" />
@@ -528,7 +536,7 @@ function ApplyFormContent({ initialJob }: ApplyClientProps) {
       ) : (
         /* Application & Payment Form */
         <form onSubmit={handleSubmitOrder} className="space-y-8">
-          
+
           {/* 1. Applied Position & Grade Selection Step */}
           <div className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 space-y-5 shadow-sm">
             <div className="flex items-center justify-between pb-4 border-b border-slate-100">
@@ -541,7 +549,7 @@ function ApplyFormContent({ initialJob }: ApplyClientProps) {
                     আবেদনের কাঙ্ক্ষিত পদ ও গ্রেড নির্বাচন
                   </h3>
                   <p className="text-xs text-slate-500">
-                    {positions.length > 1 
+                    {positions.length > 1
                       ? 'এই সার্কুলারে একাধিক গ্রেডের পদ রয়েছে। যে পদে আবেদন করবেন সেটি সিলেক্ট করুন (পদ অনুযায়ী সরকারি ফি কার্যকর হবে)।'
                       : 'সার্কুলারের পদ ও নির্ধারিত সরকারি ফি নিশ্চিত করুন।'}
                   </p>
@@ -570,8 +578,8 @@ function ApplyFormContent({ initialJob }: ApplyClientProps) {
                   >
                     <div className="flex items-start gap-3">
                       <div className={`w-6 h-6 rounded-full flex items-center justify-center shrink-0 mt-0.5 border ${
-                        isSelected 
-                          ? 'border-emerald-600 bg-emerald-600 text-white' 
+                        isSelected
+                          ? 'border-emerald-600 bg-emerald-600 text-white'
                           : 'border-slate-300 bg-white'
                       }`}>
                         {isSelected && <Check className="w-3.5 h-3.5" />}
@@ -605,7 +613,7 @@ function ApplyFormContent({ initialJob }: ApplyClientProps) {
               })}
             </div>
           </div>
-          
+
           {/* 2. Candidate Vault Pre-filled Review */}
           <div className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 space-y-6 shadow-sm">
             <div className="flex items-center justify-between pb-4 border-b border-slate-100">
@@ -631,9 +639,9 @@ function ApplyFormContent({ initialJob }: ApplyClientProps) {
             {/* Photo & Signature Preview */}
             <div className="flex flex-wrap items-center gap-6 p-4 bg-slate-50 rounded-2xl border border-slate-200/80">
               <div className="flex items-center gap-3">
-                <img 
-                  src={userProfile?.photoUrl || userProfile?.documents?.find((d: any) => d.type === "photo")?.dataUrl || mockUserProfile.photoUrl} 
-                  alt="Candidate Photo" 
+                <img
+                  src={userProfile?.photoUrl || userProfile?.documents?.find((d: any) => d.type === "photo")?.dataUrl || emptyCandidateProfile.photoUrl}
+                  alt="Candidate Photo"
                   className="w-16 h-16 object-cover rounded-xl border border-slate-300 bg-white"
                 />
                 <div>
@@ -645,9 +653,9 @@ function ApplyFormContent({ initialJob }: ApplyClientProps) {
               </div>
 
               <div className="flex items-center gap-3 pl-0 sm:pl-6 sm:border-l border-slate-200">
-                <img 
-                  src={userProfile?.signatureUrl || userProfile?.documents?.find((d: any) => d.type === "signature")?.dataUrl || mockUserProfile.signatureUrl} 
-                  alt="Candidate Signature" 
+                <img
+                  src={userProfile?.signatureUrl || userProfile?.documents?.find((d: any) => d.type === "signature")?.dataUrl || emptyCandidateProfile.signatureUrl}
+                  alt="Candidate Signature"
                   className="w-24 h-10 object-cover border border-slate-300 rounded bg-white"
                 />
                 <div>
@@ -663,27 +671,27 @@ function ApplyFormContent({ initialJob }: ApplyClientProps) {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
               <div className="p-3 bg-slate-50 rounded-xl">
                 <span className="text-slate-500 block text-[11px]">প্রার্থীর পূর্ণ নাম (English):</span>
-                <span className="font-bold text-slate-900">{userProfile?.name || candidateName || mockUserProfile.name}</span>
+                <span className="font-bold text-slate-900">{userProfile?.name || candidateName || emptyCandidateProfile.name}</span>
               </div>
               <div className="p-3 bg-slate-50 rounded-xl">
                 <span className="text-slate-500 block text-[11px]">বাবার নাম:</span>
-                <span className="font-bold text-slate-900">{userProfile?.fatherName || mockUserProfile.fatherName}</span>
+                <span className="font-bold text-slate-900">{userProfile?.fatherName || emptyCandidateProfile.fatherName}</span>
               </div>
               <div className="p-3 bg-slate-50 rounded-xl">
                 <span className="text-slate-500 block text-[11px]">মায়ের নাম:</span>
-                <span className="font-bold text-slate-900">{userProfile?.motherName || mockUserProfile.motherName}</span>
+                <span className="font-bold text-slate-900">{userProfile?.motherName || emptyCandidateProfile.motherName}</span>
               </div>
               <div className="p-3 bg-slate-50 rounded-xl">
                 <span className="text-slate-500 block text-[11px]">মোবাইল নম্বর:</span>
-                <span className="font-bold text-slate-900">{userProfile?.phone || senderPhone || mockUserProfile.phone}</span>
+                <span className="font-bold text-slate-900">{userProfile?.phone || senderPhone || emptyCandidateProfile.phone}</span>
               </div>
               <div className="p-3 bg-slate-50 rounded-xl">
                 <span className="text-slate-500 block text-[11px]">এনআইডি নম্বর:</span>
-                <span className="font-bold font-mono text-slate-900">{userProfile?.nid || mockUserProfile.nid}</span>
+                <span className="font-bold font-mono text-slate-900">{userProfile?.nid || emptyCandidateProfile.nid}</span>
               </div>
               <div className="p-3 bg-slate-50 rounded-xl">
                 <span className="text-slate-500 block text-[11px]">নিজ জেলা:</span>
-                <span className="font-bold text-slate-900">{userProfile?.district || candidateDistrict || mockUserProfile.district}</span>
+                <span className="font-bold text-slate-900">{userProfile?.district || candidateDistrict || emptyCandidateProfile.district}</span>
               </div>
             </div>
 
@@ -702,7 +710,7 @@ function ApplyFormContent({ initialJob }: ApplyClientProps) {
                 <div className="flex items-center gap-2">
                   <button
                     type="button"
-                    onClick={() => setSelectedEduLevels((userProfile.education || mockUserProfile.education).map((e: any) => e.level))}
+                    onClick={() => setSelectedEduLevels((userProfile.education || emptyCandidateProfile.education).map((e: any) => e.level))}
                     className="text-[10px] font-bold text-emerald-700 hover:underline"
                   >
                     সবগুলো নির্বাচন
@@ -711,11 +719,11 @@ function ApplyFormContent({ initialJob }: ApplyClientProps) {
               </div>
 
               <div className="divide-y divide-slate-100">
-                {(userProfile.education || mockUserProfile.education).map((edu: any, idx: number) => {
+                {(userProfile.education || emptyCandidateProfile.education).map((edu: any, idx: number) => {
                   const isChecked = selectedEduLevels.includes(edu.level);
                   return (
-                    <div 
-                      key={idx} 
+                    <div
+                      key={idx}
                       onClick={() => handleToggleEduLevel(edu.level)}
                       className={`p-3.5 flex flex-wrap items-center justify-between gap-3 cursor-pointer transition-colors ${
                         isChecked ? 'bg-emerald-50/30' : 'bg-slate-50/60 opacity-60'
@@ -927,11 +935,11 @@ function ApplyFormContent({ initialJob }: ApplyClientProps) {
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 {/* bKash */}
-                <div 
+                <div
                   onClick={() => setPaymentMethod('bKash')}
                   className={`p-4 rounded-2xl border-2 cursor-pointer transition-all flex items-center gap-3 ${
-                    paymentMethod === 'bKash' 
-                      ? 'border-pink-600 bg-pink-50/50 shadow-sm' 
+                    paymentMethod === 'bKash'
+                      ? 'border-pink-600 bg-pink-50/50 shadow-sm'
                       : 'border-slate-200 hover:border-slate-300'
                   }`}
                 >
@@ -945,11 +953,11 @@ function ApplyFormContent({ initialJob }: ApplyClientProps) {
                 </div>
 
                 {/* Nagad */}
-                <div 
+                <div
                   onClick={() => setPaymentMethod('Nagad')}
                   className={`p-4 rounded-2xl border-2 cursor-pointer transition-all flex items-center gap-3 ${
-                    paymentMethod === 'Nagad' 
-                      ? 'border-orange-600 bg-orange-50/50 shadow-sm' 
+                    paymentMethod === 'Nagad'
+                      ? 'border-orange-600 bg-orange-50/50 shadow-sm'
                       : 'border-slate-200 hover:border-slate-300'
                   }`}
                 >
@@ -967,7 +975,7 @@ function ApplyFormContent({ initialJob }: ApplyClientProps) {
                   const userBal = userProfile?.walletBalance ?? 0;
                   const isInsufficient = userBal < totalFee;
                   return (
-                    <div 
+                    <div
                       onClick={() => {
                         if (isInsufficient) {
                           alert(`আপনার ওয়ালেট ব্যালেন্স (৳${userBal}) অপর্যাপ্ত। মোট আবেদন ফি ৳${totalFee}। অনুগ্রহ করে বিকাশ অথবা নগদ দিয়ে আবেদন করুন।`);
@@ -978,8 +986,8 @@ function ApplyFormContent({ initialJob }: ApplyClientProps) {
                       className={`p-4 rounded-2xl border-2 transition-all flex items-center gap-3 ${
                         isInsufficient
                           ? 'opacity-60 bg-slate-50 border-slate-200 cursor-not-allowed'
-                          : paymentMethod === 'Wallet' 
-                            ? 'border-emerald-600 bg-emerald-50/50 shadow-sm cursor-pointer' 
+                          : paymentMethod === 'Wallet'
+                            ? 'border-emerald-600 bg-emerald-50/50 shadow-sm cursor-pointer'
                             : 'border-slate-200 hover:border-slate-300 cursor-pointer'
                       }`}
                     >
@@ -1039,8 +1047,8 @@ function ApplyFormContent({ initialJob }: ApplyClientProps) {
                     <label className="text-[11px] font-bold text-slate-700 block mb-1">
                       ট্রানজ্যাকশন আইডি (TrxID) *
                     </label>
-                    <input 
-                      type="text" 
+                    <input
+                      type="text"
                       required
                       placeholder="উদা: BK9X87M2LQ"
                       value={trxId}
@@ -1052,8 +1060,8 @@ function ApplyFormContent({ initialJob }: ApplyClientProps) {
                     <label className="text-[11px] font-bold text-slate-700 block mb-1">
                       যে নম্বর থেকে টাকা পাঠিয়েছেন (Sender Mobile) *
                     </label>
-                    <input 
-                      type="text" 
+                    <input
+                      type="text"
                       required
                       placeholder="01XXXXXXXXX"
                       value={senderPhone}

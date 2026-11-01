@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { Clock, AlertTriangle, ArrowRight, Building2, Calendar, MapPin, Banknote } from 'lucide-react';
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
 };
 
 export default function DeadlineTodayPage() {
-  const allJobs = serverDB.getJobs();
+  const allJobs = serverDB.getPublicJobs();
   const todayJobs: any[] = [];
 
   for (const job of allJobs) {

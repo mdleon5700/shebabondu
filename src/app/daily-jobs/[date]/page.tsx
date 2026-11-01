@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { serverDB } from '@/lib/db';
@@ -40,7 +40,7 @@ export default function DailyJobDatePage({ params }: Props) {
     notFound();
   }
 
-  const jobs = serverDB.getJobs();
+  const jobs = serverDB.getPublicJobs();
   const placements = serverDB.getFeaturedPlacements();
   const dateBn = BangladeshDateHelper.formatBengaliFullDate(parsedIso);
   const categories = serverDB.getCategories().filter(c => c.is_active).map(c => ({

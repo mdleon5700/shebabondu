@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { Metadata } from 'next';
 import { serverDB } from '@/lib/db';
 import { JobFeedEngine } from '@/lib/feeds/engine';
@@ -25,7 +25,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default function TodaysJobsPage() {
-  const jobs = serverDB.getJobs();
+  const jobs = serverDB.getPublicJobs();
   const placements = serverDB.getFeaturedPlacements();
   const todayInfo = BangladeshDateHelper.getBangladeshTodayDate();
   const categories = serverDB.getCategories().filter(c => c.is_active).map(c => ({

@@ -1,4 +1,5 @@
-﻿import { NextResponse } from 'next/server';
+import { getServerSession } from '@/lib/auth';
+import { NextResponse } from 'next/server';
 import { serverDB } from '@/lib/db';
 import { FeaturedManager } from '@/lib/feeds/featured';
 
@@ -8,6 +9,10 @@ export async function PATCH(
   req: Request,
   { params }: { params: { id: string } }
 ) {
+  const session = getServerSession(req);
+  if (!session || session.role !== 'admin') {
+    return NextResponse.json({ error: 'FORBIDDEN: Admin privileges required.' }, { status: 403 });
+  }
   try {
     const id = params.id;
     const placement = serverDB.getFeaturedPlacementById(id);
@@ -72,6 +77,10 @@ export async function DELETE(
   req: Request,
   { params }: { params: { id: string } }
 ) {
+  const session = getServerSession(req);
+  if (!session || session.role !== 'admin') {
+    return NextResponse.json({ error: 'FORBIDDEN: Admin privileges required.' }, { status: 403 });
+  }
   try {
     const id = params.id;
 

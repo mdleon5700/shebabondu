@@ -3,6 +3,11 @@ import type { NextRequest } from 'next/server';
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+  if (/^\/uploads\/(candidate-documents|applicant-copies)\//.test(pathname)) {
+    const target = request.nextUrl.clone();
+    target.pathname = '/api' + pathname;
+    return NextResponse.rewrite(target);
+  }
 
   // 1. Candidate Dashboard Gate
   if (pathname.startsWith('/dashboard')) {
@@ -32,12 +37,11 @@ export function middleware(request: NextRequest) {
     }
   }
 
-  return NextResponse.next();
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set('x-site-pathname', pathname);
+  return NextResponse.next({ request: { headers: requestHeaders } });
 }
 
 export const config = {
-  matcher: [
-    '/dashboard/:path*',
-    '/api/admin/:path*'
-  ]
+  matcher: ['/((?!_next/static|_next/image|favicon.ico|fonts/|images/|icons/).*)']
 };

@@ -1,4 +1,4 @@
-﻿import { NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { getServerSession } from '@/lib/auth';
 import { serverDB } from '@/lib/db';
 import { PersonalizedRecommender } from '@/lib/matching/recommender';
@@ -31,6 +31,7 @@ export async function PATCH(req: Request) {
     delete updates.id;
     delete updates.role;
     delete updates.passwordHash;
+    for (const key of ['walletBalance', 'status', 'accountStatus', 'isVerified', 'verificationStatus', 'createdAt', 'updatedAt']) delete updates[key];
 
     const updated = serverDB.updateCandidate(session.candidateId, updates);
     if (!updated) return NextResponse.json({ error: 'Candidate not found' }, { status: 404 });

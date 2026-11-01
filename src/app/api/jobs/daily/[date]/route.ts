@@ -1,4 +1,4 @@
-﻿import { NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { serverDB } from '@/lib/db';
 import { JobFeedEngine } from '@/lib/feeds/engine';
 import { BangladeshDateHelper } from '@/lib/feeds/timezone';
@@ -28,7 +28,7 @@ export async function GET(
     const page = parseInt(searchParams.get('page') || '1', 10);
     const limit = parseInt(searchParams.get('limit') || '9', 10);
 
-    const jobs = serverDB.getJobs();
+    const jobs = serverDB.getPublicJobs();
     const placements = serverDB.getFeaturedPlacements();
 
     const options: FeedQueryOptions = {

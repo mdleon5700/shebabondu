@@ -79,7 +79,7 @@ function parseSalaryRange(salaryStr?: string): { min?: number; max?: number } | 
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const job = serverDB.getJobByIdOrSlug ? serverDB.getJobByIdOrSlug(params.id) : serverDB.getJobById(params.id);
+  const job = serverDB.getPublicJobById(params.id);
   const pubStatus = (job as any)?.publicationStatus;
   if (
     !job ||
@@ -173,7 +173,7 @@ export default function SingleJobPage({ params }: Props) {
   }
 
   // 2. Resolve job by ID or clean SEO Slug
-  const job = serverDB.getJobByIdOrSlug ? serverDB.getJobByIdOrSlug(params.id) : serverDB.getJobById(params.id);
+  const job = serverDB.getPublicJobById(params.id);
   const pubStatus = (job as any)?.publicationStatus;
 
   // 3. Strict public visibility guard (0% leakage of drafts/unapproved/scheduled)

@@ -1,3 +1,4 @@
+import { randomUUID } from 'crypto';
 import { NextResponse } from 'next/server';
 import { getServerSession } from '@/lib/auth';
 import { serverDB } from '@/lib/db';
@@ -79,7 +80,7 @@ export async function POST(req: Request) {
     const chosenCat = jobData.category || 'govt';
 
     const newJob: JobCircular = {
-      id: jobData.id?.trim() || 'job-' + Date.now().toString().slice(-6),
+      id: jobData.id?.trim() || 'job-' + randomUUID(),
       title: jobData.title.trim(),
       organization: jobData.organization.trim(),
       logo: jobData.logo?.trim() || 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=120&q=80',
@@ -93,7 +94,7 @@ export async function POST(req: Request) {
       maxAge: Number(jobData.maxAge) || 32,
       districts: jobData.districts?.trim() || 'সকল জেলা',
       deadline: jobData.deadline?.trim() || '২৫ নভেম্বর ২০২৬',
-      daysRemaining: Number(jobData.daysRemaining) ?? 15,
+      daysRemaining: Number.isFinite(Number(jobData.daysRemaining)) ? Number(jobData.daysRemaining) : 15,
       govtFee: Number(jobData.govtFee) || 0,
       serviceFee: Number(jobData.serviceFee) || 0,
       officialLink: jobData.officialLink?.trim() || 'https://alljobs.teletalk.com.bd',
@@ -154,6 +155,9 @@ export async function POST(req: Request) {
       updatedAt: new Date().toISOString()
     };
 
+    if (serverDB.getJobById(newJob.id)) {
+      return NextResponse.json({ error: 'A job with this ID already exists.' }, { status: 409 });
+    }
     const saved = serverDB.saveJob(newJob, session.candidateId);
     return NextResponse.json({ success: true, job: saved });
   } catch (err: any) {

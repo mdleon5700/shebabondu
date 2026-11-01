@@ -1,4 +1,5 @@
 'use client';
+import { fetchPublicJobs } from '@/lib/public-jobs-client';
 
 import React, { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
@@ -20,12 +21,12 @@ export default function ApplicationCheckPage() {
   const [isMounted, setIsMounted] = useState(false);
   const [profile, setProfile] = useState<CandidateProfile>(storage.getUser());
   const [jobs, setJobs] = useState<JobCircular[]>(storage.getJobs());
-  const [selectedJobId, setSelectedJobId] = useState<string>('bb-ad-2026');
+  const [selectedJobId, setSelectedJobId] = useState<string>('');
 
   useEffect(() => {
     setIsMounted(true);
     setProfile(storage.getUser());
-    setJobs(storage.getJobs());
+    fetchPublicJobs().then(jobs => { setJobs(jobs); setSelectedJobId(jobs[0]?.id || ''); }).catch(() => {});
   }, []);
 
   const selectedJob = useMemo(() => {

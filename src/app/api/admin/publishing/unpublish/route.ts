@@ -1,11 +1,12 @@
+import { getServerSession } from '@/lib/auth';
 import { NextResponse } from 'next/server';
 import { unpublishJob } from '@/lib/publishing/lifecycle';
 
 export async function POST(req: Request) {
   try {
-    const adminPin = req.headers.get('x-admin-pin');
-    if (adminPin && adminPin !== '1234') {
-      return NextResponse.json({ error: 'UNAUTHORIZED: Invalid admin credentials.' }, { status: 401 });
+    const session = getServerSession(req);
+    if (!session || session.role !== 'admin') {
+      return NextResponse.json({ error: 'FORBIDDEN: Admin privileges required.' }, { status: 403 });
     }
 
     const body = await req.json();

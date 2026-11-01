@@ -1,4 +1,5 @@
-﻿import { JobCircular } from '../types';
+import { isPublicJob } from '../job-visibility';
+import { JobCircular } from '../types';
 import { SearchParams, SearchResult, SearchFacets, SearchFacetItem } from './types';
 import { SearchScorer } from './scorer';
 import { SearchNormalizer } from './normalizer';
@@ -19,6 +20,7 @@ export class SearchEngine {
 
     // 1. STRICT ZERO-LEAKAGE PUBLIC ELIGIBILITY GUARD
     const eligibleJobs = allJobs.filter((j) => {
+      if (!isPublicJob(j)) return false;
       if (j.id?.startsWith('draft-')) return false;
       const status = ((j as any).status || '').toLowerCase();
       const pubStatus = ((j as any).publicationStatus || '').toUpperCase();

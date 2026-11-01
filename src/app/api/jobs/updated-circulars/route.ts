@@ -1,4 +1,4 @@
-﻿import { NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { serverDB } from '@/lib/db';
 import { CentralDeadlineEngine } from '@/lib/deadlines/engine';
 
@@ -9,7 +9,7 @@ export async function GET(req: Request) {
     const { searchParams } = new URL(req.url);
     const limit = Math.min(50, Math.max(1, Number(searchParams.get('limit') || '20')));
 
-    const allJobs = serverDB.getJobs();
+    const allJobs = serverDB.getPublicJobs();
     const updatedList: any[] = [];
 
     for (const job of allJobs) {

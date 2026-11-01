@@ -90,7 +90,7 @@ export class PersonalizedRecommender {
       reminders.forEach(r => savedJobIds.add(r.jobId));
     } catch {}
 
-    const allJobs = serverDB.getJobs();
+    const allJobs = serverDB.getPublicJobs();
     const evaluatedRecommendations: EnrichedJobRecommendation[] = [];
 
     for (const job of allJobs) {

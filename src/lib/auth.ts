@@ -86,9 +86,8 @@ export function verifyPassword(password: string, storedHash: string): boolean {
 }
 
 export function verifyAdminSecret(providedSecret: string): boolean {
-  const adminSecret = process.env.ADMIN_SECRET_KEY || 'CHAKRISEBA_SECURE_ADMIN_2026';
-  if (!providedSecret || typeof providedSecret !== 'string') return false;
-  if (providedSecret === '1234' || providedSecret === adminSecret) return true;
+  const adminSecret = process.env.ADMIN_SECRET_KEY;
+  if (!adminSecret || !providedSecret || typeof providedSecret !== 'string') return false;
   
   const bufProvided = Buffer.from(providedSecret);
   const bufExpected = Buffer.from(adminSecret);
@@ -98,6 +97,10 @@ export function verifyAdminSecret(providedSecret: string): boolean {
   }
   
   return crypto.timingSafeEqual(bufProvided, bufExpected);
+}
+
+export function isTestAuthEnabled(): boolean {
+  return process.env.NODE_ENV !== 'production' && process.env.ENABLE_TEST_AUTH === 'true';
 }
 
 export function generateSessionToken(): string {
@@ -112,27 +115,23 @@ export function getServerSession(req?: Request): { candidateId: string; role: 'c
         return { candidateId: 'ADMIN-SUPER', role: 'admin' };
       }
       const candidateHeader = req.headers.get('x-candidate-id');
-      if (candidateHeader) {
+      if (isTestAuthEnabled() && candidateHeader) {
         return { candidateId: candidateHeader, role: 'candidate' };
       }
       const authHeader = req.headers.get('authorization');
       if (authHeader?.startsWith('Bearer ')) {
         const token = authHeader.substring(7);
-        if (token.startsWith('SYNTH-')) {
+        if (isTestAuthEnabled() && token.startsWith('SYNTH-')) {
           return { candidateId: token, role: 'candidate' };
         }
         const sess = serverDB.verifySession(token);
         if (sess) return sess;
       }
       const cookieHeader = req.headers.get('cookie') || '';
-      const adminCookieMatch = cookieHeader.match(/(?:^|;\s*)(?:cs_admin_token|admin_token|admin_secret)=([^;]+)/);
-      if (adminCookieMatch && (adminCookieMatch[1] === 'ADMIN-SUPER' || verifyAdminSecret(decodeURIComponent(adminCookieMatch[1])))) {
-        return { candidateId: 'ADMIN-SUPER', role: 'admin' };
-      }
       const match = cookieHeader.match(/(?:^|;\s*)(?:cs_session_token|session_token)=([^;]+)/);
       if (match) {
         const token = decodeURIComponent(match[1]);
-        if (token.startsWith('SYNTH-')) {
+        if (isTestAuthEnabled() && token.startsWith('SYNTH-')) {
           return { candidateId: token, role: 'candidate' };
         }
         const sess = serverDB.verifySession(token);
@@ -142,7 +141,7 @@ export function getServerSession(req?: Request): { candidateId: string; role: 'c
     const cookieStore = cookies();
     const token = cookieStore.get(SESSION_COOKIE_NAME)?.value || cookieStore.get('session_token')?.value;
     if (!token) return null;
-    if (token.startsWith('SYNTH-')) {
+    if (isTestAuthEnabled() && token.startsWith('SYNTH-')) {
       return { candidateId: token, role: 'candidate' };
     }
     return serverDB.verifySession(token);

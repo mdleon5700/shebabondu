@@ -1,4 +1,6 @@
 'use client';
+import { CentralDeadlineEngine } from '@/lib/deadlines/engine';
+
 import HeroSection from '@/components/HeroSection';
 import JobSearchSection from '@/components/JobSearchSection';
 import JobLogo from '@/components/JobLogo';
@@ -436,9 +438,9 @@ export default function HomePage() {
         const isNew = job.featured || job.isHot || pub.includes('আজ') || pub.includes('২৯') || pub.includes('৩০') || pub.includes('৩১');
         if (!isNew) return false;
       } else if (statusFilter === 'ongoing') {
-        if (job.status === 'EXPIRED' || (job.daysRemaining !== undefined && job.daysRemaining <= 0)) return false;
+        if (job.status === 'EXPIRED' || CentralDeadlineEngine.evaluateDeadline(job).isClosed) return false;
       } else if (statusFilter === 'ending_soon') {
-        if (job.daysRemaining === undefined || job.daysRemaining > 7 || job.daysRemaining <= 0) return false;
+        if (job.daysRemaining === undefined || job.daysRemaining > 7 || CentralDeadlineEngine.evaluateDeadline(job).isClosed) return false;
       } else if (statusFilter === 'ending_today') {
         if (job.daysRemaining === undefined || job.daysRemaining > 1) return false;
       }
@@ -864,7 +866,7 @@ export default function HomePage() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {paginatedJobs.map((job) => {
               const isExpired = Boolean(
-                job.daysRemaining <= 0 || 
+                CentralDeadlineEngine.evaluateDeadline(job).isClosed ||
                 (job as any).status === 'EXPIRED' || 
                 (job as any).status === 'CLOSED' ||
                 (job.deadline && (job.deadline.includes('সমাপ্ত') || job.deadline.includes('শেষ')))

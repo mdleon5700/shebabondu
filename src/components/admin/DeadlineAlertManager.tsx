@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
@@ -36,8 +36,7 @@ export default function DeadlineAlertManager() {
 
   const ADMIN_REQ_HEADERS = {
     'Content-Type': 'application/json',
-    'x-admin-secret': 'CHAKRISEBA_SECURE_ADMIN_2026'
-  };
+    };
 
   const fetchAllData = async () => {
     setIsLoading(true);

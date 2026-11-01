@@ -1,10 +1,13 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import ConditionalLayout from '@/components/layout/ConditionalLayout';
+import { headers } from 'next/headers';
+import { serverDB } from '@/lib/db';
+import PublishedPage from '@/components/PublishedPage';
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://chakrisheba.com';
 
-export const metadata: Metadata = {
+const defaultMetadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
     default: 'চাকরি সেবা • Chakri Sheba | বিডি চাকরির খবর ও আবেদন সার্ভিস',
@@ -41,11 +44,30 @@ export const metadata: Metadata = {
   },
 };
 
+export function generateMetadata(): Metadata {
+  const settings = serverDB.getPlatformSettings();
+  const pathname = headers().get('x-site-pathname') || '/';
+  const page = serverDB.getPublishedPageBySlug(pathname);
+  const title = page?.metaTitle || settings.seo?.defaultTitle || 'চাকরি সেবা';
+  const description = page?.metaDescription || settings.seo?.defaultDescription;
+  return {
+    ...defaultMetadata,
+    title: { default: title, template: '%s | চাকরি সেবা' },
+    description,
+    keywords: settings.seo?.defaultKeywords,
+    openGraph: { ...defaultMetadata.openGraph, title, description, images: settings.seo?.defaultOgImage ? [settings.seo.defaultOgImage] : [] },
+    twitter: { ...defaultMetadata.twitter, title, description }
+  };
+}
+
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const pathname = headers().get('x-site-pathname') || '/';
+  const managedPage = /^\/(admin|dashboard|login|register|apply|api)(\/|$)/.test(pathname)
+    ? null : serverDB.getPublishedPageBySlug(pathname);
   return (
     <html lang="bn">
       <head>
@@ -54,7 +76,7 @@ export default function RootLayout({
       </head>
       <body className="font-solaiman min-h-screen flex flex-col bg-slate-50 text-slate-900 selection:bg-emerald-600 selection:text-white overflow-x-hidden max-w-full">
         <ConditionalLayout>
-          {children}
+          {managedPage ? <PublishedPage page={managedPage} /> : children}
         </ConditionalLayout>
       </body>
     </html>

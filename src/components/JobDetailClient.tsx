@@ -1,4 +1,6 @@
 'use client';
+import { CentralDeadlineEngine } from '@/lib/deadlines/engine';
+
 
 import DeadlineCountdown from '@/components/deadlines/DeadlineCountdown';
 import React, { useState, useMemo, useEffect, useRef } from 'react';
@@ -62,6 +64,9 @@ export default function JobDetailClient({ job }: { job: JobCircular }) {
 
   useEffect(() => {
     setIsSaved(storage.isJobSaved(job.id));
+    fetch('/api/candidate/saved-jobs', { cache: 'no-store' }).then(res => res.ok ? res.json() : null).then(data => {
+      if (Array.isArray(data?.savedJobs)) storage.replaceSavedJobIds(data.savedJobs);
+    }).catch(() => {});
     const handleSavedChange = () => {
       setIsSaved(storage.isJobSaved(job.id));
     };
@@ -73,12 +78,16 @@ export default function JobDetailClient({ job }: { job: JobCircular }) {
     const nextSaved = storage.toggleSaveJob(job.id);
     setIsSaved(nextSaved);
     try {
-      await fetch('/api/candidate/saved-jobs', {
+      const response = await fetch('/api/candidate/saved-jobs', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ jobId: job.id, action: nextSaved ? 'save' : 'unsave' })
       });
-    } catch {}
+      if (!response.ok) throw new Error('Could not save job');
+    } catch {
+      storage.toggleSaveJob(job.id);
+      setIsSaved(!nextSaved);
+    }
   };
   const [copiedSms1, setCopiedSms1] = useState(false);
   const [copiedSms2, setCopiedSms2] = useState(false);
@@ -343,7 +352,7 @@ export default function JobDetailClient({ job }: { job: JobCircular }) {
   const maxTotalFee = maxGovtFee + job.serviceFee;
 
   const isExpired = Boolean(
-    job.daysRemaining <= 0 || 
+    CentralDeadlineEngine.evaluateDeadline(job).isClosed ||
     (job as any).status === 'EXPIRED' || 
     (job as any).publicationStatus === 'EXPIRED' ||
     (job as any).status === 'CLOSED' ||

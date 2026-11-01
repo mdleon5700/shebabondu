@@ -1,4 +1,5 @@
-﻿/**
+import { isPublicJob } from '../job-visibility';
+/**
  * Chakri Sheba - Centralized Job Feed Engine
  * Step 07: Single Authoritative Feed Provider for All Time-based & Curated Feeds
  */
@@ -22,6 +23,7 @@ export class JobFeedEngine {
    */
   public static filterPublicEligibleJobs(jobs: JobCircular[], includeExpired: boolean = false): JobCircular[] {
     return jobs.filter((job) => {
+      if (!isPublicJob(job)) return false;
       // 1. Exclude drafts and temporary records
       if (!job.id || job.id.startsWith('draft-') || job.id.startsWith('temp-')) {
         return false;

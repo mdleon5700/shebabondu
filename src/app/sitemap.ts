@@ -1,4 +1,4 @@
-﻿import { MetadataRoute } from 'next';
+import { MetadataRoute } from 'next';
 import { serverDB } from '@/lib/db';
 import { JobFeedEngine } from '@/lib/feeds/engine';
 
@@ -79,7 +79,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: route === '' ? 1.0 : (route === '/todays-jobs' || route === '/latest-jobs') ? 0.9 : route.startsWith('/jobs') ? 0.9 : 0.7,
   }));
 
-  const canonicalJobs = serverDB.getAllJobs ? serverDB.getAllJobs() : serverDB.getJobs();
+  const canonicalJobs = serverDB.getPublicJobs();
   const eligibleJobs = JobFeedEngine.filterPublicEligibleJobs(canonicalJobs, false);
 
   const jobEntries: MetadataRoute.Sitemap = eligibleJobs

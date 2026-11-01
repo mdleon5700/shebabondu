@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { Metadata } from 'next';
 import { serverDB } from '@/lib/db';
 import { PageRecord } from '@/lib/types';
@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 };
 
 export default function TermsPage() {
-  const page = serverDB.getPageById('terms-and-conditions') as unknown as PageRecord || { id: 'terms-and-conditions', slug: '/terms-and-conditions', title: 'terms-and-conditions', metaTitle: '', metaDescription: '', status: 'published', version: 1, sections: [], updatedAt: '', publishedAt: '' } as unknown as PageRecord;
+  const page = serverDB.getPublishedPageById('terms-and-conditions') as unknown as PageRecord || { id: 'terms-and-conditions', slug: '/terms-and-conditions', title: 'terms-and-conditions', metaTitle: '', metaDescription: '', status: 'published', version: 1, sections: [], updatedAt: '', publishedAt: '' } as unknown as PageRecord;
 
   const fallback = (
     <div className="space-y-6">

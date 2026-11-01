@@ -25,8 +25,7 @@ import { MediaItem } from '@/lib/types';
 
 const ADMIN_REQ_HEADERS: HeadersInit = {
   'Content-Type': 'application/json',
-  'x-admin-secret': 'CHAKRISEBA_SECURE_ADMIN_2026'
-};
+  };
 
 export default function MediaLibraryManager() {
   const [mediaItems, setMediaItems] = useState<MediaItem[]>([]);

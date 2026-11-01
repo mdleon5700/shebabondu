@@ -725,7 +725,7 @@ export default function JobDetailClient({ job }: { job: JobCircular }) {
                       href={`/apply/${job.id}`}
                       className="px-4 py-2 sm:px-5 sm:py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-black rounded-xl shadow-md transition-all flex items-center justify-center gap-1.5 shrink-0"
                     >
-                      <span>১-ক্লিক আবেদন করুন</span>
+                      <span>১-ক্লিকে আবেদন করুন</span>
                       <ArrowRight className="w-4 h-4" />
                     </Link>
                   )}
@@ -778,7 +778,7 @@ export default function JobDetailClient({ job }: { job: JobCircular }) {
                   {/* Small Red Warning Badges & Green Chips */}
                   <div className="space-y-1.5">
                     {userEvaluation.reasons.map((r, rIdx) => {
-                      const isNegative = r.includes('মেলেনি') || r.includes('অতিক্রম') || r.includes('গ্রহণযোগ্য নয়') || r.includes('প্রয়োজন') || r.includes('অপূর্ণ') || r.includes('ঘাটতি');
+                      const isNegative = r.includes('পূরণ হয়নি') || r.includes('অযোগ্য') || r.includes('অনুপযুক্ত') || r.includes('অনুপস্থিত') || r.includes('অসম্পূর্ণ') || r.includes('অতিরিক্ত');
                       if (isNegative) {
                         return (
                           <div key={rIdx} className="flex items-start gap-2 p-2.5 bg-rose-50 text-rose-900 border border-rose-200 rounded-xl text-xs font-semibold">
@@ -801,10 +801,10 @@ export default function JobDetailClient({ job }: { job: JobCircular }) {
           ) : !auth.isLoggedIn ? (
             <div className="p-4 bg-gradient-to-r from-amber-50 to-orange-50 rounded-2xl border border-amber-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
               <div className="flex items-center gap-2.5">
-                <span className="text-xl">💡</span>
+                <span className="text-xl">🎯</span>
                 <div>
-                  <span className="font-black text-amber-950 block text-[15px] mb-0.5">১-সেকেন্ডে আপনার যোগ্যতা ও বয়স যাচাই করতে চান?</span>
-                  <span className="text-amber-900 text-[15px] leading-relaxed">লগইন করলে সিস্টেম আপনার সংরক্ষিত জন্মতারিখ ও সিজিপিএ মিলিয়ে বলে দেবে আপনি এই পদে আবেদনযোগ্য কিনা।</span>
+                  <span className="font-black text-amber-950 block text-[15px] mb-0.5">আপনি কি এই সার্কুলারে আপনার যোগ্যতা ও বয়স যাচাই করতে চান?</span>
+                  <span className="text-amber-900 text-[15px] leading-relaxed">লগইন করলে আপনার প্রোফাইলের জন্মতারিখ ও জিপিএ অনুযায়ী সকল পদের যোগ্যতা স্বয়ংক্রিয়ভাবে ভেসে উঠবে।</span>
                 </div>
               </div>
               <Link

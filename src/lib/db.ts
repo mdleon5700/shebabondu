@@ -3034,9 +3034,15 @@ export const serverDB = {
       notes: decision === 'approve' ? 'Recharge verified and credited' : 'Recharge rejected', timestamp: transaction.reviewedAt
     } as AdminAuditLog);
     db.notifications[candidateId] = [{
-      id: 'NOTIF-' + transaction.id, title: decision === 'approve' ? 'ওয়ালেট রিচার্জ অনুমোদিত' : 'ওয়ালেট রিচার্জ বাতিল',
-      message: `TrxID: ${transaction.trxId} — ৳${transaction.amount} ${decision === 'approve' ? 'ওয়ালেটে যুক্ত হয়েছে।' : 'অনুমোদিত হয়নি। সাপোর্টে যোগাযোগ করুন।'}`,
-      type: 'system', read: false, date: transaction.reviewedAt, link: '/dashboard/wallet'
+      id: 'NOTIF-' + transaction.id,
+      title: decision === 'approve' ? 'ওয়ালেট রিচার্জ সফল হয়েছে' : 'ওয়ালেট রিচার্জ প্রত্যাখ্যাত',
+      message: decision === 'approve' 
+        ? `TrxID: ${transaction.trxId} - ৳${transaction.amount} সফলভাবে আপনার ওয়ালেটে জমা হয়েছে।` 
+        : `TrxID: ${transaction.trxId} - ৳${transaction.amount} রিচার্জ তথ্যের অমিলের কারণে বাতিল করা হয়েছে।`,
+      type: 'system',
+      read: false,
+      date: transaction.reviewedAt,
+      link: '/dashboard/wallet'
     }, ...(db.notifications[candidateId] || [])];
     saveDB(db);
     return { success: true, transaction, newBalance: candidate.walletBalance };
@@ -4537,6 +4543,48 @@ export const serverDB = {
             // Respect candidate alert settings
             if ((cand as any).jobAlerts === false) continue;
 
+            // Intelligent Profile & CGPA Match Check
+            let isProfileMatch = false;
+            let matchedDegreeName = '';
+            let matchedCgpa = '';
+            const edus = Array.isArray(cand.education) ? cand.education : [];
+            if (edus.length > 0) {
+              const reqEdu = (merged.minEducation || '').toLowerCase();
+              for (const edu of edus) {
+                const deg = String(edu.degree || edu.level || '').trim();
+                const res = String(edu.result || edu.cgpa || '').trim();
+                const degLower = deg.toLowerCase();
+                
+                let degMatches = false;
+                if (reqEdu.includes('master') || reqEdu.includes('মাস্টার্স') || reqEdu.includes('স্নাতকোত্তর')) {
+                  if (degLower.includes('master') || degLower.includes('মাস্টার্স') || degLower.includes('স্নাতকোত্তর')) degMatches = true;
+                } else if (reqEdu.includes('bachelor') || reqEdu.includes('honour') || reqEdu.includes('স্নাতক') || reqEdu.includes('বিএসসি') || reqEdu.includes('ইঞ্জিনিয়ারিং')) {
+                  if (degLower.includes('bachelor') || degLower.includes('honour') || degLower.includes('স্নাতক') || degLower.includes('বিএসসি') || degLower.includes('master') || degLower.includes('মাস্টার্স')) degMatches = true;
+                } else if (reqEdu.includes('diploma') || reqEdu.includes('ডিপ্লোমা') || reqEdu.includes('hsc') || reqEdu.includes('উচ্চ মাধ্যমিক')) {
+                  if (degLower.includes('diploma') || degLower.includes('ডিপ্লোমা') || degLower.includes('hsc') || degLower.includes('bachelor') || degLower.includes('স্নাতক')) degMatches = true;
+                } else if (reqEdu.includes('ssc') || reqEdu.includes('মাধ্যমিক') || reqEdu.includes('দাখিল')) {
+                  degMatches = true;
+                } else {
+                  degMatches = true;
+                }
+
+                if (degMatches) {
+                  isProfileMatch = true;
+                  matchedDegreeName = deg;
+                  matchedCgpa = res;
+                  break;
+                }
+              }
+            }
+
+            let candNotifTitle = notifTitle;
+            let candNotifMsg = notifMsg;
+
+            if (isProfileMatch) {
+              candNotifTitle = `🎯 আপনার যোগ্যতা ও সিজিপিএ অনুযায়ী সার্কুলার: ${merged.title}`;
+              candNotifMsg = `আপনার ${matchedDegreeName || 'শিক্ষাগত যোগ্যতা'}${matchedCgpa ? ` (ফল: ${matchedCgpa})` : ''} অনুযায়ী ${merged.organization}-এর এই বিজ্ঞপ্তিটির যোগ্যতা শর্তাবলী পূরণ হয়েছে। পদ সংখ্যা: ${merged.totalPosts || 'একাধিক'}। শেষ সময়: ${merged.deadline || 'শীঘ্রই'}।`;
+            }
+
             // Check category match if preferences exist
             const prefCats = (cand as any).preferredCategories || (cand as any).jobPreferences?.categories;
             if (Array.isArray(prefCats) && prefCats.length > 0) {
@@ -4558,8 +4606,8 @@ export const serverDB = {
             if (!recentSameNotif) {
               db.notifications[candId].unshift({
                 id: `notif_job_${merged.id}_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
-                title: notifTitle,
-                message: notifMsg,
+                title: candNotifTitle,
+                message: candNotifMsg,
                 type: 'system',
                 read: false,
                 date: new Date().toISOString(),

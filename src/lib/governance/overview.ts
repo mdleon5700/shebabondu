@@ -57,7 +57,7 @@ export const PlatformOverviewEngine = {
     // 2. Jobs & Circulars Metrics
     const allJobs = serverDB.getAllJobs();
     const publishedStatuses = ['ACTIVE', 'OPEN', 'PUBLISHED', 'active', 'published', 'open'];
-    const publishedJobs = allJobs.filter(j => publishedStatuses.includes(j.status || j.lifecycleStatus || ''));
+    const publishedJobs = allJobs.filter(j => publishedStatuses.includes(j.status || (j as any).lifecycleStatus || ''));
 
     const timeframePublishedJobs = timeframe === 'all'
       ? publishedJobs

@@ -8,7 +8,7 @@ export async function GET(req: Request) {
   const candidate = serverDB.getCandidateById(session.candidateId);
   if (!candidate) return NextResponse.json({ profile: null, authenticated: false });
   const { passwordHash, ...safe } = candidate;
-  return NextResponse.json({ profile: safe });
+  return NextResponse.json({ success: true, profile: safe, user: safe });
 }
 
 export async function PUT(req: Request) {
@@ -23,7 +23,7 @@ export async function PUT(req: Request) {
     const updated = serverDB.updateCandidate(session.candidateId, updates);
     if (!updated) return NextResponse.json({ error: 'Candidate not found' }, { status: 404 });
     const { passwordHash, ...safe } = updated;
-    return NextResponse.json({ success: true, profile: safe });
+    return NextResponse.json({ success: true, profile: safe, user: safe });
   } catch (err: any) {
     return NextResponse.json({ error: err.message }, { status: 500 });
   }

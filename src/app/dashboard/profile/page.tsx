@@ -231,11 +231,11 @@ export default function ProfilePage() {
     fetch('/api/profile')
       .then(res => res.ok ? res.json() : null)
       .then(data => {
-        if (data?.profile) {
-          const merged = { ...local, ...data.profile };
-          setProfile(merged);
-          populateAddressFromProfile(merged);
-          storage.updateUser(merged);
+        const p = data?.profile || data?.user;
+        if (p) {
+          setProfile(p);
+          populateAddressFromProfile(p);
+          storage.updateUser(p);
         }
       })
       .catch(() => {})

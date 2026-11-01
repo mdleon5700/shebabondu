@@ -632,7 +632,7 @@ function ApplyFormContent({ initialJob }: ApplyClientProps) {
             <div className="flex flex-wrap items-center gap-6 p-4 bg-slate-50 rounded-2xl border border-slate-200/80">
               <div className="flex items-center gap-3">
                 <img 
-                  src={mockUserProfile.photoUrl} 
+                  src={userProfile?.photoUrl || userProfile?.documents?.find((d: any) => d.type === "photo")?.dataUrl || mockUserProfile.photoUrl} 
                   alt="Candidate Photo" 
                   className="w-16 h-16 object-cover rounded-xl border border-slate-300 bg-white"
                 />
@@ -646,7 +646,7 @@ function ApplyFormContent({ initialJob }: ApplyClientProps) {
 
               <div className="flex items-center gap-3 pl-0 sm:pl-6 sm:border-l border-slate-200">
                 <img 
-                  src={mockUserProfile.signatureUrl} 
+                  src={userProfile?.signatureUrl || userProfile?.documents?.find((d: any) => d.type === "signature")?.dataUrl || mockUserProfile.signatureUrl} 
                   alt="Candidate Signature" 
                   className="w-24 h-10 object-cover border border-slate-300 rounded bg-white"
                 />
@@ -663,27 +663,27 @@ function ApplyFormContent({ initialJob }: ApplyClientProps) {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
               <div className="p-3 bg-slate-50 rounded-xl">
                 <span className="text-slate-500 block text-[11px]">প্রার্থীর পূর্ণ নাম (English):</span>
-                <span className="font-bold text-slate-900">{mockUserProfile.name}</span>
+                <span className="font-bold text-slate-900">{userProfile?.name || candidateName || mockUserProfile.name}</span>
               </div>
               <div className="p-3 bg-slate-50 rounded-xl">
                 <span className="text-slate-500 block text-[11px]">বাবার নাম:</span>
-                <span className="font-bold text-slate-900">{mockUserProfile.fatherName}</span>
+                <span className="font-bold text-slate-900">{userProfile?.fatherName || mockUserProfile.fatherName}</span>
               </div>
               <div className="p-3 bg-slate-50 rounded-xl">
                 <span className="text-slate-500 block text-[11px]">মায়ের নাম:</span>
-                <span className="font-bold text-slate-900">{mockUserProfile.motherName}</span>
+                <span className="font-bold text-slate-900">{userProfile?.motherName || mockUserProfile.motherName}</span>
               </div>
               <div className="p-3 bg-slate-50 rounded-xl">
                 <span className="text-slate-500 block text-[11px]">মোবাইল নম্বর:</span>
-                <span className="font-bold text-slate-900">{mockUserProfile.phone}</span>
+                <span className="font-bold text-slate-900">{userProfile?.phone || senderPhone || mockUserProfile.phone}</span>
               </div>
               <div className="p-3 bg-slate-50 rounded-xl">
                 <span className="text-slate-500 block text-[11px]">এনআইডি নম্বর:</span>
-                <span className="font-bold font-mono text-slate-900">{mockUserProfile.nid}</span>
+                <span className="font-bold font-mono text-slate-900">{userProfile?.nid || mockUserProfile.nid}</span>
               </div>
               <div className="p-3 bg-slate-50 rounded-xl">
                 <span className="text-slate-500 block text-[11px]">নিজ জেলা:</span>
-                <span className="font-bold text-slate-900">{mockUserProfile.district}</span>
+                <span className="font-bold text-slate-900">{userProfile?.district || candidateDistrict || mockUserProfile.district}</span>
               </div>
             </div>
 

@@ -311,18 +311,23 @@ export const storage = {
     const key = getScopedKey('cs_user_data', targetUserId);
     const saved = localStorage.getItem(key);
     if (!saved) {
-      // If legacy un-scoped key exists for default user, migrate it
-      const legacy = localStorage.getItem('cs_user_data');
-      if (legacy && getUserScope() === 'default') {
-        localStorage.setItem(key, legacy);
-        try { return JSON.parse(legacy); } catch { return mockUserProfile; }
+      // If unauthenticated guest, return read-only fallback without injecting mock user to storage
+      if (!currentAuth.isLoggedIn) {
+        return mockUserProfile;
       }
-      localStorage.setItem(key, JSON.stringify(mockUserProfile));
-      return mockUserProfile;
+      const initialProfile: CandidateProfile = {
+        ...mockUserProfile,
+        id: currentAuth.userId || 'USR-NEW',
+        name: currentAuth.name || '',
+        phone: currentAuth.phone || '',
+        walletBalance: 0
+      };
+      localStorage.setItem(key, JSON.stringify(initialProfile));
+      return initialProfile;
     }
     try {
       const parsed = JSON.parse(saved);
-      const res = { ...mockUserProfile, ...parsed };
+      const res = { ...parsed };
       if (res.fatherNid && (res.fatherNid.startsWith('/') || res.fatherNid.startsWith('http'))) {
         if (!res.fatherNidUrl) res.fatherNidUrl = res.fatherNid;
         res.fatherNid = '';

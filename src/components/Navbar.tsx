@@ -61,6 +61,27 @@ export default function Navbar() {
     fetchSettings();
     window.addEventListener('cs_settings_changed', fetchSettings);
 
+    fetch('/api/auth/me', { cache: 'no-store' })
+      .then(r => r.ok ? r.json() : null)
+      .then(d => {
+        if (d && d.isLoggedIn && d.user) {
+          const authState = {
+            isLoggedIn: true,
+            role: d.role,
+            name: d.user.name,
+            phone: d.user.phone,
+            userId: d.user.id
+          };
+          storage.setAuth(authState);
+          setAuth(authState);
+          if (d.role === 'candidate') {
+            storage.updateUser(d.user);
+            setWalletBalance(d.user.walletBalance ?? 0);
+          }
+        }
+      })
+      .catch(() => {});
+
     window.addEventListener('cs_auth_changed', handleAuthChange);
     window.addEventListener('cs_user_changed', handleUserChange);
 

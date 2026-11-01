@@ -468,7 +468,7 @@ export default function HomePage() {
 
       return true;
     });
-  }, [selectedCategory, selectedJobType, selectedEducation, selectedOrg, selectedGrade, selectedSalary, onlyUrgent, statusFilter, searchQuery, matcherActive, calcAge, calcEducation]);
+  }, [jobsList, selectedCategory, selectedJobType, selectedEducation, selectedOrg, selectedGrade, selectedSalary, selectedDistrict, onlyUrgent, statusFilter, searchQuery, matcherActive, calcAge, calcEducation]);
 
   // Reset to first page whenever search or filter criteria change
   useEffect(() => {

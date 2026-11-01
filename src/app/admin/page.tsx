@@ -1537,6 +1537,16 @@ function AdminContent() {
   }, [activeTab]);
 
   if (!isAdminAuthenticated) {
+    if (isLoading) {
+      return (
+        <div className="min-h-screen bg-slate-900 flex items-center justify-center p-4">
+          <div className="text-center space-y-4">
+            <div className="w-12 h-12 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin mx-auto" />
+            <p className="text-sm text-slate-300 font-semibold">অ্যাডমিন সেশন যাচাই করা হচ্ছে...</p>
+          </div>
+        </div>
+      );
+    }
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-emerald-950 flex items-center justify-center p-4">
         <div className="max-w-md w-full bg-white rounded-3xl shadow-2xl p-8 border border-slate-200 relative overflow-hidden">

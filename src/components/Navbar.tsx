@@ -36,6 +36,7 @@ export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [expandedMobileAccordions, setExpandedMobileAccordions] = useState<Record<string, boolean>>({});
+  const [isMounted, setIsMounted] = useState(false);
   const [auth, setAuth] = useState<AuthState>({ isLoggedIn: false, role: null, name: '' });
   const [walletBalance, setWalletBalance] = useState<number>(450);
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
@@ -44,6 +45,7 @@ export default function Navbar() {
 
   // Sync auth and user state
   useEffect(() => {
+    setIsMounted(true);
     setAuth(storage.getAuth());
     setWalletBalance(storage.getUser().walletBalance);
 
@@ -354,7 +356,9 @@ export default function Navbar() {
               <span>WhatsApp</span>
             </a>
 
-            {!auth.isLoggedIn ? (
+            {!isMounted ? (
+              <div className="w-28 h-9 rounded-xl bg-slate-100/60 animate-pulse border border-slate-200" />
+            ) : !auth.isLoggedIn ? (
               /* GUEST: Solid Primary Green Login Button */
               <Link
                 href="/login"
@@ -473,7 +477,9 @@ export default function Navbar() {
 
           {/* Mobile Menu Toggle Button */}
           <div className="flex xl:hidden items-center gap-2">
-            {!auth.isLoggedIn ? (
+            {!isMounted ? (
+              <div className="w-14 h-8 rounded-xl bg-slate-100 animate-pulse" />
+            ) : !auth.isLoggedIn ? (
               <Link 
                 href="/login"
                 className="bg-emerald-700 text-white px-3 py-1.5 rounded-xl text-xs font-bold"

@@ -4521,6 +4521,79 @@ export const serverDB = {
 
 
 
+    
+    // Automated Candidate Notification & Job Alerts Dispatch Engine
+    try {
+      const isJobActive = merged.status === 'published' || merged.status === 'active' || (merged as any).publicationStatus === 'PUBLISHED';
+      if (isJobActive) {
+        const notifTitle = exists ? `আপডেট: ${merged.title}` : `📢 নতুন সার্কুলার: ${merged.title}`;
+        const notifMsg = `${merged.organization} কর্তৃক ${merged.categoryLabel || 'নিয়োগ'} বিজ্ঞপ্তি প্রকাশিত হয়েছে। পদ সংখ্যা: ${merged.totalPosts || 'একাধিক'}। আবেদনের শেষ সময়: ${merged.deadline || 'শীঘ্রই'}।`;
+        const notifLink = `/jobs/${merged.slug || merged.id}`;
+
+        if (db.candidates) {
+          for (const candId of Object.keys(db.candidates)) {
+            const cand = db.candidates[candId];
+            if (!cand) continue;
+            // Respect candidate alert settings
+            if ((cand as any).jobAlerts === false) continue;
+
+            // Check category match if preferences exist
+            const prefCats = (cand as any).preferredCategories || (cand as any).jobPreferences?.categories;
+            if (Array.isArray(prefCats) && prefCats.length > 0) {
+              const matches = prefCats.some((c: string) => 
+                c.toLowerCase() === (merged.category || '').toLowerCase() || 
+                c.toLowerCase() === 'all'
+              );
+              if (!matches) continue;
+            }
+
+            if (!db.notifications) db.notifications = {};
+            if (!db.notifications[candId]) db.notifications[candId] = [];
+
+            // Prevent spamming identical notification within 1 hour
+            const recentSameNotif = db.notifications[candId].some(
+              (n: any) => n.link === notifLink && Date.now() - new Date(n.date).getTime() < 3600000
+            );
+
+            if (!recentSameNotif) {
+              db.notifications[candId].unshift({
+                id: `notif_job_${merged.id}_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+                title: notifTitle,
+                message: notifMsg,
+                type: 'system',
+                read: false,
+                date: new Date().toISOString(),
+                link: notifLink
+              });
+              if (db.notifications[candId].length > 100) {
+                db.notifications[candId] = db.notifications[candId].slice(0, 100);
+              }
+            }
+          }
+        }
+
+        // Notify Admin Center
+        if (!db.notifications) db.notifications = {};
+        if (!db.notifications['admin']) db.notifications['admin'] = [];
+        db.notifications['admin'].unshift({
+          id: `notif_adm_${merged.id}_${Date.now()}`,
+          title: exists ? `সার্কুলার সম্পাদিত: ${merged.title}` : `নতুন সার্কুলার প্রকাশিত: ${merged.title}`,
+          message: `${adminId} দ্বারা ${merged.organization} এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।`,
+          type: 'system',
+          read: false,
+          date: new Date().toISOString(),
+          link: `/jobs/${merged.slug || merged.id}`
+        });
+        if (db.notifications['admin'].length > 50) {
+          db.notifications['admin'] = db.notifications['admin'].slice(0, 50);
+        }
+
+        saveDB(db);
+      }
+    } catch (notifDispatchErr) {
+      console.error('[Job Notification Dispatch Error]:', notifDispatchErr);
+    }
+
     return merged;
 
 

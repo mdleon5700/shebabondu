@@ -463,6 +463,18 @@ function AdminContent() {
   const [isSimulating, setIsSimulating] = useState(false);
 
   const handleTabChange = (tabId: string) => {
+    if (tabId === 'create-circular') {
+      setActiveTab('circulars');
+      setEditingJob(null);
+      setIsCreatingNewJob(true);
+      setIsMobileMenuOpen(false);
+      try {
+        const url = new URL(window.location.href);
+        url.searchParams.set('tab', 'circulars');
+        window.history.pushState({}, '', url.toString());
+      } catch (e) {}
+      return;
+    }
     setActiveTab(tabId);
     setIsMobileMenuOpen(false);
     // Reset child filters when switching main tabs so view starts clean and predictable
@@ -1852,7 +1864,7 @@ function AdminContent() {
                     </button>
               <button
                 type="button"
-                onClick={() => handleTabChange('create-circular')}
+                onClick={() => { setActiveTab('circulars'); setEditingJob(null); setIsCreatingNewJob(true); }}
                 className="px-3.5 py-2 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold transition-all shadow-sm flex items-center gap-1.5"
               >
                 <PlusCircle className="w-3.5 h-3.5" />
@@ -4709,7 +4721,7 @@ function AdminContent() {
                   <div className="flex flex-wrap items-center gap-2.5">
                     <button
                       type="button"
-                      onClick={() => handleTabChange('create-circular')}
+                      onClick={() => { setActiveTab('circulars'); setEditingJob(null); setIsCreatingNewJob(true); }}
                       className="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shadow-sm shadow-emerald-900/10"
                     >
                       <PlusCircle className="w-4 h-4" />
@@ -5048,514 +5060,33 @@ function AdminContent() {
 
           {/* TAB 6: JOBS -> CREATE CIRCULAR */}
           {activeTab === 'create-circular' && (
-            <div className="bg-white rounded-2xl border border-slate-200/90 shadow-2xs p-6 sm:p-8 space-y-6 max-w-4xl">
-              <div className="border-b border-slate-100 pb-4">
-                <div className="flex items-center gap-2">
-                  <span className="p-2 bg-emerald-50 text-emerald-700 rounded-xl">
-                    <PlusCircle className="w-5 h-5" />
-                  </span>
-                  <div>
-                    <h2 className="font-black text-base text-slate-900">নতুন নিয়োগ বিজ্ঞপ্তি প্রকাশ ও এসইও অপটিমাইজেশন</h2>
-                    <p className="text-xs text-slate-500 font-medium">
-                      সার্কুলারের সাধারণ তথ্য, সরকারি নিয়মাবলী (কাট-অফ ডেট, বয়স ও রেজাল্ট শর্ত) এবং গুগল সার্চ (SEO) মেটাডেটা পূরণ করুন।
-                    </p>
-                  </div>
-                </div>
+            <div className="bg-white rounded-3xl border border-slate-200/90 shadow-sm p-8 sm:p-12 max-w-3xl text-center space-y-6 mx-auto my-8 animate-in fade-in">
+              <div className="w-16 h-16 rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center mx-auto shadow-inner">
+                <PlusCircle className="w-8 h-8" />
               </div>
-
-              <form onSubmit={handleCreateJob} className="space-y-6">
-                {/* 1. মূল তথ্য */}
-                <div className="space-y-4">
-                  <h3 className="text-xs font-black text-slate-900 uppercase tracking-wider flex items-center gap-1.5 pb-1 border-b border-slate-100">
-                    <Building className="w-3.5 h-3.5 text-emerald-600" />
-                    <span>১. মূল বিজ্ঞপ্তি ও প্রতিষ্ঠানের তথ্য (General Information)</span>
-                  </h3>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <label className="text-xs font-bold text-slate-700 block mb-1">পদবীর নাম ও সার্কুলার টাইটেল *</label>
-                      <input
-                        type="text"
-                        required
-                        placeholder="যেমন: বাংলাদেশ ব্যাংক সহকারী পরিচালক (জেনারেল)"
-                        value={newTitle}
-                        onChange={(e) => setNewTitle(e.target.value)}
-                        className="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs text-slate-900 focus:ring-1 focus:ring-emerald-600 focus:outline-none"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="text-xs font-bold text-slate-700 block mb-1">প্রতিষ্ঠানের নাম *</label>
-                      <input
-                        type="text"
-                        required
-                        placeholder="যেমন: বাংলাদেশ ব্যাংক"
-                        value={newOrg}
-                        onChange={(e) => setNewOrg(e.target.value)}
-                        className="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs text-slate-900 focus:ring-1 focus:ring-emerald-600 focus:outline-none"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <div>
-                      <label className="text-xs font-bold text-slate-700 block mb-1">ক্যাটাগরি</label>
-                      <select
-                        value={newCategory}
-                        onChange={(e: any) => setNewCategory(e.target.value)}
-                        className="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs text-slate-900 focus:ring-1 focus:ring-emerald-600 focus:outline-none"
-                      >
-                        <option value="govt">সরকারি চাকরি</option>
-                        <option value="bank">ব্যাংক জব</option>
-                        <option value="railway">রেলওয়ে</option>
-                        <option value="defense">প্রতিরক্ষা / ডিফেন্স</option>
-                        <option value="teacher">শিক্ষক নিয়োগ</option>
-                        <option value="ngo">এনজিও</option>
-                        <option value="private">বেসরকারি কোম্পানি</option>
-                      </select>
-                    </div>
-
-                    <div>
-                      <label className="text-xs font-bold text-slate-700 block mb-1">গ্রেড (Grade)</label>
-                      <input
-                        type="text"
-                        value={newGrade}
-                        placeholder="যেমন: ৯ম গ্রেড"
-                        onChange={(e) => setNewGrade(e.target.value)}
-                        className="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs text-slate-900 focus:ring-1 focus:ring-emerald-600 focus:outline-none"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="text-xs font-bold text-slate-700 block mb-1">পদসংখ্যা</label>
-                      <input
-                        type="text"
-                        value={newVacancies}
-                        placeholder="যেমন: ১২৫"
-                        onChange={(e) => setNewVacancies(e.target.value)}
-                        className="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs text-slate-900 focus:ring-1 focus:ring-emerald-600 focus:outline-none"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <label className="text-xs font-bold text-slate-700 block mb-1">বেতন স্কেল</label>
-                      <input
-                        type="text"
-                        value={newSalary}
-                        placeholder="যেমন: ২২,০০০ - ৫৩,০৬০ টাকা"
-                        onChange={(e) => setNewSalary(e.target.value)}
-                        className="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs text-slate-900 focus:ring-1 focus:ring-emerald-600 focus:outline-none"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="text-xs font-bold text-slate-700 block mb-1">ন্যূনতম শিক্ষাগত যোগ্যতা</label>
-                      <input
-                        type="text"
-                        value={newEducation}
-                        placeholder="যেমন: স্নাতক (সম্মান) বা সমমানের ডিগ্রি"
-                        onChange={(e) => setNewEducation(e.target.value)}
-                        className="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs text-slate-900 focus:ring-1 focus:ring-emerald-600 focus:outline-none"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                {/* ১.৫ উপ-পদসমূহ ও পদভিত্তিক শূন্যপদ (Designated Sub-Positions Builder) */}
-                <div className="p-4 bg-slate-50/90 rounded-2xl border border-slate-200 space-y-3">
-                  <div className="flex items-center justify-between pb-2 border-b border-slate-200/80">
-                    <div>
-                      <h4 className="font-black text-slate-800 text-xs flex items-center gap-1.5">
-                        <Layers className="w-3.5 h-3.5 text-emerald-700" />
-                        <span>বিজ্ঞপ্তির আওতাভুক্ত পদসমূহ (Designated Sub-Positions)</span>
-                      </h4>
-                      <p className="text-[10px] text-slate-500">
-                        বিজ্ঞপ্তিতে একাধিক পদ থাকলে প্রতিটি পদের জন্য আলাদা পদসংখ্যা, গ্রেড ও শিক্ষাগত যোগ্যতা নির্ধারণ করতে পারেন।
-                      </p>
-                    </div>
-                    <span className="text-[10px] font-bold text-emerald-800 bg-emerald-100 px-2.5 py-0.5 rounded-full">
-                      {newPositions.length} টি উপ-পদ যুক্ত
-                    </span>
-                  </div>
-
-                  {/* Existing Sub-positions List */}
-                  {newPositions.length > 0 ? (
-                    <div className="space-y-2">
-                      {newPositions.map((pos, pIdx) => (
-                        <div key={pIdx} className="bg-white p-3 rounded-xl border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-2 shadow-2xs">
-                          <div className="space-y-0.5">
-                            <div className="font-bold text-slate-900 text-xs flex items-center gap-2">
-                              <span>{pIdx + 1}. {pos.title}</span>
-                              <span className="text-[10px] bg-slate-100 text-slate-700 px-1.5 py-0.2 rounded font-semibold">{pos.grade}</span>
-                              <span className="text-[10px] bg-emerald-50 text-emerald-800 px-1.5 py-0.2 rounded font-bold">{pos.posts} জন</span>
-                            </div>
-                            <div className="text-[11px] text-slate-500">
-                              বেতন: {pos.salary} | যোগ্যতা: {pos.minEducation}
-                            </div>
-                          </div>
-                          <button
-                            type="button"
-                            onClick={() => {
-                              const updated = newPositions.filter((_, i) => i !== pIdx);
-                              setNewPositions(updated);
-                            }}
-                            className="self-end sm:self-center p-1.5 text-rose-500 hover:text-rose-700 hover:bg-rose-50 rounded-lg transition-colors"
-                            title="পদটি মুছে ফেলুন"
-                          >
-                            <Trash2 className="w-3.5 h-3.5" />
-                          </button>
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="text-center py-2.5 bg-white rounded-xl border border-dashed border-slate-200 text-slate-400 text-[11px]">
-                      কোনো পৃথক উপ-পদ যুক্ত করা হয়নি (বিজ্ঞপ্তির মূল পদবীই প্রযোজ্য হবে)। প্রয়োজন হলে নিচে থেকে পদ যোগ করুন।
-                    </div>
-                  )}
-
-                  {/* Add Position Inputs */}
-                  <div className="pt-2 border-t border-slate-200/80 grid grid-cols-1 sm:grid-cols-5 gap-2 items-end">
-                    <div className="sm:col-span-2">
-                      <label className="text-[10px] font-bold text-slate-600 block mb-0.5">পদের নাম</label>
-                      <input
-                        type="text"
-                        placeholder="যেমন: সহকারী পরিচালক (জেনারেল)"
-                        value={newPosTitle}
-                        onChange={(e) => setNewPosTitle(e.target.value)}
-                        className="w-full px-2.5 py-1.5 text-xs rounded-lg border border-slate-300 bg-white"
-                      />
-                    </div>
-                    <div>
-                      <label className="text-[10px] font-bold text-slate-600 block mb-0.5">গ্রেড</label>
-                      <input
-                        type="text"
-                        value={newPosGrade}
-                        onChange={(e) => setNewPosGrade(e.target.value)}
-                        className="w-full px-2.5 py-1.5 text-xs rounded-lg border border-slate-300 bg-white"
-                      />
-                    </div>
-                    <div>
-                      <label className="text-[10px] font-bold text-slate-600 block mb-0.5">পদসংখ্যা</label>
-                      <input
-                        type="number"
-                        min="1"
-                        value={newPosPosts}
-                        onChange={(e) => setNewPosPosts(e.target.value)}
-                        className="w-full px-2.5 py-1.5 text-xs rounded-lg border border-slate-300 bg-white"
-                      />
-                    </div>
-                    <div>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          if (!newPosTitle.trim()) {
-                            alert('পদের নাম লিখুন!');
-                            return;
-                          }
-                          const newP = {
-                            title: newPosTitle.trim(),
-                            grade: newPosGrade.trim() || '৯ম গ্রেড',
-                            posts: Number(newPosPosts) || 1,
-                            salary: newSalary || '২২,০০০ - ৫৩,০৬০ টাকা',
-                            minEducation: newEducation || 'স্নাতক বা সমমান'
-                          };
-                          const updated = [...newPositions, newP];
-                          setNewPositions(updated);
-                          setNewPosTitle('');
-                          // Auto update total vacancies if sum is greater
-                          const sumPosts = updated.reduce((s, p) => s + (p.posts || 0), 0);
-                          setNewVacancies(String(sumPosts));
-                        }}
-                        className="w-full py-1.5 bg-emerald-700 hover:bg-emerald-800 text-white rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1 shadow-2xs"
-                      >
-                        <Plus className="w-3.5 h-3.5" />
-                        <span>পদ যোগ করুন</span>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-
-                {/* ২. অ্যালগরিদম ও যোগ্যতার শর্তাবলী */}
-                <div className="p-4 bg-emerald-50/50 rounded-2xl border border-emerald-100 space-y-4">
-                  <h3 className="text-xs font-black text-slate-900 uppercase tracking-wider flex items-center gap-1.5 pb-1 border-b border-emerald-100/80">
-                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-700" />
-                    <span>২. স্বয়ংক্রিয় যোগ্যতা নির্ধারণী শর্তাবলী (Eligibility Engine Rules)</span>
-                  </h3>
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <div>
-                      <label className="text-xs font-bold text-slate-700 block mb-1">সর্বনিম্ন বয়স</label>
-                      <input
-                        type="number"
-                        value={newMinAge}
-                        onChange={(e) => setNewMinAge(Number(e.target.value))}
-                        className="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white text-xs text-slate-900 focus:ring-1 focus:ring-emerald-600 focus:outline-none"
-                      />
-                    </div>
-                    <div>
-                      <label className="text-xs font-bold text-slate-700 block mb-1">সর্বোচ্চ সাধারণ বয়স</label>
-                      <input
-                        type="number"
-                        value={newMaxAge}
-                        onChange={(e) => setNewMaxAge(Number(e.target.value))}
-                        className="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white text-xs text-slate-900 focus:ring-1 focus:ring-emerald-600 focus:outline-none"
-                      />
-                    </div>
-                    <div>
-                      <label className="text-xs font-bold text-slate-700 block mb-1">বয়স গণনার কাট-অফ ডেট *</label>
-                      <input
-                        type="date"
-                        value={newAgeCutOffDate}
-                        onChange={(e) => setNewAgeCutOffDate(e.target.value)}
-                        className="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white text-xs text-slate-900 focus:ring-1 focus:ring-emerald-600 focus:outline-none"
-                      />
-                      <span className="text-[10px] text-slate-500 mt-0.5 block">যে তারিখে প্রার্থীর বয়স নিখুঁতভাবে গণনা করা হবে</span>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <label className="text-xs font-bold text-slate-700 block mb-1">যেসব জেলার প্রার্থী আবেদনযোগ্য</label>
-                      <input
-                        type="text"
-                        value={newDistricts}
-                        placeholder="যেমন: সকল জেলা অথবা ঢাকা, চট্টগ্রাম, সিলেট"
-                        onChange={(e) => setNewDistricts(e.target.value)}
-                        className="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white text-xs text-slate-900 focus:ring-1 focus:ring-emerald-600 focus:outline-none"
-                      />
-                    </div>
-
-                    <div className="flex items-center gap-3 pt-4 sm:pt-6">
-                      <label className="relative flex items-center gap-2 cursor-pointer select-none">
-                        <input
-                          type="checkbox"
-                          checked={!newAllowThirdDivision}
-                          onChange={(e) => setNewAllowThirdDivision(!e.target.checked)}
-                          className="w-4 h-4 rounded text-rose-600 focus:ring-rose-500 border-slate-300"
-                        />
-                        <span className="text-xs font-bold text-slate-800">
-                          কোনো পরীক্ষায় ৩য় বিভাগ/শ্রেণি গ্রহণযোগ্য নয় (Disallow 3rd Division)
-                        </span>
-                      </label>
-                    </div>
-                  </div>
-                </div>
-
-                {/* ৩. লিংক ও ফি */}
-                <div className="space-y-4">
-                  <h3 className="text-xs font-black text-slate-900 uppercase tracking-wider flex items-center gap-1.5 pb-1 border-b border-slate-100">
-                    <ExternalLink className="w-3.5 h-3.5 text-emerald-600" />
-                    <span>৩. আবেদন পোর্টাল লিংক ও ফি বিবরণী</span>
-                  </h3>
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <div>
-                      <label className="text-xs font-bold text-slate-700 block mb-1">আবেদনের শেষ তারিখ ও সময় *</label>
-                      <input
-                        type="text"
-                        required
-                        value={newDeadline}
-                        placeholder="যেমন: ২৫ নভেম্বর ২০২৬ বিকাল ৫টা"
-                        onChange={(e) => setNewDeadline(e.target.value)}
-                        className="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs text-slate-900 focus:ring-1 focus:ring-emerald-600 focus:outline-none"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="text-xs font-bold text-slate-700 block mb-1">সরকারি ফি (টাকা)</label>
-                      <input
-                        type="number"
-                        value={newGovtFee}
-                        onChange={(e) => setNewGovtFee(Number(e.target.value))}
-                        className="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs text-slate-900 focus:ring-1 focus:ring-emerald-600 focus:outline-none"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="text-xs font-bold text-slate-700 block mb-1">সার্ভিস ফি (টাকা)</label>
-                      <input
-                        type="number"
-                        value={newServiceFee}
-                        onChange={(e) => setNewServiceFee(Number(e.target.value))}
-                        className="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs text-slate-900 focus:ring-1 focus:ring-emerald-600 focus:outline-none"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <label className="text-xs font-bold text-slate-700 block mb-1">অফিসিয়াল আবেদনের ওয়েবসাইট লিংক</label>
-                      <input
-                        type="url"
-                        value={newOfficialLink}
-                        placeholder="https://alljobs.teletalk.com.bd বা প্রতিষ্ঠান পোর্টাল"
-                        onChange={(e) => setNewOfficialLink(e.target.value)}
-                        className="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs text-slate-900 focus:ring-1 focus:ring-emerald-600 focus:outline-none"
-                      />
-                    </div>
-                    <div>
-                      <label className="text-xs font-bold text-slate-700 block mb-1">মূল সার্কুলার PDF ডাউনলোড লিংক</label>
-                      <input
-                        type="text"
-                        value={newCircularPdfUrl}
-                        placeholder="https://.../circular.pdf বা /pdfs/notice.pdf"
-                        onChange={(e) => setNewCircularPdfUrl(e.target.value)}
-                        className="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs text-slate-900 focus:ring-1 focus:ring-emerald-600 focus:outline-none"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                {/* ৪. এসইও ও সোশ্যাল শেয়ার অপটিমাইজেশন */}
-                <div className="p-4 sm:p-5 bg-gradient-to-br from-indigo-50/50 via-white to-blue-50/40 rounded-2xl border border-indigo-100/90 space-y-4">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2 border-b border-indigo-100">
-                    <div className="flex items-center gap-1.5">
-                      <Sparkles className="w-3.5 h-3.5 text-indigo-600" />
-                      <h3 className="text-xs font-black text-slate-900 uppercase tracking-wider">
-                        ৪. এসইও ও গুগল সার্চ অপটিমাইজেশন (SEO & Social Visibility)
-                      </h3>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <button
-                        type="button"
-                        onClick={handleAutoGenerateSeo}
-                        className="px-2.5 py-1 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-[10px] font-bold transition-all flex items-center gap-1 shadow-2xs"
-                      >
-                        <Sparkles className="w-3 h-3" />
-                        <span>১-ক্লিকে এসইও ট্যাগ তৈরি করুন</span>
-                      </button>
-                      <span className="text-[10px] font-bold text-indigo-700 bg-indigo-100/80 px-2 py-0.5 rounded-md">
-                        Google Rich Snippets
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <label className="text-xs font-bold text-slate-700 block mb-1">কাস্টম ইউআরএল স্ল্যাগ (URL Slug)</label>
-                      <div className="flex items-center rounded-xl border border-slate-300 bg-white overflow-hidden focus-within:ring-1 focus-within:ring-indigo-600">
-                        <span className="px-2.5 py-2 text-[11px] font-semibold text-slate-400 bg-slate-50 border-r border-slate-200">
-                          /jobs/
-                        </span>
-                        <input
-                          type="text"
-                          value={newSlug}
-                          placeholder={newTitle ? newTitle.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'circular-slug' : 'bangladesh-bank-ad-2026'}
-                          onChange={(e) => setNewSlug(e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, ''))}
-                          className="w-full px-2.5 py-2 text-xs text-slate-900 focus:outline-none"
-                        />
-                      </div>
-                      <span className="text-[10px] text-slate-500 mt-0.5 block">খালি রাখলে স্বয়ংক্রিয়ভাবে আইডি ব্যবহার হবে</span>
-                    </div>
-
-                    <div>
-                      <label className="text-xs font-bold text-slate-700 block mb-1">সার্চ কি-ওয়ার্ডসমূহ (SEO Keywords)</label>
-                      <input
-                        type="text"
-                        value={newSeoKeywords}
-                        placeholder="যেমন: বাংলাদেশ ব্যাংক, সহকারী পরিচালক, সরকারি চাকরি ২০২৬, Teletalk apply"
-                        onChange={(e) => setNewSeoKeywords(e.target.value)}
-                        className="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white text-xs text-slate-900 focus:ring-1 focus:ring-indigo-600 focus:outline-none"
-                      />
-                      <span className="text-[10px] text-slate-500 mt-0.5 block">কমা দিয়ে প্রতিটি কি-ওয়ার্ড আলাদা করুন</span>
-                    </div>
-                  </div>
-
-                  <div>
-                    <div className="flex items-center justify-between mb-1">
-                      <label className="text-xs font-bold text-slate-700">কাস্টম এসইও মেটা টাইটেল (SEO Title)</label>
-                      <span className="text-[10px] font-medium text-slate-400">
-                        {newSeoTitle.length} / ৬০ বর্ণ (প্রস্তাবিত)
-                      </span>
-                    </div>
-                    <input
-                      type="text"
-                      value={newSeoTitle}
-                      placeholder={newTitle ? `${newTitle} - ${newOrg} নিয়োগ বিজ্ঞপ্তি ২০২৬ | চাকরি সেবা` : 'শিরোনাম খালি থাকলে সিস্টেম স্বয়ংক্রিয় টাইটেল তৈরি করবে'}
-                      onChange={(e) => setNewSeoTitle(e.target.value)}
-                      className="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white text-xs text-slate-900 focus:ring-1 focus:ring-indigo-600 focus:outline-none"
-                    />
-                  </div>
-
-                  <div>
-                    <div className="flex items-center justify-between mb-1">
-                      <label className="text-xs font-bold text-slate-700">কাস্টম এসইও মেটা ডেসক্রিপশন (Meta Description)</label>
-                      <span className={`text-[10px] font-bold ${newSeoDescription.length > 160 ? 'text-amber-600' : 'text-slate-400'}`}>
-                        {newSeoDescription.length} / ১৬০ বর্ণ (প্রস্তাবিত)
-                      </span>
-                    </div>
-                    <textarea
-                      rows={2}
-                      value={newSeoDescription}
-                      placeholder={newOrg ? `${newOrg}-এ ${newTitle || 'বিভিন্ন পদে'} নতুন নিয়োগ বিজ্ঞপ্তি। মোট পদসংখ্যা: ${newVacancies || 1}টি, আবেদনের শেষ সময়: ${newDeadline}। বিস্তারিত জেনে চাকরি সেবার মাধ্যমে সহজে আবেদন করুন।` : 'গুগল সার্চে আপনার সার্কুলারের মেটা ডেসক্রিপশন এখানে দেখা যাবে...'}
-                      onChange={(e) => setNewSeoDescription(e.target.value)}
-                      className="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white text-xs text-slate-900 focus:ring-1 focus:ring-indigo-600 focus:outline-none"
-                    />
-                  </div>
-
-                  {/* লাইভ প্রিভিউ কার্ডস (গুগল ও সোশ্যাল প্রিভিউ) */}
-                  <div className="pt-2 grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {/* Google SERP Live Preview */}
-                    <div className="bg-white p-3.5 rounded-xl border border-slate-200/90 shadow-2xs space-y-1.5">
-                      <div className="flex items-center gap-1.5 text-[11px] font-bold text-slate-700 pb-1 border-b border-slate-100">
-                        <Globe className="w-3.5 h-3.5 text-blue-600" />
-                        <span>গুগল সার্চ ফলাফল লাইভ প্রিভিউ (Google SERP Snippet)</span>
-                      </div>
-                      <div className="space-y-0.5 pt-1">
-                        <div className="text-[11px] text-slate-700 flex items-center gap-1">
-                          <span className="font-semibold text-slate-900">চাকরি সেবা</span>
-                          <span className="text-slate-400">›</span>
-                          <span className="text-slate-500 truncate max-w-[200px]">https://chakrisheba.com/jobs/{newSlug || 'job-id'}</span>
-                        </div>
-                        <h4 className="text-xs font-bold text-blue-700 hover:underline cursor-pointer line-clamp-1">
-                          {newSeoTitle.trim() || (newTitle ? `${newTitle} - ${newOrg} নিয়োগ বিজ্ঞপ্তি ২০২৬ | চাকরি সেবা` : 'বাংলাদেশ ব্যাংক সহকারী পরিচালক নিয়োগ বিজ্ঞপ্তি ২০২৬ | চাকরি সেবা')}
-                        </h4>
-                        <p className="text-[11px] text-slate-600 line-clamp-2 leading-relaxed">
-                          {newSeoDescription.trim() || (newOrg ? `${newOrg}-এ ${newTitle || 'বিভিন্ন পদে'} নতুন নিয়োগ বিজ্ঞপ্তি। মোট পদ: ${newVacancies || 1}টি, আবেদনের শেষ সময়: ${newDeadline}। সরকারি ফি: ৳${newGovtFee}। অনলাইনে নির্ভুল আবেদনের নিয়ম ও বিস্তারিত দেখুন।` : 'বাংলাদেশ ব্যাংক-এ সহকারী পরিচালক পদে নতুন নিয়োগ বিজ্ঞপ্তি প্রকাশ। মোট পদ ১২৫টি, আবেদনের শেষ সময় ২৫ নভেম্বর ২০২৬। বিস্তারিত দেখুন...')}
-                        </p>
-                      </div>
-                    </div>
-
-                    {/* WhatsApp / Social Share Live Preview */}
-                    <div className="bg-[#f0f2f5] p-3.5 rounded-xl border border-slate-200 shadow-2xs space-y-1.5">
-                      <div className="flex items-center gap-1.5 text-[11px] font-bold text-slate-700 pb-1 border-b border-slate-200/80">
-                        <Share2 className="w-3.5 h-3.5 text-emerald-600" />
-                        <span>সোশ্যাল শেয়ার কার্ড প্রিভিউ (WhatsApp / Facebook)</span>
-                      </div>
-                      <div className="bg-white rounded-lg border border-slate-200 overflow-hidden shadow-2xs mt-1">
-                        <div className="h-16 bg-gradient-to-r from-emerald-700 to-teal-800 flex items-center justify-center text-white px-3 text-center">
-                          <div className="font-bold text-xs truncate">
-                            {newOrg || 'চাকরি সেবা'} | {newTitle || 'নিয়োগ বিজ্ঞপ্তি ২০২৬'}
-                          </div>
-                        </div>
-                        <div className="p-2.5 space-y-0.5">
-                          <span className="text-[9px] font-semibold text-slate-400 uppercase tracking-wider block">chakrisheba.com</span>
-                          <h5 className="text-[11px] font-bold text-slate-900 line-clamp-1">
-                            {newSeoTitle.trim() || (newTitle ? `${newTitle} - ${newOrg}` : 'চাকরি সেবা ক্যারিয়ার পোর্টাল')}
-                          </h5>
-                          <p className="text-[10px] text-slate-500 line-clamp-2">
-                            {newSeoDescription.trim() || 'নিয়োগ বিজ্ঞপ্তির বিস্তারিত ও অনলাইন আবেদনের সম্পূর্ণ নির্দেশিকা।'}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="pt-2">
-                  <button
-                    type="submit"
-                    disabled={isSubmittingJob}
-                    className="w-full py-3 bg-gradient-to-r from-emerald-700 to-teal-800 hover:from-emerald-800 hover:to-teal-900 text-white rounded-xl text-xs font-black transition-all shadow-md shadow-emerald-800/20 flex items-center justify-center gap-2 disabled:opacity-50"
-                  >
-                    <PlusCircle className="w-4 h-4" />
-                    <span>{isSubmittingJob ? 'প্রকাশ হচ্ছে...' : 'সার্কুলার লাইভ প্রকাশ ও এসইও কার্যকর করুন'}</span>
-                  </button>
-                </div>
-              </form>
+              <div className="space-y-2">
+                <h2 className="text-xl sm:text-2xl font-black text-slate-900">ইউনিভার্সাল সার্কুলার ওয়ার্কস্পেস</h2>
+                <p className="text-xs sm:text-sm text-slate-600 max-w-md mx-auto leading-relaxed font-medium">
+                  নতুন নিয়োগ বিজ্ঞপ্তি তৈরি, মিডিয়া ফাইল (ব্যানার, লোগো, অফিসিয়াল সার্কুলার PDF) আপলোড, কোটা, বেতন কাঠামো ও রিয়েল-টাইম প্রিভিউ এর জন্য আমাদের সমন্বিত ওয়ার্কস্পেস ব্যবহার করুন।
+                </p>
+              </div>
+              <div className="pt-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setActiveTab('circulars');
+                    setEditingJob(null);
+                    setIsCreatingNewJob(true);
+                  }}
+                  className="px-6 py-3 bg-emerald-700 hover:bg-emerald-800 text-white rounded-2xl font-black text-sm transition-all shadow-md inline-flex items-center gap-2 hover:shadow-emerald-700/20 hover:-translate-y-0.5 active:translate-y-0"
+                >
+                  <Sparkles className="w-5 h-5 text-emerald-300" />
+                  <span>ইউনিভার্সাল ওয়ার্কস্পেস ওপেন করুন</span>
+                </button>
+              </div>
             </div>
           )}
 
-          {/* TAB 7A: JOBS -> SOURCE MONITORING & REGISTRY MANAGEMENT */}
           {activeTab === 'source-monitoring' && (
             <SourceRegistryManagement />
           )}

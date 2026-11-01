@@ -194,17 +194,25 @@ export default function UniversalJobWorkspace({
   // Custom document temporary input
   const [newDocName, setNewDocName] = useState('');
 
-  // Initialize or reset form data when job changes
+  const currentJobIdRef = useRef<string | null>(null);
+
+  // Initialize form data ONLY when modal opens or job ID changes (prevents reverting edits during typing)
   useEffect(() => {
     if (isOpen) {
-      const base = isNew || !job ? { ...DEFAULT_BLANK_JOB, id: 'job-' + Date.now().toString().slice(-6) } : { ...job };
-      setFormData(base);
-      setInitialData(base);
-      setSaveError(null);
-      setSaveSuccessToast(null);
-      setActiveTab('overview');
+      const targetId = isNew ? 'NEW_JOB' : (job?.id || 'BLANK');
+      if (currentJobIdRef.current !== targetId) {
+        currentJobIdRef.current = targetId;
+        const base = isNew || !job ? { ...DEFAULT_BLANK_JOB, id: 'job-' + Date.now().toString().slice(-6) } : { ...job };
+        setFormData(base);
+        setInitialData(base);
+        setSaveError(null);
+        setSaveSuccessToast(null);
+        setActiveTab('overview');
+      }
+    } else {
+      currentJobIdRef.current = null;
     }
-  }, [job, isOpen, isNew]);
+  }, [isOpen, job?.id, isNew]);
 
   // Compute dirty state
   const isDirty = useMemo(() => {
@@ -279,6 +287,7 @@ export default function UniversalJobWorkspace({
 
       setFormData(data.job);
       setInitialData(data.job);
+      currentJobIdRef.current = data.job.id;
       setSaveSuccessToast(isCreate ? 'নতুন বিজ্ঞপ্তি সফলভাবে তৈরি ও সংরক্ষিত হয়েছে!' : 'সকল পরিবর্তন সফলভাবে ডাটাবেজে সংরক্ষিত হয়েছে!');
       onSaveSuccess(data.job);
       setTimeout(() => setSaveSuccessToast(null), 4000);
@@ -1265,8 +1274,11 @@ export default function UniversalJobWorkspace({
                     <label className="text-xs font-bold text-slate-700 block mb-1">মূল উৎস / গেজেট ইউআরএল (Source URL)</label>
                     <input
                       type="text"
-                      value={(formData as any).sourceUrl || ''}
-                      onChange={(e) => updateField('officialLink', e.target.value)}
+                      value={formData.officialLink || (formData as any).sourceUrl || ''}
+                      onChange={(e) => {
+                        updateField('officialLink', e.target.value);
+                        updateField('sourceUrl' as any, e.target.value);
+                      }}
                       placeholder="মন্ত্রণালয়ের ওয়েবসাইট বা পত্রিকার মূল সার্কুলার লিংক"
                       className="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 focus:ring-1 focus:ring-emerald-600 focus:outline-none"
                     />
@@ -1289,6 +1301,7 @@ export default function UniversalJobWorkspace({
                     <input
                       type="text"
                       value={(formData as any).sourcePublisher || ''}
+                      onChange={(e) => updateField('sourcePublisher' as any, e.target.value)}
                       placeholder="যেমন: বাংলাদেশ গেজেট / দৈনিক ইত্তেফাক"
                       className="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 focus:ring-1 focus:ring-emerald-600 focus:outline-none"
                     />

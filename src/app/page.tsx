@@ -521,14 +521,20 @@ export default function HomePage() {
               ব্রেকিং বিজ্ঞপ্তি
             </span>
             <div className="truncate text-slate-300 font-medium">
-              🔥 বাংলাদেশ ব্যাংক ১৭৫ সহকারী পরিচালক নিয়োগ • প্রাথমিক শিক্ষক ৩৫০০ পদে আবেদন চলছে • ৪৮তম বিসিএস আবেদন শুরু
+              {jobsList.length > 0 ? (
+                <span>
+                  🔥 {jobsList.slice(0, 3).map(j => `${j.organization || ''} - ${j.title || ''}`).join(' • ')}
+                </span>
+              ) : (
+                <span>অফিসিয়াল সরকারি ও ব্যাংক সার্কুলার পর্যবেক্ষণ চলছে। অনুমোদিত নতুন বিজ্ঞপ্তি এখানে স্বয়ংক্রিয়ভাবে প্রদর্শিত হবে।</span>
+              )}
             </div>
           </div>
 
           <div className="hidden md:flex items-center gap-3 text-slate-400 text-[14px] flex-shrink-0">
             <span className="flex items-center gap-1 text-emerald-400 font-bold">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
-              ১,৪২০+ চাকরিপ্রার্থী অনলাইনে সক্রিয়
+              অফিসিয়াল জব পোর্টাল সিঙ্ক সক্রিয়
             </span>
           </div>
         </div>

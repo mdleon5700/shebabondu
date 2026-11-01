@@ -23,7 +23,7 @@ const DEFAULT_AUTOMATION_TASKS: AutomationTaskDefinition[] = [
     descriptionBn: 'টেলিটক অলজবস, বিপিএসসি এবং সরকারি পোর্টাল থেকে নিয়মিত সার্কুলার সংগ্রহ ও ড্রাফট তৈরি।',
     category: 'collection',
     cronSchedule: '0 */4 * * *', // Every 4 hours
-    status: 'ACTIVE',
+    status: 'PAUSED',
     lastExecutedAt: new Date(Date.now() - 3600000).toISOString(),
     lastSuccessAt: new Date(Date.now() - 3600000).toISOString(),
     nextScheduledAt: new Date(Date.now() + 10800000).toISOString(),
@@ -39,7 +39,7 @@ const DEFAULT_AUTOMATION_TASKS: AutomationTaskDefinition[] = [
     descriptionBn: 'সংগৃহীত সার্কুলার ড্রাফটের অফিসিয়াল পিডিএফ বিশ্লেষণ ও ডাটা কনকর্ডেন্স যাচাই।',
     category: 'verification',
     cronSchedule: '*/30 * * * *', // Every 30 mins
-    status: 'ACTIVE',
+    status: 'PAUSED',
     lastExecutedAt: new Date(Date.now() - 1800000).toISOString(),
     lastSuccessAt: new Date(Date.now() - 1800000).toISOString(),
     nextScheduledAt: new Date(Date.now() + 900000).toISOString(),
@@ -55,7 +55,7 @@ const DEFAULT_AUTOMATION_TASKS: AutomationTaskDefinition[] = [
     descriptionBn: 'অনুমোদিত জব ক্যাটালগ শিডিউলড প্রকাশনা ও ডাইনামিক এক্সএমএল সাইটম্যাপ হালনাগাদ।',
     category: 'publishing',
     cronSchedule: '0 * * * *', // Hourly
-    status: 'ACTIVE',
+    status: 'PAUSED',
     lastExecutedAt: new Date(Date.now() - 2400000).toISOString(),
     lastSuccessAt: new Date(Date.now() - 2400000).toISOString(),
     nextScheduledAt: new Date(Date.now() + 1200000).toISOString(),

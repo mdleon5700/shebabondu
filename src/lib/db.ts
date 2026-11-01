@@ -1869,17 +1869,7 @@ function loadDB(): DatabaseState {
 
 
     if (!state.jobs) {
-
-
-
       state.jobs = {};
-
-
-
-      mockJobs.forEach(j => { state.jobs[j.id] = j; });
-
-
-
     }
 
 

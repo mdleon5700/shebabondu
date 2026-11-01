@@ -42,6 +42,15 @@ export async function GET(req: Request) {
     }, { status: 401 });
   }
 
+  // Permission Gate: Do not run automated scans without explicit permission
+  if (process.env.ENABLE_AUTO_SCRAPING !== 'true') {
+    return NextResponse.json({
+      success: false,
+      status: 'PAUSED',
+      message: 'স্বয়ংক্রিয় ব্যাকগ্রাউন্ড স্ক্র্যাপিং সাময়িকভাবে স্থগিত। অ্যাডমিন অনুমতি ছাড়া কোনো জব অটো স্ক্যান হবে না।'
+    });
+  }
+
   // Enforce concurrency lock
   if (isScrapingActive()) {
     const lock = getScrapeLockStatus();

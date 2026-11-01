@@ -144,7 +144,7 @@ export async function scrapeSingleSource(
     spiderRun.status = 'failed';
     spiderRun.finishedAt = new Date().toISOString();
     spiderRun.durationMs = Date.now() - startTime;
-    spiderRun.errorSummary = `????? ID "${sourceId}" ???????? ????? ??????`;
+    spiderRun.errorSummary = `সোর্স ID "${sourceId}" ডাটাবেজে পাওয়া যায়নি`;
     serverDB.recordSpiderRun(spiderRun);
 
     return {
@@ -156,7 +156,7 @@ export async function scrapeSingleSource(
       newDraftsCreated: 0,
       updatesDetected: 0,
       duplicatesIgnored: 0,
-      error: `????? ID "${sourceId}" ???????? ????? ??????`,
+      error: `সোর্স ID "${sourceId}" ডাটাবেজে পাওয়া যায়নি`,
       durationMs: Date.now() - startTime
     };
   }
@@ -165,7 +165,7 @@ export async function scrapeSingleSource(
     spiderRun.status = 'failed';
     spiderRun.finishedAt = new Date().toISOString();
     spiderRun.durationMs = Date.now() - startTime;
-    spiderRun.errorSummary = `????? "${source.name}" ???????? ?????? (paused) ??????`;
+    spiderRun.errorSummary = `সোর্স "${source.name}" বর্তমানে স্থগিত (paused) রয়েছে`;
     serverDB.recordSpiderRun(spiderRun);
 
     return {
@@ -177,7 +177,7 @@ export async function scrapeSingleSource(
       newDraftsCreated: 0,
       updatesDetected: 0,
       duplicatesIgnored: 0,
-      error: `????? "${source.name}" ???????? ?????? (paused) ??????`,
+      error: `সোর্স "${source.name}" বর্তমানে স্থগিত (paused) রয়েছে`,
       durationMs: Date.now() - startTime
     };
   }
@@ -282,7 +282,7 @@ export async function scrapeSingleSource(
       durationMs: Date.now() - startTime
     };
   } catch (err: any) {
-    const errorMsg = err.message || '????????????? ?????? ??????';
+    const errorMsg = err.message || 'কালেকশন এক্সিকিউশন ব্যর্থ হয়েছে';
     spiderRun.status = 'failed';
     spiderRun.finishedAt = new Date().toISOString();
     spiderRun.durationMs = Date.now() - startTime;
@@ -332,7 +332,7 @@ export async function scrapeAllSources(
   const lockAcquired = acquireScrapeLock(adminId);
   if (!lockAcquired) {
     const lockInfo = getScrapeLockStatus();
-    throw new Error(`??????????? ???????? ?? ??????? ?????? ???????? ???? ????? (${lockInfo.owner || '?????'}), ??????? ??? ??????? ?????`);
+    throw new Error(`কনকারেন্ট কালেকশন লক ইতিমধ্যে সক্রিয় রয়েছে (${lockInfo.owner || "অন্যান্য"}), অনুগ্রহ করে কিছুক্ষণ অপেক্ষা করুন`);
   }
 
   try {
@@ -375,7 +375,7 @@ export async function scrapeAllSources(
 export async function retrySpiderRun(runId: string, adminId = 'SYSTEM_ADMIN'): Promise<SourceScrapeResult> {
   const pastRun = serverDB.getSpiderRunById(runId);
   if (!pastRun) {
-    throw new Error(`Spider Run "${runId}" ????? ??????`);
+    throw new Error(`Spider Run "${runId}" খুঁজে পাওয়া যায়নি`);
   }
 
   return scrapeSingleSource(pastRun.sourceId, adminId, 'admin');

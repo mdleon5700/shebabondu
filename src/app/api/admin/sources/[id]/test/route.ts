@@ -14,7 +14,7 @@ export async function POST(req: Request, { params }: { params: { id: string } })
 
   const source = serverDB.getJobSourceById(params.id);
   if (!source) {
-    return NextResponse.json({ error: `NOT_FOUND: ????? "${params.id}" ????? ??????` }, { status: 404 });
+    return NextResponse.json({ error: `NOT_FOUND: সোর্স "${params.id}" খুঁজে পাওয়া যায়নি` }, { status: 404 });
   }
 
   const testUrl = source.listingUrl || source.sourceUrl;
@@ -22,7 +22,7 @@ export async function POST(req: Request, { params }: { params: { id: string } })
   if (!securityCheck.safe) {
     return NextResponse.json({
       success: false,
-      error: `????????? ?????: ${securityCheck.reason}`,
+      error: `নিরাপত্তা সমস্যা: ${securityCheck.reason}`,
       reachable: false,
       url: testUrl
     }, { status: 400 });
@@ -62,7 +62,7 @@ export async function POST(req: Request, { params }: { params: { id: string } })
       responseTimeMs,
       contentType,
       url: testUrl,
-      message: isOk ? '??????? ???? ????? ??? ??? ????????' : `????? ???? ??????????? ????????? ??? ?????: HTTP ${response.status}`
+      message: isOk ? 'কানেকশন টেস্ট সফল এবং পেজ সক্রিয় রয়েছে' : `সোর্স পেজ অপ্রাপ্য বা ত্রুটিপূর্ণ রেসপন্স কোড: HTTP ${response.status}`
     });
   } catch (err: any) {
     const responseTimeMs = Date.now() - startTime;
@@ -79,7 +79,7 @@ export async function POST(req: Request, { params }: { params: { id: string } })
       reachable: false,
       responseTimeMs,
       url: testUrl,
-      error: isTimeout ? '??????? ??????? ??????? ????? (Timeout > 6s)' : (err.message || '????? ?????? ?????? ?????')
+      error: isTimeout ? 'কানেকশন টাইমআউট হয়েছে (Timeout > 6s)' : (err.message || 'সোর্স সার্ভারে যোগাযোগ ব্যর্থ')
     }, { status: 502 });
   }
 }

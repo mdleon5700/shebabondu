@@ -1941,18 +1941,20 @@ function loadDB(): DatabaseState {
 
     if (!state.deadlineAlertRules) state.deadlineAlertRules = [
 
-      { id: 'rule-7d', name: '7 Days Before', nameBn: 'à¦†à¦¬à§‡à¦¦à¦¨à§‡à¦° à§­ à¦¦à¦¿à¦¨ à¦†à¦—à§‡', leadDays: 7, channel: 'in_app', isEnabled: true },
+      { id: 'rule-7d', name: '7 Days Before', nameBn: 'আবেদনের ৭ দিন আগে', leadDays: 7, channel: 'in_app', isEnabled: true },
 
-      { id: 'rule-3d', name: '3 Days Before', nameBn: 'à¦†à¦¬à§‡à¦¦à¦¨à§‡à¦° à§© à¦¦à¦¿à¦¨ à¦†à¦—à§‡ (à¦œà¦°à§à¦°à¦¿)', leadDays: 3, channel: 'in_app', isEnabled: true },
+      { id: 'rule-3d', name: '3 Days Before', nameBn: 'আবেদনের ৩ দিন আগে (জরুরি)', leadDays: 3, channel: 'in_app', isEnabled: true },
 
-      { id: 'rule-1d', name: '1 Day Before', nameBn: 'à¦†à¦¬à§‡à¦¦à¦¨à§‡à¦° à§§ à¦¦à¦¿à¦¨ à¦†à¦—à§‡', leadDays: 1, channel: 'in_app', isEnabled: true },
+      { id: 'rule-1d', name: '1 Day Before', nameBn: 'আবেদনের ১ দিন আগে', leadDays: 1, channel: 'in_app', isEnabled: true },
 
-      { id: 'rule-0d', name: 'Deadline Day', nameBn: 'à¦†à¦¬à§‡à¦¦à¦¨à§‡à¦° à¦¶à§‡à¦· à¦¤à¦¾à¦°à¦¿à¦– à¦†à¦œ', leadDays: 0, channel: 'in_app', isEnabled: true }
+      { id: 'rule-0d', name: 'Deadline Day', nameBn: 'আবেদনের শেষ তারিখ আজ', leadDays: 0, channel: 'in_app', isEnabled: true }
 
     ];
 
 
 
+    _cachedDbState = state;
+    _cachedDbMtime = currentMtime;
     return state;
 
 

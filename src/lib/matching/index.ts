@@ -1,5 +1,5 @@
 /**
- * CHAKRI SHEBA (????? ????) ? STEP 09: SMART JOB MATCHING MODULE EXPORTS
+ * CHAKRI SHEBA (চাকরি সেবা) — STEP 09: SMART JOB MATCHING MODULE EXPORTS
  */
 
 export * from './types';

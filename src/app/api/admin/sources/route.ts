@@ -32,25 +32,25 @@ export async function POST(req: Request) {
 
     const name = typeof body.name === 'string' ? body.name.trim() : '';
     if (!name || name.length < 2) {
-      return NextResponse.json({ error: 'VALIDATION_ERROR: ??????? ??? ?????? (??????? ? ?????)?' }, { status: 400 });
+      return NextResponse.json({ error: 'VALIDATION_ERROR: অর্গানাইজেশনের নাম ও সোর্স ইউআরএল আবশ্যক' }, { status: 400 });
     }
 
     const sourceUrl = typeof body.sourceUrl === 'string' ? body.sourceUrl.trim() : '';
     if (!sourceUrl || !/^https?:\/\//i.test(sourceUrl)) {
-      return NextResponse.json({ error: 'VALIDATION_ERROR: ???? HTTP ?? HTTPS ????? URL ???????' }, { status: 400 });
+      return NextResponse.json({ error: 'VALIDATION_ERROR: বৈধ HTTP বা HTTPS সোর্স URL প্রয়োজন' }, { status: 400 });
     }
 
     try {
       new URL(sourceUrl);
     } catch {
-      return NextResponse.json({ error: 'VALIDATION_ERROR: ????? URL ?? ???? ???????? ????' }, { status: 400 });
+      return NextResponse.json({ error: 'VALIDATION_ERROR: সোর্স URL টি ইতিমধ্যে বিদ্যমান রয়েছে' }, { status: 400 });
     }
 
     const validClassifications: SourceClassification[] = ['official', 'news', 'job_board', 'custom_api'];
     const classification = body.classification ? String(body.classification).trim() as SourceClassification : 'official';
     if (!validClassifications.includes(classification)) {
       return NextResponse.json({ 
-        error: `VALIDATION_ERROR: ???????? ????????????? ????????: ${validClassifications.join(', ')}` 
+        error: `VALIDATION_ERROR: ক্লাসিফিকেশন অবশ্যই নিম্নলিখিতগুলোর মধ্যে হতে হবে: ${validClassifications.join(', ')}` 
       }, { status: 400 });
     }
 
@@ -58,7 +58,7 @@ export async function POST(req: Request) {
     const collectionMethod = body.collectionMethod ? String(body.collectionMethod).trim() as CollectionMethod : 'html_scrape';
     if (!validMethods.includes(collectionMethod)) {
       return NextResponse.json({ 
-        error: `VALIDATION_ERROR: ???????? ??????? ????? ????????: ${validMethods.join(', ')}` 
+        error: `VALIDATION_ERROR: কালেকশন মেথড অবশ্যই নিম্নলিখিতগুলোর মধ্যে হতে হবে: ${validMethods.join(', ')}` 
       }, { status: 400 });
     }
 
@@ -67,7 +67,7 @@ export async function POST(req: Request) {
       const intervalNum = Number(body.scanIntervalMinutes);
       if (isNaN(intervalNum) || !Number.isInteger(intervalNum) || intervalNum < 15 || intervalNum > 10080) {
         return NextResponse.json({ 
-          error: 'VALIDATION_ERROR: ??????? ??????? ?? ????? ???? ??,??? ??????? (? ???) ????? ??????????? ??? ????' 
+          error: 'VALIDATION_ERROR: ক্রলিং ফ্রিকোয়েন্সি শূন্য বা নেগেটিভ হতে পারে না, সর্বনিম্ন ১ মিনিট' 
         }, { status: 400 });
       }
       scanIntervalMinutes = intervalNum;
@@ -122,7 +122,7 @@ export async function POST(req: Request) {
     if (err.message && err.message.includes('already exists')) {
       return NextResponse.json({ error: `CONFLICT: ${err.message}` }, { status: 409 });
     }
-    return NextResponse.json({ error: err.message || '????? ?????? ?????? ??????' }, { status: 500 });
+    return NextResponse.json({ error: err.message || 'সোর্স তৈরিতে সার্ভার ত্রুটি হয়েছে' }, { status: 500 });
   }
 }
 
@@ -138,13 +138,13 @@ export async function PUT(req: Request) {
   try {
     const body = await req.json();
     if (!body || typeof body !== 'object' || !body.id) {
-      return NextResponse.json({ error: 'VALIDATION_ERROR: ????? ???? ???? ????? ???? (id) ???????' }, { status: 400 });
+      return NextResponse.json({ error: 'VALIDATION_ERROR: সোর্স আপডেট করতে আইডি (id) আবশ্যক' }, { status: 400 });
     }
 
     const id = String(body.id).trim();
     const existing = serverDB.getJobSourceById(id);
     if (!existing) {
-      return NextResponse.json({ error: `NOT_FOUND: ????? "${id}" ????? ??????` }, { status: 404 });
+      return NextResponse.json({ error: `NOT_FOUND: সোর্স "${id}" খুঁজে পাওয়া যায়নি` }, { status: 404 });
     }
 
     const updates: Partial<JobSource> = {};
@@ -152,7 +152,7 @@ export async function PUT(req: Request) {
     if (body.name !== undefined) {
       const name = String(body.name).trim();
       if (!name || name.length < 2) {
-        return NextResponse.json({ error: 'VALIDATION_ERROR: ??????? ??? ??????? ? ??????? ??? ????' }, { status: 400 });
+        return NextResponse.json({ error: 'VALIDATION_ERROR: সোর্সের নাম খালি রাখা যাবে না' }, { status: 400 });
       }
       updates.name = name;
     }
@@ -160,12 +160,12 @@ export async function PUT(req: Request) {
     if (body.sourceUrl !== undefined) {
       const sourceUrl = String(body.sourceUrl).trim();
       if (!sourceUrl || !/^https?:\/\//i.test(sourceUrl)) {
-        return NextResponse.json({ error: 'VALIDATION_ERROR: ???? HTTP ?? HTTPS ????? URL ???????' }, { status: 400 });
+        return NextResponse.json({ error: 'VALIDATION_ERROR: বৈধ HTTP বা HTTPS সোর্স URL প্রয়োজন' }, { status: 400 });
       }
       try {
         new URL(sourceUrl);
       } catch {
-        return NextResponse.json({ error: 'VALIDATION_ERROR: ????? URL ?? ???? ???????? ????' }, { status: 400 });
+        return NextResponse.json({ error: 'VALIDATION_ERROR: সোর্স URL টি ইতিমধ্যে বিদ্যমান রয়েছে' }, { status: 400 });
       }
       updates.sourceUrl = sourceUrl;
     }
@@ -175,7 +175,7 @@ export async function PUT(req: Request) {
       const c = String(body.classification).trim() as SourceClassification;
       if (!validClassifications.includes(c)) {
         return NextResponse.json({ 
-          error: `VALIDATION_ERROR: ???????? ????????????? ????????: ${validClassifications.join(', ')}` 
+          error: `VALIDATION_ERROR: ক্লাসিফিকেশন অবশ্যই নিম্নলিখিতগুলোর মধ্যে হতে হবে: ${validClassifications.join(', ')}` 
         }, { status: 400 });
       }
       updates.classification = c;
@@ -186,7 +186,7 @@ export async function PUT(req: Request) {
       const m = String(body.collectionMethod).trim() as CollectionMethod;
       if (!validMethods.includes(m)) {
         return NextResponse.json({ 
-          error: `VALIDATION_ERROR: ???????? ??????? ????? ????????: ${validMethods.join(', ')}` 
+          error: `VALIDATION_ERROR: কালেকশন মেথড অবশ্যই নিম্নলিখিতগুলোর মধ্যে হতে হবে: ${validMethods.join(', ')}` 
         }, { status: 400 });
       }
       updates.collectionMethod = m;
@@ -196,7 +196,7 @@ export async function PUT(req: Request) {
       const intervalNum = Number(body.scanIntervalMinutes);
       if (isNaN(intervalNum) || !Number.isInteger(intervalNum) || intervalNum < 15 || intervalNum > 10080) {
         return NextResponse.json({ 
-          error: 'VALIDATION_ERROR: ??????? ??????? ?? ????? ???? ??,??? ??????? (? ???) ????? ??????????? ??? ????' 
+          error: 'VALIDATION_ERROR: ক্রলিং ফ্রিকোয়েন্সি শূন্য বা নেগেটিভ হতে পারে না, সর্বনিম্ন ১ মিনিট' 
         }, { status: 400 });
       }
       updates.scanIntervalMinutes = intervalNum;
@@ -241,6 +241,6 @@ export async function PUT(req: Request) {
     if (err.message && err.message.includes('already exists')) {
       return NextResponse.json({ error: `CONFLICT: ${err.message}` }, { status: 409 });
     }
-    return NextResponse.json({ error: err.message || '????? ????? ?????? ??????' }, { status: 500 });
+    return NextResponse.json({ error: err.message || 'সোর্স আপডেট ব্যর্থ হয়েছে' }, { status: 500 });
   }
 }

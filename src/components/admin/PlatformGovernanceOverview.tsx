@@ -71,6 +71,17 @@ export default function PlatformGovernanceOverview({ onNavigate }: PlatformGover
     fetchOverviewData(timeframe);
   }, [timeframe]);
 
+  const renderCardValue = (val: string | number | undefined | null, colorClass: string, prefix = '') => {
+    if (isLoading && !metrics) {
+      return <div className="h-8 w-20 bg-slate-200/70 animate-pulse rounded-lg my-1" />;
+    }
+    return (
+      <div className={`text-2xl font-black ${colorClass} transition-colors`}>
+        {prefix}{toBnNumber(val ?? 0)}
+      </div>
+    );
+  };
+
   const handleTimeframeChange = (tf: 'today' | '7d' | '30d' | '90d' | 'all') => {
     setTimeframe(tf);
   };
@@ -415,7 +426,12 @@ export default function PlatformGovernanceOverview({ onNavigate }: PlatformGover
             <span className="text-[11px] font-bold text-slate-500">সর্বশেষ {toBnNumber(activityStream.length)} টি ইভেন্ট</span>
           </div>
 
-          {activityStream.length === 0 ? (
+          {isLoading && activityStream.length === 0 ? (
+            <div className="text-center py-8 text-xs text-slate-400 font-medium flex items-center justify-center gap-2">
+              <RefreshCw className="w-4 h-4 animate-spin text-emerald-600" />
+              <span>লাইভ অ্যাক্টিভিটি স্ট্রিম সিঙ্ক হচ্ছে...</span>
+            </div>
+          ) : activityStream.length === 0 ? (
             <div className="text-center py-8 text-xs text-slate-500 font-medium">
               কোনো সাম্প্রতিক অ্যাক্টিভিটি নেই।
             </div>

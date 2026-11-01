@@ -18,7 +18,7 @@ export async function POST(req: Request) {
     }
 
     if (!draftId) {
-      return NextResponse.json({ error: 'VALIDATION_ERROR: draftId ???? runAll=true ?????? ?????' }, { status: 400 });
+      return NextResponse.json({ error: 'VALIDATION_ERROR: draftId অথবা runAll=true নির্দিষ্ট করা আবশ্যক' }, { status: 400 });
     }
 
     const result = await verifyCircularDraft(draftId, {
@@ -29,6 +29,6 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ success: true, result });
   } catch (err: any) {
-    return NextResponse.json({ error: err.message || '???????? ????????? ?????? ??????' }, { status: 500 });
+    return NextResponse.json({ error: err.message || 'ভেরিফিকেশন এক্সিকিউশন ব্যর্থ হয়েছে' }, { status: 500 });
   }
 }

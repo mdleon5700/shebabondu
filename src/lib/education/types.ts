@@ -1,6 +1,5 @@
-/**
- * CHAKRI SHEBA (????? ????) — STEP 12: EDUCATION & CERTIFICATE TYPES
- * Comprehensive Bangladesh Academic Hierarchy, Results Validation & Verification Workflow
+/**
+ * CHAKRI SHEBA (চাকরি সেবা) — STEP 12: EDUCATION & CERTIFICATE TYPES
  */
 
 export type AcademicStatus =
@@ -49,10 +48,10 @@ export interface DegreeProgramDefinition {
 
 export interface EnhancedEducationRecord {
   id?: string;
-  level: string; // e.g. '?????? (??????)', '???????? (SSC)'
-  degree: string; // e.g. '?????? ?? ?????', '???????'
+  level: string; // e.g. 'স্নাতক (সম্মান)', 'মাধ্যমিক (SSC)'
+  degree: string; // e.g. 'বিএসসি ইন সিএসই', 'বিজ্ঞান'
   institutionName?: string;
-  boardOrUni: string; // e.g. '???? ?????????????', '???? ?????'
+  boardOrUni: string; // e.g. 'ঢাকা বিশ্ববিদ্যালয়', 'ঢাকা বোর্ড'
   roll?: string;
   reg?: string;
   year?: string; // Passing year (optional if currently studying)

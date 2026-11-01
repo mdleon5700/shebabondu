@@ -145,13 +145,13 @@ export default function SourceRegistryManagement() {
       }));
 
       if (data.reachable) {
-        setSuccessMessage(`????? "${src.name}" ???????????? ????? ???! HTTP ${data.httpStatus} (${data.responseTimeMs}ms)`);
+        setSuccessMessage(`সোর্স "${src.name}" সফলভাবে টেস্ট সম্পন্ন হয়েছে! HTTP ${data.httpStatus} (${data.responseTimeMs}ms)`);
       } else {
-        setFetchError(`???????????? ????? ?????? (${src.name}): ${data.error || '?????? ??????? ?????'}`);
+        setFetchError(`কানেক্টিভিটি টেস্ট ব্যর্থ হয়েছে (${src.name}): ${data.error || "সার্ভার রেসপন্স দেয়নি"}`);
       }
       fetchSources();
     } catch (err: any) {
-      setFetchError(err.message || '???????????? ?????? ??????????? ?????? ??????');
+      setFetchError(err.message || "কানেক্টিভিটি টেস্টের অনুরোধ ব্যর্থ হয়েছে");
     } finally {
       setTestingSourceId(null);
     }
@@ -167,13 +167,13 @@ export default function SourceRegistryManagement() {
       });
       const data = await res.json();
       if (!res.ok) {
-        throw new Error(data.error || '???????? ??? ??????? ?????? ??????');
+        throw new Error(data.error || "স্পাইডার রান রিট্রাই করতে ব্যর্থ");
       }
-      setSuccessMessage(`???????? ??? "${run.id}" ??????? ?????? ??????? ??????`);
+      setSuccessMessage(`স্পাইডার রান "${run.id}" সফলভাবে পুনরায় সম্পন্ন হয়েছে`);
       await fetchSpiderRuns();
       await fetchSources();
     } catch (err: any) {
-      setFetchError(err.message || '???????? ??? ??????? ???? ?????? ??????');
+      setFetchError(err.message || "স্পাইডার রান রিট্রাই করা সম্ভব হয়নি");
     } finally {
       setRetryingRunId(null);
     }
@@ -614,7 +614,7 @@ export default function SourceRegistryManagement() {
           }`}
         >
           <Radio className="w-3.5 h-3.5" />
-          <span>????? ?????????? ? ?????????? ({sources.length})</span>
+          <span>সোর্স রেজিস্ট্রি ও মনিটরিং ({sources.length})</span>
         </button>
 
         <button
@@ -630,7 +630,7 @@ export default function SourceRegistryManagement() {
           }`}
         >
           <History className="w-3.5 h-3.5" />
-          <span>???????? ?????????? ? ??? ???????? ({spiderRuns.length})</span>
+          <span>স্পাইডার মনিটরিং ও রান হিস্ট্রি ({spiderRuns.length})</span>
         </button>
       </div>
 
@@ -760,7 +760,7 @@ export default function SourceRegistryManagement() {
                             {testResults[src.id] && (
                               <div className="mt-1 flex items-center gap-1.5">
                                 <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${testResults[src.id].reachable ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'}`}>
-                                  {testResults[src.id].reachable ? `HTTP ${testResults[src.id].httpStatus} (${testResults[src.id].responseTimeMs}ms)` : '??????? ??????'}
+                                  {testResults[src.id].reachable ? `HTTP ${testResults[src.id].httpStatus} (${testResults[src.id].responseTimeMs}ms)` : 'কানেকশন ব্যর্থ'}
                                 </span>
                               </div>
                             )}
@@ -840,7 +840,7 @@ export default function SourceRegistryManagement() {
                             onClick={() => handleTestSource(src)}
                             disabled={testingSourceId === src.id}
                             className="p-1.5 rounded-lg border border-slate-200 text-slate-600 hover:text-blue-700 hover:bg-blue-50 transition-colors"
-                            title="???????????? ????? ????"
+                            title="কানেক্টিভিটি টেস্ট করুন"
                           >
                             <Globe className={`w-3.5 h-3.5 ${testingSourceId === src.id ? 'animate-spin text-blue-600' : ''}`} />
                           </button>
@@ -914,8 +914,8 @@ export default function SourceRegistryManagement() {
         <div className="space-y-4">
           <div className="bg-white rounded-2xl border border-slate-200/90 shadow-2xs p-4 flex items-center justify-between">
             <div>
-              <h3 className="text-sm font-black text-slate-900">???????? ?????????? ? ?????????? ??</h3>
-              <p className="text-xs text-slate-500">??????? ??????????? ?????? ?????, ?????????? PDF ? ???? ??? ?????????</p>
+              <h3 className="text-sm font-black text-slate-900">স্পাইডার মনিটরিং ও এক্সিকিউশন রান</h3>
+              <p className="text-xs text-slate-500">সরকারি নোটিফিকেশন সোর্স স্ক্র্যাপ, সংগৃহীত PDF ও ডাটা ড্রাফট পর্যবেক্ষণ</p>
             </div>
             <button
               type="button"
@@ -924,7 +924,7 @@ export default function SourceRegistryManagement() {
               className="px-3 py-1.5 rounded-xl border border-slate-200 text-xs font-bold text-slate-700 hover:bg-slate-50 transition-colors flex items-center gap-1.5"
             >
               <RefreshCw className={`w-3.5 h-3.5 ${isLoadingRuns ? 'animate-spin text-emerald-600' : ''}`} />
-              <span>?? ???????</span>
+              <span>রান হিস্ট্রি</span>
             </button>
           </div>
 
@@ -932,14 +932,14 @@ export default function SourceRegistryManagement() {
             {isLoadingRuns ? (
               <div className="p-12 text-center text-slate-400 flex flex-col items-center justify-center gap-2">
                 <RefreshCw className="w-6 h-6 animate-spin text-emerald-600" />
-                <span className="text-xs font-medium">???????? ???????? ??? ?????...</span>
+                <span className="text-xs font-medium">স্পাইডার এক্সিকিউট করা হচ্ছে...</span>
               </div>
             ) : spiderRuns.length === 0 ? (
               <div className="p-12 text-center text-slate-500">
                 <History className="w-8 h-8 text-slate-300 mx-auto mb-2" />
-                <h3 className="font-bold text-slate-800 text-sm">???? ???????? ??? ?????? ???</h3>
+                <h3 className="font-bold text-slate-800 text-sm">কোনো স্পাইডার রান রেকর্ড নেই</h3>
                 <p className="text-xs text-slate-400 mt-1">
-                  ????? "??? ?????? ????? ????????? ????" ????? ????? ??? ????? ??? ???? ?????
+                  উপরে "সকল সোর্সে স্পাইডার রান চালান" বাটনে ক্লিক করে প্রথম রান শুরু করুন
                 </p>
               </div>
             ) : (
@@ -947,13 +947,13 @@ export default function SourceRegistryManagement() {
                 <table className="w-full text-left border-collapse text-xs">
                   <thead>
                     <tr className="bg-slate-50/80 border-b border-slate-200/90 text-slate-500 font-bold uppercase tracking-wider text-[10px]">
-                      <th className="py-3 px-4">??? ID ? ???</th>
-                      <th className="py-3 px-4">???????</th>
-                      <th className="py-3 px-4">?????????</th>
-                      <th className="py-3 px-4">????????? / ??????</th>
-                      <th className="py-3 px-4">PDF ? ?????????</th>
-                      <th className="py-3 px-4">??? ? ?????????</th>
-                      <th className="py-3 px-4 text-right">???????</th>
+                      <th className="py-3 px-4">রান ID ও সময়</th>
+                      <th className="py-3 px-4">স্ট্যাটাস</th>
+                      <th className="py-3 px-4">সোর্সসমূহ</th>
+                      <th className="py-3 px-4">ফলাফল / সারসংক্ষেপ</th>
+                      <th className="py-3 px-4">PDF ও ড্রাফটস</th>
+                      <th className="py-3 px-4">লগ ও বিবরণ</th>
+                      <th className="py-3 px-4 text-right">অ্যাকশন</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-100">
@@ -985,7 +985,7 @@ export default function SourceRegistryManagement() {
 
                           <td className="py-3.5 px-4 whitespace-nowrap">
                             <div className="flex items-center gap-1.5 font-mono text-[11px]">
-                              <span className="text-emerald-700 font-bold">+{run.newDraftsCreated} ???? ??????</span>
+                              <span className="text-emerald-700 font-bold">+{run.newDraftsCreated} নতুন ড্রাফট</span>
                               <span className="text-slate-300">/</span>
                               <span className="text-slate-500">{run.jobsDiscovered} ???</span>
                             </div>
@@ -993,7 +993,7 @@ export default function SourceRegistryManagement() {
 
                           <td className="py-3.5 px-4 whitespace-nowrap font-mono text-[10px] text-slate-600">
                             <div>PDF: {run.pdfsDownloaded} ??</div>
-                            <div>?????????: {run.duplicatesDetected} ??</div>
+                            <div>ডুপ্লিকেট: {run.duplicatesDetected} টি</div>
                           </td>
 
                           <td className="py-3.5 px-4 whitespace-nowrap text-slate-500 text-[11px]">
@@ -1017,7 +1017,7 @@ export default function SourceRegistryManagement() {
                                 className="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-bold transition-colors flex items-center gap-1"
                               >
                                 <Info className="w-3 h-3" />
-                                <span>?????????</span>
+                                <span>বিস্তারিত</span>
                               </button>
 
                               {(run.status === 'failed' || run.status === 'completed_with_warnings') && (
@@ -1028,7 +1028,7 @@ export default function SourceRegistryManagement() {
                                   className="px-2.5 py-1 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 rounded-lg text-xs font-bold transition-colors flex items-center gap-1 disabled:opacity-50"
                                 >
                                   <RefreshCw className={`w-3 h-3 ${isRetrying ? 'animate-spin' : ''}`} />
-                                  <span>???????</span>
+                                  <span>রিট্রাই</span>
                                 </button>
                               )}
                             </div>
@@ -1102,38 +1102,38 @@ export default function SourceRegistryManagement() {
 
               <div>
                 <label className="block text-xs font-bold text-slate-700 mb-1">
-                  ????????? ??????? ????????? ????? (??????)
+                  সার্কুলার প্রকাশের অফিসিয়াল পোর্টাল (ওয়েবপেজ)
                 </label>
                 <input
                   type="url"
                   value={formListingUrl}
                   onChange={(e) => setFormListingUrl(e.target.value)}
-                  placeholder="????: https://alljobs.teletalk.com.bd/jobs/all"
+                  placeholder="যেমন: https://alljobs.teletalk.com.bd/jobs/all"
                   className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-mono focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-emerald-500/20"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">???????????? ???</label>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">অর্গানাইজেশনের নাম</label>
                   <input
                     type="text"
                     value={formOrgName}
                     onChange={(e) => setFormOrgName(e.target.value)}
-                    placeholder="????: ?????? / ???????? ??????"
+                    placeholder="যেমন: বিপিএসসি / বাংলাদেশ ব্যাংক"
                     className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-emerald-500/20"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">??????????</label>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">অগ্রাধিকার</label>
                   <select
                     value={formPriority}
                     onChange={(e) => setFormPriority(e.target.value as any)}
                     className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-emerald-500/20"
                   >
-                    <option value="high">???? (High)</option>
-                    <option value="normal">?????? (Normal)</option>
-                    <option value="low">????? (Low)</option>
+                    <option value="high">উচ্চ (High)</option>
+                    <option value="normal">সাধারণ (Normal)</option>
+                    <option value="low">নিম্ন (Low)</option>
                   </select>
                 </div>
               </div>
@@ -1434,7 +1434,7 @@ export default function SourceRegistryManagement() {
           <div className="bg-white rounded-2xl max-w-lg w-full border border-slate-200 shadow-xl overflow-hidden animate-in fade-in zoom-in-95">
             <div className="p-4 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
               <div>
-                <h3 className="font-black text-slate-900 text-sm">???????? ??? ?????</h3>
+                <h3 className="font-black text-slate-900 text-sm">স্পাইডার রান লগ বিবরণ</h3>
                 <p className="font-mono text-[10px] text-slate-500">{selectedRunDetails.id}</p>
               </div>
               <button
@@ -1449,51 +1449,51 @@ export default function SourceRegistryManagement() {
             <div className="p-5 space-y-4 text-xs">
               <div className="grid grid-cols-2 gap-3 bg-slate-50 p-3 rounded-xl border border-slate-200">
                 <div>
-                  <span className="text-slate-400 block text-[10px]">?????:</span>
+                  <span className="text-slate-400 block text-[10px]">তারিখ:</span>
                   <span className="font-bold text-slate-800">{selectedRunDetails.sourceName}</span>
                 </div>
                 <div>
-                  <span className="text-slate-400 block text-[10px]">?????????:</span>
+                  <span className="text-slate-400 block text-[10px]">স্ট্যাটাস:</span>
                   <span className="font-bold text-slate-800">{selectedRunDetails.status}</span>
                 </div>
                 <div>
-                  <span className="text-slate-400 block text-[10px]">????:</span>
+                  <span className="text-slate-400 block text-[10px]">সময়:</span>
                   <span className="text-slate-700 font-mono text-[11px]">{new Date(selectedRunDetails.startedAt).toLocaleString('bn-BD')}</span>
                 </div>
                 <div>
-                  <span className="text-slate-400 block text-[10px]">?????????:</span>
+                  <span className="text-slate-400 block text-[10px]">স্ট্যাটাস:</span>
                   <span className="text-slate-700 font-mono text-[11px]">{(selectedRunDetails.durationMs / 1000).toFixed(2)}s</span>
                 </div>
               </div>
 
               <div className="space-y-1.5">
-                <div className="font-bold text-slate-700">??????? ?????????:</div>
+                <div className="font-bold text-slate-700">ফলাফল সামারি:</div>
                 <div className="grid grid-cols-3 gap-2 text-center">
                   <div className="p-2 bg-emerald-50 rounded-lg border border-emerald-100">
                     <div className="text-base font-black text-emerald-700">+{selectedRunDetails.newDraftsCreated}</div>
-                    <div className="text-[10px] text-emerald-800">???? ??????</div>
+                    <div className="text-[10px] text-emerald-800">নতুন সার্কুলার</div>
                   </div>
                   <div className="p-2 bg-blue-50 rounded-lg border border-blue-100">
                     <div className="text-base font-black text-blue-700">{selectedRunDetails.jobsDiscovered}</div>
-                    <div className="text-[10px] text-blue-800">?????????</div>
+                    <div className="text-[10px] text-blue-800">ডুপ্লিকেট</div>
                   </div>
                   <div className="p-2 bg-purple-50 rounded-lg border border-purple-100">
                     <div className="text-base font-black text-purple-700">{selectedRunDetails.pdfsDownloaded}</div>
-                    <div className="text-[10px] text-purple-800">PDF ???????</div>
+                    <div className="text-[10px] text-purple-800">PDF ডাউনলোড</div>
                   </div>
                 </div>
               </div>
 
               {selectedRunDetails.errorSummary && (
                 <div className="p-3 bg-rose-50 border border-rose-200 rounded-xl text-rose-800 space-y-1">
-                  <span className="font-bold block text-[11px]">??????? ?????:</span>
+                  <span className="font-bold block text-[11px]">সার্ভার রেসপন্স:</span>
                   <p className="font-mono text-[10px] break-words">{selectedRunDetails.errorSummary}</p>
                 </div>
               )}
 
               {selectedRunDetails.failedRecords && selectedRunDetails.failedRecords.length > 0 && (
                 <div className="space-y-1">
-                  <span className="font-bold text-rose-700 block text-[11px]">?????? ?????????? ({selectedRunDetails.failedRecords.length}):</span>
+                  <span className="font-bold text-rose-700 block text-[11px]">ব্যর্থ রেকর্ডসমূহ ({selectedRunDetails.failedRecords.length}):</span>
                   <div className="max-h-40 overflow-y-auto space-y-1 font-mono text-[10px] bg-slate-900 text-rose-300 p-2 rounded-xl">
                     {selectedRunDetails.failedRecords.map((rec, i) => (
                       <div key={i} className="border-b border-slate-800 pb-1">
@@ -1512,7 +1512,7 @@ export default function SourceRegistryManagement() {
                 onClick={() => setSelectedRunDetails(null)}
                 className="px-4 py-2 bg-white border border-slate-200 hover:bg-slate-100 text-slate-700 font-bold text-xs rounded-xl transition-colors"
               >
-                ???? ????
+                বন্ধ করুন
               </button>
             </div>
           </div>

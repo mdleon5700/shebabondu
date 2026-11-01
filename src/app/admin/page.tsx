@@ -521,49 +521,64 @@ function AdminContent() {
         'x-admin-secret': 'CHAKRISEBA_SECURE_ADMIN_2026'
       };
 
-      const [resApps, resStats, resCandidates, resJobs, resSources, resDrafts, resCompanies, resAudit] = await Promise.all([
-        fetch('/api/applications', { headers: adminHeaders }),
-        fetch('/api/admin/stats', { headers: adminHeaders }),
-        fetch('/api/admin/candidates', { headers: adminHeaders }),
-        fetch('/api/admin/jobs', { headers: adminHeaders }),
-        fetch('/api/admin/sources', { headers: adminHeaders }),
-        fetch('/api/admin/sources/drafts', { headers: adminHeaders }),
-        fetch('/api/admin/companies', { headers: adminHeaders }),
-        fetch('/api/admin/audit-logs', { headers: adminHeaders })
-      ]);
+      // 2. Fetch stats FIRST to immediately populate all count badges in <100ms
+      try {
+        const resStats = await fetch('/api/admin/stats', { headers: adminHeaders });
+        if (resStats.ok) {
+          const sData = await resStats.json();
+          if (sData.stats || sData) {
+            setStats(sData.stats || sData);
+          }
+        }
+      } catch (sErr) {
+        console.warn('Initial stats load failed:', sErr);
+      }
 
-      if (resApps.ok) {
-        const data = await resApps.json();
-        setApplications(Array.isArray(data) ? data : (data.applications || []));
-      }
-      if (resStats.ok) {
-        const data = await resStats.json();
-        setStats(data.stats || data);
-      }
-      if (resCandidates.ok) {
-        const data = await resCandidates.json();
-        setCandidates(data.candidates || []);
-      }
-      if (resJobs.ok) {
-        const data = await resJobs.json();
-        setJobs(data.jobs || []);
-      }
-      if (resSources.ok) {
-        const data = await resSources.json();
-        setSources(data.sources || []);
-      }
-      if (resDrafts.ok) {
-        const data = await resDrafts.json();
-        setDrafts(data.drafts || []);
-      }
-      if (resCompanies.ok) {
-        const data = await resCompanies.json();
-        setCompanies(data.companies || []);
-      }
-      if (resAudit.ok) {
-        const data = await resAudit.json();
-        setAuditLogs(data.logs || []);
-      }
+      // 3. Fetch remaining modules concurrently without blocking each other
+      await Promise.allSettled([
+        fetch('/api/applications', { headers: adminHeaders }).then(async r => {
+          if (r.ok) {
+            const data = await r.json();
+            setApplications(Array.isArray(data) ? data : (data.applications || []));
+          }
+        }),
+        fetch('/api/admin/jobs', { headers: adminHeaders }).then(async r => {
+          if (r.ok) {
+            const data = await r.json();
+            setJobs(data.jobs || []);
+          }
+        }),
+        fetch('/api/admin/candidates', { headers: adminHeaders }).then(async r => {
+          if (r.ok) {
+            const data = await r.json();
+            setCandidates(data.candidates || []);
+          }
+        }),
+        fetch('/api/admin/sources', { headers: adminHeaders }).then(async r => {
+          if (r.ok) {
+            const data = await r.json();
+            setSources(data.sources || []);
+          }
+        }),
+        fetch('/api/admin/sources/drafts', { headers: adminHeaders }).then(async r => {
+          if (r.ok) {
+            const data = await r.json();
+            setDrafts(data.drafts || []);
+          }
+        }),
+        fetch('/api/admin/companies', { headers: adminHeaders }).then(async r => {
+          if (r.ok) {
+            const data = await r.json();
+            setCompanies(data.companies || []);
+          }
+        }),
+        fetch('/api/admin/audit-logs', { headers: adminHeaders }).then(async r => {
+          if (r.ok) {
+            const data = await r.json();
+            setAuditLogs(data.logs || []);
+          }
+        })
+      ]);
     } catch (err) {
       console.error('Failed to load admin data:', err);
     } finally {
@@ -1452,7 +1467,7 @@ function AdminContent() {
       name: 'ওভারভিউ ও ড্যাশবোর্ড',
       items: [
         { id: 'dashboard', label: 'ড্যাশবোর্ড', icon: LayoutDashboard, badge: null },
-        { id: 'all-applications', label: 'সকল আবেদন', icon: FileText, badge: applications.length },
+        { id: 'all-applications', label: 'সকল আবেদন', icon: FileText, badge: applications.length || stats.totalApplications || 0 },
         { id: 'payment-verification', label: 'পেমেন্ট ভেরিফিকেশন', icon: CreditCard, badge: stats.pendingPayment, badgeColor: 'bg-amber-500 text-white' },
         { id: 'processing-queue', label: 'প্রসেসিং কিউ', icon: Clock, badge: stats.processing, badgeColor: 'bg-blue-600 text-white' },
         { id: 'completed-rejected', label: 'সম্পন্ন ও বাতিল আবেদন', icon: CheckCircle2, badge: null },
@@ -1470,9 +1485,9 @@ function AdminContent() {
     {
       name: 'জব অপারেশনস',
       items: [
-        { id: 'circulars', label: 'সকল সার্কুলার', icon: Briefcase, badge: jobs.length },
+        { id: 'circulars', label: 'সকল সার্কুলার', icon: Briefcase, badge: jobs.length || stats.totalJobs || 0 },
         { id: 'create-circular', label: 'নতুন সার্কুলার তৈরি', icon: PlusCircle, badge: null },
-        { id: 'imported-drafts', label: 'ভেরিফিকেশন ও খসড়া কিউ', icon: ShieldCheck, badge: drafts.length, badgeColor: 'bg-emerald-600 text-white' },
+        { id: 'imported-drafts', label: 'ভেরিফিকেশন ও খসড়া কিউ', icon: ShieldCheck, badge: drafts.length || stats.pendingDrafts || 0, badgeColor: 'bg-emerald-600 text-white' },
         { id: 'source-monitoring', label: 'সোর্স মনিটরিং ও স্পাইডার', icon: Radio, badge: sources.length },
         { id: 'publishing-center', label: 'পাবলিশিং ও ওয়েবসাইট সেন্টার', icon: Globe, badge: 'লাইভ', badgeColor: 'bg-emerald-600 text-white' },
         { id: 'category-search-manager', label: 'ক্যাটাগরি ও সার্চ ম্যানেজার', icon: Tag, badge: null },
@@ -1497,7 +1512,7 @@ function AdminContent() {
       name: 'প্ল্যাটফর্ম ডাটা ও প্রতিষ্ঠান',
       items: [
         { id: 'company-directory', label: 'প্রতিষ্ঠান ও নিয়োগকারী হাব', icon: Building, badge: companies.length },
-        { id: 'candidate-directory', label: 'প্রার্থী ডিরেক্টরি ও প্রোফাইল', icon: Users, badge: candidates.length },
+        { id: 'candidate-directory', label: 'প্রার্থী ডিরেক্টরি ও প্রোফাইল', icon: Users, badge: candidates.length || stats.totalCandidates || 0 },
         { id: 'eligibility-rules', label: 'যোগ্যতা ও শর্তাবলী ফিল্টার', icon: Sliders, badge: null }
       ]
     },

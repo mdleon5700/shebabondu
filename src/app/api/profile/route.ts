@@ -4,9 +4,9 @@ import { serverDB } from '@/lib/db';
 
 export async function GET(req: Request) {
   const session = getServerSession(req);
-  if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  if (!session) return NextResponse.json({ profile: null, authenticated: false });
   const candidate = serverDB.getCandidateById(session.candidateId);
-  if (!candidate) return NextResponse.json({ error: 'Candidate not found' }, { status: 404 });
+  if (!candidate) return NextResponse.json({ profile: null, authenticated: false });
   const { passwordHash, ...safe } = candidate;
   return NextResponse.json({ profile: safe });
 }

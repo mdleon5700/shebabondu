@@ -584,7 +584,7 @@ export default function HomePage() {
             </div>
             <div>
               <div className="text-2xl sm:text-3xl font-black tracking-tight flex items-baseline gap-1">
-                <span>{toBn(statusCounts.newToday)}</span>
+                <span className="status-metric-number text-3xl sm:text-4xl font-black">{toBn(statusCounts.newToday)}</span>
                 <span className={`text-[16px] font-semibold ${
                   statusFilter === 'new_today' ? 'text-emerald-100' : 'text-slate-500'
                 }`}>
@@ -618,7 +618,7 @@ export default function HomePage() {
             </div>
             <div>
               <div className="text-2xl sm:text-3xl font-black tracking-tight flex items-baseline gap-1">
-                <span>{toBn(statusCounts.ongoing)}</span>
+                <span className="status-metric-number text-3xl sm:text-4xl font-black">{toBn(statusCounts.ongoing)}</span>
                 <span className={`text-[16px] font-semibold ${
                   statusFilter === 'ongoing' ? 'text-sky-100' : 'text-slate-500'
                 }`}>
@@ -652,7 +652,7 @@ export default function HomePage() {
             </div>
             <div>
               <div className="text-2xl sm:text-3xl font-black tracking-tight flex items-baseline gap-1">
-                <span>{toBn(statusCounts.endingSoon)}</span>
+                <span className="status-metric-number text-3xl sm:text-4xl font-black">{toBn(statusCounts.endingSoon)}</span>
                 <span className={`text-[16px] font-semibold ${
                   statusFilter === 'ending_soon' ? 'text-amber-100' : 'text-slate-500'
                 }`}>
@@ -687,7 +687,7 @@ export default function HomePage() {
             </div>
             <div>
               <div className="text-2xl sm:text-3xl font-black tracking-tight flex items-baseline gap-1">
-                <span>{toBn(statusCounts.endingToday)}</span>
+                <span className="status-metric-number text-3xl sm:text-4xl font-black">{toBn(statusCounts.endingToday)}</span>
                 <span className={`text-[16px] font-semibold ${
                   statusFilter === 'ending_today' ? 'text-rose-100' : 'text-slate-500'
                 }`}>

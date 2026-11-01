@@ -129,12 +129,43 @@ a[class*="rounded-2xl"][class*="bg-"] {
 }
 
 p, li, label, input, select, textarea, .text-body {
-  font-size: 16px !important;
+  font-size: 16px;
 }
-button, button *, [role="button"], .btn, input[type="button"], input[type="submit"],
-a[class*="rounded"][class*="bg-"], a[class*="rounded"][class*="bg-"] *,
+button, [role="button"], .btn, input[type="button"], input[type="submit"],
+a[class*="rounded"][class*="bg-"],
 .share-action-btn, .share-action-btn span {
-  font-size: 17px !important;
+  font-size: 17px;
+}
+
+/* Status Metric Cards styling - preserve large bold numbers & beautiful typography */
+.status-metric-card .status-metric-number,
+.status-metric-number {
+  font-size: 2.25rem !important; /* 36px */
+  line-height: 2.5rem !important;
+  font-weight: 900 !important;
+  display: inline-block !important;
+}
+
+@media (max-width: 640px) {
+  .status-metric-card .status-metric-number,
+  .status-metric-number {
+    font-size: 1.85rem !important; /* ~30px */
+    line-height: 2.25rem !important;
+  }
+}
+
+.status-metric-card .status-metric-title,
+.status-metric-title {
+  font-size: 1.125rem !important; /* 18px */
+  font-weight: 700 !important;
+  line-height: 1.5rem !important;
+}
+
+.status-metric-card .status-metric-label,
+.status-metric-label {
+  font-size: 0.95rem !important; /* ~15px */
+  font-weight: 600 !important;
+  line-height: 1.35rem !important;
 }
 
 /* Infinite Auto-Scrolling Testimonial Marquee */

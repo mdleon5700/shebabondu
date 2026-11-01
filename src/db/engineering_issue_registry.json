@@ -183,6 +183,40 @@
       "finalStatus": "VERIFIED",
       "createdAt": "2026-11-01T05:40:00.000Z",
       "updatedAt": "2026-11-01T05:49:00.000Z"
+    },
+    {
+      "id": "CS-ISSUE-007",
+      "title": "Job Edit Disappearing Bug and Nested Button Malformation",
+      "affectedRoute": "/admin?tab=circulars",
+      "affectedModule": "Jobs & Circulars Workspace",
+      "severity": "HIGH",
+      "status": "VERIFIED",
+      "rootCause": "Unclosed <button> HTML tag in table action column and strict jobStatusFilter === 'OPEN' discarding jobs saved with status 'published'.",
+      "fixDetails": "Properly closed Edit button in admin/page.tsx, unified status helper to treat OPEN, ACTIVE, and published as active, and updated UniversalJobWorkspace to maintain synchronized publicationStatus.",
+      "verificationEvidence": "Verified via Playwright DOM click and verified in node suite that job edit updates title and remains visible."
+    },
+    {
+      "id": "CS-ISSUE-008",
+      "title": "User Panel <-> Admin Panel Application Sync Disconnect",
+      "affectedRoute": "/dashboard/applications & /admin?tab=all-applications",
+      "affectedModule": "Applications & Central Store",
+      "severity": "CRITICAL",
+      "status": "VERIFIED",
+      "rootCause": "storage.getApplications injected mockApplications on empty localStorage and wrote to unscoped key while reading scoped key. Additionally serverDB.getApplications only checked candidateId bucket, omitting phone-linked guest applications.",
+      "fixDetails": "Eliminated mockApplications injection, enhanced serverDB.getApplications to cross-link applications by candidate phone and ID, and added window focus re-fetching to dashboard applications.",
+      "verificationEvidence": "Verified end-to-end: guest application created, visible in admin, updated to completed by admin, and immediately reflected on candidate dashboard."
+    },
+    {
+      "id": "CS-ISSUE-009",
+      "title": "Website Builder, Header & Footer CMS Not Reflecting on Public Pages",
+      "affectedRoute": "/admin?tab=pages-sections, /admin?tab=header-footer & /",
+      "affectedModule": "Website CMS & Navigation",
+      "severity": "HIGH",
+      "status": "VERIFIED",
+      "rootCause": "handleSaveSeo only showed a toast without API call, Navbar and Footer hardcoded static text, and there was no public settings endpoint.",
+      "fixDetails": "Created /api/platform/settings, wired WebsiteCmsSeoManagement to PATCH /api/admin/settings, added a dedicated Header & Footer design subtab with live preview, and connected Navbar and Footer to live platform settings.",
+      "verificationEvidence": "Verified via GET /api/platform/settings, PATCH /api/admin/settings, and Playwright DOM checks."
     }
-  ]
+  ],
+  "lastAudited": "2026-11-01T07:06:31.139Z"
 }

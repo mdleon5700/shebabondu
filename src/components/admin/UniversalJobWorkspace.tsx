@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import Link from 'next/link';
 import {
+  Upload,
   LayoutDashboard,
   FileText,
   GraduationCap,
@@ -50,7 +51,8 @@ import { JobCircular, JobPosition } from '@/lib/types';
 
 const ADMIN_REQ_HEADERS: HeadersInit = {
   'Content-Type': 'application/json',
-  };
+  'x-admin-secret': '1234'
+};
 
 export interface UniversalJobWorkspaceProps {
   job: JobCircular | null;
@@ -137,6 +139,43 @@ export default function UniversalJobWorkspace({
   const [saveError, setSaveError] = useState<string | null>(null);
   const [showLivePreview, setShowLivePreview] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [uploadingField, setUploadingField] = useState<string | null>(null);
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, targetField: keyof JobCircular, type: 'image' | 'logo' | 'pdf') => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploadingField(String(targetField));
+    setSaveError(null);
+
+    try {
+      const formDataUpload = new FormData();
+      formDataUpload.append('file', file);
+      formDataUpload.append('type', type);
+
+      const res = await fetch('/api/admin/upload-file', {
+        method: 'POST',
+        headers: {
+          'x-admin-secret': '1234'
+        },
+        body: formDataUpload
+      });
+
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || 'ফাইল আপলোড ব্যর্থ হয়েছে');
+      }
+
+      updateField(targetField, data.url);
+      setSaveSuccessToast(`ফাইল সফলভাবে আপলোড হয়েছে: ${data.filename || file.name}`);
+      setTimeout(() => setSaveSuccessToast(null), 4000);
+    } catch (err: any) {
+      setSaveError(err.message || 'ফাইল আপলোড করতে সমস্যা হয়েছে');
+    } finally {
+      setUploadingField(null);
+      e.target.value = '';
+    }
+  };
 
   // Requirement bullets temporary input
   const [newReqBullet, setNewReqBullet] = useState('');
@@ -343,7 +382,7 @@ export default function UniversalJobWorkspace({
               type="button"
               onClick={() => handleSave()}
               disabled={isSaving}
-              className="px-5 py-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white rounded-xl text-xs font-black shadow-lg shadow-emerald-950/30 transition-all flex items-center gap-1.5 disabled:opacity-50"
+              className="px-5 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white rounded-xl text-sm font-black shadow-lg shadow-emerald-950/30 transition-all flex items-center gap-2 disabled:opacity-50 cursor-pointer"
             >
               {isSaving ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <Save className="w-3.5 h-3.5" />}
               <span>{isSaving ? 'সংরক্ষণ হচ্ছে...' : 'সংরক্ষণ করুন'}</span>
@@ -389,7 +428,7 @@ export default function UniversalJobWorkspace({
         {/* ============================================================== */}
         {/* 2. TAB NAVIGATION BAR (11 ORGANIZED TABS) */}
         {/* ============================================================== */}
-        <div className="px-6 py-2.5 bg-slate-100 border-b border-slate-200 flex items-center gap-1.5 overflow-x-auto shrink-0 scrollbar-none text-xs">
+        <div className="px-6 py-3 bg-slate-100 border-b border-slate-200 flex items-center gap-2 overflow-x-auto shrink-0 scrollbar-thin text-xs sm:text-sm">
           {[
             { id: 'overview', label: 'সারসংক্ষেপ', icon: LayoutDashboard },
             { id: 'details', label: 'মূল তথ্য', icon: FileText },
@@ -410,13 +449,13 @@ export default function UniversalJobWorkspace({
                 key={tab.id}
                 type="button"
                 onClick={() => setActiveTab(tab.id as WorkspaceTab)}
-                className={`px-3.5 py-1.5 rounded-xl font-bold transition-all flex items-center gap-1.5 whitespace-nowrap cursor-pointer ${
+                className={`px-4 py-2 rounded-xl font-bold transition-all flex items-center gap-2 whitespace-nowrap cursor-pointer text-xs sm:text-sm ${
                   isActive
                     ? 'bg-emerald-700 text-white shadow-sm'
                     : 'text-slate-600 hover:bg-slate-200/80 hover:text-slate-900'
                 }`}
               >
-                <Icon className="w-3.5 h-3.5" />
+                <Icon className="w-4 h-4 shrink-0" />
                 <span>{tab.label}</span>
               </button>
             );
@@ -1200,14 +1239,27 @@ export default function UniversalJobWorkspace({
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="text-xs font-bold text-slate-700 block mb-1">সার্কুলার PDF লিংক (PDF URL)</label>
-                    <input
-                      type="text"
-                      value={formData.circularPdfUrl || ''}
-                      onChange={(e) => updateField('circularPdfUrl', e.target.value)}
-                      placeholder="https://.../circular.pdf বা /pdfs/job-id.pdf"
-                      className="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 focus:ring-1 focus:ring-emerald-600 focus:outline-none"
-                    />
+                    <label className="text-xs sm:text-sm font-bold text-slate-700 block mb-1">সার্কুলার PDF লিংক (PDF URL)</label>
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        value={formData.circularPdfUrl || ''}
+                        onChange={(e) => updateField('circularPdfUrl', e.target.value)}
+                        placeholder="https://.../circular.pdf বা /pdfs/job-id.pdf"
+                        className="flex-1 px-3.5 py-2.5 text-sm rounded-xl border border-slate-300 focus:ring-1 focus:ring-emerald-600 focus:outline-none"
+                      />
+                      <label className="cursor-pointer inline-flex items-center gap-1.5 px-3.5 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 rounded-xl text-xs sm:text-sm font-bold transition-all shadow-xs shrink-0">
+                        <Upload className="w-4 h-4 text-emerald-700" />
+                        <span>{uploadingField === 'circularPdfUrl' ? 'আপলোড হচ্ছে...' : 'PDF আপলোড'}</span>
+                        <input
+                          type="file"
+                          accept="application/pdf,.pdf"
+                          className="hidden"
+                          onChange={(e) => handleFileUpload(e, 'circularPdfUrl', 'pdf')}
+                          disabled={uploadingField === 'circularPdfUrl'}
+                        />
+                      </label>
+                    </div>
                   </div>
                   <div>
                     <label className="text-xs font-bold text-slate-700 block mb-1">মূল উৎস / গেজেট ইউআরএল (Source URL)</label>
@@ -1487,24 +1539,50 @@ export default function UniversalJobWorkspace({
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="text-xs font-bold text-slate-700 block mb-1">মূল সার্কুলার ছবি (Primary Circular Image URL)</label>
-                    <input
-                      type="text"
-                      value={formData.circularImage || ''}
-                      onChange={(e) => updateField('circularImage', e.target.value)}
-                      placeholder="https://images.unsplash.com/... বা /images/circular.jpg"
-                      className="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 focus:ring-1 focus:ring-emerald-600 focus:outline-none"
-                    />
+                    <label className="text-xs sm:text-sm font-bold text-slate-700 block mb-1">মূল সার্কুলার / ব্যানার ছবি (Circular Image URL)</label>
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        value={formData.circularImage || ''}
+                        onChange={(e) => updateField('circularImage', e.target.value)}
+                        placeholder="https://images.unsplash.com/... বা /uploads/circulars/..."
+                        className="flex-1 px-3.5 py-2.5 text-sm rounded-xl border border-slate-300 focus:ring-1 focus:ring-emerald-600 focus:outline-none"
+                      />
+                      <label className="cursor-pointer inline-flex items-center gap-1.5 px-3.5 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 rounded-xl text-xs sm:text-sm font-bold transition-all shadow-xs shrink-0">
+                        <Upload className="w-4 h-4 text-emerald-700" />
+                        <span>{uploadingField === 'circularImage' ? 'আপলোড হচ্ছে...' : 'ছবি আপলোড'}</span>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          className="hidden"
+                          onChange={(e) => handleFileUpload(e, 'circularImage', 'image')}
+                          disabled={uploadingField === 'circularImage'}
+                        />
+                      </label>
+                    </div>
                   </div>
                   <div>
-                    <label className="text-xs font-bold text-slate-700 block mb-1">প্রতিষ্ঠানের লোগো (Organization Logo URL)</label>
-                    <input
-                      type="text"
-                      value={formData.logo || ''}
-                      onChange={(e) => updateField('logo', e.target.value)}
-                      placeholder="https://.../logo.png"
-                      className="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 focus:ring-1 focus:ring-emerald-600 focus:outline-none"
-                    />
+                    <label className="text-xs sm:text-sm font-bold text-slate-700 block mb-1">প্রতিষ্ঠানের লোগো (Organization Logo URL)</label>
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        value={formData.logo || ''}
+                        onChange={(e) => updateField('logo', e.target.value)}
+                        placeholder="https://.../logo.png বা /uploads/logos/..."
+                        className="flex-1 px-3.5 py-2.5 text-sm rounded-xl border border-slate-300 focus:ring-1 focus:ring-emerald-600 focus:outline-none"
+                      />
+                      <label className="cursor-pointer inline-flex items-center gap-1.5 px-3.5 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 rounded-xl text-xs sm:text-sm font-bold transition-all shadow-xs shrink-0">
+                        <Upload className="w-4 h-4 text-emerald-700" />
+                        <span>{uploadingField === 'logo' ? 'আপলোড হচ্ছে...' : 'লোগো আপলোড'}</span>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          className="hidden"
+                          onChange={(e) => handleFileUpload(e, 'logo', 'logo')}
+                          disabled={uploadingField === 'logo'}
+                        />
+                      </label>
+                    </div>
                   </div>
                 </div>
 

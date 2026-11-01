@@ -4214,10 +4214,12 @@ export const serverDB = {
     for (const list of Object.values(db.applications)) {
       if (Array.isArray(list)) all.push(...list);
     }
-    const synthApps = SyntheticUserManager.getAllApplications();
-    all.push(...synthApps);
-    if (all.length === 0) return [...mockApplications];
-    return all.sort((a, b) => (b.id > a.id ? 1 : -1));
+    return all.sort((a, b) => {
+      const timeA = new Date(a.createdAt || 0).getTime();
+      const timeB = new Date(b.createdAt || 0).getTime();
+      if (timeB !== timeA) return timeB - timeA;
+      return (b.id > a.id ? 1 : -1);
+    });
   },
 
 

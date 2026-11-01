@@ -9,20 +9,20 @@ export async function POST(req: Request) {
     const { phone, email, username, password, name, district } = body;
 
     if (!phone || !password || !name) {
-      return NextResponse.json({ error: 'à¦¨à¦¾à¦®, à¦®à§‹à¦¬à¦¾à¦‡à¦² à¦¨à¦®à§à¦¬à¦° à¦“ à¦ªà¦¾à¦¸à¦“à§Ÿà¦¾à¦°à§à¦¡ à¦ªà§à¦°à¦¦à¦¾à¦¨ à¦•à¦°à§à¦¨à¥¤' }, { status: 400 });
+      return NextResponse.json({ error: 'নাম, মোবাইল নম্বর ও পাসওয়ার্ড প্রদান করুন।' }, { status: 400 });
     }
 
     const cleanPhone = phone.trim();
     const existingPhone = serverDB.getCandidateByPhone(cleanPhone);
     if (existingPhone) {
-      return NextResponse.json({ error: 'à¦à¦‡ à¦®à§‹à¦¬à¦¾à¦‡à¦² à¦¨à¦®à§à¦¬à¦° à¦¦à¦¿à§Ÿà§‡ à¦‡à¦¤à¦¿à¦®à¦§à§à¦¯à§‡ à¦…à§à¦¯à¦¾à¦•à¦¾à¦‰à¦¨à§à¦Ÿ à¦°à§Ÿà§‡à¦›à§‡à¥¤ à¦¸à¦°à¦¾à¦¸à¦°à¦¿ à¦²à¦—à¦‡à¦¨ à¦•à¦°à§à¦¨à¥¤' }, { status: 409 });
+      return NextResponse.json({ error: 'এই মোবাইল নম্বর দিয়ে ইতিমধ্যে অ্যাকাউন্ট রয়েছে। সরাসরি লগইন করুন।' }, { status: 409 });
     }
 
     if (email && email.trim()) {
       const cleanEmail = email.trim().toLowerCase();
       const existingEmail = serverDB.getCandidateByEmail(cleanEmail);
       if (existingEmail) {
-        return NextResponse.json({ error: 'à¦à¦‡ à¦‡à¦®à§‡à¦‡à¦² à¦¦à¦¿à§Ÿà§‡ à¦‡à¦¤à¦¿à¦®à¦§à§à¦¯à§‡ à¦à¦•à¦Ÿà¦¿ à¦…à§à¦¯à¦¾à¦•à¦¾à¦‰à¦¨à§à¦Ÿ à¦°à§Ÿà§‡à¦›à§‡à¥¤ à¦¸à¦°à¦¾à¦¸à¦°à¦¿ à¦²à¦—à¦‡à¦¨ à¦•à¦°à§à¦¨à¥¤' }, { status: 409 });
+        return NextResponse.json({ error: 'এই ইমেইল দিয়ে ইতিমধ্যে একটি অ্যাকাউন্ট রয়েছে। সরাসরি লগইন করুন।' }, { status: 409 });
       }
     }
 
@@ -39,7 +39,7 @@ export async function POST(req: Request) {
       username: generatedUsername,
       name,
       nameBn: name,
-      district: district || 'à¦¢à¦¾à¦•à¦¾',
+      district: district || 'ঢাকা',
       passwordHash: hashPassword(password),
       role: 'candidate',
       walletBalance: 50, // Welcome bonus

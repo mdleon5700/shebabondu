@@ -1444,15 +1444,15 @@ function AdminContent() {
       ]
     },
     {
-      name: '?????? ???????????? ? ??????????? (BI)',
+      name: 'সার্ভিস ইন্টেলিজেন্স ও অ্যানালিটিক্স (BI)',
       items: [
-        { id: 'analytics-center', label: '??????????? ??????????? ? BI', icon: BarChart3, badge: 'BI', badgeColor: 'bg-indigo-600 text-white' },
-        { id: 'report-builder', label: '??????? ???????? ? ?????????', icon: FileSpreadsheet, badge: 'CSV', badgeColor: 'bg-emerald-600 text-white' },
-        { id: 'data-quality-inspector', label: '???? ????????? ? ????', icon: ShieldCheck, badge: null }
+        { id: 'analytics-center', label: 'অ্যানালিটিক্স ড্যাশবোর্ড ও BI', icon: BarChart3, badge: 'BI', badgeColor: 'bg-indigo-600 text-white' },
+        { id: 'report-builder', label: 'রিপোর্ট বিল্ডার ও এক্সপোর্ট', icon: FileSpreadsheet, badge: 'CSV', badgeColor: 'bg-emerald-600 text-white' },
+        { id: 'data-quality-inspector', label: 'ডাটা কোয়ালিটি ও অডিট', icon: ShieldCheck, badge: null }
       ]
     },
     {
-      name: '?? ?????????',
+      name: 'জব অপারেশনস',
       items: [
         { id: 'circulars', label: 'সকল সার্কুলার', icon: Briefcase, badge: jobs.length },
         { id: 'create-circular', label: 'নতুন সার্কুলার তৈরি', icon: PlusCircle, badge: null },

@@ -36,7 +36,7 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
     }
 
     if (!targetDoc) {
-      return NextResponse.json({ error: 'à¦¡à¦•à§à¦®à§‡à¦¨à§à¦Ÿ à¦¬à¦¾ à¦¸à¦¨à¦¦à¦ªà¦¤à§à¦°à¦Ÿà¦¿ à¦–à§à¦à¦œà§‡ à¦ªà¦¾à¦“à§Ÿà¦¾ à¦¯à¦¾à§Ÿà¦¨à¦¿à¥¤' }, { status: 404 });
+      return NextResponse.json({ error: 'ডকুমেন্ট বা সনদপত্রটি খুঁজে পাওয়া যায়নি।' }, { status: 404 });
     }
 
     // 2. Authorization Guard: Candidate must own document, OR caller must hold admin certificate review permission
@@ -44,7 +44,7 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
     const isAdmin = adminAuth.authorized;
 
     if (!isOwner && !isAdmin) {
-      return NextResponse.json({ error: 'FORBIDDEN: à¦à¦‡ à¦¸à¦¨à¦¦à¦ªà¦¤à§à¦°à¦Ÿà¦¿ à¦¦à§‡à¦–à¦¾à¦° à¦…à¦¨à§à¦®à¦¤à¦¿ à¦†à¦ªà¦¨à¦¾à¦° à¦¨à§‡à¦‡à¥¤' }, { status: 403 });
+      return NextResponse.json({ error: 'FORBIDDEN: এই সনদপত্রটি দেখার অনুমতি আপনার নেই।' }, { status: 403 });
     }
 
     // 3. File existence check and mime mapping
@@ -57,7 +57,7 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
       return NextResponse.json({
         success: true,
         documentMetadata: targetDoc,
-        message: 'à¦¡à¦•à§à¦®à§‡à¦¨à§à¦Ÿ à¦®à§‡à¦Ÿà¦¾à¦¡à¦¾à¦Ÿà¦¾ à¦‰à¦ªà¦²à¦¬à§à¦§ à¦°à§Ÿà§‡à¦›à§‡à¥¤'
+        message: 'ডকুমেন্ট মেটাডাটা উপলব্ধ রয়েছে।'
       });
     }
 
@@ -84,7 +84,7 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
     });
   } catch (error: any) {
     return NextResponse.json(
-      { error: error.message || 'à¦¡à¦•à§à¦®à§‡à¦¨à§à¦Ÿ à¦…à§à¦¯à¦¾à¦•à§à¦¸à§‡à¦¸ à¦•à¦°à¦¤à§‡ à¦¤à§à¦°à§à¦Ÿà¦¿ à¦¹à§Ÿà§‡à¦›à§‡' },
+      { error: error.message || 'ডকুমেন্ট অ্যাক্সেস করতে ত্রুটি হয়েছে' },
       { status: 500 }
     );
   }

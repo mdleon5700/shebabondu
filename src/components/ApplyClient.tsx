@@ -123,6 +123,21 @@ function ApplyFormContent({ initialJob }: ApplyClientProps) {
           setSelectedEduLevels(u.education.map((e: any) => e.level));
         }
       }
+
+      fetch('/api/profile')
+        .then(r => r.json())
+        .then(d => {
+          if (d.success && d.user) {
+            setUserProfile(d.user);
+            if (d.user.name) setCandidateName(d.user.name);
+            if (d.user.phone) setSenderPhone(d.user.phone);
+            if (d.user.district) setCandidateDistrict(d.user.district);
+            if (d.user.education && d.user.education.length > 0) {
+              setSelectedEduLevels(d.user.education.map((e: any) => e.level));
+            }
+          }
+        })
+        .catch(() => {});
       const localDocs = storage.getDocuments();
       setVaultDocs(localDocs);
       if (localDocs.length > 0) {
@@ -948,22 +963,40 @@ function ApplyFormContent({ initialJob }: ApplyClientProps) {
                 </div>
 
                 {/* Wallet Balance */}
-                <div 
-                  onClick={() => setPaymentMethod('Wallet')}
-                  className={`p-4 rounded-2xl border-2 cursor-pointer transition-all flex items-center gap-3 ${
-                    paymentMethod === 'Wallet' 
-                      ? 'border-emerald-600 bg-emerald-50/50 shadow-sm' 
-                      : 'border-slate-200 hover:border-slate-300'
-                  }`}
-                >
-                  <div className="w-10 h-10 rounded-xl bg-emerald-600 text-white font-black text-xs flex items-center justify-center flex-shrink-0">
-                    <Wallet className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <div className="text-xs font-bold text-slate-900">ওয়ালেট ব্যালেন্স</div>
-                    <div className="text-[11px] text-emerald-700 font-bold">ব্যালেন্স: ৳{mockUserProfile.walletBalance}</div>
-                  </div>
-                </div>
+                {(() => {
+                  const userBal = userProfile?.walletBalance ?? 0;
+                  const isInsufficient = userBal < totalFee;
+                  return (
+                    <div 
+                      onClick={() => {
+                        if (isInsufficient) {
+                          alert(`আপনার ওয়ালেট ব্যালেন্স (৳${userBal}) অপর্যাপ্ত। মোট আবেদন ফি ৳${totalFee}। অনুগ্রহ করে বিকাশ অথবা নগদ দিয়ে আবেদন করুন।`);
+                          return;
+                        }
+                        setPaymentMethod('Wallet');
+                      }}
+                      className={`p-4 rounded-2xl border-2 transition-all flex items-center gap-3 ${
+                        isInsufficient
+                          ? 'opacity-60 bg-slate-50 border-slate-200 cursor-not-allowed'
+                          : paymentMethod === 'Wallet' 
+                            ? 'border-emerald-600 bg-emerald-50/50 shadow-sm cursor-pointer' 
+                            : 'border-slate-200 hover:border-slate-300 cursor-pointer'
+                      }`}
+                    >
+                      <div className={`w-10 h-10 rounded-xl font-black text-xs flex items-center justify-center flex-shrink-0 ${
+                        isInsufficient ? 'bg-slate-400 text-white' : 'bg-emerald-600 text-white'
+                      }`}>
+                        <Wallet className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <div className="text-xs font-bold text-slate-900">ওয়ালেট ব্যালেন্স</div>
+                        <div className={`text-[11px] font-bold ${isInsufficient ? 'text-red-600' : 'text-emerald-700'}`}>
+                          ব্যালেন্স: ৳{userBal} {isInsufficient && '(অপর্যাপ্ত)'}
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })()}
               </div>
             </div>
 
@@ -1059,7 +1092,7 @@ function ApplyFormContent({ initialJob }: ApplyClientProps) {
               <div className="bg-emerald-50 border border-emerald-200 p-4 rounded-2xl text-xs text-emerald-900 flex items-center justify-between">
                 <div>
                   <div className="font-bold">ওয়ালেট থেকে স্বয়ংক্রিয়ভাবে ৳{totalFee} কেটে নেওয়া হবে।</div>
-                  <div className="text-[11px] text-slate-600">অবশিষ্ট ব্যালেন্স থাকবে: ৳{mockUserProfile.walletBalance - totalFee}</div>
+                  <div className="text-[11px] text-slate-600">অবশিষ্ট ব্যালেন্স থাকবে: ৳{(userProfile?.walletBalance ?? 0) - totalFee}</div>
                 </div>
                 <span className="text-emerald-700 font-bold bg-white px-3 py-1.5 rounded-xl border border-emerald-200 shadow-sm">
                   ইনস্ট্যান্ট কনফার্মেশন

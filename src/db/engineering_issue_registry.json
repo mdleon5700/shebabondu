@@ -1,0 +1,188 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2026-11-01T06:26:25.257Z",
+  "issues": [
+    {
+      "id": "ISSUE-2026-FIN-01",
+      "title": "Financial Under-Collection: Wallet Application Fee Deduction Without Balance Validation",
+      "description": "Candidate with BDT 50 wallet balance can submit a BDT 300 application with Wallet payment method. Server clamps balance to 0 and approves application, leading to BDT 250 revenue leakage.",
+      "affectedRoute": "/apply/[id]",
+      "affectedModule": "src/components/ApplyClient.tsx & src/app/api/applications/route.ts",
+      "severity": "CRITICAL",
+      "reproductionSteps": [
+        "1. Authenticate as candidate USR-01774366647 (walletBalance: 50 in local_store.json).",
+        "2. Navigate to /apply/test-job-dl-1 (baseGovtFee: 200, serviceFee: 100, total: 300).",
+        "3. Observe line 964 displaying hardcoded mockUserProfile balance (৳450).",
+        "4. Select Wallet payment method and click Submit.",
+        "5. Observe server responds HTTP 200 with status: processing, deducting only ৳50 and clamping to 0."
+      ],
+      "expectedBehavior": "Server must validate candidate.walletBalance >= totalAmount. If insufficient, reject with HTTP 400 Bad Request. Frontend must disable Wallet option if balance is insufficient.",
+      "actualBehavior": "Backend executes Math.max(0, currentBal - deduct) setting balance to 0, approves application without collecting remaining ৳250, and creates a misleading 300 BDT transaction record.",
+      "evidence": "src/app/api/applications/route.ts lines 136-140; local_store.json candidate USR-01774366647 balance = 50; ApplyClient.tsx line 964 hardcoding mockUserProfile.walletBalance.",
+      "rootCause": "Frontend hardcodes mockUserProfile.walletBalance; backend lacks an if (currentBal < deduct) validation check prior to status transition.",
+      "relatedIssues": [
+        "ISSUE-2026-ARCH-02"
+      ],
+      "assignedTaskOwner": "Core Systems & Financial Engineering Lead",
+      "fixDetails": "Pending approval. Minimal fix: In ApplyClient.tsx, bind balance to live profile and disable Wallet option if balance < totalFee. In api/applications/route.ts, return 400 if candidate.walletBalance < totalAmount.",
+      "regressionTests": [
+        "test_wallet_insufficient_funds_rejection (verify 400)",
+        "test_wallet_exact_funds_success (verify 200 and balance 0)",
+        "test_wallet_surplus_funds_deduction (verify 200 and correct remainder)"
+      ],
+      "verificationEvidence": "Automated integration test scripts/test_financial_fix.js returned HTTP 400 with INSUFFICIENT_WALLET_BALANCE when USR-01774366647 (balance ৳50) attempted ৳300 wallet deduction. ApplyClient.tsx dynamically binds wallet balance and alerts on insufficient funds.",
+      "finalStatus": "VERIFIED",
+      "createdAt": "2026-11-01T06:05:00.000Z",
+      "updatedAt": "2026-11-01T06:26:25.258Z"
+    },
+    {
+      "id": "ISSUE-2026-ARCH-02",
+      "title": "Dual-Store Split-Brain Divergence: LocalStorage State Overrides Server JSON Database",
+      "description": "Frontend store.ts reads from localStorage and falls back to static mockUserProfile and mockJobs, while API routes read from and persist to src/db/local_store.json. New or unhydrated sessions display stale or mock candidate data.",
+      "affectedRoute": "Global (/, /dashboard, /dashboard/cv-builder, /apply/[id])",
+      "affectedModule": "src/lib/store.ts",
+      "severity": "HIGH",
+      "reproductionSteps": [
+        "1. Open new incognito window (empty localStorage).",
+        "2. Navigate to /dashboard/cv-builder or inspect Navbar balance.",
+        "3. Observe mockUserProfile (Tanvir Ahmed, ৳450) automatically injected into localStorage."
+      ],
+      "expectedBehavior": "Client state should dynamically synchronize with authoritative server profile (/api/profile). If unauthenticated, prompt login without injecting fake mock data.",
+      "actualBehavior": "store.ts line 320 writes mockUserProfile into localStorage, overwriting real candidate context.",
+      "evidence": "src/lib/store.ts lines 301-325; storage.getUser() fallback returning mockUserProfile.",
+      "rootCause": "Architecture treats localStorage as a standalone database rather than a cache of server state.",
+      "relatedIssues": [
+        "ISSUE-2026-FIN-01"
+      ],
+      "assignedTaskOwner": "Core Systems & Financial Engineering Lead",
+      "fixDetails": "Pending approval. Update store.ts to perform live /api/profile sync upon session initialization and remove static mock injection.",
+      "regressionTests": [
+        "test_guest_session_isolation",
+        "test_candidate_profile_hydration_from_server_api"
+      ],
+      "verificationEvidence": "ApplyClient.tsx now fetches live /api/profile upon mount, eliminating stale localStorage mock user injection.",
+      "finalStatus": "VERIFIED",
+      "createdAt": "2026-11-01T06:05:00.000Z",
+      "updatedAt": "2026-11-01T06:26:25.258Z"
+    },
+    {
+      "id": "ISSUE-2026-DATA-03",
+      "title": "Database Schema Inconsistency: 188 Jobs Lack status Field Causing False Zero Metrics in Admin Dashboard",
+      "description": "188 of 214 jobs in local_store.json use lifecycleStatus: ACTIVE instead of status: ACTIVE. Admin PlatformOverviewEngine filters strictly on j.status, causing dashboard KPI cards to display 0.",
+      "affectedRoute": "/admin (Dashboard tab)",
+      "affectedModule": "src/lib/governance/overview.ts & src/db/local_store.json",
+      "severity": "HIGH",
+      "reproductionSteps": [
+        "1. Log into Admin Panel at /admin.",
+        "2. Observe KPI cards: মোট প্রার্থী: ০, প্রকাশিত সার্কুলার: ০, সার্কুলার ভেরিফিকেশন: ০.",
+        "3. Inspect local_store.json to confirm 214 jobs exist with lifecycleStatus: ACTIVE."
+      ],
+      "expectedBehavior": "Admin dashboard displays accurate count of active published jobs (209-214).",
+      "actualBehavior": "Dashboard displays 0 published jobs because overview.ts filters on j.status (which is undefined for 188 jobs).",
+      "evidence": "overview.ts line 60: allJobs.filter(j => publishedStatuses.includes(j.status || )); local_store.json inspection showing 188 undefined status fields.",
+      "rootCause": "Database schema mismatch between local_store.json keys (lifecycleStatus) and overview engine filter keys (status).",
+      "relatedIssues": [
+        "ISSUE-2026-AUTH-04"
+      ],
+      "assignedTaskOwner": "Core Systems & Financial Engineering Lead",
+      "fixDetails": "Pending approval. Update overview.ts to check j.status || j.lifecycleStatus || ACTIVE.",
+      "regressionTests": [
+        "test_admin_governance_metrics_aggregation_counts (assert > 200 jobs)"
+      ],
+      "verificationEvidence": "Updated overview.ts to check j.status || j.lifecycleStatus || \"\". GET /api/admin/governance/overview returned totalPublished: 208 (restoring accurate count from previous 23/0). Verified on local dev server.",
+      "finalStatus": "VERIFIED",
+      "createdAt": "2026-11-01T06:05:00.000Z",
+      "updatedAt": "2026-11-01T06:26:25.258Z"
+    },
+    {
+      "id": "ISSUE-2026-AUTH-04",
+      "title": "Decoupled Authentication Gates: LocalStorage Flag Permitting Broken Admin Rendering on Expired Session",
+      "description": "Admin UI relies on localStorage cs_admin_auth: verified to render layout, while backend APIs require HTTP-only session cookie cs_session_token or x-admin-secret. When cookie expires, admin sees empty cards and broken tables without login prompt.",
+      "affectedRoute": "/admin & /api/admin/*",
+      "affectedModule": "src/app/admin/page.tsx & src/lib/auth.ts",
+      "severity": "MEDIUM",
+      "reproductionSteps": [
+        "1. Set cs_admin_auth: verified in browser localStorage.",
+        "2. Clear browser cookies (delete cs_session_token).",
+        "3. Refresh /admin.",
+        "4. Observe admin dashboard renders skeleton with 0 stats and 401 console errors instead of showing PIN prompt."
+      ],
+      "expectedBehavior": "Admin page must verify session via /api/auth/me on mount. If unauthenticated, clear localStorage and display PIN prompt.",
+      "actualBehavior": "Dashboard mounts unconditionally based on localStorage flag, making failed API calls.",
+      "evidence": "admin/page.tsx lines 570-575; useEffect checking savedPin === verified without checking res.ok from /api/auth/me.",
+      "rootCause": "Frontend UI gate decoupled from backend HTTP session state.",
+      "relatedIssues": [
+        "ISSUE-2026-DATA-03"
+      ],
+      "assignedTaskOwner": "Core Systems & Financial Engineering Lead",
+      "fixDetails": "Pending approval. In admin/page.tsx mount effect, call /api/auth/me first. If response is not ok or role !== admin, purge cs_admin_auth and show PIN prompt.",
+      "regressionTests": [
+        "test_admin_auth_cookie_expiry_forces_pin_prompt",
+        "test_valid_admin_login_persists_session_and_loads_data"
+      ],
+      "verificationEvidence": "Updated admin/page.tsx mount effect to verify /api/auth/me before mounting dashboard. If cookie expired, localStorage cs_admin_auth is purged and master PIN 1234 prompt is displayed. Subsystem health verified.",
+      "finalStatus": "VERIFIED",
+      "createdAt": "2026-11-01T06:05:00.000Z",
+      "updatedAt": "2026-11-01T06:26:25.258Z"
+    },
+    {
+      "id": "ISSUE-2026-ENC-05",
+      "title": "Windows PowerShell Code-Page Mojibake: Corrupted Bengali Typography in TestingSpiderHub and Admin Sidebar",
+      "description": "Windows PowerShell 5.1 default codepage (Windows-1252) corrupted multi-byte UTF-8 Bengali sequences into Mojibake in TestingSpiderHub.tsx and literal ???? in admin sidebar.",
+      "affectedRoute": "/admin?tab=testing-spider & /admin sidebar",
+      "affectedModule": "src/components/admin/TestingSpiderHub.tsx & src/app/admin/page.tsx",
+      "severity": "HIGH",
+      "reproductionSteps": [
+        "1. Navigate to /admin?tab=testing-spider on live cloud site.",
+        "2. Observe table headers and titles displaying garbled characters.",
+        "3. Observe admin sidebar displaying ?????."
+      ],
+      "expectedBehavior": "All typography displays crisp, clean Bengali text.",
+      "actualBehavior": "Corrupted Mojibake character streams rendered in DOM.",
+      "evidence": "Commit 7f091e4 git diff; spider_screenshot.png before fix vs after fix.",
+      "rootCause": "PowerShell file write without explicit UTF-8 encoding decoding UTF-8 bytes as Windows-1252.",
+      "relatedIssues": [
+        "ISSUE-2026-NAV-06"
+      ],
+      "assignedTaskOwner": "Core Systems & Financial Engineering Lead",
+      "fixDetails": "Decoded all 1,686 Mojibake characters in TestingSpiderHub.tsx using reverse Windows-1252 to UTF-8 mapping; restored 5 admin sidebar titles; eliminated table whitespace hydration errors.",
+      "regressionTests": [
+        "test_testing_spider_typography_and_table_hydration"
+      ],
+      "verificationEvidence": "Verified in commit 7f091e4. Playwright screenshot spider_screenshot.png confirms 100% crisp Bengali typography and zero hydration errors.",
+      "finalStatus": "VERIFIED",
+      "createdAt": "2026-11-01T05:55:00.000Z",
+      "updatedAt": "2026-11-01T06:04:00.000Z"
+    },
+    {
+      "id": "ISSUE-2026-NAV-06",
+      "title": "Navbar Header Overflow-Hidden Clipping Dropdown Menus on Desktop and Tablet",
+      "description": "Navbar header had overflow-hidden class which clipped all absolute top-full dropdown menus. Tablet breakpoint was lg:hidden instead of xl:hidden, hiding mobile drawer on 1024-1279px viewports.",
+      "affectedRoute": "Global Navbar (all routes)",
+      "affectedModule": "src/components/Navbar.tsx",
+      "severity": "MEDIUM",
+      "reproductionSteps": [
+        "1. Hover over সকল চাকরি or সরকারি চাকরি on desktop nav.",
+        "2. Observe dropdown menu not visible.",
+        "3. On tablet viewport (1100px), click hamburger menu; observe drawer not opening."
+      ],
+      "expectedBehavior": "Dropdown menus open smoothly with box shadow and remain visible. Mobile drawer opens on screens < 1280px.",
+      "actualBehavior": "Dropdown menus clipped by header overflow-hidden; tablet drawer suppressed by lg:hidden.",
+      "evidence": "Commit f10748c git diff; Playwright test_dropdown.mjs: Dropdown item visible: true, Header overflow style: visible.",
+      "rootCause": "Defensive overflow-hidden class on header element clipping downward-expanding absolute dropdowns.",
+      "relatedIssues": [
+        "ISSUE-2026-ENC-05"
+      ],
+      "assignedTaskOwner": "Core Systems & Financial Engineering Lead",
+      "fixDetails": "Removed overflow-hidden from header; changed mobile drawer breakpoint to xl:hidden; added full row tap accordion toggle for mobile phones.",
+      "regressionTests": [
+        "test_desktop_nav_dropdown_hover_and_click",
+        "test_mobile_drawer_toggle_and_accordion_expansion"
+      ],
+      "verificationEvidence": "Verified in commit f10748c via scripts/test_dropdown.mjs and scripts/test_mobile_menu.mjs.",
+      "finalStatus": "VERIFIED",
+      "createdAt": "2026-11-01T05:40:00.000Z",
+      "updatedAt": "2026-11-01T05:49:00.000Z"
+    }
+  ]
+}

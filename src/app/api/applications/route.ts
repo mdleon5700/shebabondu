@@ -133,10 +133,20 @@ export async function POST(req: Request) {
     const isWalletPay = appData.paymentMethod === 'Wallet';
     const computedStatus = isWalletPay ? 'processing' : (appData.status || 'pending_payment');
 
-    if (isWalletPay && candidate) {
+    if (isWalletPay) {
+      if (!candidate) {
+        return NextResponse.json({ 
+          error: 'WALLET_AUTH_REQUIRED: ওয়ালেট পেমেন্টের জন্য প্রার্থী হিসেবে লগইন করা আবশ্যক।' 
+        }, { status: 401 });
+      }
       const currentBal = candidate.walletBalance || 0;
       const deduct = appData.totalAmount || 0;
-      const newBal = Math.max(0, currentBal - deduct);
+      if (currentBal < deduct) {
+        return NextResponse.json({ 
+          error: `INSUFFICIENT_WALLET_BALANCE: অপর্যাপ্ত ওয়ালেট ব্যালেন্স! আপনার বর্তমান ওয়ালেট ব্যালেন্স ৳${currentBal}, কিন্তু এই আবেদনের মোট ফি ৳${deduct}। অনুগ্রহ করে বিকাশ বা নগদ দিয়ে আবেদন করুন অথবা ওয়ালেটে টাকা রিচার্জ করুন।` 
+        }, { status: 400 });
+      }
+      const newBal = currentBal - deduct;
       serverDB.updateCandidate(candidateId!, { walletBalance: newBal });
       const walletTx = {
         id: `TXN-${Date.now().toString().slice(-6)}`,

@@ -1,0 +1,1280 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2026-11-01T06:21:29.318Z",
+  "systemSummary": {
+    "totalRoutes": 94,
+    "totalApis": 147,
+    "totalComponents": 40,
+    "totalLibModules": 205,
+    "databaseRecords": {
+      "candidates": 41,
+      "jobs": 214,
+      "applications": 42,
+      "savedJobs": 42,
+      "transactions": 22,
+      "notifications": 44,
+      "auditLogs": 2537,
+      "drafts": 30,
+      "categories": 27
+    }
+  },
+  "statistics": {
+    "totalDiscoveredLogicUnits": 32,
+    "fullyImplemented": 25,
+    "partiallyImplemented": 2,
+    "broken": 4,
+    "duplicate": 1,
+    "disconnected": 0,
+    "missing": 1,
+    "unverified": 0,
+    "deprecated": 0
+  },
+  "modules": [
+    {
+      "id": "BL-01-AUTH-01",
+      "domain": "1. Authentication and Identity",
+      "name": "Candidate Multi-Identifier Authentication & Salted Hash Verification",
+      "purpose": "Authenticate candidates via phone, email, or username using salted SHA-256 password hashing with rate-limited brute-force protection.",
+      "trigger": "POST /api/auth/login",
+      "inputData": "{ identifier, password, role }",
+      "validationRules": "Identifier and password required; minimum password length 6; max 5 failed attempts per IP/account within 15 minutes.",
+      "processingSteps": [
+        "Check rate limit",
+        "Query candidate by phone/email/username",
+        "Verify password hash",
+        "Generate session token",
+        "Set cs_session_token cookie"
+      ],
+      "businessRules": "Demo candidate auto-created on first login if absent; guest access returns null gracefully without 401.",
+      "relatedFiles": [
+        "src/lib/auth.ts",
+        "src/app/api/auth/login/route.ts"
+      ],
+      "relatedRoutes": [
+        "/login",
+        "/register"
+      ],
+      "relatedApis": [
+        "/api/auth/login",
+        "/api/auth/me",
+        "/api/auth/logout"
+      ],
+      "databaseModels": [
+        "candidates.passwordHash",
+        "sessions"
+      ],
+      "dependencies": [
+        "serverDB.createSession",
+        "serverDB.getCandidateByIdentifier"
+      ],
+      "outputState": "Session record persisted; HTTP-only cookie set.",
+      "errorHandling": "HTTP 401 on incorrect credentials; HTTP 429 on rate limit lockout.",
+      "securityReq": "Rate-limited public endpoint.",
+      "status": "FULLY_IMPLEMENTED"
+    },
+    {
+      "id": "BL-01-AUTH-02",
+      "domain": "1. Authentication and Identity",
+      "name": "Admin Timing-Safe Secret PIN Gate",
+      "purpose": "Grant administrative access across the platform via timing-safe comparison of master PIN (1234) or environment secret key.",
+      "trigger": "POST /api/auth/login (role: 'admin'), header x-admin-secret",
+      "inputData": "{ role: 'admin', adminPin: string }",
+      "validationRules": "PIN must match 1234 or ADMIN_SECRET_KEY using constant-time comparison.",
+      "processingSteps": [
+        "Check rate limit",
+        "Run crypto.timingSafeEqual on provided PIN",
+        "Issue ADMIN-SUPER session token",
+        "Log in adminAuditLogs"
+      ],
+      "businessRules": "Master admin PIN 1234 supported across all cloud and local environments.",
+      "relatedFiles": [
+        "src/lib/auth.ts",
+        "src/app/api/auth/login/route.ts"
+      ],
+      "relatedRoutes": [
+        "/admin"
+      ],
+      "relatedApis": [
+        "/api/auth/login",
+        "/api/admin/*"
+      ],
+      "databaseModels": [
+        "sessions",
+        "adminAuditLogs"
+      ],
+      "dependencies": [
+        "verifyAdminSecret",
+        "serverDB.createSession"
+      ],
+      "outputState": "Admin session created with candidateId: 'ADMIN-SUPER', role: 'admin'.",
+      "errorHandling": "HTTP 401 on invalid PIN.",
+      "securityReq": "Super Admin privileges.",
+      "status": "FULLY_IMPLEMENTED"
+    },
+    {
+      "id": "BL-01-AUTH-03",
+      "domain": "1. Authentication and Identity",
+      "name": "Admin Client-Server Session Synchronization",
+      "purpose": "Synchronize client localStorage cs_admin_auth with server HTTP-only session cookie cs_session_token.",
+      "trigger": "Mount of /admin page",
+      "inputData": "localStorage cs_admin_auth, cookie cs_session_token",
+      "validationRules": "Server API /api/auth/me must return { isLoggedIn: true, role: 'admin' }.",
+      "processingSteps": [
+        "Check localStorage",
+        "Call /api/auth/me",
+        "If valid, render admin console",
+        "If expired, purge localStorage and prompt PIN"
+      ],
+      "businessRules": "Never display empty skeleton dashboard when session cookie is expired.",
+      "relatedFiles": [
+        "src/app/admin/page.tsx",
+        "src/lib/auth.ts"
+      ],
+      "relatedRoutes": [
+        "/admin"
+      ],
+      "relatedApis": [
+        "/api/auth/me"
+      ],
+      "databaseModels": [
+        "sessions"
+      ],
+      "dependencies": [
+        "BL-01-AUTH-02"
+      ],
+      "outputState": "Synchronized admin authentication state.",
+      "errorHandling": "Purge stale credentials on 401/403.",
+      "securityReq": "Admin gate guard.",
+      "status": "BROKEN"
+    },
+    {
+      "id": "BL-02-USER-01",
+      "domain": "2. User Management",
+      "name": "Candidate Unique Registration & Account Lifecycle",
+      "purpose": "Register new candidates with unique phone-based ID format USR-XXXXXXXXXX and initial 0 BDT wallet balance.",
+      "trigger": "POST /api/auth/register",
+      "inputData": "{ name, phone, email, password }",
+      "validationRules": "Phone must be valid Bangladeshi format (01XXXXXXXXX); email must be valid; phone and email unique.",
+      "processingSteps": [
+        "Verify phone/email uniqueness",
+        "Hash password",
+        "Create candidate record with walletBalance: 0",
+        "Save to DB",
+        "Issue session"
+      ],
+      "businessRules": "Every candidate starts with a clean profile and free platform access.",
+      "relatedFiles": [
+        "src/app/api/auth/register/route.ts",
+        "src/lib/db.ts"
+      ],
+      "relatedRoutes": [
+        "/register"
+      ],
+      "relatedApis": [
+        "/api/auth/register"
+      ],
+      "databaseModels": [
+        "candidates",
+        "sessions"
+      ],
+      "dependencies": [
+        "BL-01-AUTH-01"
+      ],
+      "outputState": "New candidate saved in DB; session issued.",
+      "errorHandling": "HTTP 409 if phone or email already registered.",
+      "securityReq": "Public registration.",
+      "status": "FULLY_IMPLEMENTED"
+    },
+    {
+      "id": "BL-03-PROF-01",
+      "domain": "3. User Profiles",
+      "name": "Authoritative 360-Degree Profile Retrieval & Storage Cache Invalidation",
+      "purpose": "Deliver live candidate profile to client from serverDB, stripping password hashes and hydrating client state.",
+      "trigger": "GET /api/profile, GET /api/user/profile",
+      "inputData": "Session cookie or x-candidate-id header",
+      "validationRules": "Valid candidate session.",
+      "processingSteps": [
+        "Resolve candidate from session",
+        "Fetch candidate from serverDB",
+        "Strip passwordHash",
+        "Return live profile"
+      ],
+      "businessRules": "Client store.ts must hydrate from this endpoint instead of hardcoded mockUserProfile.",
+      "relatedFiles": [
+        "src/app/api/profile/route.ts",
+        "src/lib/store.ts"
+      ],
+      "relatedRoutes": [
+        "/dashboard/profile",
+        "/dashboard",
+        "/dashboard/cv-builder"
+      ],
+      "relatedApis": [
+        "/api/profile"
+      ],
+      "databaseModels": [
+        "candidates"
+      ],
+      "dependencies": [
+        "BL-01-AUTH-01"
+      ],
+      "outputState": "Candidate profile object delivered to client.",
+      "errorHandling": "Return null profile with HTTP 200 for guest sessions.",
+      "securityReq": "Candidate session.",
+      "status": "BROKEN"
+    },
+    {
+      "id": "BL-04-EDU-01",
+      "domain": "4. Education and Qualifications",
+      "name": "Bangladesh Education Hierarchy & Degree Catalog Mapping",
+      "purpose": "Define canonical ranks (PSC: 5, JSC: 8, SSC: 10, HSC: 12, Diploma: 14, Bachelor: 16, Masters: 17, PhD: 20) and validate degree prerequisites.",
+      "trigger": "Candidate education update, eligibility check",
+      "inputData": "{ level, degreeTitle, institute, passingYear, gpa, maxGpa, board }",
+      "validationRules": "Level must exist in catalog; GPA between 1.0 and maxGpa; passingYear between 1971 and currentYear.",
+      "processingSteps": [
+        "Validate against catalog",
+        "Assign rank weight",
+        "Update candidate education in serverDB",
+        "Invalidate matching cache"
+      ],
+      "businessRules": "Higher degree automatically satisfies lower prerequisite levels in job eligibility rules.",
+      "relatedFiles": [
+        "src/lib/education/catalog.ts",
+        "src/lib/education/validator.ts",
+        "src/app/api/user/education/route.ts"
+      ],
+      "relatedRoutes": [
+        "/dashboard/education"
+      ],
+      "relatedApis": [
+        "/api/user/education",
+        "/api/user/education/[id]"
+      ],
+      "databaseModels": [
+        "candidates.education"
+      ],
+      "dependencies": [
+        "BL-03-PROF-01"
+      ],
+      "outputState": "Education record persisted in candidate document.",
+      "errorHandling": "HTTP 400 on invalid GPA or degree title.",
+      "securityReq": "Candidate session required.",
+      "status": "FULLY_IMPLEMENTED"
+    },
+    {
+      "id": "BL-05-DOC-01",
+      "domain": "5. Document Management",
+      "name": "Applicant Document Vault & Government Spec Validation",
+      "purpose": "Validate and store applicant photos (300x300, <100KB), signatures (300x80, <60KB), NID cards, and certificates.",
+      "trigger": "POST /api/candidate/upload-document, POST /api/documents",
+      "inputData": "Base64 or binary file with { type, category, filename, size }",
+      "validationRules": "Allowed MIME: image/jpeg, image/png, application/pdf; size strictly constrained per type.",
+      "processingSteps": [
+        "Validate MIME and size",
+        "Save in serverDB.documents with DOC-XXXXXXXXXX ID",
+        "Update candidate document pointers",
+        "Persist to DB"
+      ],
+      "businessRules": "Teletalk standard 300x300 photo and 300x80 signature required for automated tele-talk application filing.",
+      "relatedFiles": [
+        "src/app/api/candidate/upload-document/route.ts",
+        "src/app/api/documents/route.ts"
+      ],
+      "relatedRoutes": [
+        "/dashboard/vault",
+        "/dashboard/profile"
+      ],
+      "relatedApis": [
+        "/api/candidate/upload-document",
+        "/api/documents"
+      ],
+      "databaseModels": [
+        "documents",
+        "candidates.documents"
+      ],
+      "dependencies": [
+        "BL-03-PROF-01"
+      ],
+      "outputState": "Document stored in DB documents collection.",
+      "errorHandling": "HTTP 400 on dimension mismatch or file size overflow.",
+      "securityReq": "Candidate session.",
+      "status": "FULLY_IMPLEMENTED"
+    },
+    {
+      "id": "BL-06-SPID-01",
+      "domain": "6. Job Spider and Collection",
+      "name": "Autonomous Multi-Source Recruitment Crawler",
+      "purpose": "Collect raw circulars from Teletalk, BPSC, Bangladesh Bank, and Ministry career portals with backoff and rate-limiting.",
+      "trigger": "POST /api/admin/sources/run, GET /api/cron/scraper",
+      "inputData": "{ sourceId, forceFullScan: boolean }",
+      "validationRules": "Source must be active in jobSources registry.",
+      "processingSteps": [
+        "Fetch source endpoint with 3s rate-limit",
+        "Parse HTML links or PDF attachments",
+        "Detect duplicates via URL/hash",
+        "Queue into circularDrafts",
+        "Record run in spiderRuns"
+      ],
+      "businessRules": "Never re-download identical PDF circulars already processed within the last 30 days.",
+      "relatedFiles": [
+        "src/lib/collector/orchestrator.ts",
+        "src/lib/collector/teletalk_adapter.ts",
+        "src/lib/collector/bpsc_adapter.ts",
+        "src/lib/collector/bb_adapter.ts"
+      ],
+      "relatedRoutes": [
+        "/admin?tab=testing-spider",
+        "/admin?tab=sources"
+      ],
+      "relatedApis": [
+        "/api/admin/sources/run",
+        "/api/cron/scraper"
+      ],
+      "databaseModels": [
+        "jobSources",
+        "spiderRuns",
+        "circularDrafts"
+      ],
+      "dependencies": [
+        "serverDB.saveSpiderRun"
+      ],
+      "outputState": "Spider run record created; drafts appended to queue.",
+      "errorHandling": "Log HTTP failure in spiderRuns without halting pipeline.",
+      "securityReq": "Admin or Cron secret.",
+      "status": "FULLY_IMPLEMENTED"
+    },
+    {
+      "id": "BL-08-EXTR-01",
+      "domain": "8. HTML and PDF Extraction",
+      "name": "Circular Table & Position Parser",
+      "purpose": "Extract positions, grades, vacancies, minimum degrees, and application deadlines from raw circular PDF/HTML text.",
+      "trigger": "Ingestion pipeline after spider fetch",
+      "inputData": "Extracted text string or PDF buffer",
+      "validationRules": "Input text must contain at least 100 characters and recruitment keywords.",
+      "processingSteps": [
+        "Run regex extractors for dates",
+        "Parse tabular position rows",
+        "Parse application fee structure",
+        "Store structured payload in circularDrafts"
+      ],
+      "businessRules": "Identify official Teletalk submission URL and application start/end dates.",
+      "relatedFiles": [
+        "src/lib/collector/pdf_extractor.ts",
+        "src/lib/collector/html_parser.ts",
+        "src/lib/collector/pdf_parser.ts"
+      ],
+      "relatedRoutes": [
+        "/admin?tab=testing-spider"
+      ],
+      "relatedApis": [
+        "/api/admin/sources/drafts"
+      ],
+      "databaseModels": [
+        "circularDrafts"
+      ],
+      "dependencies": [
+        "BL-06-SPID-01"
+      ],
+      "outputState": "Structured draft in circularDrafts collection.",
+      "errorHandling": "Flag draft as manual_review_required if parsing fails.",
+      "securityReq": "Internal pipeline.",
+      "status": "FULLY_IMPLEMENTED"
+    },
+    {
+      "id": "BL-09-NORM-01",
+      "domain": "9. Job Normalization",
+      "name": "Circular Normalization, Mojibake Prevention & Sanitization",
+      "purpose": "Standardize raw parsed circular data into clean UTF-8 Bengali typography and canonical JobCircular schema.",
+      "trigger": "Ingestion pipeline before verification",
+      "inputData": "Raw circular draft payload",
+      "validationRules": "Title, organization, and deadline must be non-empty.",
+      "processingSteps": [
+        "Strip Windows-1252 Mojibake sequences",
+        "Clean whitespace and HTML tags",
+        "Parse deadline to ISO 8601",
+        "Map government pay scale to grade"
+      ],
+      "businessRules": "Zero tolerance for corrupt encoding in published circular text.",
+      "relatedFiles": [
+        "src/lib/collector/normalizer.ts",
+        "src/lib/collector/security.ts",
+        "src/lib/collector/ingestion.ts"
+      ],
+      "relatedRoutes": [
+        "/admin?tab=testing-spider"
+      ],
+      "relatedApis": [
+        "/api/admin/sources/drafts"
+      ],
+      "databaseModels": [
+        "circularDrafts"
+      ],
+      "dependencies": [
+        "BL-08-EXTR-01"
+      ],
+      "outputState": "Normalized circular draft ready for review.",
+      "errorHandling": "Reject draft if organization name is missing.",
+      "securityReq": "Sanitization rule.",
+      "status": "FULLY_IMPLEMENTED"
+    },
+    {
+      "id": "BL-10-VERIF-01",
+      "domain": "10. AI Verification and Manual Review",
+      "name": "12-Factor Deterministic & Gemini AI Verification Engine",
+      "purpose": "Audit recruitment circulars across 12 mandatory criteria (title, org, deadline, positions, eligibility, fees) with AI hallucination check.",
+      "trigger": "POST /api/admin/verification/verify/[id]",
+      "inputData": "Draft ID or full circular draft object",
+      "validationRules": "12 mandatory checks: title, org, positions, vacancies, minEducation, ageLimit, deadline, fee, sourceLink, terms, quota, contact.",
+      "processingSteps": [
+        "Run deterministic rules engine",
+        "Query Gemini AI if API key present",
+        "Compute confidence score (0-100%)",
+        "Auto-pass if >= 90% and rules pass"
+      ],
+      "businessRules": "Circulars with confidence < 80% cannot be auto-published.",
+      "relatedFiles": [
+        "src/lib/verification/deterministic_engine.ts",
+        "src/lib/verification/confidence_engine.ts",
+        "src/lib/verification/gemini_provider.ts",
+        "src/lib/verification/orchestrator.ts"
+      ],
+      "relatedRoutes": [
+        "/admin?tab=job-verification"
+      ],
+      "relatedApis": [
+        "/api/admin/verification/*"
+      ],
+      "databaseModels": [
+        "verificationResults",
+        "verificationQueue"
+      ],
+      "dependencies": [
+        "BL-09-NORM-01"
+      ],
+      "outputState": "VerificationResult saved with confidence score.",
+      "errorHandling": "Fallback to deterministic engine if Gemini AI quota exceeded.",
+      "securityReq": "verification.review permission.",
+      "status": "FULLY_IMPLEMENTED"
+    },
+    {
+      "id": "BL-11-JOB-01",
+      "domain": "11. Job Creation and Management",
+      "name": "Job Circular CRUD & Sub-Position Structure",
+      "purpose": "Create, read, update, and soft-delete job circulars with multiple sub-positions, salaries, and eligibility rules.",
+      "trigger": "POST /api/admin/jobs, PUT /api/admin/jobs/[id], DELETE /api/admin/jobs/[id]",
+      "inputData": "JobCircular object with positions array",
+      "validationRules": "Title, organization, category, deadline required; sub-positions must include title, posts, minEducation.",
+      "processingSteps": [
+        "Validate required fields",
+        "Generate unique job ID if creating new",
+        "Persist to serverDB.jobs",
+        "Append entry to adminAuditLogs"
+      ],
+      "businessRules": "Deleted jobs are flagged as ARCHIVED or removed; foreign key references in applications remain intact.",
+      "relatedFiles": [
+        "src/app/api/admin/jobs/route.ts",
+        "src/app/api/admin/jobs/[id]/route.ts"
+      ],
+      "relatedRoutes": [
+        "/admin?tab=create-circular",
+        "/admin?tab=jobs"
+      ],
+      "relatedApis": [
+        "/api/admin/jobs",
+        "/api/admin/jobs/[id]"
+      ],
+      "databaseModels": [
+        "jobs",
+        "adminAuditLogs"
+      ],
+      "dependencies": [
+        "BL-01-AUTH-02"
+      ],
+      "outputState": "Job updated in serverDB.jobs.",
+      "errorHandling": "HTTP 400 on missing title or organization.",
+      "securityReq": "jobs.create / jobs.update permission.",
+      "status": "FULLY_IMPLEMENTED"
+    },
+    {
+      "id": "BL-12-PUB-01",
+      "domain": "12. Job Approval and Publishing",
+      "name": "7-State Publishing Lifecycle & Version Snapshot Engine",
+      "purpose": "Enforce strict state progression: DRAFT -> PENDING_VERIFICATION -> VERIFIED -> SCHEDULED -> PUBLISHED -> ARCHIVED.",
+      "trigger": "POST /api/admin/publishing/publish/[id], cron publisher",
+      "inputData": "{ jobId, targetStatus, scheduledDate }",
+      "validationRules": "Must pass publication validator; transitions strictly follow status_machine matrix.",
+      "processingSteps": [
+        "Check if job status allows target transition",
+        "Run pre-publication validator",
+        "Create snapshot in publicationSnapshots",
+        "Update job status to PUBLISHED",
+        "Trigger notification queue"
+      ],
+      "businessRules": "Zero unverified circulars may be transitioned directly to PUBLISHED.",
+      "relatedFiles": [
+        "src/lib/publishing/status_machine.ts",
+        "src/lib/publishing/validator.ts",
+        "src/lib/publishing/orchestrator.ts",
+        "src/lib/publishing/queue.ts"
+      ],
+      "relatedRoutes": [
+        "/admin?tab=publishing-center"
+      ],
+      "relatedApis": [
+        "/api/admin/publishing/*",
+        "/api/cron/publisher"
+      ],
+      "databaseModels": [
+        "jobs",
+        "publicationSnapshots",
+        "publishingQueue"
+      ],
+      "dependencies": [
+        "BL-10-VERIF-01",
+        "BL-11-JOB-01"
+      ],
+      "outputState": "Job published; snapshot created; public cache invalidated.",
+      "errorHandling": "Reject invalid transition with explanation.",
+      "securityReq": "jobs.publish permission.",
+      "status": "FULLY_IMPLEMENTED"
+    },
+    {
+      "id": "BL-12-PUB-02",
+      "domain": "12. Job Approval and Publishing",
+      "name": "Database Job Schema Status Unification",
+      "purpose": "Harmonize legacy lifecycleStatus ('ACTIVE') and status ('ACTIVE') so Admin Overview Engine reports all 214 jobs correctly.",
+      "trigger": "PlatformOverviewEngine aggregation, job publishing",
+      "inputData": "Job object from serverDB.jobs",
+      "validationRules": "Active jobs must be discoverable via status or lifecycleStatus.",
+      "processingSteps": [
+        "Filter jobs by j.status || j.lifecycleStatus || 'ACTIVE'",
+        "Count published circulars accurately",
+        "Display > 200 jobs on Admin Dashboard KPI card"
+      ],
+      "businessRules": "Admin KPI metrics must match actual database records.",
+      "relatedFiles": [
+        "src/lib/governance/overview.ts",
+        "src/lib/db.ts"
+      ],
+      "relatedRoutes": [
+        "/admin"
+      ],
+      "relatedApis": [
+        "/api/admin/governance/overview"
+      ],
+      "databaseModels": [
+        "jobs.status",
+        "jobs.lifecycleStatus"
+      ],
+      "dependencies": [
+        "BL-12-PUB-01"
+      ],
+      "outputState": "Correct circular counts displayed on Admin Dashboard.",
+      "errorHandling": "Fallback to ACTIVE if lifecycleStatus is active.",
+      "securityReq": "Data integrity.",
+      "status": "BROKEN"
+    },
+    {
+      "id": "BL-13-CAT-01",
+      "domain": "13. Job Categories and Classification",
+      "name": "Hierarchical Taxonomy & Automated Keyword Classifier",
+      "purpose": "Classify jobs into 27 categories (Government, Bank, NGO, IT, Engineering, Medical, Defense, Railway, Education).",
+      "trigger": "Job creation or spider ingestion",
+      "inputData": "Job title, organization name, description",
+      "validationRules": "Category slug must exist in taxonomy catalog.",
+      "processingSteps": [
+        "Normalize text and extract keyword tokens",
+        "Score category affinities from defaults taxonomy",
+        "Assign primary category and SEO URL slug",
+        "Assign secondary category tags"
+      ],
+      "businessRules": "BPSC and Ministry circulars are auto-assigned to 'government-jobs'.",
+      "relatedFiles": [
+        "src/lib/taxonomy/classifier.ts",
+        "src/lib/taxonomy/defaults.ts",
+        "src/lib/taxonomy/validator.ts"
+      ],
+      "relatedRoutes": [
+        "/categories",
+        "/categories/[slug]",
+        "/government-jobs",
+        "/bank-jobs"
+      ],
+      "relatedApis": [
+        "/api/categories",
+        "/api/categories/tree"
+      ],
+      "databaseModels": [
+        "categories",
+        "jobs.category"
+      ],
+      "dependencies": [
+        "BL-11-JOB-01"
+      ],
+      "outputState": "Category slug and hierarchy metadata assigned.",
+      "errorHandling": "Assign 'private-jobs' as fallback.",
+      "securityReq": "Public classification.",
+      "status": "FULLY_IMPLEMENTED"
+    },
+    {
+      "id": "BL-14-SRCH-01",
+      "domain": "14. Job Search and Filtering",
+      "name": "Multilingual TF-IDF Relevance Search & Faceted Filter",
+      "purpose": "Execute full-text searches with Bengali stemming and facet by organization, district, education, and grade.",
+      "trigger": "GET /api/jobs/search, GET /api/jobs",
+      "inputData": "{ q, category, district, minEducation, page, limit }",
+      "validationRules": "Sanitize search string; page size <= 50.",
+      "processingSteps": [
+        "Tokenize query using Bengali stemmer and normalizer",
+        "Score jobs across title (3.0), org (2.0), description (1.0)",
+        "Filter out expired jobs",
+        "Sort by relevance or deadline",
+        "Record query in searchAnalytics"
+      ],
+      "businessRules": "Expired jobs hidden from public search to prevent invalid applications.",
+      "relatedFiles": [
+        "src/lib/search/engine.ts",
+        "src/lib/search/normalizer.ts",
+        "src/lib/search/scorer.ts"
+      ],
+      "relatedRoutes": [
+        "/jobs",
+        "/government-jobs",
+        "/bank-jobs",
+        "/it-jobs"
+      ],
+      "relatedApis": [
+        "/api/jobs/search",
+        "/api/jobs"
+      ],
+      "databaseModels": [
+        "jobs",
+        "searchAnalytics"
+      ],
+      "dependencies": [
+        "BL-13-CAT-01"
+      ],
+      "outputState": "Search results with facet counts and pagination.",
+      "errorHandling": "Return empty results array with alternative suggestions.",
+      "securityReq": "Public search.",
+      "status": "FULLY_IMPLEMENTED"
+    },
+    {
+      "id": "BL-15-ELIG-01",
+      "domain": "15. Job Details and Eligibility",
+      "name": "Real-Time Candidate Eligibility Breakdown Engine",
+      "purpose": "Evaluate candidate eligibility (Eligible, Conditional, Ineligible) based on age, education, district quota, and special quotas.",
+      "trigger": "POST /api/eligibility/check, view of /jobs/[id]",
+      "inputData": "{ candidateId, jobId }",
+      "validationRules": "Valid candidate ID and job ID.",
+      "processingSteps": [
+        "Load candidate profile and job circular",
+        "Calculate candidate age on reference date",
+        "Check education level against minimum required",
+        "Check quota age extensions (32 for FF/disabled)",
+        "Check district exclusions",
+        "Return rule-by-rule breakdown"
+      ],
+      "businessRules": "Never fabricate missing profile data; prompt candidate to update profile if data is incomplete.",
+      "relatedFiles": [
+        "src/lib/matching/engine.ts",
+        "src/lib/matching/explainer.ts",
+        "src/app/api/eligibility/check/route.ts"
+      ],
+      "relatedRoutes": [
+        "/jobs/[id]",
+        "/dashboard/eligible-jobs"
+      ],
+      "relatedApis": [
+        "/api/eligibility/check"
+      ],
+      "databaseModels": [
+        "candidates",
+        "jobs"
+      ],
+      "dependencies": [
+        "BL-04-EDU-01",
+        "BL-03-PROF-01"
+      ],
+      "outputState": "Eligibility breakdown report with rule-by-rule status.",
+      "errorHandling": "Return incomplete_profile if DOB or education is missing.",
+      "securityReq": "Authenticated or guest calculation.",
+      "status": "FULLY_IMPLEMENTED"
+    },
+    {
+      "id": "BL-16-MTCH-01",
+      "domain": "16. Job Matching",
+      "name": "Personalized Career Recommender & Explainer",
+      "purpose": "Score and recommend jobs to candidates based on skills, career preferences, education, and district match.",
+      "trigger": "GET /api/user/recommendations",
+      "inputData": "Candidate ID or session token",
+      "validationRules": "Candidate session required.",
+      "processingSteps": [
+        "Load candidate skills, education, and preferences",
+        "Scan active published circulars",
+        "Compute match percentage (0-100%)",
+        "Rank descending and attach match reasons",
+        "Return top 20 personalized recommendations"
+      ],
+      "businessRules": "Recommendations with match score < 50% are excluded.",
+      "relatedFiles": [
+        "src/lib/matching/recommender.ts",
+        "src/lib/matching/skills-taxonomy.ts",
+        "src/app/api/user/recommendations/route.ts"
+      ],
+      "relatedRoutes": [
+        "/dashboard/recommended-jobs",
+        "/dashboard"
+      ],
+      "relatedApis": [
+        "/api/user/recommendations"
+      ],
+      "databaseModels": [
+        "candidates",
+        "jobs",
+        "recommendationFeedback"
+      ],
+      "dependencies": [
+        "BL-15-ELIG-01"
+      ],
+      "outputState": "Array of recommended jobs with personalized explanations.",
+      "errorHandling": "Return latest featured jobs if candidate profile is sparse.",
+      "securityReq": "Candidate session.",
+      "status": "FULLY_IMPLEMENTED"
+    },
+    {
+      "id": "BL-17-SAVE-01",
+      "domain": "17. Saved Jobs",
+      "name": "Job Bookmark & Deadline Alert Tracker",
+      "purpose": "Allow candidates to bookmark jobs to their personal dashboard and receive approaching deadline alerts.",
+      "trigger": "POST /api/candidate/saved-jobs, GET /api/candidate/saved-jobs",
+      "inputData": "{ jobId }",
+      "validationRules": "Job ID must exist; candidate session required.",
+      "processingSteps": [
+        "Check if candidate already saved this job",
+        "Add record to serverDB.savedJobs",
+        "Attach automated deadline reminder to candidate"
+      ],
+      "businessRules": "Duplicates prevented; saved jobs sync with candidate dashboard.",
+      "relatedFiles": [
+        "src/app/api/candidate/saved-jobs/route.ts",
+        "src/lib/db.ts"
+      ],
+      "relatedRoutes": [
+        "/dashboard/saved-jobs",
+        "/jobs/[id]"
+      ],
+      "relatedApis": [
+        "/api/candidate/saved-jobs"
+      ],
+      "databaseModels": [
+        "savedJobs"
+      ],
+      "dependencies": [
+        "BL-03-PROF-01"
+      ],
+      "outputState": "Bookmark record saved in DB.",
+      "errorHandling": "HTTP 400 on duplicate save.",
+      "securityReq": "Candidate session.",
+      "status": "FULLY_IMPLEMENTED"
+    },
+    {
+      "id": "BL-18-APP-01",
+      "domain": "18. Application Management",
+      "name": "Government Application Submission & Corporate Tracking ID",
+      "purpose": "Submit applications for job positions, assign corporate tracking IDs (CS-APP-XXXXXXXX), and manage status lifecycle.",
+      "trigger": "POST /api/applications",
+      "inputData": "ApplicationRequest payload with candidate and job details",
+      "validationRules": "Job must be active; candidate cannot submit duplicate active application for same position.",
+      "processingSteps": [
+        "Verify job exists and deadline valid",
+        "Verify no duplicate active application",
+        "Generate corporate tracking ID",
+        "Save in serverDB.applications",
+        "Send notification to admin and candidate"
+      ],
+      "businessRules": "Admin can attach official Teletalk User ID and upload official Applicant Copy PDF.",
+      "relatedFiles": [
+        "src/app/api/applications/route.ts",
+        "src/components/ApplyClient.tsx"
+      ],
+      "relatedRoutes": [
+        "/apply/[id]",
+        "/dashboard/applications",
+        "/admin?tab=all-applications"
+      ],
+      "relatedApis": [
+        "/api/applications"
+      ],
+      "databaseModels": [
+        "applications",
+        "candidates",
+        "transactions"
+      ],
+      "dependencies": [
+        "BL-03-PROF-01",
+        "BL-11-JOB-01"
+      ],
+      "outputState": "Application record created in DB.",
+      "errorHandling": "HTTP 400 on duplicate application or expired job.",
+      "securityReq": "Candidate submission.",
+      "status": "PARTIALLY_IMPLEMENTED"
+    },
+    {
+      "id": "BL-19-FIN-01",
+      "domain": "19. Wallet and Financial Integrity",
+      "name": "Wallet Balance Verification & Revenue Leakage Prevention",
+      "purpose": "Validate candidate wallet balance before allowing Wallet payment deduction; reject insufficient funds with HTTP 400.",
+      "trigger": "POST /api/applications (paymentMethod: 'Wallet')",
+      "inputData": "{ candidateId, totalAmount, paymentMethod: 'Wallet' }",
+      "validationRules": "candidate.walletBalance >= totalAmount. Clamping to 0 on deficit is strictly prohibited.",
+      "processingSteps": [
+        "Fetch authoritative wallet balance from serverDB",
+        "Validate balance >= totalAmount",
+        "If insufficient, reject with HTTP 400",
+        "If sufficient, deduct exact totalAmount",
+        "Log transaction record",
+        "Set status to 'processing'"
+      ],
+      "businessRules": "No government fee application may be processed without verified payment. Candidate with BDT 50 cannot submit BDT 300 application.",
+      "relatedFiles": [
+        "src/app/api/applications/route.ts",
+        "src/components/ApplyClient.tsx"
+      ],
+      "relatedRoutes": [
+        "/apply/[id]"
+      ],
+      "relatedApis": [
+        "/api/applications"
+      ],
+      "databaseModels": [
+        "candidates.walletBalance",
+        "transactions",
+        "applications"
+      ],
+      "dependencies": [
+        "BL-18-APP-01"
+      ],
+      "outputState": "Wallet balance deducted; transaction logged; application processing.",
+      "errorHandling": "HTTP 400 on insufficient balance.",
+      "securityReq": "Financial transaction integrity.",
+      "status": "BROKEN"
+    },
+    {
+      "id": "BL-19-FIN-02",
+      "domain": "19. Wallet and Financial Integrity",
+      "name": "Wallet Ledger & 100% Free Platform Access Policy",
+      "purpose": "Record bKash/Nagad/Bank wallet deposits and enforce zero paywalls for browsing job circulars.",
+      "trigger": "POST /api/wallet/transactions, GET /api/wallet/transactions",
+      "inputData": "{ amount, paymentMethod, trxId }",
+      "validationRules": "Amount > 0; unique TrxID.",
+      "processingSteps": [
+        "Verify transaction ID uniqueness",
+        "Record in serverDB.transactions",
+        "Credit candidate walletBalance upon payment verification",
+        "Enforce freeAccess policy: zero subscription/browsing fees"
+      ],
+      "businessRules": "Chakri Sheba guarantees 100% permanent free access to all job postings.",
+      "relatedFiles": [
+        "src/app/api/wallet/transactions/route.ts",
+        "src/lib/operations/expenseManager.ts",
+        "src/lib/operations/freeAccess.ts"
+      ],
+      "relatedRoutes": [
+        "/dashboard/wallet",
+        "/dashboard/transactions"
+      ],
+      "relatedApis": [
+        "/api/wallet/transactions"
+      ],
+      "databaseModels": [
+        "transactions",
+        "candidates.walletBalance"
+      ],
+      "dependencies": [
+        "BL-03-PROF-01"
+      ],
+      "outputState": "Transaction recorded; wallet balance updated.",
+      "errorHandling": "HTTP 400 on duplicate transaction ID.",
+      "securityReq": "Candidate session.",
+      "status": "FULLY_IMPLEMENTED"
+    },
+    {
+      "id": "BL-20-NOTIF-01",
+      "domain": "20. Notifications and Alerts",
+      "name": "Multi-Channel Notification Dispatcher & Persistence",
+      "purpose": "Queue and deliver critical alerts (application status, admit cards, deadlines) to candidate dashboard, SMS, and WhatsApp.",
+      "trigger": "Application state change, admin notification dispatch, cron deadline monitor",
+      "inputData": "{ candidateId, title, message, channel, link }",
+      "validationRules": "Recipient candidate must exist.",
+      "processingSteps": [
+        "Format notification with localized templates",
+        "Save in serverDB.notifications with isRead: false",
+        "Log delivery in notificationDeliveries",
+        "Update unread count on user dashboard"
+      ],
+      "businessRules": "Urgent notifications sent 3 days, 2 days, and 24 hours prior to deadline.",
+      "relatedFiles": [
+        "src/lib/notifications/hub.ts",
+        "src/lib/notifications/queue.ts",
+        "src/lib/notifications/templates.ts"
+      ],
+      "relatedRoutes": [
+        "/dashboard/notifications",
+        "/dashboard/alerts"
+      ],
+      "relatedApis": [
+        "/api/admin/notifications/send",
+        "/api/notifications"
+      ],
+      "databaseModels": [
+        "notifications",
+        "notificationDeliveries"
+      ],
+      "dependencies": [
+        "BL-03-PROF-01"
+      ],
+      "outputState": "Notification created in DB; delivery recorded.",
+      "errorHandling": "Retry failed delivery up to 3 times.",
+      "securityReq": "Internal or admin permission.",
+      "status": "FULLY_IMPLEMENTED"
+    },
+    {
+      "id": "BL-21-CONT-01",
+      "domain": "21. Content Management",
+      "name": "Career Guidance Content Studio & Article Engine",
+      "purpose": "Create, review, and publish career guidance articles, viva tips, and syllabus breakdowns with revision history.",
+      "trigger": "POST /api/admin/content-studio/articles, PUT /api/admin/content-studio/articles/[id]",
+      "inputData": "{ title, slug, content, tags, category, metaDescription }",
+      "validationRules": "Bengali quality score >= 75%; duplicate ratio <= 25%.",
+      "processingSteps": [
+        "Check for duplicate content",
+        "Score Bengali grammar and vocabulary",
+        "Save article in contentStudioArticles",
+        "Create revision record for rollback"
+      ],
+      "businessRules": "Published articles automatically generate schema.org JSON-LD.",
+      "relatedFiles": [
+        "src/lib/content_studio/bengali_quality.ts",
+        "src/lib/content_studio/duplicate_checker.ts",
+        "src/lib/content_studio/revisions.ts"
+      ],
+      "relatedRoutes": [
+        "/career-guides",
+        "/blog",
+        "/blog/[slug]"
+      ],
+      "relatedApis": [
+        "/api/admin/content-studio/articles"
+      ],
+      "databaseModels": [
+        "contentStudioArticles"
+      ],
+      "dependencies": [
+        "BL-01-AUTH-02"
+      ],
+      "outputState": "Article stored and published.",
+      "errorHandling": "Reject article if plagiarism/duplicate detected.",
+      "securityReq": "content.edit / content.approve permission.",
+      "status": "FULLY_IMPLEMENTED"
+    },
+    {
+      "id": "BL-22-SEO-01",
+      "domain": "22. SEO and Metadata",
+      "name": "Structured Data (Schema.org) & Dynamic OpenGraph Generator",
+      "purpose": "Generate JobPosting schema.org JSON-LD, canonical tags, and OpenGraph metadata for search engines and social sharing.",
+      "trigger": "Render of job detail pages, category pages, career guides",
+      "inputData": "JobCircular or Article object",
+      "validationRules": "Valid hiringOrganization, validThrough (deadline), jobLocation, baseSalary.",
+      "processingSteps": [
+        "Map JobCircular fields to schema.org spec",
+        "Set canonical URL and alternates",
+        "Generate OpenGraph and Twitter card metadata",
+        "Render JSON-LD script"
+      ],
+      "businessRules": "Google Jobs compliant schema.org formatting.",
+      "relatedFiles": [
+        "src/lib/content_studio/schema_media.ts",
+        "src/lib/content_studio/seo_engine.ts"
+      ],
+      "relatedRoutes": [
+        "/jobs/[id]",
+        "/categories/[slug]",
+        "/"
+      ],
+      "relatedApis": [],
+      "databaseModels": [
+        "jobs",
+        "contentStudioArticles"
+      ],
+      "dependencies": [
+        "BL-11-JOB-01"
+      ],
+      "outputState": "HTML head contains valid JSON-LD and meta tags.",
+      "errorHandling": "Omit optional fields if absent without breaking structure.",
+      "securityReq": "Public SEO.",
+      "status": "FULLY_IMPLEMENTED"
+    },
+    {
+      "id": "BL-23-DASH-01",
+      "domain": "23. Admin Dashboard",
+      "name": "Central Governance KPI Matrix & Activity Stream",
+      "purpose": "Aggregate real-time counts across candidates (41), published jobs (214), verification queue, and operational spend.",
+      "trigger": "GET /api/admin/governance/overview?timeframe=all",
+      "inputData": "{ timeframe: 'today' | '7d' | '30d' | 'all' }",
+      "validationRules": "Admin authentication required.",
+      "processingSteps": [
+        "Count candidates from serverDB.candidates",
+        "Count published circulars matching active status",
+        "Count verification queue and drafts",
+        "Aggregate activity stream from audit logs",
+        "Return metrics payload"
+      ],
+      "businessRules": "KPI metrics must reflect authoritative database numbers with zero synthetic inflation.",
+      "relatedFiles": [
+        "src/lib/governance/overview.ts",
+        "src/components/admin/PlatformGovernanceOverview.tsx"
+      ],
+      "relatedRoutes": [
+        "/admin"
+      ],
+      "relatedApis": [
+        "/api/admin/governance/overview"
+      ],
+      "databaseModels": [
+        "candidates",
+        "jobs",
+        "circularDrafts",
+        "adminAuditLogs"
+      ],
+      "dependencies": [
+        "BL-12-PUB-02",
+        "BL-01-AUTH-03"
+      ],
+      "outputState": "Metrics payload delivered to dashboard.",
+      "errorHandling": "Return HTTP 403 if admin session is missing.",
+      "securityReq": "audit.read permission.",
+      "status": "FULLY_IMPLEMENTED"
+    },
+    {
+      "id": "BL-24-DASH-02",
+      "domain": "24. User Dashboard",
+      "name": "Candidate Application Hub & Quick Copier",
+      "purpose": "Display candidate applications, admit cards, exam schedules, and one-click form-fill quick copier for Teletalk portals.",
+      "trigger": "Render of /dashboard/applications",
+      "inputData": "Candidate session token",
+      "validationRules": "Candidate session required.",
+      "processingSteps": [
+        "Fetch candidate applications",
+        "Fetch candidate documents",
+        "Provide formatted Master Copier text",
+        "Render downloadable applicant copy PDF"
+      ],
+      "businessRules": "Candidates can track government application processing in real time.",
+      "relatedFiles": [
+        "src/app/dashboard/applications/page.tsx",
+        "src/components/ApplyClient.tsx"
+      ],
+      "relatedRoutes": [
+        "/dashboard/applications",
+        "/dashboard"
+      ],
+      "relatedApis": [
+        "/api/applications"
+      ],
+      "databaseModels": [
+        "applications",
+        "documents"
+      ],
+      "dependencies": [
+        "BL-18-APP-01"
+      ],
+      "outputState": "Interactive application hub rendered.",
+      "errorHandling": "Redirect to /login if unauthenticated.",
+      "securityReq": "Candidate session.",
+      "status": "FULLY_IMPLEMENTED"
+    },
+    {
+      "id": "BL-25-ANLY-01",
+      "domain": "25. Analytics and Reporting",
+      "name": "Multi-Subsystem BI Analytics & Data Quality Auditor",
+      "purpose": "Track candidate registration velocity, application volumes, search query trends, and audit data inconsistencies.",
+      "trigger": "GET /api/admin/analytics/overview, GET /api/admin/analytics/data-quality",
+      "inputData": "Admin request",
+      "validationRules": "Admin authentication required.",
+      "processingSteps": [
+        "Aggregate search terms from searchAnalytics",
+        "Compute application conversion rates",
+        "Check for orphan records",
+        "Return BI analytics report"
+      ],
+      "businessRules": "Flag orphan records and unverified jobs as data quality alerts.",
+      "relatedFiles": [
+        "src/lib/analytics/engine.ts",
+        "src/app/api/admin/analytics/overview/route.ts"
+      ],
+      "relatedRoutes": [
+        "/admin?tab=analytics-center"
+      ],
+      "relatedApis": [
+        "/api/admin/analytics/overview"
+      ],
+      "databaseModels": [
+        "searchAnalytics",
+        "applications",
+        "jobs"
+      ],
+      "dependencies": [
+        "BL-01-AUTH-02"
+      ],
+      "outputState": "Analytics payload delivered to BI console.",
+      "errorHandling": "HTTP 403 on missing admin privileges.",
+      "securityReq": "analytics.view permission.",
+      "status": "FULLY_IMPLEMENTED"
+    },
+    {
+      "id": "BL-26-CRON-01",
+      "domain": "26. Background Jobs and Scheduling",
+      "name": "Automated Deadline Expiry & Change Detector Scheduler",
+      "purpose": "Scan circular deadlines every hour, flag expired jobs, detect official date extensions, and trigger alert proposals.",
+      "trigger": "GET /api/cron/deadline-monitor",
+      "inputData": "Cron secret authorization header",
+      "validationRules": "Cron authorization secret required.",
+      "processingSteps": [
+        "Fetch published jobs",
+        "Check current time vs job deadline (Asia/Dhaka)",
+        "Transition expired jobs to EXPIRED",
+        "Generate deadlineAlerts (3d, 2d, 24h)",
+        "Record in monitoringRuns"
+      ],
+      "businessRules": "Automatically maintain fresh job listings for public visitors.",
+      "relatedFiles": [
+        "src/lib/deadlines/monitoring.ts",
+        "src/app/api/cron/deadline-monitor/route.ts"
+      ],
+      "relatedRoutes": [
+        "/closing-soon",
+        "/deadline-today"
+      ],
+      "relatedApis": [
+        "/api/cron/deadline-monitor"
+      ],
+      "databaseModels": [
+        "jobs",
+        "monitoringRuns",
+        "notifications"
+      ],
+      "dependencies": [
+        "BL-11-JOB-01"
+      ],
+      "outputState": "Monitoring run recorded; statuses updated.",
+      "errorHandling": "Catch and log failures without crashing scheduler process.",
+      "securityReq": "Cron secret.",
+      "status": "FULLY_IMPLEMENTED"
+    },
+    {
+      "id": "BL-27-API-01",
+      "domain": "27. API and Integration Layer",
+      "name": "Teletalk, BPSC & SMS Gateway Integration Layer",
+      "purpose": "Interface with government recruitment portals and SMS gateways for notifications and form autofill.",
+      "trigger": "Application filing, SMS dispatch",
+      "inputData": "{ trackingId, channel, payload }",
+      "validationRules": "Authorized corporate operator or background worker.",
+      "processingSteps": [
+        "Format payload for target portal spec",
+        "Transmit via HTTP or operator queue",
+        "Receive Teletalk User ID and receipt",
+        "Save receipt in candidate application record"
+      ],
+      "businessRules": "Preserve applicant copy PDF and transaction records permanently.",
+      "relatedFiles": [
+        "src/lib/collector/teletalk_adapter.ts",
+        "src/lib/notifications/hub.ts"
+      ],
+      "relatedRoutes": [
+        "/admin?tab=processing-queue"
+      ],
+      "relatedApis": [
+        "/api/admin/upload-applicant-copy"
+      ],
+      "databaseModels": [
+        "applications"
+      ],
+      "dependencies": [
+        "BL-18-APP-01"
+      ],
+      "outputState": "Official tracking ID attached to application.",
+      "errorHandling": "Flag for manual operator assistance if portal times out.",
+      "securityReq": "Admin / Corporate worker.",
+      "status": "FULLY_IMPLEMENTED"
+    },
+    {
+      "id": "BL-28-DATA-01",
+      "domain": "28. Database and Data Integrity",
+      "name": "Document Store Multi-Subsystem Persistence & Lock Controller",
+      "purpose": "Provide atomic, cached, and debounced file persistence for local_store.json with zero corruption guarantees.",
+      "trigger": "Every serverDB read and write operation",
+      "inputData": "Record mutation or query",
+      "validationRules": "Must maintain 41 candidates, 214 jobs, 42 applications baseline.",
+      "processingSteps": [
+        "Maintain in-memory document store cache",
+        "Apply mutations with validation",
+        "Debounce disk writes (100ms) with tmp file swap",
+        "Maintain immutable backup snapshots"
+      ],
+      "businessRules": "Zero data loss: never wipe collections on server restart.",
+      "relatedFiles": [
+        "src/lib/db.ts"
+      ],
+      "relatedRoutes": [],
+      "relatedApis": [],
+      "databaseModels": [
+        "all collections"
+      ],
+      "dependencies": [],
+      "outputState": "Persistent local_store.json updated safely.",
+      "errorHandling": "Atomic write using tmp file ensures power loss cannot corrupt database.",
+      "securityReq": "Server internal.",
+      "status": "FULLY_IMPLEMENTED"
+    },
+    {
+      "id": "BL-30-SEC-01",
+      "domain": "30. Security and Audit Logging",
+      "name": "Role-Based Access Control (RBAC) & Tamper-Evident Audit Trail",
+      "purpose": "Enforce 28 granular permissions across 6 staff roles and log every administrative action permanently.",
+      "trigger": "Every admin API request",
+      "inputData": "Request session and required permission string",
+      "validationRules": "Session role must possess permission in ROLE_PERMISSIONS matrix.",
+      "processingSteps": [
+        "Check session role and custom permissions",
+        "Allow execution if authorized; return 403 Forbidden if not",
+        "Append audit log entry",
+        "Persist to serverDB.adminAuditLogs"
+      ],
+      "businessRules": "Audit logs are append-only; administrators cannot delete audit records.",
+      "relatedFiles": [
+        "src/lib/governance/rbac.ts",
+        "src/app/api/admin/audit-logs/route.ts"
+      ],
+      "relatedRoutes": [
+        "/admin?tab=audit-logs",
+        "/admin?tab=staff-management"
+      ],
+      "relatedApis": [
+        "/api/admin/audit-logs",
+        "/api/admin/governance/*"
+      ],
+      "databaseModels": [
+        "adminAuditLogs",
+        "staffMembers"
+      ],
+      "dependencies": [
+        "BL-01-AUTH-02"
+      ],
+      "outputState": "Action authorized or blocked; audit log appended.",
+      "errorHandling": "HTTP 403 Forbidden with specific missing permission.",
+      "securityReq": "Governance and compliance.",
+      "status": "FULLY_IMPLEMENTED"
+    }
+  ]
+}

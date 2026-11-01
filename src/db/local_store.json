@@ -17767,6 +17767,51 @@
       "candidateId": "USR-01799112233",
       "role": "candidate",
       "expiresAt": "2026-11-08T21:44:58.392Z"
+    },
+    "662f3308515f8480aac426c52d2d6f8349578ac264a89987d35f9e8188024ed2": {
+      "candidateId": "ADMIN-SUPER",
+      "role": "admin",
+      "expiresAt": "2026-11-08T23:40:27.877Z"
+    },
+    "55151f7302cf875f70688c026207c2f062667536f4772f6264adaef6ad9b336e": {
+      "candidateId": "ADMIN-SUPER",
+      "role": "admin",
+      "expiresAt": "2026-11-08T23:41:16.330Z"
+    },
+    "cf3b739128c7523f76614b8aa1f9511d3e7a5bdc659dc188dafce4472a282887": {
+      "candidateId": "ADMIN-SUPER",
+      "role": "admin",
+      "expiresAt": "2026-11-08T23:41:47.966Z"
+    },
+    "38dd85b91c22580a52fd06f316d776099695bff29bc7a8ca87da281b9ff3d413": {
+      "candidateId": "ADMIN-SUPER",
+      "role": "admin",
+      "expiresAt": "2026-11-08T23:42:09.687Z"
+    },
+    "bc1adef9dec0f7db6bd56a1b336b29ea1920c410832aeecfa42639e2bcfd81a8": {
+      "candidateId": "ADMIN-SUPER",
+      "role": "admin",
+      "expiresAt": "2026-11-08T23:45:05.997Z"
+    },
+    "bae33908dccccb48e6a2f9351289ac8927dbd77a0a6aaee1d49309ff3f8ffc4c": {
+      "candidateId": "ADMIN-SUPER",
+      "role": "admin",
+      "expiresAt": "2026-11-08T23:46:01.669Z"
+    },
+    "417329ea0676572b2e3f444b573996debff4eeff3d7e62f8f3ef2b5952e109d7": {
+      "candidateId": "ADMIN-SUPER",
+      "role": "admin",
+      "expiresAt": "2026-11-08T23:46:27.608Z"
+    },
+    "7ebf2566c8e19a160f882baa11e88b3a4a5cd85a32eed37da3de9b5028efc7e3": {
+      "candidateId": "ADMIN-SUPER",
+      "role": "admin",
+      "expiresAt": "2026-11-08T23:46:53.109Z"
+    },
+    "feb0096a414744f61675fe99bb65a2e6bc696d15710cd9e51c6375d433884fdc": {
+      "candidateId": "ADMIN-SUPER",
+      "role": "admin",
+      "expiresAt": "2026-11-08T23:47:18.499Z"
     }
   },
   "coupons": {

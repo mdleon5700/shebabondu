@@ -486,7 +486,14 @@ export default function JobDetailClient({ job }: { job: JobCircular }) {
             <div className="flex items-center gap-3 text-emerald-800 font-bold text-base sm:text-lg">
               <JobLogo logo={job.logo} organization={job.organization} size="md" />
               <div>
-                <div>{job.organization}</div>
+                <Link 
+                  href={`/organizations/${encodeURIComponent(job.organization)}`}
+                  className="hover:text-emerald-950 hover:underline flex items-center gap-1.5 transition-colors"
+                  title="এই প্রতিষ্ঠানের সকল সার্কুলার দেখুন"
+                >
+                  <span>{job.organization}</span>
+                  <ExternalLink className="w-3.5 h-3.5 opacity-60" />
+                </Link>
                 <div className="text-xs font-normal text-slate-500">গণপ্রজাতন্ত্রী বাংলাদেশ সরকার অনুমোদিত নিয়োগ বিজ্ঞপ্তি</div>
               </div>
             </div>

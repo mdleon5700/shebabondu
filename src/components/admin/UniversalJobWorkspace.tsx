@@ -45,7 +45,8 @@ import {
   Heading3,
   Bold,
   Italic,
-  Table as TableIcon
+  Table as TableIcon,
+  ArrowRight
 } from 'lucide-react';
 import { JobCircular, JobPosition } from '@/lib/types';
 
@@ -67,6 +68,7 @@ export interface UniversalJobWorkspaceProps {
 type WorkspaceTab = 
   | 'overview'
   | 'details'
+  | 'positions'
   | 'eligibility'
   | 'application'
   | 'circular'
@@ -140,6 +142,110 @@ export default function UniversalJobWorkspace({
   const [showLivePreview, setShowLivePreview] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [uploadingField, setUploadingField] = useState<string | null>(null);
+
+  // Organization Autocomplete state
+  const [orgSuggestions, setOrgSuggestions] = useState<Array<{
+    name: string;
+    nameBn?: string;
+    logo: string;
+    orgType: string;
+    category: string;
+    website: string;
+    activeJobsCount: number;
+    slug: string;
+  }>>([]);
+  const [showOrgDropdown, setShowOrgDropdown] = useState(false);
+  const [orgFilterQuery, setOrgFilterQuery] = useState('');
+
+  // Fetch organization suggestions on mount
+  useEffect(() => {
+    if (isOpen) {
+      fetch('/api/organizations/suggestions')
+        .then(res => res.json())
+        .then(data => {
+          if (data.success && Array.isArray(data.organizations)) {
+            setOrgSuggestions(data.organizations);
+          }
+        })
+        .catch(() => {});
+    }
+  }, [isOpen]);
+
+  // Filtered org suggestions
+  const filteredOrgSuggestions = useMemo(() => {
+    const q = (formData.organization || orgFilterQuery || '').trim().toLowerCase();
+    if (!q) return orgSuggestions.slice(0, 10);
+    return orgSuggestions.filter(item => 
+      item.name.toLowerCase().includes(q) ||
+      (item.nameBn && item.nameBn.toLowerCase().includes(q)) ||
+      item.orgType.toLowerCase().includes(q) ||
+      item.slug.toLowerCase().includes(q)
+    ).slice(0, 12);
+  }, [orgSuggestions, formData.organization, orgFilterQuery]);
+
+  // Standard BD Pay Scale 2015 Presets
+  const GOVT_GRADE_PRESETS = [
+    { grade: '৯ম গ্রেড', salary: '২২,০০০ - ৫৩,০৬০ টাকা', defaultFee: 223, minEdu: 'স্নাতক বা সমমান' },
+    { grade: '১০ম গ্রেড', salary: '১৬,০০০ - ৩৮,৬৪০ টাকা', defaultFee: 112, minEdu: 'স্নাতক বা ডিপ্লোমা' },
+    { grade: '১১তম গ্রেড', salary: '১২,৫০০ - ৩০,২৩০ টাকা', defaultFee: 112, minEdu: 'স্নাতক / এইচএসসি' },
+    { grade: '১২তম গ্রেড', salary: '১১,৩০০ - ২৭,৩০০ টাকা', defaultFee: 112, minEdu: 'এইচএসসি বা সমমান' },
+    { grade: '১৩তম গ্রেড', salary: '১১,০০০ - ২৬,৫৯০ টাকা', defaultFee: 112, minEdu: 'এইচএসসি বা সমমান' },
+    { grade: '১৪তম গ্রেড', salary: '১০,২০০ - ২৪,৬৮০ টাকা', defaultFee: 112, minEdu: 'এইচএসসি বা সমমান' },
+    { grade: '১৫তম গ্রেড', salary: '৯,৭০০ - ২৩,৪৯০ টাকা', defaultFee: 112, minEdu: 'এইচএসসি বা সমমান' },
+    { grade: '১৬তম গ্রেড', salary: '৯,৩০০ - ২২,৪৯০ টাকা', defaultFee: 112, minEdu: 'এসএসসি বা সমমান' },
+    { grade: '২০তম গ্রেড', salary: '৮,২৫০ - ২০,০১০ টাকা', defaultFee: 56, minEdu: 'এসএসসি বা ৮ম শ্রেণি' }
+  ];
+
+  // Deadline Quick Calculator Shortcut
+  const calculateDeadlinePreset = (daysFromNow: number | 'endOfMonth') => {
+    const now = new Date();
+    let targetDate: Date;
+    if (daysFromNow === 'endOfMonth') {
+      targetDate = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+    } else {
+      targetDate = new Date(now.getTime() + daysFromNow * 24 * 60 * 60 * 1000);
+    }
+    
+    const bnMonths = ['জানুয়ারি', 'ফেব্রুয়ারি', 'মার্চ', 'এপ্রিল', 'মে', 'জুন', 'জুলাই', 'আগস্ট', 'সেপ্টেম্বর', 'অক্টোবর', 'নভেম্বর', 'ডিসেম্বর'];
+    const dayBn = String(targetDate.getDate()).padStart(2, '0').replace(/\d/g, d => '০১২৩৪৫৬৭৮৯'[+d]);
+    const monthBn = bnMonths[targetDate.getMonth()];
+    const yearBn = String(targetDate.getFullYear()).replace(/\d/g, d => '০১২৩৪৫৬৭৮৯'[+d]);
+    
+    const formattedBn = `${dayBn} ${monthBn} ${yearBn}`;
+    const diffTime = targetDate.getTime() - now.getTime();
+    const diffDays = Math.max(1, Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
+    
+    updateField('deadline', formattedBn);
+    updateField('daysRemaining', diffDays);
+  };
+
+  // Helper to sync positions and totalPosts
+  const handlePositionsChange = (newPositions: JobPosition[]) => {
+    updateField('positions', newPositions);
+    if (newPositions.length > 0) {
+      const total = newPositions.reduce((sum, p) => sum + (Number(p.posts) || 1), 0);
+      updateField('totalPosts', total);
+      if (newPositions.length === 1) {
+        if (newPositions[0].grade) updateField('grade', newPositions[0].grade);
+        if (newPositions[0].salary) updateField('salary', newPositions[0].salary);
+        if (newPositions[0].govtFee) updateField('govtFee', newPositions[0].govtFee);
+      }
+    }
+  };
+
+  // Helper to add position from preset
+  const handleAddPresetPosition = (preset: typeof GOVT_GRADE_PRESETS[0]) => {
+    const currentList = formData.positions || [];
+    const newP: JobPosition = {
+      title: `${preset.grade} পদ`,
+      grade: preset.grade,
+      posts: 1,
+      salary: preset.salary,
+      minEducation: preset.minEdu,
+      govtFee: preset.defaultFee
+    };
+    handlePositionsChange([...currentList, newP]);
+  };
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, targetField: keyof JobCircular, type: 'image' | 'logo' | 'pdf') => {
     const file = e.target.files?.[0];
@@ -441,6 +547,7 @@ export default function UniversalJobWorkspace({
           {[
             { id: 'overview', label: 'সারসংক্ষেপ', icon: LayoutDashboard },
             { id: 'details', label: 'মূল তথ্য', icon: FileText },
+            { id: 'positions', label: `পদ ও বেতন মেট্রিক্স (${(formData.positions || []).length || 1})`, icon: Layers },
             { id: 'eligibility', label: 'যোগ্যতা ও শর্তাবলী', icon: GraduationCap },
             { id: 'application', label: 'আবেদন ও ফি', icon: Send },
             { id: 'circular', label: 'সার্কুলার ও সোর্স', icon: FileCode },
@@ -595,16 +702,123 @@ export default function UniversalJobWorkspace({
                       className="w-full px-3.5 py-2 text-xs rounded-xl border border-slate-300 focus:ring-1 focus:ring-emerald-600 focus:outline-none"
                     />
                   </div>
-                  <div>
-                    <label className="text-xs font-bold text-slate-700 block mb-1">প্রতিষ্ঠানের নাম (Organization) *</label>
-                    <input
-                      type="text"
-                      required
-                      value={formData.organization || ''}
-                      onChange={(e) => updateField('organization', e.target.value)}
-                      placeholder="যেমন: বাংলাদেশ ব্যাংক"
-                      className="w-full px-3.5 py-2 text-xs rounded-xl border border-slate-300 focus:ring-1 focus:ring-emerald-600 focus:outline-none"
-                    />
+                  <div className="relative">
+                    <div className="flex items-center justify-between mb-1">
+                      <label className="text-xs font-bold text-slate-700 block">
+                        প্রতিষ্ঠানের নাম (Organization) *
+                      </label>
+                      <span className="text-[11px] font-semibold text-emerald-700">
+                        ⚡ অটো-সাজেস্ট ড্রপডাউন
+                      </span>
+                    </div>
+
+                    <div className="relative">
+                      <input
+                        type="text"
+                        required
+                        value={formData.organization || ''}
+                        onChange={(e) => {
+                          updateField('organization', e.target.value);
+                          setOrgFilterQuery(e.target.value);
+                          setShowOrgDropdown(true);
+                        }}
+                        onFocus={() => setShowOrgDropdown(true)}
+                        placeholder="যেমন: বাংলাদেশ ব্যাংক, CPGCBL, APSCL, জেলা প্রশাসন"
+                        className="w-full px-3.5 py-2 text-xs rounded-xl border border-slate-300 focus:ring-1 focus:ring-emerald-600 focus:outline-none"
+                      />
+                      <Building2 className="w-4 h-4 text-slate-400 absolute right-3 top-2.5 pointer-events-none" />
+                    </div>
+
+                    {/* Autocomplete Dropdown */}
+                    {showOrgDropdown && filteredOrgSuggestions.length > 0 && (
+                      <div className="absolute left-0 right-0 top-full mt-1 bg-white rounded-2xl shadow-2xl border border-slate-200 z-50 max-h-72 overflow-y-auto divide-y divide-slate-100 animate-in fade-in">
+                        <div className="p-2.5 bg-slate-50 text-[11px] font-bold text-slate-600 flex items-center justify-between border-b border-slate-200">
+                          <span className="flex items-center gap-1.5">
+                            <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
+                            <span>তালিকাভুক্ত প্রতিষ্ঠানসমূহ ({filteredOrgSuggestions.length} টি পাওয়া গেছে):</span>
+                          </span>
+                          <button 
+                            type="button" 
+                            onClick={() => setShowOrgDropdown(false)} 
+                            className="text-slate-400 hover:text-slate-700 font-bold px-1.5 py-0.5 rounded hover:bg-slate-200"
+                          >
+                            ✕ বন্ধ
+                          </button>
+                        </div>
+                        {filteredOrgSuggestions.map((item, idx) => (
+                          <div
+                            key={idx}
+                            onMouseDown={() => {
+                              updateField('organization', item.name);
+                              if (item.logo) updateField('logo', item.logo);
+                              if (item.orgType) updateField('orgType', item.orgType);
+                              if (item.category) updateField('category', item.category);
+                              const labelMap: any = {
+                                govt: 'সরকারি চাকরি',
+                                bank: 'ব্যাংক জব',
+                                railway: 'বাংলাদেশ রেলওয়ে',
+                                defense: 'প্রতিরক্ষা ও পুলিশ',
+                                teacher: 'শিক্ষক নিয়োগ',
+                                ngo: 'এনজিও',
+                                private: 'বেসরকারি',
+                                health: 'স্বাস্থ্য ও চিকিৎসা',
+                                engineer: 'প্রকৌশলী ও প্রযুক্তি'
+                              };
+                              if (item.category && labelMap[item.category]) {
+                                updateField('categoryLabel', labelMap[item.category]);
+                              }
+                              if (item.website && (!formData.officialLink || formData.officialLink.includes('teletalk.com.bd'))) {
+                                updateField('officialLink', item.website);
+                              }
+                              setShowOrgDropdown(false);
+                            }}
+                            className="p-2.5 hover:bg-emerald-50/90 cursor-pointer flex items-center justify-between gap-3 transition-colors text-xs"
+                          >
+                            <div className="flex items-center gap-2.5 min-w-0">
+                              <div className="w-8 h-8 rounded-lg bg-white border border-slate-200 p-0.5 shrink-0 flex items-center justify-center overflow-hidden">
+                                <img src={item.logo} alt={item.name} className="w-full h-full object-contain" />
+                              </div>
+                              <div className="min-w-0">
+                                <div className="font-bold text-slate-900 truncate">{item.name}</div>
+                                <div className="text-[10px] text-slate-500 flex items-center gap-1.5">
+                                  <span>{item.orgType}</span>
+                                  {item.activeJobsCount > 0 && (
+                                    <span className="text-emerald-700 font-bold bg-emerald-100/70 px-1.5 py-0.2 rounded">
+                                      {item.activeJobsCount} টি চলমান সার্কুলার
+                                    </span>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                            <span className="text-[11px] text-emerald-700 font-bold shrink-0">
+                              অটো-ফিল ↵
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
+                    {/* Selected Org Logo Preview & Directory Shortcut */}
+                    {formData.organization && (
+                      <div className="flex items-center justify-between p-2 bg-slate-50 rounded-xl border border-slate-200 mt-2">
+                        <div className="flex items-center gap-2 min-w-0">
+                          <div className="w-6 h-6 rounded-md bg-white border border-slate-200 p-0.5 overflow-hidden shrink-0">
+                            <img src={formData.logo || 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=120&q=80'} alt="Logo" className="w-full h-full object-contain" />
+                          </div>
+                          <span className="text-[11px] font-bold text-slate-800 truncate">
+                            লোগো ও টাইপ সংযুক্ত
+                          </span>
+                        </div>
+                        <Link
+                          href={`/organizations/${encodeURIComponent(formData.organization)}`}
+                          target="_blank"
+                          className="text-[11px] font-bold text-emerald-700 hover:text-emerald-900 hover:underline flex items-center gap-1 shrink-0"
+                        >
+                          <span>সকল সার্কুলার দেখুন</span>
+                          <ExternalLink className="w-3 h-3" />
+                        </Link>
+                      </div>
+                    )}
                   </div>
                 </div>
 
@@ -653,10 +867,18 @@ export default function UniversalJobWorkspace({
                     />
                   </div>
                   <div>
-                    <label className="text-xs font-bold text-slate-700 block mb-1">বেতন গ্রেড (Pay Grade)</label>
+                    <div className="flex items-center justify-between mb-1">
+                      <label className="text-xs font-bold text-slate-700 block">বেতন গ্রেড (Pay Grade)</label>
+                      <span className="text-[10px] text-slate-400">স্কেল প্রিসেট</span>
+                    </div>
                     <select
                       value={formData.grade || '৯ম গ্রেড'}
-                      onChange={(e) => updateField('grade', e.target.value)}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        updateField('grade', val);
+                        const match = GOVT_GRADE_PRESETS.find(p => p.grade === val);
+                        if (match) updateField('salary', match.salary);
+                      }}
                       className="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 focus:ring-1 focus:ring-emerald-600 focus:outline-none"
                     >
                       {Array.from({ length: 20 }, (_, i) => `${i + 1}ম গ্রেড`).map(g => (
@@ -792,7 +1014,16 @@ export default function UniversalJobWorkspace({
                     />
                   </div>
                   <div>
-                    <label className="text-xs font-bold text-slate-700 block mb-1">আবেদনের শেষ তারিখ (Deadline) *</label>
+                    <div className="flex items-center justify-between mb-1">
+                      <label className="text-xs font-bold text-slate-700 block">আবেদনের শেষ তারিখ (Deadline) *</label>
+                      <div className="flex items-center gap-1 text-[10px]">
+                        <button type="button" onClick={() => calculateDeadlinePreset(7)} className="px-1.5 py-0.5 bg-slate-100 hover:bg-emerald-100 text-slate-700 rounded font-bold cursor-pointer">+৭ দিন</button>
+                        <button type="button" onClick={() => calculateDeadlinePreset(15)} className="px-1.5 py-0.5 bg-slate-100 hover:bg-emerald-100 text-slate-700 rounded font-bold cursor-pointer">+১৫ দিন</button>
+                        <button type="button" onClick={() => calculateDeadlinePreset(21)} className="px-1.5 py-0.5 bg-slate-100 hover:bg-emerald-100 text-slate-700 rounded font-bold cursor-pointer">+২১ দিন</button>
+                        <button type="button" onClick={() => calculateDeadlinePreset(30)} className="px-1.5 py-0.5 bg-slate-100 hover:bg-emerald-100 text-slate-700 rounded font-bold cursor-pointer">+৩০ দিন</button>
+                        <button type="button" onClick={() => calculateDeadlinePreset('endOfMonth')} className="px-1.5 py-0.5 bg-slate-100 hover:bg-emerald-100 text-slate-700 rounded font-bold cursor-pointer">মাসের শেষ</button>
+                      </div>
+                    </div>
                     <input
                       type="text"
                       required
@@ -813,11 +1044,369 @@ export default function UniversalJobWorkspace({
                   </div>
                 </div>
               </div>
+
+              {/* Positions Quick Jump Banner */}
+              <div className="p-4 bg-emerald-50 rounded-2xl border border-emerald-200 flex items-center justify-between gap-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center shrink-0">
+                    <Layers className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h4 className="text-xs font-black text-slate-900">
+                      পদবী ও পদভিত্তিক সুযোগ-সুবিধা মেট্রিক্স (Positions Matrix)
+                    </h4>
+                    <p className="text-[11px] text-slate-600">
+                      এই বিজ্ঞপ্তিতে মোট {(formData.positions || []).length} টি পদ এবং {formData.totalPosts || 1} টি শূন্যপদ সংজ্ঞায়িত রয়েছে।
+                    </p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setActiveTab('positions')}
+                  className="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-bold transition-all shrink-0 flex items-center gap-1.5 shadow-2xs"
+                >
+                  <span>পদ ও বেতন মেট্রিক্স কনফিগার করুন</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </button>
+              </div>
             </div>
           )}
 
           {/* ------------------------------------------------------------ */}
-          {/* TAB 3: ELIGIBILITY & REQUIREMENTS */}
+          
+          {activeTab === 'positions' && (
+            <div className="space-y-6 max-w-5xl mx-auto">
+              
+              {/* Header & Stats Banner */}
+              <div className="bg-gradient-to-r from-slate-900 via-emerald-950 to-slate-900 text-white p-6 rounded-3xl border border-emerald-900/50 shadow-md">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div>
+                    <span className="text-[11px] font-bold text-emerald-400 bg-emerald-500/20 px-3 py-1 rounded-full border border-emerald-500/30 uppercase tracking-wider inline-flex items-center gap-1">
+                      <Layers className="w-3.5 h-3.5" />
+                      <span>মাল্টি-পজিশন মেট্রিক্স ইঞ্জিন (Multi-Position Matrix)</span>
+                    </span>
+                    <h3 className="text-xl font-black text-white mt-2">
+                      পদবী, শূন্যপদ, বেতন গ্রেড ও পদভিত্তিক ফি কনফিগারেশন
+                    </h3>
+                    <p className="text-xs text-slate-300 mt-1">
+                      একই সার্কুলারে ভিন্ন ভিন্ন পদের জন্য আলাদা পদসংখ্যা, বেতন গ্রেড, স্কেল ও টেলিটক আবেদন ফি এক জায়গায় ম্যানেজ করুন।
+                    </p>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const current = formData.positions || [];
+                        const newP: JobPosition = {
+                          title: `নতুন পদ ${current.length + 1}`,
+                          grade: '৯ম গ্রেড',
+                          posts: 1,
+                          salary: '২২,০০০ - ৫৩,০৬০ টাকা',
+                          minEducation: 'স্নাতক বা সমমান',
+                          govtFee: 223
+                        };
+                        handlePositionsChange([...current, newP]);
+                      }}
+                      className="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold shadow-lg transition-all flex items-center gap-1.5"
+                    >
+                      <Plus className="w-4 h-4" />
+                      <span>নতুন পদ যোগ করুন</span>
+                    </button>
+                  </div>
+                </div>
+
+                {/* Aggregate Stats */}
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-6 pt-5 border-t border-slate-800">
+                  <div className="bg-slate-900/80 p-3 rounded-2xl border border-slate-800">
+                    <span className="text-[11px] font-semibold text-slate-400 block">মোট পদবী</span>
+                    <span className="text-lg font-black text-white">{(formData.positions || []).length} টি</span>
+                  </div>
+                  <div className="bg-slate-900/80 p-3 rounded-2xl border border-slate-800">
+                    <span className="text-[11px] font-semibold text-slate-400 block">মোট শূন্যপদ (Auto-Sync)</span>
+                    <span className="text-lg font-black text-emerald-400">{formData.totalPosts || 1} জন</span>
+                  </div>
+                  <div className="bg-slate-900/80 p-3 rounded-2xl border border-slate-800">
+                    <span className="text-[11px] font-semibold text-slate-400 block">সরকারি ফি পরিসর</span>
+                    <span className="text-lg font-black text-amber-300">
+                      ৳{formData.positions && formData.positions.length > 0 
+                        ? Math.min(...formData.positions.map(p => p.govtFee ?? formData.govtFee ?? 200))
+                        : (formData.govtFee || 200)
+                      } 
+                      {formData.positions && formData.positions.length > 1 && Math.min(...formData.positions.map(p => p.govtFee ?? formData.govtFee ?? 200)) !== Math.max(...formData.positions.map(p => p.govtFee ?? formData.govtFee ?? 200))
+                        ? ` - ৳${Math.max(...formData.positions.map(p => p.govtFee ?? formData.govtFee ?? 200))}`
+                        : ''
+                      }
+                    </span>
+                  </div>
+                  <div className="bg-slate-900/80 p-3 rounded-2xl border border-slate-800">
+                    <span className="text-[11px] font-semibold text-slate-400 block">টেলিটক মোট ফি (চার্জসহ)</span>
+                    <span className="text-lg font-black text-blue-300">
+                      ৳{(formData.positions && formData.positions.length > 0 
+                        ? Math.min(...formData.positions.map(p => p.govtFee ?? formData.govtFee ?? 200))
+                        : (formData.govtFee || 200)) + (formData.serviceFee || 80)
+                      }
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Quick Grade Presets Bar */}
+              <div className="bg-white p-5 rounded-3xl border border-slate-200 shadow-2xs space-y-2.5">
+                <span className="text-xs font-bold text-slate-700 block">
+                  ⚡ ১-ক্লিকে জাতীয় বেতন স্কেল ২০১৫ পদ যোগ করুন:
+                </span>
+                <div className="flex flex-wrap gap-2">
+                  {GOVT_GRADE_PRESETS.map((preset) => (
+                    <button
+                      key={preset.grade}
+                      type="button"
+                      onClick={() => handleAddPresetPosition(preset)}
+                      className="px-3 py-1.5 bg-slate-50 hover:bg-emerald-50 hover:border-emerald-300 border border-slate-200 text-slate-800 rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer"
+                    >
+                      <Plus className="w-3 h-3 text-emerald-600" />
+                      <span>{preset.grade}</span>
+                      <span className="text-[10px] text-slate-500">({preset.salary.split(' ')[0]} | ফি ৳{preset.defaultFee})</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Positions List */}
+              <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-2xs space-y-4">
+                <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+                  <h3 className="text-sm font-black text-slate-900 flex items-center gap-2">
+                    <Layers className="w-4 h-4 text-emerald-600" />
+                    <span>পদবী তালিকা ও স্পেসিফিকেশন ({(formData.positions || []).length} টি পদ)</span>
+                  </h3>
+                  <span className="text-[11px] font-bold text-slate-500">
+                    প্রতিটি পদের তথ্য ও ফি এখানে সরাসরি পরিবর্তন করুন
+                  </span>
+                </div>
+
+                {(formData.positions && formData.positions.length > 0) ? (
+                  <div className="space-y-4">
+                    {formData.positions.map((pos, pIdx) => {
+                      const pFee = pos.govtFee ?? formData.govtFee ?? 200;
+                      return (
+                        <div 
+                          key={pIdx} 
+                          className="bg-slate-50/80 p-4 rounded-2xl border border-slate-200 space-y-3 relative group hover:border-emerald-300 transition-all"
+                        >
+                          <div className="flex items-center justify-between gap-3">
+                            <div className="flex items-center gap-2">
+                              <span className="w-6 h-6 rounded-full bg-emerald-700 text-white font-bold text-xs flex items-center justify-center shrink-0">
+                                {pIdx + 1}
+                              </span>
+                              <span className="font-black text-sm text-slate-900">
+                                {pos.title || `পদ ${pIdx + 1}`}
+                              </span>
+                            </div>
+
+                            <div className="flex items-center gap-2">
+                              {/* Clone Button */}
+                              <button
+                                type="button"
+                                title="এই পদটি ক্লোন করুন"
+                                onClick={() => {
+                                  const current = formData.positions || [];
+                                  const cloned: JobPosition = { ...pos, title: `${pos.title} (কপি)` };
+                                  handlePositionsChange([...current, cloned]);
+                                }}
+                                className="px-2.5 py-1 text-xs font-semibold text-slate-600 hover:text-emerald-700 bg-white hover:bg-emerald-50 rounded-lg border border-slate-200 transition-colors flex items-center gap-1"
+                              >
+                                <Copy className="w-3 h-3" />
+                                <span>ক্লোন</span>
+                              </button>
+
+                              {/* Delete Button */}
+                              <button
+                                type="button"
+                                title="এই পদ মুছে ফেলুন"
+                                onClick={() => {
+                                  const updated = (formData.positions || []).filter((_, i) => i !== pIdx);
+                                  handlePositionsChange(updated);
+                                }}
+                                className="p-1.5 text-rose-500 hover:text-rose-700 hover:bg-rose-50 rounded-lg border border-transparent hover:border-rose-200 transition-colors"
+                              >
+                                <Trash2 className="w-3.5 h-3.5" />
+                              </button>
+                            </div>
+                          </div>
+
+                          {/* Editable Row Inputs */}
+                          <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 pt-1 text-xs">
+                            {/* Title */}
+                            <div className="sm:col-span-4">
+                              <label className="text-[11px] font-bold text-slate-600 block mb-1">পদের নাম (Title) *</label>
+                              <input
+                                type="text"
+                                value={pos.title}
+                                onChange={(e) => {
+                                  const updated = [...formData.positions!];
+                                  updated[pIdx] = { ...updated[pIdx], title: e.target.value };
+                                  handlePositionsChange(updated);
+                                }}
+                                className="w-full px-2.5 py-1.5 text-xs rounded-lg border border-slate-300 focus:ring-1 focus:ring-emerald-600 bg-white"
+                              />
+                            </div>
+
+                            {/* Vacancies */}
+                            <div className="sm:col-span-2">
+                              <label className="text-[11px] font-bold text-slate-600 block mb-1">পদসংখ্যা (Posts)</label>
+                              <input
+                                type="number"
+                                min="1"
+                                value={pos.posts || 1}
+                                onChange={(e) => {
+                                  const updated = [...formData.positions!];
+                                  updated[pIdx] = { ...updated[pIdx], posts: Math.max(1, Number(e.target.value)) };
+                                  handlePositionsChange(updated);
+                                }}
+                                className="w-full px-2.5 py-1.5 text-xs rounded-lg border border-slate-300 focus:ring-1 focus:ring-emerald-600 bg-white"
+                              />
+                            </div>
+
+                            {/* Grade */}
+                            <div className="sm:col-span-3">
+                              <label className="text-[11px] font-bold text-slate-600 block mb-1">বেতন গ্রেড (Grade)</label>
+                              <select
+                                value={pos.grade || '৯ম গ্রেড'}
+                                onChange={(e) => {
+                                  const gVal = e.target.value;
+                                  const updated = [...formData.positions!];
+                                  const match = GOVT_GRADE_PRESETS.find(p => p.grade === gVal);
+                                  updated[pIdx] = { 
+                                    ...updated[pIdx], 
+                                    grade: gVal,
+                                    salary: match ? match.salary : updated[pIdx].salary,
+                                    govtFee: match ? match.defaultFee : updated[pIdx].govtFee
+                                  };
+                                  handlePositionsChange(updated);
+                                }}
+                                className="w-full px-2.5 py-1.5 text-xs rounded-lg border border-slate-300 focus:ring-1 focus:ring-emerald-600 bg-white"
+                              >
+                                {Array.from({ length: 20 }, (_, i) => `${i + 1}ম গ্রেড`).map(g => (
+                                  <option key={g} value={g}>{g}</option>
+                                ))}
+                                <option value="নন-গ্রেড / চুক্তিভিত্তিক">নন-গ্রেড / চুক্তিভিত্তিক</option>
+                              </select>
+                            </div>
+
+                            {/* Salary Scale */}
+                            <div className="sm:col-span-3">
+                              <label className="text-[11px] font-bold text-slate-600 block mb-1">বেতন স্কেল (Salary)</label>
+                              <input
+                                type="text"
+                                value={pos.salary || ''}
+                                onChange={(e) => {
+                                  const updated = [...formData.positions!];
+                                  updated[pIdx] = { ...updated[pIdx], salary: e.target.value };
+                                  handlePositionsChange(updated);
+                                }}
+                                placeholder="যেমন: ২২,০০০ - ৫৩,০৬০ টাকা"
+                                className="w-full px-2.5 py-1.5 text-xs rounded-lg border border-slate-300 focus:ring-1 focus:ring-emerald-600 bg-white"
+                              />
+                            </div>
+
+                            {/* Govt Fee with 1-click Preset chips */}
+                            <div className="sm:col-span-6 bg-white p-2.5 rounded-xl border border-slate-200">
+                              <div className="flex items-center justify-between mb-1.5">
+                                <label className="text-[11px] font-bold text-slate-700">সরকারি আবেদন ফি (Govt Fee ৳)</label>
+                                <div className="flex items-center gap-1 text-[10px]">
+                                  <span className="text-slate-400">প্রিসেট:</span>
+                                  {[223, 112, 56, 100, 0].map(feeVal => (
+                                    <button
+                                      key={feeVal}
+                                      type="button"
+                                      onClick={() => {
+                                        const updated = [...formData.positions!];
+                                        updated[pIdx] = { ...updated[pIdx], govtFee: feeVal };
+                                        handlePositionsChange(updated);
+                                      }}
+                                      className={`px-1.5 py-0.5 rounded font-bold transition-colors cursor-pointer ${
+                                        pFee === feeVal ? 'bg-emerald-600 text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                                      }`}
+                                    >
+                                      ৳{feeVal}
+                                    </button>
+                                  ))}
+                                </div>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <input
+                                  type="number"
+                                  value={pos.govtFee ?? 200}
+                                  onChange={(e) => {
+                                    const updated = [...formData.positions!];
+                                    updated[pIdx] = { ...updated[pIdx], govtFee: Number(e.target.value) };
+                                    handlePositionsChange(updated);
+                                  }}
+                                  className="w-32 px-2.5 py-1 text-xs rounded-lg border border-slate-300 font-bold text-slate-800"
+                                />
+                                <span className="text-[11px] text-slate-500">
+                                  + টেলিটক চার্জ ৳{formData.serviceFee || 80} = <strong className="text-emerald-800 font-black">৳{(pos.govtFee ?? 200) + (formData.serviceFee || 80)}</strong>
+                                </span>
+                              </div>
+                            </div>
+
+                            {/* Min Education */}
+                            <div className="sm:col-span-6 bg-white p-2.5 rounded-xl border border-slate-200">
+                              <div className="flex items-center justify-between mb-1.5">
+                                <label className="text-[11px] font-bold text-slate-700">শিক্ষাগত যোগ্যতা (Minimum Education)</label>
+                                <div className="flex items-center gap-1 text-[10px]">
+                                  {['স্নাতক', 'এইচএসসি', 'এসএসসি', 'ডিপ্লোমা'].map(eduTag => (
+                                    <button
+                                      key={eduTag}
+                                      type="button"
+                                      onClick={() => {
+                                        const updated = [...formData.positions!];
+                                        updated[pIdx] = { ...updated[pIdx], minEducation: `${eduTag} বা সমমান` };
+                                        handlePositionsChange(updated);
+                                      }}
+                                      className="px-1.5 py-0.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded font-semibold cursor-pointer"
+                                    >
+                                      {eduTag}
+                                    </button>
+                                  ))}
+                                </div>
+                              </div>
+                              <input
+                                type="text"
+                                value={pos.minEducation || ''}
+                                onChange={(e) => {
+                                  const updated = [...formData.positions!];
+                                  updated[pIdx] = { ...updated[pIdx], minEducation: e.target.value };
+                                  handlePositionsChange(updated);
+                                }}
+                                placeholder="যেমন: কোনো স্বীকৃত বিশ্ববিদ্যালয় হতে স্নাতক বা সমমান ডিগ্রি"
+                                className="w-full px-2.5 py-1 text-xs rounded-lg border border-slate-300 font-medium"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  <div className="text-center py-8 bg-slate-50/80 rounded-2xl border border-dashed border-slate-200 text-slate-500 text-xs space-y-2">
+                    <p className="font-bold text-slate-700">এখনো কোনো নির্দিষ্ট পদ যোগ করা হয়নি।</p>
+                    <p>সার্কুলারে একাধিক ভিন্ন ভিন্ন পদ, বেতন গ্রেড বা আবেদন ফি থাকলে উপরের স্ট্যান্ডার্ড প্রিসেট বা বাটনে ক্লিক করে যোগ করুন।</p>
+                    <button
+                      type="button"
+                      onClick={() => handleAddPresetPosition(GOVT_GRADE_PRESETS[0])}
+                      className="px-4 py-2 bg-emerald-700 text-white rounded-xl text-xs font-bold hover:bg-emerald-800 transition-colors inline-flex items-center gap-1"
+                    >
+                      <Plus className="w-3.5 h-3.5" />
+                      <span>৯ম গ্রেড পদ দিয়ে শুরু করুন</span>
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* ------------------------------------------------------------ */}
           {/* ------------------------------------------------------------ */}
           {activeTab === 'eligibility' && (
             <div className="space-y-6 max-w-5xl mx-auto">
@@ -979,109 +1568,29 @@ export default function UniversalJobWorkspace({
                 </div>
               </div>
 
-              {/* Designated Sub-Positions Builder */}
-              <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-2xs space-y-4">
-                <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-                  <h3 className="text-sm font-black text-slate-900 flex items-center gap-2">
-                    <Layers className="w-4 h-4 text-emerald-600" />
-                    <span>পদভিত্তিক উপ-পদসমূহ (Designated Sub-Positions Builder)</span>
-                  </h3>
-                  <span className="text-[11px] font-bold text-emerald-800 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
-                    {(formData.positions || []).length} টি উপ-পদ
-                  </span>
-                </div>
-
-                {/* Sub positions list */}
-                {(formData.positions && formData.positions.length > 0) ? (
-                  <div className="space-y-2">
-                    {formData.positions.map((pos, pIdx) => (
-                      <div key={pIdx} className="bg-slate-50 p-3 rounded-xl border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
-                        <div>
-                          <div className="font-bold text-slate-900 flex items-center gap-2">
-                            <span>{pIdx + 1}. {pos.title}</span>
-                            <span className="text-[10px] bg-slate-200 text-slate-800 px-1.5 py-0.5 rounded font-bold">{pos.grade}</span>
-                            <span className="text-[10px] bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded font-bold">{pos.posts} জন</span>
-                          </div>
-                          <div className="text-[11px] text-slate-500 mt-0.5">
-                            বেতন: {pos.salary} | যোগ্যতা: {pos.minEducation}
-                          </div>
-                        </div>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            const updated = formData.positions!.filter((_, i) => i !== pIdx);
-                            updateField('positions', updated);
-                          }}
-                          className="self-end sm:self-center p-1.5 text-rose-500 hover:text-rose-700 hover:bg-rose-50 rounded-lg transition-colors"
-                        >
-                          <Trash2 className="w-3.5 h-3.5" />
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="text-center py-4 bg-slate-50/60 rounded-xl border border-dashed border-slate-200 text-slate-400 text-xs">
-                    কোনো উপ-পদ যুক্ত করা নেই। সার্কুলারে একাধিক ভিন্ন পদ থাকলে নিচে থেকে যুক্ত করুন।
-                  </div>
-                )}
-
-                {/* Add Sub-Position Form */}
-                <div className="pt-2 border-t border-slate-100 grid grid-cols-1 sm:grid-cols-5 gap-2 items-end">
-                  <div className="sm:col-span-2">
-                    <label className="text-[11px] font-bold text-slate-600 block mb-1">পদের নাম</label>
-                    <input
-                      type="text"
-                      value={newPosTitle}
-                      onChange={(e) => setNewPosTitle(e.target.value)}
-                      placeholder="যেমন: হিসাবরক্ষক"
-                      className="w-full px-2.5 py-1.5 text-xs rounded-lg border border-slate-300"
-                    />
+              {/* Positions Quick Jump Banner inside Eligibility */}
+              <div className="p-4 bg-emerald-50 rounded-2xl border border-emerald-200 flex items-center justify-between gap-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center shrink-0">
+                    <Layers className="w-5 h-5" />
                   </div>
                   <div>
-                    <label className="text-[11px] font-bold text-slate-600 block mb-1">গ্রেড</label>
-                    <input
-                      type="text"
-                      value={newPosGrade}
-                      onChange={(e) => setNewPosGrade(e.target.value)}
-                      className="w-full px-2.5 py-1.5 text-xs rounded-lg border border-slate-300"
-                    />
-                  </div>
-                  <div>
-                    <label className="text-[11px] font-bold text-slate-600 block mb-1">পদসংখ্যা</label>
-                    <input
-                      type="number"
-                      min="1"
-                      value={newPosPosts}
-                      onChange={(e) => setNewPosPosts(Number(e.target.value))}
-                      className="w-full px-2.5 py-1.5 text-xs rounded-lg border border-slate-300"
-                    />
-                  </div>
-                  <div>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        if (!newPosTitle.trim()) {
-                          alert('পদের নাম লিখুন!');
-                          return;
-                        }
-                        const newP: JobPosition = {
-                          title: newPosTitle.trim(),
-                          grade: newPosGrade.trim() || '৯ম গ্রেড',
-                          posts: Number(newPosPosts) || 1,
-                          salary: newPosSalary || formData.salary || '২২,০০০ - ৫৩,০৬০ টাকা',
-                          minEducation: newPosEdu || formData.minEducation || 'স্নাতক বা সমমান'
-                        };
-                        updateField('positions', [...(formData.positions || []), newP]);
-                        setNewPosTitle('');
-                        setNewPosPosts(1);
-                      }}
-                      className="w-full py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1 shadow-2xs"
-                    >
-                      <Plus className="w-3.5 h-3.5" />
-                      <span>যোগ করুন</span>
-                    </button>
+                    <h4 className="text-xs font-black text-slate-900">
+                      পদবী ও পদভিত্তিক যোগ্যতা ও ফি মেট্রিক্স
+                    </h4>
+                    <p className="text-[11px] text-slate-600">
+                      পদভিত্তিক পৃথক শিক্ষাগত যোগ্যতা, অভিজ্ঞতা ও ফি &apos;পদ ও বেতন মেট্রিক্স&apos; ট্যাবে একত্রিত করা হয়েছে।
+                    </p>
                   </div>
                 </div>
+                <button
+                  type="button"
+                  onClick={() => setActiveTab('positions')}
+                  className="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-bold transition-all shrink-0 flex items-center gap-1.5 shadow-2xs cursor-pointer"
+                >
+                  <span>পদ ও বেতন মেট্রিক্সে যান</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </button>
               </div>
             </div>
           )}
@@ -1145,7 +1654,21 @@ export default function UniversalJobWorkspace({
 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <div>
-                    <label className="text-xs font-bold text-slate-700 block mb-1">সরকারি আবেদন ফি (৳)</label>
+                    <div className="flex items-center justify-between mb-1">
+                      <label className="text-xs font-bold text-slate-700 block">সরকারি আবেদন ফি (৳)</label>
+                      <div className="flex items-center gap-1 text-[10px]">
+                        {[223, 112, 56, 100, 0].map(feeVal => (
+                          <button
+                            key={feeVal}
+                            type="button"
+                            onClick={() => updateField('govtFee', feeVal)}
+                            className="px-1.5 py-0.5 bg-slate-100 hover:bg-emerald-100 text-slate-700 rounded font-bold cursor-pointer"
+                          >
+                            ৳{feeVal}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
                     <input
                       type="number"
                       value={formData.govtFee || 0}
@@ -1173,6 +1696,57 @@ export default function UniversalJobWorkspace({
                     />
                   </div>
                 </div>
+
+                {/* Multi-Positions Fee Breakdown Table */}
+                {formData.positions && formData.positions.length > 0 && (
+                  <div className="p-4 bg-emerald-50/70 rounded-2xl border border-emerald-200 space-y-3 mt-4">
+                    <div className="flex items-center justify-between">
+                      <h4 className="text-xs font-black text-emerald-950 flex items-center gap-1.5">
+                        <Layers className="w-3.5 h-3.5 text-emerald-700" />
+                        <span>পদভিত্তিক নির্দিষ্ট ফি ও মোট চার্জ তালিকা ({formData.positions.length} টি পদ):</span>
+                      </h4>
+                      <button
+                        type="button"
+                        onClick={() => setActiveTab('positions')}
+                        className="text-[11px] font-bold text-emerald-800 hover:underline flex items-center gap-1"
+                      >
+                        <span>পদ ও ফি মেট্রিক্স এডিট করুন</span>
+                        <ArrowRight className="w-3 h-3" />
+                      </button>
+                    </div>
+
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-left text-xs bg-white rounded-xl border border-emerald-100 overflow-hidden">
+                        <thead className="bg-emerald-100/70 text-emerald-950 font-bold text-[11px]">
+                          <tr>
+                            <th className="p-2.5">পদের নাম</th>
+                            <th className="p-2.5">গ্রেড</th>
+                            <th className="p-2.5">পদসংখ্যা</th>
+                            <th className="p-2.5">সরকারি ফি</th>
+                            <th className="p-2.5">সার্ভিস চার্জ</th>
+                            <th className="p-2.5">মোট ফি</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-slate-100 text-[11px]">
+                          {formData.positions.map((pos, pIdx) => {
+                            const pGovtFee = pos.govtFee ?? formData.govtFee ?? 200;
+                            const pTotal = pGovtFee + (formData.serviceFee || 80);
+                            return (
+                              <tr key={pIdx} className="hover:bg-slate-50">
+                                <td className="p-2.5 font-bold text-slate-900">{pos.title}</td>
+                                <td className="p-2.5 text-slate-600">{pos.grade}</td>
+                                <td className="p-2.5 font-bold text-emerald-800">{pos.posts} জন</td>
+                                <td className="p-2.5 font-bold text-slate-800">৳{pGovtFee}</td>
+                                <td className="p-2.5 text-slate-500">+৳{formData.serviceFee || 80}</td>
+                                <td className="p-2.5 font-black text-emerald-700">৳{pTotal}</td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* Required Documents Checklist */}

@@ -14799,6 +14799,11 @@
       "candidateId": "ADMIN-SUPER",
       "role": "admin",
       "expiresAt": "2026-11-08T18:40:57.607Z"
+    },
+    "6e48ba4f35c27b7246fb91c41a7721e20e45326538d360137d1fded7a303c426": {
+      "candidateId": "ADMIN-SUPER",
+      "role": "admin",
+      "expiresAt": "2026-11-08T19:21:14.906Z"
     }
   },
   "coupons": {
@@ -14905,6 +14910,172 @@
   "couponRedemptions": {},
   "raffleEntries": {},
   "adminAuditLogs": [
+    {
+      "adminId": "ADMIN-SUPER",
+      "action": "job_edit",
+      "targetId": "job-teletalk-15106-cpgcbl",
+      "targetType": "order",
+      "changes": {
+        "job": {}
+      },
+      "notes": "Job circular updated: undefined",
+      "id": "AUDIT-1793560742346-X2NUN",
+      "timestamp": "2026-11-01T19:19:02.346Z"
+    },
+    {
+      "adminId": "ADMIN-SUPER",
+      "action": "job_publish",
+      "targetId": "job-teletalk-15083-itiiu",
+      "targetType": "order",
+      "changes": {
+        "job": {
+          "new": "আয়কর গোয়েন্দা ও তদন্ত ইউনিট (ITIIU) রাজস্ব খাতে নিয়োগ বিজ্ঞপ্তি ২০২৬"
+        }
+      },
+      "notes": "Job circular published: আয়কর গোয়েন্দা ও তদন্ত ইউনিট (ITIIU) রাজস্ব খাতে নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "id": "AUDIT-1793560671392-J0PGJ",
+      "timestamp": "2026-11-01T19:17:51.393Z"
+    },
+    {
+      "adminId": "ADMIN-SUPER",
+      "action": "job_publish",
+      "targetId": "job-teletalk-15085-basb",
+      "targetType": "order",
+      "changes": {
+        "job": {
+          "new": "বাংলাদেশ সশস্ত্র বাহিনী বোর্ড (BASB) কর্মকর্তা নিয়োগ বিজ্ঞপ্তি ২০২৬"
+        }
+      },
+      "notes": "Job circular published: বাংলাদেশ সশস্ত্র বাহিনী বোর্ড (BASB) কর্মকর্তা নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "id": "AUDIT-1793560671136-R7TSC",
+      "timestamp": "2026-11-01T19:17:51.136Z"
+    },
+    {
+      "adminId": "ADMIN-SUPER",
+      "action": "job_publish",
+      "targetId": "job-teletalk-15090-apscl",
+      "targetType": "order",
+      "changes": {
+        "job": {
+          "new": "আশুগঞ্জ পাওয়ার স্টেশন কোম্পানি লিমিটেড (APSCL) বিভিন্ন পদে নিয়োগ বিজ্ঞপ্তি ২০২৬"
+        }
+      },
+      "notes": "Job circular published: আশুগঞ্জ পাওয়ার স্টেশন কোম্পানি লিমিটেড (APSCL) বিভিন্ন পদে নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "id": "AUDIT-1793560670881-4ZIW4",
+      "timestamp": "2026-11-01T19:17:50.881Z"
+    },
+    {
+      "adminId": "ADMIN-SUPER",
+      "action": "job_publish",
+      "targetId": "job-teletalk-15102-dcjhenaidah",
+      "targetType": "order",
+      "changes": {
+        "job": {
+          "new": "জেলা প্রশাসকের কার্যালয়, ঝিনাইদহ নিয়োগ বিজ্ঞপ্তি ২০২৬"
+        }
+      },
+      "notes": "Job circular published: জেলা প্রশাসকের কার্যালয়, ঝিনাইদহ নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "id": "AUDIT-1793560670572-EHFMG",
+      "timestamp": "2026-11-01T19:17:50.572Z"
+    },
+    {
+      "adminId": "ADMIN-SUPER",
+      "action": "job_publish",
+      "targetId": "job-teletalk-15106-cpgcbl",
+      "targetType": "order",
+      "changes": {
+        "job": {
+          "new": "কোল পাওয়ার জেনারেশন কোম্পানি বাংলাদেশ লিমিটেড (CPGCBL) নিয়োগ বিজ্ঞপ্তি ২০২৬"
+        }
+      },
+      "notes": "Job circular published: কোল পাওয়ার জেনারেশন কোম্পানি বাংলাদেশ লিমিটেড (CPGCBL) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "id": "AUDIT-1793560670046-TI63F",
+      "timestamp": "2026-11-01T19:17:50.046Z"
+    },
+    {
+      "adminId": "ADMIN-SUPER",
+      "action": "job_delete",
+      "targetId": "job-teletalk-15083-itiiu",
+      "targetType": "order",
+      "changes": {
+        "job": {
+          "old": "অফিস সহকারী-কাম-কম্পিউটার মুদ্রাক্ষরিক ও সাঁট-মুদ্রাক্ষরিক নিয়োগ"
+        }
+      },
+      "notes": "Job deleted: অফিস সহকারী-কাম-কম্পিউটার মুদ্রাক্ষরিক ও সাঁট-মুদ্রাক্ষরিক নিয়োগ",
+      "id": "AUDIT-1793560668722-PO7IB",
+      "timestamp": "2026-11-01T19:17:48.722Z"
+    },
+    {
+      "adminId": "ADMIN-SUPER",
+      "action": "job_delete",
+      "targetId": "job-teletalk-15085-basb",
+      "targetType": "order",
+      "changes": {
+        "job": {
+          "old": "ভেরিফিকেশন / ইনভেস্টিগেশন অফিসার নিয়োগ বিজ্ঞপ্তি"
+        }
+      },
+      "notes": "Job deleted: ভেরিফিকেশন / ইনভেস্টিগেশন অফিসার নিয়োগ বিজ্ঞপ্তি",
+      "id": "AUDIT-1793560668582-5C670",
+      "timestamp": "2026-11-01T19:17:48.582Z"
+    },
+    {
+      "adminId": "ADMIN-SUPER",
+      "action": "job_delete",
+      "targetId": "job-teletalk-15090-apscl",
+      "targetType": "order",
+      "changes": {
+        "job": {
+          "old": "সহকারী ব্যবস্থাপক (কেমিকেল) নিয়োগ বিজ্ঞপ্তি ২০২৬"
+        }
+      },
+      "notes": "Job deleted: সহকারী ব্যবস্থাপক (কেমিকেল) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "id": "AUDIT-1793560668419-GEMDI",
+      "timestamp": "2026-11-01T19:17:48.419Z"
+    },
+    {
+      "adminId": "ADMIN-SUPER",
+      "action": "job_delete",
+      "targetId": "job-teletalk-15101-dcjhenaidah",
+      "targetType": "order",
+      "changes": {
+        "job": {
+          "old": "অফিস সহায়ক ও কম্পিউটার মুদ্রাক্ষরিক পদে নিয়োগ"
+        }
+      },
+      "notes": "Job deleted: অফিস সহায়ক ও কম্পিউটার মুদ্রাক্ষরিক পদে নিয়োগ",
+      "id": "AUDIT-1793560668257-R0R52",
+      "timestamp": "2026-11-01T19:17:48.257Z"
+    },
+    {
+      "adminId": "ADMIN-SUPER",
+      "action": "job_delete",
+      "targetId": "job-teletalk-15104-cpgcbl",
+      "targetType": "order",
+      "changes": {
+        "job": {
+          "old": "কোল পাওয়ার জেনারেশন কোম্পানি বাংলাদেশ লিমিটেড (CPGCBL) নিয়োগ বিজ্ঞপ্তি ২০২৬"
+        }
+      },
+      "notes": "Job deleted: কোল পাওয়ার জেনারেশন কোম্পানি বাংলাদেশ লিমিটেড (CPGCBL) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "id": "AUDIT-1793560668126-F1ED7",
+      "timestamp": "2026-11-01T19:17:48.126Z"
+    },
+    {
+      "adminId": "ADMIN-SUPER",
+      "action": "job_edit",
+      "targetId": "job-teletalk-15104-cpgcbl",
+      "targetType": "order",
+      "changes": {
+        "job": {
+          "new": "কোল পাওয়ার জেনারেশন কোম্পানি বাংলাদেশ লিমিটেড (CPGCBL) নিয়োগ বিজ্ঞপ্তি ২০২৬"
+        }
+      },
+      "notes": "Job circular updated: কোল পাওয়ার জেনারেশন কোম্পানি বাংলাদেশ লিমিটেড (CPGCBL) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "id": "AUDIT-1793559705781-GY2FQ",
+      "timestamp": "2026-11-01T19:01:45.781Z"
+    },
     {
       "adminId": "ADMIN-SUPER",
       "action": "job_edit",
@@ -53178,196 +53349,646 @@
     }
   ],
   "jobs": {
-    "job-teletalk-15104-cpgcbl": {
-      "id": "job-teletalk-15104-cpgcbl",
-      "title": "সহকারী প্রকৌশলী (মেকানিক্যাল) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+    "job-teletalk-15106-cpgcbl": {
+      "id": "job-teletalk-15106-cpgcbl",
+      "title": "কোল পাওয়ার জেনারেশন কোম্পানি বাংলাদেশ লিমিটেড (CPGCBL) নিয়োগ বিজ্ঞপ্তি ২০২৬",
       "organization": "কোল পাওয়ার জেনারেশন কোম্পানি বাংলাদেশ লিমিটেড (CPGCBL)",
-      "logo": "https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=120&q=80",
+      "logo": "https://alljobs.teletalk.com.bd/media/recruiter/organization/logo/bangladesh-govt-logo-A2C7688845-seeklogo.com_QWZOOQ6.png",
       "category": "govt",
-      "categoryLabel": "সরকারি চাকরি (ইঞ্জিনিয়ারিং)",
-      "grade": "৮ম গ্রেড",
-      "totalPosts": 5,
-      "salary": "২৩,০০০ - ৫৫,৪৭০ টাকা (কোম্পানি স্কেল অনুযায়ী আকর্ষণীয় সুবিধাদি)",
-      "minEducation": "বিএসসি ইন মেকানিক্যাল ইঞ্জিনিয়ারিং বা সমমান ডিগ্রি",
+      "categoryLabel": "সরকারি চাকরি (বিদ্যুৎ খাত)",
+      "grade": "৭ম - ১০ম গ্রেড",
+      "totalPosts": 22,
+      "salary": "৪০,০০০ - ১,০৫,০০০ টাকা (কোম্পানি নিজস্ব পে-স্কেল ও বিশেষ সুবিধাদি)",
+      "minEducation": "স্নাতক / বিএসসি ইঞ্জিনিয়ারিং / ডিপ্লোমা ডিগ্রি",
       "minAge": 21,
-      "maxAge": 30,
+      "maxAge": 32,
       "districts": "সকল জেলা",
-      "deadline": "2026-11-30",
-      "daysRemaining": 28,
-      "govtFee": 500,
-      "serviceFee": 80,
-      "officialLink": "http://cpgcbl.teletalk.com.bd",
-      "circularImage": "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=800&q=80",
-      "audioSummary": "কোল পাওয়ার জেনারেশন কোম্পানি বাংলাদেশ লিমিটেডে সহকারী প্রকৌশলী মেকানিক্যাল পদে ৫ জন নিয়োগের বিজ্ঞপ্তি প্রকাশ হয়েছে। আবেদনের শেষ তারিখ ৩০ নভেম্বর ২০২৬।",
-      "featured": true,
+      "deadline": "2026-11-23 23:45:00",
+      "daysRemaining": 22,
+      "govtFee": 1000,
+      "serviceFee": 112,
+      "officialLink": "http://cpgcbl.teletalk.com.bd/cpgcbl26/",
+      "circularImage": "https://alljobs.teletalk.com.bd/alljobs-banner.jpg",
+      "circularPdfUrl": "http://cpgcbl.teletalk.com.bd/cpgcbl26/docs/20260302.pdf",
+      "circularPages": [],
+      "audioSummary": "কোল পাওয়ার জেনারেশন কোম্পানি বাংলাদেশ লিমিটেড (CPGCBL)-এ বিভিন্ন গ্রেডে মোট ২২ জন নিয়োগের বিজ্ঞপ্তি প্রকাশ হয়েছে। আবেদনের শেষ তারিখ ২৩ নভেম্বর ২০২৬ রাত ১১:৪৫ মিনিট।",
       "publishedDate": "১ নভেম্বর ২০২৬",
-      "slug": "cpgcbl-assistant-engineer-mechanical-2026",
       "requirements": [
-        "স্বীকৃত বিশ্ববিদ্যালয় থেকে মেকানিক্যাল ইঞ্জিনিয়ারিংয়ে ন্যূনতম সিজিপিএ ৩.০০ সহ ৪ বছর মেয়াদী বিএসসি ডিগ্রি।",
-        "কম্পিউটার অটোক্যাড ও সংশ্লিষ্ট সফটওয়্যার চালনায় পারদর্শী হতে হবে।",
-        "সকল জেলার যোগ্য প্রার্থীরা অনলাইনে আবেদন করতে পারবেন।"
+        "স্বীকৃত শিক্ষা প্রতিষ্ঠান থেকে সংশ্লিষ্ট বিষয়ে নির্ধারিত ন্যূনতম জিপিএ/সিজিপিএ সহ উত্তীর্ণ হতে হবে।",
+        "কম্পিউটার পরিচালনায় এমএস অফিস ও সংশ্লিষ্ট কাজের অভিজ্ঞতা থাকতে হবে।",
+        "সকল জেলার যোগ্য বাংলাদেশি নাগরিকরা টেলিটক অনলাইন পোর্টালে আবেদন করতে পারবেন।"
       ],
+      "positions": [
+        {
+          "title": "Assistant Manager (Security)",
+          "grade": "৮ম গ্রেড",
+          "posts": 2,
+          "salary": "৫০,০০০ - ১,০৫,০০০ টাকা",
+          "minEducation": "অবসরপ্রাপ্ত সামরিক কর্মকর্তা (ক্যাপ্টেন/সমমান) অথবা স্বীকৃত বিশ্ববিদ্যালয় হতে স্নাতক/স্নাতকোত্তর ডিগ্রি।",
+          "govtFee": 1000
+        },
+        {
+          "title": "Assistant Manager (HR/Admin/Stores)",
+          "grade": "৮ম গ্রেড",
+          "posts": 2,
+          "salary": "৫০,০০০ - ১,০৫,০০০ টাকা",
+          "minEducation": "স্বীকৃত বিশ্ববিদ্যালয় হতে হিউম্যান রিসোর্স ম্যানেজমেন্ট/ব্যবস্থাপনা/লোকপ্রশাসনে ন্যূনতম ১ম শ্রেণি বা সিজিপিএ ৩.০০ সহ স্নাতকোত্তর/এমবিএ ডিগ্রি।",
+          "govtFee": 1000
+        },
+        {
+          "title": "Assistant Engineer (Mechanical)",
+          "grade": "৮ম গ্রেড",
+          "posts": 4,
+          "salary": "৫০,০০০ - ১,০৫,০০০ টাকা",
+          "minEducation": "স্বীকৃত বিশ্ববিদ্যালয় হতে মেকানিক্যাল ইঞ্জিনিয়ারিংয়ে ন্যূনতম সিজিপিএ ৩.০০ সহ ৪ বছর মেয়াদী বিএসসি ডিগ্রি।",
+          "govtFee": 1000
+        },
+        {
+          "title": "Assistant Engineer (Electrical)",
+          "grade": "৮ম গ্রেড",
+          "posts": 4,
+          "salary": "৫০,০০০ - ১,০৫,০০০ টাকা",
+          "minEducation": "স্বীকৃত বিশ্ববিদ্যালয় হতে ইলেকট্রিক্যাল/ইইই ইঞ্জিনিয়ারিংয়ে ন্যূনতম সিজিপিএ ৩.০০ সহ ৪ বছর মেয়াদী বিএসসি ডিগ্রি।",
+          "govtFee": 1000
+        },
+        {
+          "title": "Junior Assistant Manager (HR/Admin/Stores)",
+          "grade": "৯ম গ্রেড",
+          "posts": 2,
+          "salary": "৪০,০০০ - ৮৪,০০০ টাকা",
+          "minEducation": "স্বীকৃত বিশ্ববিদ্যালয় হতে স্নাতক (সম্মান) বা স্নাতকোত্তর ডিগ্রি। কম্পিউটার চালনায় পারদর্শী হতে হবে।",
+          "govtFee": 500
+        },
+        {
+          "title": "Sub-Assistant Engineer (Mechanical)",
+          "grade": "১০ম গ্রেড",
+          "posts": 4,
+          "salary": "৩৫,০০০ - ৭৩,৫০০ টাকা",
+          "minEducation": "বাংলাদেশ কারিগরি শিক্ষা বোর্ড হতে মেকানিক্যাল ইঞ্জিনিয়ারিংয়ে ন্যূনতম ২য় বিভাগ বা সিজিপিএ ৩.০০ সহ ৪ বছর মেয়াদী ডিপ্লোমা ইন ইঞ্জিনিয়ারিং।",
+          "govtFee": 500
+        },
+        {
+          "title": "Sub-Assistant Engineer (Electrical)",
+          "grade": "১০ম গ্রেড",
+          "posts": 4,
+          "salary": "৩৫,০০০ - ৭৩,৫০০ টাকা",
+          "minEducation": "বাংলাদেশ কারিগরি শিক্ষা বোর্ড হতে ইলেকট্রিক্যাল ইঞ্জিনিয়ারিংয়ে ন্যূনতম ২য় বিভাগ বা সিজিপিএ ৩.০০ সহ ৪ বছর মেয়াদী ডিপ্লোমা ইন ইঞ্জিনিয়ারিং।",
+          "govtFee": 500
+        }
+      ],
+      "feeRange": "৫৫৬ - ১,১১২ টাকা (টেলিটক সার্ভিস চার্জসহ)",
+      "ageCutOffDate": "2026-11-01",
+      "smsPrefix": "",
+      "allowThirdDivision": true,
+      "minFirstDivisionsCount": 0,
       "documentsRequired": [
         "জাতীয় পরিচয়পত্র (NID) স্মার্ট কার্ড",
-        "মেকানিক্যাল ইঞ্জিনিয়ারিং বিএসসি সনদ ও মার্কশিট",
-        "পাসপোর্ট সাইজ রঙিন ছবি (৩০০x৩০০ পিক্সেল)",
-        "স্বচ্ছ ব্যাকগ্রাউন্ডের ডিজিটাল স্বাক্ষর (৩০০x৮০ পিক্সেল)"
+        "সকল শিক্ষাগত যোগ্যতার মূল সনদ ও মার্কশিট",
+        "পাসপোর্ট সাইজ রঙিন ছবি (৩০০ x ৩০০ পিক্সেল)",
+        "স্বচ্ছ ব্যাকগ্রাউন্ডের ডিজিটাল স্বাক্ষর (৩০০ x ৮০ পিক্সেল)"
       ],
-      "seoTitle": "CPGCBL সহকারী প্রকৌশলী নিয়োগ ২০২৬ | চাকরি সেবা",
-      "seoDescription": "কোল পাওয়ার জেনারেশন কোম্পানি বাংলাদেশ লিমিটেড সহকারী প্রকৌশলী নিয়োগ ২০২৬। বিস্তারিত শর্ত ও ১০০% নির্ভুল আবেদন নির্দেশিকা।",
-      "bengaliDescription": "বিদ্যুৎ খাতের অগ্রণী প্রতিষ্ঠান কোল পাওয়ার জেনারেশন কোম্পানি বাংলাদেশ লিমিটেড (সিপিজিসিবিএল)-এ সহকারী প্রকৌশলী (মেকানিক্যাল) পদে জনবল নিয়োগের নিমিত্তে প্রকৃত বাংলাদেশি নাগরিকদের নিকট থেকে অনলাইনে দরখাস্ত আহ্বান করা যাচ্ছে।"
+      "bengaliDescription": "গণপ্রজাতন্ত্রী বাংলাদেশ সরকারের বিদ্যুৎ খাতের রাষ্ট্রায়ত্ত শীর্ষ প্রতিষ্ঠান কোল পাওয়ার জেনারেশন কোম্পানি বাংলাদেশ লিমিটেড (সিপিজিসিবিএল)-এ বিভিন্ন পদে জনবল নিয়োগের নিমিত্তে প্রকৃত বাংলাদেশি নাগরিকদের নিকট থেকে অনলাইনে দরখাস্ত আহ্বান করা যাচ্ছে।",
+      "faqItems": [],
+      "seoTitle": "CPGCBL নিয়োগ বিজ্ঞপ্তি ২০২৬ | টেলিটক অনলাইন আবেদন ও গেজেট নোটিশ",
+      "seoDescription": "কোল পাওয়ার জেনারেশন কোম্পানি বাংলাদেশ লিমিটেড (CPGCBL)-এ বিভিন্ন পদে ২২ জন নিয়োগের আসল বিজ্ঞপ্তি। আবেদনের শুরু ৩ নভেম্বর, শেষ ২৩ নভেম্বর ২০২৬।",
+      "seoKeywords": [],
+      "slug": "cpgcbl-recruitment-circular-2026-teletalk",
+      "refNo": "27.32.0000.000.007.11.0003.25-0229",
+      "designation": "কোল পাওয়ার জেনারেশন কোম্পানি বাংলাদেশ লিমিটেড (CPGCBL) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "eligibility": "",
+      "status": "published",
+      "featured": true,
+      "isHot": true,
+      "orgType": "",
+      "subCategory": "",
+      "employmentType": "full_time",
+      "workArrangement": "on_site",
+      "division": "",
+      "district": "",
+      "upazila": "",
+      "salaryType": "range",
+      "applicationStartDate": "2026-11-03 10:00:00",
+      "applicationMethod": "online_teletalk",
+      "applicationInstructions": "",
+      "experienceYears": "",
+      "skills": [],
+      "canonicalUrl": "",
+      "robotsDirective": "index, follow",
+      "ogImage": "",
+      "twitterImage": "",
+      "verificationStatus": "VERIFIED",
+      "verificationConfidence": 99.8,
+      "verificationNotes": "টেলিটক লাইভ পোর্টাল (cpgcbl.teletalk.com.bd) ও অফিশিয়াল গেজেট PDF থেকে ১০০% যাচাইকৃত।",
+      "lastVerifiedAt": "2026-11-01T19:17:49.902Z",
+      "verifiedBy": "Super Admin",
+      "createdAt": "2026-11-01T19:17:49.902Z",
+      "updatedAt": "2026-11-01T19:19:02.300Z",
+      "revisionHistory": [
+        {
+          "timestamp": "2026-11-01T19:19:02.300Z",
+          "adminId": "ADMIN-SUPER",
+          "action": "update",
+          "changedFields": [
+            "verifiedBy"
+          ],
+          "summary": "1টি ফিল্ড পরিবর্তিত হয়েছে (verifiedBy)"
+        },
+        {
+          "timestamp": "2026-11-01T19:17:49.995Z",
+          "adminId": "ADMIN-SUPER",
+          "action": "create",
+          "changedFields": [
+            "initial_creation"
+          ],
+          "summary": "সার্কুলার সফলভাবে তৈরি হয়েছে"
+        }
+      ]
     },
-    "job-teletalk-15101-dcjhenaidah": {
-      "id": "job-teletalk-15101-dcjhenaidah",
-      "title": "অফিস সহায়ক ও কম্পিউটার মুদ্রাক্ষরিক পদে নিয়োগ",
-      "organization": "জেলা প্রশাসকের কার্যালয়, ঝিনাইদহ (রাজস্ব প্রশাসন)",
-      "logo": "https://images.unsplash.com/photo-1572021335469-31706a17aaef?auto=format&fit=crop&w=120&q=80",
+    "job-teletalk-15102-dcjhenaidah": {
+      "id": "job-teletalk-15102-dcjhenaidah",
+      "title": "জেলা প্রশাসকের কার্যালয়, ঝিনাইদহ নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "organization": "জেলা প্রশাসকের কার্যালয়, ঝিনাইদহ",
+      "logo": "https://alljobs.teletalk.com.bd/media/recruiter/organization/logo/bangladesh-govt-logo-A2C7688845-seeklogo.com_QWZOOQ6.png",
       "category": "govt",
       "categoryLabel": "সরকারি চাকরি (প্রশাসন)",
-      "grade": "১৬তম-২০তম গ্রেড",
-      "totalPosts": 7,
-      "salary": "৯,৩০০ - ২২,৪৯০ টাকা (জাতীয় বেতন স্কেল ২০১৫)",
-      "minEducation": "এইচএসসি / সমমান পাস",
+      "grade": "১৬তম ও ২০তম গ্রেড",
+      "totalPosts": 11,
+      "salary": "৮,২৫০ - ২২,৪৯০ টাকা (জাতীয় বেতন স্কেল ২০১৫)",
+      "minEducation": "এইচএসসি / এসএসসি পাস",
       "minAge": 18,
       "maxAge": 32,
-      "districts": "ঝিনাইদহ ও ঢাকা বিভাগের জেলাসমূহ",
-      "deadline": "2026-11-25",
-      "daysRemaining": 23,
+      "districts": "ঝিনাইদহ জেলা (স্থায়ী বাসিন্দা)",
+      "deadline": "2026-11-22 17:00:00",
+      "daysRemaining": 21,
       "govtFee": 200,
-      "serviceFee": 60,
-      "officialLink": "http://dcjhenaidah.teletalk.com.bd",
-      "circularImage": "https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&w=800&q=80",
-      "audioSummary": "জেলা প্রশাসকের কার্যালয় ঝিনাইদহে অফিস সহকারী ও অফিস সহায়ক পদে ৭ জন নিয়োগ দেওয়া হবে। আবেদনের শেষ সময় ২৫ নভেম্বর ২০২৬।",
-      "featured": false,
-      "publishedDate": "১ নভেম্বর ২০২৬",
-      "slug": "dc-office-jhenaidah-office-assistant-2026",
+      "serviceFee": 23,
+      "officialLink": "https://dcjhenaidah.teletalk.com.bd/",
+      "circularImage": "https://alljobs.teletalk.com.bd/alljobs-banner.jpg",
+      "circularPdfUrl": "https://dcjhenaidah.teletalk.com.bd/docs/DCJH.pdf",
+      "circularPages": [],
+      "audioSummary": "জেলা প্রশাসকের কার্যালয়, ঝিনাইদহে অফিস সহকারী ও নিরাপত্তা প্রহরী পদে মোট ১১ জন নিয়োগের বিজ্ঞপ্তি প্রকাশ হয়েছে। আবেদনের শেষ তারিখ ২২ নভেম্বর ২০২৬ বিকাল ৫টা।",
+      "publishedDate": "২ নভেম্বর ২০২৬",
       "requirements": [
-        "উচ্চ মাধ্যমিক সার্টিফিকেট (এইচএসসি) বা সমমানের পরীক্ষায় উত্তীর্ণ।",
-        "কম্পিউটার টাইপিংয়ে প্রতি মিনিটে বাংলায় ২০ ও ইংরেজিতে ২০ শব্দের গতি সম্পন্ন হতে হবে।",
-        "অনলাইনে টেলিটক পোর্টালের মাধ্যমে আবেদনপত্র সাবমিট করতে হবে।"
+        "প্রার্থীকে অবশ্যই ঝিনাইদহ জেলার স্থায়ী বাসিন্দা ও বাংলাদেশের নাগরিক হতে হবে।",
+        "নির্ধারিত শিক্ষাগত যোগ্যতা ও অভিজ্ঞতা সম্পূর্ণ থাকতে হবে।",
+        "টেলিটকের অফিসিয়াল সাবডোমেইন (dcjhenaidah.teletalk.com.bd)-এ অনলাইনে নির্ধারিত সময়ের মধ্যে আবেদন সম্পন্ন করতে হবে।"
       ],
+      "positions": [
+        {
+          "title": "Office Assistant (অফিস সহকারী)",
+          "grade": "১৬তম গ্রেড",
+          "posts": 6,
+          "salary": "৯,৩০০ - ২২,৪৯০ টাকা",
+          "minEducation": "উচ্চ মাধ্যমিক সার্টিফিকেট (এইচএসসি) বা সমমানের পরীক্ষায় উত্তীর্ণ। কম্পিউটার টাইপিংয়ে প্রতি মিনিটে বাংলায় ২০ ও ইংরেজিতে ২০ শব্দের গতি থাকতে হবে।",
+          "govtFee": 200
+        },
+        {
+          "title": "Security Guard (নিরাপত্তা প্রহরী)",
+          "grade": "২০তম গ্রেড",
+          "posts": 5,
+          "salary": "৮,২৫০ - ২০,০১০ টাকা",
+          "minEducation": "মাধ্যমিক স্কুল সার্টিফিকেট (এসএসসি) বা সমমানের পরীক্ষায় উত্তীর্ণ এবং সুঠাম স্বাস্থ্যের অধিকারী হতে হবে।",
+          "govtFee": 100
+        }
+      ],
+      "feeRange": "১১২ - ২২৩ টাকা (টেলিটক সার্ভিস চার্জসহ)",
+      "ageCutOffDate": "2026-11-01",
+      "smsPrefix": "",
+      "allowThirdDivision": true,
+      "minFirstDivisionsCount": 0,
       "documentsRequired": [
-        "জাতীয় পরিচয়পত্র বা অনলাইন জন্মনিবন্ধন সনদ",
-        "এইচএসসি বা সমমানের শিক্ষাগত সনদের সত্যায়িত কপি",
-        "ইউনিয়ন পরিষদ / পৌরসভা প্রদত্ত নাগরিকত্ব ও চারিত্রিক সনদ"
+        "জাতীয় পরিচয়পত্র (NID) অথবা অনলাইন জন্মনিবন্ধন সনদ",
+        "ঝিনাইদহ জেলার স্থায়ী নাগরিকত্ব সনদ ও চারিত্রিক সনদপত্র",
+        "শিক্ষাগত যোগ্যতার সনদপত্র",
+        "পাসপোর্ট সাইজের রঙিন ছবি ও স্বাক্ষর"
       ],
-      "seoTitle": "ঝিনাইদহ জেলা প্রশাসক কার্যালয় নিয়োগ ২০২৬ | চাকরি সেবা",
-      "seoDescription": "জেলা প্রশাসকের কার্যালয় ঝিনাইদহ নিয়োগ ২০২৬। ৭টি পদে আবেদনের নিয়মাবলী ও টেলিটক ফি জমা দেওয়ার বিস্তারিত নির্দেশিকা।",
-      "bengaliDescription": "জনপ্রশাসন মন্ত্রণালয়ের অধীন জেলা প্রশাসকের কার্যালয় ঝিনাইদহের রাজস্ব প্রশাসনের আওতাধীন শূন্য পদসমূহে সরাসরি জনবল নিয়োগের জন্য অনলাইনে দরখাস্ত আহ্বান করা হচ্ছে।"
+      "bengaliDescription": "জনপ্রশাসন মন্ত্রণালয়ের আওতাধীন জেলা প্রশাসকের কার্যালয়, ঝিনাইদহ এবং এর অধীনস্থ উপজেলা নির্বাহী অফিসারের কার্যালয়সমূহে রাজস্ব খাতের শূন্য পদসমূহে সরাসরি নিয়োগের জন্য ঝিনাইদহ জেলার স্থায়ী বাসিন্দাদের নিকট থেকে দরখাস্ত আহ্বান করা হচ্ছে।",
+      "faqItems": [],
+      "seoTitle": "ঝিনাইদহ জেলা প্রশাসক কার্যালয় নিয়োগ ২০২৬ | dcjhenaidah teletalk",
+      "seoDescription": "ডিসি অফিস ঝিনাইদহ নিয়োগ বিজ্ঞপ্তি ২০২৬। অফিস সহকারী ও নিরাপত্তা প্রহরী পদে ১১ জন নিয়োগ। আবেদনের শেষ তারিখ ২২ নভেম্বর ২০২৬।",
+      "seoKeywords": [],
+      "slug": "dc-office-jhenaidah-job-circular-2026",
+      "refNo": "05.44.4400.008.68.001.26-628",
+      "designation": "জেলা প্রশাসকের কার্যালয়, ঝিনাইদহ নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "eligibility": "",
+      "status": "published",
+      "featured": true,
+      "isHot": true,
+      "orgType": "",
+      "subCategory": "",
+      "employmentType": "full_time",
+      "workArrangement": "on_site",
+      "division": "",
+      "district": "",
+      "upazila": "",
+      "salaryType": "range",
+      "applicationStartDate": "2026-11-02 10:00:00",
+      "applicationMethod": "online_teletalk",
+      "applicationInstructions": "",
+      "experienceYears": "",
+      "skills": [],
+      "canonicalUrl": "",
+      "robotsDirective": "index, follow",
+      "ogImage": "",
+      "twitterImage": "",
+      "verificationStatus": "VERIFIED",
+      "verificationConfidence": 99.8,
+      "verificationNotes": "ডিসি ঝিনাইদহ টেলিটক পোর্টাল (dcjhenaidah.teletalk.com.bd) ও আসল নোটিশ PDF (DCJH.pdf) থেকে শতভাগ যাচাইকৃত।",
+      "lastVerifiedAt": "2026-11-01T19:17:50.484Z",
+      "verifiedBy": "ADMIN-SUPER",
+      "createdAt": "2026-11-01T19:17:50.484Z",
+      "updatedAt": "2026-11-01T19:17:50.485Z",
+      "revisionHistory": [
+        {
+          "timestamp": "2026-11-01T19:17:50.485Z",
+          "adminId": "ADMIN-SUPER",
+          "action": "create",
+          "changedFields": [
+            "initial_creation"
+          ],
+          "summary": "সার্কুলার সফলভাবে তৈরি হয়েছে"
+        }
+      ]
     },
     "job-teletalk-15090-apscl": {
       "id": "job-teletalk-15090-apscl",
-      "title": "সহকারী ব্যবস্থাপক (কেমিকেল) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "title": "আশুগঞ্জ পাওয়ার স্টেশন কোম্পানি লিমিটেড (APSCL) বিভিন্ন পদে নিয়োগ বিজ্ঞপ্তি ২০২৬",
       "organization": "আশুগঞ্জ পাওয়ার স্টেশন কোম্পানি লিমিটেড (APSCL)",
-      "logo": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=120&q=80",
+      "logo": "https://alljobs.teletalk.com.bd/media/recruiter/organization/logo/bangladesh-govt-logo-A2C7688845-seeklogo.com_QWZOOQ6.png",
       "category": "govt",
-      "categoryLabel": "সরকারি ও স্বায়ত্তশাসিত",
-      "grade": "৮ম গ্রেড",
-      "totalPosts": 3,
-      "salary": "৫২,০০০ টাকা (কোম্পানি বেতন স্কেল ও প্রভিডেন্ট ফান্ড/গ্র্যাচুইটি)",
-      "minEducation": "এমএসসি ইন কেমিস্ট্রি / বিএসসি ইন কেমিক্যাল ইঞ্জিনিয়ারিং",
-      "minAge": 22,
-      "maxAge": 30,
-      "districts": "সকল জেলা",
-      "deadline": "2026-12-05",
-      "daysRemaining": 33,
-      "govtFee": 1000,
-      "serviceFee": 100,
-      "officialLink": "http://apscl.teletalk.com.bd",
-      "circularImage": "https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=800&q=80",
-      "audioSummary": "আশুগঞ্জ পাওয়ার স্টেশন কোম্পানি লিমিটেডে সহকারী ব্যবস্থাপক কেমিকেল পদে ৩ জন নিয়োগের সার্কুলার প্রকাশিত হয়েছে। শেষ তারিখ ৫ ডিসেম্বর ২০২৬।",
-      "featured": true,
-      "publishedDate": "১ নভেম্বর ২০২৬",
-      "slug": "apscl-assistant-manager-chemical-2026",
-      "requirements": [
-        "স্বীকৃত শিক্ষা প্রতিষ্ঠান হতে কেমিস্ট্রি বা কেমিক্যাল ইঞ্জিনিয়ারিংয়ে ন্যূনতম ১ম শ্রেণি বা সমমানের সিজিপিএ।",
-        "কোনো পরীক্ষায় ৩য় বিভাগ গ্রহণযোগ্য নয়।",
-        "বিদ্যুৎ কেন্দ্র বা রিফাইনারি ল্যাবে অভিজ্ঞ প্রার্থীদের অগ্রাধিকার প্রদান করা হবে।"
-      ],
-      "documentsRequired": [
-        "জাতীয় পরিচয়পত্র (NID)",
-        "স্নাতক ও স্নাতকোত্তর সনদ ও নম্বরপত্র",
-        "পাসপোর্ট সাইজ ছবি ও ডিজিটাল স্বাক্ষর"
-      ],
-      "seoTitle": "APSCL সহকারী ব্যবস্থাপক নিয়োগ ২০২৬ | চাকরি সেবা",
-      "seoDescription": "আশুগঞ্জ পাওয়ার স্টেশন কোম্পানি লিমিটেড সহকারী ব্যবস্থাপক (কেমিকেল) নিয়োগ ২০২৬। শিক্ষাগত যোগ্যতা ও আবেদন পদ্ধতি।",
-      "bengaliDescription": "দেশের অন্যতম বৃহৎ বিদ্যুৎ উৎপাদনকারী প্রতিষ্ঠান আশুগঞ্জ পাওয়ার স্টেশন কোম্পানি লিমিটেড (এপিএসসিএল)-এর জন্য সহকারী ব্যবস্থাপক (কেমিকেল) পদে দক্ষ জনবল নিয়োগ দেওয়া হবে।"
-    },
-    "job-teletalk-15085-basb": {
-      "id": "job-teletalk-15085-basb",
-      "title": "ভেরিফিকেশন / ইনভেস্টিগেশন অফিসার নিয়োগ বিজ্ঞপ্তি",
-      "organization": "বাংলাদেশ সশস্ত্র বোর্ড (BASB), প্রতিরক্ষা মন্ত্রণালয়",
-      "logo": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=120&q=80",
-      "category": "defense",
-      "categoryLabel": "প্রতিরক্ষা ও সরকারি চাকরি",
-      "grade": "১০ম গ্রেড",
-      "totalPosts": 4,
-      "salary": "১৬,০০০ - ৩৮,৬৪০ টাকা (জাতীয় বেতন স্কেল ২০১৫)",
-      "minEducation": "স্নাতক বা সমমানের ডিগ্রি",
-      "minAge": 18,
-      "maxAge": 30,
-      "districts": "সকল জেলা",
-      "deadline": "2026-11-28",
-      "daysRemaining": 26,
-      "govtFee": 300,
-      "serviceFee": 80,
-      "officialLink": "http://basb.teletalk.com.bd",
-      "circularImage": "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=800&q=80",
-      "audioSummary": "প্রতিরক্ষা মন্ত্রণালয়ের আওতাধীন বাংলাদেশ সশস্ত্র বোর্ডে ভেরিফিকেশন অফিসার পদে ৪ জন নিয়োগ দেওয়া হবে। আবেদনের শেষ তারিখ ২৮ নভেম্বর ২০২৬।",
-      "featured": false,
-      "publishedDate": "১ নভেম্বর ২০২৬",
-      "slug": "basb-investigation-verification-officer-2026",
-      "requirements": [
-        "যেকোনো স্বীকৃত বিশ্ববিদ্যালয় হতে ন্যূনতম স্নাতক বা সমমানের ডিগ্রি।",
-        "সশস্ত্র বাহিনীর অবসরপ্রাপ্ত জেসিও/এনসিও বা সমমানের প্রার্থীরা সরকারি বিধি অনুযায়ী অগ্রাধিকার পাবেন।",
-        "প্রার্থীকে বাংলাদেশের স্থায়ী নাগরিক হতে হবে।"
-      ],
-      "documentsRequired": [
-        "এনআইডি কার্ডের কপি",
-        "শিক্ষাগত যোগ্যতার মূল সনদের সত্যায়িত কপি",
-        "অবসরপ্রাপ্ত সামরিক সদস্যদের ক্ষেত্রে ডিসচার্জ বুক / সার্ভিস সনদের অনুলিপি"
-      ],
-      "seoTitle": "বাংলাদেশ সশস্ত্র বোর্ড নিয়োগ ২০২৬ | চাকরি সেবা",
-      "seoDescription": "প্রতিরক্ষা মন্ত্রণালয় বাংলাদেশ সশস্ত্র বোর্ড (BASB) ভেরিফিকেশন অফিসার নিয়োগ ২০২৬। পদ সংখ্যা ও আবেদনের যোগ্যতা।",
-      "bengaliDescription": "প্রতিরক্ষা মন্ত্রণালয়ের নিয়ন্ত্রণাধীন বাংলাদেশ সশস্ত্র বোর্ড (বিএএসবি)-এর প্রধান কার্যালয় এবং বিভিন্ন জেলা কার্যালয়ের ১০ম গ্রেডের কর্মকর্তা পদে সরাসরি নিয়োগের জন্য দরখাস্ত আহ্বান করা হচ্ছে।"
-    },
-    "job-teletalk-15083-itiiu": {
-      "id": "job-teletalk-15083-itiiu",
-      "title": "অফিস সহকারী-কাম-কম্পিউটার মুদ্রাক্ষরিক ও সাঁট-মুদ্রাক্ষরিক নিয়োগ",
-      "organization": "ইনকাম ট্যাক্স ইন্টেলিজেন্স অ্যান্ড ইনভেস্টিগেশন ইউনিট (ITIIU)",
-      "logo": "https://images.unsplash.com/photo-1450133064473-71024230f91b?auto=format&fit=crop&w=120&q=80",
-      "category": "govt",
-      "categoryLabel": "সরকারি চাকরি (রাজস্ব)",
-      "grade": "১৩তম-১৪তম গ্রেড",
-      "totalPosts": 6,
-      "salary": "১১,০০০ - ২৬,৫৯০ টাকা (জাতীয় বেতন স্কেল ২০১৫)",
-      "minEducation": "স্নাতক / এইচএসসি বা সমমান ডিগ্রি",
+      "categoryLabel": "সরকারি চাকরি (বিদ্যুৎ খাত)",
+      "grade": "৮ম - ২০তম গ্রেড",
+      "totalPosts": 81,
+      "salary": "৮,২৫০ - ৫৫,৪৭০ টাকা (কোম্পানি নিজস্ব পে-স্কেল ও আকর্ষণীয় সুবিধাদি)",
+      "minEducation": "বিএসসি ইঞ্জিনিয়ারিং / ডিপ্লোমা / স্নাতক / এসএসসি পাস",
       "minAge": 18,
       "maxAge": 32,
       "districts": "সকল জেলা",
-      "deadline": "2026-11-22",
-      "daysRemaining": 20,
-      "govtFee": 223,
-      "serviceFee": 60,
-      "officialLink": "http://itiiu.teletalk.com.bd",
-      "circularImage": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800&q=80",
-      "audioSummary": "জাতীয় রাজস্ব বোর্ডের ইনকাম ট্যাক্স ইন্টেলিজেন্স ইউনিটে ৬টি পদে নিয়োগের বিজ্ঞপ্তি প্রকাশিত হয়েছে। আবেদনের শেষ তারিখ ২২ নভেম্বর ২০২৬।",
-      "featured": true,
-      "publishedDate": "১ নভেম্বর ২০২৬",
-      "slug": "itiiu-income-tax-intelligence-assistant-2026",
+      "deadline": "2026-11-30 17:00:00",
+      "daysRemaining": 29,
+      "govtFee": 1000,
+      "serviceFee": 112,
+      "officialLink": "https://apscl.teletalk.com.bd/apscl2026/",
+      "circularImage": "https://alljobs.teletalk.com.bd/alljobs-banner.jpg",
+      "circularPdfUrl": "https://apscl.teletalk.com.bd/apscl2026/docs/20261029.pdf",
+      "circularPages": [],
+      "audioSummary": "আশুগঞ্জ পাওয়ার স্টেশন কোম্পানি লিমিটেড (APSCL)-এ সহকারী প্রকৌশলী, উপ-সহকারী প্রকৌশলী, কম্পিউটার অপারেটর ও সিকিউরিটি গার্ডসহ বিভিন্ন পদে ৮১ জন নিয়োগের বিজ্ঞপ্তি। আবেদনের শেষ তারিখ ৩০ নভেম্বর ২০২৬।",
+      "publishedDate": "২ নভেম্বর ২০২৬",
       "requirements": [
-        "স্বীকৃত বোর্ড বা বিশ্ববিদ্যালয় হতে এইচএসসি বা স্নাতক সমমান ডিগ্রি।",
-        "সাঁটলিপিতে প্রতি মিনিটে বাংলায় ৫০ শব্দ ও ইংরেজিতে ৮০ শব্দের গতি সম্পন্ন হতে হবে।",
-        "কম্পিউটার টাইপিংয়ে প্রতি মিনিটে বাংলায় ২৫ ও ইংরেজিতে ৩০ শব্দের ন্যূনতম গতি থাকতে হবে।"
+        "বাংলাদেশের সকল জেলার প্রার্থীরা শর্তানুযায়ী আবেদন করতে পারবেন।",
+        "প্রার্থীদের বয়সসীমা বিজ্ঞপ্তির তারিখ অনুযায়ী সাধারণ প্রার্থীদের জন্য সর্বোচ্চ ৩২ বছর।",
+        "আবেদন ও ফি প্রদান সম্পূর্ণ টেলিটক প্রিপেইড মোবাইলের মাধ্যমে অনলাইনে সম্পন্ন করতে হবে।"
       ],
+      "positions": [
+        {
+          "title": "Assistant Engineer (Electrical)",
+          "grade": "৮ম গ্রেড",
+          "posts": 15,
+          "salary": "৫০,০০০ - ১,০৫,০০০ টাকা",
+          "minEducation": "স্বীকৃত বিশ্ববিদ্যালয় হতে ইলেকট্রিক্যাল ইঞ্জিনিয়ারিংয়ে ন্যূনতম সিজিপিএ ৩.০০ সহ ৪ বছর মেয়াদী বিএসসি ডিগ্রি।",
+          "govtFee": 1000
+        },
+        {
+          "title": "Assistant Engineer (Mechanical)",
+          "grade": "৮ম গ্রেড",
+          "posts": 11,
+          "salary": "৫০,০০০ - ১,০৫,০০০ টাকা",
+          "minEducation": "স্বীকৃত বিশ্ববিদ্যালয় হতে মেকানিক্যাল ইঞ্জিনিয়ারিংয়ে ন্যূনতম সিজিপিএ ৩.০০ সহ ৪ বছর মেয়াদী বিএসসি ডিগ্রি।",
+          "govtFee": 1000
+        },
+        {
+          "title": "Sub-Assistant Engineer (Mechanical)",
+          "grade": "১০ম গ্রেড",
+          "posts": 13,
+          "salary": "৩৫,০০০ - ৭৩,৫০০ টাকা",
+          "minEducation": "কারিগরি শিক্ষা বোর্ড হতে মেকানিক্যাল টেকনোলজিতে ৪ বছর মেয়াদী ডিপ্লোমা ইন ইঞ্জিনিয়ারিং।",
+          "govtFee": 500
+        },
+        {
+          "title": "Sub-Assistant Engineer (Electrical)",
+          "grade": "১০ম গ্রেড",
+          "posts": 9,
+          "salary": "৩৫,০০০ - ৭৩,৫০০ টাকা",
+          "minEducation": "কারিগরি শিক্ষা বোর্ড হতে ইলেকট্রিক্যাল টেকনোলজিতে ৪ বছর মেয়াদী ডিপ্লোমা ইন ইঞ্জিনিয়ারিং।",
+          "govtFee": 500
+        },
+        {
+          "title": "Junior Assistant Cum Computer Operator",
+          "grade": "১৪তম গ্রেড",
+          "posts": 8,
+          "salary": "১০,২০০ - ২৪,৬৮০ টাকা",
+          "minEducation": "স্বীকৃত বিশ্ববিদ্যালয় হতে ন্যূনতম ২য় শ্রেণি বা সমমানের সিজিপিএ সহ স্নাতক বা সমমানের ডিগ্রি এবং কম্পিউটার টাইপিং দক্ষতা।",
+          "govtFee": 200
+        },
+        {
+          "title": "Security Guard (নিরাপত্তা প্রহরী)",
+          "grade": "২০তম গ্রেড",
+          "posts": 12,
+          "salary": "৮,২৫০ - ২০,০১০ টাকা",
+          "minEducation": "এসএসসি বা সমমান পাস। সুঠাম দেহের অধিকারী ও আনসার/ভিডিপি সনদপ্রাপ্তদের অগ্রাধিকার।",
+          "govtFee": 100
+        },
+        {
+          "title": "Fireman (ফায়ারম্যান)",
+          "grade": "১৮তম গ্রেড",
+          "posts": 6,
+          "salary": "৮,৮০০ - ২১,৩১০ টাকা",
+          "minEducation": "এসএসসি বা সমমান পাস এবং ফায়ার ফাইটিংয়ে ন্যূনতম প্রশিক্ষণপ্রাপ্ত।",
+          "govtFee": 100
+        },
+        {
+          "title": "Assistant Manager (HR & Admin)",
+          "grade": "৮ম গ্রেড",
+          "posts": 3,
+          "salary": "৫০,০০০ - ১,০৫,০০০ টাকা",
+          "minEducation": "স্বীকৃত বিশ্ববিদ্যালয় হতে হিউম্যান রিসোর্স ম্যানেজমেন্ট/ম্যানেজমেন্টে প্রথম শ্রেণি বা সমমানের সিজিপিএ সহ স্নাতকোত্তর।",
+          "govtFee": 1000
+        },
+        {
+          "title": "Assistant Manager (Finance/Accounts)",
+          "grade": "৮ম গ্রেড",
+          "posts": 2,
+          "salary": "৫০,০০০ - ১,০৫,০০০ টাকা",
+          "minEducation": "ফিন্যান্স/অ্যাকাউন্টিংয়ে ১ম শ্রেণি বা সমমানের সিজিপিএ সহ এমবিএ/স্নাতকোত্তর ডিগ্রি।",
+          "govtFee": 1000
+        },
+        {
+          "title": "Assistant Manager (Chemical)",
+          "grade": "৮ম গ্রেড",
+          "posts": 2,
+          "salary": "৫০,০০০ - ১,০৫,০০০ টাকা",
+          "minEducation": "ফলিত রসায়ন/কেমিস্ট্রিতে ১ম শ্রেণি সহ এমএসসি বা কেমিক্যাল ইঞ্জিনিয়ারিংয়ে বিএসসি।",
+          "govtFee": 1000
+        }
+      ],
+      "feeRange": "১১২ - ১,১১২ টাকা (টেলিটক সার্ভিস চার্জসহ)",
+      "ageCutOffDate": "2026-11-01",
+      "smsPrefix": "",
+      "allowThirdDivision": true,
+      "minFirstDivisionsCount": 0,
       "documentsRequired": [
-        "জাতীয় পরিচয়পত্র (NID) কার্ড",
-        "সকল স্তরের শিক্ষাগত যোগ্যতার সনদপত্র",
-        "কম্পিউটার প্রশিক্ষণ কোর্সের প্রত্যয়নপত্র"
+        "জাতীয় পরিচয়পত্র (NID)",
+        "সকল বোর্ড ও বিশ্ববিদ্যালয়ের সনদপত্র",
+        "ছবি (৩০০ x ৩০০) ও ডিজিটাল স্বাক্ষর (৩০০ x ৮০)"
       ],
-      "seoTitle": "ITIIU ইনকাম ট্যাক্স গোয়েন্দা ইউনিট নিয়োগ ২০২৬ | চাকরি সেবা",
-      "seoDescription": "জাতীয় রাজস্ব বোর্ডের আওতাধীন ইনকাম ট্যাক্স ইন্টেলিজেন্স অ্যান্ড ইনভেস্টিগেশন ইউনিট (ITIIU) নিয়োগ ২০২৬। আবেদনের বিস্তারিত পদ্ধতি।",
-      "bengaliDescription": "জাতীয় রাজস্ব বোর্ডের আয়কর অনুবিভাগের আওতায় গঠিত বিশেষায়িত গোয়েন্দা সংস্থা ইনকাম ট্যাক্স ইন্টেলিজেন্স অ্যান্ড ইনভেস্টিগেশন ইউনিট (আইটিআইআইইউ)-এর রাজস্ব খাতভুক্ত শূন্য পদে সরকারি বিধিমোতাবেক জনবল নিয়োগ করা হবে।"
+      "bengaliDescription": "দেশের বিদ্যুৎ উৎপাদনে দ্বিতীয় বৃহত্তম রাষ্ট্রায়ত্ত বিদ্যুৎ কেন্দ্র আশুগঞ্জ পাওয়ার স্টেশন কোম্পানি লিমিটেড (এপিএসসিএল)-এ বিভিন্ন পদে জনবল নিয়োগের নিমিত্তে প্রকৃত বাংলাদেশি নাগরিকদের নিকট থেকে অনলাইনে আবেদন আহ্বান করা হচ্ছে।",
+      "faqItems": [],
+      "seoTitle": "APSCL আশুগঞ্জ পাওয়ার স্টেশন নিয়োগ ২০২৬ | ৮১ পদে বিশাল বিজ্ঞপ্তি",
+      "seoDescription": "আশুগঞ্জ পাওয়ার স্টেশন কোম্পানি লিমিটেড (APSCL) বিভিন্ন পদে ৮১ জন নিয়োগের বিজ্ঞপ্তি প্রকাশ করেছে। আবেদনের শেষ তারিখ ৩০ নভেম্বর ২০২৬।",
+      "seoKeywords": [],
+      "slug": "apscl-recruitment-circular-2026-teletalk",
+      "refNo": "27.25.1233.000.217.11.003.18(Ad-4).1018",
+      "designation": "আশুগঞ্জ পাওয়ার স্টেশন কোম্পানি লিমিটেড (APSCL) বিভিন্ন পদে নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "eligibility": "",
+      "status": "published",
+      "featured": true,
+      "isHot": true,
+      "orgType": "",
+      "subCategory": "",
+      "employmentType": "full_time",
+      "workArrangement": "on_site",
+      "division": "",
+      "district": "",
+      "upazila": "",
+      "salaryType": "range",
+      "applicationStartDate": "2026-11-02 10:00:00",
+      "applicationMethod": "online_teletalk",
+      "applicationInstructions": "",
+      "experienceYears": "",
+      "skills": [],
+      "canonicalUrl": "",
+      "robotsDirective": "index, follow",
+      "ogImage": "",
+      "twitterImage": "",
+      "verificationStatus": "VERIFIED",
+      "verificationConfidence": 99.8,
+      "verificationNotes": "এপিএসসিএল টেলিটক মাইক্রোসাইট (apscl.teletalk.com.bd/apscl2026) ও আসল নোটিশ PDF (20261029.pdf) থেকে যাচাইকৃত।",
+      "lastVerifiedAt": "2026-11-01T19:17:50.706Z",
+      "verifiedBy": "ADMIN-SUPER",
+      "createdAt": "2026-11-01T19:17:50.706Z",
+      "updatedAt": "2026-11-01T19:17:50.707Z",
+      "revisionHistory": [
+        {
+          "timestamp": "2026-11-01T19:17:50.707Z",
+          "adminId": "ADMIN-SUPER",
+          "action": "create",
+          "changedFields": [
+            "initial_creation"
+          ],
+          "summary": "সার্কুলার সফলভাবে তৈরি হয়েছে"
+        }
+      ]
+    },
+    "job-teletalk-15085-basb": {
+      "id": "job-teletalk-15085-basb",
+      "title": "বাংলাদেশ সশস্ত্র বাহিনী বোর্ড (BASB) কর্মকর্তা নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "organization": "বাংলাদেশ সশস্ত্র বাহিনী বোর্ড (BASB), প্রতিরক্ষা মন্ত্রণালয়",
+      "logo": "https://alljobs.teletalk.com.bd/media/recruiter/organization/logo/bangladesh-govt-logo-A2C7688845-seeklogo.com_QWZOOQ6.png",
+      "category": "defense",
+      "categoryLabel": "প্রতিরক্ষা ও সরকারি",
+      "grade": "১০ম গ্রেড",
+      "totalPosts": 2,
+      "salary": "১৬,০০০ - ৩৮,৬৪০ টাকা (জাতীয় বেতন স্কেল ২০১৫)",
+      "minEducation": "স্বীকৃত বিশ্ববিদ্যালয় হতে স্নাতক বা সমমানের ডিগ্রি",
+      "minAge": 18,
+      "maxAge": 32,
+      "districts": "সকল জেলা",
+      "deadline": "2026-11-21 17:00:00",
+      "daysRemaining": 20,
+      "govtFee": 500,
+      "serviceFee": 56,
+      "officialLink": "https://basb.teletalk.com.bd/",
+      "circularImage": "https://alljobs.teletalk.com.bd/alljobs-banner.jpg",
+      "circularPdfUrl": "https://basb.teletalk.com.bd/docs/BASB20261028.pdf",
+      "circularPages": [],
+      "audioSummary": "প্রতিরক্ষা মন্ত্রণালয়ের আওতাধীন বাংলাদেশ সশস্ত্র বাহিনী বোর্ডে (BASB) যাচাই ও তদন্তকারী কর্মকর্তা পদে নিয়োগের বিজ্ঞপ্তি প্রকাশ হয়েছে। আবেদনের শেষ তারিখ ২১ নভেম্বর ২০২৬।",
+      "publishedDate": "১ নভেম্বর ২০২৬",
+      "requirements": [
+        "প্রার্থীকে বাংলাদেশের স্থায়ী নাগরিক হতে হবে।",
+        "তদন্ত ও প্রতিবেদন প্রস্তুতকরণে অভিজ্ঞতা এবং কম্পিউটার পরিচালনায় পারদর্শী হতে হবে।",
+        "অনলাইনে টেলিটকের মাধ্যমে নির্ধারিত সময়ের মধ্যে আবেদন দাখিল করতে হবে।"
+      ],
+      "positions": [
+        {
+          "title": "Verification / Investigation Officer (যাচাই ও তদন্তকারী কর্মকর্তা)",
+          "grade": "১০ম গ্রেড",
+          "posts": 2,
+          "salary": "১৬,০০০ - ৩৮,৬৪০ টাকা",
+          "minEducation": "স্বীকৃত বিশ্ববিদ্যালয় হতে অন্যূন দ্বিতীয় শ্রেণি বা সমমানের সিজিপিএ সহ স্নাতক বা সমমানের ডিগ্রি। অবসরপ্রাপ্ত জেসিও/সমমান সশস্ত্র বাহিনীর প্রার্থীদের অগ্রাধিকার দেওয়া হবে।",
+          "govtFee": 500
+        }
+      ],
+      "feeRange": "৫৫৬ টাকা (টেলিটক সার্ভিস চার্জসহ)",
+      "ageCutOffDate": "2026-11-01",
+      "smsPrefix": "",
+      "allowThirdDivision": true,
+      "minFirstDivisionsCount": 0,
+      "documentsRequired": [
+        "জাতীয় পরিচয়পত্র (NID)",
+        "স্নাতক ও অন্যান্য শিক্ষাগত যোগ্যতার সনদ",
+        "মুক্তিযোদ্ধা/সামরিক অবসরপ্রাপ্ত সনদ (প্রযোজ্য ক্ষেত্রে)",
+        "রঙিন ছবি ও ডিজিটাল স্বাক্ষর"
+      ],
+      "bengaliDescription": "গণপ্রজাতন্ত্রী বাংলাদেশ সরকারের প্রতিরক্ষা মন্ত্রণালয়ের আওতাধীন বাংলাদেশ সশস্ত্র বাহিনী বোর্ড (বিএএসবি)-এ রাজস্ব খাতভুক্ত ১০ম গ্রেডের শূন্য পদে সরাসরি জনবল নিয়োগের নিমিত্তে অনলাইনে আবেদনপত্র আহ্বান করা হচ্ছে।",
+      "faqItems": [],
+      "seoTitle": "BASB নিয়োগ বিজ্ঞপ্তি ২০২৬ | বাংলাদেশ সশস্ত্র বাহিনী বোর্ড",
+      "seoDescription": "প্রতিরক্ষা মন্ত্রণালয়ের অধীনে বাংলাদেশ সশস্ত্র বাহিনী বোর্ড (BASB)-এ তদন্তকারী কর্মকর্তা পদে নিয়োগের অফিসিয়াল বিজ্ঞপ্তি। আবেদনের শেষ তারিখ ২১ নভেম্বর ২০২৬।",
+      "seoKeywords": [],
+      "slug": "basb-verification-officer-circular-2026",
+      "refNo": "23.28.2666.001.11.029.26-",
+      "designation": "বাংলাদেশ সশস্ত্র বাহিনী বোর্ড (BASB) কর্মকর্তা নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "eligibility": "",
+      "status": "published",
+      "featured": true,
+      "isHot": true,
+      "orgType": "",
+      "subCategory": "",
+      "employmentType": "full_time",
+      "workArrangement": "on_site",
+      "division": "",
+      "district": "",
+      "upazila": "",
+      "salaryType": "range",
+      "applicationStartDate": "2026-11-01 10:00:00",
+      "applicationMethod": "online_teletalk",
+      "applicationInstructions": "",
+      "experienceYears": "",
+      "skills": [],
+      "canonicalUrl": "",
+      "robotsDirective": "index, follow",
+      "ogImage": "",
+      "twitterImage": "",
+      "verificationStatus": "VERIFIED",
+      "verificationConfidence": 99.8,
+      "verificationNotes": "বিএএসবি টেলিটক পোর্টাল (basb.teletalk.com.bd) ও গেজেট PDF (BASB20261028.pdf) থেকে সরাসরি সংগৃহীত ও নিরীক্ষিত।",
+      "lastVerifiedAt": "2026-11-01T19:17:51.053Z",
+      "verifiedBy": "ADMIN-SUPER",
+      "createdAt": "2026-11-01T19:17:51.053Z",
+      "updatedAt": "2026-11-01T19:17:51.054Z",
+      "revisionHistory": [
+        {
+          "timestamp": "2026-11-01T19:17:51.054Z",
+          "adminId": "ADMIN-SUPER",
+          "action": "create",
+          "changedFields": [
+            "initial_creation"
+          ],
+          "summary": "সার্কুলার সফলভাবে তৈরি হয়েছে"
+        }
+      ]
+    },
+    "job-teletalk-15083-itiiu": {
+      "id": "job-teletalk-15083-itiiu",
+      "title": "আয়কর গোয়েন্দা ও তদন্ত ইউনিট (ITIIU) রাজস্ব খাতে নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "organization": "আয়কর গোয়েন্দা ও তদন্ত ইউনিট (ITIIU), জাতীয় রাজস্ব বোর্ড (NBR)",
+      "logo": "https://alljobs.teletalk.com.bd/media/recruiter/organization/logo/bangladesh-govt-logo-A2C7688845-seeklogo.com_QWZOOQ6.png",
+      "category": "govt",
+      "categoryLabel": "সরকারি চাকরি (এনবিআর রাজস্ব)",
+      "grade": "১৩তম - ২০তম গ্রেড",
+      "totalPosts": 35,
+      "salary": "৮,২৫০ - ২৬,৫৯০ টাকা (জাতীয় বেতন স্কেল ২০১৫)",
+      "minEducation": "স্নাতক / এইচএসসি / এসএসসি পাস",
+      "minAge": 18,
+      "maxAge": 32,
+      "districts": "সকল জেলা (বিজ্ঞপ্তিতে উল্লিখিত জেলাসমূহ)",
+      "deadline": "2026-11-23 17:00:00",
+      "daysRemaining": 22,
+      "govtFee": 200,
+      "serviceFee": 23,
+      "officialLink": "https://itiiu.teletalk.com.bd/",
+      "circularImage": "https://alljobs.teletalk.com.bd/alljobs-banner.jpg",
+      "circularPdfUrl": "https://itiiu.teletalk.com.bd/docs/ITIIU20261101.pdf",
+      "circularPages": [],
+      "audioSummary": "জাতীয় রাজস্ব বোর্ডের আয়কর গোয়েন্দা ও তদন্ত ইউনিটে ব্যক্তিগত সহকারী, অফিস সহকারী ও অফিস সহায়কসহ বিভিন্ন পদে মোট ৩৫ জন নিয়োগের বিজ্ঞপ্তি। আবেদনের শেষ তারিখ ২৩ নভেম্বর ২০২৬।",
+      "publishedDate": "২ নভেম্বর ২০২৬",
+      "requirements": [
+        "বাংলাদেশের নাগরিক হতে হবে এবং বিজ্ঞপ্তিতে বর্ণিত শর্তাবলি পূরণ করতে হবে।",
+        "প্রার্থীর বয়সসীমা ৩ নভেম্বর ২০২৬ তারিখে ১৮ থেকে ৩২ বছরের মধ্যে হতে হবে।",
+        "আবেদন ও ফি প্রদান অনলাইনেই itiiu.teletalk.com.bd পোর্টালে সম্পন্ন করতে হবে।"
+      ],
+      "positions": [
+        {
+          "title": "Personal Assistant (ব্যক্তিগত সহকারী)",
+          "grade": "১৩তম গ্রেড",
+          "posts": 10,
+          "salary": "১১,০০০ - ২৬,৫৯০ টাকা",
+          "minEducation": "স্বীকৃত বিশ্ববিদ্যালয় হতে অন্যূন দ্বিতীয় শ্রেণি বা সমমানের সিজিপিএ সহ স্নাতক বা সমমানের ডিগ্রি। সাঁটলিপিতে প্রতি মিনিটে বাংলায় ৫০ ও ইংরেজিতে ৮০ শব্দের গতি এবং কম্পিউটার মুদ্রাক্ষরে বাংলায় ২৫ ও ইংরেজিতে ৩০ শব্দের গতি।",
+          "govtFee": 200
+        },
+        {
+          "title": "Office Assistant-Cum-Computer Typist (অফিস সহকারী কাম-কম্পিউটার মুদ্রাক্ষরিক)",
+          "grade": "১৬তম গ্রেড",
+          "posts": 12,
+          "salary": "৯,৩০০ - ২২,৪৯০ টাকা",
+          "minEducation": "উচ্চ মাধ্যমিক সার্টিফিকেট (এইচএসসি) বা সমমানের পরীক্ষায় উত্তীর্ণ। কম্পিউটার টাইপিংয়ে প্রতি মিনিটে বাংলায় ২০ ও ইংরেজিতে ২০ শব্দের গতি থাকতে হবে।",
+          "govtFee": 200
+        },
+        {
+          "title": "Office Support Staff (অফিস সহায়ক)",
+          "grade": "২০তম গ্রেড",
+          "posts": 13,
+          "salary": "৮,২৫০ - ২০,০১০ টাকা",
+          "minEducation": "মাধ্যমিক স্কুল সার্টিফিকেট (এসএসসি) বা সমমানের পরীক্ষায় উত্তীর্ণ।",
+          "govtFee": 100
+        }
+      ],
+      "feeRange": "১১২ - ২২৩ টাকা (টেলিটক সার্ভিস চার্জসহ)",
+      "ageCutOffDate": "2026-11-01",
+      "smsPrefix": "",
+      "allowThirdDivision": true,
+      "minFirstDivisionsCount": 0,
+      "documentsRequired": [
+        "জাতীয় পরিচয়পত্র (NID) স্মার্ট কার্ড",
+        "সকল শিক্ষাগত যোগ্যতার সনদপত্র ও সাঁটলিপি/কম্পিউটার প্রশিক্ষণ সনদ",
+        "পাসপোর্ট সাইজের ছবি (৩০০x৩০০) ও স্বাক্ষর (৩০০x৮০)"
+      ],
+      "bengaliDescription": "অর্থ মন্ত্রণালয়ের অভ্যন্তরীণ সম্পদ বিভাগের অধীনস্থ জাতীয় রাজস্ব বোর্ডের আয়কর অনুবিভাগের বিশেষায়িত সংস্থা আয়কর গোয়েন্দা ও তদন্ত ইউনিট (আইটিআইআইইউ)-এর রাজস্ব খাতভুক্ত বিভিন্ন পদে অস্থায়ী ভিত্তিতে সরাসরি জনবল নিয়োগের জন্য যোগ্য প্রার্থীদের নিকট থেকে অনলাইনে আবেদন আহ্বান করা হচ্ছে।",
+      "faqItems": [],
+      "seoTitle": "ITIIU আয়কর গোয়েন্দা ও তদন্ত ইউনিট নিয়োগ ২০২৬ | ৩৫ পদে এনবিআর সার্কুলার",
+      "seoDescription": "জাতীয় রাজস্ব বোর্ডের অধীনস্থ আয়কর গোয়েন্দা ও তদন্ত ইউনিট (ITIIU)-এ ৩৫ পদে নিয়োগ বিজ্ঞপ্তি। আবেদন শুরুর তারিখ ৩ নভেম্বর, শেষ ২৩ নভেম্বর ২০২৬।",
+      "seoKeywords": [],
+      "slug": "itiiu-nbr-job-circular-2026",
+      "refNo": "08.01.2622.533.000.11.0001.26.9451",
+      "designation": "আয়কর গোয়েন্দা ও তদন্ত ইউনিট (ITIIU) রাজস্ব খাতে নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "eligibility": "",
+      "status": "published",
+      "featured": true,
+      "isHot": true,
+      "orgType": "",
+      "subCategory": "",
+      "employmentType": "full_time",
+      "workArrangement": "on_site",
+      "division": "",
+      "district": "",
+      "upazila": "",
+      "salaryType": "range",
+      "applicationStartDate": "2026-11-03 10:00:00",
+      "applicationMethod": "online_teletalk",
+      "applicationInstructions": "",
+      "experienceYears": "",
+      "skills": [],
+      "canonicalUrl": "",
+      "robotsDirective": "index, follow",
+      "ogImage": "",
+      "twitterImage": "",
+      "verificationStatus": "VERIFIED",
+      "verificationConfidence": 99.8,
+      "verificationNotes": "আইটিআইআইইউ টেলিটক পোর্টাল (itiiu.teletalk.com.bd) ও গেজেট PDF (ITIIU20261101.pdf) থেকে সরাসরি সংগৃহীত ও শতভাগ নির্ভুল।",
+      "lastVerifiedAt": "2026-11-01T19:17:51.271Z",
+      "verifiedBy": "ADMIN-SUPER",
+      "createdAt": "2026-11-01T19:17:51.271Z",
+      "updatedAt": "2026-11-01T19:17:51.272Z",
+      "revisionHistory": [
+        {
+          "timestamp": "2026-11-01T19:17:51.272Z",
+          "adminId": "ADMIN-SUPER",
+          "action": "create",
+          "changedFields": [
+            "initial_creation"
+          ],
+          "summary": "সার্কুলার সফলভাবে তৈরি হয়েছে"
+        }
+      ]
     }
   },
   "pages": {

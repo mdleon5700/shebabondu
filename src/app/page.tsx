@@ -313,7 +313,7 @@ export default function HomePage() {
       if (!isExpired) {
         ongoing++;
         const pub = job.publishedDate || '';
-        if (job.featured || job.isHot || pub.includes('আজ') || pub.includes('২৯') || pub.includes('৩০') || pub.includes('৩১')) {
+        if (job.featured || job.isHot || pub.includes('আজ') || pub.includes('নভেম্বর') || pub.includes('০১') || pub.includes('০২') || pub.includes('২৯') || pub.includes('৩০') || pub.includes('৩১')) {
           newToday++;
         }
         if (days > 0 && days <= 7) {
@@ -429,7 +429,7 @@ export default function HomePage() {
       // Status Metric Card Filtering
       if (statusFilter === 'new_today') {
         const pub = job.publishedDate || '';
-        const isNew = job.featured || job.isHot || pub.includes('আজ') || pub.includes('২৯') || pub.includes('৩০') || pub.includes('৩১');
+        const isNew = job.featured || job.isHot || pub.includes('আজ') || pub.includes('নভেম্বর') || pub.includes('০১') || pub.includes('০২') || pub.includes('২৯') || pub.includes('৩০') || pub.includes('৩১');
         if (!isNew) return false;
       } else if (statusFilter === 'ongoing') {
         if (job.status === 'EXPIRED' || CentralDeadlineEngine.evaluateDeadline(job).isClosed) return false;
@@ -563,39 +563,59 @@ export default function HomePage() {
       />
 
       {/* 3. LIVE JOB STATUS DASHBOARD METRICS (4 Interactive Filter Cards) */}
-      <section className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 mt-3.5 sm:mt-5 lg:mt-6">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+      <section className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 mt-4 sm:mt-6 lg:mt-8">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-5">
           
           {/* 1. আজ নতুন */}
           <button
             type="button"
             onClick={() => handleSelectStatusFilter('new_today')}
-            className={`p-4 sm:p-5 rounded-2xl sm:rounded-3xl border transition-all text-left flex flex-col justify-between group cursor-pointer ${
+            className={`group relative overflow-hidden p-4 sm:p-5 lg:p-6 rounded-2xl sm:rounded-3xl border-2 transition-all duration-200 text-left flex flex-col justify-between cursor-pointer ${
               statusFilter === 'new_today'
-                ? 'bg-gradient-to-br from-emerald-600 to-teal-700 text-white shadow-lg shadow-emerald-700/25 border-emerald-600 scale-[1.02]'
-                : 'bg-white hover:bg-emerald-50/50 text-slate-800 border-emerald-100/90 hover:border-emerald-300 shadow-sm hover:shadow-md'
+                ? 'bg-gradient-to-br from-emerald-600 via-emerald-700 to-teal-800 text-white shadow-xl shadow-emerald-700/30 border-emerald-500 scale-[1.02]'
+                : 'bg-white hover:bg-emerald-50/50 text-slate-800 border-emerald-200/90 hover:border-emerald-400 shadow-sm hover:shadow-md'
             }`}
           >
-            <div className="flex items-center justify-between mb-2">
-              <span className={`text-[17px] font-bold ${
-                statusFilter === 'new_today' ? 'text-emerald-100' : 'text-emerald-800'
+            <div className="flex items-center justify-between gap-2 mb-3">
+              <div className="flex items-center gap-2">
+                <span className={`text-[17px] sm:text-lg font-extrabold tracking-normal ${
+                  statusFilter === 'new_today' ? 'text-white' : 'text-emerald-950'
+                }`}>
+                  আজ নতুন
+                </span>
+                <span className={`px-2 py-0.5 rounded-full text-[11px] font-black tracking-wider uppercase ${
+                  statusFilter === 'new_today' ? 'bg-white/20 text-emerald-100' : 'bg-emerald-100 text-emerald-800'
+                }`}>
+                  তাজা
+                </span>
+              </div>
+              <span className={`w-9 h-9 sm:w-11 sm:h-11 rounded-2xl flex items-center justify-center transition-all duration-300 group-hover:scale-110 ${
+                statusFilter === 'new_today' ? 'bg-white/20 text-white' : 'bg-emerald-100/80 text-emerald-700 shadow-xs'
               }`}>
-                আজ নতুন
-              </span>
-              <span className={`w-8 h-8 rounded-xl flex items-center justify-center transition-transform group-hover:scale-110 ${
-                statusFilter === 'new_today' ? 'bg-white/20 text-white' : 'bg-emerald-100 text-emerald-700'
-              }`}>
-                <Sparkles className="w-4 h-4" />
+                <Sparkles className="w-5 h-5" />
               </span>
             </div>
+
             <div>
-              <div className="text-2xl sm:text-3xl font-black tracking-tight flex items-baseline gap-1">
-                <span className="status-metric-number text-3xl sm:text-4xl font-black">{toBn(statusCounts.newToday)}</span>
-                <span className={`text-[16px] font-semibold ${
-                  statusFilter === 'new_today' ? 'text-emerald-100' : 'text-slate-500'
+              <div className="flex items-baseline gap-1.5 sm:gap-2">
+                <span className={`status-metric-number text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight ${
+                  statusFilter === 'new_today' ? 'text-white' : 'text-slate-900'
+                }`}>
+                  {toBn(statusCounts.newToday)}
+                </span>
+                <span className={`text-[15px] sm:text-[17px] font-bold ${
+                  statusFilter === 'new_today' ? 'text-emerald-100' : 'text-slate-600'
                 }`}>
                   টি চাকরির খবর
                 </span>
+              </div>
+              <div className={`mt-2.5 pt-2 border-t text-[12px] sm:text-[13px] font-medium flex items-center justify-between ${
+                statusFilter === 'new_today' 
+                  ? 'border-white/20 text-emerald-100' 
+                  : 'border-slate-100 text-slate-500 group-hover:text-emerald-700'
+              }`}>
+                <span>{statusFilter === 'new_today' ? 'ফিল্টার সক্রিয়' : 'আজকের নতুন বিজ্ঞপ্তি'}</span>
+                <span className="font-bold">{statusFilter === 'new_today' ? '✕ বাতিল' : 'দেখুন →'}</span>
               </div>
             </div>
           </button>
@@ -604,32 +624,52 @@ export default function HomePage() {
           <button
             type="button"
             onClick={() => handleSelectStatusFilter('ongoing')}
-            className={`p-4 sm:p-5 rounded-2xl sm:rounded-3xl border transition-all text-left flex flex-col justify-between group cursor-pointer ${
+            className={`group relative overflow-hidden p-4 sm:p-5 lg:p-6 rounded-2xl sm:rounded-3xl border-2 transition-all duration-200 text-left flex flex-col justify-between cursor-pointer ${
               statusFilter === 'ongoing'
-                ? 'bg-gradient-to-br from-sky-600 to-blue-700 text-white shadow-lg shadow-sky-700/25 border-sky-600 scale-[1.02]'
-                : 'bg-white hover:bg-sky-50/50 text-slate-800 border-sky-100/90 hover:border-sky-300 shadow-sm hover:shadow-md'
+                ? 'bg-gradient-to-br from-sky-600 via-sky-700 to-blue-800 text-white shadow-xl shadow-sky-700/30 border-sky-500 scale-[1.02]'
+                : 'bg-white hover:bg-sky-50/50 text-slate-800 border-sky-200/90 hover:border-sky-400 shadow-sm hover:shadow-md'
             }`}
           >
-            <div className="flex items-center justify-between mb-2">
-              <span className={`text-[17px] font-bold ${
-                statusFilter === 'ongoing' ? 'text-sky-100' : 'text-sky-800'
+            <div className="flex items-center justify-between gap-2 mb-3">
+              <div className="flex items-center gap-2">
+                <span className={`text-[17px] sm:text-lg font-extrabold tracking-normal ${
+                  statusFilter === 'ongoing' ? 'text-white' : 'text-sky-950'
+                }`}>
+                  আবেদন চলছে
+                </span>
+                <span className={`px-2 py-0.5 rounded-full text-[11px] font-black tracking-wider uppercase ${
+                  statusFilter === 'ongoing' ? 'bg-white/20 text-sky-100' : 'bg-sky-100 text-sky-800'
+                }`}>
+                  সক্রিয়
+                </span>
+              </div>
+              <span className={`w-9 h-9 sm:w-11 sm:h-11 rounded-2xl flex items-center justify-center transition-all duration-300 group-hover:scale-110 ${
+                statusFilter === 'ongoing' ? 'bg-white/20 text-white' : 'bg-sky-100/80 text-sky-700 shadow-xs'
               }`}>
-                আবেদন চলছে
-              </span>
-              <span className={`w-8 h-8 rounded-xl flex items-center justify-center transition-transform group-hover:scale-110 ${
-                statusFilter === 'ongoing' ? 'bg-white/20 text-white' : 'bg-sky-100 text-sky-700'
-              }`}>
-                <Briefcase className="w-4 h-4" />
+                <Briefcase className="w-5 h-5" />
               </span>
             </div>
+
             <div>
-              <div className="text-2xl sm:text-3xl font-black tracking-tight flex items-baseline gap-1">
-                <span className="status-metric-number text-3xl sm:text-4xl font-black">{toBn(statusCounts.ongoing)}</span>
-                <span className={`text-[16px] font-semibold ${
-                  statusFilter === 'ongoing' ? 'text-sky-100' : 'text-slate-500'
+              <div className="flex items-baseline gap-1.5 sm:gap-2">
+                <span className={`status-metric-number text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight ${
+                  statusFilter === 'ongoing' ? 'text-white' : 'text-slate-900'
+                }`}>
+                  {toBn(statusCounts.ongoing)}
+                </span>
+                <span className={`text-[15px] sm:text-[17px] font-bold ${
+                  statusFilter === 'ongoing' ? 'text-sky-100' : 'text-slate-600'
                 }`}>
                   টি চাকরি
                 </span>
+              </div>
+              <div className={`mt-2.5 pt-2 border-t text-[12px] sm:text-[13px] font-medium flex items-center justify-between ${
+                statusFilter === 'ongoing' 
+                  ? 'border-white/20 text-sky-100' 
+                  : 'border-slate-100 text-slate-500 group-hover:text-sky-700'
+              }`}>
+                <span>{statusFilter === 'ongoing' ? 'ফিল্টার সক্রিয়' : 'চলমান সকল বিজ্ঞপ্তি'}</span>
+                <span className="font-bold">{statusFilter === 'ongoing' ? '✕ বাতিল' : 'দেখুন →'}</span>
               </div>
             </div>
           </button>
@@ -638,32 +678,52 @@ export default function HomePage() {
           <button
             type="button"
             onClick={() => handleSelectStatusFilter('ending_soon')}
-            className={`p-4 sm:p-5 rounded-2xl sm:rounded-3xl border transition-all text-left flex flex-col justify-between group cursor-pointer ${
+            className={`group relative overflow-hidden p-4 sm:p-5 lg:p-6 rounded-2xl sm:rounded-3xl border-2 transition-all duration-200 text-left flex flex-col justify-between cursor-pointer ${
               statusFilter === 'ending_soon'
-                ? 'bg-gradient-to-br from-amber-500 to-orange-600 text-white shadow-lg shadow-amber-600/25 border-amber-500 scale-[1.02]'
-                : 'bg-white hover:bg-amber-50/50 text-slate-800 border-amber-100/90 hover:border-amber-300 shadow-sm hover:shadow-md'
+                ? 'bg-gradient-to-br from-amber-500 via-amber-600 to-orange-700 text-white shadow-xl shadow-amber-600/30 border-amber-400 scale-[1.02]'
+                : 'bg-white hover:bg-amber-50/50 text-slate-800 border-amber-200/90 hover:border-amber-400 shadow-sm hover:shadow-md'
             }`}
           >
-            <div className="flex items-center justify-between mb-2">
-              <span className={`text-[17px] font-bold ${
-                statusFilter === 'ending_soon' ? 'text-amber-100' : 'text-amber-800'
+            <div className="flex items-center justify-between gap-2 mb-3">
+              <div className="flex items-center gap-2">
+                <span className={`text-[17px] sm:text-lg font-extrabold tracking-normal ${
+                  statusFilter === 'ending_soon' ? 'text-white' : 'text-amber-950'
+                }`}>
+                  শেষ হতে চলেছে
+                </span>
+                <span className={`px-2 py-0.5 rounded-full text-[11px] font-black tracking-wider uppercase ${
+                  statusFilter === 'ending_soon' ? 'bg-white/20 text-amber-100' : 'bg-amber-100 text-amber-800'
+                }`}>
+                  ৭ দিন
+                </span>
+              </div>
+              <span className={`w-9 h-9 sm:w-11 sm:h-11 rounded-2xl flex items-center justify-center transition-all duration-300 group-hover:scale-110 ${
+                statusFilter === 'ending_soon' ? 'bg-white/20 text-white' : 'bg-amber-100/80 text-amber-700 shadow-xs'
               }`}>
-                শেষ হতে চলেছে
-              </span>
-              <span className={`w-8 h-8 rounded-xl flex items-center justify-center transition-transform group-hover:scale-110 ${
-                statusFilter === 'ending_soon' ? 'bg-white/20 text-white' : 'bg-amber-100 text-amber-700'
-              }`}>
-                <Clock className="w-4 h-4" />
+                <Clock className="w-5 h-5" />
               </span>
             </div>
+
             <div>
-              <div className="text-2xl sm:text-3xl font-black tracking-tight flex items-baseline gap-1">
-                <span className="status-metric-number text-3xl sm:text-4xl font-black">{toBn(statusCounts.endingSoon)}</span>
-                <span className={`text-[16px] font-semibold ${
-                  statusFilter === 'ending_soon' ? 'text-amber-100' : 'text-slate-500'
+              <div className="flex items-baseline gap-1.5 sm:gap-2">
+                <span className={`status-metric-number text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight ${
+                  statusFilter === 'ending_soon' ? 'text-white' : 'text-slate-900'
+                }`}>
+                  {toBn(statusCounts.endingSoon)}
+                </span>
+                <span className={`text-[15px] sm:text-[17px] font-bold ${
+                  statusFilter === 'ending_soon' ? 'text-amber-100' : 'text-slate-600'
                 }`}>
                   টি চাকরি
                 </span>
+              </div>
+              <div className={`mt-2.5 pt-2 border-t text-[12px] sm:text-[13px] font-medium flex items-center justify-between ${
+                statusFilter === 'ending_soon' 
+                  ? 'border-white/20 text-amber-100' 
+                  : 'border-slate-100 text-slate-500 group-hover:text-amber-700'
+              }`}>
+                <span>{statusFilter === 'ending_soon' ? 'ফিল্টার সক্রিয়' : 'শীঘ্রই সময় শেষ'}</span>
+                <span className="font-bold">{statusFilter === 'ending_soon' ? '✕ বাতিল' : 'দেখুন →'}</span>
               </div>
             </div>
           </button>
@@ -672,33 +732,53 @@ export default function HomePage() {
           <button
             type="button"
             onClick={() => handleSelectStatusFilter('ending_today')}
-            className={`p-4 sm:p-5 rounded-2xl sm:rounded-3xl border transition-all text-left flex flex-col justify-between group cursor-pointer ${
+            className={`group relative overflow-hidden p-4 sm:p-5 lg:p-6 rounded-2xl sm:rounded-3xl border-2 transition-all duration-200 text-left flex flex-col justify-between cursor-pointer ${
               statusFilter === 'ending_today'
-                ? 'bg-gradient-to-br from-rose-600 to-red-700 text-white shadow-lg shadow-rose-700/25 border-rose-600 scale-[1.02]'
-                : 'bg-white hover:bg-rose-50/50 text-slate-800 border-rose-100/90 hover:border-rose-300 shadow-sm hover:shadow-md'
+                ? 'bg-gradient-to-br from-rose-600 via-rose-700 to-red-800 text-white shadow-xl shadow-rose-700/30 border-rose-500 scale-[1.02]'
+                : 'bg-white hover:bg-rose-50/50 text-slate-800 border-rose-200/90 hover:border-rose-400 shadow-sm hover:shadow-md'
             }`}
           >
-            <div className="flex items-center justify-between mb-2">
-              <span className={`text-[17px] font-bold flex items-center gap-1.5 ${
-                statusFilter === 'ending_today' ? 'text-rose-100' : 'text-rose-700'
+            <div className="flex items-center justify-between gap-2 mb-3">
+              <div className="flex items-center gap-2">
+                <span className={`text-[17px] sm:text-lg font-extrabold tracking-normal flex items-center gap-1.5 ${
+                  statusFilter === 'ending_today' ? 'text-white' : 'text-rose-950'
+                }`}>
+                  <span>আজ শেষ</span>
+                  <span className="w-2 h-2 rounded-full bg-rose-500 animate-ping"></span>
+                </span>
+                <span className={`px-2 py-0.5 rounded-full text-[11px] font-black tracking-wider uppercase ${
+                  statusFilter === 'ending_today' ? 'bg-white/20 text-rose-100' : 'bg-rose-100 text-rose-800'
+                }`}>
+                  জরুরি
+                </span>
+              </div>
+              <span className={`w-9 h-9 sm:w-11 sm:h-11 rounded-2xl flex items-center justify-center transition-all duration-300 group-hover:scale-110 ${
+                statusFilter === 'ending_today' ? 'bg-white/20 text-white' : 'bg-rose-100/80 text-rose-700 shadow-xs'
               }`}>
-                <span>আজ শেষ</span>
-                <span className="w-2 h-2 rounded-full bg-rose-500 animate-ping"></span>
-              </span>
-              <span className={`w-8 h-8 rounded-xl flex items-center justify-center transition-transform group-hover:scale-110 ${
-                statusFilter === 'ending_today' ? 'bg-white/20 text-white' : 'bg-rose-100 text-rose-700'
-              }`}>
-                <Flame className="w-4 h-4" />
+                <Flame className="w-5 h-5" />
               </span>
             </div>
+
             <div>
-              <div className="text-2xl sm:text-3xl font-black tracking-tight flex items-baseline gap-1">
-                <span className="status-metric-number text-3xl sm:text-4xl font-black">{toBn(statusCounts.endingToday)}</span>
-                <span className={`text-[16px] font-semibold ${
-                  statusFilter === 'ending_today' ? 'text-rose-100' : 'text-slate-500'
+              <div className="flex items-baseline gap-1.5 sm:gap-2">
+                <span className={`status-metric-number text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight ${
+                  statusFilter === 'ending_today' ? 'text-white' : 'text-slate-900'
+                }`}>
+                  {toBn(statusCounts.endingToday)}
+                </span>
+                <span className={`text-[15px] sm:text-[17px] font-bold ${
+                  statusFilter === 'ending_today' ? 'text-rose-100' : 'text-slate-600'
                 }`}>
                   টি চাকরি
                 </span>
+              </div>
+              <div className={`mt-2.5 pt-2 border-t text-[12px] sm:text-[13px] font-medium flex items-center justify-between ${
+                statusFilter === 'ending_today' 
+                  ? 'border-white/20 text-rose-100' 
+                  : 'border-slate-100 text-slate-500 group-hover:text-rose-700'
+              }`}>
+                <span>{statusFilter === 'ending_today' ? 'ফিল্টার সক্রিয়' : 'আজকের মধ্যেই আবেদন'}</span>
+                <span className="font-bold">{statusFilter === 'ending_today' ? '✕ বাতিল' : 'দেখুন →'}</span>
               </div>
             </div>
           </button>
@@ -706,7 +786,7 @@ export default function HomePage() {
         </div>
       </section>
 
-         <div className="space-y-12 mt-8">
+      <div className="space-y-12 mt-8">
       {/* STEP 07: DYNAMIC JOB FEED DISCOVERY STRIP */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-gradient-to-r from-emerald-900/90 via-slate-900 to-teal-950 text-white rounded-2xl p-4 sm:p-5 shadow-lg border border-emerald-700/30 flex flex-col md:flex-row items-center justify-between gap-4">

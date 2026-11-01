@@ -137,19 +137,17 @@ export default function SavedJobsPage() {
   };
 
   const handleRemove = async (id: string) => {
-    // 1. Update local storage & state immediately
-    storage.toggleSaveJob(id);
-    setSavedIds(prev => prev.filter(savedId => savedId !== id));
-
-    // 2. Notify backend server
     try {
-      await fetch('/api/candidate/saved-jobs', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const response = await fetch('/api/candidate/saved-jobs', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ jobId: id, action: 'unsave' })
       });
-    } catch {
-      // Local state is already updated
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || 'সংরক্ষিত চাকরি সরানো যায়নি');
+      storage.replaceSavedJobIds(data.savedJobs);
+      setSavedIds(data.savedJobs);
+    } catch (error) {
+      setReminderToast(error instanceof Error ? error.message : 'সংরক্ষিত চাকরি সরানো যায়নি');
     }
   };
 

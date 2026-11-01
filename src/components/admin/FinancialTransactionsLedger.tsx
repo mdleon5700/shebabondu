@@ -19,7 +19,7 @@ import {
   ArrowUpRight,
   ShieldCheck
 } from 'lucide-react';
-import { ApplicationRequest, JobCircular } from '@/lib/types';
+import { ApplicationRequest, JobCircular, WalletTransaction } from '@/lib/types';
 
 interface FinancialTransactionsLedgerProps {
   activeTab?: string;
@@ -38,77 +38,11 @@ interface TransactionRecord {
   serviceFee: number;
   totalAmount: number;
   gateway: 'bKash' | 'Nagad' | 'Rocket' | 'Wallet';
-  status: 'completed' | 'pending' | 'refunded';
+  status: 'completed' | 'pending' | 'refunded' | 'failed';
+  candidateId?: string;
+  kind?: 'recharge' | 'application' | 'wallet';
   date: string;
 }
-
-const INITIAL_TRANSACTIONS: TransactionRecord[] = [
-  {
-    id: 'TXN-801',
-    trxId: 'BLK8942A9',
-    candidateName: 'মো: তানভীর হোসেন',
-    candidatePhone: '01774366643',
-    jobTitle: 'তথ্য ও যোগাযোগ প্রযুক্তি অধিদপ্তর - সহকারী প্রোগ্রামার',
-    govtFee: 112,
-    serviceFee: 80,
-    totalAmount: 192,
-    gateway: 'bKash',
-    status: 'completed',
-    date: 'আজ, ১০:১৫ পূর্বাহ্ন'
-  },
-  {
-    id: 'TXN-802',
-    trxId: 'NGD9921BC',
-    candidateName: 'ফারহানা ইয়াসমিন',
-    candidatePhone: '01812345678',
-    jobTitle: 'বাংলাদেশ ব্যাংক - সহকারী পরিচালক (জেনারেল)',
-    govtFee: 200,
-    serviceFee: 80,
-    totalAmount: 280,
-    gateway: 'Nagad',
-    status: 'completed',
-    date: 'আজ, ০৯:০০ পূর্বাহ্ন'
-  },
-  {
-    id: 'TXN-803',
-    trxId: 'RCK5543DE',
-    candidateName: 'আহমেদ সাদিক',
-    candidatePhone: '01998765432',
-    jobTitle: 'সোনালী ব্যাংক পিএলসি - সিনিয়র অফিসার',
-    govtFee: 200,
-    serviceFee: 120,
-    totalAmount: 320,
-    gateway: 'Rocket',
-    status: 'completed',
-    date: 'গতকাল, ১১:৩০ অপরাহ্ন'
-  },
-  {
-    id: 'TXN-804',
-    trxId: 'WLT1120XY',
-    candidateName: 'রাশেদ খান',
-    candidatePhone: '01655443322',
-    jobTitle: 'পল্লী বিদ্যুতায়ন বোর্ড - সহকারী প্রকৌশলী',
-    govtFee: 150,
-    serviceFee: 80,
-    totalAmount: 230,
-    gateway: 'Wallet',
-    status: 'completed',
-    date: 'গতকাল, ০৫:২০ অপরাহ্ন'
-  },
-  {
-    id: 'TXN-805',
-    trxId: 'BLK7731OP',
-    candidateName: 'তাসলিমা আক্তার',
-    candidatePhone: '01511223344',
-    jobTitle: 'কাস্টমস ও ভ্যাট কমিশনারেট - সহকারী রাজস্ব কর্মকর্তা',
-    govtFee: 112,
-    serviceFee: 80,
-    totalAmount: 192,
-    gateway: 'bKash',
-    status: 'pending',
-    date: 'গতকাল, ০২:১৫ অপরাহ্ন'
-  }
-];
 
 export default function FinancialTransactionsLedger({
   activeTab = 'transactions',
@@ -134,7 +68,7 @@ export default function FinancialTransactionsLedger({
   };
 
   // Transactions State
-  const [transactions, setTransactions] = useState<TransactionRecord[]>(INITIAL_TRANSACTIONS);
+  const [transactions, setTransactions] = useState<TransactionRecord[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [gatewayFilter, setGatewayFilter] = useState<'all' | 'bKash' | 'Nagad' | 'Rocket' | 'Wallet'>('all');
   const [statusFilter, setStatusFilter] = useState<'all' | 'completed' | 'pending' | 'refunded'>('all');
@@ -142,6 +76,65 @@ export default function FinancialTransactionsLedger({
 
   // Selected receipt for print/preview modal
   const [selectedReceiptTxn, setSelectedReceiptTxn] = useState<TransactionRecord | null>(null);
+
+  const [walletTransactions, setWalletTransactions] = useState<Array<WalletTransaction & { candidateId: string; candidateName: string; candidatePhone: string }>>([]);
+  const [reviewingId, setReviewingId] = useState<string | null>(null);
+  const [ledgerError, setLedgerError] = useState<string | null>(null);
+
+  const loadWalletTransactions = async () => {
+    try {
+      const response = await fetch('/api/admin/wallet-transactions', { cache: 'no-store' });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || 'লেনদেন লোড করা যায়নি');
+      setWalletTransactions(data.transactions || []);
+    } catch (error) {
+      setLedgerError(error instanceof Error ? error.message : 'লেনদেন লোড করা যায়নি');
+    }
+  };
+
+  React.useEffect(() => {
+    loadWalletTransactions();
+    window.addEventListener('focus', loadWalletTransactions);
+    return () => window.removeEventListener('focus', loadWalletTransactions);
+  }, []);
+
+  React.useEffect(() => {
+    const applicationRows: TransactionRecord[] = applications.map(application => ({
+      id: application.id, trxId: application.trxId || application.id,
+      candidateName: application.candidateName, candidatePhone: application.candidatePhone,
+      jobTitle: application.jobTitle, govtFee: application.governmentFee ?? application.financialSnapshot?.governmentApplicationFee ?? 0,
+      serviceFee: application.financialSnapshot?.finalServiceCharge ?? application.serviceCharge ?? 0,
+      totalAmount: application.totalAmount, gateway: application.paymentMethod as TransactionRecord['gateway'],
+      status: ['completed', 'processing', 'submitted'].includes(application.status) ? 'completed' : application.status === 'rejected' ? 'failed' : 'pending',
+      date: application.date, kind: 'application'
+    }));
+    const walletRows: TransactionRecord[] = walletTransactions.filter(transaction => !applications.some(application => transaction.id === 'TXN-' + application.id)).map(transaction => ({
+      id: transaction.id, trxId: transaction.trxId, candidateId: transaction.candidateId,
+      candidateName: transaction.candidateName, candidatePhone: transaction.candidatePhone,
+      jobTitle: transaction.description, govtFee: 0, serviceFee: 0, totalAmount: transaction.amount,
+      gateway: transaction.method as TransactionRecord['gateway'], status: transaction.status, date: transaction.date,
+      kind: transaction.type === 'recharge' ? 'recharge' : 'wallet'
+    }));
+    setTransactions([...walletRows, ...applicationRows]);
+  }, [applications, walletTransactions]);
+
+  const reviewRecharge = async (transaction: TransactionRecord, decision: 'approve' | 'reject') => {
+    setReviewingId(transaction.id);
+    setLedgerError(null);
+    try {
+      const response = await fetch('/api/admin/wallet-transactions', {
+        method: 'PATCH', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ candidateId: transaction.candidateId, transactionId: transaction.id, decision })
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || 'যাচাই ব্যর্থ হয়েছে');
+      await loadWalletTransactions();
+    } catch (error) {
+      setLedgerError(error instanceof Error ? error.message : 'যাচাই ব্যর্থ হয়েছে');
+    } finally {
+      setReviewingId(null);
+    }
+  };
 
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
@@ -161,12 +154,14 @@ export default function FinancialTransactionsLedger({
   });
 
   // Financial KPI totals
-  const totalCollected = transactions.reduce((sum, t) => sum + (t.status === 'completed' ? t.totalAmount : 0), 0);
+  const totalCollected = transactions.reduce((sum, t) => sum + (t.kind === 'application' && t.status === 'completed' ? t.totalAmount : 0), 0);
   const totalGovtFees = transactions.reduce((sum, t) => sum + (t.status === 'completed' ? t.govtFee : 0), 0);
   const totalServiceFees = transactions.reduce((sum, t) => sum + (t.status === 'completed' ? t.serviceFee : 0), 0);
 
   return (
     <div className="space-y-6">
+      {ledgerError && <p role="alert" className="rounded-xl border border-red-200 bg-red-50 p-3 text-red-800 text-base">{ledgerError}</p>}
+      <button type="button" onClick={loadWalletTransactions} className="rounded-xl border bg-white px-4 py-2 text-[17px]">লেনদেন রিফ্রেশ করুন</button>
       {/* Top Module Header */}
       <div className="bg-white rounded-2xl border border-slate-200/90 shadow-2xs p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
@@ -268,8 +263,8 @@ export default function FinancialTransactionsLedger({
           </div>
           <div>
             <p className="text-[11px] font-bold text-slate-500 uppercase">পেন্ডিং ভেরিফিকেশন</p>
-            <h3 className="text-xl font-black text-amber-600">১ টি</h3>
-            <p className="text-[11px] font-semibold text-slate-500">৳১৯২ অপরিশোধিত</p>
+            <h3 className="text-xl font-black text-amber-600">{transactions.filter(transaction => transaction.status === 'pending').length} টি</h3>
+            <p className="text-[11px] font-semibold text-slate-500">৳{transactions.filter(transaction => transaction.status === 'pending').reduce((sum, transaction) => sum + transaction.totalAmount, 0).toLocaleString('bn-BD')} যাচাইয়ের অপেক্ষায়</p>
           </div>
         </div>
       </div>
@@ -376,12 +371,16 @@ export default function FinancialTransactionsLedger({
                         </span>
                       ) : (
                         <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800 flex items-center gap-1 w-fit">
-                          <Clock className="w-3 h-3" /> পেন্ডিং
+                          <Clock className="w-3 h-3" /> {t.status === 'failed' ? 'বাতিল' : 'পেন্ডিং'}
                         </span>
                       )}
                     </td>
                     <td className="py-2.5 px-3 text-right">
                       <div className="text-[10px] text-slate-400 mb-1">{t.date}</div>
+                      {t.kind === 'recharge' && t.status === 'pending' && <div className="flex gap-2 mb-2">
+                        <button type="button" disabled={reviewingId === t.id} onClick={() => reviewRecharge(t, 'approve')} className="rounded-lg bg-emerald-700 text-white px-3 py-1 text-[17px]">অনুমোদন</button>
+                        <button type="button" disabled={reviewingId === t.id} onClick={() => reviewRecharge(t, 'reject')} className="rounded-lg border border-red-300 text-red-700 px-3 py-1 text-[17px]">বাতিল</button>
+                      </div>}
                       <button
                         type="button"
                         onClick={() => setSelectedReceiptTxn(t)}

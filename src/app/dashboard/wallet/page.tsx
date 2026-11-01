@@ -5,8 +5,12 @@ import Link from 'next/link';
 import { Wallet, Plus, ShieldCheck, History, ArrowRight, RefreshCw, CheckCircle2, AlertCircle } from 'lucide-react';
 import { storage } from '@/lib/store';
 import { CandidateProfile, WalletTransaction } from '@/lib/types';
+import { useCandidateData } from '@/components/CandidateDataProvider';
 
 export default function WalletPage() {
+  const candidateData = useCandidateData();
+  const [trxId, setTrxId] = useState('');
+  const [transactions, setTransactions] = useState<WalletTransaction[]>([]);
   const [isMounted, setIsMounted] = useState(false);
   const [profile, setProfile] = useState<CandidateProfile>(storage.getUser());
   const [amount, setAmount] = useState('300');
@@ -26,6 +30,7 @@ export default function WalletPage() {
         const res = await fetch('/api/wallet/transactions');
         if (res.ok) {
           const data = await res.json();
+          setTransactions(data.transactions || []);
           if (typeof data.walletBalance === 'number') {
             setProfile(prev => ({ ...prev, walletBalance: data.walletBalance }));
           }
@@ -35,7 +40,13 @@ export default function WalletPage() {
       }
     };
     fetchBalance();
+    window.addEventListener('focus', fetchBalance);
+    return () => window.removeEventListener('focus', fetchBalance);
   }, []);
+
+  useEffect(() => {
+    if (candidateData.profile) setProfile(candidateData.profile);
+  }, [candidateData.profile]);
 
   const handleRecharge = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -43,26 +54,10 @@ export default function WalletPage() {
     if (add <= 0) return;
 
     setIsRecharging(true);
+    setRechargeSuccess(false);
     setErrorMessage(null);
 
     try {
-      // 1. Update local storage for instant offline UI
-      storage.updateWallet(add);
-      const generatedTrxId = `${method === 'bKash' ? 'BKL' : 'NGD'}${Math.floor(10000000 + Math.random() * 90000000)}`;
-      const newTx: WalletTransaction = {
-        id: `TXN-${Date.now().toString().slice(-4)}`,
-        date: 'আজ, এখনই',
-        amount: add,
-        type: 'recharge',
-        description: `ওয়ালেট ব্যালেন্স রিচার্জ (${method === 'bKash' ? 'বিকাশ' : 'নগদ'})`,
-        method: method,
-        trxId: generatedTrxId,
-        status: 'completed'
-      };
-      storage.addTransaction(newTx);
-      setProfile(storage.getUser());
-
-      // 2. Sync to Server DB
       const res = await fetch('/api/wallet/transactions', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -71,22 +66,18 @@ export default function WalletPage() {
           type: 'recharge',
           description: `ওয়ালেট ব্যালেন্স রিচার্জ (${method === 'bKash' ? 'বিকাশ' : 'নগদ'})`,
           method: method,
-          trxId: generatedTrxId
+          trxId: trxId.trim()
         })
       });
 
-      if (res.ok) {
-        const data = await res.json();
-        if (typeof data.newBalance === 'number') {
-          setProfile(prev => ({ ...prev, walletBalance: data.newBalance }));
-        }
-      }
-
+      const data = await res.json();
+      if (!res.ok || !data.success) throw new Error(data.error || 'রিচার্জ আবেদন ব্যর্থ হয়েছে');
+      if (data.transaction) setTransactions(previous => [data.transaction, ...previous]);
+      await candidateData.refresh();
       setRechargeSuccess(true);
-      setTimeout(() => setRechargeSuccess(false), 3500);
-    } catch (err: any) {
-      console.warn('Server sync error', err);
-      setRechargeSuccess(true); // Still succeeded locally
+      setTrxId('');
+    } catch (error) {
+      setErrorMessage(error instanceof Error ? error.message : 'রিচার্জ আবেদন ব্যর্থ হয়েছে');
     } finally {
       setIsRecharging(false);
     }
@@ -105,10 +96,6 @@ export default function WalletPage() {
   return (
     <div className="space-y-6 max-w-4xl">
       <div>
-        <div className="sandbox-demo-badge inline-flex items-center gap-1.5 px-3 py-1 bg-amber-50 text-amber-800 rounded-full text-xs font-bold border border-amber-200 mb-2">
-          <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
-          <span>Demo Prototype Mode</span>
-        </div>
         <h1 className="text-2xl font-black text-slate-900 flex items-center gap-2">
           <Wallet className="w-6 h-6 text-emerald-700" />
           <span>আমার ওয়ালেট ও ক্যাশ ম্যানেজমেন্ট</span>
@@ -124,7 +111,7 @@ export default function WalletPage() {
           <div className="text-4xl font-black text-emerald-400">৳{profile.walletBalance || 0}</div>
           <div className="text-xs text-slate-400 pt-1 flex items-center gap-1.5">
             <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-            <span>১০০% রিফান্ড ও ইনস্ট্যান্ট আবেদন গ্যারান্টি</span>
+            <span>যাচাইকৃত ব্যালেন্স দিয়ে আবেদন ফি পরিশোধ করুন</span>
           </div>
         </div>
 
@@ -137,17 +124,25 @@ export default function WalletPage() {
         </Link>
       </div>
 
+      {transactions.length > 0 && <div className="bg-white rounded-2xl border p-5 space-y-3">
+        <h2 className="text-xl font-bold">ওয়ালেট লেনদেন ও যাচাইয়ের অবস্থা</h2>
+        {transactions.map(transaction => <div key={transaction.id} className="flex flex-wrap justify-between gap-2 border-b py-2">
+          <span className="break-all">{transaction.trxId} · ৳{transaction.amount}</span>
+          <span>{transaction.status === 'pending' ? 'যাচাইয়ের অপেক্ষায়' : transaction.status === 'failed' ? 'বাতিল' : 'অনুমোদিত'}</span>
+        </div>)}
+      </div>}
+
       {/* Instant Recharge Form */}
       <div className="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-4">
         <div className="flex items-center justify-between">
           <h3 className="font-bold text-sm text-slate-900">ব্যালেন্স রিচার্জ করুন (বিকাশ / নগদ)</h3>
-          <span className="text-[11px] font-bold text-slate-500">ইনস্ট্যান্ট অ্যাক্টিভেশন</span>
+          <span className="text-[11px] font-bold text-slate-500">পেমেন্ট যাচাই সাপেক্ষে</span>
         </div>
         
         {rechargeSuccess && (
           <div className="p-3.5 bg-emerald-50 text-emerald-900 rounded-2xl text-xs font-bold border border-emerald-300 flex items-center gap-2 animate-fade-in">
             <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-            <span>৳{amount} সফলভাবে আপনার ওয়ালেটে রিচার্জ সম্পন্ন হয়েছে! বর্তমান ব্যালেন্স: ৳{profile.walletBalance}</span>
+            <span>রিচার্জ আবেদন জমা হয়েছে। অ্যাডমিন যাচাইয়ের পর ব্যালেন্স যুক্ত হবে। বর্তমান ব্যালেন্স: ৳{profile.walletBalance}</span>
           </div>
         )}
 
@@ -210,6 +205,11 @@ export default function WalletPage() {
             />
           </div>
 
+          <div>
+            <label htmlFor="wallet-trx-id" className="font-bold text-slate-700 block mb-1">পেমেন্ট ট্রানজ্যাকশন ID (TrxID):</label>
+            <input id="wallet-trx-id" value={trxId} onChange={event => setTrxId(event.target.value)} required minLength={4} maxLength={100} className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-base" />
+          </div>
+
           <button
             type="submit"
             disabled={isRecharging}
@@ -221,7 +221,7 @@ export default function WalletPage() {
                 <span>রিচার্জ প্রসেস হচ্ছে...</span>
               </>
             ) : (
-              <span>{method === 'bKash' ? 'বিকাশ' : 'নগদ'} দিয়ে এখনই রিচার্জ করুন (৳{amount})</span>
+              <span>{method === 'bKash' ? 'বিকাশ' : 'নগদ'} রিচার্জ যাচাইয়ের আবেদন করুন (৳{amount})</span>
             )}
           </button>
         </form>

@@ -1,3 +1,4 @@
+import { repairStoredText } from './text-encoding';
 import { CentralDeadlineEngine } from './deadlines/engine';
 import { isPublicJob } from './job-visibility';
 import fs from 'fs';
@@ -1815,7 +1816,7 @@ function loadDB(): DatabaseState {
 
 
 
-    const state = JSON.parse(raw);
+    const state = repairStoredText(JSON.parse(raw));
 
 
 
@@ -1991,7 +1992,7 @@ function loadDB(): DatabaseState {
 
 
 
-        return JSON.parse(rawBak);
+        return repairStoredText(JSON.parse(rawBak));
 
 
 
@@ -2772,7 +2773,17 @@ export const serverDB = {
     }
     const db = loadDB();
     const list = db.documents[candidateId] || [];
+    const deleted = list.find(document => document.id === docId);
     const updated = list.filter(d => d.id !== docId);
+    const candidate = db.candidates[candidateId];
+    if (candidate && deleted) {
+      const urls = [deleted.fileUrl, deleted.dataUrl, deleted.secureUrl].filter(Boolean);
+      const fields = ['photoUrl', 'signatureUrl', 'nidFrontUrl', 'nidBackUrl', 'fatherNidUrl', 'motherNidUrl', 'nagorikCertificateUrl', 'birthCertificateUrl', 'characterCertificateUrl', 'quotaCertificateUrl'];
+      for (const field of fields) {
+        if (urls.includes((candidate as any)[field])) (candidate as any)[field] = '';
+      }
+      candidate.customDocuments = candidate.customDocuments?.filter(document => document.id !== docId);
+    }
     db.documents[candidateId] = updated;
     saveDB(db);
     return updated;
@@ -3005,6 +3016,42 @@ export const serverDB = {
 
 
 
+  getWalletTransactions() {
+    const db = loadDB();
+    return Object.entries(db.transactions).flatMap(([candidateId, transactions]) => transactions.map(transaction => ({
+      ...transaction, candidateId,
+      candidateName: db.candidates[candidateId]?.name || '',
+      candidatePhone: db.candidates[candidateId]?.phone || ''
+    })));
+  },
+
+  reviewWalletRecharge(candidateId: string, transactionId: string, decision: 'approve' | 'reject', adminId: string) {
+    const db = loadDB();
+    const candidate = db.candidates[candidateId];
+    const transaction = db.transactions[candidateId]?.find(item => item.id === transactionId);
+    if (!candidate || !transaction || transaction.type !== 'recharge') return { success: false, error: 'Recharge not found' };
+    const targetStatus = decision === 'approve' ? 'completed' : 'failed';
+    if (transaction.status === targetStatus) return { success: true, transaction, newBalance: candidate.walletBalance };
+    if (transaction.status !== 'pending') return { success: false, error: 'Recharge already reviewed' };
+    if (!Number.isFinite(transaction.amount) || transaction.amount <= 0) return { success: false, error: 'Invalid recharge amount' };
+    if (decision === 'approve') candidate.walletBalance = Math.round(((candidate.walletBalance || 0) + transaction.amount) * 100) / 100;
+    transaction.status = targetStatus;
+    transaction.reviewedAt = new Date().toISOString();
+    transaction.reviewedBy = adminId;
+    db.adminAuditLogs.unshift({
+      id: 'AUDIT-WALLET-' + transaction.id, adminId, action: 'wallet_recharge_review',
+      targetId: transaction.id, targetType: 'order', changes: { status: { old: 'pending', new: targetStatus } },
+      notes: decision === 'approve' ? 'Recharge verified and credited' : 'Recharge rejected', timestamp: transaction.reviewedAt
+    } as AdminAuditLog);
+    db.notifications[candidateId] = [{
+      id: 'NOTIF-' + transaction.id, title: decision === 'approve' ? 'ওয়ালেট রিচার্জ অনুমোদিত' : 'ওয়ালেট রিচার্জ বাতিল',
+      message: `TrxID: ${transaction.trxId} — ৳${transaction.amount} ${decision === 'approve' ? 'ওয়ালেটে যুক্ত হয়েছে।' : 'অনুমোদিত হয়নি। সাপোর্টে যোগাযোগ করুন।'}`,
+      type: 'system', read: false, date: transaction.reviewedAt, link: '/dashboard/wallet'
+    }, ...(db.notifications[candidateId] || [])];
+    saveDB(db);
+    return { success: true, transaction, newBalance: candidate.walletBalance };
+  },
+
   addTransaction(candidateId: string, tx: WalletTransaction, idempotencyKey?: string): { success: boolean; error?: string; tx?: WalletTransaction; newBalance?: number } {
 
 
@@ -3033,7 +3080,8 @@ export const serverDB = {
 
 
 
-    const isDuplicate = list.some(t => t.id === tx.id || (tx.trxId && t.trxId === tx.trxId));
+    if (!Number.isFinite(tx.amount) || tx.amount <= 0) return { success: false, error: 'Invalid transaction amount' };
+    const isDuplicate = Object.values(db.transactions).some(transactions => transactions.some(t => t.id === tx.id || (tx.trxId && (t.trxId || '').toUpperCase() === tx.trxId.toUpperCase())));
 
 
 
@@ -3053,11 +3101,12 @@ export const serverDB = {
 
 
 
-    const delta = tx.type === 'recharge' ? tx.amount : -tx.amount;
+    const delta = tx.status === 'completed' ? (tx.type === 'fee_deduction' ? -tx.amount : tx.amount) : 0;
 
 
 
-    const newBalance = Math.max(0, (candidate.walletBalance || 0) + delta);
+    const newBalance = Math.round(((candidate.walletBalance || 0) + delta) * 100) / 100;
+    if (newBalance < 0) return { success: false, error: 'Insufficient wallet balance' };
 
 
 
@@ -4361,6 +4410,7 @@ export const serverDB = {
 
 
   saveJob(job: Partial<JobCircular> & { id: string }, adminId = 'ADMIN'): JobCircular {
+    job = repairStoredText(job);
     if (job.id && (job.id.startsWith('SYNTH-') || (job as any).isSynthetic)) {
       return SyntheticJobManager.saveJob(job, adminId);
     }

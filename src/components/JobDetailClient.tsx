@@ -52,10 +52,12 @@ import {
 } from 'lucide-react';
 import { mockJobs } from '@/data/mockJobs';
 import JobLogo from '@/components/JobLogo';
+import { useCandidateData } from '@/components/CandidateDataProvider';
 import { storage, AuthState } from '@/lib/store';
 import { JobCircular, JobPosition, CandidateProfile, EligibilityResult } from '@/lib/types';
 
 export default function JobDetailClient({ job }: { job: JobCircular }) {
+  const candidateData = useCandidateData();
 
   // States
   const [isPlayingAudio, setIsPlayingAudio] = useState(false);
@@ -196,15 +198,11 @@ export default function JobDetailClient({ job }: { job: JobCircular }) {
   const [showAuditDetails, setShowAuditDetails] = useState<boolean>(false);
 
   useEffect(() => {
-    const currentAuth = storage.getAuth();
-    setAuth(currentAuth);
-    if (currentAuth.isLoggedIn) {
-      const profile = storage.getUser();
-      setUserProfile(profile);
-      const evalResult = storage.checkEligibility(profile, job);
-      setUserEvaluation(evalResult);
-    }
-  }, [job]);
+    const profile = candidateData.profile;
+    setAuth(profile ? { isLoggedIn: true, role: 'candidate', name: profile.name, userId: profile.id } : { isLoggedIn: false, role: null, name: '' });
+    setUserProfile(profile);
+    setUserEvaluation(profile ? storage.checkEligibility(profile, job, candidateData.documents) : null);
+  }, [job, candidateData.profile, candidateData.documents]);
 
   // Age Calculator States
   const [birthDay, setBirthDay] = useState('15');

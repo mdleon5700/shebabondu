@@ -46,7 +46,7 @@ export default function SettingsPage() {
         const res = await fetch('/api/auth/me');
         if (res.ok) {
           const data = await res.json();
-          if (data.success && data.user) {
+          if (data.isLoggedIn && data.user) {
             setProfile(data.user);
           }
         }
@@ -102,14 +102,18 @@ export default function SettingsPage() {
     }
   };
 
-  const handleExportData = () => {
+  const handleExportData = async () => {
+    try {
+      const responses = await Promise.all(['/api/profile', '/api/documents', '/api/applications', '/api/candidate/saved-jobs'].map(url => fetch(url, { cache: 'no-store' })));
+      if (responses.some(response => !response.ok)) throw new Error('তথ্য এক্সপোর্ট করা যায়নি। আবার চেষ্টা করুন।');
+      const [userData, docData, applicationData, savedData] = await Promise.all(responses.map(response => response.json()));
     const data = {
       exportTimestamp: new Date().toISOString(),
       platform: 'Chakri Sheba (চাকরি সেবা)',
-      profile: profile || storage.getUser(),
-      documents: storage.getDocuments(),
-      applications: storage.getApplications(),
-      savedJobs: storage.getSavedJobIds()
+      profile: userData.profile,
+      documents: docData.documents,
+      applications: applicationData.applications,
+      savedJobs: savedData.savedJobs
     };
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
@@ -118,6 +122,9 @@ export default function SettingsPage() {
     a.download = `chakrisheba-my-data-${profile?.phone || 'profile'}.json`;
     a.click();
     URL.revokeObjectURL(url);
+    } catch (error) {
+      alert(error instanceof Error ? error.message : 'তথ্য এক্সপোর্ট করা যায়নি');
+    }
   };
 
   return (

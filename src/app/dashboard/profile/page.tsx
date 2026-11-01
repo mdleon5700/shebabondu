@@ -24,7 +24,7 @@ import {
 } from 'lucide-react';
 import { storage } from '@/lib/store';
 import { CandidateProfile, EducationRecord, ExperienceRecord } from '@/lib/types';
-import { mockUserProfile } from '@/data/mockJobs';
+import { emptyCandidateProfile as mockUserProfile } from '@/lib/candidate-defaults';
 import { BD_DIVISIONS_EN, BD_DIVISIONS_MAP, getDivisionForDistrict, getDistrictsForDivision, getUpazilasForDistrict, normalizeToEnglishDistrict, normalizeToEnglishDivision } from '@/lib/constants';
 
 export default function ProfilePage() {
@@ -303,21 +303,19 @@ export default function ProfilePage() {
     }
   };
 
-  const syncProfileToServer = async (p: CandidateProfile) => {
+  const syncProfileToServer = async (profileToSave: CandidateProfile): Promise<boolean> => {
     try {
-      const res = await fetch('/api/profile', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(p)
+      const response = await fetch('/api/profile', {
+        method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(profileToSave)
       });
-      if (res.ok) {
-        const data = await res.json();
-        if (data?.profile) {
-          storage.updateUser(data.profile);
-        }
-      }
-    } catch (err) {
-      console.warn('Profile sync failed', err);
+      const data = await response.json();
+      if (!response.ok || !data.profile) throw new Error(data.error || 'প্রোফাইল সংরক্ষণ ব্যর্থ হয়েছে');
+      setProfile(data.profile);
+      storage.updateUser(data.profile);
+      return true;
+    } catch (error) {
+      alert(error instanceof Error ? error.message : 'প্রোফাইল সংরক্ষণ ব্যর্থ হয়েছে');
+      return false;
     }
   };
 
@@ -357,22 +355,12 @@ export default function ProfilePage() {
       }
     };
 
-    setProfile(updatedProfile);
-    storage.updateUser(updatedProfile);
-    try {
-      await fetch('/api/profile', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(updatedProfile)
-      });
-    } catch (err) {
-      console.error('Failed to sync profile with server DB:', err);
-    }
+    if (!await syncProfileToServer(updatedProfile)) return;
     setSavedSuccess(true);
     setTimeout(() => setSavedSuccess(false), 3000);
   };
 
-  const handleAddEducation = (e: React.FormEvent) => {
+  const handleAddEducation = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!eduDegree || !eduResult) return;
     const newEdu: EducationRecord = {
@@ -389,20 +377,16 @@ export default function ProfilePage() {
       ...profile,
       education: [newEdu, ...profile.education]
     };
-    setProfile(updated);
-    storage.updateUser(updated);
-    syncProfileToServer(updated);
+    if (!await syncProfileToServer(updated)) return;
     setShowEduModal(false);
     setEduDegree('');
     setEduResult('');
   };
 
-  const handleDeleteEducation = (idx: number) => {
+  const handleDeleteEducation = async (idx: number) => {
     const updatedList = profile.education.filter((_, i) => i !== idx);
     const updated = { ...profile, education: updatedList };
-    setProfile(updated);
-    storage.updateUser(updated);
-    syncProfileToServer(updated);
+    if (!await syncProfileToServer(updated)) return;
   };
 
   const handleAddSkill = async (e: React.FormEvent) => {
@@ -435,7 +419,8 @@ export default function ProfilePage() {
 
   const handleDeleteSkill = async (skillId: string) => {
     try {
-      await fetch('/api/user/skills/' + encodeURIComponent(skillId), { method: 'DELETE' });
+      const response = await fetch('/api/user/skills/' + encodeURIComponent(skillId), { method: 'DELETE' });
+      if (!response.ok) throw new Error('Skill deletion failed');
       const updatedSkills = (profile.skills || []).filter((s: any) => (typeof s === 'string' ? s !== skillId : s.id !== skillId && s.name !== skillId));
       const updated = { ...profile, skills: updatedSkills };
       setProfile(updated);
@@ -495,7 +480,8 @@ export default function ProfilePage() {
 
   const handleDeleteExperience = async (expId: string) => {
     try {
-      await fetch('/api/user/experience/' + encodeURIComponent(expId), { method: 'DELETE' });
+      const response = await fetch('/api/user/experience/' + encodeURIComponent(expId), { method: 'DELETE' });
+      if (!response.ok) throw new Error('Experience deletion failed');
       const updatedExp = (profile.experiences || []).filter((e: any) => e.id !== expId);
       const updated = { ...profile, experiences: updatedExp };
       setProfile(updated);
@@ -1352,8 +1338,6 @@ export default function ProfilePage() {
                 checked={!profile.quota || profile.quota === 'none'}
                 onChange={() => {
                   const u = { ...profile, quota: 'none' as any };
-                  setProfile(u);
-                  storage.updateUser(u);
                   syncProfileToServer(u);
                 }}
                 className="text-emerald-700"
@@ -1371,8 +1355,6 @@ export default function ProfilePage() {
                 checked={profile.quota === 'freedom_fighter'}
                 onChange={() => {
                   const u = { ...profile, quota: 'freedom_fighter' as any };
-                  setProfile(u);
-                  storage.updateUser(u);
                   syncProfileToServer(u);
                 }}
                 className="text-emerald-700"
@@ -1390,8 +1372,6 @@ export default function ProfilePage() {
                 checked={profile.quota === 'disabled'}
                 onChange={() => {
                   const u = { ...profile, quota: 'disabled' as any };
-                  setProfile(u);
-                  storage.updateUser(u);
                   syncProfileToServer(u);
                 }}
                 className="text-emerald-700"

@@ -470,6 +470,11 @@ export const storage = {
       return [];
     }
   },
+  replaceDocuments(documents: CandidateDocument[]) {
+    if (typeof window === 'undefined') return;
+    localStorage.setItem(getScopedKey('cs_documents_data'), JSON.stringify(documents));
+    window.dispatchEvent(new Event('cs_docs_changed'));
+  },
   saveDocument(doc: CandidateDocument, targetUserId?: string) {
     const docs = this.getDocuments(targetUserId);
     const updated = [doc, ...docs.filter(d => d.id !== doc.id)];

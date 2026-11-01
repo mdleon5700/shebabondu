@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import { JobCircular } from '@/lib/types';
 import JobLogo from './JobLogo';
+import JobEligibilityLabel from './JobEligibilityLabel';
 
 interface JobCardProps {
   job: JobCircular;
@@ -124,7 +125,7 @@ export default function JobCard({ job }: JobCardProps) {
         <div className="flex items-center justify-between text-[15px] mb-4 bg-emerald-50/70 border border-emerald-200/50 p-2 rounded-lg">
           <div className="flex items-center gap-1.5 text-emerald-800 font-bold">
             <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-            <span>আপনার প্রোফাইল অনুযায়ী: শতভাগ যোগ্য!</span>
+            <JobEligibilityLabel job={job} />
           </div>
           <button
             onClick={handlePlayAudio}

@@ -1,4 +1,5 @@
 'use client';
+import { fetchPublicJobs } from '@/lib/public-jobs-client';
 import { CentralDeadlineEngine } from '@/lib/deadlines/engine';
 
 import HeroSection from '@/components/HeroSection';
@@ -201,17 +202,10 @@ const candidateReviews = [
 
 export default function HomePage() {
   const [searchQuery, setSearchQuery] = useState('');
-  const [jobsList, setJobsList] = useState<any[]>(mockJobs);
+  const [jobsList, setJobsList] = useState<any[]>([]);
 
   useEffect(() => {
-    fetch('/api/jobs?limit=200')
-      .then(res => res.json())
-      .then(data => {
-        if (data.success && Array.isArray(data.jobs) && data.jobs.length > 0) {
-          setJobsList(data.jobs);
-        }
-      })
-      .catch(() => {});
+    fetchPublicJobs().then(setJobsList).catch(() => {});
   }, []);
   const [selectedJobType, setSelectedJobType] = useState('all');
   const [selectedEducation, setSelectedEducation] = useState('all');

@@ -1,4 +1,5 @@
 'use client';
+import { fetchPublicJobs } from '@/lib/public-jobs-client';
 
 import React, { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
@@ -74,11 +75,7 @@ export default function JobListingView({
     try {
       setIsLoading(true);
       setFetchError(null);
-      const res = await fetch('/api/jobs?limit=200', { cache: 'no-store' });
-      if (!res.ok) {
-        throw new Error(`সার্ভার থেকে চাকরির তালিকা লোড করা যায়নি (HTTP ${res.status})`);
-      }
-      const data = await res.json();
+      const data = { success: true, jobs: await fetchPublicJobs() };
       if (data && data.success && Array.isArray(data.jobs)) {
         // Enforce published canonical jobs only (zero mock jobs, zero drafts)
         const validCanonicalJobs: JobCircular[] = data.jobs.filter((j: any) => 
@@ -411,7 +408,7 @@ export default function JobListingView({
 
       {/* 6. Pagination */}
       {totalPages > 1 && (
-        <div className="flex items-center justify-center gap-2 pt-4">
+        <div className="flex flex-wrap items-center justify-center gap-2 pt-4">
           <button
             onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
             disabled={currentPage === 1}
@@ -420,18 +417,22 @@ export default function JobListingView({
             <ChevronLeft className="w-4 h-4" />
           </button>
           
-          {Array.from({ length: totalPages }).map((_, idx) => (
+          {Array.from({ length: totalPages }, (_, index) => index + 1).filter(page => page === 1 || page === totalPages || Math.abs(page - currentPage) <= 1).map((pageNumber, index, pages) => (
+            <React.Fragment key={pageNumber}>
+            {index > 0 && pageNumber - pages[index - 1] > 1 && <span aria-hidden="true">…</span>}
             <button
-              key={idx}
-              onClick={() => setCurrentPage(idx + 1)}
+              onClick={() => setCurrentPage(pageNumber)}
+              aria-label={'পৃষ্ঠা ' + toBn(pageNumber)}
+              aria-current={currentPage === pageNumber ? 'page' : undefined}
               className={`w-9 h-9 rounded-xl text-xs font-bold transition-colors ${
-                currentPage === idx + 1
+                currentPage === pageNumber
                   ? 'bg-emerald-700 text-white shadow-md shadow-emerald-800/20'
                   : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50'
               }`}
             >
-              {toBn(idx + 1)}
+              {toBn(pageNumber)}
             </button>
+            </React.Fragment>
           ))}
 
           <button

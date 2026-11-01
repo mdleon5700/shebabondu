@@ -58,7 +58,7 @@ export default function TransactionsPage() {
                 {tx.type === 'recharge' ? '+' : '-'}৳{tx.amount}
               </div>
               <span className="text-[10px] font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
-                সফল
+                {tx.status === 'pending' ? 'যাচাইয়ের অপেক্ষায়' : tx.status === 'failed' ? 'বাতিল' : 'সফল'}
               </span>
             </div>
           </div>

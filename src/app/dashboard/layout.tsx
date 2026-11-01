@@ -93,9 +93,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [completion, setCompletion] = useState(85);
   const [isMounted, setIsMounted] = useState(false);
+  const [sessionChecked, setSessionChecked] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
+    setSessionChecked(false);
     fetch('/api/auth/me', { cache: 'no-store' })
       .then(async res => {
         if (!res.ok) throw new Error('Session expired');
@@ -109,7 +111,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       .catch(() => {
         storage.logout();
         router.replace('/login?redirect=' + encodeURIComponent(pathname));
-      });
+      }).finally(() => setSessionChecked(true));
 
     const handleUserChange = () => {
       const u = storage.getUser();
@@ -128,6 +130,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     storage.logout();
     router.push('/login');
   };
+
+  if (!sessionChecked) return <div role="status" className="p-8 text-base text-slate-600">ড্যাশবোর্ড লোড হচ্ছে...</div>;
 
   if (isMounted && !storage.getAuth().isLoggedIn) {
     return (

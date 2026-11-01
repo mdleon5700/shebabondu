@@ -22,7 +22,7 @@ export async function GET(req: Request) {
 
   const totalRevenue = allApps
     .filter(a => a.status === 'completed' || a.status === 'processing')
-    .reduce((sum, a) => sum + (a.serviceCharge || 80), 0);
+    .reduce((sum, a) => sum + (a.financialSnapshot?.finalServiceCharge ?? a.serviceCharge ?? 0), 0);
 
   return NextResponse.json({
     success: true,

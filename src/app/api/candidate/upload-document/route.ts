@@ -70,7 +70,7 @@ export async function POST(req: Request) {
     const mimeType = mimeMap[fileExt] || 'application/octet-stream';
     const relativeUrl = '/api/uploads/candidate-documents/' + cleanFileName;
 
-    let targetDocId = 'DOC-' + timestamp.toString().slice(-6);
+    let targetDocId = 'DOC-' + crypto.randomUUID();
     let version = 1;
     let previousVersionId: string | undefined = undefined;
 
@@ -89,8 +89,8 @@ export async function POST(req: Request) {
       const fieldMap: Record<string, string> = {
         nid_front: 'nidFrontUrl',
         nid_back: 'nidBackUrl',
-        father_nid: 'fatherNid',
-        mother_nid: 'motherNid',
+        father_nid: 'fatherNidUrl',
+        mother_nid: 'motherNidUrl',
         nagorik_certificate: 'nagorikCertificateUrl',
         birth_certificate: 'birthCertificateUrl',
         character_certificate: 'characterCertificateUrl',

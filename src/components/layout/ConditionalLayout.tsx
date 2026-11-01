@@ -3,6 +3,7 @@ import React from 'react';
 import { usePathname } from 'next/navigation';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import { CandidateDataProvider } from '@/components/CandidateDataProvider';
 
 export default function ConditionalLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -13,10 +14,10 @@ export default function ConditionalLayout({ children }: { children: React.ReactN
   }
 
   return (
-    <>
+    <CandidateDataProvider>
       <Navbar />
       <main className="flex-grow">{children}</main>
       <Footer />
-    </>
+    </CandidateDataProvider>
   );
 }

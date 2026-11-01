@@ -66,12 +66,25 @@ export default function RecommendedJobsPage() {
     }
     const saved = storage.getSavedJobIds();
     setSavedJobIds(saved || []);
+    fetch('/api/candidate/saved-jobs', { cache: 'no-store' }).then(res => res.ok ? res.json() : null).then(data => {
+      if (Array.isArray(data?.savedJobs)) { storage.replaceSavedJobIds(data.savedJobs); setSavedJobIds(data.savedJobs); }
+    }).catch(() => {});
     fetchRecommendations();
   }, []);
 
-  const handleToggleSave = (jobId: string) => {
-    storage.toggleSaveJob(jobId);
-    setSavedJobIds(storage.getSavedJobIds());
+  const handleToggleSave = async (jobId: string) => {
+    try {
+      const response = await fetch('/api/candidate/saved-jobs', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ jobId, action: savedJobIds.includes(jobId) ? 'unsave' : 'save' })
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || 'Could not save job');
+      storage.replaceSavedJobIds(data.savedJobs);
+      setSavedJobIds(data.savedJobs);
+    } catch (error) {
+      setFeedbackSuccess(error instanceof Error ? error.message : 'সংরক্ষণ ব্যর্থ হয়েছে');
+    }
   };
 
   const handleFeedback = async (jobId: string, action: 'RELEVANT' | 'NOT_RELEVANT' | 'HIDDEN') => {

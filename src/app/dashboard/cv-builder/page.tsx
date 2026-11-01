@@ -4,17 +4,11 @@ import React, { useState, useEffect } from 'react';
 import { FileText, Download, Printer, CheckCircle2, User, Mail, Phone, MapPin } from 'lucide-react';
 import { storage } from '@/lib/store';
 import { CandidateProfile } from '@/lib/types';
+import { useCandidateData } from '@/components/CandidateDataProvider';
 
 export default function CvBuilderPage() {
-  const [profile, setProfile] = useState<CandidateProfile | null>(null);
+  const { profile } = useCandidateData();
   const [template, setTemplate] = useState<'classic' | 'modern'>('modern');
-
-  useEffect(() => {
-    const auth = storage.getAuth();
-    if (auth.isLoggedIn) {
-      setProfile(storage.getUser());
-    }
-  }, []);
 
   const handlePrint = () => {
     window.print();

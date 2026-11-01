@@ -1,3 +1,4 @@
+import { randomUUID } from 'crypto';
 import { NextResponse } from 'next/server';
 import { getServerSession } from '@/lib/auth';
 import { serverDB } from '@/lib/db';
@@ -25,14 +26,13 @@ export async function GET(req: Request) {
   return NextResponse.json({
     walletBalance: candidate?.walletBalance || 0,
     transactions: txs,
-    mode: 'simulated_prototype_mode'
+    success: true
   });
 }
 
 export async function POST(req: Request) {
   const session = getServerSession(req);
   if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  if (session.role !== 'admin') return NextResponse.json({ error: 'Wallet credits require admin payment verification.' }, { status: 403 });
 
   try {
     const body = await req.json();
@@ -59,15 +59,18 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'সঠিক টাকার পরিমাণ দিন' }, { status: 400 });
     }
 
+    if (session.role !== 'admin' && (type && type !== 'recharge')) return NextResponse.json({ error: 'Only recharge requests are allowed.' }, { status: 403 });
+    if (!['bKash', 'Nagad', ...(session.role === 'admin' ? ['Bank', 'Wallet'] : [])].includes(method || 'bKash')) return NextResponse.json({ error: 'Invalid payment method' }, { status: 400 });
+    if (typeof trxId !== 'string' || !/^[a-zA-Z0-9-]{4,100}$/.test(trxId.trim())) return NextResponse.json({ error: 'সঠিক পেমেন্ট TrxID প্রদান করুন।' }, { status: 400 });
     const newTx: WalletTransaction = {
-      id: `TXN-${Date.now().toString().slice(-6)}`,
+      id: 'TXN-' + randomUUID(),
       date: new Date().toLocaleString('bn-BD'),
       amount: Number(amount),
       type: type || 'recharge',
-      description: description || 'ওয়ালেট ব্যালেন্স রিচার্জ (সিমুলেশন)',
+      description: description || 'ওয়ালেট রিচার্জ আবেদন',
       method: method || 'bKash',
-      trxId: trxId || `BKL${Math.floor(10000000 + Math.random() * 90000000)}`,
-      status: 'completed'
+      trxId: trxId.trim().toUpperCase(),
+      status: session.role === 'admin' ? 'completed' : 'pending'
     };
 
     const res = serverDB.addTransaction(targetId, newTx, idempotencyKey);
@@ -79,7 +82,7 @@ export async function POST(req: Request) {
       success: true,
       transaction: res.tx,
       newBalance: res.newBalance,
-      message: 'লেনদেন সফলভাবে লেজারে যুক্ত হয়েছে (স্যান্ডবক্স মোড)'
+      message: session.role === 'admin' ? 'লেনদেন সংরক্ষিত হয়েছে।' : 'রিচার্জ আবেদন জমা হয়েছে। অ্যাডমিন যাচাইয়ের পর ব্যালেন্স যুক্ত হবে।'
     });
   } catch (err: any) {
     return NextResponse.json({ error: err.message }, { status: 500 });

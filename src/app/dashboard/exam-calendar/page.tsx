@@ -1,4 +1,5 @@
 'use client';
+import { fetchPublicJobs } from '@/lib/public-jobs-client';
 
 import React, { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
@@ -57,7 +58,7 @@ export default function ExamCalendarPage() {
       try {
         const [appRes, jobRes] = await Promise.allSettled([
           fetch('/api/applications'),
-          fetch('/api/jobs?limit=50')
+          fetchPublicJobs()
         ]);
 
         if (appRes.status === 'fulfilled' && appRes.value.ok) {
@@ -67,12 +68,8 @@ export default function ExamCalendarPage() {
           }
         }
 
-        if (jobRes.status === 'fulfilled' && jobRes.value.ok) {
-          const jobData = await jobRes.value.json();
-          if (jobData.jobs && Array.isArray(jobData.jobs) && isMounted) {
-            setJobs(jobData.jobs);
-          }
-        }
+        if (jobRes.status === 'fulfilled' && isMounted) setJobs(jobRes.value);
+
       } catch (err) {
         console.warn('Calendar sync warning', err);
       } finally {

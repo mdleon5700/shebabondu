@@ -1660,6 +1660,9 @@ export interface ApplicationRequest {
 
 
 export interface WalletTransaction {
+  reviewedAt?: string;
+  reviewedBy?: string;
+  reviewNotes?: string;
 
 
 

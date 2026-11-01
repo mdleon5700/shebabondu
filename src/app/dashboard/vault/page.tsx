@@ -24,8 +24,10 @@ import {
 } from 'lucide-react';
 import { storage } from '@/lib/store';
 import { CandidateDocument } from '@/lib/types';
+import { useCandidateData } from '@/components/CandidateDataProvider';
 
 export default function DocumentVaultPage() {
+  const candidateData = useCandidateData();
   const [isMounted, setIsMounted] = useState(false);
   const [documents, setDocuments] = useState<CandidateDocument[]>([]);
   const [activeResizerTab, setActiveResizerTab] = useState<'photo' | 'signature'>('photo');
@@ -43,7 +45,6 @@ export default function DocumentVaultPage() {
   // Filter custom documents from full list
   const customDocumentsList = documents.filter(d => 
     d.type === 'custom' || 
-    Boolean(d.category) || 
     (!['photo', 'signature', 'nid_front', 'nid_back', 'father_nid', 'mother_nid', 'nagorik_certificate', 'birth_certificate', 'character_certificate', 'quota_certificate'].includes(d.type))
   );
 
@@ -73,28 +74,7 @@ export default function DocumentVaultPage() {
       const data = await res.json();
 
       if (data.success && data.fileUrl) {
-        const newDoc: CandidateDocument = data.docRecord || {
-          id: 'DOC-CUST-' + Date.now().toString().slice(-6),
-          type: 'custom',
-          title: customDocTitle.trim(),
-          category: customDocCategory,
-          fileName: data.fileName || customDocFile.name,
-          fileSize: Math.round(customDocFile.size / 1024) + ' KB',
-          uploadDate: new Date().toLocaleDateString('bn-BD'),
-          dataUrl: data.fileUrl,
-          fileUrl: data.fileUrl,
-          isVerified: true
-        };
-
-        const updatedDocs = storage.saveDocument(newDoc);
-        setDocuments(updatedDocs);
-
-        // Update profile in storage
-        const currentProfile = storage.getUser();
-        const existingCustom = currentProfile.customDocuments || [];
-        currentProfile.customDocuments = [newDoc, ...existingCustom.filter(d => d.id !== newDoc.id)];
-        storage.updateUser(currentProfile);
-        setUserProfile({ ...currentProfile });
+        await candidateData.refresh();
 
         setDocUploadToast('✓ "' + customDocTitle.trim() + '" সফলভাবে ভল্টে সংরক্ষিত হয়েছে!');
         setTimeout(() => setDocUploadToast(null), 4000);
@@ -113,18 +93,18 @@ export default function DocumentVaultPage() {
 
   const handleDeleteCustomDoc = async (id: string, title: string) => {
     if (!confirm('আপনি কি নিশ্চিত যে "' + title + '" ভল্ট থেকে মুছে ফেলতে চান?')) return;
-    try {
-      await fetch('/api/documents?id=' + encodeURIComponent(id), { method: 'DELETE' });
-    } catch (e) {}
+    await deleteDocument(id);
+  };
 
-    const updated = storage.deleteDocument(id);
-    const currentProfile = storage.getUser();
-    if (currentProfile.customDocuments) {
-      currentProfile.customDocuments = currentProfile.customDocuments.filter(d => d.id !== id);
-      storage.updateUser(currentProfile);
-      setUserProfile({ ...currentProfile });
+  const deleteDocument = async (id: string) => {
+    try {
+      const response = await fetch('/api/documents?id=' + encodeURIComponent(id), { method: 'DELETE' });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || 'ডকুমেন্ট মুছে ফেলা যায়নি');
+      await candidateData.refresh();
+    } catch (error) {
+      alert(error instanceof Error ? error.message : 'ডকুমেন্ট মুছে ফেলা যায়নি');
     }
-    setDocuments(updated);
   };
 
   const handleUploadOfficialDoc = async (e: React.ChangeEvent<HTMLInputElement>, docType: string, docTitle: string) => {
@@ -137,6 +117,8 @@ export default function DocumentVaultPage() {
       formData.append('file', file);
       formData.append('docType', docType);
       formData.append('docTitle', docTitle);
+      const existing = documents.find(document => document.type === docType);
+      if (existing) formData.append('replaceDocId', existing.id);
 
       const res = await fetch('/api/candidate/upload-document', {
         method: 'POST',
@@ -145,41 +127,9 @@ export default function DocumentVaultPage() {
       const data = await res.json();
 
       if (data.success && data.fileUrl) {
-        // Map to profile field
-        const fieldMap: Record<string, string> = {
-          nid_front: 'nidFrontUrl',
-          nid_back: 'nidBackUrl',
-          father_nid: 'fatherNidUrl',
-          mother_nid: 'motherNidUrl',
-          nagorik_certificate: 'nagorikCertificateUrl',
-          birth_certificate: 'birthCertificateUrl',
-          character_certificate: 'characterCertificateUrl',
-          quota_certificate: 'quotaCertificateUrl',
-        };
+        await candidateData.refresh();
 
-        const currentProfile = storage.getUser();
-        const profileField = fieldMap[docType];
-        if (profileField) {
-          (currentProfile as any)[profileField] = data.fileUrl;
-        }
-
-        const newDoc: CandidateDocument = {
-          id: 'DOC-' + Date.now().toString().slice(-4),
-          type: (docType as any) || 'other',
-          title: docTitle,
-          fileName: data.fileName || file.name,
-          fileSize: Math.round(file.size / 1024) + ' KB',
-          uploadDate: new Date().toLocaleDateString('bn-BD'),
-          dataUrl: data.fileUrl,
-          isVerified: true
-        };
-
-        const updatedDocs = storage.saveDocument(newDoc);
-        storage.updateUser(currentProfile);
-        setDocuments(updatedDocs);
-        setUserProfile({ ...currentProfile });
-
-        setDocUploadToast(docTitle + ' সফলভাবে আপলোড ও ভেরিফাই হয়েছে!');
+        setDocUploadToast(docTitle + ' আপলোড হয়েছে; অ্যাডমিন যাচাইয়ের অপেক্ষায় রয়েছে।');
         setTimeout(() => setDocUploadToast(null), 4000);
       } else {
         alert(data.error || 'আপলোড ব্যর্থ হয়েছে');
@@ -206,16 +156,12 @@ export default function DocumentVaultPage() {
 
   useEffect(() => {
     setIsMounted(true);
-    setDocuments(storage.getDocuments());
-    fetch('/api/documents')
-      .then(res => res.json())
-      .then(data => {
-        if (data.success && Array.isArray(data.documents)) {
-          setDocuments(data.documents);
-        }
-      })
-      .catch(() => {});
   }, []);
+
+  useEffect(() => {
+    setDocuments(candidateData.documents);
+    if (candidateData.profile) setUserProfile(candidateData.profile);
+  }, [candidateData.documents, candidateData.profile]);
 
   // Set preset dimensions
   const handleSelectPreset = (preset: 'photo' | 'signature') => {
@@ -301,39 +247,31 @@ export default function DocumentVaultPage() {
     a.click();
   };
 
-  const handleSaveToVault = () => {
-    if (!resizedDataUrl) return;
-    const newDoc: CandidateDocument = {
-      id: `DOC-${Date.now().toString().slice(-4)}`,
-      type: activeResizerTab === 'photo' ? 'photo' : 'signature',
-      title: activeResizerTab === 'photo' ? 'প্রার্থীর ছবি (টেলিটক ৩০০×৩০০)' : 'প্রার্থীর ডিজিটাল স্বাক্ষর (৩০০×৮০)',
-      fileName: activeResizerTab === 'photo' ? 'candidate-photo-300x300.jpg' : 'candidate-signature-300x80.jpg',
-      fileSize: `${resizedFileSizeKb || 45} KB`,
-      dimensions: `${targetWidth} × ${targetHeight} px`,
-      uploadDate: '২৮ অক্টোবর ২০২৬',
-      dataUrl: resizedDataUrl,
-      isVerified: true
-    };
-    const updated = storage.saveDocument(newDoc);
-    setDocuments(updated);
-
-    // Also sync with profile if photo/signature
-    const user = storage.getUser();
-    if (activeResizerTab === 'photo') user.photoUrl = resizedDataUrl;
-    if (activeResizerTab === 'signature') user.signatureUrl = resizedDataUrl;
-    storage.updateUser(user);
-    fetch('/api/profile', {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(user)
-    }).catch(() => {});
-
-    alert('ডকুমেন্ট সফলভাবে ভল্ট ও প্রার্থীর প্রোফাইলে সেভ হয়েছে!');
+  const handleSaveToVault = async () => {
+    if (!resizedDataUrl || uploadingDocType) return;
+    setUploadingDocType(activeResizerTab);
+    try {
+      const blob = await fetch(resizedDataUrl).then(response => response.blob());
+      const formData = new FormData();
+      formData.append('file', blob, activeResizerTab + '.jpg');
+      formData.append('docType', activeResizerTab);
+      formData.append('docTitle', activeResizerTab === 'photo' ? 'প্রার্থীর ছবি' : 'প্রার্থীর স্বাক্ষর');
+      const existing = documents.find(document => document.type === activeResizerTab);
+      if (existing) formData.append('replaceDocId', existing.id);
+      const response = await fetch('/api/candidate/upload-document', { method: 'POST', body: formData });
+      const data = await response.json();
+      if (!response.ok || !data.success) throw new Error(data.error || 'ডকুমেন্ট সংরক্ষণ ব্যর্থ হয়েছে');
+      await candidateData.refresh();
+      setDocUploadToast('ডকুমেন্ট সার্ভারে সংরক্ষিত হয়েছে; অ্যাডমিন যাচাইয়ের অপেক্ষায় রয়েছে।');
+    } catch (error) {
+      alert(error instanceof Error ? error.message : 'ডকুমেন্ট সংরক্ষণ ব্যর্থ হয়েছে');
+    } finally {
+      setUploadingDocType(null);
+    }
   };
 
-  const handleDeleteDoc = (id: string) => {
-    const updated = storage.deleteDocument(id);
-    setDocuments(updated);
+  const handleDeleteDoc = async (id: string) => {
+    await deleteDocument(id);
   };
 
   if (!isMounted) {
@@ -806,9 +744,10 @@ export default function DocumentVaultPage() {
               <div className="p-2.5 bg-slate-50 rounded-xl border border-slate-100 flex items-center justify-between text-[11px] text-slate-600">
                 <span>সাইজ: <strong>{doc.fileSize}</strong></span>
                 {doc.dimensions && <span>মাপ: {doc.dimensions}</span>}
+                <span>{doc.isVerified ? 'অ্যাডমিন যাচাইকৃত' : doc.verificationStatus === 'REJECTED' ? 'বাতিল' : doc.verificationStatus === 'NEEDS_CORRECTION' ? 'সংশোধন প্রয়োজন' : 'যাচাইয়ের অপেক্ষায়'}</span>
               </div>
 
-              {doc.dataUrl && (
+              {doc.dataUrl && (doc.mimeType?.startsWith('image/') || /\.(png|jpe?g|webp)$/i.test(doc.fileName)) && (
                 <div className="h-16 bg-slate-100 rounded-xl flex items-center justify-center overflow-hidden border">
                   <img src={doc.dataUrl} alt="" className="max-h-full object-contain" />
                 </div>

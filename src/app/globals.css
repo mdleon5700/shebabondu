@@ -1,0 +1,225 @@
+@font-face {
+  font-family: 'SolaimanLipi';
+  src: url('/fonts/solaimanlipi-normal.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SolaimanLipi';
+  src: url('/fonts/solaimanlipi-bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-solaiman: 'SolaimanLipi', Arial, sans-serif;
+  --font-hind: 'SolaimanLipi', Arial, sans-serif;
+}
+
+html, body {
+  font-family: 'SolaimanLipi', Arial, sans-serif !important;
+  line-height: 1.6;
+  background-color: #f8fafc;
+  color: #0f172a;
+}
+
+/* SolaimanLipi everywhere across headings, buttons, nav, paragraphs, inputs, etc. */
+*,
+*::before,
+*::after,
+html, body,
+h1, h2, h3, h4, h5, h6,
+p, span, a, input, select, textarea,
+button,
+label,
+div,
+nav,
+header,
+footer,
+section,
+main,
+aside,
+ul, ol, li,
+table, th, td,
+.font-heading,
+.font-hind,
+.font-solaiman,
+.font-body,
+.font-sans,
+.font-bangla {
+  font-family: 'SolaimanLipi', Arial, sans-serif !important;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+.gradient-green {
+  background: linear-gradient(135deg, #006a4e 0%, #059669 100%);
+}
+
+.badge-pulse {
+  animation: pulse-badge 2s infinite;
+}
+
+@keyframes pulse-badge {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+
+/* Typography Rules: Buttons 17px, Normal Paragraphs/Text 16px */
+p,
+article,
+.text-body {
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+button,
+[role="button"],
+.btn {
+  font-size: 17px;
+}
+
+
+/* UNIVERSAL FONT SIZE ENFORCEMENT: Buttons 17px, Paragraphs/Body 16px */
+p,
+article,
+.text-body,
+label,
+input,
+select,
+textarea {
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+button,
+[role="button"],
+.btn,
+input[type="button"],
+input[type="submit"],
+a[class*="rounded-xl"][class*="bg-"],
+a[class*="rounded-xl"][class*="border-2"],
+a[class*="rounded-2xl"][class*="bg-"] {
+  font-size: 17px;
+}
+
+/* Explicit font size overrides when requested */
+.text-\[15px\],
+[class*="text-[15px]"],
+.share-action-btn,
+.share-action-btn span {
+  font-size: 15px !important;
+}
+
+/* Infinite Auto-Scrolling Testimonial Marquee */
+@keyframes marquee-scroll {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee-scroll {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll 95s linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee-scroll:hover {
+  animation-play-state: paused;
+}
+
+
+/* =========================================================================
+   OFFICIAL A4 PRINTABLE RECEIPT & SLIP STYLES (PIXEL-PERFECT A4 PRINTING)
+   ========================================================================= */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 8mm 12mm 8mm 12mm;
+  }
+  
+  html, body {
+    background: #ffffff !important;
+    color: #0f172a !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Hide all surrounding screen navigation, headers, footers, buttons */
+  nav, header, aside, footer,
+  .no-print,
+  button,
+  .btn {
+    display: none !important;
+    visibility: hidden !important;
+  }
+
+  /* Isolate the official printable receipt modal */
+  #official-printable-receipt-modal {
+    position: static !important;
+    display: block !important;
+    background: transparent !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: visible !important;
+  }
+
+  #official-printable-receipt-modal > div {
+    max-width: 100% !important;
+    width: 100% !important;
+    border: none !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #ffffff !important;
+  }
+
+  #official-printable-receipt {
+    display: block !important;
+    visibility: visible !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+    padding: 8mm 5mm !important;
+    background: #ffffff !important;
+    color: #0f172a !important;
+    box-shadow: none !important;
+    border: none !important;
+    page-break-inside: avoid !important;
+  }
+
+  #official-printable-receipt * {
+    visibility: visible !important;
+  }
+}

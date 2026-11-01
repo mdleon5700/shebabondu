@@ -1,0 +1,22 @@
+[
+  {
+    "defectId": "DEF-BENGALI-CORRUPT",
+    "signature": "TEXT_ENCODING_QUESTION_MARKS",
+    "category": "ENCODING",
+    "rootCause": "PowerShell Set-Content default ANSI encoding write corrupted UTF-8 strings",
+    "reproductionSteps": [
+      "Check for ??? in text components"
+    ],
+    "affectedFiles": [
+      "src/app/admin/page.tsx"
+    ],
+    "failedPatchAttempts": [
+      "patch_fingerprint_ansi_write"
+    ],
+    "successfulPatchSummary": "Rebuilt file using explicit UTF-8 Node writer",
+    "verificationEvidence": "Deterministic scanner confirmed 0 ??? occurrences",
+    "status": "RESOLVED",
+    "timestamp": "2026-10-29T06:21:46.211Z",
+    "lastFailureReason": "Failed due to encoding"
+  }
+]

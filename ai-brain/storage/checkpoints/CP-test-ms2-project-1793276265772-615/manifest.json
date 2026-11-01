@@ -1,0 +1,14 @@
+{
+  "checkpointId": "CP-test-ms2-project-1793276265772-615",
+  "projectId": "test-ms2-project",
+  "taskId": "T-FEAT",
+  "workspacePath": "C:\\Users\\Leon Rahman\\Documents\\chakri-sheba\\ai-brain\\tests",
+  "timestamp": "2026-10-29T12:17:45.774Z",
+  "files": [
+    {
+      "relPath": "temp_checkpoint_test.txt",
+      "fullPath": "C:\\Users\\Leon Rahman\\Documents\\chakri-sheba\\ai-brain\\tests\\temp_checkpoint_test.txt",
+      "backupPath": "C:\\Users\\Leon Rahman\\Documents\\chakri-sheba\\ai-brain\\storage\\checkpoints\\CP-test-ms2-project-1793276265772-615\\74656d705f636865636b706f696e745f746573742e747874"
+    }
+  ]
+}

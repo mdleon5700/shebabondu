@@ -1,0 +1,577 @@
+[
+  {
+    "taskId": "TASK-chakri-sheba-001",
+    "projectId": "chakri-sheba",
+    "title": "Fix ENCODING: Potential UTF-8 text corruption detected (4 occurrences of ?",
+    "description": "Potential UTF-8 text corruption detected (4 occurrences of ???)",
+    "findingId": "ENC-CORRUPT-698299001",
+    "category": "ENCODING",
+    "priority": 2,
+    "severity": "HIGH",
+    "dependencies": [],
+    "relevantFiles": [
+      "ai-brain\\core\\DeterministicScanner.js"
+    ],
+    "acceptanceCriteria": [
+      "No ENCODING error in ai-brain\\core\\DeterministicScanner.js",
+      "Verification test passes cleanly"
+    ],
+    "risk": "LOW",
+    "state": "COMPLETED",
+    "attemptCount": 1,
+    "maxAttempts": 3,
+    "checkpointId": null,
+    "evidence": "Executed verification cleanly: node -v",
+    "createdAt": "2026-10-29T06:20:53.333Z",
+    "leaseOwner": null,
+    "leaseExpiresAt": null,
+    "startedAt": "2026-10-29T06:21:21.838Z",
+    "updatedAt": "2026-10-29T06:21:21.888Z",
+    "completedAt": "2026-10-29T06:21:21.888Z"
+  },
+  {
+    "taskId": "TASK-chakri-sheba-002",
+    "projectId": "chakri-sheba",
+    "title": "Fix QUALITY: Disconnected empty button handler: onClick={() => {}}",
+    "description": "Disconnected empty button handler: onClick={() => {}}",
+    "findingId": "UX-EMPTY-HANDLER-698299001",
+    "category": "QUALITY",
+    "priority": 4,
+    "severity": "LOW",
+    "dependencies": [],
+    "relevantFiles": [
+      "ai-brain\\core\\DeterministicScanner.js"
+    ],
+    "acceptanceCriteria": [
+      "No QUALITY error in ai-brain\\core\\DeterministicScanner.js",
+      "Verification test passes cleanly"
+    ],
+    "risk": "LOW",
+    "state": "READY",
+    "attemptCount": 0,
+    "maxAttempts": 3,
+    "checkpointId": null,
+    "evidence": null,
+    "createdAt": "2026-10-29T06:20:53.333Z"
+  },
+  {
+    "taskId": "TASK-chakri-sheba-003",
+    "projectId": "chakri-sheba",
+    "title": "Fix SYNTAX: Invalid JSON syntax: Unexpected token '﻿', \"﻿{\"content\"... i",
+    "description": "Invalid JSON syntax: Unexpected token '﻿', \"﻿{\"content\"... is not valid JSON",
+    "findingId": "JSON-SYNTAX-1988629929",
+    "category": "SYNTAX",
+    "priority": 1,
+    "severity": "CRITICAL",
+    "dependencies": [],
+    "relevantFiles": [
+      "ai-brain\\storage\\test_payload.json"
+    ],
+    "acceptanceCriteria": [
+      "No SYNTAX error in ai-brain\\storage\\test_payload.json",
+      "Verification test passes cleanly"
+    ],
+    "risk": "HIGH",
+    "state": "COMPLETED",
+    "attemptCount": 1,
+    "maxAttempts": 3,
+    "checkpointId": null,
+    "evidence": "Executed verification cleanly: node -v",
+    "createdAt": "2026-10-29T06:20:53.333Z",
+    "leaseOwner": null,
+    "leaseExpiresAt": null,
+    "startedAt": "2026-10-29T06:21:21.779Z",
+    "updatedAt": "2026-10-29T06:21:21.835Z",
+    "completedAt": "2026-10-29T06:21:21.835Z"
+  },
+  {
+    "taskId": "TASK-chakri-sheba-004",
+    "projectId": "chakri-sheba",
+    "title": "Fix ENCODING: Potential UTF-8 text corruption detected (2 occurrences of ?",
+    "description": "Potential UTF-8 text corruption detected (2 occurrences of ???)",
+    "findingId": "ENC-CORRUPT-101276517",
+    "category": "ENCODING",
+    "priority": 2,
+    "severity": "HIGH",
+    "dependencies": [],
+    "relevantFiles": [
+      "ai-brain\\tests\\e2e_acceptance.test.js"
+    ],
+    "acceptanceCriteria": [
+      "No ENCODING error in ai-brain\\tests\\e2e_acceptance.test.js",
+      "Verification test passes cleanly"
+    ],
+    "risk": "LOW",
+    "state": "COMPLETED",
+    "attemptCount": 1,
+    "maxAttempts": 3,
+    "checkpointId": null,
+    "evidence": "Executed verification cleanly: node -v",
+    "createdAt": "2026-10-29T06:20:53.333Z",
+    "leaseOwner": null,
+    "leaseExpiresAt": null,
+    "startedAt": "2026-10-29T06:21:21.891Z",
+    "updatedAt": "2026-10-29T06:21:21.942Z",
+    "completedAt": "2026-10-29T06:21:21.942Z"
+  },
+  {
+    "taskId": "TASK-chakri-sheba-005",
+    "projectId": "chakri-sheba",
+    "title": "Fix ENCODING: Potential UTF-8 text corruption detected (2 occurrences of ?",
+    "description": "Potential UTF-8 text corruption detected (2 occurrences of ???)",
+    "findingId": "ENC-CORRUPT-1851437311",
+    "category": "ENCODING",
+    "priority": 2,
+    "severity": "HIGH",
+    "dependencies": [],
+    "relevantFiles": [
+      "ai-brain\\tests\\milestone4.test.js"
+    ],
+    "acceptanceCriteria": [
+      "No ENCODING error in ai-brain\\tests\\milestone4.test.js",
+      "Verification test passes cleanly"
+    ],
+    "risk": "LOW",
+    "state": "COMPLETED",
+    "attemptCount": 1,
+    "maxAttempts": 3,
+    "checkpointId": null,
+    "evidence": "Executed verification cleanly: node -v",
+    "createdAt": "2026-10-29T06:20:53.333Z",
+    "leaseOwner": null,
+    "leaseExpiresAt": null,
+    "startedAt": "2026-10-29T06:21:21.944Z",
+    "updatedAt": "2026-10-29T06:21:21.994Z",
+    "completedAt": "2026-10-29T06:21:21.994Z"
+  },
+  {
+    "taskId": "TASK-chakri-sheba-006",
+    "projectId": "chakri-sheba",
+    "title": "Fix ENCODING: Potential UTF-8 text corruption detected (2 occurrences of ?",
+    "description": "Potential UTF-8 text corruption detected (2 occurrences of ???)",
+    "findingId": "ENC-CORRUPT-1316133892",
+    "category": "ENCODING",
+    "priority": 2,
+    "severity": "HIGH",
+    "dependencies": [],
+    "relevantFiles": [
+      "ai-brain\\tests\\milestone7.test.js"
+    ],
+    "acceptanceCriteria": [
+      "No ENCODING error in ai-brain\\tests\\milestone7.test.js",
+      "Verification test passes cleanly"
+    ],
+    "risk": "LOW",
+    "state": "COMPLETED",
+    "attemptCount": 1,
+    "maxAttempts": 3,
+    "checkpointId": null,
+    "evidence": "Executed verification cleanly: node -v",
+    "createdAt": "2026-10-29T06:20:53.333Z",
+    "leaseOwner": null,
+    "leaseExpiresAt": null,
+    "startedAt": "2026-10-29T06:21:21.997Z",
+    "updatedAt": "2026-10-29T06:21:22.048Z",
+    "completedAt": "2026-10-29T06:21:22.048Z"
+  },
+  {
+    "taskId": "TASK-chakri-sheba-007",
+    "projectId": "chakri-sheba",
+    "title": "Fix ENCODING: Potential UTF-8 text corruption detected (2 occurrences of ?",
+    "description": "Potential UTF-8 text corruption detected (2 occurrences of ???)",
+    "findingId": "ENC-CORRUPT-1996192262",
+    "category": "ENCODING",
+    "priority": 2,
+    "severity": "HIGH",
+    "dependencies": [],
+    "relevantFiles": [
+      "ai-brain\\tests\\milestone9.test.js"
+    ],
+    "acceptanceCriteria": [
+      "No ENCODING error in ai-brain\\tests\\milestone9.test.js",
+      "Verification test passes cleanly"
+    ],
+    "risk": "LOW",
+    "state": "READY",
+    "attemptCount": 0,
+    "maxAttempts": 3,
+    "checkpointId": null,
+    "evidence": null,
+    "createdAt": "2026-10-29T06:20:53.333Z"
+  },
+  {
+    "taskId": "TASK-chakri-sheba-008",
+    "projectId": "chakri-sheba",
+    "title": "Fix ENCODING: Potential UTF-8 text corruption detected (25 occurrences of ",
+    "description": "Potential UTF-8 text corruption detected (25 occurrences of ???)",
+    "findingId": "ENC-CORRUPT-204191572",
+    "category": "ENCODING",
+    "priority": 2,
+    "severity": "HIGH",
+    "dependencies": [],
+    "relevantFiles": [
+      "scripts\\patch_apply_page.js"
+    ],
+    "acceptanceCriteria": [
+      "No ENCODING error in scripts\\patch_apply_page.js",
+      "Verification test passes cleanly"
+    ],
+    "risk": "LOW",
+    "state": "READY",
+    "attemptCount": 0,
+    "maxAttempts": 3,
+    "checkpointId": null,
+    "evidence": null,
+    "createdAt": "2026-10-29T06:20:53.333Z"
+  },
+  {
+    "taskId": "TASK-chakri-sheba-009",
+    "projectId": "chakri-sheba",
+    "title": "Fix ENCODING: Potential UTF-8 text corruption detected (129 occurrences of",
+    "description": "Potential UTF-8 text corruption detected (129 occurrences of ???)",
+    "findingId": "ENC-CORRUPT-525652111",
+    "category": "ENCODING",
+    "priority": 2,
+    "severity": "HIGH",
+    "dependencies": [],
+    "relevantFiles": [
+      "scripts\\patch_dashboard_apps.js"
+    ],
+    "acceptanceCriteria": [
+      "No ENCODING error in scripts\\patch_dashboard_apps.js",
+      "Verification test passes cleanly"
+    ],
+    "risk": "LOW",
+    "state": "READY",
+    "attemptCount": 0,
+    "maxAttempts": 3,
+    "checkpointId": null,
+    "evidence": null,
+    "createdAt": "2026-10-29T06:20:53.333Z"
+  },
+  {
+    "taskId": "TASK-chakri-sheba-010",
+    "projectId": "chakri-sheba",
+    "title": "Fix ENCODING: Potential UTF-8 text corruption detected (20 occurrences of ",
+    "description": "Potential UTF-8 text corruption detected (20 occurrences of ???)",
+    "findingId": "ENC-CORRUPT-647540921",
+    "category": "ENCODING",
+    "priority": 2,
+    "severity": "HIGH",
+    "dependencies": [],
+    "relevantFiles": [
+      "scripts\\save_part1.js"
+    ],
+    "acceptanceCriteria": [
+      "No ENCODING error in scripts\\save_part1.js",
+      "Verification test passes cleanly"
+    ],
+    "risk": "LOW",
+    "state": "READY",
+    "attemptCount": 0,
+    "maxAttempts": 3,
+    "checkpointId": null,
+    "evidence": null,
+    "createdAt": "2026-10-29T06:20:53.333Z"
+  },
+  {
+    "taskId": "TASK-chakri-sheba-011",
+    "projectId": "chakri-sheba",
+    "title": "Fix ENCODING: Potential UTF-8 text corruption detected (128 occurrences of",
+    "description": "Potential UTF-8 text corruption detected (128 occurrences of ???)",
+    "findingId": "ENC-CORRUPT-647511130",
+    "category": "ENCODING",
+    "priority": 2,
+    "severity": "HIGH",
+    "dependencies": [],
+    "relevantFiles": [
+      "scripts\\save_part2.js"
+    ],
+    "acceptanceCriteria": [
+      "No ENCODING error in scripts\\save_part2.js",
+      "Verification test passes cleanly"
+    ],
+    "risk": "LOW",
+    "state": "READY",
+    "attemptCount": 0,
+    "maxAttempts": 3,
+    "checkpointId": null,
+    "evidence": null,
+    "createdAt": "2026-10-29T06:20:53.333Z"
+  },
+  {
+    "taskId": "TASK-chakri-sheba-012",
+    "projectId": "chakri-sheba",
+    "title": "Fix ENCODING: Potential UTF-8 text corruption detected (128 occurrences of",
+    "description": "Potential UTF-8 text corruption detected (128 occurrences of ???)",
+    "findingId": "ENC-CORRUPT-647481339",
+    "category": "ENCODING",
+    "priority": 2,
+    "severity": "HIGH",
+    "dependencies": [],
+    "relevantFiles": [
+      "scripts\\save_part3.js"
+    ],
+    "acceptanceCriteria": [
+      "No ENCODING error in scripts\\save_part3.js",
+      "Verification test passes cleanly"
+    ],
+    "risk": "LOW",
+    "state": "READY",
+    "attemptCount": 0,
+    "maxAttempts": 3,
+    "checkpointId": null,
+    "evidence": null,
+    "createdAt": "2026-10-29T06:20:53.333Z"
+  },
+  {
+    "taskId": "TASK-chakri-sheba-013",
+    "projectId": "chakri-sheba",
+    "title": "Fix ENCODING: Potential UTF-8 text corruption detected (377 occurrences of",
+    "description": "Potential UTF-8 text corruption detected (377 occurrences of ???)",
+    "findingId": "ENC-CORRUPT-2142692111",
+    "category": "ENCODING",
+    "priority": 2,
+    "severity": "HIGH",
+    "dependencies": [],
+    "relevantFiles": [
+      "scripts\\save_part4_and_assemble.js"
+    ],
+    "acceptanceCriteria": [
+      "No ENCODING error in scripts\\save_part4_and_assemble.js",
+      "Verification test passes cleanly"
+    ],
+    "risk": "LOW",
+    "state": "READY",
+    "attemptCount": 0,
+    "maxAttempts": 3,
+    "checkpointId": null,
+    "evidence": null,
+    "createdAt": "2026-10-29T06:20:53.333Z"
+  },
+  {
+    "taskId": "TASK-chakri-sheba-014",
+    "projectId": "chakri-sheba",
+    "title": "Fix ENCODING: Potential UTF-8 text corruption detected (53 occurrences of ",
+    "description": "Potential UTF-8 text corruption detected (53 occurrences of ???)",
+    "findingId": "ENC-CORRUPT-1206688451",
+    "category": "ENCODING",
+    "priority": 2,
+    "severity": "HIGH",
+    "dependencies": [],
+    "relevantFiles": [
+      "scripts\\seed_missing_entities.js"
+    ],
+    "acceptanceCriteria": [
+      "No ENCODING error in scripts\\seed_missing_entities.js",
+      "Verification test passes cleanly"
+    ],
+    "risk": "LOW",
+    "state": "READY",
+    "attemptCount": 0,
+    "maxAttempts": 3,
+    "checkpointId": null,
+    "evidence": null,
+    "createdAt": "2026-10-29T06:20:53.333Z"
+  },
+  {
+    "taskId": "TASK-chakri-sheba-015",
+    "projectId": "chakri-sheba",
+    "title": "Fix ENCODING: Potential UTF-8 text corruption detected (117 occurrences of",
+    "description": "Potential UTF-8 text corruption detected (117 occurrences of ???)",
+    "findingId": "ENC-CORRUPT-75623050",
+    "category": "ENCODING",
+    "priority": 2,
+    "severity": "HIGH",
+    "dependencies": [],
+    "relevantFiles": [
+      "scripts\\verify_system.js"
+    ],
+    "acceptanceCriteria": [
+      "No ENCODING error in scripts\\verify_system.js",
+      "Verification test passes cleanly"
+    ],
+    "risk": "LOW",
+    "state": "READY",
+    "attemptCount": 0,
+    "maxAttempts": 3,
+    "checkpointId": null,
+    "evidence": null,
+    "createdAt": "2026-10-29T06:20:53.333Z"
+  },
+  {
+    "taskId": "TASK-chakri-sheba-016",
+    "projectId": "chakri-sheba",
+    "title": "Fix ENCODING: Potential UTF-8 text corruption detected (656 occurrences of",
+    "description": "Potential UTF-8 text corruption detected (656 occurrences of ???)",
+    "findingId": "ENC-CORRUPT-1070662940",
+    "category": "ENCODING",
+    "priority": 2,
+    "severity": "HIGH",
+    "dependencies": [],
+    "relevantFiles": [
+      "scripts\\write_admin_page.js"
+    ],
+    "acceptanceCriteria": [
+      "No ENCODING error in scripts\\write_admin_page.js",
+      "Verification test passes cleanly"
+    ],
+    "risk": "LOW",
+    "state": "READY",
+    "attemptCount": 0,
+    "maxAttempts": 3,
+    "checkpointId": null,
+    "evidence": null,
+    "createdAt": "2026-10-29T06:20:53.333Z"
+  },
+  {
+    "taskId": "TASK-chakri-sheba-017",
+    "projectId": "chakri-sheba",
+    "title": "Fix ENCODING: Potential UTF-8 text corruption detected (269 occurrences of",
+    "description": "Potential UTF-8 text corruption detected (269 occurrences of ???)",
+    "findingId": "ENC-CORRUPT-1033707692",
+    "category": "ENCODING",
+    "priority": 2,
+    "severity": "HIGH",
+    "dependencies": [],
+    "relevantFiles": [
+      "scripts\\write_website_builder.js"
+    ],
+    "acceptanceCriteria": [
+      "No ENCODING error in scripts\\write_website_builder.js",
+      "Verification test passes cleanly"
+    ],
+    "risk": "LOW",
+    "state": "READY",
+    "attemptCount": 0,
+    "maxAttempts": 3,
+    "checkpointId": null,
+    "evidence": null,
+    "createdAt": "2026-10-29T06:20:53.333Z"
+  },
+  {
+    "taskId": "TASK-chakri-sheba-018",
+    "projectId": "chakri-sheba",
+    "title": "Fix IMPORT: Broken relative import path: \"./server\"",
+    "description": "Broken relative import path: \"./server\"",
+    "findingId": "IMPORT-BROKEN-108465055",
+    "category": "IMPORT",
+    "priority": 2,
+    "severity": "HIGH",
+    "dependencies": [],
+    "relevantFiles": [
+      "ai-brain\\modes\\BuildMode.js"
+    ],
+    "acceptanceCriteria": [
+      "No IMPORT error in ai-brain\\modes\\BuildMode.js",
+      "Verification test passes cleanly"
+    ],
+    "risk": "LOW",
+    "state": "READY",
+    "attemptCount": 0,
+    "maxAttempts": 3,
+    "checkpointId": null,
+    "evidence": null,
+    "createdAt": "2026-10-29T06:20:53.333Z"
+  },
+  {
+    "taskId": "TASK-chakri-sheba-019",
+    "projectId": "chakri-sheba",
+    "title": "Fix IMPORT: Broken relative import path: \"./broken_dependency\"",
+    "description": "Broken relative import path: \"./broken_dependency\"",
+    "findingId": "IMPORT-BROKEN-1222138407",
+    "category": "IMPORT",
+    "priority": 2,
+    "severity": "HIGH",
+    "dependencies": [],
+    "relevantFiles": [
+      "ai-brain\\tests\\e2e_acceptance.test.js"
+    ],
+    "acceptanceCriteria": [
+      "No IMPORT error in ai-brain\\tests\\e2e_acceptance.test.js",
+      "Verification test passes cleanly"
+    ],
+    "risk": "LOW",
+    "state": "READY",
+    "attemptCount": 0,
+    "maxAttempts": 3,
+    "checkpointId": null,
+    "evidence": null,
+    "createdAt": "2026-10-29T06:20:53.333Z"
+  },
+  {
+    "taskId": "TASK-chakri-sheba-020",
+    "projectId": "chakri-sheba",
+    "title": "Fix IMPORT: Broken relative import path: \"./app\"",
+    "description": "Broken relative import path: \"./app\"",
+    "findingId": "IMPORT-BROKEN-1246882555",
+    "category": "IMPORT",
+    "priority": 2,
+    "severity": "HIGH",
+    "dependencies": [],
+    "relevantFiles": [
+      "ai-brain\\tests\\e2e_acceptance.test.js"
+    ],
+    "acceptanceCriteria": [
+      "No IMPORT error in ai-brain\\tests\\e2e_acceptance.test.js",
+      "Verification test passes cleanly"
+    ],
+    "risk": "LOW",
+    "state": "READY",
+    "attemptCount": 0,
+    "maxAttempts": 3,
+    "checkpointId": null,
+    "evidence": null,
+    "createdAt": "2026-10-29T06:20:53.333Z"
+  },
+  {
+    "taskId": "TASK-chakri-sheba-021",
+    "projectId": "chakri-sheba",
+    "title": "Fix IMPORT: Broken relative import path: \"./types\"",
+    "description": "Broken relative import path: \"./types\"",
+    "findingId": "IMPORT-BROKEN-388060045",
+    "category": "IMPORT",
+    "priority": 2,
+    "severity": "HIGH",
+    "dependencies": [],
+    "relevantFiles": [
+      "scripts\\update_db_state.js"
+    ],
+    "acceptanceCriteria": [
+      "No IMPORT error in scripts\\update_db_state.js",
+      "Verification test passes cleanly"
+    ],
+    "risk": "LOW",
+    "state": "READY",
+    "attemptCount": 0,
+    "maxAttempts": 3,
+    "checkpointId": null,
+    "evidence": null,
+    "createdAt": "2026-10-29T06:20:53.334Z"
+  },
+  {
+    "taskId": "TASK-chakri-sheba-022",
+    "projectId": "chakri-sheba",
+    "title": "Fix IMPORT: Broken relative import path: \"./globals.css\"",
+    "description": "Broken relative import path: \"./globals.css\"",
+    "findingId": "IMPORT-BROKEN-149548757",
+    "category": "IMPORT",
+    "priority": 2,
+    "severity": "HIGH",
+    "dependencies": [],
+    "relevantFiles": [
+      "scripts\\write_layout.js"
+    ],
+    "acceptanceCriteria": [
+      "No IMPORT error in scripts\\write_layout.js",
+      "Verification test passes cleanly"
+    ],
+    "risk": "LOW",
+    "state": "READY",
+    "attemptCount": 0,
+    "maxAttempts": 3,
+    "checkpointId": null,
+    "evidence": null,
+    "createdAt": "2026-10-29T06:20:53.334Z"
+  }
+]

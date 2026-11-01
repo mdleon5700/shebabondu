@@ -1,0 +1,140 @@
+
+  // Copy Candidate Data for Teletalk
+  const handleCopyCandidateData = (app: ApplicationRequest) => {
+    const formattedData = "[TELETALK AUTO-FILL DATA]\n" +
+      "Name: " + app.candidateName + "\n" +
+      "Phone: " + app.candidatePhone + "\n" +
+      "District: " + app.candidateDistrict + "\n" +
+      "Job: " + app.jobTitle + "\n" +
+      "Post: " + app.postName + "\n" +
+      "Government Fee: ?" + (app.governmentFee || 200) + "\n" +
+      "Tracking ID: " + app.id;
+    navigator.clipboard.writeText(formattedData);
+    setCopiedCandidateId(app.id);
+    setTimeout(() => setCopiedCandidateId(null), 2500);
+  };
+
+  // Approve Payment via API
+  const handleApprovePayment = async (appId: string) => {
+    try {
+      const res = await fetch("/api/applications/" + appId, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          status: "processing",
+          verificationType: "admin_verified",
+          notes: "?????/??? ??????? ???????? ?????? ????????? ??? ??????? ???????? ????? ??? ?????"
+        })
+      });
+      const data = await res.json();
+      if (data.success) {
+        setApplications(prev => prev.map(a => a.id === appId ? data.application : a));
+        loadAdminData();
+        alert("??????? ??????? ??????? ? ???????? ?????!");
+      } else {
+        alert(data.error || "?????? ?????");
+      }
+    } catch (err: any) {
+      alert(err.message);
+    }
+  };
+
+  // Complete Order & Upload PDF via API
+  const handleCompleteOrder = async (appId: string) => {
+    const pdfUrl = prompt("Applicant Copy PDF ???? ??? (??????):", "https://alljobs.teletalk.com.bd/applicant-copy/" + appId + ".pdf");
+    try {
+      const res = await fetch("/api/applications/" + appId, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          status: "completed",
+          verificationType: "officially_verified",
+          applicantCopyPdfUrl: pdfUrl || undefined,
+          notes: "????????? ?????? ????? ??????? ??? ??????????????? ??? ????? ??? ??????"
+        })
+      });
+      const data = await res.json();
+      if (data.success) {
+        setApplications(prev => prev.map(a => a.id === appId ? data.application : a));
+        loadAdminData();
+        alert("????? ??????? ??????? ????? ??? ????????? ??????????? ????? ???? ???????? ?????!");
+      } else {
+        alert(data.error || "?????? ?????");
+      }
+    } catch (err: any) {
+      alert(err.message);
+    }
+  };
+
+  // Publish New Job via API
+  const handlePublishJob = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setPublishStatus("????? ??? ?????...");
+    try {
+      const res = await fetch("/api/admin/jobs", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title: newTitle,
+          organization: newOrg,
+          category: newCategory,
+          grade: newGrade,
+          totalPosts: Number(newPosts),
+          salary: newSalary,
+          minEducation: newEducation,
+          deadline: newDeadline,
+          govtFee: Number(newGovtFee),
+          serviceFee: Number(newServiceFee),
+          districts: newDistricts
+        })
+      });
+      const data = await res.json();
+      if (data.success) {
+        setPublishStatus("???! ??????????? ???? ???????? ????? ?????" + (shareToFacebook ? " ??? ?????? ????" : "") + (shareToTelegram ? " ? ??????????" : "") + " ????? ??? ?????!");
+        setNewTitle("");
+        setNewOrg("");
+        loadAdminData();
+      } else {
+        alert(data.error || "????? ?????? ?????");
+        setPublishStatus(null);
+      }
+    } catch (err: any) {
+      alert(err.message);
+      setPublishStatus(null);
+    }
+  };
+
+  const handleApproveDraft = async (draftId: string) => {
+    try {
+      const res = await fetch("/api/admin/sources/drafts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "approve", draftId })
+      });
+      const data = await res.json();
+      if (data.success) {
+        alert("?????? ??????? ???? ?????????? ?????????? ?????!");
+        loadAdminData();
+      }
+    } catch (err: any) {
+      alert(err.message);
+    }
+  };
+
+  const handleRejectDraft = async (draftId: string) => {
+    if (!confirm("???? ?? ?? ?????? ??????????? ????? ???? ????")) return;
+    try {
+      const res = await fetch("/api/admin/sources/drafts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "reject", draftId })
+      });
+      const data = await res.json();
+      if (data.success) {
+        alert("???????? ????? ??? ??????");
+        loadAdminData();
+      }
+    } catch (err: any) {
+      alert(err.message);
+    }
+  };

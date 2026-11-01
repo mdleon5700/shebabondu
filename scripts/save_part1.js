@@ -1,0 +1,170 @@
+const fs = require('fs');
+const path = require('path');
+
+let part1 = `'use client';
+
+import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { 
+  ShieldCheck, 
+  Users, 
+  Clock, 
+  CheckCircle2, 
+  FileText, 
+  Upload, 
+  Send, 
+  Share2, 
+  CreditCard, 
+  Download, 
+  Plus, 
+  Copy, 
+  ExternalLink,
+  Sparkles,
+  Search,
+  Filter,
+  Check,
+  X,
+  Tag,
+  Globe,
+  Building,
+  Radio,
+  FileCheck,
+  AlertTriangle,
+  Lock,
+  Eye,
+  KeyRound,
+  RefreshCw,
+  Sliders,
+  History
+} from 'lucide-react';
+import CouponsRaffleManagement from '@/components/admin/CouponsRaffleManagement';
+import WebsiteBuilder from '@/components/admin/WebsiteBuilder';
+import { ApplicationRequest, JobCircular, JobSource, CircularDraft, CompanyProfile } from '@/lib/types';
+
+export default function AdminPage() {
+  const [isAdminAuthenticated, setIsAdminAuthenticated] = useState<boolean>(false);
+  const [adminPin, setAdminPin] = useState<string>('CHAKRISEBA_SECURE_ADMIN_2026');
+  const [authError, setAuthError] = useState<string | null>(null);
+  const [isLoggingIn, setIsLoggingIn] = useState<boolean>(false);
+
+  const [activeTab, setActiveTab] = useState<
+    'orders' | 'new-job' | 'builder' | 'candidates' | 'coupons-raffle' | 'sources' | 'companies' | 'audit'
+  >('orders');
+
+  const [applications, setApplications] = useState<ApplicationRequest[]>([]);
+  const [stats, setStats] = useState<any>({
+    totalCandidates: 0,
+    totalApplications: 0,
+    pendingPayment: 0,
+    processing: 0,
+    completed: 0,
+    totalRevenue: 0,
+    activeCoupons: 0,
+    activeRaffles: 0,
+    totalJobs: 0,
+    pendingDrafts: 0
+  });
+  const [candidates, setCandidates] = useState<any[]>([]);
+  const [sources, setSources] = useState<JobSource[]>([]);
+  const [drafts, setDrafts] = useState<CircularDraft[]>([]);
+  const [auditLogs, setAuditLogs] = useState<any[]>([]);
+  const [companies, setCompanies] = useState<CompanyProfile[]>([]);
+
+  const [orderStatusFilter, setOrderStatusFilter] = useState<string>('all');
+  const [orderSearchQuery, setOrderSearchQuery] = useState<string>('');
+  const [copiedCandidateId, setCopiedCandidateId] = useState<string | null>(null);
+
+  const [newTitle, setNewTitle] = useState('');
+  const [newOrg, setNewOrg] = useState('');
+  const [newCategory, setNewCategory] = useState<'govt' | 'bank' | 'teacher' | 'railway' | 'ngo'>('govt');
+  const [newGrade, setNewGrade] = useState('?? ?????');
+  const [newPosts, setNewPosts] = useState('120');
+  const [newSalary, setNewSalary] = useState('??,??? - ??,??? ????');
+  const [newEducation, setNewEducation] = useState('?????? (??????) ?? ????? ??????');
+  const [newDeadline, setNewDeadline] = useState('?? ??????? ????');
+  const [newGovtFee, setNewGovtFee] = useState('200');
+  const [newServiceFee, setNewServiceFee] = useState('80');
+  const [newDistricts, setNewDistricts] = useState('??? ????');
+  const [shareToFacebook, setShareToFacebook] = useState(true);
+  const [shareToTelegram, setShareToTelegram] = useState(true);
+  const [shareToLinkedIn, setShareToLinkedIn] = useState(false);
+  const [publishStatus, setPublishStatus] = useState<string | null>(null);
+
+  useEffect(() => {
+    checkAdminSession();
+  }, []);
+
+  const checkAdminSession = async () => {
+    try {
+      const res = await fetch('/api/auth/me');
+      const data = await res.json();
+      if (data.user && data.user.role === 'admin') {
+        setIsAdminAuthenticated(true);
+        loadAdminData();
+      }
+    } catch {
+      // not logged in
+    }
+  };
+
+  const handleAdminLogin = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    setIsLoggingIn(true);
+    setAuthError(null);
+    try {
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ role: 'admin', adminPin })
+      });
+      const data = await res.json();
+      if (data.success && data.user.role === 'admin') {
+        setIsAdminAuthenticated(true);
+        loadAdminData();
+      } else {
+        setAuthError(data.error || '??? ???????? ???!');
+      }
+    } catch (err: any) {
+      setAuthError(err.message);
+    } finally {
+      setIsLoggingIn(false);
+    }
+  };
+
+  const loadAdminData = async () => {
+    try {
+      const statsRes = await fetch('/api/admin/stats');
+      const statsData = await statsRes.json();
+      if (statsData.success) setStats(statsData.stats);
+
+      const appsRes = await fetch('/api/applications');
+      const appsData = await appsRes.json();
+      if (appsData.success && appsData.applications) setApplications(appsData.applications);
+
+      const candRes = await fetch('/api/admin/candidates');
+      const candData = await candRes.json();
+      if (candData.success) setCandidates(candData.candidates);
+
+      const sourcesRes = await fetch('/api/admin/sources');
+      const sourcesData = await sourcesRes.json();
+      if (sourcesData.success) setSources(sourcesData.sources);
+
+      const draftsRes = await fetch('/api/admin/sources/drafts');
+      const draftsData = await draftsRes.json();
+      if (draftsData.success) setDrafts(draftsData.drafts);
+
+      const auditRes = await fetch('/api/admin/audit-logs');
+      const auditData = await auditRes.json();
+      if (auditData.success) setAuditLogs(auditData.logs);
+
+      const compRes = await fetch('/api/admin/companies');
+      const compData = await compRes.json();
+      if (compData.success) setCompanies(compData.companies);
+    } catch (err) {
+      console.error('Failed to load admin data', err);
+    }
+  };
+`;
+
+fs.writeFileSync(path.join(__dirname, 'admin_part1.txt'), part1, 'utf8');
+console.log('Saved admin_part1.txt');

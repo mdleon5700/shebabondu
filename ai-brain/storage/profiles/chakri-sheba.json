@@ -1,0 +1,30 @@
+{
+  "projectId": "chakri-sheba",
+  "displayName": "Chakri Sheba Recruitment Portal",
+  "workspacePath": "C:\\Users\\Leon Rahman\\Documents\\chakri-sheba",
+  "framework": "Next.js",
+  "language": "TypeScript",
+  "mode": "MAINTENANCE",
+  "allowedFilesystemBoundary": "C:\\Users\\Leon Rahman\\Documents\\chakri-sheba",
+  "permissions": {
+    "canEditFiles": true,
+    "canRunBuild": true,
+    "canRunTests": true,
+    "canRunExternalCommands": false,
+    "canDeploy": false,
+    "requiresHumanApprovalForDestructive": true
+  },
+  "allowedCommands": [
+    "npm run build",
+    "npm run test",
+    "npm run lint",
+    "npm test",
+    "npx tsc --noEmit",
+    "node"
+  ],
+  "acceptanceCriteria": [],
+  "knownIssues": [],
+  "lastVerifiedRevision": null,
+  "createdAt": "2026-10-29T06:08:05.885Z",
+  "updatedAt": "2026-10-29T12:17:45.530Z"
+}

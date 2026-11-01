@@ -1,0 +1,2432 @@
+{
+  "candidates": {
+    "USR-01712345678": {
+      "id": "USR-01712345678",
+      "phone": "01712-345678",
+      "email": "tanvir.jobseeker@gmail.com",
+      "username": "tanvir2026",
+      "name": "মোঃ তানভীর হাসান",
+      "nameBn": "মোঃ তানভীর হাসান",
+      "fatherName": "মোঃ রফিকুল ইসলাম",
+      "motherName": "মোসাঃ রোকেয়া বেগম",
+      "dob": "1998-05-15",
+      "gender": "male",
+      "nid": "19982692015004512",
+      "district": "ঢাকা",
+      "address": "বাড়ি ১২, রোড ৪, সেক্টর ১০, উত্তরা, ঢাকা-১২৩০",
+      "permanentAddress": "গ্রাম: চরভদ্রাসন, ডাকঘর: চরভদ্রাসন, উপজেলা: চরভদ্রাসন, জেলা: ফরিদপুর",
+      "nationality": "Bangladeshi",
+      "maritalStatus": "single",
+      "photoUrl": "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=400&q=80",
+      "signatureUrl": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=400&q=80",
+      "education": [
+        {
+          "level": "SSC",
+          "degree": "এসএসসি (বিজ্ঞান)",
+          "boardOrUni": "ঢাকা",
+          "roll": "451289",
+          "reg": "1214896320",
+          "year": "2014",
+          "result": "5.00"
+        },
+        {
+          "level": "HSC",
+          "degree": "এইচএসসি (বিজ্ঞান)",
+          "boardOrUni": "ঢাকা",
+          "roll": "189421",
+          "reg": "1214896320",
+          "year": "2016",
+          "result": "4.83"
+        },
+        {
+          "level": "Honours",
+          "degree": "বিএসসি (সম্মান) ইন সিএসই",
+          "boardOrUni": "ঢাকা বিশ্ববিদ্যালয়",
+          "roll": "160541",
+          "reg": "201648912",
+          "year": "2021",
+          "result": "3.68"
+        }
+      ],
+      "walletBalance": 450,
+      "passwordHash": "scrypt$8f243a18b5eb3335a6d2f93a9d0902e6$ef32de488ea1b93df4c486ef79398d93e044b22073a41b49537215fb971ab2f03e28f63d35b11c91d356fffa6ad03ffb4e5a6f26b4151748ba2534b5571574e0",
+      "role": "candidate",
+      "createdAt": "2026-10-29T05:51:00.631Z",
+      "updatedAt": "2026-10-29T05:51:00.632Z"
+    },
+    "CAND-TEST-01": {
+      "id": "CAND-TEST-01",
+      "name": "তানজিম আহমেদ",
+      "phone": "01700-000001",
+      "email": "test01@chakriseba.test",
+      "dob": "1998-05-15",
+      "district": "ঢাকা",
+      "gender": "male",
+      "quota": "general",
+      "education": [
+        {
+          "level": "স্নাতক (সম্মান)",
+          "degree": "বিএসসি ইন সিএসই",
+          "institution": "ঢাকা বিশ্ববিদ্যালয়",
+          "passingYear": "2021",
+          "result": "CGPA 3.65 (1st Class)"
+        },
+        {
+          "level": "HSC",
+          "degree": "বিজ্ঞান",
+          "institution": "ঢাকা কলেজ",
+          "passingYear": "2016",
+          "result": "GPA 5.00"
+        },
+        {
+          "level": "SSC",
+          "degree": "বিজ্ঞান",
+          "institution": "গভর্নমেন্ট ল্যাবরেটরি হাই স্কুল",
+          "passingYear": "2014",
+          "result": "GPA 5.00"
+        }
+      ],
+      "experienceYears": 3,
+      "skills": [
+        "কম্পিউটার পরিচালনা",
+        "বাংলা ও ইংরেজি টাইপিং"
+      ],
+      "status": "active",
+      "isSyntheticTest": true,
+      "createdAt": "2026-10-29T11:57:42.705Z"
+    },
+    "CAND-TEST-02": {
+      "id": "CAND-TEST-02",
+      "name": "শায়লা শারমিন",
+      "phone": "01700-000002",
+      "email": "test02@chakriseba.test",
+      "dob": "1999-02-20",
+      "district": "চট্টগ্রাম",
+      "gender": "female",
+      "quota": "general",
+      "education": [],
+      "experienceYears": 0,
+      "skills": [
+        "কম্পিউটার পরিচালনা",
+        "বাংলা ও ইংরেজি টাইপিং"
+      ],
+      "status": "active",
+      "isSyntheticTest": true,
+      "createdAt": "2026-10-29T11:57:42.720Z"
+    },
+    "CAND-TEST-03": {
+      "id": "CAND-TEST-03",
+      "name": "আরিফুল ইসলাম",
+      "phone": "01700-000003",
+      "email": "test03@chakriseba.test",
+      "dob": "1997-11-10",
+      "district": "রাজশাহী",
+      "gender": "male",
+      "quota": "general",
+      "education": [
+        {
+          "level": "স্নাতক (সম্মান)",
+          "degree": "বিবিএ",
+          "institution": "রাজশাহী বিশ্ববিদ্যালয়",
+          "passingYear": "2020",
+          "result": "CGPA 2.80 (2nd Class)"
+        },
+        {
+          "level": "HSC",
+          "degree": "ব্যবসায় শিক্ষা",
+          "institution": "রাজশাহী কলেজ",
+          "passingYear": "2015",
+          "result": "GPA 2.40 (3rd Division)"
+        },
+        {
+          "level": "SSC",
+          "degree": "ব্যবসায় শিক্ষা",
+          "institution": "রাজশাহী জিলা স্কুল",
+          "passingYear": "2013",
+          "result": "GPA 3.50 (2nd Division)"
+        }
+      ],
+      "experienceYears": 1,
+      "skills": [
+        "কম্পিউটার পরিচালনা",
+        "বাংলা ও ইংরেজি টাইপিং"
+      ],
+      "status": "active",
+      "isSyntheticTest": true,
+      "createdAt": "2026-10-29T11:57:42.720Z"
+    },
+    "CAND-TEST-04": {
+      "id": "CAND-TEST-04",
+      "name": "মাহমুদুর রহমান",
+      "phone": "01700-000004",
+      "email": "test04@chakriseba.test",
+      "dob": "1991-01-01",
+      "district": "খুলনা",
+      "gender": "male",
+      "quota": "general",
+      "education": [
+        {
+          "level": "স্নাতক (সম্মান)",
+          "degree": "অর্থনীতি",
+          "institution": "খুলনা বিশ্ববিদ্যালয়",
+          "passingYear": "2013",
+          "result": "CGPA 3.40 (1st Class)"
+        }
+      ],
+      "experienceYears": 5,
+      "skills": [
+        "কম্পিউটার পরিচালনা",
+        "বাংলা ও ইংরেজি টাইপিং"
+      ],
+      "status": "active",
+      "isSyntheticTest": true,
+      "createdAt": "2026-10-29T11:57:42.720Z"
+    },
+    "CAND-TEST-05": {
+      "id": "CAND-TEST-05",
+      "name": "ফারহানা হক",
+      "phone": "01700-000005",
+      "email": "test05@chakriseba.test",
+      "dob": "2010-06-01",
+      "district": "বরিশাল",
+      "gender": "female",
+      "quota": "general",
+      "education": [
+        {
+          "level": "SSC",
+          "degree": "বিজ্ঞান",
+          "institution": "বরিশাল সরকারি বালিকা উচ্চ বিদ্যালয়",
+          "passingYear": "2025",
+          "result": "GPA 5.00"
+        }
+      ],
+      "experienceYears": 0,
+      "skills": [
+        "কম্পিউটার পরিচালনা",
+        "বাংলা ও ইংরেজি টাইপিং"
+      ],
+      "status": "active",
+      "isSyntheticTest": true,
+      "createdAt": "2026-10-29T11:57:42.720Z"
+    },
+    "CAND-TEST-06": {
+      "id": "CAND-TEST-06",
+      "name": "নাজমুল হাসান",
+      "phone": "01700-000006",
+      "email": "test06@chakriseba.test",
+      "dob": "1996-03-22",
+      "district": "সিলেট",
+      "gender": "male",
+      "quota": "general",
+      "education": [
+        {
+          "level": "স্নাতক (সম্মান)",
+          "degree": "বিএসসি ইন সিএসই",
+          "institution": "শাহজালাল বিজ্ঞান ও প্রযুক্তি বিশ্ববিদ্যালয়",
+          "passingYear": "2019",
+          "result": "CGPA 3.50"
+        }
+      ],
+      "experienceYears": 2,
+      "skills": [
+        "কম্পিউটার পরিচালনা",
+        "বাংলা ও ইংরেজি টাইপিং"
+      ],
+      "status": "active",
+      "isSyntheticTest": true,
+      "createdAt": "2026-10-29T11:57:42.720Z"
+    },
+    "CAND-TEST-07": {
+      "id": "CAND-TEST-07",
+      "name": "তাসলিমা আক্তার",
+      "phone": "01700-000007",
+      "email": "test07@chakriseba.test",
+      "dob": "1998-09-14",
+      "district": "রংপুর",
+      "gender": "female",
+      "quota": "general",
+      "education": [
+        {
+          "level": "স্নাতক (সম্মান)",
+          "degree": "ইংরেজি",
+          "institution": "কারমাইকেল কলেজ",
+          "passingYear": "2021",
+          "result": "CGPA 3.20"
+        }
+      ],
+      "experienceYears": 0,
+      "skills": [
+        "কম্পিউটার পরিচালনা",
+        "বাংলা ও ইংরেজি টাইপিং"
+      ],
+      "status": "active",
+      "isSyntheticTest": true,
+      "createdAt": "2026-10-29T11:57:42.720Z"
+    },
+    "CAND-TEST-08": {
+      "id": "CAND-TEST-08",
+      "name": "রিফাত হোসেন",
+      "phone": "01700-000008",
+      "email": "test08@chakriseba.test",
+      "dob": "1997-04-18",
+      "district": "ময়মনসিংহ",
+      "gender": "male",
+      "quota": "general",
+      "education": [
+        {
+          "level": "স্নাতক (সম্মান)",
+          "degree": "ইতিহাস",
+          "institution": "আনন্দ মোহন কলেজ",
+          "passingYear": "2020",
+          "result": "CGPA 3.10"
+        }
+      ],
+      "experienceYears": 1,
+      "skills": [
+        "কম্পিউটার পরিচালনা",
+        "বাংলা ও ইংরেজি টাইপিং"
+      ],
+      "status": "active",
+      "isSyntheticTest": true,
+      "createdAt": "2026-10-29T11:57:42.720Z"
+    },
+    "CAND-TEST-09": {
+      "id": "CAND-TEST-09",
+      "name": "রুকসানা পারভীন",
+      "phone": "01700-000009",
+      "email": "test09@chakriseba.test",
+      "dob": "1999-07-25",
+      "district": "কুমিল্লা",
+      "gender": "female",
+      "quota": "general",
+      "education": [
+        {
+          "level": "স্নাতক (সম্মান)",
+          "degree": "সমাজবিজ্ঞান",
+          "institution": "কুমিল্লা ভিক্টোরিয়া কলেজ",
+          "passingYear": "2022",
+          "result": "CGPA 3.35"
+        }
+      ],
+      "experienceYears": 0,
+      "skills": [
+        "কম্পিউটার পরিচালনা",
+        "বাংলা ও ইংরেজি টাইপিং"
+      ],
+      "status": "active",
+      "isSyntheticTest": true,
+      "createdAt": "2026-10-29T11:57:42.720Z"
+    },
+    "CAND-TEST-10": {
+      "id": "CAND-TEST-10",
+      "name": "জাহিদুল ইসলাম",
+      "phone": "01700-000010",
+      "email": "test10@chakriseba.test",
+      "dob": "",
+      "district": "বগুড়া",
+      "gender": "male",
+      "quota": "general",
+      "education": [
+        {
+          "level": "স্নাতক (সম্মান)",
+          "degree": "গণিত",
+          "institution": "সরকারি আজিজুল হক কলেজ",
+          "passingYear": "2020",
+          "result": "CGPA 3.45"
+        }
+      ],
+      "experienceYears": 1,
+      "skills": [
+        "কম্পিউটার পরিচালনা",
+        "বাংলা ও ইংরেজি টাইপিং"
+      ],
+      "status": "active",
+      "isSyntheticTest": true,
+      "createdAt": "2026-10-29T11:57:42.720Z"
+    },
+    "CAND-TEST-11": {
+      "id": "CAND-TEST-11",
+      "name": "সাদিয়া সুলতানা",
+      "phone": "01700-000011",
+      "email": "test11@chakriseba.test",
+      "dob": "1994-11-15",
+      "district": "পাবনা",
+      "gender": "female",
+      "quota": "freedom_fighter",
+      "education": [
+        {
+          "level": "স্নাতক (সম্মান)",
+          "degree": "রসায়ন",
+          "institution": "পাবনা এডওয়ার্ড কলেজ",
+          "passingYear": "2017",
+          "result": "CGPA 3.55"
+        }
+      ],
+      "experienceYears": 2,
+      "skills": [
+        "কম্পিউটার পরিচালনা",
+        "বাংলা ও ইংরেজি টাইপিং"
+      ],
+      "status": "active",
+      "isSyntheticTest": true,
+      "createdAt": "2026-10-29T11:57:42.720Z"
+    },
+    "CAND-TEST-12": {
+      "id": "CAND-TEST-12",
+      "name": "মেহেদী হাসান",
+      "phone": "01700-000012",
+      "email": "test12@chakriseba.test",
+      "dob": "1998-01-05",
+      "district": "যশোর",
+      "gender": "male",
+      "quota": "general",
+      "education": [
+        {
+          "level": "স্নাতক (সম্মান)",
+          "degree": "পদার্থবিজ্ঞান",
+          "institution": "এম এম কলেজ যশোর",
+          "passingYear": "2021",
+          "result": "CGPA 3.30"
+        }
+      ],
+      "experienceYears": 0,
+      "skills": [
+        "কম্পিউটার পরিচালনা",
+        "বাংলা ও ইংরেজি টাইপিং"
+      ],
+      "status": "active",
+      "isSyntheticTest": true,
+      "createdAt": "2026-10-29T11:57:42.720Z"
+    },
+    "CAND-TEST-13": {
+      "id": "CAND-TEST-13",
+      "name": "সামিয়া জাহান",
+      "phone": "01700-000013",
+      "email": "test13@chakriseba.test",
+      "dob": "1999-10-12",
+      "district": "ফরিদপুর",
+      "gender": "female",
+      "quota": "general",
+      "education": [
+        {
+          "level": "স্নাতক (সম্মান)",
+          "degree": "উদ্ভিদবিজ্ঞান",
+          "institution": "রাজেন্দ্র কলেজ",
+          "passingYear": "2022",
+          "result": "CGPA 3.40"
+        }
+      ],
+      "experienceYears": 0,
+      "skills": [
+        "কম্পিউটার পরিচালনা",
+        "বাংলা ও ইংরেজি টাইপিং"
+      ],
+      "status": "active",
+      "isSyntheticTest": true,
+      "createdAt": "2026-10-29T11:57:42.720Z"
+    },
+    "CAND-TEST-14": {
+      "id": "CAND-TEST-14",
+      "name": "কামরুল ইসলাম",
+      "phone": "01700-000014",
+      "email": "test14@chakriseba.test",
+      "dob": "1997-08-30",
+      "district": "কুষ্টিয়া",
+      "gender": "male",
+      "quota": "general",
+      "education": [
+        {
+          "level": "স্নাতক (সম্মান)",
+          "degree": "পরিসংখ্যান",
+          "institution": "কুষ্টিয়া সরকারি কলেজ",
+          "passingYear": "2020",
+          "result": "CGPA 3.60"
+        }
+      ],
+      "experienceYears": 1,
+      "skills": [
+        "কম্পিউটার পরিচালনা",
+        "বাংলা ও ইংরেজি টাইপিং"
+      ],
+      "status": "active",
+      "isSyntheticTest": true,
+      "createdAt": "2026-10-29T11:57:42.720Z"
+    },
+    "CAND-TEST-15": {
+      "id": "CAND-TEST-15",
+      "name": "ফারজানা ইয়াসমিন",
+      "phone": "01700-000015",
+      "email": "test15@chakriseba.test",
+      "dob": "1998-12-05",
+      "district": "দিনাজপুর",
+      "gender": "female",
+      "quota": "general",
+      "education": [
+        {
+          "level": "স্নাতক (সম্মান)",
+          "degree": "প্রাণিবিজ্ঞান",
+          "institution": "দিনাজপুর সরকারি কলেজ",
+          "passingYear": "2021",
+          "result": "CGPA 3.42"
+        }
+      ],
+      "experienceYears": 0,
+      "skills": [
+        "কম্পিউটার পরিচালনা",
+        "বাংলা ও ইংরেজি টাইপিং"
+      ],
+      "status": "active",
+      "isSyntheticTest": true,
+      "createdAt": "2026-10-29T11:57:42.720Z"
+    },
+    "CAND-TEST-16": {
+      "id": "CAND-TEST-16",
+      "name": "তৌহিদুল ইসলাম",
+      "phone": "01700-000016",
+      "email": "test16@chakriseba.test",
+      "dob": "1996-05-19",
+      "district": "নোয়াখালী",
+      "gender": "male",
+      "quota": "general",
+      "education": [
+        {
+          "level": "স্নাতক (সম্মান)",
+          "degree": "রাষ্ট্রবিজ্ঞান",
+          "institution": "নোয়াখালী সরকারি কলেজ",
+          "passingYear": "2019",
+          "result": "CGPA 3.25"
+        }
+      ],
+      "experienceYears": 2,
+      "skills": [
+        "কম্পিউটার পরিচালনা",
+        "বাংলা ও ইংরেজি টাইপিং"
+      ],
+      "status": "active",
+      "isSyntheticTest": true,
+      "createdAt": "2026-10-29T11:57:42.720Z"
+    },
+    "CAND-TEST-17": {
+      "id": "CAND-TEST-17",
+      "name": "নুসরাত জাহান",
+      "phone": "01700-000017",
+      "email": "test17@chakriseba.test",
+      "dob": "1999-04-14",
+      "district": "টাঙ্গাইল",
+      "gender": "female",
+      "quota": "general",
+      "education": [
+        {
+          "level": "স্নাতক (সম্মান)",
+          "degree": "হিসাববিজ্ঞান",
+          "institution": "সাদত কলেজ",
+          "passingYear": "2022",
+          "result": "CGPA 3.50"
+        }
+      ],
+      "experienceYears": 0,
+      "skills": [
+        "কম্পিউটার পরিচালনা",
+        "বাংলা ও ইংরেজি টাইপিং"
+      ],
+      "status": "active",
+      "isSyntheticTest": true,
+      "createdAt": "2026-10-29T11:57:42.720Z"
+    },
+    "CAND-TEST-18": {
+      "id": "CAND-TEST-18",
+      "name": "শাহরিয়ার কবির",
+      "phone": "01700-000018",
+      "email": "test18@chakriseba.test",
+      "dob": "1997-03-08",
+      "district": "গাজীপুর",
+      "gender": "male",
+      "quota": "general",
+      "education": [
+        {
+          "level": "স্নাতক (সম্মান)",
+          "degree": "কম্পিউটার সায়েন্স",
+          "institution": "ডুয়েট",
+          "passingYear": "2020",
+          "result": "CGPA 3.75"
+        }
+      ],
+      "experienceYears": 2,
+      "skills": [
+        "কম্পিউটার পরিচালনা",
+        "বাংলা ও ইংরেজি টাইপিং"
+      ],
+      "status": "active",
+      "isSyntheticTest": true,
+      "createdAt": "2026-10-29T11:57:42.720Z"
+    },
+    "CAND-TEST-19": {
+      "id": "CAND-TEST-19",
+      "name": "আয়েশা সিদ্দিকী",
+      "phone": "01700-000019",
+      "email": "test19@chakriseba.test",
+      "dob": "1998-07-22",
+      "district": "নারায়ণগঞ্জ",
+      "gender": "female",
+      "quota": "general",
+      "education": [
+        {
+          "level": "স্নাতক (সম্মান)",
+          "degree": "আন্তর্জাতিক সম্পর্ক",
+          "institution": "জাহাঙ্গীরনগর বিশ্ববিদ্যালয়",
+          "passingYear": "2021",
+          "result": "CGPA 3.62"
+        }
+      ],
+      "experienceYears": 1,
+      "skills": [
+        "কম্পিউটার পরিচালনা",
+        "বাংলা ও ইংরেজি টাইপিং"
+      ],
+      "status": "active",
+      "isSyntheticTest": true,
+      "createdAt": "2026-10-29T11:57:42.721Z"
+    },
+    "CAND-TEST-20": {
+      "id": "CAND-TEST-20",
+      "name": "এনামুল হক",
+      "phone": "01700-000020",
+      "email": "test20@chakriseba.test",
+      "dob": "1997-12-25",
+      "district": "ঢাকা",
+      "gender": "male",
+      "quota": "general",
+      "education": [
+        {
+          "level": "স্নাতক (সম্মান)",
+          "degree": "এমবিবিএস",
+          "institution": "ঢাকা মেডিকেল কলেজ",
+          "passingYear": "2021",
+          "result": "Passed (1st Class)"
+        }
+      ],
+      "experienceYears": 2,
+      "skills": [
+        "কম্পিউটার পরিচালনা",
+        "বাংলা ও ইংরেজি টাইপিং"
+      ],
+      "status": "active",
+      "isSyntheticTest": true,
+      "createdAt": "2026-10-29T11:57:42.721Z"
+    }
+  },
+  "documents": {
+    "USR-01712345678": [],
+    "CAND-TEST-01": [
+      {
+        "id": "DOC-01-CV",
+        "title": "Curriculum Vitae",
+        "type": "pdf",
+        "fileName": "cv.pdf",
+        "isVerified": true
+      },
+      {
+        "id": "DOC-01-NID",
+        "title": "জাতীয় পরিচয়পত্র",
+        "type": "jpg",
+        "fileName": "nid.jpg",
+        "isVerified": true
+      },
+      {
+        "id": "DOC-01-CERT",
+        "title": "স্নাতক সনদ",
+        "type": "pdf",
+        "fileName": "bsc_cert.pdf",
+        "isVerified": true
+      }
+    ],
+    "CAND-TEST-02": [
+      {
+        "id": "DOC-02-NID",
+        "title": "জাতীয় পরিচয়পত্র",
+        "type": "jpg",
+        "fileName": "nid.jpg",
+        "isVerified": true
+      }
+    ],
+    "CAND-TEST-03": [
+      {
+        "id": "DOC-03-CV",
+        "title": "CV",
+        "type": "pdf",
+        "fileName": "cv.pdf",
+        "isVerified": true
+      }
+    ],
+    "CAND-TEST-04": [
+      {
+        "id": "DOC-04-CV",
+        "title": "CV",
+        "type": "pdf",
+        "fileName": "cv.pdf",
+        "isVerified": true
+      }
+    ],
+    "CAND-TEST-05": [],
+    "CAND-TEST-06": [
+      {
+        "id": "DOC-06-CV",
+        "title": "CV",
+        "type": "pdf",
+        "fileName": "cv.pdf",
+        "isVerified": true
+      }
+    ],
+    "CAND-TEST-07": [],
+    "CAND-TEST-08": [
+      {
+        "id": "DOC-08-PHOTO",
+        "title": "ছবি",
+        "type": "jpg",
+        "fileName": "photo.jpg",
+        "isVerified": true
+      }
+    ],
+    "CAND-TEST-09": [
+      {
+        "id": "DOC-09-CV",
+        "title": "CV",
+        "type": "pdf",
+        "fileName": "cv.pdf",
+        "isVerified": false
+      }
+    ],
+    "CAND-TEST-10": [
+      {
+        "id": "DOC-10-CV",
+        "title": "CV",
+        "type": "pdf",
+        "fileName": "cv.pdf",
+        "isVerified": true
+      }
+    ],
+    "CAND-TEST-11": [
+      {
+        "id": "DOC-11-QUOTA",
+        "title": "মুক্তিযোদ্ধা সনদ",
+        "type": "pdf",
+        "fileName": "ff_cert.pdf",
+        "isVerified": true
+      },
+      {
+        "id": "DOC-11-CV",
+        "title": "CV",
+        "type": "pdf",
+        "fileName": "cv.pdf",
+        "isVerified": true
+      }
+    ],
+    "CAND-TEST-12": [
+      {
+        "id": "DOC-12-CV",
+        "title": "CV",
+        "type": "pdf",
+        "fileName": "cv.pdf",
+        "isVerified": true
+      }
+    ],
+    "CAND-TEST-13": [
+      {
+        "id": "DOC-13-CV",
+        "title": "CV",
+        "type": "pdf",
+        "fileName": "cv.pdf",
+        "isVerified": true
+      }
+    ],
+    "CAND-TEST-14": [
+      {
+        "id": "DOC-14-CV",
+        "title": "CV",
+        "type": "pdf",
+        "fileName": "cv.pdf",
+        "isVerified": true
+      }
+    ],
+    "CAND-TEST-15": [
+      {
+        "id": "DOC-15-CV",
+        "title": "CV",
+        "type": "pdf",
+        "fileName": "cv.pdf",
+        "isVerified": true
+      }
+    ],
+    "CAND-TEST-16": [
+      {
+        "id": "DOC-16-CV",
+        "title": "CV",
+        "type": "pdf",
+        "fileName": "cv.pdf",
+        "isVerified": true
+      }
+    ],
+    "CAND-TEST-17": [
+      {
+        "id": "DOC-17-NEW",
+        "title": "হালনাগাদ সিভি",
+        "type": "pdf",
+        "fileName": "new_cv.pdf",
+        "isVerified": true
+      }
+    ],
+    "CAND-TEST-18": [
+      {
+        "id": "DOC-18-CV",
+        "title": "CV",
+        "type": "pdf",
+        "fileName": "cv.pdf",
+        "isVerified": true
+      }
+    ],
+    "CAND-TEST-19": [
+      {
+        "id": "DOC-19-CV",
+        "title": "CV",
+        "type": "pdf",
+        "fileName": "cv.pdf",
+        "isVerified": true
+      }
+    ],
+    "CAND-TEST-20": [
+      {
+        "id": "DOC-20-MBBS",
+        "title": "এমবিবিএস সনদপত্র",
+        "type": "pdf",
+        "fileName": "mbbs.pdf",
+        "isVerified": true
+      },
+      {
+        "id": "DOC-20-BMDC",
+        "title": "বিএমডিসি নিবন্ধন",
+        "type": "pdf",
+        "fileName": "bmdc.pdf",
+        "isVerified": true
+      },
+      {
+        "id": "DOC-20-CV",
+        "title": "CV",
+        "type": "pdf",
+        "fileName": "cv.pdf",
+        "isVerified": true
+      }
+    ]
+  },
+  "applications": {
+    "USR-01712345678": [
+      {
+        "id": "APP-2026-001",
+        "jobId": "bb-ad-2026",
+        "jobTitle": "বাংলাদেশ ব্যাংক সহকারী পরিচালক (জেনারেল)",
+        "organization": "বাংলাদেশ ব্যাংক",
+        "postName": "সহকারী পরিচালক (৯ম গ্রেড)",
+        "candidateName": "মোঃ তানভীর হাসান",
+        "candidatePhone": "01712-345678",
+        "candidateDistrict": "ঢাকা",
+        "date": "২৬ অক্টোবর ২০২৬",
+        "totalAmount": 280,
+        "paymentMethod": "bKash",
+        "trxId": "BKL89921471",
+        "status": "completed",
+        "teleTalkTrackingId": "BBAD-9981241",
+        "applicantCopyPdfUrl": "https://alljobs.teletalk.com.bd/slips/APP-2026-001.pdf",
+        "verificationType": "officially_verified",
+        "governmentFee": 200,
+        "serviceCharge": 80,
+        "couponDiscount": 0,
+        "notes": "আবেদন সফলভাবে সম্পন্ন এবং অ্যাপ্লিক্যান্ট কপি সংযুক্ত।"
+      },
+      {
+        "id": "APP-2026-002",
+        "jobId": "sonali-senior-officer-2026",
+        "jobTitle": "সোনালী ব্যাংক সিনিয়র অফিসার নিয়োগ ২০২৬",
+        "organization": "সোনালী ব্যাংক পিএলসি",
+        "postName": "সিনিয়র অফিসার (সাধারণ)",
+        "candidateName": "মোঃ তানভীর হাসান",
+        "candidatePhone": "01712-345678",
+        "candidateDistrict": "ঢাকা",
+        "date": "২৭ অক্টোবর ২০২৬",
+        "totalAmount": 280,
+        "paymentMethod": "bKash",
+        "trxId": "BKL77123992",
+        "status": "processing",
+        "verificationType": "admin_verified",
+        "governmentFee": 200,
+        "serviceCharge": 80,
+        "couponDiscount": 0,
+        "notes": "পেমেন্ট অনুমোদিত। টিম মেম্বার টেলিটকে ফরম পূরণ করছে।"
+      },
+      {
+        "id": "APP-2026-003",
+        "jobId": "bpsc-47-bcs",
+        "jobTitle": "৪৭তম বিসিএস পরীক্ষা ২০২৬ নিয়োগ বিজ্ঞপ্তি",
+        "organization": "বাংলাদেশ সরকারি কর্ম কমিশন (BPSC)",
+        "postName": "বিসিএস (প্রশাসন / পুলিশ / সাধারণ ক্যাডার)",
+        "candidateName": "মোসাঃ সাদিয়া আফরিন",
+        "candidatePhone": "01811-999888",
+        "candidateDistrict": "চট্টগ্রাম",
+        "date": "২৮ অক্টোবর ২০২৬",
+        "totalAmount": 780,
+        "paymentMethod": "bKash",
+        "trxId": "BKL99321455",
+        "status": "pending_payment",
+        "verificationType": "user_reported",
+        "governmentFee": 700,
+        "serviceCharge": 80,
+        "couponDiscount": 0,
+        "notes": "পেমেন্ট ট্রানজেকশন যাচাইয়ের অপেক্ষায় রয়েছে।"
+      }
+    ],
+    "CAND-TEST-01": [
+      {
+        "id": "APP-TEST-01",
+        "jobId": "job-teletalk-20261027-bscs-348",
+        "jobTitle": "সমন্বিত ৯ ব্যাংক ও ২ আর্থিক প্রতিষ্ঠান সিনিয়র অফিসার (সাধারণ) নিয়োগ ২০২৬",
+        "postName": "সিনিয়র অফিসার (সাধারণ)",
+        "status": "pending_payment",
+        "date": "২৯/১০/২০২৬",
+        "candidateName": "তানজিম আহমেদ",
+        "candidatePhone": "01700-000001",
+        "statusHistory": [
+          {
+            "status": "pending_payment",
+            "date": "2026-10-29T11:57:42.720Z",
+            "notes": "আবেদনপত্র সিস্টেমে গৃহীত হয়েছে।"
+          }
+        ]
+      }
+    ],
+    "CAND-TEST-02": [],
+    "CAND-TEST-03": [],
+    "CAND-TEST-04": [],
+    "CAND-TEST-05": [],
+    "CAND-TEST-06": [
+      {
+        "id": "APP-TEST-06",
+        "jobId": "job-teletalk-20261027-bscs-348",
+        "jobTitle": "সমন্বিত ৯ ব্যাংক ও ২ আর্থিক প্রতিষ্ঠান সিনিয়র অফিসার (সাধারণ) নিয়োগ ২০২৬",
+        "postName": "সিনিয়র অফিসার (সাধারণ)",
+        "status": "pending_payment",
+        "needsAdminReview": true,
+        "date": "২৯/১০/২০২৬",
+        "candidateName": "নাজমুল হাসান",
+        "candidatePhone": "01700-000006",
+        "statusHistory": [
+          {
+            "status": "pending_payment",
+            "date": "2026-10-29T11:57:42.720Z",
+            "notes": "কাগজপত্র/অভিজ্ঞতা ম্যানুয়াল পর্যালোচনার জন্য চিহ্নিত।"
+          }
+        ]
+      }
+    ],
+    "CAND-TEST-07": [
+      {
+        "id": "APP-TEST-07",
+        "jobId": "job-teletalk-20261027-bscs-348",
+        "jobTitle": "সমন্বিত ৯ ব্যাংক ও ২ আর্থিক প্রতিষ্ঠান সিনিয়র অফিসার (সাধারণ) নিয়োগ ২০২৬",
+        "postName": "সিনিয়র অফিসার (সাধারণ)",
+        "status": "pending_payment",
+        "date": "২৯/১০/২০২৬",
+        "candidateName": "তাসলিমা আক্তার",
+        "candidatePhone": "01700-000007",
+        "statusHistory": [
+          {
+            "status": "pending_payment",
+            "date": "2026-10-29T06:58:12.505Z",
+            "notes": "আবেদনপত্র সিস্টেমে গৃহীত হয়েছে।"
+          }
+        ]
+      }
+    ],
+    "CAND-TEST-08": [
+      {
+        "id": "APP-TEST-08",
+        "jobId": "job-teletalk-20261027-bscs-348",
+        "jobTitle": "সমন্বিত ৯ ব্যাংক ও ২ আর্থিক প্রতিষ্ঠান সিনিয়র অফিসার (সাধারণ) নিয়োগ ২০২৬",
+        "postName": "সিনিয়র অফিসার (সাধারণ)",
+        "status": "pending_payment",
+        "date": "২৯/১০/২০২৬",
+        "candidateName": "রিফাত হোসেন",
+        "candidatePhone": "01700-000008",
+        "statusHistory": [
+          {
+            "status": "pending_payment",
+            "date": "2026-10-29T06:58:12.505Z",
+            "notes": "আবেদনপত্র সিস্টেমে গৃহীত হয়েছে।"
+          }
+        ]
+      }
+    ],
+    "CAND-TEST-09": [
+      {
+        "id": "APP-TEST-09",
+        "jobId": "job-teletalk-20261027-bscs-348",
+        "jobTitle": "সমন্বিত ৯ ব্যাংক ও ২ আর্থিক প্রতিষ্ঠান সিনিয়র অফিসার (সাধারণ) নিয়োগ ২০২৬",
+        "postName": "সিনিয়র অফিসার (সাধারণ)",
+        "status": "pending_payment",
+        "needsAdminReview": true,
+        "date": "২৯/১০/২০২৬",
+        "candidateName": "রুকসানা পারভীন",
+        "candidatePhone": "01700-000009",
+        "statusHistory": [
+          {
+            "status": "pending_payment",
+            "date": "2026-10-29T11:57:42.720Z",
+            "notes": "কাগজপত্র/অভিজ্ঞতা ম্যানুয়াল পর্যালোচনার জন্য চিহ্নিত।"
+          }
+        ]
+      }
+    ],
+    "CAND-TEST-10": [],
+    "CAND-TEST-11": [
+      {
+        "id": "APP-TEST-11",
+        "jobId": "job-teletalk-20261027-bscs-348",
+        "jobTitle": "সমন্বিত ৯ ব্যাংক ও ২ আর্থিক প্রতিষ্ঠান সিনিয়র অফিসার (সাধারণ) নিয়োগ ২০২৬",
+        "postName": "সিনিয়র অফিসার (সাধারণ)",
+        "status": "pending_payment",
+        "date": "২৯/১০/২০২৬",
+        "candidateName": "সাদিয়া সুলতানা",
+        "candidatePhone": "01700-000011",
+        "statusHistory": [
+          {
+            "status": "pending_payment",
+            "date": "2026-10-29T11:57:42.720Z",
+            "notes": "আবেদনপত্র সিস্টেমে গৃহীত হয়েছে।"
+          }
+        ]
+      }
+    ],
+    "CAND-TEST-12": [
+      {
+        "id": "APP-TEST-12",
+        "jobId": "job-teletalk-20261027-bscs-348",
+        "jobTitle": "সমন্বিত ৯ ব্যাংক ও ২ আর্থিক প্রতিষ্ঠান সিনিয়র অফিসার (সাধারণ) নিয়োগ ২০২৬",
+        "postName": "সিনিয়র অফিসার (সাধারণ)",
+        "status": "pending_payment",
+        "date": "২৯/১০/২০২৬",
+        "candidateName": "মেহেদী হাসান",
+        "candidatePhone": "01700-000012",
+        "statusHistory": [
+          {
+            "status": "pending_payment",
+            "date": "2026-10-29T11:57:42.720Z",
+            "notes": "আবেদনপত্র সিস্টেমে গৃহীত হয়েছে।"
+          }
+        ]
+      }
+    ],
+    "CAND-TEST-13": [
+      {
+        "id": "APP-TEST-13",
+        "jobId": "job-teletalk-20261027-bscs-348",
+        "jobTitle": "সমন্বিত ৯ ব্যাংক ও ২ আর্থিক প্রতিষ্ঠান সিনিয়র অফিসার (সাধারণ) নিয়োগ ২০২৬",
+        "postName": "সিনিয়র অফিসার (সাধারণ)",
+        "status": "pending_payment",
+        "date": "২৯/১০/২০২৬",
+        "candidateName": "সামিয়া জাহান",
+        "candidatePhone": "01700-000013",
+        "statusHistory": [
+          {
+            "status": "pending_payment",
+            "date": "2026-10-29T11:57:42.720Z",
+            "notes": "আবেদনপত্র সিস্টেমে গৃহীত হয়েছে।"
+          }
+        ]
+      }
+    ],
+    "CAND-TEST-14": [
+      {
+        "id": "APP-TEST-14-1",
+        "jobId": "job-teletalk-20261027-bscs-348",
+        "jobTitle": "সমন্বিত ৯ ব্যাংক ও ২ আর্থিক প্রতিষ্ঠান সিনিয়র অফিসার (সাধারণ) নিয়োগ ২০২৬",
+        "postName": "সিনিয়র অফিসার (সাধারণ)",
+        "status": "pending_payment",
+        "date": "২৯/১০/২০২৬",
+        "candidateName": "কামরুল ইসলাম",
+        "candidatePhone": "01700-000014"
+      }
+    ],
+    "CAND-TEST-15": [],
+    "CAND-TEST-16": [
+      {
+        "id": "APP-TEST-16",
+        "jobId": "job-teletalk-20261027-bscs-348",
+        "jobTitle": "সমন্বিত ৯ ব্যাংক ও ২ আর্থিক প্রতিষ্ঠান সিনিয়র অফিসার (সাধারণ) নিয়োগ ২০২৬",
+        "postName": "সিনিয়র অফিসার (সাধারণ)",
+        "status": "completed",
+        "date": "২৯/১০/২০২৬",
+        "candidateName": "তৌহিদুল ইসলাম",
+        "candidatePhone": "01700-000016",
+        "statusHistory": [
+          {
+            "status": "pending_payment",
+            "date": "2026-10-29T11:57:42.720Z",
+            "notes": "আবেদনপত্র সিস্টেমে গৃহীত হয়েছে।"
+          },
+          {
+            "status": "completed",
+            "date": "2026-10-29T11:57:42.720Z",
+            "notes": "অ্যাডমিন কর্তৃক আবেদনপত্র ও সকল কাগজপত্র যাচাই সম্পন্ন হয়েছে। প্রবেশপত্র প্রস্তুত।"
+          }
+        ],
+        "verificationType": "admin_verified"
+      }
+    ],
+    "CAND-TEST-17": [
+      {
+        "id": "APP-TEST-17",
+        "jobId": "job-teletalk-20261027-bscs-348",
+        "jobTitle": "সমন্বিত ৯ ব্যাংক ও ২ আর্থিক প্রতিষ্ঠান সিনিয়র অফিসার (সাধারণ) নিয়োগ ২০২৬",
+        "postName": "সিনিয়র অফিসার (সাধারণ)",
+        "status": "pending_payment",
+        "date": "২৯/১০/২০২৬",
+        "candidateName": "নুসরাত জাহান",
+        "candidatePhone": "01700-000017",
+        "statusHistory": [
+          {
+            "status": "pending_payment",
+            "date": "2026-10-29T11:57:42.720Z",
+            "notes": "আবেদনপত্র সিস্টেমে গৃহীত হয়েছে।"
+          }
+        ]
+      }
+    ],
+    "CAND-TEST-18": [
+      {
+        "id": "APP-TEST-18",
+        "jobId": "job-teletalk-20261027-bscs-348",
+        "jobTitle": "সমন্বিত ৯ ব্যাংক ও ২ আর্থিক প্রতিষ্ঠান সিনিয়র অফিসার (সাধারণ) নিয়োগ ২০২৬",
+        "postName": "সিনিয়র অফিসার (সাধারণ)",
+        "status": "pending_payment",
+        "date": "২৯/১০/২০২৬",
+        "candidateName": "শাহরিয়ার কবির",
+        "candidatePhone": "01700-000018",
+        "statusHistory": [
+          {
+            "status": "pending_payment",
+            "date": "2026-10-29T11:57:42.721Z",
+            "notes": "আবেদনপত্র সিস্টেমে গৃহীত হয়েছে।"
+          }
+        ]
+      }
+    ],
+    "CAND-TEST-19": [
+      {
+        "id": "APP-TEST-19",
+        "jobId": "job-teletalk-20261027-bscs-348",
+        "jobTitle": "সমন্বিত ৯ ব্যাংক ও ২ আর্থিক প্রতিষ্ঠান সিনিয়র অফিসার (সাধারণ) নিয়োগ ২০২৬",
+        "postName": "সিনিয়র অফিসার (সাধারণ)",
+        "status": "pending_payment",
+        "date": "২৯/১০/২০২৬",
+        "candidateName": "আয়েশা সিদ্দিকী",
+        "candidatePhone": "01700-000019",
+        "statusHistory": [
+          {
+            "status": "pending_payment",
+            "date": "2026-10-29T11:57:42.721Z",
+            "notes": "আবেদনপত্র সিস্টেমে গৃহীত হয়েছে।"
+          }
+        ]
+      }
+    ],
+    "CAND-TEST-20": [
+      {
+        "id": "APP-TEST-20",
+        "jobId": "job-teletalk-bpsc-bcs-51-2026",
+        "jobTitle": "৫১তম বিসিএস (বিশেষ) পরীক্ষা ২০২৬ নিয়োগ বিজ্ঞপ্তি",
+        "postName": "সহকারী সার্জন",
+        "status": "completed",
+        "date": "২৯/১০/২০২৬",
+        "candidateName": "এনামুল হক",
+        "candidatePhone": "01700-000020",
+        "statusHistory": [
+          {
+            "status": "pending_payment",
+            "date": "2026-10-29T11:57:42.721Z",
+            "notes": "আবেদনপত্র সিস্টেমে গৃহীত হয়েছে।"
+          },
+          {
+            "status": "completed",
+            "date": "2026-10-29T11:57:42.721Z",
+            "notes": "অ্যাডমিন কর্তৃক আবেদনপত্র ও সকল কাগজপত্র যাচাই সম্পন্ন হয়েছে। প্রবেশপত্র প্রস্তুত।"
+          }
+        ],
+        "verificationType": "officially_verified",
+        "notes": "Teletalk form filled and applicant copy PDF attached"
+      }
+    ]
+  },
+  "savedJobs": {
+    "USR-01712345678": [
+      "bb-ad-2026",
+      "sonali-senior-officer-2026"
+    ],
+    "CAND-TEST-01": [],
+    "CAND-TEST-02": [],
+    "CAND-TEST-03": [],
+    "CAND-TEST-04": [],
+    "CAND-TEST-05": [],
+    "CAND-TEST-06": [],
+    "CAND-TEST-07": [],
+    "CAND-TEST-08": [],
+    "CAND-TEST-09": [],
+    "CAND-TEST-10": [],
+    "CAND-TEST-11": [],
+    "CAND-TEST-12": [],
+    "CAND-TEST-13": [],
+    "CAND-TEST-14": [],
+    "CAND-TEST-15": [],
+    "CAND-TEST-16": [],
+    "CAND-TEST-17": [],
+    "CAND-TEST-18": [],
+    "CAND-TEST-19": [],
+    "CAND-TEST-20": []
+  },
+  "transactions": {
+    "USR-01712345678": []
+  },
+  "notifications": {
+    "USR-01712345678": []
+  },
+  "sessions": {
+    "26556aa2f16fbae95cab1c6c7d253c4c6514e1252106b41fa6f36ecc4f8927b5": {
+      "candidateId": "ADMIN-SUPER",
+      "role": "admin",
+      "expiresAt": "2026-11-05T06:04:23.066Z"
+    },
+    "816258d7a94a866e8bec8459da97f525a6cb6a90d82cfdae3fc226b04eef73f0": {
+      "candidateId": "ADMIN-SUPER",
+      "role": "admin",
+      "expiresAt": "2026-11-05T06:04:23.464Z"
+    },
+    "66b73a9e826142d43b90b55ac33b1640909bbc97727381b36acbbd83f374701e": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-05T06:07:36.452Z"
+    },
+    "e118ff669912315894c6efdf33318d95d71f406cf82c15ef3c6237e7494d173c": {
+      "candidateId": "ADMIN-SUPER",
+      "role": "admin",
+      "expiresAt": "2026-11-05T06:08:53.265Z"
+    },
+    "TEST-SESSION-CAND-TEST-01": {
+      "token": "TEST-SESSION-CAND-TEST-01",
+      "candidateId": "CAND-TEST-01",
+      "role": "candidate",
+      "createdAt": "2026-10-29T11:57:42.706Z",
+      "expiresAt": "2026-11-05T11:57:42.706Z"
+    },
+    "TEST-SESSION-CAND-TEST-02": {
+      "token": "TEST-SESSION-CAND-TEST-02",
+      "candidateId": "CAND-TEST-02",
+      "role": "candidate",
+      "createdAt": "2026-10-29T11:57:42.720Z",
+      "expiresAt": "2026-11-05T11:57:42.720Z"
+    },
+    "TEST-SESSION-CAND-TEST-03": {
+      "token": "TEST-SESSION-CAND-TEST-03",
+      "candidateId": "CAND-TEST-03",
+      "role": "candidate",
+      "createdAt": "2026-10-29T11:57:42.720Z",
+      "expiresAt": "2026-11-05T11:57:42.720Z"
+    },
+    "TEST-SESSION-CAND-TEST-04": {
+      "token": "TEST-SESSION-CAND-TEST-04",
+      "candidateId": "CAND-TEST-04",
+      "role": "candidate",
+      "createdAt": "2026-10-29T11:57:42.720Z",
+      "expiresAt": "2026-11-05T11:57:42.720Z"
+    },
+    "TEST-SESSION-CAND-TEST-05": {
+      "token": "TEST-SESSION-CAND-TEST-05",
+      "candidateId": "CAND-TEST-05",
+      "role": "candidate",
+      "createdAt": "2026-10-29T11:57:42.720Z",
+      "expiresAt": "2026-11-05T11:57:42.720Z"
+    },
+    "TEST-SESSION-CAND-TEST-06": {
+      "token": "TEST-SESSION-CAND-TEST-06",
+      "candidateId": "CAND-TEST-06",
+      "role": "candidate",
+      "createdAt": "2026-10-29T11:57:42.720Z",
+      "expiresAt": "2026-11-05T11:57:42.720Z"
+    },
+    "TEST-SESSION-CAND-TEST-07": {
+      "token": "TEST-SESSION-CAND-TEST-07",
+      "candidateId": "CAND-TEST-07",
+      "role": "candidate",
+      "createdAt": "2026-10-29T11:57:42.720Z",
+      "expiresAt": "2026-11-05T11:57:42.720Z"
+    },
+    "TEST-SESSION-CAND-TEST-08": {
+      "token": "TEST-SESSION-CAND-TEST-08",
+      "candidateId": "CAND-TEST-08",
+      "role": "candidate",
+      "createdAt": "2026-10-29T11:57:42.720Z",
+      "expiresAt": "2026-11-05T11:57:42.720Z"
+    },
+    "TEST-SESSION-CAND-TEST-09": {
+      "token": "TEST-SESSION-CAND-TEST-09",
+      "candidateId": "CAND-TEST-09",
+      "role": "candidate",
+      "createdAt": "2026-10-29T11:57:42.720Z",
+      "expiresAt": "2026-11-05T11:57:42.720Z"
+    },
+    "TEST-SESSION-CAND-TEST-10": {
+      "token": "TEST-SESSION-CAND-TEST-10",
+      "candidateId": "CAND-TEST-10",
+      "role": "candidate",
+      "createdAt": "2026-10-29T11:57:42.720Z",
+      "expiresAt": "2026-11-05T11:57:42.720Z"
+    },
+    "TEST-SESSION-CAND-TEST-11": {
+      "token": "TEST-SESSION-CAND-TEST-11",
+      "candidateId": "CAND-TEST-11",
+      "role": "candidate",
+      "createdAt": "2026-10-29T11:57:42.720Z",
+      "expiresAt": "2026-11-05T11:57:42.720Z"
+    },
+    "TEST-SESSION-CAND-TEST-12": {
+      "token": "TEST-SESSION-CAND-TEST-12",
+      "candidateId": "CAND-TEST-12",
+      "role": "candidate",
+      "createdAt": "2026-10-29T11:57:42.720Z",
+      "expiresAt": "2026-11-05T11:57:42.720Z"
+    },
+    "TEST-SESSION-CAND-TEST-13": {
+      "token": "TEST-SESSION-CAND-TEST-13",
+      "candidateId": "CAND-TEST-13",
+      "role": "candidate",
+      "createdAt": "2026-10-29T11:57:42.720Z",
+      "expiresAt": "2026-11-05T11:57:42.720Z"
+    },
+    "TEST-SESSION-CAND-TEST-14": {
+      "token": "TEST-SESSION-CAND-TEST-14",
+      "candidateId": "CAND-TEST-14",
+      "role": "candidate",
+      "createdAt": "2026-10-29T11:57:42.720Z",
+      "expiresAt": "2026-11-05T11:57:42.720Z"
+    },
+    "TEST-SESSION-CAND-TEST-15": {
+      "token": "TEST-SESSION-CAND-TEST-15",
+      "candidateId": "CAND-TEST-15",
+      "role": "candidate",
+      "createdAt": "2026-10-29T11:57:42.720Z",
+      "expiresAt": "2026-11-05T11:57:42.720Z"
+    },
+    "TEST-SESSION-CAND-TEST-16": {
+      "token": "TEST-SESSION-CAND-TEST-16",
+      "candidateId": "CAND-TEST-16",
+      "role": "candidate",
+      "createdAt": "2026-10-29T11:57:42.720Z",
+      "expiresAt": "2026-11-05T11:57:42.720Z"
+    },
+    "TEST-SESSION-CAND-TEST-17": {
+      "token": "TEST-SESSION-CAND-TEST-17",
+      "candidateId": "CAND-TEST-17",
+      "role": "candidate",
+      "createdAt": "2026-10-29T11:57:42.720Z",
+      "expiresAt": "2026-11-05T11:57:42.720Z"
+    },
+    "TEST-SESSION-CAND-TEST-18": {
+      "token": "TEST-SESSION-CAND-TEST-18",
+      "candidateId": "CAND-TEST-18",
+      "role": "candidate",
+      "createdAt": "2026-10-29T11:57:42.720Z",
+      "expiresAt": "2026-11-05T11:57:42.720Z"
+    },
+    "TEST-SESSION-CAND-TEST-19": {
+      "token": "TEST-SESSION-CAND-TEST-19",
+      "candidateId": "CAND-TEST-19",
+      "role": "candidate",
+      "createdAt": "2026-10-29T11:57:42.721Z",
+      "expiresAt": "2026-11-05T11:57:42.721Z"
+    },
+    "TEST-SESSION-CAND-TEST-20": {
+      "token": "TEST-SESSION-CAND-TEST-20",
+      "candidateId": "CAND-TEST-20",
+      "role": "candidate",
+      "createdAt": "2026-10-29T11:57:42.721Z",
+      "expiresAt": "2026-11-05T11:57:42.721Z"
+    },
+    "22dedcffe7692c0e053ca151a1470fb8ec3a8e63d74581d2c7d19e474b34d920": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-05T06:56:48.378Z"
+    },
+    "3f79cac6c3dc53fb0bf95433e1f2e1095f633c77362fc110a032f9200c7b56bb": {
+      "candidateId": "ADMIN-SUPER",
+      "role": "admin",
+      "expiresAt": "2026-11-05T06:56:48.395Z"
+    },
+    "c2fc31c63199e765491144e31682fa0b03db2d9fe97bf8994dfb214cafbb5787": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-05T11:58:39.457Z"
+    },
+    "395d9976d8c57ec458963c9684ebcac1e33dc40425c4ab3272664b0d064d3f14": {
+      "candidateId": "ADMIN-SUPER",
+      "role": "admin",
+      "expiresAt": "2026-11-05T11:58:39.479Z"
+    }
+  },
+  "coupons": {
+    "FIRST50": {
+      "id": "coupon-first50",
+      "code": "FIRST50",
+      "title": "৫০% সার্ভিস ছাড় (নতুন প্রার্থীর প্রথম আবেদন)",
+      "description": "প্রথম আবেদনে সার্ভিস চার্জে ৫০% ছাড়",
+      "discountType": "percentage",
+      "discountValue": 50,
+      "minServiceCharge": 50,
+      "maxDiscountCap": 40,
+      "startDate": "2026-10-28T05:51:00.632Z",
+      "expiryDate": "2026-11-28T05:51:00.632Z",
+      "status": "active",
+      "globalUsageLimit": 1000,
+      "usedCount": 12,
+      "perCandidateLimit": 1,
+      "allowCombineWithRaffle": true,
+      "createdAt": "2026-10-29T05:51:00.632Z",
+      "updatedAt": "2026-10-29T05:51:00.632Z"
+    }
+  },
+  "raffleCampaigns": {},
+  "couponRedemptions": {},
+  "raffleEntries": {},
+  "adminAuditLogs": [
+    {
+      "adminId": "ADMIN-SUPER",
+      "action": "page_publish",
+      "targetId": "_exam-guidelines-2026",
+      "targetType": "order",
+      "changes": {
+        "version": {
+          "old": 3,
+          "new": 4
+        }
+      },
+      "notes": "Page পরীক্ষা নির্দেশিকা সহায়িকা ২০২৬ (হালনাগাদ) published",
+      "id": "AUDIT-1793275119553-DVZCT",
+      "timestamp": "2026-10-29T11:58:39.553Z"
+    },
+    {
+      "adminId": "ADMIN-SUPER",
+      "action": "page_save",
+      "targetId": "_exam-guidelines-2026",
+      "targetType": "order",
+      "changes": {
+        "version": {
+          "old": 2,
+          "new": 3
+        }
+      },
+      "notes": "Page পরীক্ষা নির্দেশিকা সহায়িকা ২০২৬ saved as draft",
+      "id": "AUDIT-1793275119542-9A6XK",
+      "timestamp": "2026-10-29T11:58:39.542Z"
+    },
+    {
+      "adminId": "ADMIN-SUPER",
+      "action": "status_change",
+      "targetId": "APP-TEST-20",
+      "targetType": "order",
+      "changes": {
+        "status": {
+          "new": "completed"
+        }
+      },
+      "notes": "Teletalk form filled and applicant copy PDF attached",
+      "id": "AUDIT-1793275119524-U0YKY",
+      "timestamp": "2026-10-29T11:58:39.524Z"
+    },
+    {
+      "adminId": "ADMIN-SUPER",
+      "action": "status_change",
+      "targetId": "APP-TEST-20",
+      "targetType": "order",
+      "changes": {
+        "status": {
+          "new": "processing"
+        }
+      },
+      "notes": "TrxID verified by admin",
+      "id": "AUDIT-1793275119515-ZM0HW",
+      "timestamp": "2026-10-29T11:58:39.515Z"
+    },
+    {
+      "adminId": "ADMIN-SUPER",
+      "action": "source_approval",
+      "targetId": "draft-rupali-01",
+      "targetType": "order",
+      "changes": {
+        "draftId": {
+          "new": "draft-rupali-01"
+        },
+        "createdJobId": {
+          "new": "job-154664"
+        }
+      },
+      "notes": "Approved draft into live job: রূপালী ব্যাংক পিএলসি সিনিয়র অফিসার (আইটি) নিয়োগ",
+      "id": "AUDIT-1793274154666-13MET",
+      "timestamp": "2026-10-29T11:42:34.666Z"
+    },
+    {
+      "adminId": "ADMIN-SUPER",
+      "action": "source_approval",
+      "targetId": "draft-rupali-01",
+      "targetType": "order",
+      "changes": {
+        "draftId": {
+          "new": "draft-rupali-01"
+        },
+        "createdJobId": {
+          "new": "job-008500"
+        }
+      },
+      "notes": "Approved draft into live job: রূপালী ব্যাংক পিএলসি সিনিয়র অফিসার (আইটি) নিয়োগ",
+      "id": "AUDIT-1793257008502-PMTD5",
+      "timestamp": "2026-10-29T06:56:48.502Z"
+    },
+    {
+      "adminId": "ADMIN-SUPER",
+      "action": "page_publish",
+      "targetId": "_exam-guidelines-2026",
+      "targetType": "order",
+      "changes": {
+        "version": {
+          "old": 1,
+          "new": 2
+        }
+      },
+      "notes": "Page হালনাগাদ তথ্য ও সার্কুলার হালনাগাদ তথ্য ও সার্কুলার হালনাগাদ তথ্য ও সার্কুলার হালনাগাদ তথ্য ও সার্কুলার (হালনাগাদ তথ্য ও সার্কুলার) published",
+      "id": "AUDIT-1793257008469-8AY4Q",
+      "timestamp": "2026-10-29T06:56:48.469Z"
+    },
+    {
+      "adminId": "ADMIN-SUPER",
+      "action": "page_save",
+      "targetId": "_exam-guidelines-2026",
+      "targetType": "order",
+      "changes": {
+        "version": {
+          "new": 1
+        }
+      },
+      "notes": "Page হালনাগাদ তথ্য ও সার্কুলার হালনাগাদ তথ্য ও সার্কুলার হালনাগাদ তথ্য ও সার্কুলার হালনাগাদ তথ্য ও সার্কুলার saved as draft",
+      "id": "AUDIT-1793257008455-ML9DF",
+      "timestamp": "2026-10-29T06:56:48.455Z"
+    },
+    {
+      "adminId": "ADMIN-SUPER",
+      "action": "status_change",
+      "targetId": "APP-TEST-20",
+      "targetType": "order",
+      "changes": {
+        "status": {
+          "new": "completed"
+        }
+      },
+      "notes": "Teletalk form filled and applicant copy PDF attached",
+      "id": "AUDIT-1793257008435-5K407",
+      "timestamp": "2026-10-29T06:56:48.435Z"
+    },
+    {
+      "adminId": "ADMIN-SUPER",
+      "action": "status_change",
+      "targetId": "APP-TEST-20",
+      "targetType": "order",
+      "changes": {
+        "status": {
+          "new": "processing"
+        }
+      },
+      "notes": "TrxID verified by admin",
+      "id": "AUDIT-1793257008424-RJ3LI",
+      "timestamp": "2026-10-29T06:56:48.424Z"
+    },
+    {
+      "id": "AUDIT-1793256389544",
+      "action": "TELETALK_SYNC",
+      "actor": "ADMIN_AUTONOMOUS_SYNC_ENGINE",
+      "timestamp": "2026-10-29T06:46:29.544Z",
+      "details": "Synced 8 official circulars"
+    },
+    {
+      "id": "AUDIT-1793256329953",
+      "action": "TELETALK_SYNC",
+      "actor": "ADMIN_AUTONOMOUS_SYNC_ENGINE",
+      "timestamp": "2026-10-29T06:45:29.953Z",
+      "details": "Synced 8 official circulars (Created: 0, Updated: 1, Duplicates Merged: 8)"
+    },
+    {
+      "id": "AUDIT-1793256313602",
+      "action": "TELETALK_SYNC",
+      "actor": "ADMIN_AUTONOMOUS_SYNC_ENGINE",
+      "timestamp": "2026-10-29T06:45:13.602Z",
+      "details": "Synced 8 official circulars (Created: 0, Updated: 1, Duplicates Merged: 8)"
+    },
+    {
+      "id": "AUDIT-1793256307537",
+      "action": "TELETALK_SYNC",
+      "actor": "ADMIN_AUTONOMOUS_SYNC_ENGINE",
+      "timestamp": "2026-10-29T06:45:07.537Z",
+      "details": "Synced 8 official circulars (Created: 8, Updated: 0, Duplicates Merged: 0)"
+    },
+    {
+      "adminId": "ADMIN-SUPER",
+      "action": "source_approval",
+      "targetId": "draft-rupali-01",
+      "targetType": "order",
+      "changes": {
+        "draftId": {
+          "new": "draft-rupali-01"
+        },
+        "createdJobId": {
+          "new": "job-916345"
+        }
+      },
+      "notes": "Approved draft into live job: রূপালী ব্যাংক পিএলসি সিনিয়র অফিসার (আইটি) নিয়োগ",
+      "id": "AUDIT-1793254916347-K6M83",
+      "timestamp": "2026-10-29T06:21:56.347Z"
+    },
+    {
+      "adminId": "ADMIN-SUPER",
+      "action": "page_publish",
+      "targetId": "home",
+      "targetType": "order",
+      "changes": {
+        "version": {
+          "old": 1,
+          "new": 2
+        }
+      },
+      "notes": "Page হোমপেজ — চাকরি সেবা published",
+      "id": "AUDIT-1793253982472-LQYS5",
+      "timestamp": "2026-10-29T06:06:22.472Z"
+    },
+    {
+      "adminId": "ADMIN-SUPER",
+      "action": "source_approval",
+      "targetId": "draft-rupali-01",
+      "targetType": "order",
+      "changes": {
+        "draftId": {
+          "new": "draft-rupali-01"
+        },
+        "createdJobId": {
+          "new": "job-877477"
+        }
+      },
+      "notes": "Approved draft into live job: রূপালী ব্যাংক পিএলসি সিনিয়র অফিসার (আইটি) নিয়োগ",
+      "id": "AUDIT-1793253877494-RJNIG",
+      "timestamp": "2026-10-29T06:04:37.494Z"
+    },
+    {
+      "id": "AUDIT-INIT",
+      "adminId": "ADMIN-SUPER",
+      "action": "order_adjustment",
+      "targetId": "APP-2026-001",
+      "targetType": "order",
+      "changes": {
+        "status": {
+          "new": "completed"
+        }
+      },
+      "notes": "সিস্টেম ইনিশিয়ালাইজেশন ও ভেরিফাইড আবেদন রেকর্ড প্রস্তুত।",
+      "timestamp": "2026-10-29T05:51:00.633Z"
+    }
+  ],
+  "jobs": {
+    "job-877477": {
+      "id": "job-877477",
+      "title": "রূপালী ব্যাংক পিএলসি সিনিয়র অফিসার (আইটি) নিয়োগ",
+      "organization": "রূপালী ব্যাংক পিএলসি",
+      "logo": "https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=120&q=80",
+      "category": "bank",
+      "categoryLabel": "ব্যাংক জব",
+      "grade": "৯ম গ্রেড",
+      "totalPosts": 65,
+      "salary": "২২,০০০ - ৫৩,০৬০ টাকা",
+      "minEducation": "বিএসসি ইন সিএসই / আইটি",
+      "minAge": 21,
+      "maxAge": 32,
+      "districts": "সকল জেলা",
+      "deadline": "৩০ নভেম্বর ২০২৬",
+      "daysRemaining": 20,
+      "govtFee": 200,
+      "serviceFee": 80,
+      "officialLink": "https://alljobs.teletalk.com.bd/circular/rupali-bank-2026",
+      "circularImage": "https://images.unsplash.com/photo-1586281380349-632531db7ed4?auto=format&fit=crop&w=600&q=80",
+      "audioSummary": "রূপালী ব্যাংক পিএলসি সিনিয়র অফিসার (আইটি) নিয়োগ প্রকাশিত হয়েছে। আবেদনের শেষ তারিখ ৩০ নভেম্বর ২০২৬।",
+      "publishedDate": "২৯/১০/২০২৬",
+      "requirements": [
+        "বিএসসি ইন সিএসই / আইটি",
+        "বয়স: ২১-৩২ বছর"
+      ],
+      "refNo": "RUPALI-IT-2026-01",
+      "status": "OPEN",
+      "documentsRequired": [
+        "স্নাতক সনদ",
+        "এসএসসি ও এইচএসসি ট্রান্সক্রিপ্ট",
+        "জাতীয় পরিচয়পত্র",
+        "পাসপোর্ট সাইজ ছবি"
+      ]
+    },
+    "job-teletalk-20261027-bscs-348": {
+      "id": "job-teletalk-20261027-bscs-348",
+      "refNo": "20261027_bscs_348",
+      "title": "সমন্বিত ৯ ব্যাংক ও ২ আর্থিক প্রতিষ্ঠান সিনিয়র অফিসার (সাধারণ) নিয়োগ ২০২৬",
+      "organization": "ব্যাংকার্স সিলেকশন কমিটি সচিবালয় (বাংলাদেশ ব্যাংক)",
+      "category": "bank",
+      "categoryLabel": "ব্যাংক জব",
+      "grade": "৯ম গ্রেড",
+      "totalPosts": 874,
+      "salary": "২২,০০০ - ৫৩,০৬০ টাকা",
+      "minEducation": "যেকোনো বিষয়ে ৪ বছর মেয়াদি স্নাতক (সম্মান) বা স্নাতকোত্তর ডিগ্রি",
+      "minAge": 21,
+      "maxAge": 30,
+      "ageCutOffDate": "2026-11-01",
+      "districts": "সকল জেলা",
+      "deadline": "৩০ নভেম্বর ২০২৬",
+      "daysRemaining": 32,
+      "govtFee": 200,
+      "serviceFee": 80,
+      "officialLink": "https://erecruitment.bb.org.bd",
+      "publishedDate": "২৭/১০/২০২৬",
+      "status": "OPEN",
+      "requirements": [
+        "যেকোনো বিষয়ে ৪ বছর মেয়াদি স্নাতক (সম্মান) বা স্নাতকোত্তর ডিগ্রি",
+        "এসএসসি বা এইচএসসি পর্যায়ে কমপক্ষে ২টি প্রথম বিভাগ/শ্রেণি বা সমমানের সিজিপিএ",
+        "কোনো পর্যায়ে ৩য় বিভাগ/শ্রেণি গ্রহণযোগ্য নয়",
+        "বয়সসীমা: ২১ হতে ৩০ বছর (মুক্তিযোদ্ধা কোটায় ৩২ বছর)"
+      ],
+      "documentsRequired": [
+        "স্নাতক সনদ",
+        "এসএসসি ও এইচএসসি ট্রান্সক্রিপ্ট",
+        "নাগরিকত্ব সনদ",
+        "জাতীয় পরিচয়পত্র",
+        "পাসপোর্ট সাইজ ছবি"
+      ],
+      "logo": "https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=120&q=80",
+      "circularImage": "https://images.unsplash.com/photo-1586281380349-632531db7ed4?auto=format&fit=crop&w=600&q=80",
+      "audioSummary": "সমন্বিত ৯ ব্যাংক ও ২ আর্থিক প্রতিষ্ঠান সিনিয়র অফিসার (সাধারণ) নিয়োগ ২০২৬ প্রকাশিত হয়েছে। আবেদনের শেষ তারিখ ৩০ নভেম্বর ২০২৬।",
+      "createdAt": "2026-10-29T06:45:07.536Z",
+      "lastVerifiedAt": "2026-10-29T06:45:07.536Z",
+      "updatedAt": "2026-10-29T06:46:29.543Z"
+    },
+    "job-teletalk-20261026-bscs-347": {
+      "id": "job-teletalk-20261026-bscs-347",
+      "refNo": "20261026_bscs_347",
+      "title": "আনসার ভিডিপি উন্নয়ন ব্যাংক সিস্টেম ম্যানেজার (গ্রেড-৩) নিয়োগ",
+      "organization": "আনসার ভিডিপি উন্নয়ন ব্যাংক",
+      "category": "bank",
+      "categoryLabel": "ব্যাংক জব",
+      "grade": "৩য় গ্রেড",
+      "totalPosts": 2,
+      "salary": "৫৬,৫০০ - ৭৪,৪০০ টাকা",
+      "minEducation": "কম্পিউটার সায়েন্স / আইটি বিষয়ে স্নাতক",
+      "minAge": 25,
+      "maxAge": 40,
+      "ageCutOffDate": "2026-11-01",
+      "districts": "সকল জেলা",
+      "deadline": "০২ নভেম্বর ২০২৬",
+      "daysRemaining": 4,
+      "govtFee": 600,
+      "serviceFee": 100,
+      "officialLink": "https://erecruitment.bb.org.bd",
+      "publishedDate": "২৬/১০/২০২৬",
+      "status": "OPEN",
+      "requirements": [
+        "সিএসই বা আইটি বিষয়ে ন্যূনতম স্নাতক ডিগ্রি",
+        "সংশ্লিষ্ট ক্ষেত্রে ১২ বছরের বাস্তব অভিজ্ঞতা"
+      ],
+      "documentsRequired": [
+        "অভিজ্ঞতা সনদ",
+        "স্নাতক সনদ",
+        "জাতীয় পরিচয়পত্র",
+        "ছবি"
+      ],
+      "logo": "https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=120&q=80",
+      "circularImage": "https://images.unsplash.com/photo-1586281380349-632531db7ed4?auto=format&fit=crop&w=600&q=80",
+      "audioSummary": "আনসার ভিডিপি উন্নয়ন ব্যাংক সিস্টেম ম্যানেজার (গ্রেড-৩) নিয়োগ প্রকাশিত হয়েছে। আবেদনের শেষ তারিখ ০২ নভেম্বর ২০২৬।",
+      "createdAt": "2026-10-29T06:45:07.536Z",
+      "lastVerifiedAt": "2026-10-29T06:45:07.536Z",
+      "updatedAt": "2026-10-29T06:46:29.544Z"
+    },
+    "job-teletalk-20261005-bscs-321": {
+      "id": "job-teletalk-20261005-bscs-321",
+      "refNo": "20261005_bscs_321",
+      "title": "আনসার ভিডিপি উন্নয়ন ব্যাংক প্রিন্সিপাল অফিসার (গ্রেড-৬) নিয়োগ",
+      "organization": "আনসার ভিডিপি উন্নয়ন ব্যাংক",
+      "category": "bank",
+      "categoryLabel": "ব্যাংক জব",
+      "grade": "৬ষ্ঠ গ্রেড",
+      "totalPosts": 18,
+      "salary": "৩৫,৫০০ - ৬৭,০১০ টাকা",
+      "minEducation": "স্নাতকোত্তর অথবা ৪ বছর মেয়াদি স্নাতক (সম্মান)",
+      "minAge": 22,
+      "maxAge": 30,
+      "ageCutOffDate": "2026-11-01",
+      "districts": "সকল জেলা",
+      "deadline": "০২ নভেম্বর ২০২৬",
+      "daysRemaining": 4,
+      "govtFee": 300,
+      "serviceFee": 80,
+      "officialLink": "https://erecruitment.bb.org.bd",
+      "publishedDate": "০৫/১০/২০২৬",
+      "status": "OPEN",
+      "requirements": [
+        "স্নাতকোত্তর বা ৪ বছর মেয়াদি স্নাতক",
+        "ব্যাংকিং কার্যক্রমে ন্যূনতম ৩ বছরের বাস্তব অভিজ্ঞতা"
+      ],
+      "documentsRequired": [
+        "শিক্ষাগত সনদ",
+        "অভিজ্ঞতা সনদ",
+        "জাতীয় পরিচয়পত্র"
+      ],
+      "logo": "https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=120&q=80",
+      "circularImage": "https://images.unsplash.com/photo-1586281380349-632531db7ed4?auto=format&fit=crop&w=600&q=80",
+      "audioSummary": "আনসার ভিডিপি উন্নয়ন ব্যাংক প্রিন্সিপাল অফিসার (গ্রেড-৬) নিয়োগ প্রকাশিত হয়েছে। আবেদনের শেষ তারিখ ০২ নভেম্বর ২০২৬।",
+      "createdAt": "2026-10-29T06:45:07.536Z",
+      "lastVerifiedAt": "2026-10-29T06:45:07.536Z",
+      "updatedAt": "2026-10-29T06:46:29.544Z"
+    },
+    "job-teletalk-bpsc-bcs-51-2026": {
+      "id": "job-teletalk-bpsc-bcs-51-2026",
+      "refNo": "BPSC-BCS-51-2026",
+      "title": "৫১তম বিসিএস (বিশেষ) পরীক্ষা ২০২৬ নিয়োগ বিজ্ঞপ্তি",
+      "organization": "বাংলাদেশ সরকারি কর্ম কমিশন (BPSC)",
+      "category": "govt",
+      "categoryLabel": "সরকারি / বিসিএস",
+      "grade": "৯ম গ্রেড",
+      "totalPosts": 310,
+      "salary": "২২,০০০ - ৫৩,০৬০ টাকা",
+      "minEducation": "এমবিবিএস অথবা বিডিএস ডিগ্রি (বিএমডিসি নিবন্ধিত)",
+      "minAge": 21,
+      "maxAge": 32,
+      "ageCutOffDate": "2026-11-01",
+      "districts": "সকল জেলা",
+      "deadline": "১০ ডিসেম্বর ২০২৬",
+      "daysRemaining": 42,
+      "govtFee": 700,
+      "serviceFee": 100,
+      "officialLink": "http://bpsc.teletalk.com.bd/bcs51",
+      "publishedDate": "১৫/১০/২০২৬",
+      "status": "OPEN",
+      "requirements": [
+        "স্বীকৃত বিশ্ববিদ্যালয় হতে এমবিবিএস বা বিডিএস ডিগ্রি",
+        "বাংলাদেশ মেডিকেল ও ডেন্টাল কাউন্সিলের হালনাগাদ নিবন্ধন",
+        "বয়সসীমা: ২১ হতে ৩২ বছর"
+      ],
+      "documentsRequired": [
+        "এমবিবিএস সনদ",
+        "বিএমডিসি রেজিস্ট্রেশন",
+        "নাগরিকত্ব সনদ",
+        "জাতীয় পরিচয়পত্র",
+        "ছবি"
+      ],
+      "logo": "https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=120&q=80",
+      "circularImage": "https://images.unsplash.com/photo-1586281380349-632531db7ed4?auto=format&fit=crop&w=600&q=80",
+      "audioSummary": "৫১তম বিসিএস (বিশেষ) পরীক্ষা ২০২৬ নিয়োগ বিজ্ঞপ্তি প্রকাশিত হয়েছে। আবেদনের শেষ তারিখ ১০ ডিসেম্বর ২০২৬।",
+      "createdAt": "2026-10-29T06:45:07.536Z",
+      "lastVerifiedAt": "2026-10-29T06:45:07.536Z",
+      "updatedAt": "2026-10-29T06:46:29.544Z"
+    },
+    "job-teletalk-bpsc-noncadre-2026-03": {
+      "id": "job-teletalk-bpsc-noncadre-2026-03",
+      "refNo": "BPSC-NONCADRE-2026-03",
+      "title": "বিভিন্ন মন্ত্রণালয় ও অধিদপ্তরে ৯ম ও ১০ম গ্রেডের নন-ক্যাডার পদসমূহে নিয়োগ",
+      "organization": "বাংলাদেশ সরকারি কর্ম কমিশন (BPSC)",
+      "category": "govt",
+      "categoryLabel": "সরকারি / বিসিএস",
+      "grade": "৯ম গ্রেড",
+      "totalPosts": 154,
+      "salary": "১৬,০০০ - ৫৩,০৬০ টাকা",
+      "minEducation": "স্নাতক (সম্মান) বা সমমানের ডিগ্রি",
+      "minAge": 21,
+      "maxAge": 30,
+      "ageCutOffDate": "2026-11-01",
+      "districts": "সকল জেলা",
+      "deadline": "১৫ নভেম্বর ২০২৬",
+      "daysRemaining": 17,
+      "govtFee": 500,
+      "serviceFee": 80,
+      "officialLink": "http://bpsc.teletalk.com.bd",
+      "publishedDate": "১২/১০/২০২৬",
+      "status": "OPEN",
+      "requirements": [
+        "স্নাতক (সম্মান) ডিগ্রি",
+        "বয়সসীমা: ২১ হতে ৩০ বছর (কোটা: ৩২ বছর)"
+      ],
+      "documentsRequired": [
+        "স্নাতক সনদ",
+        "এসএসসি/এইচএসসি ট্রান্সক্রিপ্ট",
+        "জাতীয় পরিচয়পত্র"
+      ],
+      "logo": "https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=120&q=80",
+      "circularImage": "https://images.unsplash.com/photo-1586281380349-632531db7ed4?auto=format&fit=crop&w=600&q=80",
+      "audioSummary": "বিভিন্ন মন্ত্রণালয় ও অধিদপ্তরে ৯ম ও ১০ম গ্রেডের নন-ক্যাডার পদসমূহে নিয়োগ প্রকাশিত হয়েছে। আবেদনের শেষ তারিখ ১৫ নভেম্বর ২০২৬।",
+      "createdAt": "2026-10-29T06:45:07.536Z",
+      "lastVerifiedAt": "2026-10-29T06:45:07.536Z",
+      "updatedAt": "2026-10-29T06:46:29.544Z"
+    },
+    "job-teletalk-20261008-bscs-331": {
+      "id": "job-teletalk-20261008-bscs-331",
+      "refNo": "20261008_bscs_331",
+      "title": "সোনালী ব্যাংক পিএলসি উপ-সহকারী প্রকৌশলী (ইলেকট্রিক্যাল) নিয়োগ",
+      "organization": "সোনালী ব্যাংক পিএলসি",
+      "category": "bank",
+      "categoryLabel": "ব্যাংক জব",
+      "grade": "১০ম গ্রেড",
+      "totalPosts": 38,
+      "salary": "১৬,০০০ - ৩৮,৬৪০ টাকা",
+      "minEducation": "ডিপ্লোমা ইন ইলেকট্রিক্যাল ইঞ্জিনিয়ারিং",
+      "minAge": 18,
+      "maxAge": 30,
+      "ageCutOffDate": "2026-10-01",
+      "districts": "সকল জেলা",
+      "deadline": "২৫ অক্টোবর ২০২৬",
+      "daysRemaining": 0,
+      "govtFee": 200,
+      "serviceFee": 80,
+      "officialLink": "https://erecruitment.bb.org.bd",
+      "publishedDate": "০৮/১০/২০২৬",
+      "status": "EXPIRED",
+      "requirements": [
+        "ডিপ্লোমা ইন ইঞ্জিনিয়ারিং (ইলেকট্রিক্যাল)",
+        "ন্যূনতম ২য় বিভাগ বা সিজিপিএ ২.৫"
+      ],
+      "documentsRequired": [
+        "ডিপ্লোমা সনদ",
+        "জাতীয় পরিচয়পত্র"
+      ],
+      "logo": "https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=120&q=80",
+      "circularImage": "https://images.unsplash.com/photo-1586281380349-632531db7ed4?auto=format&fit=crop&w=600&q=80",
+      "audioSummary": "সোনালী ব্যাংক পিএলসি উপ-সহকারী প্রকৌশলী (ইলেকট্রিক্যাল) নিয়োগ প্রকাশিত হয়েছে। আবেদনের শেষ তারিখ ২৫ অক্টোবর ২০২৬।",
+      "createdAt": "2026-10-29T06:45:07.536Z",
+      "lastVerifiedAt": "2026-10-29T06:45:07.536Z",
+      "updatedAt": "2026-10-29T06:46:29.544Z"
+    },
+    "job-teletalk-bpsc-bcs-50-2025": {
+      "id": "job-teletalk-bpsc-bcs-50-2025",
+      "refNo": "BPSC-BCS-50-2025",
+      "title": "৫০তম বিসিএস পরীক্ষা ২০২৫ (বিজ্ঞপ্তি সমাপ্ত)",
+      "organization": "বাংলাদেশ সরকারি কর্ম কমিশন (BPSC)",
+      "category": "govt",
+      "categoryLabel": "সরকারি / বিসিএস",
+      "grade": "৯ম গ্রেড",
+      "totalPosts": 2155,
+      "salary": "২২,০০০ - ৫৩,০৬০ টাকা",
+      "minEducation": "স্নাতক (সম্মান) বা সমমানের ডিগ্রি",
+      "minAge": 21,
+      "maxAge": 30,
+      "ageCutOffDate": "2025-08-01",
+      "districts": "সকল জেলা",
+      "deadline": "৩১ আগস্ট ২০২৫",
+      "daysRemaining": 0,
+      "govtFee": 700,
+      "serviceFee": 100,
+      "officialLink": "http://bpsc.teletalk.com.bd/bcs50",
+      "publishedDate": "০১/০৭/২০২৫",
+      "status": "CLOSED",
+      "requirements": [
+        "স্নাতক ডিগ্রি"
+      ],
+      "documentsRequired": [
+        "সনদপত্র"
+      ],
+      "logo": "https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=120&q=80",
+      "circularImage": "https://images.unsplash.com/photo-1586281380349-632531db7ed4?auto=format&fit=crop&w=600&q=80",
+      "audioSummary": "৫০তম বিসিএস পরীক্ষা ২০২৫ (বিজ্ঞপ্তি সমাপ্ত) প্রকাশিত হয়েছে। আবেদনের শেষ তারিখ ৩১ আগস্ট ২০২৫।",
+      "createdAt": "2026-10-29T06:45:07.536Z",
+      "lastVerifiedAt": "2026-10-29T06:45:07.536Z",
+      "updatedAt": "2026-10-29T06:46:29.544Z"
+    },
+    "job-teletalk-bb-ad-res-2026": {
+      "id": "job-teletalk-bb-ad-res-2026",
+      "refNo": "BB-AD-RES-2026",
+      "title": "বাংলাদেশ ব্যাংক সহকারী পরিচালক (গবেষণা) নিয়োগ ২০২৬",
+      "organization": "বাংলাদেশ ব্যাংক",
+      "category": "bank",
+      "categoryLabel": "ব্যাংক জব",
+      "grade": "৯ম গ্রেড",
+      "totalPosts": 45,
+      "salary": "২২,০০০ - ৫৩,০৬০ টাকা",
+      "minEducation": "অর্থনীতি / পরিসংখ্যান বিষয়ে স্নাতকোত্তর",
+      "minAge": 21,
+      "maxAge": 30,
+      "ageCutOffDate": "2026-12-01",
+      "districts": "সকল জেলা",
+      "deadline": "১৫ ডিসেম্বর ২০২৬",
+      "daysRemaining": 47,
+      "govtFee": 200,
+      "serviceFee": 80,
+      "officialLink": "https://erecruitment.bb.org.bd",
+      "publishedDate": "২৮/১০/২০২৬",
+      "status": "UPCOMING",
+      "requirements": [
+        "অর্থনীতি বা পরিসংখ্যানে প্রথম শ্রেণি/বিভাগ সমমানের স্নাতকোত্তর"
+      ],
+      "documentsRequired": [
+        "স্নাতকোত্তর সনদ"
+      ],
+      "logo": "https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=120&q=80",
+      "circularImage": "https://images.unsplash.com/photo-1586281380349-632531db7ed4?auto=format&fit=crop&w=600&q=80",
+      "audioSummary": "বাংলাদেশ ব্যাংক সহকারী পরিচালক (গবেষণা) নিয়োগ ২০২৬ প্রকাশিত হয়েছে। আবেদনের শেষ তারিখ ১৫ ডিসেম্বর ২০২৬।",
+      "createdAt": "2026-10-29T06:45:07.536Z",
+      "lastVerifiedAt": "2026-10-29T06:45:07.536Z",
+      "updatedAt": "2026-10-29T06:46:29.544Z"
+    }
+  },
+  "pages": {
+    "home": {
+      "id": "home",
+      "slug": "/",
+      "title": "হোমপেজ — চাকরি সেবা",
+      "metaTitle": "চাকরি সেবা | সরকারি ও বেসরকারি চাকরি আবেদন পোর্টাল ২০২৬",
+      "metaDescription": "১-ক্লিকে চাকরির আবেদন, টেলিটক অটো-ফিল ও নির্ভুল ফর্ম পূরণ সেবা।",
+      "status": "published",
+      "version": 2,
+      "isSystemPage": true,
+      "updatedAt": "2026-10-29T06:06:22.470Z",
+      "publishedAt": "2026-10-29T06:06:22.470Z",
+      "sections": [
+        {
+          "id": "sec-hero",
+          "type": "hero",
+          "title": "সরকারি ও ব্যাংক চাকরির নির্ভুল আবেদন সেবা",
+          "subtitle": "টেলিটক আবেদনের ঝামেলা শেষ। ঘরে বসেই ১-ক্লিকে নিশ্চিত করুন নির্ভুল আবেদন ও দ্রুত স্লিপ ডেলিভারি।",
+          "content": {
+            "ctaText": "চলতি সার্কুলার দেখুন",
+            "ctaUrl": "/jobs",
+            "badge": "⚡ ২০২৬ এর সর্বশেষ নিয়োগ সার্কুলার"
+          },
+          "style": {
+            "backgroundColor": "#064e3b",
+            "textColor": "#ffffff",
+            "paddingY": "xl",
+            "textAlign": "center"
+          },
+          "isVisible": true
+        },
+        {
+          "id": "sec-features",
+          "type": "features",
+          "title": "কেন চাকরি সেবা ব্যবহার করবেন?",
+          "subtitle": "আমাদের প্ল্যাটফর্মের বিশ্বস্ত ও আধুনিক সেবাসমূহ",
+          "content": {
+            "items": [
+              {
+                "title": "১০০% নির্ভুল টেলিটক ফরম পূরণ",
+                "desc": "অভিজ্ঞ ব্যাকঅফিস টিম দ্বারা অফিসিয়াল সাইটে প্রমিত ফর্ম পূরণ।"
+              },
+              {
+                "title": "৩০০×৩০০ ছবি ও স্বাক্ষর কনভার্ট",
+                "desc": "টেলিটকের কঠোর মেগাবাইট ও পিক্সেল সাইজ অটোমেটিক ফরম্যাটিং।"
+              },
+              {
+                "title": "এসএমএস ও ট্র্যাকিং অ্যালার্ট",
+                "desc": "পরীক্ষার তারিখ ও প্রবেশপত্র আসার সাথে সাথে ইনস্ট্যান্ট নোটিফিকেশন।"
+              }
+            ]
+          },
+          "style": {
+            "backgroundColor": "#064e3b",
+            "textColor": "#ffffff",
+            "paddingY": "lg",
+            "columns": 3
+          },
+          "isVisible": true
+        }
+      ],
+      "revisions": [
+        {
+          "id": "REV-1793253982471",
+          "version": 2,
+          "savedAt": "2026-10-29T06:06:22.470Z",
+          "savedBy": "ADMIN-SUPER",
+          "status": "published",
+          "sections": [
+            {
+              "id": "sec-hero",
+              "type": "hero",
+              "title": "সরকারি ও ব্যাংক চাকরির নির্ভুল আবেদন সেবা",
+              "subtitle": "টেলিটক আবেদনের ঝামেলা শেষ। ঘরে বসেই ১-ক্লিকে নিশ্চিত করুন নির্ভুল আবেদন ও দ্রুত স্লিপ ডেলিভারি।",
+              "content": {
+                "ctaText": "চলতি সার্কুলার দেখুন",
+                "ctaUrl": "/jobs",
+                "badge": "⚡ ২০২৬ এর সর্বশেষ নিয়োগ সার্কুলার"
+              },
+              "style": {
+                "backgroundColor": "#064e3b",
+                "textColor": "#ffffff",
+                "paddingY": "xl",
+                "textAlign": "center"
+              },
+              "isVisible": true
+            },
+            {
+              "id": "sec-features",
+              "type": "features",
+              "title": "কেন চাকরি সেবা ব্যবহার করবেন?",
+              "subtitle": "আমাদের প্ল্যাটফর্মের বিশ্বস্ত ও আধুনিক সেবাসমূহ",
+              "content": {
+                "items": [
+                  {
+                    "title": "১০০% নির্ভুল টেলিটক ফরম পূরণ",
+                    "desc": "অভিজ্ঞ ব্যাকঅফিস টিম দ্বারা অফিসিয়াল সাইটে প্রমিত ফর্ম পূরণ।"
+                  },
+                  {
+                    "title": "৩০০×৩০০ ছবি ও স্বাক্ষর কনভার্ট",
+                    "desc": "টেলিটকের কঠোর মেগাবাইট ও পিক্সেল সাইজ অটোমেটিক ফরম্যাটিং।"
+                  },
+                  {
+                    "title": "এসএমএস ও ট্র্যাকিং অ্যালার্ট",
+                    "desc": "পরীক্ষার তারিখ ও প্রবেশপত্র আসার সাথে সাথে ইনস্ট্যান্ট নোটিফিকেশন।"
+                  }
+                ]
+              },
+              "style": {
+                "backgroundColor": "#064e3b",
+                "textColor": "#ffffff",
+                "paddingY": "lg",
+                "columns": 3
+              },
+              "isVisible": true
+            }
+          ]
+        }
+      ]
+    },
+    "about-us": {
+      "id": "about-us",
+      "slug": "/about-us",
+      "title": "আমাদের সম্পর্কে — চাকরি সেবা",
+      "metaTitle": "আমাদের সম্পর্কে | চাকরি সেবা বিডি",
+      "metaDescription": "চাকরি সেবা বাংলাদেশের চাকরিপ্রার্থীদের জন্য একটি ওয়ান-স্টপ প্রযুক্তি নির্ভর প্ল্যাটফর্ম।",
+      "status": "published",
+      "version": 1,
+      "isSystemPage": true,
+      "updatedAt": "2026-10-29T05:51:00.632Z",
+      "publishedAt": "2026-10-29T05:51:00.632Z",
+      "sections": [
+        {
+          "id": "sec-about-hero",
+          "type": "hero",
+          "title": "বাংলাদেশের প্রথম ডিজিটাল জব অ্যাসিস্ট্যান্স প্ল্যাটফর্ম",
+          "subtitle": "আমরা চাকরিপ্রার্থীদের সময়, শ্রম এবং ভুলের ঝুঁকি কমিয়ে ক্যারিয়ার গঠনে পাশে থাকি।",
+          "content": {},
+          "style": {
+            "backgroundColor": "#0f172a",
+            "textColor": "#ffffff",
+            "paddingY": "lg",
+            "textAlign": "center"
+          },
+          "isVisible": true
+        }
+      ],
+      "revisions": []
+    },
+    "_exam-guidelines-2026": {
+      "id": "_exam-guidelines-2026",
+      "title": "পরীক্ষা নির্দেশিকা সহায়িকা ২০২৬ (হালনাগাদ)",
+      "slug": "/exam-guidelines-2026",
+      "metaTitle": "বিসিএস ও ব্যাংক পরীক্ষা প্রস্তুতি নির্দেশিকা",
+      "metaDescription": "সকল সরকারি ও স্বায়ত্তশাসিত চাকরির প্রস্তুতি নিয়মাবলী",
+      "sections": [
+        {
+          "id": "sec-hero-01",
+          "type": "hero",
+          "title": "চাকরি পরীক্ষার সম্পূর্ণ সহায়ক গাইডলাইন",
+          "subtitle": "টেলিটক ও ব্যাংকার্স সিলেকশন কমিটির সকল প্রস্তুতি নিয়ম",
+          "content": {
+            "ctaText": "আবেদন শুরু করুন",
+            "ctaUrl": "/dashboard"
+          },
+          "style": {
+            "backgroundColor": "#064e3b",
+            "textColor": "#ffffff",
+            "paddingY": "xl",
+            "textAlign": "center"
+          },
+          "isVisible": true
+        },
+        {
+          "id": "sec-features-01",
+          "type": "features",
+          "title": "কেন আমাদের নির্দেশিকা পড়বেন",
+          "subtitle": "সঠিক তথ্যের নিশ্চয়তা",
+          "content": {
+            "items": [
+              {
+                "title": "সঠিক ফরম্যাট ও ছবির মাপ",
+                "desc": "টেলিটক আবেদনের ছবি ও স্বাক্ষর নির্দেশিকা"
+              },
+              {
+                "title": "পেমেন্ট ভেরিফিকেশন নিয়ম",
+                "desc": "এসএমএস ফরম্যাট ও ট্রানজেকশন আইডি নিয়ম"
+              },
+              {
+                "title": "প্রবেশপত্র ডাউনলোডের তথ্য",
+                "desc": "এসএমএস পেলে প্রবেশপত্র ডাউনলোডের সঠিক নির্দেশিকা"
+              }
+            ]
+          },
+          "style": {
+            "backgroundColor": "#ffffff",
+            "textColor": "#0f172a",
+            "paddingY": "lg",
+            "columns": 3
+          },
+          "isVisible": true
+        }
+      ],
+      "version": 4,
+      "status": "published",
+      "updatedAt": "2026-10-29T11:58:39.550Z",
+      "publishedAt": "2026-10-29T11:58:39.550Z",
+      "revisions": [
+        {
+          "id": "REV-1793275119550",
+          "version": 4,
+          "savedAt": "2026-10-29T11:58:39.550Z",
+          "savedBy": "ADMIN-SUPER",
+          "status": "published",
+          "sections": [
+            {
+              "id": "sec-hero-01",
+              "type": "hero",
+              "title": "চাকরি পরীক্ষার সম্পূর্ণ সহায়ক গাইডলাইন",
+              "subtitle": "টেলিটক ও ব্যাংকার্স সিলেকশন কমিটির সকল প্রস্তুতি নিয়ম",
+              "content": {
+                "ctaText": "আবেদন শুরু করুন",
+                "ctaUrl": "/dashboard"
+              },
+              "style": {
+                "backgroundColor": "#064e3b",
+                "textColor": "#ffffff",
+                "paddingY": "xl",
+                "textAlign": "center"
+              },
+              "isVisible": true
+            },
+            {
+              "id": "sec-features-01",
+              "type": "features",
+              "title": "কেন আমাদের নির্দেশিকা পড়বেন",
+              "subtitle": "সঠিক তথ্যের নিশ্চয়তা",
+              "content": {
+                "items": [
+                  {
+                    "title": "সঠিক ফরম্যাট ও ছবির মাপ",
+                    "desc": "টেলিটক আবেদনের ছবি ও স্বাক্ষর নির্দেশিকা"
+                  },
+                  {
+                    "title": "পেমেন্ট ভেরিফিকেশন নিয়ম",
+                    "desc": "এসএমএস ফরম্যাট ও ট্রানজেকশন আইডি নিয়ম"
+                  },
+                  {
+                    "title": "প্রবেশপত্র ডাউনলোডের তথ্য",
+                    "desc": "এসএমএস পেলে প্রবেশপত্র ডাউনলোডের সঠিক নির্দেশিকা"
+                  }
+                ]
+              },
+              "style": {
+                "backgroundColor": "#ffffff",
+                "textColor": "#0f172a",
+                "paddingY": "lg",
+                "columns": 3
+              },
+              "isVisible": true
+            }
+          ]
+        },
+        {
+          "id": "REV-1793275119539",
+          "version": 3,
+          "savedAt": "2026-10-29T11:58:39.539Z",
+          "savedBy": "ADMIN-SUPER",
+          "status": "draft",
+          "sections": [
+            {
+              "id": "sec-1793275119538",
+              "type": "hero",
+              "title": "পরীক্ষা নির্দেশিকা সহায়িকা ২০২৬",
+              "subtitle": "নতুন পৃষ্ঠার বিবরণ এখানে লিখুন",
+              "content": {},
+              "style": {
+                "backgroundColor": "#ffffff",
+                "textColor": "#0f172a",
+                "paddingY": "lg",
+                "textAlign": "center"
+              },
+              "isVisible": true
+            }
+          ]
+        },
+        {
+          "id": "REV-1793257008466",
+          "version": 2,
+          "savedAt": "2026-10-29T06:56:48.466Z",
+          "savedBy": "ADMIN-SUPER",
+          "status": "published",
+          "sections": [
+            {
+              "id": "sec-hero-01",
+              "type": "hero",
+              "title": "হালনাগাদ তথ্য ও সার্কুলার হালনাগাদ তথ্য ও সার্কুলার হালনাগাদ তথ্য ও সার্কুলার হালনাগাদ তথ্য ও সার্কুলার হালনাগাদ তথ্য ও সার্কুলার",
+              "subtitle": "হালনাগাদ তথ্য ও সার্কুলার হালনাগাদ তথ্য ও সার্কুলার হালনাগাদ তথ্য ও সার্কুলার হালনাগাদ তথ্য ও সার্কুলার ? হালনাগাদ তথ্য ও সার্কুলার হালনাগাদ তথ্য ও সার্কুলার",
+              "content": {
+                "ctaText": "হালনাগাদ তথ্য ও সার্কুলার হালনাগাদ তথ্য ও সার্কুলার",
+                "ctaUrl": "/dashboard"
+              },
+              "style": {
+                "backgroundColor": "#064e3b",
+                "textColor": "#ffffff",
+                "paddingY": "xl",
+                "textAlign": "center"
+              },
+              "isVisible": true
+            },
+            {
+              "id": "sec-features-01",
+              "type": "features",
+              "title": "হালনাগাদ তথ্য ও সার্কুলার ??? হালনাগাদ তথ্য ও সার্কুলার হালনাগাদ তথ্য ও সার্কুলার",
+              "subtitle": "?? হালনাগাদ তথ্য ও সার্কুলার হালনাগাদ তথ্য ও সার্কুলার",
+              "content": {
+                "items": [
+                  {
+                    "title": "হালনাগাদ তথ্য ও সার্কুলার ? হালনাগাদ তথ্য ও সার্কুলার হালনাগাদ তথ্য ও সার্কুলার হালনাগাদ তথ্য ও সার্কুলার",
+                    "desc": "হালনাগাদ তথ্য ও সার্কুলার হালনাগাদ তথ্য ও সার্কুলার হালনাগাদ তথ্য ও সার্কুলার হালনাগাদ তথ্য ও সার্কুলার হালনাগাদ তথ্য ও সার্কুলার হালনাগাদ তথ্য ও সার্কুলার"
+                  },
+                  {
+                    "title": "হালনাগাদ তথ্য ও সার্কুলার হালনাগাদ তথ্য ও সার্কুলার হালনাগাদ তথ্য ও সার্কুলার",
+                    "desc": "হালনাগাদ তথ্য ও সার্কুলার হালনাগাদ তথ্য ও সার্কুলার ? হালনাগাদ তথ্য ও সার্কুলার হালনাগাদ তথ্য ও সার্কুলার হালনাগাদ তথ্য ও সার্কুলার"
+                  },
+                  {
+                    "title": "হালনাগাদ তথ্য ও সার্কুলার হালনাগাদ তথ্য ও সার্কুলার হালনাগাদ তথ্য ও সার্কুলার",
+                    "desc": "হালনাগাদ তথ্য ও সার্কুলার হালনাগাদ তথ্য ও সার্কুলার হালনাগাদ তথ্য ও সার্কুলার হালনাগাদ তথ্য ও সার্কুলার হালনাগাদ তথ্য ও সার্কুলার হালনাগাদ তথ্য ও সার্কুলার হালনাগাদ তথ্য ও সার্কুলার হালনাগাদ তথ্য ও সার্কুলার"
+                  }
+                ]
+              },
+              "style": {
+                "backgroundColor": "#ffffff",
+                "textColor": "#0f172a",
+                "paddingY": "lg",
+                "columns": 3
+              },
+              "isVisible": true
+            }
+          ]
+        },
+        {
+          "id": "REV-1793257008453",
+          "version": 1,
+          "savedAt": "2026-10-29T06:56:48.453Z",
+          "savedBy": "ADMIN-SUPER",
+          "status": "draft",
+          "sections": [
+            {
+              "id": "sec-1793257008452",
+              "type": "hero",
+              "title": "হালনাগাদ তথ্য ও সার্কুলার হালনাগাদ তথ্য ও সার্কুলার হালনাগাদ তথ্য ও সার্কুলার হালনাগাদ তথ্য ও সার্কুলার",
+              "subtitle": "নতুন পৃষ্ঠার বিবরণ এখানে লিখুন",
+              "content": {},
+              "style": {
+                "backgroundColor": "#ffffff",
+                "textColor": "#0f172a",
+                "paddingY": "lg",
+                "textAlign": "center"
+              },
+              "isVisible": true
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "jobSources": {
+    "teletalk-alljobs": {
+      "id": "teletalk-alljobs",
+      "name": "Teletalk Alljobs Portal",
+      "sourceUrl": "https://alljobs.teletalk.com.bd",
+      "type": "official_portal",
+      "fetchStatus": "active",
+      "lastFetchedAt": "2026-10-29T05:51:00.632Z",
+      "autoSync": true
+    },
+    "bpsc-portal": {
+      "id": "bpsc-portal",
+      "name": "Bangladesh Public Service Commission (BPSC)",
+      "sourceUrl": "http://www.bpsc.gov.bd",
+      "type": "official_portal",
+      "fetchStatus": "active",
+      "lastFetchedAt": "2026-10-29T05:51:00.632Z",
+      "autoSync": true
+    },
+    "bb-erecruitment": {
+      "id": "bb-erecruitment",
+      "name": "Bangladesh Bank e-Recruitment System",
+      "sourceUrl": "https://erecruitment.bb.org.bd",
+      "type": "official_portal",
+      "fetchStatus": "active",
+      "lastFetchedAt": "2026-10-29T05:51:00.632Z",
+      "autoSync": true
+    }
+  },
+  "circularDrafts": {
+    "draft-rupali-01": {
+      "id": "draft-rupali-01",
+      "sourceName": "দৈনিক ইত্তেফাক ও টেলিটক পোর্টাল",
+      "sourceUrl": "https://alljobs.teletalk.com.bd/circular/rupali-bank-2026",
+      "extractedTitle": "রূপালী ব্যাংক পিএলসি সিনিয়র অফিসার (আইটি) নিয়োগ",
+      "extractedOrg": "রূপালী ব্যাংক পিএলসি",
+      "category": "bank",
+      "grade": "৯ম গ্রেড",
+      "deadline": "৩০ নভেম্বর ২০২৬",
+      "vacancies": 65,
+      "minEducation": "বিএসসি ইন সিএসই / আইটি",
+      "salary": "২২,০০০ - ৫৩,০৬০ টাকা",
+      "govtFee": 200,
+      "confidenceScore": 0.96,
+      "duplicateDetected": false,
+      "status": "approved",
+      "createdAt": "2026-10-29T05:51:00.632Z",
+      "approvedJobId": "job-877477"
+    }
+  },
+  "companies": {
+    "comp-pran": {
+      "id": "comp-pran",
+      "name": "PRAN-RFL Group",
+      "nameBn": "প্রাণ-আরএফএল গ্রুপ",
+      "industry": "FMCG & Manufacturing",
+      "district": "ঢাকা",
+      "verified": true,
+      "contactEmail": "careers@pranrflgroup.com",
+      "contactPhone": "09613-772673",
+      "activeJobsCount": 4,
+      "createdAt": "2026-10-29T05:51:00.632Z"
+    },
+    "comp-walton": {
+      "id": "comp-walton",
+      "name": "Walton Hi-Tech Industries PLC",
+      "nameBn": "ওয়ালটন হাই-টেক ইন্ডাস্ট্রিজ পিএলসি",
+      "industry": "Electronics & Engineering",
+      "district": "গাজীপুর",
+      "verified": true,
+      "contactEmail": "jobs@waltonbd.com",
+      "contactPhone": "09612-316267",
+      "activeJobsCount": 2,
+      "createdAt": "2026-10-29T05:51:00.632Z"
+    }
+  },
+  "companyApplications": {}
+}

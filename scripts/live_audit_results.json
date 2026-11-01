@@ -1,0 +1,38 @@
+[
+  {
+    "id": "ISSUE-001",
+    "url": "/categories/government-jobs",
+    "panel": "public",
+    "severity": "P3",
+    "category": "console",
+    "description": "Console error: Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "snippet": "Failed to load resource: the server responded with a status of 404 (Not Found)"
+  },
+  {
+    "id": "ISSUE-002",
+    "url": "/dashboard/wallet",
+    "panel": "user",
+    "severity": "P1",
+    "category": "console",
+    "description": "Runtime unhandled JS error: Text content does not match server-rendered HTML.\nSee more info here: https://nextjs.org/docs/messages/react-hydration-error",
+    "snippet": "Text content does not match server-rendered HTML.\nSee more info here: https://nextjs.org/docs/messages/react-hydration-error; Text content does not ma"
+  },
+  {
+    "id": "ISSUE-003",
+    "url": "/dashboard/wallet",
+    "panel": "user",
+    "severity": "P2",
+    "category": "console",
+    "description": "React hydration mismatch: Warning: Text content did not match. Server: \"%s\" Client: \"%s\"%s 450 100 \n    at div\n    at div\n    ",
+    "snippet": "Warning: Text content did not match. Server: \"%s\" Client: \"%s\"%s 450 100 \n    at div\n    at div\n    at div\n    at div\n    at WalletPage (webpack-inter"
+  },
+  {
+    "id": "ISSUE-004",
+    "url": "/dashboard/wallet",
+    "panel": "user",
+    "severity": "P3",
+    "category": "console",
+    "description": "Console error: Warning: An error occurred during hydration. The server HTML was replaced with client content in <%s",
+    "snippet": "Warning: An error occurred during hydration. The server HTML was replaced with client content in <%s>. #document"
+  }
+]

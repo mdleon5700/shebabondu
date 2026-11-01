@@ -1,0 +1,246 @@
+{
+  "timestamp": "2026-10-30T09:05:12+0600",
+  "total_crawled_pages": 128,
+  "total_internal_links": 151,
+  "total_external_links": 92,
+  "total_static_source_references": 99,
+  "broken_internal_count": 0,
+  "broken_internal_details": {},
+  "security_issues_count": 0,
+  "security_issues_details": [],
+  "bad_patterns_count": 0,
+  "bad_patterns_details": [],
+  "broken_external_count": 46,
+  "broken_external_details": {
+    "http://bpsc.teletalk.com.bd/bcs51": {
+      "status": 0,
+      "reachable": false,
+      "error": "<urlopen error [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] ssl/tls alert handshake failure (_ssl."
+    },
+    "http://bpsc.teletalk.com.bd/bcs52": {
+      "status": 0,
+      "reachable": false,
+      "error": "<urlopen error [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] ssl/tls alert handshake failure (_ssl."
+    },
+    "http://bpsc.teletalk.com.bd/circular/acc.pdf": {
+      "status": 0,
+      "reachable": false,
+      "error": "<urlopen error [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] ssl/tls alert handshake failure (_ssl."
+    },
+    "http://bpsc.teletalk.com.bd/bcs50": {
+      "status": 0,
+      "reachable": false,
+      "error": "<urlopen error [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] ssl/tls alert handshake failure (_ssl."
+    },
+    "http://bpsc.teletalk.com.bd/circular/44bcs.pdf": {
+      "status": 0,
+      "reachable": false,
+      "error": "<urlopen error [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] ssl/tls alert handshake failure (_ssl."
+    },
+    "http://bpsc.teletalk.com.bd": {
+      "status": 0,
+      "reachable": false,
+      "error": "<urlopen error [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] ssl/tls alert handshake failure (_ssl."
+    },
+    "http://bpsc.teletalk.com.bd/circular/sae.pdf": {
+      "status": 0,
+      "reachable": false,
+      "error": "<urlopen error [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] ssl/tls alert handshake failure (_ssl."
+    },
+    "http://bpsc.teletalk.com.bd/circular/adm.pdf": {
+      "status": 0,
+      "reachable": false,
+      "error": "<urlopen error [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] ssl/tls alert handshake failure (_ssl."
+    },
+    "http://bpsc.teletalk.com.bd/circular/legit.pdf": {
+      "status": 0,
+      "reachable": false,
+      "error": "<urlopen error [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] ssl/tls alert handshake failure (_ssl."
+    },
+    "http://bpsc.teletalk.com.bd/nchoice": {
+      "status": 0,
+      "reachable": false,
+      "error": "<urlopen error [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] ssl/tls alert handshake failure (_ssl."
+    },
+    "http://bpsc.teletalk.com.bd/circular/nurse_2026.pdf": {
+      "status": 0,
+      "reachable": false,
+      "error": "<urlopen error [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] ssl/tls alert handshake failure (_ssl."
+    },
+    "http://bpsc.teletalk.com.bd/ncad": {
+      "status": 0,
+      "reachable": false,
+      "error": "<urlopen error [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] ssl/tls alert handshake failure (_ssl."
+    },
+    "http://untrusted-scam-phishing.com/steal.pdf": {
+      "status": 0,
+      "reachable": false,
+      "error": "<urlopen error [Errno 11001] getaddrinfo failed>"
+    },
+    "http://unauthorized-domain.com/bpsc.pdf": {
+      "status": 0,
+      "reachable": false,
+      "error": "<urlopen error [Errno 11001] getaddrinfo failed>"
+    },
+    "http://malicious-phishing-site.com/circular.pdf": {
+      "status": 0,
+      "reachable": false,
+      "error": "<urlopen error [Errno 11001] getaddrinfo failed>"
+    },
+    "http://bpsc.teletalk.com.bd/rhd.pdf": {
+      "status": 0,
+      "reachable": false,
+      "error": "<urlopen error [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] ssl/tls alert handshake failure (_ssl."
+    },
+    "https://bpsc.teletalk.com.bd": {
+      "status": 0,
+      "reachable": false,
+      "error": "<urlopen error [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] ssl/tls alert handshake failure (_ssl."
+    },
+    "https://bpsc.teletalk.com.bd/apply/adm01": {
+      "status": 0,
+      "reachable": false,
+      "error": "<urlopen error [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] ssl/tls alert handshake failure (_ssl."
+    },
+    "https://bpsc.teletalk.com.bd/circulars/adm01.pdf": {
+      "status": 0,
+      "reachable": false,
+      "error": "<urlopen error [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] ssl/tls alert handshake failure (_ssl."
+    },
+    "https://dpe.teletalk.com.bd": {
+      "status": 0,
+      "reachable": false,
+      "error": "<urlopen error [WinError 10054] An existing connection was forcibly closed by the remote h"
+    },
+    "https://facebook.com/sharer/sharer.php?u=https%3A%2F%2Fchakrisheba.com%2Fjobs%2Fagrani-officer-cash": {
+      "status": 400,
+      "reachable": false,
+      "error": "HTTP 400 Bad Request"
+    },
+    "https://facebook.com/sharer/sharer.php?u=https%3A%2F%2Fchakrisheba.com%2Fjobs%2Fbb-ad-2026": {
+      "status": 400,
+      "reachable": false,
+      "error": "HTTP 400 Bad Request"
+    },
+    "https://facebook.com/chakrisheba.bd": {
+      "status": 400,
+      "reachable": false,
+      "error": "HTTP 400 Bad Request"
+    },
+    "https://facebook.com/sharer/sharer.php?u=https%3A%2F%2Fchakrisheba.com%2Fjobs%2Fbrac-bank-young-leaders": {
+      "status": 400,
+      "reachable": false,
+      "error": "HTTP 400 Bad Request"
+    },
+    "http://localhost:8080/exploit": {
+      "status": 0,
+      "reachable": false,
+      "error": "<urlopen error [WinError 10061] No connection could be made because the target machine act"
+    },
+    "https://facebook.com/sharer/sharer.php?u=https%3A%2F%2Fchakrisheba.com%2Fjobs%2Fjanata-executive-officer": {
+      "status": 400,
+      "reachable": false,
+      "error": "HTTP 400 Bad Request"
+    },
+    "https://facebook.com/sharer/sharer.php?u=https%3A%2F%2Fchakrisheba.com%2Fjobs%2Fjob-195498": {
+      "status": 400,
+      "reachable": false,
+      "error": "HTTP 400 Bad Request"
+    },
+    "https://facebook.com/sharer/sharer.php?u=https%3A%2F%2Fchakrisheba.com%2Fjobs%2Fdbbl-assistant-officer": {
+      "status": 400,
+      "reachable": false,
+      "error": "HTTP 400 Bad Request"
+    },
+    "https://facebook.com/sharer/sharer.php?u=https%3A%2F%2Fchakrisheba.com%2Fjobs%2Fislami-bank-probationary-officer": {
+      "status": 400,
+      "reachable": false,
+      "error": "HTTP 400 Bad Request"
+    },
+    "https://facebook.com/sharer/sharer.php?u=https%3A%2F%2Fchakrisheba.com%2Fjobs%2Fjob-675648": {
+      "status": 400,
+      "reachable": false,
+      "error": "HTTP 400 Bad Request"
+    },
+    "https://facebook.com/sharer/sharer.php?u=https%3A%2F%2Fchakrisheba.com%2Fjobs%2Fjob-teletalk-20261005-bscs-321": {
+      "status": 400,
+      "reachable": false,
+      "error": "HTTP 400 Bad Request"
+    },
+    "https://facebook.com/sharer/sharer.php?u=https%3A%2F%2Fchakrisheba.com%2Fjobs%2Fjob-877477": {
+      "status": 400,
+      "reachable": false,
+      "error": "HTTP 400 Bad Request"
+    },
+    "https://facebook.com/sharer/sharer.php?u=https%3A%2F%2Fchakrisheba.com%2Fjobs%2Fjob-teletalk-20261008-bscs-331": {
+      "status": 400,
+      "reachable": false,
+      "error": "HTTP 400 Bad Request"
+    },
+    "https://facebook.com/sharer/sharer.php?u=https%3A%2F%2Fchakrisheba.com%2Fjobs%2Fjob-213035": {
+      "status": 400,
+      "reachable": false,
+      "error": "HTTP 400 Bad Request"
+    },
+    "https://facebook.com/sharer/sharer.php?u=https%3A%2F%2Fchakrisheba.com%2Fjobs%2Fjob-teletalk-20261026-bscs-347": {
+      "status": 400,
+      "reachable": false,
+      "error": "HTTP 400 Bad Request"
+    },
+    "https://facebook.com/sharer/sharer.php?u=https%3A%2F%2Fchakrisheba.com%2Fjobs%2Fjob-teletalk-bb-ad-res-2026": {
+      "status": 400,
+      "reachable": false,
+      "error": "HTTP 400 Bad Request"
+    },
+    "https://facebook.com/sharer/sharer.php?u=https%3A%2F%2Fchakrisheba.com%2Fjobs%2Fjob-teletalk-20261027-bscs-348": {
+      "status": 400,
+      "reachable": false,
+      "error": "HTTP 400 Bad Request"
+    },
+    "https://facebook.com/sharer/sharer.php?u=https%3A%2F%2Fchakrisheba.com%2Fjobs%2Fjob-teletalk-bpsc-bcs-51-2026": {
+      "status": 400,
+      "reachable": false,
+      "error": "HTTP 400 Bad Request"
+    },
+    "https://facebook.com/sharer/sharer.php?u=https%3A%2F%2Fchakrisheba.com%2Fjobs%2Fjob-teletalk-bpsc-bcs-50-2025": {
+      "status": 400,
+      "reachable": false,
+      "error": "HTTP 400 Bad Request"
+    },
+    "https://facebook.com/sharer/sharer.php?u=https%3A%2F%2Fchakrisheba.com%2Fjobs%2Fjob-teletalk-bpsc-noncadre-2026-03": {
+      "status": 400,
+      "reachable": false,
+      "error": "HTTP 400 Bad Request"
+    },
+    "https://facebook.com/sharer/sharer.php?u=https%3A%2F%2Fchakrisheba.com%2Fjobs%2Fpubali-junior-officer": {
+      "status": 400,
+      "reachable": false,
+      "error": "HTTP 400 Bad Request"
+    },
+    "https://facebook.com/sharer/sharer.php?u=https%3A%2F%2Fchakrisheba.com%2Fjobs%2Frupali-officer-general": {
+      "status": 400,
+      "reachable": false,
+      "error": "HTTP 400 Bad Request"
+    },
+    "https://facebook.com/sharer/sharer.php?u=https%3A%2F%2Fchakrisheba.com%2Fjobs%2Fsonali-senior-officer-2026": {
+      "status": 400,
+      "reachable": false,
+      "error": "HTTP 400 Bad Request"
+    },
+    "http://10.0.0.1/admin": {
+      "status": 0,
+      "reachable": false,
+      "error": "<urlopen error timed out>"
+    },
+    "http://169.254.169.254/latest/meta-data": {
+      "status": 0,
+      "reachable": false,
+      "error": "<urlopen error timed out>"
+    },
+    "https://youtube.com/@chakrisheba": {
+      "status": 404,
+      "reachable": false,
+      "error": "HTTP 404 Not Found"
+    }
+  }
+}

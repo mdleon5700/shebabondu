@@ -1,0 +1,30 @@
+{
+  "projectId": "disposable-demo-app",
+  "displayName": "Disposable Test Target",
+  "workspacePath": "C:\\Users\\Leon Rahman\\Documents\\chakri-sheba\\ai-brain\\disposable_test_target",
+  "framework": "Generic",
+  "language": "JavaScript",
+  "mode": "AUDIT_AND_REPAIR",
+  "allowedFilesystemBoundary": "C:\\Users\\Leon Rahman\\Documents\\chakri-sheba\\ai-brain\\disposable_test_target",
+  "permissions": {
+    "canEditFiles": true,
+    "canRunBuild": true,
+    "canRunTests": true,
+    "canRunExternalCommands": false,
+    "canDeploy": false,
+    "requiresHumanApprovalForDestructive": true
+  },
+  "allowedCommands": [
+    "npm run build",
+    "npm run test",
+    "npm run lint",
+    "npm test",
+    "npx tsc --noEmit",
+    "node"
+  ],
+  "acceptanceCriteria": [],
+  "knownIssues": [],
+  "lastVerifiedRevision": null,
+  "createdAt": "2026-10-29T06:20:06.788Z",
+  "updatedAt": "2026-10-29T06:21:47.688Z"
+}

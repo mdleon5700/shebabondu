@@ -1,0 +1,55 @@
+[
+  {
+    "taskId": "TASK-disposable-demo-app-001",
+    "projectId": "disposable-demo-app",
+    "title": "Fix ENCODING: Potential UTF-8 text corruption detected (1 occurrences of ?",
+    "description": "Potential UTF-8 text corruption detected (1 occurrences of ???)",
+    "findingId": "ENC-CORRUPT-1422502875",
+    "category": "ENCODING",
+    "priority": 2,
+    "severity": "HIGH",
+    "dependencies": [],
+    "relevantFiles": [
+      "test.js"
+    ],
+    "acceptanceCriteria": [
+      "No ENCODING error in test.js",
+      "Verification test passes cleanly"
+    ],
+    "risk": "LOW",
+    "state": "READY",
+    "attemptCount": 1,
+    "maxAttempts": 3,
+    "checkpointId": null,
+    "evidence": null,
+    "createdAt": "2026-10-29T06:21:47.693Z",
+    "leaseOwner": null,
+    "leaseExpiresAt": null,
+    "startedAt": "2026-10-29T06:21:47.980Z"
+  },
+  {
+    "taskId": "TASK-disposable-demo-app-002",
+    "projectId": "disposable-demo-app",
+    "title": "Fix IMPORT: Broken relative import path: \"./broken_dependency\"",
+    "description": "Broken relative import path: \"./broken_dependency\"",
+    "findingId": "IMPORT-BROKEN-1572129186",
+    "category": "IMPORT",
+    "priority": 2,
+    "severity": "HIGH",
+    "dependencies": [],
+    "relevantFiles": [
+      "app.js"
+    ],
+    "acceptanceCriteria": [
+      "No IMPORT error in app.js",
+      "Verification test passes cleanly"
+    ],
+    "risk": "LOW",
+    "state": "READY",
+    "attemptCount": 0,
+    "maxAttempts": 3,
+    "checkpointId": null,
+    "evidence": null,
+    "createdAt": "2026-10-29T06:21:47.693Z"
+  }
+]

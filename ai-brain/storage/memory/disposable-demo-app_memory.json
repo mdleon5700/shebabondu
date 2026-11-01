@@ -1,0 +1,15 @@
+[
+  {
+    "defectId": "DEF-DISPOSABLE-01",
+    "signature": "BROKEN_MODULE_IMPORT",
+    "category": "IMPORT",
+    "rootCause": "Missing dependency file broken_dependency.js",
+    "reproductionSteps": [],
+    "affectedFiles": [],
+    "failedPatchAttempts": [],
+    "successfulPatchSummary": "Created broken_dependency.js and verified node test.js",
+    "verificationEvidence": "Test returned APP_SELF_TEST_PASSED",
+    "status": "RESOLVED",
+    "timestamp": "2026-10-29T06:21:48.010Z"
+  }
+]

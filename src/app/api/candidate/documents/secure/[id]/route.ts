@@ -1,0 +1,92 @@
+﻿import { NextResponse } from 'next/server';
+import { getServerSession } from '@/lib/auth';
+import { AdminGovernanceRbac } from '@/lib/governance';
+import { serverDB } from '@/lib/db';
+import { SyntheticUserManager } from '@/lib/testing/synthetic/synthetic-user-manager';
+import fs from 'fs';
+import path from 'path';
+
+export async function GET(req: Request, { params }: { params: { id: string } }) {
+  try {
+    const docId = params.id;
+    const session = getServerSession(req);
+    const adminAuth = AdminGovernanceRbac.authorizeRequest(req, 'certificates.review');
+
+    // 1. Locate the document across database candidate records
+    const allCandidates = serverDB.getAllCandidates();
+    let targetDoc: any = null;
+    let ownerCandidateId: string = '';
+
+    for (const cand of allCandidates) {
+      const docs = serverDB.getDocuments(cand.id);
+      const found = docs.find((d: any) => d.id === docId || d.fileName?.includes(docId));
+      if (found) {
+        targetDoc = found;
+        ownerCandidateId = cand.id;
+        break;
+      }
+    }
+
+    if (!targetDoc) {
+      const synthDoc = SyntheticUserManager.findDocument(docId);
+      if (synthDoc) {
+        targetDoc = synthDoc.doc;
+        ownerCandidateId = synthDoc.candidateId;
+      }
+    }
+
+    if (!targetDoc) {
+      return NextResponse.json({ error: 'à¦¡à¦•à§à¦®à§‡à¦¨à§à¦Ÿ à¦¬à¦¾ à¦¸à¦¨à¦¦à¦ªà¦¤à§à¦°à¦Ÿà¦¿ à¦–à§à¦à¦œà§‡ à¦ªà¦¾à¦“à§Ÿà¦¾ à¦¯à¦¾à§Ÿà¦¨à¦¿à¥¤' }, { status: 404 });
+    }
+
+    // 2. Authorization Guard: Candidate must own document, OR caller must hold admin certificate review permission
+    const isOwner = session && session.candidateId === ownerCandidateId;
+    const isAdmin = adminAuth.authorized;
+
+    if (!isOwner && !isAdmin) {
+      return NextResponse.json({ error: 'FORBIDDEN: à¦à¦‡ à¦¸à¦¨à¦¦à¦ªà¦¤à§à¦°à¦Ÿà¦¿ à¦¦à§‡à¦–à¦¾à¦° à¦…à¦¨à§à¦®à¦¤à¦¿ à¦†à¦ªà¦¨à¦¾à¦° à¦¨à§‡à¦‡à¥¤' }, { status: 403 });
+    }
+
+    // 3. File existence check and mime mapping
+    const uploadDir = path.join(process.cwd(), 'public', 'uploads', 'candidate-documents');
+    const safeFileName = path.basename(targetDoc.fileName || '');
+    const fullFilePath = path.join(uploadDir, safeFileName);
+
+    if (!fs.existsSync(fullFilePath)) {
+      // If physical file not found on disk, return document metadata safely
+      return NextResponse.json({
+        success: true,
+        documentMetadata: targetDoc,
+        message: 'à¦¡à¦•à§à¦®à§‡à¦¨à§à¦Ÿ à¦®à§‡à¦Ÿà¦¾à¦¡à¦¾à¦Ÿà¦¾ à¦‰à¦ªà¦²à¦¬à§à¦§ à¦°à§Ÿà§‡à¦›à§‡à¥¤'
+      });
+    }
+
+    const fileBuffer = fs.readFileSync(fullFilePath);
+    const ext = path.extname(safeFileName).toLowerCase();
+    const mimeTypes: Record<string, string> = {
+      '.pdf': 'application/pdf',
+      '.jpg': 'image/jpeg',
+      '.jpeg': 'image/jpeg',
+      '.png': 'image/png',
+      '.webp': 'image/webp'
+    };
+
+    const contentType = mimeTypes[ext] || 'application/octet-stream';
+
+    return new Response(fileBuffer, {
+      status: 200,
+      headers: {
+        'Content-Type': contentType,
+        'Content-Disposition': `inline; filename="${safeFileName}"`,
+        'X-Content-Type-Options': 'nosniff',
+        'Cache-Control': 'private, max-age=3600'
+      }
+    });
+  } catch (error: any) {
+    return NextResponse.json(
+      { error: error.message || 'à¦¡à¦•à§à¦®à§‡à¦¨à§à¦Ÿ à¦…à§à¦¯à¦¾à¦•à§à¦¸à§‡à¦¸ à¦•à¦°à¦¤à§‡ à¦¤à§à¦°à§à¦Ÿà¦¿ à¦¹à§Ÿà§‡à¦›à§‡' },
+      { status: 500 }
+    );
+  }
+}
+

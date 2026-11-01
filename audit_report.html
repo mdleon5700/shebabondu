@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <title>Chakri Sheba — Master Website Audit Report</title>
+  <style>
+    :root {
+      --primary: #047857;
+      --primary-dark: #064e3b;
+      --bg: #0f172a;
+      --card-bg: #1e293b;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --border: #334155;
+      --pass: #10b981;
+      --fail: #ef4444;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      padding: 30px 20px;
+      line-height: 1.5;
+    }
+    .container { max-width: 1200px; margin: 0 auto; }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 28px;
+    }
+    h1 { font-size: 24px; font-weight: 800; color: #34d399; display: flex; align-items: center; gap: 8px; }
+    .time-badge { font-size: 14px; color: var(--text-muted); }
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    .metric-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+    }
+    .metric-label { font-size: 13px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; }
+    .metric-value { font-size: 28px; font-weight: 800; margin-top: 6px; }
+    .metric-value.green { color: #34d399; }
+    .metric-value.cyan { color: #38bdf8; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--card-bg);
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    th {
+      background: #0f172a;
+      text-align: left;
+      padding: 14px 16px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border);
+    }
+    td {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+    }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(255,255,255,0.02); }
+    .badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+    .badge.pass { background: rgba(16, 185, 129, 0.2); color: #34d399; }
+    .badge.fail { background: rgba(239, 68, 68, 0.2); color: #f87171; }
+    .module-tag {
+      background: rgba(56, 189, 248, 0.15);
+      color: #38bdf8;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .latency.fast { color: #34d399; font-weight: 700; }
+    .latency.normal { color: #fbbf24; font-weight: 700; }
+    .latency.slow { color: #f87171; font-weight: 700; }
+    .step-name { font-weight: 600; color: #f1f5f9; }
+    .detail-cell { color: var(--text-muted); font-size: 13px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div>
+        <h1>🛡️ চাকরি সেবা — মাস্টার ওয়েবসাইট অডিট ও হেলথ রিপোর্ট</h1>
+        <p style="color: var(--text-muted); font-size: 14px; margin-top: 4px;">Target: http://localhost:3000 • Engine: ChakriSheba Synthetic Watchdog</p>
+      </div>
+      <div class="time-badge">Generated: 30 October 2026, 07:57 PM</div>
+    </header>
+
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-label">সর্বমোট চেক</div>
+        <div class="metric-value">48টি</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">সফল ফলাফল (Pass Rate)</div>
+        <div class="metric-value green">100.0%</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">ব্যর্থ বা সমস্যা (Errors)</div>
+        <div class="metric-value green">0টি</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">গড় রেসপন্স টাইম (Latency)</div>
+        <div class="metric-value cyan">116 ms</div>
+      </div>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 40px;">#</th>
+          <th style="width: 120px;">মডিউল</th>
+          <th>নিরীক্ষিত বিষয় ও ধাপ</th>
+          <th style="width: 80px;">স্ট্যাটাস</th>
+          <th style="width: 100px;">সময়কাল</th>
+          <th>প্রমাণ ও বিবরণ</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+            <tr>
+              <td>1</td>
+              <td><span class="module-tag">Guest</span></td>
+              <td class="step-name">১.১ হোমপেজ লোড ও ব্র্যান্ড এলিমেন্ট</td>
+              <td><span class="badge pass">PASS</span></td>
+              <td><span class="latency fast">124 ms</span></td>
+              <td class="detail-cell">হোমপেজ, টাইটেল ও লাইভ নোটিশ বার সক্রিয়</td>
+            </tr>
+            
+            <tr>
+              <td>2</td>
+              <td><span class="module-tag">Guest</span></td>
+              <td class="step-name">১.২ বাংলা জব সার্চ সিমুলেশন: "বাংলাদেশ ব্যাংক"</td>
+              <td><span class="badge pass">PASS</span></td>
+              <td><span class="latency fast">86 ms</span></td>
+              <td class="detail-cell">HTTP 200</td>
+            </tr>
+            
+            <tr>
+              <td>3</td>
+              <td><span class="module-tag">Guest</span></td>
+              <td class="step-name">১.২ বাংলা জব সার্চ সিমুলেশন: "বিসিএস"</td>
+              <td><span class="badge pass">PASS</span></td>
+              <td><span class="latency fast">76 ms</span></td>
+              <td class="detail-cell">HTTP 200</td>
+            </tr>
+            
+            <tr>
+              <td>4</td>
+              <td><span class="module-tag">Guest</span></td>
+              <td class="step-name">১.২ বাংলা জব সার্চ সিমুলেশন: "সহকারী"</td>
+              <td><span class="badge pass">PASS</span></td>
+              <td><span class="latency fast">91 ms</span></td>
+              <td class="detail-cell">HTTP 200</td>
+            </tr>
+            
+            <tr>
+              <td>5</td>
+              <td><span class="module-tag">Guest</span></td>
+              <td class="step-name">১.৩ ক্যাটাগরি ফিল্টার: সরকারি চাকরি</td>
+              <td><span class="badge pass">PASS</span></td>
+              <td><span class="latency fast">93 ms</span></td>
+              <td class="detail-cell">HTTP 200</td>
+            </tr>
+            
+            <tr>
+              <td>6</td>
+              <td><span class="module-tag">Guest</span></td>
+              <td class="step-name">১.৩ ক্যাটাগরি ফিল্টার: ব্যাংক জবস</td>
+              <td><span class="badge pass">PASS</span></td>
+              <td><span class="latency fast">92 ms</span></td>
+              <td class="detail-cell">HTTP 200</td>
+            </tr>
+            
+            <tr>
+              <td>7</td>
+              <td><span class="module-tag">Guest</span></td>
+              <td class="step-name">১.৩ ক্যাটাগরি ফিল্টার: শিক্ষক নিয়োগ</td>
+              <td><span class="badge pass">PASS</span></td>
+              <td><span class="latency fast">93 ms</span></td>
+              <td class="detail-cell">HTTP 200</td>
+            </tr>
+            
+            <tr>
+              <td>8</td>
+              <td><span class="module-tag">Guest</span></td>
+              <td class="step-name">১.৩ ক্যাটাগরি ফিল্টার: আইটি ও সফটওয়্যার</td>
+              <td><span class="badge pass">PASS</span></td>
+              <td><span class="latency fast">63 ms</span></td>
+              <td class="detail-cell">HTTP 200</td>
+            </tr>
+            
+            <tr>
+              <td>9</td>
+              <td><span class="module-tag">Guest</span></td>
+              <td class="step-name">১.৩ ক্যাটাগরি ফিল্টার: এডমিট কার্ড ডাউনলোড</td>
+              <td><span class="badge pass">PASS</span></td>
+              <td><span class="latency fast">76 ms</span></td>
+              <td class="detail-cell">HTTP 200</td>
+            </tr>
+            
+            <tr>
+              <td>10</td>
+              <td><span class="module-tag">Guest</span></td>
+              <td class="step-name">১.৩ ক্যাটাগরি ফিল্টার: পরীক্ষার ফলাফল</td>
+              <td><span class="badge pass">PASS</span></td>
+              <td><span class="latency fast">90 ms</span></td>
+              <td class="detail-cell">HTTP 200</td>
+            </tr>
+            
+            <tr>
+              <td>11</td>
+              <td><span class="module-tag">Guest</span></td>
+              <td class="step-name">১.৪ সার্কুলার বিস্তারিত ভিউ ও লোগো রেন্ডারিং</td>
+              <td><span class="badge pass">PASS</span></td>
+              <td><span class="latency fast">206 ms</span></td>
+              <td class="detail-cell">সার্কুলার ডাটা সক্রিয় এবং কোনো র ইমেজ ইউআরএল টেক্সট ফাঁস নেই</td>
+            </tr>
+            
+            <tr>
+              <td>12</td>
+              <td><span class="module-tag">Guest</span></td>
+              <td class="step-name">১.৫ ১-ক্লিক আবেদন পোর্টাল ভিউ</td>
+              <td><span class="badge pass">PASS</span></td>
+              <td><span class="latency fast">154 ms</span></td>
+              <td class="detail-cell">HTTP 200</td>
+            </tr>
+            
+            <tr>
+              <td>13</td>
+              <td><span class="module-tag">Guest</span></td>
+              <td class="step-name">১.৬ ফেক সার্কুলার গার্ড (404 Fallback)</td>
+              <td><span class="badge pass">PASS</span></td>
+              <td><span class="latency fast">165 ms</span></td>
+              <td class="detail-cell">Expected 404 -> Got 404</td>
+            </tr>
+            
+            <tr>
+              <td>14</td>
+              <td><span class="module-tag">Candidate</span></td>
+              <td class="step-name">২.১ ক্যান্ডিডেট সেশন ও আইডেন্টিটি ভ্যালিডেশন</td>
+              <td><span class="badge pass">PASS</span></td>
+              <td><span class="latency fast">130 ms</span></td>
+              <td class="detail-cell">HTTP 200</td>
+            </tr>
+            
+            <tr>
+              <td>15</td>
+              <td><span class="module-tag">Candidate</span></td>
+              <td class="step-name">২.২ ক্যান্ডিডেট প্রোফাইল তথ্য রিট্রাইভাল</td>
+              <td><span class="badge pass">PASS</span></td>
+              <td><span class="latency fast">113 ms</span></td>
+              <td class="detail-cell">HTTP 200</td>
+            </tr>
+            
+            <tr>
+              <td>16</td>
+              <td><span class="module-tag">Candidate</span></td>
+              <td class="step-name">২.৩ আবেদনের অগ্রগতি ও ট্র্যাকিং হিস্ট্রি</td>
+              <td><span class="badge pass">PASS</span></td>
+              <td><span class="latency fast">110 ms</span></td>
+              <td class="detail-cell">HTTP 200</td>
+            </tr>
+            
+            <tr>
+              <td>17</td>
+              <td><span class="module-tag">Candidate</span></td>
+              <td class="step-name">২.৪ ডিজিটাল ডকুমেন্ট ভল্ট এপিআই</td>
+              <td><span class="badge pass">PASS</span></td>
+              <td><span class="latency fast">93 ms</span></td>
+              <td class="detail-cell">HTTP 200</td>
+            </tr>
+            
+            <tr>
+              <td>18</td>
+              <td><span class="module-tag">Candidate</span></td>
+              <td class="step-name">২.৫ ওয়ালেট ব্যালেন্স ও পেমেন্ট রসিদ হিস্ট্রি</td>
+              <td><span class="badge pass">PASS</span></td>
+              <td><span class="latency fast">129 ms</span></td>
+              <td class="detail-cell">HTTP 200</td>
+            </tr>
+            
+            <tr>
+              <td>19</td>
+              <td><span class="module-tag">Candidate</span></td>
+              <td class="step-name">২.৬ ড্যাশবোর্ড পেজ: মূল ড্যাশবোর্ড</td>
+              <td><span class="badge pass">PASS</span></td>
+              <td><span class="latency fast">125 ms</span></td>
+              <td class="detail-cell">HTTP 200</td>
+            </tr>
+            
+            <tr>
+              <td>20</td>
+              <td><span class="module-tag">Candidate</span></td>
+              <td class="step-name">২.৬ ড্যাশবোর্ড পেজ: আবেদন তালিকা পেজ</td>
+              <td><span class="badge pass">PASS</span></td>
+              <td><span class="latency fast">108 ms</span></td>
+              <td class="detail-cell">HTTP 200</td>
+            </tr>
+            
+            <tr>
+              <td>21</td>
+              <td><span class="module-tag">Candidate</span></td>
+              <td class="step-name">২.৬ ড্যাশবোর্ড পেজ: ডকুমেন্ট ভল্ট পেজ</td>
+              <td><span class="badge pass">PASS</span></td>
+              <td><span class="latency fast">138 ms</span></td>
+              <td class="detail-cell">HTTP 200</td>
+            </tr>
+            
+            <tr>
+              <td>22</td>
+              <td><span class="module-tag">Candidate</span></td>
+              <td class="step-name">২.৬ ড্যাশবোর্ড পেজ: বুকমার্ক করা চাকরি পেজ</td>
+              <td><span class="badge pass">PASS</span></td>
+              <td><span class="latency fast">91 ms</span></td>
+              <td class="detail-cell">HTTP 200</td>
+            </tr>
+            
+            <tr>
+              <td>23</td>
+              <td><span class="module-tag">Candidate</span></td>
+              <td class="step-name">২.৬ ড্যাশবোর্ড পেজ: সিভি বিল্ডার পেজ</td>
+              <td><span class="badge pass">PASS</span></td>
+              <td><span class="latency fast">124 ms</span></td>
+              <td class="detail-cell">HTTP 200</td>
+            </tr>
+            
+            <tr>
+              <td>24</td>
+              <td><span class="module-tag">Admin</span></td>
+              <td class="step-name">৩.১ অ্যাডমিন পিন অথেনটিকেশন ও লগইন</td>
+              <td><span class="badge pass">PASS</span></td>
+              <td><span class="latency fast">90 ms</span></td>
+              <td class="detail-cell">HTTP 200</td>
+            </tr>
+            
+            <tr>
+              <td>25</td>
+              <td><span class="module-tag">Admin</span></td>
+              <td class="step-name">৩.২ প্ল্যাটফর্ম সার্বিক অ্যানালিটিক্স ও কাউন্টার</td>
+              <td><span class="badge pass">PASS</span></td>
+              <td><span class="latency fast">238 ms</span></td>
+              <td class="detail-cell">HTTP 200</td>
+            </tr>
+            
+            <tr>
+              <td>26</td>
+              <td><span class="module-tag">Admin</span></td>
+              <td class="step-name">৩.২ সার্কুলার পাবলিশিং ও ম্যানেজমেন্ট এপিআই</td>
+              <td><span class="badge pass">PASS</span></td>
+              <td><span class="latency fast">144 ms</span></td>
+              <td class="detail-cell">HTTP 200</td>
+            </tr>
+            
+            <tr>
+              <td>27</td>
+              <td><span class="module-tag">Admin</span></td>
+              <td class="step-name">৩.২ জব সোর্স ও কালেক্টর মনিটরিং এপিআই</td>
+              <td><span class="badge pass">PASS</span></td>
+              <td><span class="latency fast">111 ms</span></td>
+              <td class="detail-cell">HTTP 200</td>
+            </tr>
+            
+            <tr>
+              <td>28</td>
+              <td><span class="module-tag">Admin</span></td>
+              <td class="step-name">৩.২ সংগৃহীত ড্রাফট সার্কুলার রিভিউ কিউ</td>
+              <td><span class="badge pass">PASS</span></td>
+              <td><span class="latency fast">102 ms</span></td>
+              <td class="detail-cell">HTTP 200</td>
+            </tr>
+            
+            <tr>
+              <td>29</td>
+              <td><span class="module-tag">Admin</span></td>
+              <td class="step-name">৩.২ ক্যান্ডিডেট ডিরেক্টরি এপিআই</td>
+              <td><span class="badge pass">PASS</span></td>
+              <td><span class="latency slow">1150 ms</span></td>
+              <td class="detail-cell">HTTP 200</td>
+            </tr>
+            
+            <tr>
+              <td>30</td>
+              <td><span class="module-tag">Admin</span></td>
+              <td class="step-name">৩.২ সিকিউরিটি অডিট ও অপারেশনাল লগস</td>
+              <td><span class="badge pass">PASS</span></td>
+              <td><span class="latency fast">85 ms</span></td>
+              <td class="detail-cell">HTTP 200</td>
+            </tr>
+            
+            <tr>
+              <td>31</td>
+              <td><span class="module-tag">Admin</span></td>
+              <td class="step-name">৩.৩ অ্যাডমিন প্যানেল ফুল UI পেজ ভিউ</td>
+              <td><span class="badge pass">PASS</span></td>
+              <td><span class="latency normal">510 ms</span></td>
+              <td class="detail-cell">HTTP 200</td>
+            </tr>
+            
+            <tr>
+              <td>32</td>
+              <td><span class="module-tag">Security</span></td>
+              <td class="step-name">৪.১ বহিরাগতদের জন্য অ্যাডমিন এপিআই ব্লক (401/403)</td>
+              <td><span class="badge pass">PASS</span></td>
+              <td><span class="latency fast">43 ms</span></td>
+              <td class="detail-cell">Protected: HTTP 403</td>
+            </tr>
+            
+            <tr>
+              <td>33</td>
+              <td><span class="module-tag">Security</span></td>
+              <td class="step-name">৪.২ ড্রাফট সার্কুলার ডাটাবেজ প্রটেকশন (RBAC)</td>
+              <td><span class="badge pass">PASS</span></td>
+              <td><span class="latency fast">12 ms</span></td>
+              <td class="detail-cell">Protected: HTTP 403</td>
+            </tr>
+            
+            <tr>
+              <td>34</td>
+              <td><span class="module-tag">Security</span></td>
+              <td class="step-name">৪.৩ ক্যান্ডিডেট প্রোফাইল ডেটা প্রটেকশন (401)</td>
+              <td><span class="badge pass">PASS</span></td>
+              <td><span class="latency fast">25 ms</span></td>
+              <td class="detail-cell">Protected: HTTP 401</td>
+            </tr>
+            
+            <tr>
+              <td>35</td>
+              <td><span class="module-tag">Security</span></td>
+              <td class="step-name">৪.৪ ডিজিটাল ডকুমেন্ট ভল্ট সিকিউরিটি (401)</td>
+              <td><span class="badge pass">PASS</span></td>
+              <td><span class="latency fast">19 ms</span></td>
+              <td class="detail-cell">Protected: HTTP 401</td>
+            </tr>
+            
+            <tr>
+              <td>36</td>
+              <td><span class="module-tag">Security</span></td>
+              <td class="step-name">৪.৫ মেথড নট এলাউড গার্ড (/api/auth/login GET -> 405)</td>
+              <td><span class="badge pass">PASS</span></td>
+              <td><span class="latency fast">22 ms</span></td>
+              <td class="detail-cell">Method Guard: HTTP 405</td>
+            </tr>
+            
+            <tr>
+              <td>37</td>
+              <td><span class="module-tag">Security</span></td>
+              <td class="step-name">৪.৬ অবৈধ অ্যাডমিন পিন রিজেকশন গার্ড (401)</td>
+              <td><span class="badge pass">PASS</span></td>
+              <td><span class="latency fast">23 ms</span></td>
+              <td class="detail-cell">Rejected: HTTP 401</td>
+            </tr>
+            
+            <tr>
+              <td>38</td>
+              <td><span class="module-tag">SEO</span></td>
+              <td class="step-name">৫.১ robots.txt ক্রলার রুলস ও সাইটম্যাপ লিংক</td>
+              <td><span class="badge pass">PASS</span></td>
+              <td><span class="latency fast">21 ms</span></td>
+              <td class="detail-cell">User-Agent ও Sitemap নির্দেশিকা বিদ্যমান</td>
+            </tr>
+            
+            <tr>
+              <td>39</td>
+              <td><span class="module-tag">SEO</span></td>
+              <td class="step-name">৫.২ sitemap.xml এক্সএমএল ফরম্যাট ও ইউআরএল সংখ্যা</td>
+              <td><span class="badge pass">PASS</span></td>
+              <td><span class="latency fast">121 ms</span></td>
+              <td class="detail-cell">সাইটম্যাপে ইনডেক্স করা ইউআরএল: 309টি</td>
+            </tr>
+            
+            <tr>
+              <td>40</td>
+              <td><span class="module-tag">SEO</span></td>
+              <td class="step-name">৫.৩ হোমপেজ এসইও ট্যাগস (Title, Desc, Canonical)</td>
+              <td><span class="badge pass">PASS</span></td>
+              <td><span class="latency fast">66 ms</span></td>
+              <td class="detail-cell">Title, Description এবং Canonical লিংক ট্যাগ যথাযথভাবে সেট আছে</td>
+            </tr>
+            
+            <tr>
+              <td>41</td>
+              <td><span class="module-tag">SEO</span></td>
+              <td class="step-name">৫.৪ গুগল জব স্কিমা (JobPosting JSON-LD)</td>
+              <td><span class="badge pass">PASS</span></td>
+              <td><span class="latency fast">133 ms</span></td>
+              <td class="detail-cell">গুগল সার্চ ইনডেক্সিংয়ের জন্য Structured Data উপস্থিত</td>
+            </tr>
+            
+            <tr>
+              <td>42</td>
+              <td><span class="module-tag">Database</span></td>
+              <td class="step-name">৬.১ ডাটাবেজ ফাইলের উপস্থিতি (local_store.json)</td>
+              <td><span class="badge pass">PASS</span></td>
+              <td><span class="latency fast">0 ms</span></td>
+              <td class="detail-cell">C:\Users\Leon Rahman\Documents\chakri-sheba\src\db\local_store.json</td>
+            </tr>
+            
+            <tr>
+              <td>43</td>
+              <td><span class="module-tag">Database</span></td>
+              <td class="step-name">৬.২ ডাটাবেজ সিনট্যাক্স ও বৈধ JSON স্ট্রাকচার</td>
+              <td><span class="badge pass">PASS</span></td>
+              <td><span class="latency fast">2 ms</span></td>
+              <td class="detail-cell">Syntax Valid</td>
+            </tr>
+            
+            <tr>
+              <td>44</td>
+              <td><span class="module-tag">Database</span></td>
+              <td class="step-name">৬.৩ ক্যানোনিকাল চাকরির সংখ্যা (Invariant: >=9)</td>
+              <td><span class="badge pass">PASS</span></td>
+              <td><span class="latency fast">1 ms</span></td>
+              <td class="detail-cell">বর্তমান সক্রিয় সার্কুলার: 210টি</td>
+            </tr>
+            
+            <tr>
+              <td>45</td>
+              <td><span class="module-tag">Database</span></td>
+              <td class="step-name">৬.৪ নিবন্ধিত অফিশিয়াল সোর্স (BB, BPSC, Teletalk)</td>
+              <td><span class="badge pass">PASS</span></td>
+              <td><span class="latency fast">1 ms</span></td>
+              <td class="detail-cell">রেজিস্টার্ড সোর্স: 5টি</td>
+            </tr>
+            
+            <tr>
+              <td>46</td>
+              <td><span class="module-tag">Database</span></td>
+              <td class="step-name">৬.৫ ড্রাফট সার্কুলার কিউ রেকর্ড</td>
+              <td><span class="badge pass">PASS</span></td>
+              <td><span class="latency fast">1 ms</span></td>
+              <td class="detail-cell">ড্রাফট সংখ্যা: 29টি</td>
+            </tr>
+            
+            <tr>
+              <td>47</td>
+              <td><span class="module-tag">Database</span></td>
+              <td class="step-name">৬.৬ নিবন্ধিত চাকরিপ্রার্থী অ্যাকাউন্ট অখণ্ডতা</td>
+              <td><span class="badge pass">PASS</span></td>
+              <td><span class="latency fast">1 ms</span></td>
+              <td class="detail-cell">ক্যান্ডিডেট প্রোফাইল: 41টি</td>
+            </tr>
+            
+            <tr>
+              <td>48</td>
+              <td><span class="module-tag">Database</span></td>
+              <td class="step-name">৬.৭ চাকরি আবেদন রেকর্ড অখণ্ডতা</td>
+              <td><span class="badge pass">PASS</span></td>
+              <td><span class="latency fast">1 ms</span></td>
+              <td class="detail-cell">আবেদন রেকর্ড: 41টি</td>
+            </tr>
+            
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>

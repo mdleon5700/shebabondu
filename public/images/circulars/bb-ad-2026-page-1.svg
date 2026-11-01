@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1130" width="100%" height="100%">
+  <defs>
+    <style>
+      .title { font-family: 'SolaimanLipi', sans-serif; font-size: 20px; font-weight: bold; fill: #0f172a; text-anchor: middle; }
+      .sub { font-family: 'SolaimanLipi', sans-serif; font-size: 14px; fill: #334155; text-anchor: middle; }
+      .head { font-family: 'SolaimanLipi', sans-serif; font-size: 17px; font-weight: bold; fill: #047857; text-anchor: middle; }
+      .text { font-family: 'SolaimanLipi', sans-serif; font-size: 13px; fill: #1e293b; line-height: 1.5; }
+      .bold { font-weight: bold; fill: #0f172a; }
+      .th { font-family: 'SolaimanLipi', sans-serif; font-size: 12px; font-weight: bold; fill: #0f172a; }
+      .td { font-family: 'SolaimanLipi', sans-serif; font-size: 12px; fill: #1e293b; }
+      .meta { font-family: 'SolaimanLipi', sans-serif; font-size: 12px; fill: #475569; }
+    </style>
+  </defs>
+  <!-- Paper Background -->
+  <rect width="800" height="1130" fill="#ffffff" />
+  <rect x="25" y="25" width="750" height="1080" fill="none" stroke="#cbd5e1" stroke-width="1.5" />
+  <rect x="29" y="29" width="742" height="1072" fill="none" stroke="#047857" stroke-width="0.8" opacity="0.6" />
+
+  <!-- Header & Crest -->
+  <circle cx="400" cy="70" r="24" fill="#ecfdf5" stroke="#059669" stroke-width="1.5" />
+  <text x="400" y="78" font-size="24" text-anchor="middle">🏛️</text>
+  <text x="400" y="112" class="title">বাংলাদেশ ব্যাংক</text>
+  <text x="400" y="132" class="sub">প্রধান কার্যালয়, মতিঝিল, ঢাকা-১০০০</text>
+  <text x="400" y="150" class="sub">হিউম্যান রিসোর্সেস ডিপার্টমেন্ট-১ (কর্মী শাখা)</text>
+
+  <!-- Memo & Date -->
+  <line x1="50" y1="165" x2="750" y2="165" stroke="#047857" stroke-width="1" />
+  <text x="60" y="185" class="meta">স্মারক নং: এইচআরডি-১/কর্মী-নিয়োগ/২০২৬-১৮৭</text>
+  <text x="740" y="185" class="meta" text-anchor="end">তারিখ: ১২ আশ্বিন ১৪৩৩ / ২৬ অক্টোবর ২০২৬</text>
+
+  <!-- Circular Notice Title -->
+  <rect x="180" y="205" width="440" height="34" rx="6" fill="#f0fdf4" stroke="#86efac" />
+  <text x="400" y="228" class="head">নিয়োগ বিজ্ঞপ্তি (পৃষ্ঠা - ০১)</text>
+
+  <!-- Notice Body -->
+  <text x="60" y="265" class="text">বাংলাদেশ ব্যাংকের নিম্নবর্ণিত ৯ম ও ১০ম গ্রেডের স্থায়ী শূন্য পদসমূহে প্রতিযোগিতামূলক পরীক্ষার মাধ্যমে জনবল নিয়োগের নিমিত্তে প্রকৃত</text>
+  <text x="60" y="285" class="text">বাংলাদেশি নাগরিকদের নিকট হতে অনলাইনে (https://erecruitment.bb.org.bd) দরখাস্ত আহ্বান করা যাচ্ছে:</text>
+
+  <!-- Position Table -->
+  <g transform="translate(50, 305)">
+    <!-- Table Header -->
+    <rect x="0" y="0" width="700" height="32" fill="#f1f5f9" stroke="#94a3b8" />
+    <line x1="40" y1="0" x2="40" y2="32" stroke="#94a3b8" />
+    <line x1="220" y1="0" x2="220" y2="32" stroke="#94a3b8" />
+    <line x1="310" y1="0" x2="310" y2="32" stroke="#94a3b8" />
+    <line x1="380" y1="0" x2="380" y2="32" stroke="#94a3b8" />
+    <line x1="620" y1="0" x2="620" y2="32" stroke="#94a3b8" />
+
+    <text x="20" y="20" class="th" text-anchor="middle">ক্র.</text>
+    <text x="130" y="20" class="th" text-anchor="middle">পদের নাম ও গ্রেড</text>
+    <text x="265" y="20" class="th" text-anchor="middle">বেতন স্কেল</text>
+    <text x="345" y="20" class="th" text-anchor="middle">পদসংখ্যা</text>
+    <text x="500" y="20" class="th" text-anchor="middle">প্রয়োজনীয় শিক্ষাগত যোগ্যতা</text>
+    <text x="660" y="20" class="th" text-anchor="middle">ফি</text>
+
+    <!-- Row 1: AD General -->
+    <rect x="0" y="32" width="700" height="60" fill="#ffffff" stroke="#cbd5e1" />
+    <text x="20" y="65" class="td" text-anchor="middle">০১</text>
+    <text x="50" y="58" class="td bold">সহকারী পরিচালক (জেনারেল)</text>
+    <text x="50" y="76" class="meta">জাতীয় বেতন স্কেল - ৯ম গ্রেড</text>
+    <text x="225" y="65" class="td">২২,০০০ - ৫৩,০৬০/-</text>
+    <text x="345" y="65" class="td bold" text-anchor="middle" fill="#047857">১০০ টি</text>
+    <text x="390" y="54" class="td">স্বীকৃত বিশ্ববিদ্যালয় হতে যেকোনো বিষয়ে ৪ বছর মেয়াদী স্নাতক</text>
+    <text x="390" y="70" class="td">(সম্মান) বা স্নাতকোত্তর। কোনো পরীক্ষায় ৩য় বিভাগ নয়।</text>
+    <text x="660" y="65" class="td bold" text-anchor="middle">৳২০০</text>
+
+    <!-- Row 2: AD Research -->
+    <rect x="0" y="92" width="700" height="60" fill="#f8fafc" stroke="#cbd5e1" />
+    <text x="20" y="125" class="td" text-anchor="middle">০২</text>
+    <text x="50" y="118" class="td bold">সহকারী পরিচালক (পরিসংখ্যান)</text>
+    <text x="50" y="136" class="meta">জাতীয় বেতন স্কেল - ৯ম গ্রেড</text>
+    <text x="225" y="125" class="td">২২,০০০ - ৫৩,০৬০/-</text>
+    <text x="345" y="125" class="td bold" text-anchor="middle" fill="#047857">৪৫ টি</text>
+    <text x="390" y="114" class="td">অর্থনীতি, পরিসংখ্যান বা গণিত বিষয়ে ন্যূনতম ২য় শ্রেণি</text>
+    <text x="390" y="130" class="td">বা সমমানের সিজিপিএ সহ মাস্টার্স ডিগ্রি।</text>
+    <text x="660" y="125" class="td bold" text-anchor="middle">৳২০০</text>
+
+    <!-- Row 3: Officer -->
+    <rect x="0" y="152" width="700" height="55" fill="#ffffff" stroke="#cbd5e1" />
+    <text x="20" y="183" class="td" text-anchor="middle">০৩</text>
+    <text x="50" y="176" class="td bold">অফিসার (সাধারণ ক্যাশ)</text>
+    <text x="50" y="193" class="meta">জাতীয় বেতন স্কেল - ১০ম গ্রেড</text>
+    <text x="225" y="183" class="td">১৬,০০০ - ৩৮,৬৪০/-</text>
+    <text x="345" y="183" class="td bold" text-anchor="middle" fill="#047857">৩০ টি</text>
+    <text x="390" y="174" class="td">যেকোনো স্বীকৃত বিশ্ববিদ্যালয় হতে স্নাতক বা সমমান ডিগ্রি।</text>
+    <text x="390" y="190" class="td">কম্পিউটার চালনায় মৌলিক জ্ঞান থাকতে হবে।</text>
+    <text x="660" y="183" class="td bold" text-anchor="middle">৳১১২</text>
+
+    <!-- Total -->
+    <rect x="0" y="207" width="700" height="28" fill="#ecfdf5" stroke="#94a3b8" />
+    <text x="180" y="225" class="td bold" text-anchor="middle">সর্বমোট শূন্যপদের সংখ্যা</text>
+    <text x="345" y="225" class="td bold" text-anchor="middle" fill="#065f46">১৭৫ টি পদ</text>
+  </g>
+
+  <!-- Instructions Title -->
+  <text x="60" y="580" class="head" text-anchor="start">আবেদন সংক্রান্ত সাধারণ নির্দেশনাবলী ও প্রাথমিক যোগ্যতা:</text>
+  <text x="60" y="610" class="text">১. বয়সসীমা: ০১ অক্টোবর ২০২৬ তারিখে সাধারণ প্রার্থীর বয়স ২১ হতে ৩২ বছর। বীর মুক্তিযোদ্ধা সন্তান ও প্রতিবন্ধীদের ক্ষেত্রে ৩২ বছর।</text>
+  <text x="60" y="635" class="text">২. শিক্ষাগত যোগ্যতা: এসএসসি ও এইচএসসি পর্যায়ে জিপিএ ৩.০০ বা তদূর্ধ্ব ১ম বিভাগ এবং ডিগ্রি পর্যায়ে সিজিপিএ ৩.০০ ১ম শ্রেণি গণ্য হবে।</text>
+  <text x="60" y="660" class="text">৩. ৩য় বিভাগ সংক্রান্ত: শিক্ষাজীবনের কোনো পর্যায়ে ৩য় বিভাগ/শ্রেণি বা সমমানের সিজিপিএ থাকলে তিনি অযোগ্য বিবেচিত হবেন।</text>
+  <text x="60" y="685" class="text">৪. অনলাইন আবেদনের ঠিকানা: বাংলাদেশ ব্যাংক রিক্রুটমেন্ট পোর্টাল (https://erecruitment.bb.org.bd)-এ ফরম পূরণ করতে হবে।</text>
+  <text x="60" y="710" class="text">৫. শেষ সময়: আগামী ১৫ নভেম্বর ২০২৬ তারিখ রাত ১১:৫৯ মিনিট পর্যন্ত আবেদন ফরম দাখিল ও ফি পরিশোধ করা যাবে।</text>
+
+  <!-- Page Footer Watermark & Navigation note -->
+  <line x1="50" y1="1040" x2="750" y2="1040" stroke="#e2e8f0" stroke-width="1" />
+  <text x="60" y="1060" class="meta">অফিসিয়াল সার্কুলার গেজেট • বাংলাদেশ ব্যাংক • পৃষ্ঠা ১ / ২</text>
+  <text x="740" y="1060" class="meta" text-anchor="end">পরবর্তী পৃষ্ঠায় শর্তাবলী ও পরিচালকের স্বাক্ষর দ্রষ্টব্য ➔</text>
+</svg>

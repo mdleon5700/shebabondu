@@ -1,0 +1,14 @@
+{
+  "checkpointId": "CP-disposable-demo-app-1793254806807-698",
+  "projectId": "disposable-demo-app",
+  "taskId": "TASK-FIX-01",
+  "workspacePath": "C:\\Users\\Leon Rahman\\Documents\\chakri-sheba\\ai-brain\\disposable_test_target",
+  "timestamp": "2026-10-29T06:20:06.808Z",
+  "files": [
+    {
+      "relPath": "messages.json",
+      "fullPath": "C:\\Users\\Leon Rahman\\Documents\\chakri-sheba\\ai-brain\\disposable_test_target\\messages.json",
+      "backupPath": "C:\\Users\\Leon Rahman\\Documents\\chakri-sheba\\ai-brain\\storage\\checkpoints\\CP-disposable-demo-app-1793254806807-698\\6d657373616765732e6a736f6e"
+    }
+  ]
+}

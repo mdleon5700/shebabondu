@@ -1,0 +1,53 @@
+[
+  {
+    "taskId": "T-BASE",
+    "projectId": "test-ms2-project",
+    "title": "Base Infrastructure",
+    "description": "Base Infrastructure",
+    "priority": 1,
+    "severity": "MEDIUM",
+    "dependencies": [],
+    "relevantFiles": [],
+    "acceptanceCriteria": [
+      "Task execution succeeds without regressions"
+    ],
+    "risk": "LOW",
+    "state": "COMPLETED",
+    "attemptCount": 1,
+    "maxAttempts": 3,
+    "checkpointId": null,
+    "evidence": null,
+    "createdAt": "2026-10-29T12:17:45.735Z",
+    "leaseOwner": null,
+    "leaseExpiresAt": null,
+    "startedAt": "2026-10-29T12:17:45.738Z",
+    "updatedAt": "2026-10-29T12:17:45.740Z",
+    "resultEvidence": "Base created cleanly",
+    "completedAt": "2026-10-29T12:17:45.740Z"
+  },
+  {
+    "taskId": "T-FEAT",
+    "projectId": "test-ms2-project",
+    "title": "Feature Module",
+    "description": "Feature Module",
+    "priority": 2,
+    "severity": "MEDIUM",
+    "dependencies": [
+      "T-BASE"
+    ],
+    "relevantFiles": [],
+    "acceptanceCriteria": [
+      "Task execution succeeds without regressions"
+    ],
+    "risk": "LOW",
+    "state": "READY",
+    "attemptCount": 1,
+    "maxAttempts": 3,
+    "checkpointId": null,
+    "evidence": null,
+    "createdAt": "2026-10-29T12:17:45.735Z",
+    "leaseOwner": null,
+    "leaseExpiresAt": null,
+    "startedAt": "2026-10-29T12:17:45.742Z"
+  }
+]

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Metadata } from 'next';
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import Link from 'next/link';
 import { 
   Building2, 
@@ -49,7 +49,12 @@ export default async function CategoryLandingPage({ params, searchParams }: Prop
   const category = serverDB.getCategoryBySlug(slug);
 
   if (!category) {
-    notFound();
+    redirect(`/jobs?search=${encodeURIComponent(slug)}`);
+  }
+
+  // Canonical redirect if requested by an alias
+  if (category.slug.toLowerCase() !== slug) {
+    redirect(`/categories/${category.slug}`);
   }
 
   const allCategories = serverDB.getCategories().filter((c) => c.is_active);

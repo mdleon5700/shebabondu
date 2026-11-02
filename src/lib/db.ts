@@ -7834,13 +7834,75 @@ export const serverDB = {
 
 
   getCategoryBySlug(slug: string): import('./taxonomy/types').CategoryRecord | null {
-
+    if (!slug) return null;
     const cats = this.getCategories();
+    const clean = slug.toLowerCase().trim().replace(/^\/+|\/+$/g, '');
 
-    const clean = slug.toLowerCase().trim();
+    // 1. Direct exact slug match
+    const exact = cats.find(c => c.slug.toLowerCase() === clean);
+    if (exact) return exact;
 
-    return cats.find(c => c.slug.toLowerCase() === clean) || null;
+    // 2. Comprehensive Alias Dictionary for short codes & common terms
+    const ALIAS_MAP: Record<string, string> = {
+      'govt': 'government-jobs',
+      'government': 'government-jobs',
+      'govt-jobs': 'government-jobs',
+      'sorkari': 'government-jobs',
+      'bank': 'bank-jobs',
+      'banks': 'bank-jobs',
+      'bank-job': 'bank-jobs',
+      'bcs': 'bcs',
+      'bpsc': 'bcs',
+      'defense': 'defense-jobs',
+      'defence': 'defense-jobs',
+      'army': 'defense-jobs',
+      'railway': 'railway-jobs',
+      'railways': 'railway-jobs',
+      'rail': 'railway-jobs',
+      'ngo': 'ngo-jobs',
+      'ngos': 'ngo-jobs',
+      'it': 'it-jobs',
+      'software': 'it-jobs',
+      'tech': 'it-jobs',
+      'engineering': 'engineering-jobs',
+      'engineer': 'engineering-jobs',
+      'medical': 'medical-jobs',
+      'health': 'medical-jobs',
+      'doctor': 'medical-jobs',
+      'teacher': 'teacher-jobs',
+      'teachers': 'teacher-jobs',
+      'shikkhok': 'teacher-jobs',
+      'education': 'teacher-jobs',
+      'primary': 'primary-teacher-jobs',
+      'private': 'private-jobs',
+      'company': 'private-jobs',
+      'marketing': 'marketing-jobs',
+      'accounting': 'accounting-finance-jobs',
+      'finance': 'accounting-finance-jobs',
+      'fresher': 'fresher-jobs',
+      'internship': 'internships',
+      'internships': 'internships',
+      'part-time': 'part-time-jobs',
+      'parttime': 'part-time-jobs',
+      'tutoring': 'tutoring-jobs',
+      'ministry': 'ministry-jobs',
+      'directorate': 'directorate-jobs',
+      'autonomous': 'autonomous-jobs',
+      'agriculture': 'agriculture-jobs',
+      'telecom': 'telecom-jobs',
+      'textile': 'textile-garments-jobs'
+    };
 
+    const targetSlug = ALIAS_MAP[clean] || (clean.endsWith('-jobs') ? clean : `${clean}-jobs`);
+    const aliasMatch = cats.find(c => c.slug.toLowerCase() === targetSlug);
+    if (aliasMatch) return aliasMatch;
+
+    // 3. Substring & Bengali transliteration match
+    return cats.find(c =>
+      c.slug.toLowerCase().includes(clean) ||
+      (c.name_bn && c.name_bn.includes(clean)) ||
+      (c.name_en && c.name_en.toLowerCase().includes(clean))
+    ) || null;
   },
 
 

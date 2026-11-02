@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { notFound } from 'next/navigation';
+import { notFound, redirect, RedirectType } from 'next/navigation';
 import { serverDB } from '@/lib/db';
 import PublishedPage from '@/components/PublishedPage';
 
@@ -8,12 +8,88 @@ export const dynamic = 'force-dynamic';
 type Props = { params: { slug: string[] } };
 
 export function generateMetadata({ params }: Props): Metadata {
-  const page = serverDB.getPublishedPageBySlug('/' + params.slug.join('/'));
+  const fullPath = '/' + params.slug.join('/');
+  const page = serverDB.getPublishedPageBySlug(fullPath);
   return page ? { title: page.metaTitle || page.title, description: page.metaDescription } : { robots: { index: false } };
 }
 
 export default function CustomPage({ params }: Props) {
-  const page = serverDB.getPublishedPageBySlug('/' + params.slug.join('/'));
-  if (!page) notFound();
-  return <PublishedPage page={page} />;
+  const rawPath = params.slug.join('/');
+  const fullPath = '/' + rawPath;
+  const first = (params.slug[0] || '').toLowerCase().trim();
+
+  // 1. Direct CMS Page
+  const page = serverDB.getPublishedPageBySlug(fullPath);
+  if (page) {
+    return <PublishedPage page={page} />;
+  }
+
+  // 2. High-frequency URL Aliases
+  const ROOT_REDIRECTS: Record<string, string> = {
+    'privacy': '/privacy-policy',
+    'privacy-policy': '/privacy-policy',
+    'terms': '/terms-and-conditions',
+    'terms-and-conditions': '/terms-and-conditions',
+    'about': '/about-us',
+    'about-us': '/about-us',
+    'help': '/faq',
+    'faq': '/faq',
+    'support': '/contact-us',
+    'contact': '/contact-us',
+    'contact-us': '/contact-us',
+    'circulars': '/jobs',
+    'circular': '/jobs',
+    'alljobs': '/jobs',
+    'teletalk': '/jobs',
+    'bcs': '/categories/bcs',
+    'govt': '/government-jobs',
+    'bank': '/bank-jobs',
+    'ngo': '/ngo-jobs',
+    'teacher': '/teacher-jobs',
+    'defense': '/categories/defense-jobs',
+    'railway': '/categories/railway-jobs'
+  };
+
+  if (params.slug.length === 1 && ROOT_REDIRECTS[first]) {
+    redirect(ROOT_REDIRECTS[first]);
+  }
+
+  // 3. /circulars/:id or /circular/:id -> /jobs/:id
+  if (first === 'circulars' || first === 'circular') {
+    if (params.slug.length > 1) {
+      redirect(`/jobs/${params.slug.slice(1).join('/')}`);
+    } else {
+      redirect('/jobs');
+    }
+  }
+
+  // 4. /jobs/category/:slug -> /categories/:slug
+  if (first === 'jobs' && params.slug[1] === 'category' && params.slug[2]) {
+    redirect(`/categories/${params.slug[2]}`);
+  }
+
+  // 5. Category alias match
+  const matchedCat = serverDB.getCategoryBySlug(rawPath) || (params.slug.length === 1 ? serverDB.getCategoryBySlug(first) : null);
+  if (matchedCat) {
+    redirect(`/categories/${matchedCat.slug}`);
+  }
+
+  // 6. Organization match
+  if (params.slug.length === 1) {
+    const org = serverDB.getCompanies ? serverDB.getCompanies().find((c: any) => c.slug === first || c.id === first) : null;
+    if (org) {
+      redirect(`/organizations/${org.slug || org.id}`);
+    }
+  }
+
+  // 7. Dynamic redirects configured in admin
+  if (serverDB.findRedirectByPath) {
+    const rec = serverDB.findRedirectByPath(fullPath);
+    if (rec && rec.isActive) {
+      redirect(rec.targetPath, RedirectType.replace);
+    }
+  }
+
+  // 8. Graceful fallback to jobs search instead of hard 404
+  redirect(`/jobs?search=${encodeURIComponent(rawPath.replace(/[/-]/g, ' '))}`);
 }

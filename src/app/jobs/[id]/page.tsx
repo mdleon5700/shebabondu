@@ -190,7 +190,7 @@ export default function SingleJobPage({ params }: Props) {
     pubStatus === 'REJECTED' ||
     pubStatus === 'PUBLICATION_FAILED'
   ) {
-    notFound();
+    redirect(`/jobs?search=${encodeURIComponent(params.id)}`);
   }
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://chakrisheba.com';

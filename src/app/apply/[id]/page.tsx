@@ -1,7 +1,7 @@
 import { CentralDeadlineEngine } from '@/lib/deadlines/engine';
 import React from 'react';
 import { Metadata } from 'next';
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import { serverDB } from '@/lib/db';
 import ApplyClient from '@/components/ApplyClient';
 
@@ -37,7 +37,7 @@ export default function ApplyPage({ params }: Props) {
   const job = serverDB.getPublicJobById(params.id);
 
   if (!job || job.id.startsWith('draft-') || (job as any).status === 'UNPUBLISHED') {
-    notFound();
+    redirect(`/jobs?search=${encodeURIComponent(params.id)}`);
   }
 
   return <ApplyClient initialJob={job} />;

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Metadata } from 'next';
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import { serverDB } from '@/lib/db';
 import { JobFeedEngine } from '@/lib/feeds/engine';
 import { BangladeshDateHelper } from '@/lib/feeds/timezone';
@@ -35,9 +35,22 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default function DailyJobDatePage({ params }: Props) {
+  const rawDate = (params.date || '').toLowerCase().trim();
+  if (rawDate === 'today') {
+    const today = new Date().toISOString().split('T')[0];
+    redirect(`/daily-jobs/${today}`);
+  }
+  if (rawDate === 'yesterday') {
+    const yesterday = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+    redirect(`/daily-jobs/${yesterday}`);
+  }
+  if (/^\d{4}-\d{2}$/.test(rawDate)) {
+    redirect('/daily-jobs');
+  }
+
   const parsedIso = BangladeshDateHelper.parseToIsoDate(params.date);
   if (!parsedIso) {
-    notFound();
+    redirect('/daily-jobs');
   }
 
   const jobs = serverDB.getPublicJobs();

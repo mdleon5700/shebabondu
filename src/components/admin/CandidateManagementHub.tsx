@@ -144,7 +144,7 @@ export default function CandidateManagementHub({
         ));
 
       const matchesStatus = statusFilter === 'all' || 
-        (statusFilter === 'verified' && (c.isVerified || c.id === 'USR-01774366643')) ||
+        (statusFilter === 'verified' && (c.isVerified || c.id === ('USR-01774366647' as string))) ||
         (statusFilter === 'active' && c.accountStatus !== 'suspended' && c.accountStatus !== 'banned') ||
         (statusFilter === 'suspended' && c.accountStatus === 'suspended');
 
@@ -367,7 +367,7 @@ export default function CandidateManagementHub({
               <div>
                 <p className="text-[11px] font-bold text-slate-500 uppercase">ভেরিফাইড চাকরিপ্রার্থী</p>
                 <h3 className="text-xl font-black text-blue-700">
-                  {candidates.filter(c => c.isVerified || c.id === 'USR-01774366643').length} জন
+                  {candidates.filter(c => c.isVerified || c.id === ('USR-01774366647' as string)).length} জন
                 </h3>
                 <p className="text-[11px] text-slate-500">এনআইডি ও সনদ যাচাইকৃত</p>
               </div>
@@ -508,7 +508,7 @@ export default function CandidateManagementHub({
                 </thead>
                 <tbody className="divide-y divide-slate-100 font-medium">
                   {filteredCandidates.map((c) => {
-                    const isVerified = c.isVerified || c.id === 'USR-01774366643';
+                    const isVerified = c.isVerified || c.id === ('USR-01774366647' as string);
                     const isSuspended = c.accountStatus === 'suspended';
 
                     return (
@@ -1014,9 +1014,9 @@ export default function CandidateManagementHub({
                     </p>
                   </div>
                   <span className={`px-2.5 py-1 rounded-full text-xs font-bold ${
-                    currentCandidate.isVerified || currentCandidate.id === 'USR-01774366643' ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-200 text-slate-700'
+                    currentCandidate.isVerified || currentCandidate.id === ('USR-01774366647' as string) ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-200 text-slate-700'
                   }`}>
-                    {currentCandidate.isVerified || currentCandidate.id === 'USR-01774366643' ? '✓ ভেরিফাইড' : 'আনভেরিফাইড'}
+                    {currentCandidate.isVerified || currentCandidate.id === ('USR-01774366647' as string) ? '✓ ভেরিফাইড' : 'আনভেরিফাইড'}
                   </span>
                 </div>
               </div>

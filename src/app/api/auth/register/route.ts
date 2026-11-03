@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { serverDB } from '@/lib/db';
 import { hashPassword, generateSessionToken, createSessionCookie } from '@/lib/auth';
 import { emptyCandidateProfile } from '@/lib/candidate-defaults';
+import { generateSmartCandidateId, generateSmartUsername } from '@/lib/id-generator';
 
 export async function POST(req: Request) {
   try {
@@ -28,10 +29,10 @@ export async function POST(req: Request) {
       }
     }
 
-    const candidateId = `USR-${cleanPhone.replace(/[^0-9]/g, '') || Date.now().toString()}`;
+    const candidateId = generateSmartCandidateId(cleanPhone);
     const generatedUsername = (username && username.trim()) 
       ? username.trim().toLowerCase() 
-      : (email ? email.split('@')[0].replace(/[^a-zA-Z0-9]/g, '') : 'user') + Math.floor(100 + Math.random() * 900);
+      : generateSmartUsername(name, cleanPhone, (u) => !!serverDB.getCandidateByIdentifier(u));
 
     if (serverDB.getCandidateByIdentifier(generatedUsername)) return NextResponse.json({ error: 'Username already exists.' }, { status: 409 });
     const newCandidate = serverDB.createCandidate({

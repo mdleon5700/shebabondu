@@ -1,3 +1,4 @@
+import { generateSmartDocumentId } from '@/lib/id-generator';
 import { privateUploadDirectory } from '@/lib/private-uploads';
 import { NextResponse } from 'next/server';
 import { getServerSession } from '@/lib/auth';
@@ -70,7 +71,7 @@ export async function POST(req: Request) {
     const mimeType = mimeMap[fileExt] || 'application/octet-stream';
     const relativeUrl = '/api/uploads/candidate-documents/' + cleanFileName;
 
-    let targetDocId = 'DOC-' + crypto.randomUUID();
+    let targetDocId = generateSmartDocumentId();
     let version = 1;
     let previousVersionId: string | undefined = undefined;
 

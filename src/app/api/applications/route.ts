@@ -1,4 +1,5 @@
 import { randomUUID } from 'crypto';
+import { generateSmartApplicationId } from '@/lib/id-generator';
 import { calculateOrderDiscounts } from '@/lib/discounts';
 import { CentralDeadlineEngine } from '@/lib/deadlines/engine';
 import { NextResponse } from 'next/server';
@@ -101,7 +102,7 @@ export async function POST(req: Request) {
       }, { status: 409 });
     }
 
-    const genAppId = 'APP-' + randomUUID();
+    const genAppId = generateSmartApplicationId();
     const isWalletPay = appData.paymentMethod === 'Wallet';
     const computedStatus = isWalletPay ? 'processing' : 'pending_payment';
 

@@ -71,6 +71,7 @@ import {
 
 import { mockUserProfile, mockApplications, mockJobs } from '../data/mockJobs';
 import { SyntheticUserManager } from './testing/synthetic/synthetic-user-manager';
+import { generateSmartTransactionId, generateSmartNotificationId } from './id-generator';
 import { SyntheticJobManager } from './testing/synthetic/synthetic-job-manager';
 
 
@@ -2842,7 +2843,7 @@ export const serverDB = {
       if ((candidate.walletBalance || 0) < app.totalAmount) return { success: false, error: 'Insufficient wallet balance' };
       candidate.walletBalance = Math.round(((candidate.walletBalance || 0) - app.totalAmount) * 100) / 100;
       transaction = {
-        id: 'TXN-' + app.id,
+        id: generateSmartTransactionId(),
         date: new Date().toISOString(),
         amount: app.totalAmount,
         type: 'fee_deduction',
@@ -8657,7 +8658,7 @@ export const serverDB = {
 
       ...notif,
 
-      id: 'notif_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6),
+      id: generateSmartNotificationId(),
 
       date: new Date().toISOString(),
 

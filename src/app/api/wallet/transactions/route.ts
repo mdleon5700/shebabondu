@@ -1,4 +1,5 @@
 import { randomUUID } from 'crypto';
+import { generateSmartTransactionId } from '@/lib/id-generator';
 import { NextResponse } from 'next/server';
 import { getServerSession } from '@/lib/auth';
 import { serverDB } from '@/lib/db';
@@ -63,7 +64,7 @@ export async function POST(req: Request) {
     if (!['bKash', 'Nagad', ...(session.role === 'admin' ? ['Bank', 'Wallet'] : [])].includes(method || 'bKash')) return NextResponse.json({ error: 'Invalid payment method' }, { status: 400 });
     if (typeof trxId !== 'string' || !/^[a-zA-Z0-9-]{4,100}$/.test(trxId.trim())) return NextResponse.json({ error: 'সঠিক পেমেন্ট TrxID প্রদান করুন।' }, { status: 400 });
     const newTx: WalletTransaction = {
-      id: 'TXN-' + randomUUID(),
+      id: generateSmartTransactionId(),
       date: new Date().toLocaleString('bn-BD'),
       amount: Number(amount),
       type: type || 'recharge',

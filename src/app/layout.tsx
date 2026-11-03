@@ -1,9 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import ConditionalLayout from '@/components/layout/ConditionalLayout';
-import { headers } from 'next/headers';
 import { serverDB } from '@/lib/db';
-import PublishedPage from '@/components/PublishedPage';
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://chakrisheba.com';
 
@@ -46,10 +44,8 @@ const defaultMetadata: Metadata = {
 
 export function generateMetadata(): Metadata {
   const settings = serverDB.getPlatformSettings();
-  const pathname = headers().get('x-site-pathname') || '/';
-  const page = serverDB.getPublishedPageBySlug(pathname);
-  const title = page?.metaTitle || settings.seo?.defaultTitle || 'চাকরি সেবা';
-  const description = page?.metaDescription || settings.seo?.defaultDescription;
+  const title = settings.seo?.defaultTitle || 'চাকরি সেবা • Chakri Sheba | বিডি চাকরির খবর ও আবেদন সার্ভিস';
+  const description = settings.seo?.defaultDescription || 'বাংলাদেশের সকল সরকারি ও বেসরকারি চাকরির নিয়মিত আপডেট এবং ঘরে বসেই নির্ভুল আবেদনের বিশ্বস্ত প্ল্যাটফর্ম।';
   return {
     ...defaultMetadata,
     title: { default: title, template: '%s | চাকরি সেবা' },
@@ -65,9 +61,6 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const pathname = headers().get('x-site-pathname') || '/';
-  const managedPage = /^\/(admin|dashboard|login|register|apply|api)(\/|$)/.test(pathname)
-    ? null : serverDB.getPublishedPageBySlug(pathname);
   return (
     <html lang="bn">
       <head>
@@ -76,7 +69,7 @@ export default function RootLayout({
       </head>
       <body className="font-solaiman min-h-screen flex flex-col bg-slate-50 text-slate-900 selection:bg-emerald-600 selection:text-white overflow-x-hidden max-w-full">
         <ConditionalLayout>
-          {managedPage ? <PublishedPage page={managedPage} /> : children}
+          {children}
         </ConditionalLayout>
       </body>
     </html>

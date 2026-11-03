@@ -4781,8 +4781,9 @@ export const serverDB = {
 
 
   getPublishedPageBySlug(slug: string): PageRecord['publishedContent'] | null {
-    const pages = Object.values(loadDB().pages || {});
     const cleanSlug = slug.startsWith('/') ? slug : '/' + slug;
+    if (cleanSlug === '/' || cleanSlug === '') return null; // Root route is served exclusively by native HomePage component
+    const pages = Object.values(loadDB().pages || {});
     const match = pages.find(page => page.status !== 'archived' && ((page.publishedContent?.useOnCanonicalPath !== false && page.publishedContent?.slug === cleanSlug) || (page.status === 'published' && page.slug === cleanSlug)));
     if (!match) return null;
     if (match.publishedContent) return match.publishedContent;

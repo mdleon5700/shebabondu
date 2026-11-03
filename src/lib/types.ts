@@ -4540,6 +4540,7 @@ export interface HtmlPdfComparison {
 
 
 export interface CompanyProfile {
+  slug?: string;
 
 
 

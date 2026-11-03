@@ -78,7 +78,7 @@ export default function CustomPage({ params }: Props) {
   if (params.slug.length === 1) {
     const org = serverDB.getCompanies ? serverDB.getCompanies().find((c: any) => c.slug === first || c.id === first) : null;
     if (org) {
-      redirect(`/organizations/${org.slug || org.id}`);
+      redirect(`/organizations/${(org as any).slug || (org as any).id || first}`);
     }
   }
 

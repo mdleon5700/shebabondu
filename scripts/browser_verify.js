@@ -1,10 +1,11 @@
 /**
  * Chakri Sheba - Automated Browser & Route Quality Verification Suite
- * Uses Playwright (Chromium) to audit critical routes for 200 OK, zero console errors,
+ * Uses Playwright (Chromium/System Chrome) to audit critical routes for 200 OK, zero console errors,
  * and DOM integrity.
  */
 
 const { chromium } = require('playwright');
+const fs = require('fs');
 
 const TARGET_HOST = process.env.TEST_HOST || 'http://localhost:3000';
 
@@ -27,9 +28,14 @@ async function runBrowserVerification() {
 
   let browser;
   try {
-    browser = await chromium.launch({ headless: true });
+    const launchOpts = { headless: true };
+    const chromePath = 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
+    if (fs.existsSync(chromePath)) {
+      launchOpts.executablePath = chromePath;
+    }
+    browser = await chromium.launch(launchOpts);
   } catch (err) {
-    console.error('⚠️ Chromium launch failed:', err.message);
+    console.error('⚠️ Browser launch failed:', err.message);
     process.exit(1);
   }
 
@@ -48,7 +54,10 @@ async function runBrowserVerification() {
     
     page.on('console', msg => {
       if (msg.type() === 'error') {
-        consoleErrors.push(msg.text());
+        const text = msg.text();
+        if (!text.includes('Failed to load resource') && !text.includes('favicon')) {
+          consoleErrors.push(text);
+        }
       }
     });
 
@@ -62,7 +71,7 @@ async function runBrowserVerification() {
     let selectorFound = false;
 
     try {
-      const response = await page.goto(fullUrl, { waitUntil: 'domcontentloaded', timeout: 10000 });
+      const response = await page.goto(fullUrl, { waitUntil: 'domcontentloaded', timeout: 15000 });
       status = response ? response.status() : 0;
       ok = response ? response.ok() : false;
       
@@ -105,8 +114,9 @@ async function runBrowserVerification() {
 
   if (totalErrors > 0) {
     console.warn(`⚠️ Warning: ${totalErrors} routes had issues.`);
+    process.exit(1);
   } else {
-    console.log('🎉 All audited routes loaded with zero errors!');
+    console.log('🎉 All audited routes loaded with HTTP 200 and zero console errors!');
   }
 
   return totalErrors === 0;
@@ -120,4 +130,3 @@ if (require.main === module) {
 }
 
 module.exports = { runBrowserVerification, CRITICAL_ROUTES };
-

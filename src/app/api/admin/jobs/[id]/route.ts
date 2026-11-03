@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { getServerSession } from '@/lib/auth';
 import { serverDB } from '@/lib/db';
 import { JobCircular } from '@/lib/types';
@@ -68,6 +69,12 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
     }
 
     const saved = serverDB.saveJob(payload, session.candidateId || 'ADMIN');
+    try {
+      revalidatePath('/jobs');
+      revalidatePath('/jobs/' + params.id);
+      revalidatePath('/');
+      revalidatePath('/admin');
+    } catch {}
     return NextResponse.json({ success: true, job: saved });
   } catch (err: any) {
     return NextResponse.json({ error: err.message }, { status: 500 });
@@ -80,5 +87,11 @@ export async function DELETE(req: Request, { params }: { params: { id: string } 
     return NextResponse.json({ error: 'FORBIDDEN: Admin privileges required.' }, { status: 403 });
   }
   const deleted = serverDB.deleteJob(params.id, session.candidateId || 'ADMIN');
+    try {
+      revalidatePath('/jobs');
+      revalidatePath('/jobs/' + params.id);
+      revalidatePath('/');
+      revalidatePath('/admin');
+    } catch {}
   return NextResponse.json({ success: deleted });
 }

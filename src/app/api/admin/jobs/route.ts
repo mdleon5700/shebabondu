@@ -1,5 +1,6 @@
 import { randomUUID } from 'crypto';
 import { NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { getServerSession } from '@/lib/auth';
 import { serverDB } from '@/lib/db';
 import { JobCircular } from '@/lib/types';
@@ -159,6 +160,14 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'A job with this ID already exists.' }, { status: 409 });
     }
     const saved = serverDB.saveJob(newJob, session.candidateId);
+    try {
+      revalidatePath('/jobs');
+      revalidatePath('/');
+      revalidatePath('/latest-jobs');
+      revalidatePath('/todays-jobs');
+      revalidatePath('/daily-jobs');
+      revalidatePath('/admin');
+    } catch {}
     return NextResponse.json({ success: true, job: saved });
   } catch (err: any) {
     return NextResponse.json({ error: err.message }, { status: 500 });

@@ -11,7 +11,8 @@ interface Props {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const cleanSlug = params.slug.replace(/^_/, '');
+  const rawSlug = params?.slug || '';
+  const cleanSlug = rawSlug.replace(/^_/, '');
   const pages = serverDB.getPages().map(page => serverDB.getPublishedPageById(page.id)).filter((page): page is NonNullable<typeof page> => page !== null);
   const page = pages.find(p => p.id === params.slug || p.id === cleanSlug || p.id === `_${cleanSlug}` || p.slug === `/${params.slug}` || p.slug === `/${cleanSlug}`);
 
@@ -26,7 +27,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default function DynamicCmsPage({ params }: Props) {
-  const cleanSlug = params.slug.replace(/^_/, '');
+  const rawSlug = params?.slug || '';
+  const cleanSlug = rawSlug.replace(/^_/, '');
   const pages = serverDB.getPages().map(page => serverDB.getPublishedPageById(page.id)).filter((page): page is NonNullable<typeof page> => page !== null);
   const page = pages.find(p => p.id === params.slug || p.id === cleanSlug || p.id === `_${cleanSlug}` || p.slug === `/${params.slug}` || p.slug === `/${cleanSlug}`);
 

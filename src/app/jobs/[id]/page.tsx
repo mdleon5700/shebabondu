@@ -79,7 +79,8 @@ function parseSalaryRange(salaryStr?: string): { min?: number; max?: number } | 
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const job = serverDB.getPublicJobById(params.id);
+  const jobId = params?.id || '';
+  const job = serverDB.getPublicJobById(jobId);
   const pubStatus = (job as any)?.publicationStatus;
   if (
     !job ||
@@ -190,7 +191,7 @@ export default function SingleJobPage({ params }: Props) {
     pubStatus === 'REJECTED' ||
     pubStatus === 'PUBLICATION_FAILED'
   ) {
-    redirect(`/jobs?search=${encodeURIComponent(params.id)}`);
+    redirect(`/jobs?search=${encodeURIComponent(params?.id || '')}`);
   }
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://chakrisheba.com';

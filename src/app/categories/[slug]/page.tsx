@@ -22,7 +22,8 @@ interface Props {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const category = serverDB.getCategoryBySlug(params.slug);
+  const slug = (params?.slug || '').toLowerCase().trim();
+  const category = slug ? serverDB.getCategoryBySlug(slug) : null;
   if (!category) {
     return { title: 'ক্যাটাগরি পাওয়া যায়নি | চাকরি সেবা' };
   }
@@ -45,8 +46,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function CategoryLandingPage({ params, searchParams }: Props) {
-  const slug = params.slug.toLowerCase().trim();
-  const category = serverDB.getCategoryBySlug(slug);
+  const slug = (params?.slug || '').toLowerCase().trim();
+  const category = slug ? serverDB.getCategoryBySlug(slug) : null;
 
   if (!category) {
     redirect(`/jobs?search=${encodeURIComponent(slug)}`);

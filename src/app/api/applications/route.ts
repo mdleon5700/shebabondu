@@ -2,6 +2,7 @@ import { randomUUID } from 'crypto';
 import { calculateOrderDiscounts } from '@/lib/discounts';
 import { CentralDeadlineEngine } from '@/lib/deadlines/engine';
 import { NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { getServerSession } from '@/lib/auth';
 import { serverDB } from '@/lib/db';
 import { storage } from '@/lib/store';
@@ -157,6 +158,11 @@ export async function POST(req: Request) {
     };
 
     const result = serverDB.submitApplication(candidateId, newApp, isWalletPay);
+    try {
+      revalidatePath('/dashboard/applications');
+      revalidatePath('/dashboard');
+      revalidatePath('/admin');
+    } catch {}
     if (!result.success) return NextResponse.json({ error: result.error }, { status: 409 });
     const updated = result.applications;
     const res = NextResponse.json({ success: true, applications: updated, createdApp: newApp }, {
@@ -218,6 +224,11 @@ export async function PATCH(req: Request) {
       return NextResponse.json({ error: 'আবেদনটি খুঁজে পাওয়া যায়নি' }, { status: 404 });
     }
 
+    try {
+      revalidatePath('/dashboard/applications');
+      revalidatePath('/dashboard');
+      revalidatePath('/admin');
+    } catch {}
     if (session.role === 'admin') {
       serverDB.recordAdminAudit({
         adminId: session.candidateId,

@@ -75,15 +75,15 @@ function ApplyFormContent({ initialJob }: ApplyClientProps) {
 
   // Positions available for this circular
   const positions: JobPosition[] = useMemo(() => {
-    return job.positions && job.positions.length > 0
+    return job?.positions && job.positions.length > 0
       ? job.positions
       : [{
-          title: job.title,
-          grade: job.grade,
-          posts: job.totalPosts,
-          salary: job.salary,
-          minEducation: job.minEducation,
-          govtFee: job.govtFee
+          title: job?.title || 'আবেদনের পদ',
+          grade: job?.grade || '',
+          posts: job?.totalPosts || 1,
+          salary: job?.salary || '',
+          minEducation: job?.minEducation || '',
+          govtFee: job?.govtFee || 200
         }];
   }, [job]);
 
@@ -209,10 +209,10 @@ function ApplyFormContent({ initialJob }: ApplyClientProps) {
   };
   const [isSubmitting, setIsSubmitting] = useState(false);
   const isExpired = Boolean(
-    CentralDeadlineEngine.evaluateDeadline(job).isClosed ||
-    job.status === 'EXPIRED' ||
-    job.status === 'CLOSED' ||
-    (job.deadline && (job.deadline.includes('সমাপ্ত') || job.deadline.includes('শেষ')))
+    (job && CentralDeadlineEngine.evaluateDeadline(job).isClosed) ||
+    job?.status === 'EXPIRED' ||
+    job?.status === 'CLOSED' ||
+    (job?.deadline && (job.deadline.includes('সমাপ্ত') || job.deadline.includes('শেষ')))
   );
   const [orderSuccess, setOrderSuccess] = useState(false);
   const [createdOrderNumber, setCreatedOrderNumber] = useState<string>('');
@@ -393,11 +393,20 @@ function ApplyFormContent({ initialJob }: ApplyClientProps) {
     }
   };
 
+  if (!job) {
+    return (
+      <div className="max-w-4xl mx-auto px-4 py-20 text-center space-y-4">
+        <div className="w-12 h-12 border-4 border-emerald-600 border-t-transparent rounded-full animate-spin mx-auto" />
+        <p className="text-slate-600 font-medium text-sm">সার্কুলারের তথ্য লোড হচ্ছে...</p>
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
 
       {/* Back button */}
-      <Link href={`/jobs/${job.id}`} className="inline-flex items-center gap-1 text-xs font-semibold text-slate-500 hover:text-emerald-700 transition-colors">
+      <Link href={`/jobs/${job?.id || jobId}`} className="inline-flex items-center gap-1 text-xs font-semibold text-slate-500 hover:text-emerald-700 transition-colors">
         <ChevronLeft className="w-4 h-4" />
         <span>সার্কুলার বিবরণে ফিরে যান</span>
       </Link>
@@ -526,7 +535,7 @@ function ApplyFormContent({ initialJob }: ApplyClientProps) {
               <ArrowRight className="w-4 h-4" />
             </Link>
             <Link
-              href={`/jobs/${job.id}`}
+              href={`/jobs/${job?.id || jobId}`}
               className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3.5 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 font-bold text-sm sm:text-base rounded-2xl transition-all"
             >
               <span>সার্কুলারের অফিশিয়াল নোটিশ দেখুন</span>

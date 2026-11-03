@@ -1466,100 +1466,165 @@ function AdminContent() {
     );
   }, [applications, activeTab, appStatusFilter, paymentGatewayFilter, processingChannelFilter, processingSortOrder, completedSubFilter, searchTerm, jobs]);
 
-  const navGroups: { name: string; items: { id: string; label: string; icon: any; badge?: any; badgeColor?: string }[] }[] = [
+  const navGroups: { 
+    name: string; 
+    items: { 
+      id: string; 
+      label: string; 
+      icon: any; 
+      badge?: any; 
+      badgeColor?: string; 
+      keywords?: string[];
+      subTabs?: { id: string; label: string }[];
+    }[] 
+  }[] = [
     {
-      name: 'ওভারভিউ ও ড্যাশবোর্ড',
+      name: 'কোর ম্যানেজমেন্ট হাব',
       items: [
-        { id: 'dashboard', label: 'ড্যাশবোর্ড', icon: LayoutDashboard, badge: null },
-        { id: 'all-applications', label: 'সকল আবেদন', icon: FileText, badge: applications.length || stats.totalApplications || 0 },
-        { id: 'payment-verification', label: 'পেমেন্ট ভেরিফিকেশন', icon: CreditCard, badge: stats.pendingPayment, badgeColor: 'bg-amber-500 text-white' },
-        { id: 'processing-queue', label: 'প্রসেসিং কিউ', icon: Clock, badge: stats.processing, badgeColor: 'bg-blue-600 text-white' },
-        { id: 'completed-rejected', label: 'সম্পন্ন ও বাতিল আবেদন', icon: CheckCircle2, badge: null },
-        { id: 'documents', label: 'অ্যাপ্লিক্যান্ট কপি ও ডকুমেন্টস', icon: Download, badge: null }
-      ]
-    },
-    {
-      name: 'সার্ভিস ইন্টেলিজেন্স ও অ্যানালিটিক্স (BI)',
-      items: [
-        { id: 'analytics-center', label: 'অ্যানালিটিক্স ড্যাশবোর্ড ও BI', icon: BarChart3, badge: 'BI', badgeColor: 'bg-indigo-600 text-white' },
-        { id: 'report-builder', label: 'রিপোর্ট বিল্ডার ও এক্সপোর্ট', icon: FileSpreadsheet, badge: 'CSV', badgeColor: 'bg-emerald-600 text-white' },
-        { id: 'data-quality-inspector', label: 'ডাটা কোয়ালিটি ও অডিট', icon: ShieldCheck, badge: null }
-      ]
-    },
-    {
-      name: 'জব অপারেশনস',
-      items: [
-        { id: 'circulars', label: 'সকল সার্কুলার', icon: Briefcase, badge: jobs.length || stats.totalJobs || 0 },
-        { id: 'create-circular', label: 'নতুন সার্কুলার তৈরি', icon: PlusCircle, badge: null },
-        { id: 'imported-drafts', label: 'ভেরিফিকেশন ও খসড়া কিউ', icon: ShieldCheck, badge: drafts.length || stats.pendingDrafts || 0, badgeColor: 'bg-emerald-600 text-white' },
-        { id: 'source-monitoring', label: 'সোর্স মনিটরিং ও স্পাইডার', icon: Radio, badge: sources.length },
-        { id: 'publishing-center', label: 'পাবলিশিং ও ওয়েবসাইট সেন্টার', icon: Globe, badge: 'লাইভ', badgeColor: 'bg-emerald-600 text-white' },
-        { id: 'category-search-manager', label: 'ক্যাটাগরি ও সার্চ ম্যানেজার', icon: Tag, badge: null },
-        { id: 'job-feed-manager', label: 'জব ফিড ও ফিচার্ড ম্যানেজার', icon: Rss, badge: null },
-        { id: 'deadline-alert-manager', label: 'ডেডলাইন ও নোটিফিকেশন অ্যালার্ট', icon: Clock, badge: null },
-        { id: 'smart-job-matching', label: 'স্মার্ট ম্যাচিং ও রিকমেন্ডেশন', icon: Sparkles, badge: null }
-      ]
-    },
-    {
-      name: 'কন্টেন্ট ও মিডিয়া অপারেশনস',
-      items: [
-        { id: 'content-studio', label: 'কন্টেন্ট ও এসইও স্টুডিও', icon: PenTool, badge: 'Studio', badgeColor: 'bg-indigo-600 text-white' },
-        { id: 'builder', label: 'ভিজ্যুয়াল পেইজ বিল্ডার', icon: Globe, badge: null },
-        { id: 'media-library', label: 'মিডিয়া লাইব্রেরি ও ফাইল ম্যানেজার', icon: HardDrive, badge: 'Media', badgeColor: 'bg-purple-600 text-white' },
-        { id: 'header-footer', label: 'হেডার ও ফুটার ডিজাইন', icon: Layout, badge: 'Live', badgeColor: 'bg-emerald-600 text-white' },
-        { id: 'pages-sections', label: 'পেইজ ও সেকশন ম্যানেজমেন্ট', icon: Layers, badge: null },
-        { id: 'seo-meta', label: 'এসইও মেটাডাটা ও সিএমএস', icon: Search, badge: null },
-        { id: 'revisions', label: 'রিভিশন ও হিস্ট্রি রিকভারি', icon: History, badge: null }
-      ]
-    },
-    {
-      name: 'প্ল্যাটফর্ম ডাটা ও প্রতিষ্ঠান',
-      items: [
-        { id: 'company-directory', label: 'প্রতিষ্ঠান ও নিয়োগকারী হাব', icon: Building, badge: companies.length },
-        { id: 'candidate-directory', label: 'প্রার্থী ডিরেক্টরি ও প্রোফাইল', icon: Users, badge: candidates.length || stats.totalCandidates || 0 },
-        { id: 'eligibility-rules', label: 'যোগ্যতা ও শর্তাবলী ফিল্টার', icon: Sliders, badge: null }
-      ]
-    },
-    {
-      name: 'যোগাযোগ ও নোটিফিকেশন',
-      items: [
-        { id: 'notifications', label: 'নোটিফিকেশন ও ব্রডকাস্ট', icon: Bell, badge: null },
-        { id: 'sms-status', label: 'এসএমএস গেটওয়ে ও ব্যালেন্স', icon: MessageSquare, badge: 'সক্রিয়' },
-        { id: 'templates-delivery', label: 'টেমপ্লেট ও ডেলিভারি হিস্ট্রি', icon: Mail, badge: null }
-      ]
-    },
-    {
-      name: 'অটোমেশন ও সিস্টেম',
-      items: [
-        { id: 'testing-spider', label: 'টেস্টিং স্পাইডার হাব (Audit)', icon: ShieldCheck, badge: 'Live', badgeColor: 'bg-emerald-600 text-white' },
-        { id: 'automation-hub', label: 'সেন্ট্রাল অটোমেশন ও শিডিউলার', icon: Zap, badge: 'অটো', badgeColor: 'bg-amber-600 text-white' },
-        { id: 'system-health', label: 'সিস্টেম হেলথ ও ডায়াগনস্টিকস', icon: Activity, badge: null },
-        { id: 'platform-operations', label: '১০০% ফ্রি ও অপারেশনাল খরচ', icon: DollarSign, badge: 'Free', badgeColor: 'bg-emerald-600 text-white' },
-        { id: 'transactions', label: 'ট্রানজেকশন তালিকা', icon: Receipt, badge: null },
-        { id: 'coupons-discounts', label: 'কুপন ও ডিসকাউন্ট', icon: Tag, badge: stats.activeCoupons },
-        { id: 'raffle-campaigns', label: 'র‍্যাফেল ড্র ক্যাম্পেইন', icon: Gift, badge: stats.activeRaffles }
-      ]
-    },
-    {
-      name: 'প্রশাসন ও নিরাপত্তা (RBAC)',
-      items: [
-        { id: 'staff-roles', label: 'স্টাফ ও রোল পারমিশন / RBAC', icon: ShieldAlert, badge: null },
-        { id: 'audit-logs', label: 'অ্যাডমিন অডিট ও অ্যাক্টিভিটি লগ', icon: Database, badge: auditLogs.length },
-        { id: 'settings', label: 'প্ল্যাটফর্ম সেটিংস ও গ্লোবাল কনফিগ', icon: Settings, badge: null },
-        { id: 'backup-diagnostics', label: 'ব্যাকআপ ও ডাটাবেস রিকভারি', icon: HardDrive, badge: null }
+        { 
+          id: 'dashboard', 
+          label: 'ড্যাশবোর্ড ও ওভারভিউ', 
+          icon: LayoutDashboard, 
+          badge: null,
+          keywords: ['kpi', 'analytics', 'bi', 'report', 'ডাটা কোয়ালিটি', 'রিপোর্ট'],
+          subTabs: [
+            { id: 'dashboard', label: 'মূল ড্যাশবোর্ড ও KPI' },
+            { id: 'analytics-center', label: 'অ্যানালিটিক্স ও BI' },
+            { id: 'report-builder', label: 'রিপোর্ট এক্সপোর্ট' },
+            { id: 'data-quality-inspector', label: 'ডাটা কোয়ালিটি ও অডিট' }
+          ]
+        },
+        { 
+          id: 'all-applications', 
+          label: 'আবেদন ও অর্ডার হাব', 
+          icon: FileText, 
+          badge: stats.pendingPayment ? stats.pendingPayment + ' পেন্ডিং' : (applications.length || stats.totalApplications || 0),
+          badgeColor: stats.pendingPayment ? 'bg-amber-500 text-white' : undefined,
+          keywords: ['আবেদন', 'পেমেন্ট', 'টেলিটক', 'প্রসেসিং', 'ভেরিফিকেশন', 'ডকুমেন্ট', 'copy'],
+          subTabs: [
+            { id: 'all-applications', label: 'সকল আবেদন' },
+            { id: 'payment-verification', label: 'পেমেন্ট ভেরিফিকেশন' },
+            { id: 'processing-queue', label: 'প্রসেসিং কিউ' },
+            { id: 'completed-rejected', label: 'সম্পন্ন ও বাতিল' },
+            { id: 'documents', label: 'অ্যাপ্লিক্যান্ট ডকুমেন্টস' }
+          ]
+        },
+        { 
+          id: 'circulars', 
+          label: 'সার্কুলার ও নিয়োগ হাব', 
+          icon: Briefcase, 
+          badge: drafts.length ? drafts.length + ' খসড়া' : (jobs.length || stats.totalJobs || 0),
+          badgeColor: drafts.length ? 'bg-blue-600 text-white' : undefined,
+          keywords: ['সার্কুলার', 'চাকরি', 'খসড়া', 'draft', 'spider', 'স্পাইডার', 'ক্যাটাগরি', 'ফিড'],
+          subTabs: [
+            { id: 'circulars', label: 'সকল সার্কুলার' },
+            { id: 'imported-drafts', label: 'খসড়া ও ভেরিফিকেশন কিউ' },
+            { id: 'publishing-center', label: 'পাবলিশিং সেন্টার' },
+            { id: 'category-search-manager', label: 'ক্যাটাগরি ও সার্চ' },
+            { id: 'source-monitoring', label: 'সোর্স স্পাইডার' },
+            { id: 'job-feed-manager', label: 'জব ফিড ও ফিচার্ড' },
+            { id: 'smart-job-matching', label: 'স্মার্ট ম্যাচিং' }
+          ]
+        },
+        { 
+          id: 'candidate-directory', 
+          label: 'প্রার্থী ও প্রতিষ্ঠান হাব', 
+          icon: Users, 
+          badge: candidates.length || stats.totalCandidates || 0,
+          keywords: ['প্রার্থী', 'candidate', 'user', 'প্রতিষ্ঠান', 'company', 'যোগ্যতা', 'eligibility'],
+          subTabs: [
+            { id: 'candidate-directory', label: 'প্রার্থী ডিরেক্টরি' },
+            { id: 'company-directory', label: 'প্রতিষ্ঠান হাব' },
+            { id: 'eligibility-rules', label: 'যোগ্যতা ফিল্টার' }
+          ]
+        },
+        { 
+          id: 'content-studio', 
+          label: 'ওয়েবসাইট ও কন্টেন্ট সিএমএস', 
+          icon: Globe, 
+          badge: 'Studio',
+          badgeColor: 'bg-indigo-600 text-white',
+          keywords: ['পেজ', 'page', 'builder', 'cms', 'seo', 'মিডিয়া', 'media', 'header', 'footer'],
+          subTabs: [
+            { id: 'content-studio', label: 'কন্টেন্ট ও এসইও স্টুডিও' },
+            { id: 'builder', label: 'ভিজ্যুয়াল পেইজ বিল্ডার' },
+            { id: 'pages-sections', label: 'পেইজ ও সেকশন ম্যানেজমেন্ট' },
+            { id: 'media-library', label: 'মিডিয়া লাইব্রেরি' }
+          ]
+        },
+        { 
+          id: 'transactions', 
+          label: 'ফিন্যান্স ও ডিসকাউন্ট', 
+          icon: CreditCard, 
+          badge: stats.activeCoupons ? stats.activeCoupons + ' কুপন' : null,
+          keywords: ['টাকা', 'finance', 'লেনদেন', 'কুপন', 'coupon', 'raffle', 'র‍্যাফেল', 'খরচ'],
+          subTabs: [
+            { id: 'transactions', label: 'ট্রানজেকশন তালিকা' },
+            { id: 'coupons-discounts', label: 'কুপন ও ডিসকাউন্ট' },
+            { id: 'raffle-campaigns', label: 'র‍্যাফেল ড্র ক্যাম্পেইন' },
+            { id: 'platform-operations', label: 'অপারেশনাল খরচ ও অপটিমাইজেশন' }
+          ]
+        },
+        { 
+          id: 'notifications', 
+          label: 'যোগাযোগ ও মেসেজিং', 
+          icon: Bell, 
+          badge: 'সক্রিয়',
+          badgeColor: 'bg-emerald-600 text-white',
+          keywords: ['এসএমএস', 'sms', 'notification', 'মেসেজ', 'ব্রডকাস্ট', 'টেমপ্লেট'],
+          subTabs: [
+            { id: 'notifications', label: 'নোটিফিকেশন ও ব্রডকাস্ট' },
+            { id: 'sms-status', label: 'এসএমএস গেটওয়ে ও ব্যালেন্স' },
+            { id: 'templates-delivery', label: 'টেমপ্লেট ও হিস্ট্রি' }
+          ]
+        },
+        { 
+          id: 'settings', 
+          label: 'সিস্টেম ও সিকিউরিটি', 
+          icon: Settings, 
+          badge: null,
+          keywords: ['সেটিংস', 'rbac', 'staff', 'অডিট', 'audit', 'automation', 'অটোমেশন', 'backup'],
+          subTabs: [
+            { id: 'settings', label: 'প্ল্যাটফর্ম সেটিংস' },
+            { id: 'staff-roles', label: 'স্টাফ ও RBAC রোলস' },
+            { id: 'audit-logs', label: 'অডিট ও অ্যাক্টিভিটি লগ' },
+            { id: 'automation-hub', label: 'সেন্ট্রাল অটোমেশন' },
+            { id: 'testing-spider', label: 'টেস্টিং স্পাইডার' },
+            { id: 'backup-diagnostics', label: 'ব্যাকআপ ও রিকভারি' }
+          ]
+        }
       ]
     }
   ];
 
-  const currentNav = useMemo(() => {
+  const activeHub = useMemo(() => {
     for (const group of navGroups) {
-      const match = group.items.find(i => i.id === activeTab);
-      if (match) {
-        return { groupName: group.name, itemName: match.label };
+      for (const item of group.items) {
+        if (item.id === activeTab || item.subTabs?.some(s => s.id === activeTab)) {
+          return item;
+        }
       }
     }
-    return { groupName: 'ওভারভিউ', itemName: 'ড্যাশবোর্ড' };
-  }, [activeTab]);
+    return navGroups[0].items[0];
+  }, [activeTab, navGroups]);
+
+  const currentNav = useMemo(() => {
+    for (const group of navGroups) {
+      for (const item of group.items) {
+        if (item.id === activeTab) {
+          return { groupName: group.name, itemName: item.label };
+        }
+        if (item.subTabs) {
+          const subMatch = item.subTabs.find(s => s.id === activeTab);
+          if (subMatch) {
+            return { groupName: item.label, itemName: subMatch.label };
+          }
+        }
+      }
+    }
+    return { groupName: 'অ্যাডমিন', itemName: activeTab };
+  }, [activeTab, navGroups]);
+
 
   if (!isAdminAuthenticated) {
     if (isLoading) {
@@ -1780,9 +1845,16 @@ function AdminContent() {
                   {group.name}
                 </div>
                 <div className="space-y-0.5">
-                  {group.items.map((item) => {
+                  {group.items.filter((item) => {
+                    if (!searchTerm.trim()) return true;
+                    const term = searchTerm.toLowerCase().trim();
+                    if (item.label.toLowerCase().includes(term)) return true;
+                    if (item.keywords && item.keywords.some((k) => k.toLowerCase().includes(term))) return true;
+                    if (item.subTabs && item.subTabs.some(s => s.label.toLowerCase().includes(term))) return true;
+                    return false;
+                  }).map((item) => {
                     const Icon = item.icon;
-                    const isActive = activeTab === item.id;
+                    const isActive = activeTab === item.id || Boolean(item.subTabs?.some(s => s.id === activeTab));
                     return (
                       <button
                         key={item.id}
@@ -1872,6 +1944,29 @@ function AdminContent() {
               </button>
             </div>
           </div>
+
+          {/* 2.5 SUB-HUB NAVIGATION PILL BAR */}
+          {activeHub && activeHub.subTabs && activeHub.subTabs.length > 1 && (
+            <div className="mb-6 flex flex-wrap items-center gap-1.5 p-1.5 bg-white rounded-2xl border border-slate-200/90 shadow-2xs">
+              {activeHub.subTabs.map((sub) => {
+                const isSubActive = activeTab === sub.id;
+                return (
+                  <button
+                    key={sub.id}
+                    type="button"
+                    onClick={() => handleTabChange(sub.id)}
+                    className={'px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ' +
+                      (isSubActive
+                        ? 'bg-emerald-800 text-white shadow-xs'
+                        : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100')
+                    }
+                  >
+                    {sub.label}
+                  </button>
+                );
+              })}
+            </div>
+          )}
 
           {/* TAB 1: OVERVIEW -> DASHBOARD (STEP 14: PLATFORM GOVERNANCE & CONTROL CENTER) */}
           {activeTab === 'dashboard' && (

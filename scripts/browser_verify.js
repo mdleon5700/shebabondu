@@ -44,11 +44,11 @@ async function runBrowserVerification() {
     viewport: { width: 1280, height: 720 }
   });
 
-  const page = await context.newPage();
   const results = [];
   let totalErrors = 0;
 
   for (const route of CRITICAL_ROUTES) {
+    const page = await context.newPage();
     const fullUrl = `${TARGET_HOST}${route.path}`;
     const consoleErrors = [];
     
@@ -104,6 +104,7 @@ async function runBrowserVerification() {
     if (consoleErrors.length > 0) {
       console.log(`   ⚠️ Console Errors:`, consoleErrors.slice(0, 2));
     }
+    await page.close();
   }
 
   await browser.close();

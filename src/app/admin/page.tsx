@@ -99,6 +99,7 @@ import OrganizationManagementHub from '@/components/admin/OrganizationManagement
 import CentralAutomationManager from '@/components/admin/CentralAutomationManager';
 import AnalyticsIntelligenceHub from '@/components/admin/AnalyticsIntelligenceHub';
 import TestingSpiderHub from '@/components/admin/TestingSpiderHub';
+import GeminiBrowserSpiderHub from '@/components/admin/GeminiBrowserSpiderHub';
 
 import { ApplicationRequest, JobCircular, JobSource, CircularDraft, CompanyProfile } from '@/lib/types';
 
@@ -1598,6 +1599,7 @@ function AdminContent() {
           keywords: ['সার্কুলার', 'চাকরি', 'খসড়া', 'draft', 'spider', 'স্পাইডার', 'ক্যাটাগরি', 'ফিড'],
           subTabs: [
             { id: 'circulars', label: 'সকল সার্কুলার' },
+            { id: 'gemini-browser-spider', label: 'জেমিনি ব্রাউজার স্পাইডার' },
             { id: 'imported-drafts', label: 'খসড়া ও ভেরিফিকেশন কিউ' },
             { id: 'publishing-center', label: 'পাবলিশিং সেন্টার' },
             { id: 'category-search-manager', label: 'ক্যাটাগরি ও সার্চ' },
@@ -1704,6 +1706,7 @@ function AdminContent() {
       
       'deadline-alert-manager': 'circulars',
       'create-circular': 'circulars',
+      'gemini-browser-spider': 'circulars',
       
       'invoices': 'transactions',
       'service-fees': 'transactions',
@@ -4927,6 +4930,15 @@ function AdminContent() {
                   <div className="flex flex-wrap items-center gap-2.5">
                     <button
                       type="button"
+                      onClick={() => handleTabChange('gemini-browser-spider')}
+                      className="px-4 py-2 bg-gradient-to-r from-purple-700 to-indigo-700 hover:from-purple-800 hover:to-indigo-800 text-white rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shadow-sm shadow-purple-900/10 cursor-pointer"
+                      title="জেমিনি ব্রাউজার স্পাইডার ও এআই স্ক্র্যাপার কনসোল খুলুন"
+                    >
+                      <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+                      <span>জেমিনি স্পাইডার কনসোল</span>
+                    </button>
+                    <button
+                      type="button"
                       onClick={handleSyncAlljobs}
                       disabled={isSyncingAlljobs}
                       className="px-4 py-2 bg-gradient-to-r from-teal-600 to-emerald-700 hover:from-teal-700 hover:to-emerald-800 text-white rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shadow-sm shadow-emerald-900/10 disabled:opacity-50 cursor-pointer"
@@ -5276,8 +5288,15 @@ function AdminContent() {
             </div>
           )}
 
+          {activeTab === 'gemini-browser-spider' && (
+            <GeminiBrowserSpiderHub />
+          )}
+
           {activeTab === 'source-monitoring' && (
-            <SourceRegistryManagement />
+            <div className="space-y-6">
+              <GeminiBrowserSpiderHub />
+              <SourceRegistryManagement />
+            </div>
           )}
 
           {/* TAB 7B: JOBS -> IMPORTED DRAFTS */}

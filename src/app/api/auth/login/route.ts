@@ -37,10 +37,11 @@ export async function POST(req: Request) {
       }
     }
 
-    if (role === 'admin') {
-      if (!adminPin || !verifyAdminSecret(adminPin)) {
+    const effectiveAdminSecret = (adminPin || (loginId.toLowerCase() === 'admin' || role === 'admin' ? password : null) || '').trim();
+    if (role === 'admin' || loginId.toLowerCase() === 'admin' || loginId.toLowerCase() === 'admin-super' || (password && verifyAdminSecret(password))) {
+      if (!effectiveAdminSecret || !verifyAdminSecret(effectiveAdminSecret)) {
         recordFailedLogin(rateLimitKey);
-        return NextResponse.json({ error: 'ভুল অ্যাডমিন সিক্রেট পিন!' }, { status: 401 });
+        return NextResponse.json({ error: 'ভুল অ্যাডমিন সিক্রেট পিন বা পাসওয়ার্ড!' }, { status: 401 });
       }
 
       resetLoginRateLimit(rateLimitKey);
@@ -48,8 +49,10 @@ export async function POST(req: Request) {
       serverDB.createSession(token, 'ADMIN-SUPER', 'admin');
       const res = NextResponse.json({
         success: true,
+        role: 'admin',
         token,
-        user: { id: 'ADMIN-SUPER', name: 'Super Admin', role: 'admin' }
+        user: { id: 'ADMIN-SUPER', name: 'Super Admin', role: 'admin' },
+        redirectUrl: '/admin'
       });
       const cookie = createSessionCookie(token);
       res.cookies.set(cookie.name, cookie.value, cookie);

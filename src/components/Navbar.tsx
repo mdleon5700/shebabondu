@@ -286,7 +286,7 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop Navigation Links (Ordered: হোম | সরকারি চাকরি | বেসরকারি চাকরি | পরীক্ষা ও ফলাফল | আবেদন নির্দেশনা | জব টিপস) */}
-          <nav className="hidden xl:flex items-center gap-0.5 2xl:gap-1.5 font-bold text-[14px] 2xl:text-[16px] text-slate-800 whitespace-nowrap flex-shrink-0">
+          <nav className="hidden lg:flex items-center gap-0.5 xl:gap-1 font-bold text-[13px] xl:text-[15px] text-slate-800 whitespace-nowrap flex-shrink-0">
             {navItems.map((item) => {
               const hasDropdown = Boolean(item.dropdown && item.dropdown.length > 0);
               const isCurrentOpen = activeDropdown === item.id;
@@ -347,7 +347,7 @@ export default function Navbar() {
             
             {/* WhatsApp button - Outlined in green */}
             <a
-              href="https://wa.me/8801700000000"
+              href="https://wa.me/8801774366643"
               target="_blank"
               rel="noopener noreferrer"
               className="px-2.5 2xl:px-3 py-1.5 2xl:py-2 rounded-xl border-2 border-emerald-600 text-emerald-700 bg-white hover:bg-emerald-50 text-xs 2xl:text-sm font-bold transition-all flex items-center gap-1.5 shadow-sm"
@@ -476,7 +476,7 @@ export default function Navbar() {
           </div>
 
           {/* Mobile Menu Toggle Button */}
-          <div className="flex xl:hidden items-center gap-2">
+          <div className="flex lg:hidden items-center gap-2">
             {!isMounted ? (
               <div className="w-14 h-8 rounded-xl bg-slate-100 animate-pulse" />
             ) : !auth.isLoggedIn ? (
@@ -510,7 +510,7 @@ export default function Navbar() {
 
       {/* 3. TABLET & MOBILE ACCORDION DRAWER */}
       {mobileMenuOpen && (
-        <div className="xl:hidden bg-white border-b border-slate-200 px-4 pt-3 pb-6 space-y-3 max-h-[85vh] overflow-y-auto">
+        <div className="lg:hidden bg-white border-b border-slate-200 px-4 pt-3 pb-6 space-y-3 max-h-[85vh] overflow-y-auto">
           <nav className="space-y-1 text-[16px] font-bold text-slate-800">
             {navItems.map((item) => {
               const hasDropdown = Boolean(item.dropdown && item.dropdown.length > 0);
@@ -519,27 +519,26 @@ export default function Navbar() {
               return (
                 <div key={item.id} className="border-b border-slate-100 pb-1">
                                     <div className="flex items-center justify-between">
-                    {hasDropdown ? (
+                    <Link
+                      href={item.href}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="py-2.5 px-2 rounded-xl hover:bg-emerald-50 text-slate-900 font-bold flex-1 text-left transition-colors"
+                    >
+                      {item.label}
+                    </Link>
+                    {hasDropdown && (
                       <button
                         type="button"
                         onClick={() => toggleMobileAccordion(item.id)}
-                        className="w-full flex items-center justify-between py-2.5 px-2 rounded-xl hover:bg-emerald-50 text-slate-900 font-bold text-left transition-colors"
+                        className="p-2.5 rounded-xl hover:bg-emerald-50 text-slate-600 transition-colors flex items-center justify-center cursor-pointer"
+                        aria-label={`${item.label} সাবমেনু ড্রপডাউন`}
                       >
-                        <span>{item.label}</span>
                         <ChevronDown 
                           className={`w-4 h-4 transition-transform duration-200 text-slate-500 ${
                             isExpanded ? 'rotate-180 text-emerald-700' : ''
                           }`} 
                         />
                       </button>
-                    ) : (
-                      <Link
-                        href={item.href}
-                        onClick={() => setMobileMenuOpen(false)}
-                        className="block w-full py-2.5 px-2 rounded-xl hover:bg-emerald-50 text-slate-900 font-bold"
-                      >
-                        {item.label}
-                      </Link>
                     )}
                   </div>
 
@@ -566,7 +565,7 @@ export default function Navbar() {
           {/* Mobile Bottom Actions (WhatsApp + Login) */}
           <div className="pt-4 space-y-2.5">
             <a
-              href="https://wa.me/8801700000000"
+              href="https://wa.me/8801774366643"
               target="_blank"
               rel="noopener noreferrer"
               className="w-full py-3 border-2 border-emerald-600 text-emerald-700 rounded-xl font-bold text-[17px] flex items-center justify-center gap-2 hover:bg-emerald-50 transition-colors"

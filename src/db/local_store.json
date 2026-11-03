@@ -2680,7 +2680,7 @@
       "permanentAddress": "",
       "photoUrl": "",
       "signatureUrl": "",
-      "walletBalance": 50,
+      "walletBalance": 800,
       "maritalStatus": "single",
       "quota": "none",
       "education": [],
@@ -5098,7 +5098,38 @@
         "teleTalkTrackingId": "TT-RAKIB-2026"
       }
     ],
-    "USR-01888888888": [],
+    "USR-01888888888": [
+      {
+        "id": "TEST-APP-1793676219223",
+        "jobId": "test-job-1793676219223",
+        "jobTitle": "সহকারী পরিচালক",
+        "organization": "বাংলাদেশ ব্যাংক",
+        "postName": "সহকারী পরিচালক (1793676219223)",
+        "totalAmount": 200,
+        "governmentFee": 150,
+        "serviceCharge": 50,
+        "paymentMethod": "Wallet",
+        "status": "processing",
+        "date": "৩/১১/২০২৬",
+        "createdAt": "2026-11-03T03:23:39.239Z",
+        "candidateId": "USR-01888888888"
+      },
+      {
+        "id": "TEST-APP-1793676006772",
+        "jobId": "test-job-1",
+        "jobTitle": "সহকারী পরিচালক",
+        "organization": "বাংলাদেশ ব্যাংক",
+        "postName": "সহকারী পরিচালক (জেনারেল)",
+        "totalAmount": 200,
+        "governmentFee": 150,
+        "serviceCharge": 50,
+        "paymentMethod": "Wallet",
+        "status": "processing",
+        "date": "৩/১১/২০২৬",
+        "createdAt": "2026-11-03T03:20:06.789Z",
+        "candidateId": "USR-01888888888"
+      }
+    ],
     "USR-01799112233": []
   },
   "savedJobs": {
@@ -5200,7 +5231,28 @@
     ],
     "USR-01857684380": [],
     "USR-01799887766": [],
-    "USR-01888888888": []
+    "USR-01888888888": [
+      {
+        "id": "TXN-TEST-APP-1793676219223",
+        "date": "2026-11-03T03:23:39.240Z",
+        "amount": 200,
+        "type": "fee_deduction",
+        "description": "সহকারী পরিচালক - সহকারী পরিচালক (1793676219223)",
+        "method": "Wallet",
+        "trxId": "WALLET-TEST-APP-1793676219223",
+        "status": "completed"
+      },
+      {
+        "id": "TXN-TEST-APP-1793676006772",
+        "date": "2026-11-03T03:20:06.791Z",
+        "amount": 200,
+        "type": "fee_deduction",
+        "description": "সহকারী পরিচালক - সহকারী পরিচালক (জেনারেল)",
+        "method": "Wallet",
+        "trxId": "WALLET-TEST-APP-1793676006772",
+        "status": "completed"
+      }
+    ]
   },
   "notifications": {
     "USR-01712345678": [

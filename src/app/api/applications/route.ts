@@ -146,6 +146,7 @@ export async function POST(req: Request) {
       verificationType: isWalletPay ? 'officially_verified' : 'user_reported',
       status: computedStatus,
       date: new Date().toLocaleDateString('bn-BD'),
+      createdAt: new Date().toISOString(),
       statusHistory: [
         {
           status: computedStatus,
@@ -165,7 +166,7 @@ export async function POST(req: Request) {
     } catch {}
     if (!result.success) return NextResponse.json({ error: result.error }, { status: 409 });
     const updated = result.applications;
-    const res = NextResponse.json({ success: true, applications: updated, createdApp: newApp }, {
+    const res = NextResponse.json({ success: true, applications: updated, createdApp: newApp, walletBalance: result.walletBalance, transaction: result.transaction }, {
       headers: {
         'Cache-Control': 'private, no-cache, no-store, must-revalidate'
       }

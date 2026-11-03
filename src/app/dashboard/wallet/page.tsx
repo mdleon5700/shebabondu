@@ -24,13 +24,26 @@ export default function WalletPage() {
     // 1. Local user
     setProfile(storage.getUser());
 
-    // 2. Fetch server wallet balance
+    // 2. Fetch server wallet balance & sync transactions
     const fetchBalance = async () => {
       try {
+        setProfile(storage.getUser());
+        const localTxs = storage.getTransactions();
+        setTransactions(localTxs);
         const res = await fetch('/api/wallet/transactions');
         if (res.ok) {
           const data = await res.json();
-          setTransactions(data.transactions || []);
+          if (Array.isArray(data.transactions)) {
+            const map = new Map<string, WalletTransaction>();
+            localTxs.forEach((t: WalletTransaction) => map.set(t.id, t));
+            data.transactions.forEach((t: WalletTransaction) => map.set(t.id, t));
+            const merged = Array.from(map.values()).sort((a: WalletTransaction, b: WalletTransaction) => {
+              const timeA = new Date(a.date).getTime() || 0;
+              const timeB = new Date(b.date).getTime() || 0;
+              return timeB - timeA;
+            });
+            setTransactions(merged);
+          }
           if (typeof data.walletBalance === 'number') {
             setProfile(prev => ({ ...prev, walletBalance: data.walletBalance }));
           }
@@ -41,7 +54,15 @@ export default function WalletPage() {
     };
     fetchBalance();
     window.addEventListener('focus', fetchBalance);
-    return () => window.removeEventListener('focus', fetchBalance);
+    window.addEventListener('cs_wallet_changed', fetchBalance);
+    window.addEventListener('cs_txs_changed', fetchBalance);
+    window.addEventListener('cs_user_changed', fetchBalance);
+    return () => {
+      window.removeEventListener('focus', fetchBalance);
+      window.removeEventListener('cs_wallet_changed', fetchBalance);
+      window.removeEventListener('cs_txs_changed', fetchBalance);
+      window.removeEventListener('cs_user_changed', fetchBalance);
+    };
   }, []);
 
   useEffect(() => {
@@ -72,7 +93,18 @@ export default function WalletPage() {
 
       const data = await res.json();
       if (!res.ok || !data.success) throw new Error(data.error || 'রিচার্জ আবেদন ব্যর্থ হয়েছে');
-      if (data.transaction) setTransactions(previous => [data.transaction, ...previous]);
+      if (data.transaction) {
+        setTransactions(previous => [data.transaction, ...previous]);
+        try { storage.addTransaction(data.transaction); } catch {}
+      }
+      if (typeof data.newBalance === 'number') {
+        const u = storage.getUser();
+        u.walletBalance = data.newBalance;
+        storage.updateUser(u);
+      }
+      window.dispatchEvent(new Event('cs_wallet_changed'));
+      window.dispatchEvent(new Event('cs_txs_changed'));
+      window.dispatchEvent(new Event('cs_user_changed'));
       await candidateData.refresh();
       setRechargeSuccess(true);
       setTrxId('');
@@ -124,13 +156,47 @@ export default function WalletPage() {
         </Link>
       </div>
 
-      {transactions.length > 0 && <div className="bg-white rounded-2xl border p-5 space-y-3">
-        <h2 className="text-xl font-bold">ওয়ালেট লেনদেন ও যাচাইয়ের অবস্থা</h2>
-        {transactions.map(transaction => <div key={transaction.id} className="flex flex-wrap justify-between gap-2 border-b py-2">
-          <span className="break-all">{transaction.trxId} · ৳{transaction.amount}</span>
-          <span>{transaction.status === 'pending' ? 'যাচাইয়ের অপেক্ষায়' : transaction.status === 'failed' ? 'বাতিল' : 'অনুমোদিত'}</span>
-        </div>)}
-      </div>}
+      {transactions.length > 0 ? (
+        <div className="bg-white rounded-3xl border border-slate-200/90 shadow-sm p-6 space-y-4">
+          <div className="flex items-center justify-between">
+            <h2 className="text-base font-black text-slate-900 flex items-center gap-2">
+              <History className="w-4 h-4 text-emerald-700" />
+              <span>সাম্প্রতিক ওয়ালেট লেনদেন ও স্ট্যাটাস ({transactions.length} টি)</span>
+            </h2>
+            <Link href="/dashboard/transactions" className="text-xs font-bold text-emerald-700 hover:underline">
+              সম্পূর্ণ হিস্ট্রি দেখুন →
+            </Link>
+          </div>
+          <div className="divide-y divide-slate-100">
+            {transactions.slice(0, 5).map(tx => (
+              <div key={tx.id} className="py-3 flex items-center justify-between gap-3 text-xs">
+                <div className="space-y-0.5">
+                  <div className="font-bold text-slate-800">{tx.description}</div>
+                  <div className="text-[11px] text-slate-400">TrxID: {tx.trxId} • {tx.method}</div>
+                </div>
+                <div className="text-right">
+                  <div className={`font-black text-sm ${tx.type === 'recharge' ? 'text-emerald-700' : 'text-slate-900'}`}>
+                    {tx.type === 'recharge' ? '+' : '-'}৳{tx.amount}
+                  </div>
+                  <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${
+                    tx.status === 'pending'
+                      ? 'text-amber-800 bg-amber-50 border-amber-200'
+                      : tx.status === 'failed'
+                      ? 'text-rose-800 bg-rose-50 border-rose-200'
+                      : 'text-emerald-800 bg-emerald-50 border-emerald-200'
+                  }`}>
+                    {tx.status === 'pending' ? 'যাচাইয়ের অপেক্ষায়' : tx.status === 'failed' ? 'বাতিল' : 'অনুমোদিত / সফল'}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      ) : (
+        <div className="bg-white rounded-3xl border border-slate-200/90 p-5 text-center text-slate-500 text-xs">
+          কোনো ওয়ালেট লেনদেন পাওয়া যায়নি। বিকাশ বা নগদ দিয়ে ব্যালেন্স রিচার্জ করে সরাসরি আবেদন ফি পরিশোধ করুন।
+        </div>
+      )}
 
       {/* Instant Recharge Form */}
       <div className="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-4">

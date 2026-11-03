@@ -381,7 +381,37 @@ function ApplyFormContent({ initialJob }: ApplyClientProps) {
       const data = await res.json();
       if (res.ok && data.success && data.createdApp) {
         setCreatedOrderNumber(data.createdApp.id);
-        try { storage.addApplication(data.createdApp); } catch {}
+        try {
+          storage.addApplication(data.createdApp);
+          if (paymentMethod === 'Wallet' || (useWalletSplit && splitWalletAmount > 0)) {
+            const user = storage.getUser();
+            if (typeof data.walletBalance === 'number') {
+              user.walletBalance = data.walletBalance;
+            } else {
+              user.walletBalance = Math.max(0, (user.walletBalance || 0) - (data.createdApp.totalAmount || 0));
+            }
+            storage.updateUser(user);
+
+            const txn = data.transaction || {
+              id: 'TXN-' + data.createdApp.id,
+              date: new Date().toISOString(),
+              amount: data.createdApp.totalAmount,
+              type: 'fee_deduction',
+              description: `${data.createdApp.jobTitle} - ${data.createdApp.postName}`,
+              method: 'Wallet',
+              trxId: 'WALLET-' + data.createdApp.id,
+              status: 'completed'
+            };
+            storage.addTransaction(txn);
+
+            window.dispatchEvent(new Event('cs_wallet_changed'));
+            window.dispatchEvent(new Event('cs_txs_changed'));
+            window.dispatchEvent(new Event('cs_user_changed'));
+          }
+          window.dispatchEvent(new CustomEvent('cs_application_submitted', { detail: data.createdApp }));
+        } catch (storageErr) {
+          console.warn('Storage sync error:', storageErr);
+        }
         setOrderSuccess(true);
       } else {
         alert(data.error || 'আবেদন জমা দিতে সমস্যা হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।');

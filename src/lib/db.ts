@@ -2821,29 +2821,42 @@ export const serverDB = {
     return Array.from(map.values()).sort((a, b) => (b.id > a.id ? 1 : -1));
   },
 
-  submitApplication(candidateId: string, app: ApplicationRequest, payWithWallet: boolean): { success: boolean; error?: string; applications?: ApplicationRequest[] } {
+  submitApplication(candidateId: string, app: ApplicationRequest, payWithWallet: boolean): { success: boolean; error?: string; applications?: ApplicationRequest[]; walletBalance?: number; transaction?: WalletTransaction } {
     const db = loadDB();
-    const candidate = db.candidates[candidateId];
+    let candidate: CandidateRecord | undefined = db.candidates[candidateId];
+    if (!candidate && candidateId?.startsWith('SYNTH-')) {
+      candidate = SyntheticUserManager.getSyntheticUserById(candidateId) as any;
+    }
+    if (!candidate) {
+      const all = Object.values(db.candidates);
+      candidate = all.find(c => c.id === candidateId || c.phone === (app as any).candidatePhone);
+    }
     if (!candidate) return { success: false, error: 'Candidate not found' };
     const list = db.applications[candidateId] || [];
     if (list.some(existing => existing.id === app.id || (existing.jobId === app.jobId && existing.postName === app.postName && ['pending_payment', 'processing', 'submitted'].includes(existing.status)))) {
       return { success: false, error: 'Duplicate application' };
     }
     if (!Number.isFinite(app.totalAmount) || app.totalAmount < 0) return { success: false, error: 'Invalid application fee' };
+    let transaction: WalletTransaction | undefined = undefined;
     if (payWithWallet) {
       if ((candidate.walletBalance || 0) < app.totalAmount) return { success: false, error: 'Insufficient wallet balance' };
       candidate.walletBalance = Math.round(((candidate.walletBalance || 0) - app.totalAmount) * 100) / 100;
-      const transaction: WalletTransaction = {
-        id: 'TXN-' + app.id, date: new Date().toISOString(), amount: app.totalAmount,
-        type: 'fee_deduction', description: app.jobTitle + ' - ' + app.postName,
-        method: 'Wallet', trxId: 'WALLET-' + app.id, status: 'completed'
+      transaction = {
+        id: 'TXN-' + app.id,
+        date: new Date().toISOString(),
+        amount: app.totalAmount,
+        type: 'fee_deduction',
+        description: app.jobTitle + ' - ' + app.postName,
+        method: 'Wallet',
+        trxId: 'WALLET-' + app.id,
+        status: 'completed'
       };
       db.transactions[candidateId] = [transaction, ...(db.transactions[candidateId] || [])];
     }
     const applications = [{ ...app, candidateId }, ...list];
     db.applications[candidateId] = applications;
     saveDB(db);
-    return { success: true, applications };
+    return { success: true, applications, walletBalance: candidate.walletBalance, transaction };
   },
 
   addApplication(candidateId: string, app: ApplicationRequest): ApplicationRequest[] {

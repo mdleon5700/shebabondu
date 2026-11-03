@@ -173,6 +173,7 @@ function AdminContent() {
 
   // 2.1 All Applications Super Enhancements State
   const [appStatusFilter, setAppStatusFilter] = useState<'all' | 'pending_payment' | 'processing' | 'completed' | 'rejected'>('all');
+  const [appSortOrder, setAppSortOrder] = useState<'fifo' | 'lifo' | 'deadline' | 'fee'>('fifo');
   const [inspectingApp, setInspectingApp] = useState<ApplicationRequest | null>(null);
   const [copiedTrxId, setCopiedTrxId] = useState<string | null>(null);
   const [drawerTrackingId, setDrawerTrackingId] = useState('');
@@ -1498,7 +1499,7 @@ function AdminContent() {
       (a.teleTalkTrackingId && a.teleTalkTrackingId.toLowerCase().includes(term)) ||
       (a.trxId && a.trxId.toLowerCase().includes(term))
     );
-  }, [applications, activeTab, appStatusFilter, paymentGatewayFilter, processingChannelFilter, processingSortOrder, completedSubFilter, searchTerm, jobs]);
+  }, [applications, activeTab, appStatusFilter, appSortOrder, paymentGatewayFilter, processingChannelFilter, processingSortOrder, completedSubFilter, searchTerm, jobs]);
 
   const navGroups: { 
     name: string; 

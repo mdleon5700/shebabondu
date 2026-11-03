@@ -114,8 +114,14 @@ export class BangladeshDateHelper {
     // 3. Convert all Bengali digits to English
     const enStr = this.toEnDigits(trimmed);
 
-    // 4. Check slash-separated date (e.g. 30/10/2026 or 01/07/2025)
-    const slashMatch = enStr.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/);
+    // 3b. Check embedded YYYY-MM-DD anywhere in text
+    const embeddedIso = enStr.match(/\b(\d{4})-(\d{2})-(\d{2})\b/);
+    if (embeddedIso) {
+      return `${embeddedIso[1]}-${embeddedIso[2]}-${embeddedIso[3]}`;
+    }
+
+    // 4. Check slash/dash-separated date (e.g. 30/10/2026 or 01/07/2025 or embedded in sentence)
+    const slashMatch = enStr.match(/\b(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})\b/);
     if (slashMatch) {
       const d = slashMatch[1].padStart(2, '0');
       const m = slashMatch[2].padStart(2, '0');
@@ -123,23 +129,45 @@ export class BangladeshDateHelper {
       return `${y}-${m}-${d}`;
     }
 
-    // 5. Check text month in Bengali or English (e.g. "২৮ অক্টোবর ২০২৬" or "28 October 2026")
-    const words = enStr.split(/\s+/);
-    if (words.length >= 2) {
-      const dayCandidate = words[0].replace(/[^0-9]/g, '');
-      const monthCandidate = words[1].toLowerCase();
-      const yearCandidate = (words[2] ? words[2].replace(/[^0-9]/g, '') : '') || '2026';
+    // 5. Check text month in Bengali or English (e.g. "২৮ অক্টোবর ২০২৬", "শেষ তারিখ: ২৫ নভেম্বর ২০২৬", "25 November 2026")
+    const textMonthRegex = /(\d{1,2})\s+([^\s\d\:\,\.\/]+)(?:\s+(\d{4}))?/i;
+    const match = enStr.match(textMonthRegex);
+    if (match) {
+      const day = match[1].padStart(2, '0');
+      const monthWord = match[2].toLowerCase();
+      const year = match[3] || '2026';
 
-      if (dayCandidate && yearCandidate && yearCandidate.length === 4) {
+      let monthNum = '00';
+      for (const [key, val] of Object.entries(BN_MONTHS_MAP)) {
+        if (monthWord.includes(key) || key.includes(monthWord)) {
+          monthNum = val;
+          break;
+        }
+      }
+
+      if (monthNum !== '00') {
+        return `${year}-${monthNum}-${day}`;
+      }
+    }
+
+    // 5b. Fallback word scan: search tokens for day and month
+    const words = enStr.split(/[\s,:]+/).filter(Boolean);
+    for (let i = 0; i < words.length - 1; i++) {
+      const dayCandidate = words[i].replace(/[^0-9]/g, '');
+      const monthCandidate = words[i + 1].toLowerCase();
+      const yearCandidate = (words[i + 2] ? words[i + 2].replace(/[^0-9]/g, '') : '') || '2026';
+
+      if (dayCandidate && dayCandidate.length <= 2 && Number(dayCandidate) >= 1 && Number(dayCandidate) <= 31) {
         let m = '00';
         for (const [key, val] of Object.entries(BN_MONTHS_MAP)) {
-          if (monthCandidate.includes(key)) {
+          if (monthCandidate.includes(key) || key.includes(monthCandidate)) {
             m = val;
             break;
           }
         }
         if (m !== '00') {
-          return `${yearCandidate}-${m}-${dayCandidate.padStart(2, '0')}`;
+          const y = yearCandidate.length === 4 ? yearCandidate : '2026';
+          return `${y}-${m}-${dayCandidate.padStart(2, '0')}`;
         }
       }
     }
@@ -147,9 +175,6 @@ export class BangladeshDateHelper {
     return null;
   }
 
-  /**
-   * Get today's calendar date info in Asia/Dhaka (BST)
-   */
   public static getBangladeshTodayDate(nowInput?: Date): {
     isoDate: string;
     dateBn: string;

@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { UserCheck, Phone, Lock, User, ArrowRight, ShieldCheck, AlertCircle, Loader2 } from 'lucide-react';
 import { storage } from '@/lib/store';
+import { getAllDistrictsList } from '@/lib/constants';
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -12,6 +13,7 @@ export default function RegisterPage() {
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [district, setDistrict] = useState('ঢাকা');
+  const [isCustomDistrict, setIsCustomDistrict] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 

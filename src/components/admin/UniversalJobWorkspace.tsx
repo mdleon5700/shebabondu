@@ -51,6 +51,7 @@ import {
   ArrowLeft
 } from 'lucide-react';
 import { JobCircular, JobPosition } from '@/lib/types';
+import { BD_ALL_DISTRICTS_BN, getUpazilasForDistrict } from '@/lib/constants';
 
 const ADMIN_REQ_HEADERS: HeadersInit = {
   'Content-Type': 'application/json',
@@ -1140,24 +1141,42 @@ export default function UniversalJobWorkspace({
                     />
                   </div>
                   <div>
-                    <label className="text-xs font-bold text-slate-700 block mb-1">জেলা (District)</label>
+                    <div className="flex items-center justify-between mb-1">
+                      <label className="text-xs font-bold text-slate-700">জেলা (District)</label>
+                      <span className="text-[10px] text-slate-400 font-semibold">৬৪ জেলা বা কাস্টম</span>
+                    </div>
                     <input
                       type="text"
+                      list="admin-all-districts-list"
                       value={formData.district || ''}
                       onChange={(e) => updateField('district', e.target.value)}
-                      placeholder="যেমন: ঢাকা"
-                      className="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 focus:ring-1 focus:ring-emerald-600 focus:outline-none"
+                      placeholder="যেমন: ঢাকা (বা কাস্টম জেলা লিখুন)"
+                      className="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 focus:ring-1 focus:ring-emerald-600 focus:outline-none font-bold"
                     />
+                    <datalist id="admin-all-districts-list">
+                      {BD_ALL_DISTRICTS_BN.map((d: string) => (
+                        <option key={d} value={d}>{d}</option>
+                      ))}
+                    </datalist>
                   </div>
                   <div>
-                    <label className="text-xs font-bold text-slate-700 block mb-1">উপজেলা / এরিয়া</label>
+                    <div className="flex items-center justify-between mb-1">
+                      <label className="text-xs font-bold text-slate-700">উপজেলা / এরিয়া (Upazila)</label>
+                      <span className="text-[10px] text-slate-400 font-semibold">উপজেলা বা কাস্টম</span>
+                    </div>
                     <input
                       type="text"
+                      list="admin-upazilas-list"
                       value={formData.upazila || ''}
                       onChange={(e) => updateField('upazila', e.target.value)}
-                      placeholder="যেমন: মতিঝিল"
-                      className="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 focus:ring-1 focus:ring-emerald-600 focus:outline-none"
+                      placeholder="যেমন: মিরপুর, সদর (বা কাস্টম লিখুন)"
+                      className="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 focus:ring-1 focus:ring-emerald-600 focus:outline-none font-bold"
                     />
+                    <datalist id="admin-upazilas-list">
+                      {getUpazilasForDistrict(formData.district).map((u: string) => (
+                        <option key={u} value={u}>{u}</option>
+                      ))}
+                    </datalist>
                   </div>
                 </div>
               </div>
@@ -1639,14 +1658,43 @@ export default function UniversalJobWorkspace({
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-                  <div>
-                    <label className="text-xs font-bold text-slate-700 block mb-1">যেসব জেলার প্রার্থী আবেদন করতে পারবেন</label>
+                  <div className="sm:col-span-2 space-y-2">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                      <label className="text-xs font-bold text-slate-700">যেসব জেলার প্রার্থী আবেদন করতে পারবেন (প্রযোজ্য জেলা)</label>
+                      <span className="text-[10px] text-slate-500 font-bold">কুইক প্রিসেটে ক্লিক করে সহজে পূরণ করুন:</span>
+                    </div>
+
+                    {/* Quick District Presets */}
+                    <div className="flex flex-wrap gap-1.5 pb-1">
+                      {[
+                        { label: 'সকল জেলা', val: 'সকল জেলা' },
+                        { label: 'সকল জেলা (এতিম ও প্রতিবন্ধী ব্যতীত)', val: 'সকল জেলা (এতিম ও শারীরিক প্রতিবন্ধী কোটায় সকল জেলার প্রার্থী আবেদন করতে পারবেন)' },
+                        { label: 'ঢাকা বিভাগ', val: 'ঢাকা বিভাগের সকল জেলা' },
+                        { label: 'চট্টগ্রাম বিভাগ', val: 'চট্টগ্রাম বিভাগের সকল জেলা' },
+                        { label: 'রাজশাহী বিভাগ', val: 'রাজশাহী বিভাগের সকল জেলা' },
+                        { label: 'খুলনা বিভাগ', val: 'খুলনা বিভাগের সকল জেলা' },
+                        { label: 'বরিশাল বিভাগ', val: 'বরিশাল বিভাগের সকল জেলা' },
+                        { label: 'সিলেট বিভাগ', val: 'সিলেট বিভাগের সকল জেলা' },
+                        { label: 'রংপুর বিভাগ', val: 'রংপুর বিভাগের সকল জেলা' },
+                        { label: 'ময়মনসিংহ বিভাগ', val: 'ময়মনসিংহ বিভাগের সকল জেলা' }
+                      ].map(chip => (
+                        <button
+                          key={chip.label}
+                          type="button"
+                          onClick={() => updateField('districts', chip.val)}
+                          className="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-slate-100 hover:bg-emerald-50 hover:text-emerald-800 hover:border-emerald-300 border border-slate-200 transition-colors cursor-pointer"
+                        >
+                          {chip.label}
+                        </button>
+                      ))}
+                    </div>
+
                     <input
                       type="text"
                       value={formData.districts || 'সকল জেলা'}
                       onChange={(e) => updateField('districts', e.target.value)}
-                      placeholder="সকল জেলা অথবা নির্দিষ্ট জেলার নাম লিখুন"
-                      className="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 focus:ring-1 focus:ring-emerald-600 focus:outline-none"
+                      placeholder="সকল জেলা অথবা কাস্টম জেলার তালিকা লিখুন..."
+                      className="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 focus:ring-1 focus:ring-emerald-600 focus:outline-none font-bold"
                     />
                   </div>
                   <div className="flex items-center pt-3 sm:pt-5">

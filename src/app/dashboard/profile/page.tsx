@@ -25,7 +25,7 @@ import {
 import { storage } from '@/lib/store';
 import { CandidateProfile, EducationRecord, ExperienceRecord } from '@/lib/types';
 import { emptyCandidateProfile as mockUserProfile } from '@/lib/candidate-defaults';
-import { BD_DIVISIONS_EN, BD_DIVISIONS_MAP, getDivisionForDistrict, getDistrictsForDivision, getUpazilasForDistrict, normalizeToEnglishDistrict, normalizeToEnglishDivision } from '@/lib/constants';
+import { BD_DIVISIONS_EN, BD_DIVISIONS_MAP, getAllDistrictsList, getDivisionForDistrict, getDistrictsForDivision, getUpazilasForDistrict, normalizeToEnglishDistrict, normalizeToEnglishDivision } from '@/lib/constants';
 
 export default function ProfilePage() {
   const [profile, setProfile] = useState<CandidateProfile>(mockUserProfile);
@@ -76,8 +76,17 @@ export default function ProfilePage() {
   const [permanentPostCode, setPermanentPostCode] = useState<string>('');
 
   // Auto-selected Upazila / Thana Custom Input Modes
+  const [homeDistrictCustomMode, setHomeDistrictCustomMode] = useState<boolean>(false);
+  const [presentCustomDivisionMode, setPresentCustomDivisionMode] = useState<boolean>(false);
+  const [presentCustomDistrictMode, setPresentCustomDistrictMode] = useState<boolean>(false);
   const [presentCustomThanaMode, setPresentCustomThanaMode] = useState<boolean>(false);
+  const [permanentCustomDivisionMode, setPermanentCustomDivisionMode] = useState<boolean>(false);
+  const [permanentCustomDistrictMode, setPermanentCustomDistrictMode] = useState<boolean>(false);
   const [permanentCustomThanaMode, setPermanentCustomThanaMode] = useState<boolean>(false);
+  const [customQuotaMode, setCustomQuotaMode] = useState<boolean>(false);
+  const [customQuotaTitle, setCustomQuotaTitle] = useState<string>('');
+  const [eduCustomLevelMode, setEduCustomLevelMode] = useState<boolean>(false);
+  const [eduCustomBoardMode, setEduCustomBoardMode] = useState<boolean>(false);
 
   // Education Modal / Form State
   const [showEduModal, setShowEduModal] = useState(false);
@@ -807,14 +816,44 @@ export default function ProfilePage() {
             </div>
 
             <div className="space-y-1.5">
-              <label className="font-bold text-slate-700">নিজ জেলা (কোটা নির্ধারণে অত্যন্ত গুরুত্বপূর্ণ)</label>
-              <input
-                type="text"
-                value={profile.district}
-                onChange={(e) => setProfile({ ...profile, district: e.target.value })}
-                className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl font-medium focus:ring-2 focus:ring-emerald-600/30 outline-none"
-                required
-              />
+              <div className="flex items-center justify-between">
+                <label className="font-bold text-slate-700">নিজ জেলা (Home District — কোটা ও যোগ্যতায় জরুরি)</label>
+                <button
+                  type="button"
+                  onClick={() => setHomeDistrictCustomMode(!homeDistrictCustomMode)}
+                  className="text-[11px] text-emerald-700 hover:underline font-bold cursor-pointer"
+                >
+                  {homeDistrictCustomMode ? '৬৪ জেলার তালিকা থেকে বাছুন' : 'অন্যান্য / কাস্টম জেলা লিখুন'}
+                </button>
+              </div>
+              {homeDistrictCustomMode ? (
+                <input
+                  type="text"
+                  value={profile.district}
+                  onChange={(e) => setProfile({ ...profile, district: e.target.value })}
+                  placeholder="যেমন: ঢাকা, বগুড়া, নোয়াখালী..."
+                  className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl font-bold text-xs focus:ring-2 focus:ring-emerald-600/30 outline-none"
+                  required
+                />
+              ) : (
+                <select
+                  value={profile.district}
+                  onChange={(e) => {
+                    if (e.target.value === '__custom__') {
+                      setHomeDistrictCustomMode(true);
+                      setProfile({ ...profile, district: '' });
+                    } else {
+                      setProfile({ ...profile, district: e.target.value });
+                    }
+                  }}
+                  className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl font-bold text-xs focus:ring-2 focus:ring-emerald-600/30 outline-none cursor-pointer"
+                >
+                  {getAllDistrictsList().map(d => (
+                    <option key={d.en} value={d.bn}>{d.bn} ({d.en}) — {d.division}</option>
+                  ))}
+                  <option value="__custom__">➕ অন্যান্য (কাস্টম জেলা লিখুন)...</option>
+                </select>
+              )}
             </div>
 
             <div className="space-y-1.5">
@@ -865,33 +904,85 @@ export default function ProfilePage() {
 
                   {/* Row 2: Division & District */}
                   <div className="space-y-1.5">
-                    <label className="font-bold text-slate-700">বিভাগ (Division — English)</label>
-                    <select
-                      value={presentDivision}
-                      onChange={(e) => handlePresentDivisionChange(e.target.value)}
-                      className="w-full px-3.5 py-2.5 bg-white border border-slate-200 rounded-xl font-medium focus:ring-2 focus:ring-emerald-600/30 outline-none text-xs text-slate-900 cursor-pointer font-bold"
-                    >
-                      {BD_DIVISIONS_EN.map((div) => (
-                        <option key={div} value={div}>
-                          {div} ({BD_DIVISIONS_MAP[div]?.bn || div})
-                        </option>
-                      ))}
-                    </select>
+                    <div className="flex items-center justify-between">
+                      <label className="font-bold text-slate-700">বিভাগ (Division — English)</label>
+                      <button
+                        type="button"
+                        onClick={() => setPresentCustomDivisionMode(!presentCustomDivisionMode)}
+                        className="text-[10px] text-emerald-700 hover:underline font-bold cursor-pointer"
+                      >
+                        {presentCustomDivisionMode ? 'তালিকা থেকে বাছুন' : 'কাস্টম বিভাগ'}
+                      </button>
+                    </div>
+                    {presentCustomDivisionMode ? (
+                      <input
+                        type="text"
+                        value={presentDivision}
+                        onChange={(e) => setPresentDivision(e.target.value.toUpperCase())}
+                        placeholder="e.g. DHAKA"
+                        className="w-full px-3.5 py-2.5 bg-white border border-slate-200 rounded-xl font-mono uppercase text-xs text-slate-900 font-bold focus:ring-2 focus:ring-emerald-600/30 outline-none"
+                      />
+                    ) : (
+                      <select
+                        value={presentDivision}
+                        onChange={(e) => {
+                          if (e.target.value === '__custom__') {
+                            setPresentCustomDivisionMode(true);
+                          } else {
+                            handlePresentDivisionChange(e.target.value);
+                          }
+                        }}
+                        className="w-full px-3.5 py-2.5 bg-white border border-slate-200 rounded-xl font-medium focus:ring-2 focus:ring-emerald-600/30 outline-none text-xs text-slate-900 cursor-pointer font-bold"
+                      >
+                        {BD_DIVISIONS_EN.map((div) => (
+                          <option key={div} value={div}>
+                            {div} ({BD_DIVISIONS_MAP[div]?.bn || div})
+                          </option>
+                        ))}
+                        <option value="__custom__">➕ OTHER (TYPE CUSTOM DIVISION)...</option>
+                      </select>
+                    )}
                   </div>
 
                   <div className="space-y-1.5">
-                    <label className="font-bold text-slate-700">জেলা (District — English)</label>
-                    <select
-                      value={presentDistrict}
-                      onChange={(e) => handlePresentDistrictChange(e.target.value)}
-                      className="w-full px-3.5 py-2.5 bg-white border border-slate-200 rounded-xl font-medium focus:ring-2 focus:ring-emerald-600/30 outline-none text-xs text-slate-900 cursor-pointer font-bold"
-                    >
-                      {getDistrictsForDivision(presentDivision).map((d) => (
-                        <option key={d.en} value={d.en}>
-                          {d.en} ({d.bn})
-                        </option>
-                      ))}
-                    </select>
+                    <div className="flex items-center justify-between">
+                      <label className="font-bold text-slate-700">জেলা (District — English)</label>
+                      <button
+                        type="button"
+                        onClick={() => setPresentCustomDistrictMode(!presentCustomDistrictMode)}
+                        className="text-[10px] text-emerald-700 hover:underline font-bold cursor-pointer"
+                      >
+                        {presentCustomDistrictMode ? 'তালিকা থেকে বাছুন' : 'কাস্টম জেলা'}
+                      </button>
+                    </div>
+                    {presentCustomDistrictMode ? (
+                      <input
+                        type="text"
+                        value={presentDistrict}
+                        onChange={(e) => setPresentDistrict(e.target.value.toUpperCase())}
+                        placeholder="e.g. DHAKA"
+                        className="w-full px-3.5 py-2.5 bg-white border border-slate-200 rounded-xl font-mono uppercase text-xs text-slate-900 font-bold focus:ring-2 focus:ring-emerald-600/30 outline-none"
+                      />
+                    ) : (
+                      <select
+                        value={presentDistrict}
+                        onChange={(e) => {
+                          if (e.target.value === '__custom__') {
+                            setPresentCustomDistrictMode(true);
+                          } else {
+                            handlePresentDistrictChange(e.target.value);
+                          }
+                        }}
+                        className="w-full px-3.5 py-2.5 bg-white border border-slate-200 rounded-xl font-medium focus:ring-2 focus:ring-emerald-600/30 outline-none text-xs text-slate-900 cursor-pointer font-bold"
+                      >
+                        {getDistrictsForDivision(presentDivision).map((d) => (
+                          <option key={d.en} value={d.en}>
+                            {d.en} ({d.bn})
+                          </option>
+                        ))}
+                        <option value="__custom__">➕ OTHER (TYPE CUSTOM DISTRICT)...</option>
+                      </select>
+                    )}
                   </div>
 
                   {/* Row 3: Upazila / Thana & Post Office / Code */}
@@ -1018,33 +1109,85 @@ export default function ProfilePage() {
 
                     {/* Row 2: Division & District */}
                     <div className="space-y-1.5">
-                      <label className="font-bold text-slate-700">স্থায়ী বিভাগ (Division — English)</label>
-                      <select
-                        value={permanentDivision}
-                        onChange={(e) => handlePermanentDivisionChange(e.target.value)}
-                        className="w-full px-3.5 py-2.5 bg-white border border-slate-200 rounded-xl font-medium focus:ring-2 focus:ring-emerald-600/30 outline-none text-xs text-slate-900 cursor-pointer font-bold"
-                      >
-                        {BD_DIVISIONS_EN.map((div) => (
-                          <option key={div} value={div}>
-                            {div} ({BD_DIVISIONS_MAP[div]?.bn || div})
-                          </option>
-                        ))}
-                      </select>
+                      <div className="flex items-center justify-between">
+                        <label className="font-bold text-slate-700">স্থায়ী বিভাগ (Division — English)</label>
+                        <button
+                          type="button"
+                          onClick={() => setPermanentCustomDivisionMode(!permanentCustomDivisionMode)}
+                          className="text-[10px] text-emerald-700 hover:underline font-bold cursor-pointer"
+                        >
+                          {permanentCustomDivisionMode ? 'তালিকা থেকে বাছুন' : 'কাস্টম বিভাগ'}
+                        </button>
+                      </div>
+                      {permanentCustomDivisionMode ? (
+                        <input
+                          type="text"
+                          value={permanentDivision}
+                          onChange={(e) => setPermanentDivision(e.target.value.toUpperCase())}
+                          placeholder="e.g. DHAKA"
+                          className="w-full px-3.5 py-2.5 bg-white border border-slate-200 rounded-xl font-mono uppercase text-xs text-slate-900 font-bold focus:ring-2 focus:ring-emerald-600/30 outline-none"
+                        />
+                      ) : (
+                        <select
+                          value={permanentDivision}
+                          onChange={(e) => {
+                            if (e.target.value === '__custom__') {
+                              setPermanentCustomDivisionMode(true);
+                            } else {
+                              handlePermanentDivisionChange(e.target.value);
+                            }
+                          }}
+                          className="w-full px-3.5 py-2.5 bg-white border border-slate-200 rounded-xl font-medium focus:ring-2 focus:ring-emerald-600/30 outline-none text-xs text-slate-900 cursor-pointer font-bold"
+                        >
+                          {BD_DIVISIONS_EN.map((div) => (
+                            <option key={div} value={div}>
+                              {div} ({BD_DIVISIONS_MAP[div]?.bn || div})
+                            </option>
+                          ))}
+                          <option value="__custom__">➕ OTHER (TYPE CUSTOM DIVISION)...</option>
+                        </select>
+                      )}
                     </div>
 
                     <div className="space-y-1.5">
-                      <label className="font-bold text-slate-700">স্থায়ী জেলা (District — English)</label>
-                      <select
-                        value={permanentDistrict}
-                        onChange={(e) => handlePermanentDistrictChange(e.target.value)}
-                        className="w-full px-3.5 py-2.5 bg-white border border-slate-200 rounded-xl font-medium focus:ring-2 focus:ring-emerald-600/30 outline-none text-xs text-slate-900 cursor-pointer font-bold"
-                      >
-                        {getDistrictsForDivision(permanentDivision).map((d) => (
-                          <option key={d.en} value={d.en}>
-                            {d.en} ({d.bn})
-                          </option>
-                        ))}
-                      </select>
+                      <div className="flex items-center justify-between">
+                        <label className="font-bold text-slate-700">স্থায়ী জেলা (District — English)</label>
+                        <button
+                          type="button"
+                          onClick={() => setPermanentCustomDistrictMode(!permanentCustomDistrictMode)}
+                          className="text-[10px] text-emerald-700 hover:underline font-bold cursor-pointer"
+                        >
+                          {permanentCustomDistrictMode ? 'তালিকা থেকে বাছুন' : 'কাস্টম জেলা'}
+                        </button>
+                      </div>
+                      {permanentCustomDistrictMode ? (
+                        <input
+                          type="text"
+                          value={permanentDistrict}
+                          onChange={(e) => setPermanentDistrict(e.target.value.toUpperCase())}
+                          placeholder="e.g. DHAKA"
+                          className="w-full px-3.5 py-2.5 bg-white border border-slate-200 rounded-xl font-mono uppercase text-xs text-slate-900 font-bold focus:ring-2 focus:ring-emerald-600/30 outline-none"
+                        />
+                      ) : (
+                        <select
+                          value={permanentDistrict}
+                          onChange={(e) => {
+                            if (e.target.value === '__custom__') {
+                              setPermanentCustomDistrictMode(true);
+                            } else {
+                              handlePermanentDistrictChange(e.target.value);
+                            }
+                          }}
+                          className="w-full px-3.5 py-2.5 bg-white border border-slate-200 rounded-xl font-medium focus:ring-2 focus:ring-emerald-600/30 outline-none text-xs text-slate-900 cursor-pointer font-bold"
+                        >
+                          {getDistrictsForDivision(permanentDivision).map((d) => (
+                            <option key={d.en} value={d.en}>
+                              {d.en} ({d.bn})
+                            </option>
+                          ))}
+                          <option value="__custom__">➕ OTHER (TYPE CUSTOM DISTRICT)...</option>
+                        </select>
+                      )}
                     </div>
 
                     {/* Row 3: Auto-selected Upazila & Post Office / Code */}
@@ -1213,21 +1356,49 @@ export default function ProfilePage() {
 
                 <form onSubmit={handleAddEducation} className="space-y-3 text-xs">
                   <div>
-                    <label className="font-bold text-slate-700 block mb-1">পর্যায় (Level)</label>
-                    <select
-                      value={eduLevel}
-                      onChange={(e) => setEduLevel(e.target.value)}
-                      className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl font-medium outline-none"
-                    >
-                      <option value="জেএসসি (JSC) / জেডিসি (JDC)">জেএসসি (JSC) / জেডিসি (JDC) / ৮ম শ্রেণি</option>
-                      <option value="মাধ্যমিক (SSC)">মাধ্যমিক (SSC) / দাখিল</option>
-                      <option value="উচ্চ মাধ্যমিক (HSC)">উচ্চ মাধ্যমিক (HSC) / আলিম</option>
-                      <option value="ডিপ্লোমা ইন ইঞ্জিনিয়ারিং">ডিপ্লোমা ইন ইঞ্জিনিয়ারিং / কারিগরি / মেডিকেল</option>
-                      <option value="ডিগ্রি (পাস কোর্স)">ডিগ্রি (পাস কোর্স) - ৩ বছর মেয়াদী</option>
-                      <option value="স্নাতক (অনার্স)">স্নাতক (অনার্স) / সমমান - ৪ বছর মেয়াদী</option>
-                      <option value="স্নাতকোত্তর (মাস্টার্স)">স্নাতকোত্তর (মাস্টার্স) / কামিল</option>
-                      <option value="উচ্চতর গবেষণা (এমফিল / পিএইচডি)">উচ্চতর গবেষণা (এমফিল / পিএইচডি)</option>
-                    </select>
+                    <div className="flex items-center justify-between mb-1">
+                      <label className="font-bold text-slate-700">পর্যায় (Level)</label>
+                      <button
+                        type="button"
+                        onClick={() => setEduCustomLevelMode(!eduCustomLevelMode)}
+                        className="text-[10px] text-emerald-700 hover:underline font-bold cursor-pointer"
+                      >
+                        {eduCustomLevelMode ? 'তালিকা থেকে বাছুন' : 'কাস্টম পর্যায় লিখুন'}
+                      </button>
+                    </div>
+                    {eduCustomLevelMode ? (
+                      <input
+                        type="text"
+                        value={eduLevel}
+                        onChange={(e) => setEduLevel(e.target.value)}
+                        placeholder="যেমন: ও-লেভেল, এ-লেভেল, ডিপ্লোমা ఇన్ নার্সিং..."
+                        className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl font-bold text-xs outline-none"
+                        required
+                      />
+                    ) : (
+                      <select
+                        value={eduLevel}
+                        onChange={(e) => {
+                          if (e.target.value === '__custom__') {
+                            setEduCustomLevelMode(true);
+                            setEduLevel('');
+                          } else {
+                            setEduLevel(e.target.value);
+                          }
+                        }}
+                        className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl font-medium outline-none cursor-pointer"
+                      >
+                        <option value="জেএসসি (JSC) / জেডিসি (JDC)">জেএসসি (JSC) / জেডিসি (JDC) / ৮ম শ্রেণি</option>
+                        <option value="মাধ্যমিক (SSC)">মাধ্যমিক (SSC) / দাখিল</option>
+                        <option value="উচ্চ মাধ্যমিক (HSC)">উচ্চ মাধ্যমিক (HSC) / আলিম</option>
+                        <option value="ডিপ্লোমা ইন ইঞ্জিনিয়ারিং">ডিপ্লোমা ইন ইঞ্জিনিয়ারিং / কারিগরি / মেডিকেল</option>
+                        <option value="ডিগ্রি (পাস কোর্স)">ডিগ্রি (পাস কোর্স) - ৩ বছর মেয়াদী</option>
+                        <option value="স্নাতক (অনার্স)">স্নাতক (অনার্স) / সমমান - ৪ বছর মেয়াদী</option>
+                        <option value="স্নাতকোত্তর (মাস্টার্স)">স্নাতকোত্তর (মাস্টার্স) / কামিল</option>
+                        <option value="উচ্চতর গবেষণা (এমফিল / পিএইচডি)">উচ্চতর গবেষণা (এমফিল / পিএইচডি)</option>
+                        <option value="__custom__">➕ অন্যান্য / কাস্টম শিক্ষাগত পর্যায় লিখুন...</option>
+                      </select>
+                    )}
                   </div>
 
                   <div>
@@ -1330,14 +1501,15 @@ export default function ProfilePage() {
             </p>
           </div>
 
-          <div className="space-y-3 text-xs">
-            <label className="flex items-center gap-3 p-3.5 border rounded-2xl cursor-pointer hover:bg-slate-50">
+          <div className="space-y-2.5 text-xs">
+            <label className="flex items-center gap-3 p-3.5 border rounded-2xl cursor-pointer hover:bg-slate-50 transition-colors">
               <input
                 type="radio"
                 name="quota"
                 checked={!profile.quota || profile.quota === 'none'}
                 onChange={() => {
-                  const u = { ...profile, quota: 'none' as any };
+                  setCustomQuotaMode(false);
+                  const u = { ...profile, quota: 'none' as any, quotaDetails: '' };
                   syncProfileToServer(u);
                 }}
                 className="text-emerald-700"
@@ -1348,12 +1520,13 @@ export default function ProfilePage() {
               </div>
             </label>
 
-            <label className="flex items-center gap-3 p-3.5 border rounded-2xl cursor-pointer hover:bg-slate-50">
+            <label className="flex items-center gap-3 p-3.5 border rounded-2xl cursor-pointer hover:bg-slate-50 transition-colors">
               <input
                 type="radio"
                 name="quota"
                 checked={profile.quota === 'freedom_fighter'}
                 onChange={() => {
+                  setCustomQuotaMode(false);
                   const u = { ...profile, quota: 'freedom_fighter' as any };
                   syncProfileToServer(u);
                 }}
@@ -1365,12 +1538,13 @@ export default function ProfilePage() {
               </div>
             </label>
 
-            <label className="flex items-center gap-3 p-3.5 border rounded-2xl cursor-pointer hover:bg-slate-50">
+            <label className="flex items-center gap-3 p-3.5 border rounded-2xl cursor-pointer hover:bg-slate-50 transition-colors">
               <input
                 type="radio"
                 name="quota"
                 checked={profile.quota === 'disabled'}
                 onChange={() => {
+                  setCustomQuotaMode(false);
                   const u = { ...profile, quota: 'disabled' as any };
                   syncProfileToServer(u);
                 }}
@@ -1379,6 +1553,112 @@ export default function ProfilePage() {
               <div>
                 <strong className="text-slate-800 block">শারীরিক প্রতিবন্ধী প্রার্থী কোটা</strong>
                 <span className="text-slate-500">সমাজসেবা অধিদপ্তর কর্তৃক প্রদত্ত প্রতিবন্ধী পরিচয়পত্র থাকতে হবে (বয়স ৩২ বছর)।</span>
+              </div>
+            </label>
+
+            <label className="flex items-center gap-3 p-3.5 border rounded-2xl cursor-pointer hover:bg-slate-50 transition-colors">
+              <input
+                type="radio"
+                name="quota"
+                checked={(profile.quota as any) === 'tribal'}
+                onChange={() => {
+                  setCustomQuotaMode(false);
+                  const u = { ...profile, quota: 'tribal' as any };
+                  syncProfileToServer(u);
+                }}
+                className="text-emerald-700"
+              />
+              <div>
+                <strong className="text-slate-800 block">ক্ষুদ্র নৃ-গোষ্ঠী / আদিবাসী কোটা</strong>
+                <span className="text-slate-500">জেলা প্রশাসক বা সার্কেল চিফ কর্তৃক প্রদত্ত আদিবাসী সনদপত্র থাকতে হবে (বয়স ৩২ বছর)।</span>
+              </div>
+            </label>
+
+            <label className="flex items-center gap-3 p-3.5 border rounded-2xl cursor-pointer hover:bg-slate-50 transition-colors">
+              <input
+                type="radio"
+                name="quota"
+                checked={(profile.quota as any) === 'ansar'}
+                onChange={() => {
+                  setCustomQuotaMode(false);
+                  const u = { ...profile, quota: 'ansar' as any };
+                  syncProfileToServer(u);
+                }}
+                className="text-emerald-700"
+              />
+              <div>
+                <strong className="text-slate-800 block">আনসার ও গ্রাম প্রতিরক্ষা বাহিনী (Ansar & VDP) কোটা</strong>
+                <span className="text-slate-500">আনসার ও ভিডিপি মৌলিক প্রশিক্ষণ সনদপত্রধারী প্রার্থীরা প্রযোজ্য হবেন।</span>
+              </div>
+            </label>
+
+            <label className="flex items-center gap-3 p-3.5 border rounded-2xl cursor-pointer hover:bg-slate-50 transition-colors">
+              <input
+                type="radio"
+                name="quota"
+                checked={(profile.quota as any) === 'orphan'}
+                onChange={() => {
+                  setCustomQuotaMode(false);
+                  const u = { ...profile, quota: 'orphan' as any };
+                  syncProfileToServer(u);
+                }}
+                className="text-emerald-700"
+              />
+              <div>
+                <strong className="text-slate-800 block">এতিম ও সমাজসেবা অধিদপ্তর নিবন্ধিত নিবাসী কোটা</strong>
+                <span className="text-slate-500">সরকারি বা অনুমোদিত শিশু পরিবারের নিবাসী প্রার্থীরা প্রযোজ্য হবেন।</span>
+              </div>
+            </label>
+
+            <label className="flex items-center gap-3 p-3.5 border rounded-2xl cursor-pointer hover:bg-slate-50 transition-colors">
+              <input
+                type="radio"
+                name="quota"
+                checked={(profile.quota as any) === 'ward'}
+                onChange={() => {
+                  setCustomQuotaMode(false);
+                  const u = { ...profile, quota: 'ward' as any };
+                  syncProfileToServer(u);
+                }}
+                className="text-emerald-700"
+              />
+              <div>
+                <strong className="text-slate-800 block">পোষ্য / বিভাগীয় প্রার্থী কোটা (Departmental / Ward Quota)</strong>
+                <span className="text-slate-500">সংশ্লিষ্ট প্রতিষ্ঠান/মন্ত্রণালয়ে কর্মরত চাকরিজীবীদের সন্তানদের ক্ষেত্রে প্রযোজ্য।</span>
+              </div>
+            </label>
+
+            <label className="flex items-center gap-3 p-3.5 border rounded-2xl cursor-pointer hover:bg-slate-50 transition-colors">
+              <input
+                type="radio"
+                name="quota"
+                checked={customQuotaMode || (profile.quota as any) === 'custom'}
+                onChange={() => {
+                  setCustomQuotaMode(true);
+                  const u = { ...profile, quota: 'custom' as any };
+                  syncProfileToServer(u);
+                }}
+                className="text-emerald-700"
+              />
+              <div className="flex-1">
+                <strong className="text-slate-800 block">অন্যান্য / কাস্টম কোটা (Custom Quota)</strong>
+                <span className="text-slate-500">অন্যান্য বিশেষ কোটা সুবিধা থাকলে নিজে নাম লিখে উল্লেখ করুন।</span>
+                {(customQuotaMode || (profile.quota as any) === 'custom') && (
+                  <div className="mt-2">
+                    <input
+                      type="text"
+                      value={customQuotaTitle || (profile as any).customQuotaName || ''}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        setCustomQuotaTitle(val);
+                        const u = { ...profile, quota: 'custom' as any, customQuotaName: val };
+                        syncProfileToServer(u);
+                      }}
+                      placeholder="কাস্টম কোটার নাম লিখুন (যেমন: ক্রীড়াবিদ কোটা, রেলওয়ে পোষ্য কোটা...)"
+                      className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl font-bold text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                    />
+                  </div>
+                )}
               </div>
             </label>
           </div>

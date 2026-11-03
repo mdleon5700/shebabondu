@@ -5,7 +5,12 @@ import { serverDB } from '@/lib/db';
 export async function GET(req: Request) {
   const session = getServerSession(req);
   if (!session) {
-    return NextResponse.json({ error: 'Unauthorized: No active session found' }, { status: 401 });
+    return NextResponse.json({ 
+      isLoggedIn: false, 
+      user: null, 
+      role: null,
+      message: 'No active session' 
+    }, { status: 200 });
   }
 
   if (session.role === 'admin') {
@@ -18,7 +23,12 @@ export async function GET(req: Request) {
 
   const candidate = serverDB.getCandidateById(session.candidateId);
   if (!candidate) {
-    return NextResponse.json({ error: 'Candidate not found' }, { status: 404 });
+    return NextResponse.json({ 
+      isLoggedIn: false, 
+      user: null, 
+      role: null, 
+      error: 'Candidate not found' 
+    }, { status: 200 });
   }
 
   const { passwordHash, ...safeCandidate } = candidate;

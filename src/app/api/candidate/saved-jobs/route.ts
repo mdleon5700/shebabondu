@@ -5,11 +5,11 @@ import { serverDB } from '@/lib/db';
 export async function GET(req: Request) {
   const session = getServerSession(req);
   if (!session) {
-    return NextResponse.json({ error: 'UNAUTHORIZED: Login required' }, { status: 401 });
+    return NextResponse.json({ success: true, savedJobs: [], isLoggedIn: false }, { status: 200 });
   }
 
   const savedJobs = serverDB.getSavedJobs(session.candidateId);
-  return NextResponse.json({ success: true, savedJobs });
+  return NextResponse.json({ success: true, savedJobs, isLoggedIn: true });
 }
 
 export async function POST(req: Request) {

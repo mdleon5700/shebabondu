@@ -335,7 +335,8 @@ function ApplyFormContent({ initialJob }: ApplyClientProps) {
     setIsSubmitting(true);
     try {
       const me = await fetch('/api/auth/me', { cache: 'no-store' });
-      if (!me.ok) {
+      const meData = await me.json().catch(() => ({}));
+      if (!me.ok || !meData.isLoggedIn) {
         router.push('/login?redirect=' + encodeURIComponent(window.location.pathname + window.location.search));
         return;
       }

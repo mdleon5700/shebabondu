@@ -1,4 +1,5 @@
 'use client';
+import { matchJobQuery } from '@/lib/search-helper';
 import { fetchPublicJobs } from '@/lib/public-jobs-client';
 
 import React, { useState, useMemo, useEffect } from 'react';
@@ -198,13 +199,9 @@ export default function JobListingView({
       // Grade filter
       if (selectedGrade !== 'all' && job.grade !== selectedGrade) return false;
 
-      // Search query
+      // Search query (smart bilingual & position-level matching)
       if (searchQuery.trim()) {
-        const q = searchQuery.toLowerCase();
-        const matchesTitle = job.title.toLowerCase().includes(q);
-        const matchesOrg = job.organization.toLowerCase().includes(q);
-        const matchesEdu = job.minEducation.toLowerCase().includes(q);
-        if (!matchesTitle && !matchesOrg && !matchesEdu) return false;
+        if (!matchJobQuery(job, searchQuery)) return false;
       }
 
       return true;

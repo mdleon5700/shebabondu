@@ -1,4 +1,5 @@
 'use client';
+import { matchJobQuery } from '@/lib/search-helper';
 import { fetchPublicJobs } from '@/lib/public-jobs-client';
 import { CentralDeadlineEngine } from '@/lib/deadlines/engine';
 
@@ -439,26 +440,9 @@ export default function HomePage() {
         if (job.daysRemaining === undefined || job.daysRemaining > 1) return false;
       }
 
-      // Keyword search input (smart multi-field & synonym matching)
+      // Keyword search input (smart bilingual, multi-field & position-level matching)
       if (searchQuery.trim()) {
-        const query = searchQuery.toLowerCase().trim();
-        const terms = query.split(/\s+/);
-        const matchesAll = terms.every(term => {
-          const inTitle = job.title?.toLowerCase().includes(term);
-          const inOrg = job.organization?.toLowerCase().includes(term);
-          const inEdu = job.minEducation?.toLowerCase().includes(term);
-          const inCat = job.categoryLabel?.toLowerCase().includes(term) || job.category?.toLowerCase().includes(term);
-          const inDesig = (job as any).designation?.toLowerCase().includes(term);
-          const inReq = job.requirements?.some((r: string) => r.toLowerCase().includes(term));
-
-          if (term === 'আইটি' || term === 'it') {
-            return inTitle || inOrg || inEdu || inCat || inDesig || inReq ||
-                   job.title?.includes('কম্পিউটার') || job.title?.includes('প্রোগ্রামার') || job.title?.includes('ডাটা') ||
-                   job.category === 'it';
-          }
-          return inTitle || inOrg || inEdu || inCat || inDesig || inReq;
-        });
-        if (!matchesAll) return false;
+        if (!matchJobQuery(job, searchQuery)) return false;
       }
 
       if (matcherActive) {

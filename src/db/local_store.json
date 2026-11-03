@@ -191,7 +191,13 @@
       }
     ]
   },
-  "sessions": {},
+  "sessions": {
+    "1b5e9f2f49df8e9e270c80306be3224d50ed72021bb56be919f74f16a864b6bb": {
+      "candidateId": "USR-01774366647",
+      "role": "candidate",
+      "expiresAt": "2026-11-10T17:28:45.740Z"
+    }
+  },
   "coupons": {
     "FIRST50": {
       "id": "coupon-first50",
@@ -9669,7 +9675,62 @@
       "updated_at": "2026-10-30T00:00:00.000Z"
     }
   },
-  "searchAnalytics": [],
+  "searchAnalytics": [
+    {
+      "query": "",
+      "filters": {
+        "category": "teacher-jobs"
+      },
+      "resultsCount": 2,
+      "id": "SEV-1793727670107-6LCG",
+      "timestamp": "2026-11-03T17:41:10.107Z"
+    },
+    {
+      "query": "",
+      "filters": {
+        "category": "bank-jobs"
+      },
+      "resultsCount": 2,
+      "id": "SEV-1793727668166-KMEM",
+      "timestamp": "2026-11-03T17:41:08.166Z"
+    },
+    {
+      "query": "",
+      "filters": {
+        "category": "bcs"
+      },
+      "resultsCount": 0,
+      "id": "SEV-1793727667019-PW5L",
+      "timestamp": "2026-11-03T17:41:07.019Z"
+    },
+    {
+      "query": "",
+      "filters": {
+        "category": "teacher-jobs"
+      },
+      "resultsCount": 2,
+      "id": "SEV-1793726672104-4UQ0",
+      "timestamp": "2026-11-03T17:24:32.104Z"
+    },
+    {
+      "query": "",
+      "filters": {
+        "category": "bank-jobs"
+      },
+      "resultsCount": 2,
+      "id": "SEV-1793726670079-2MD5",
+      "timestamp": "2026-11-03T17:24:30.079Z"
+    },
+    {
+      "query": "",
+      "filters": {
+        "category": "bcs"
+      },
+      "resultsCount": 0,
+      "id": "SEV-1793726668918-2JPN",
+      "timestamp": "2026-11-03T17:24:28.918Z"
+    }
+  ],
   "contentStudioArticles": {
     "draft-bb-test-2026": {
       "draftId": "draft-bb-test-2026",

@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { getServerSession } from '@/lib/auth';
 import { serverDB } from '@/lib/db';
 import { PageRecord } from '@/lib/types';
@@ -29,6 +30,7 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
       id: params.id
     };
     const saved = serverDB.savePage(pageToSave, session.candidateId, isPublish);
+    if (isPublish) { try { revalidatePath(pageToSave.slug); revalidatePath('/'); } catch (e) {} }
     return NextResponse.json({ success: true, page: saved });
   } catch (err: any) {
     return NextResponse.json({ error: err.message }, { status: 500 });

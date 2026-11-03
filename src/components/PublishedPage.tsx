@@ -7,7 +7,7 @@ function safeLink(value: unknown): string {
   return typeof value === 'string' && /^(\/(?!\/)|https?:\/\/|#)/i.test(value) ? value : '/jobs';
 }
 
-export default function PublishedPage({ page }: { page: NonNullable<PageRecord['publishedContent']> }) {
+export default function PublishedPage({ page }: { page: NonNullable<PageRecord['publishedContent']> | PageRecord }) {
   return <div>{page.sections.filter(section => section.isVisible !== false).map((section, index) => {
     const content = section.content || {};
     const style = section.style || {};

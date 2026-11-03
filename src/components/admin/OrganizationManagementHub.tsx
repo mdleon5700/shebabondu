@@ -27,9 +27,13 @@ import {
 import { CompanyProfile, JobCircular } from '@/lib/types';
 
 
-const ADMIN_REQ_HEADERS: HeadersInit = {
-  'Content-Type': 'application/json',
+const getAdminHeaders = (): HeadersInit => {
+  const pin = typeof window !== 'undefined' ? (localStorage.getItem('cs_admin_pin') || '1234') : '1234';
+  return {
+    'Content-Type': 'application/json',
+    'x-admin-secret': pin
   };
+};
 
 interface OrganizationManagementHubProps {
   onRefreshData?: () => void;
@@ -74,8 +78,8 @@ export default function OrganizationManagementHub({ onRefreshData }: Organizatio
     try {
       setLoading(true);
       const [resComp, resJobs] = await Promise.all([
-        fetch('/api/admin/companies', { headers: ADMIN_REQ_HEADERS }),
-        fetch('/api/admin/jobs', { headers: ADMIN_REQ_HEADERS })
+        fetch('/api/admin/companies', { headers: getAdminHeaders() }),
+        fetch('/api/admin/jobs', { headers: getAdminHeaders() })
       ]);
 
       if (resComp.ok) {
@@ -185,7 +189,7 @@ export default function OrganizationManagementHub({ onRefreshData }: Organizatio
         // PATCH
         const res = await fetch('/api/admin/companies', {
           method: 'PATCH',
-          headers: ADMIN_REQ_HEADERS,
+          headers: getAdminHeaders(),
           body: JSON.stringify({ ...payload, companyId: editingOrg.id })
         });
         const data = await res.json();
@@ -195,7 +199,7 @@ export default function OrganizationManagementHub({ onRefreshData }: Organizatio
         // POST
         const res = await fetch('/api/admin/companies', {
           method: 'POST',
-          headers: ADMIN_REQ_HEADERS,
+          headers: getAdminHeaders(),
           body: JSON.stringify(payload)
         });
         const data = await res.json();
@@ -222,7 +226,7 @@ export default function OrganizationManagementHub({ onRefreshData }: Organizatio
     try {
       const res = await fetch(`/api/admin/companies?id=${comp.id}`, {
         method: 'DELETE',
-        headers: ADMIN_REQ_HEADERS
+        headers: getAdminHeaders()
       });
       const data = await res.json();
       if (!res.ok) {
@@ -242,7 +246,7 @@ export default function OrganizationManagementHub({ onRefreshData }: Organizatio
     try {
       const res = await fetch('/api/admin/companies', {
         method: 'PATCH',
-        headers: ADMIN_REQ_HEADERS,
+        headers: getAdminHeaders(),
         body: JSON.stringify({ companyId: comp.id, verified: !comp.verified })
       });
       if (res.ok) {

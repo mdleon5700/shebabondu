@@ -132,6 +132,15 @@ function AdminContent() {
   // Active Module / Navigation State
   const initialTab = searchParams.get('tab') || 'dashboard';
   const [activeTab, setActiveTab] = useState<string>(initialTab);
+  const [builderSelectedPageId, setBuilderSelectedPageId] = useState<string>('home');
+
+  // Synchronize activeTab whenever searchParams URL changes (e.g. back/forward, direct link, bookmark)
+  useEffect(() => {
+    const tabParam = searchParams.get('tab');
+    if (tabParam && tabParam !== activeTab) {
+      setActiveTab(tabParam);
+    }
+  }, [searchParams]);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [isGlobalSearchOpen, setIsGlobalSearchOpen] = useState<boolean>(false);
@@ -473,7 +482,10 @@ function AdminContent() {
   const [simResult, setSimResult] = useState<any | null>(null);
   const [isSimulating, setIsSimulating] = useState(false);
 
-  const handleTabChange = (tabId: string) => {
+  const handleTabChange = (tabId: string, pageId?: string) => {
+    if (pageId && tabId === 'builder') {
+      setBuilderSelectedPageId(pageId);
+    }
     if (tabId === 'create-circular') {
       setActiveTab('circulars');
       setEditingJob(null);
@@ -1640,6 +1652,44 @@ function AdminContent() {
         }
       }
     }
+
+    // Comprehensive alias & child tab mapping to keep sidebar & sub-hub pills firmly anchored
+    const TAB_TO_HUB_MAP: Record<string, string> = {
+      'candidate-details': 'candidate-directory',
+      'account-status': 'candidate-directory',
+      'eligibility-rules': 'candidate-directory',
+      'company-directory': 'candidate-directory',
+      'employer-verification': 'candidate-directory',
+      'company-jobs': 'candidate-directory',
+      
+      'seo-meta': 'content-studio',
+      'header-footer': 'content-studio',
+      'revisions': 'content-studio',
+      'pages-sections': 'content-studio',
+      'builder': 'content-studio',
+      'media-library': 'content-studio',
+      
+      'deadline-alert-manager': 'circulars',
+      'create-circular': 'circulars',
+      
+      'invoices': 'transactions',
+      'service-fees': 'transactions',
+      
+      'system-health': 'settings',
+      'automation-center': 'dashboard',
+    };
+
+    const targetHubId = TAB_TO_HUB_MAP[activeTab];
+    if (targetHubId) {
+      for (const group of navGroups) {
+        for (const item of group.items) {
+          if (item.id === targetHubId) {
+            return item;
+          }
+        }
+      }
+    }
+
     return navGroups[0].items[0];
   }, [activeTab, navGroups]);
 
@@ -5629,13 +5679,14 @@ function AdminContent() {
           )}
 
           {/* TAB 8: CANDIDATES -> CANDIDATE DIRECTORY, DETAILS, ACCOUNT STATUS */}
-          {(activeTab === 'candidate-directory' || activeTab === 'candidate-details' || activeTab === 'account-status') && (
+          {(activeTab === 'candidate-directory' || activeTab === 'candidate-details' || activeTab === 'account-status' || activeTab === 'eligibility-rules') && (
             <div className="space-y-4">
               <CandidateManagementHub
                 activeTab={activeTab}
                 onTabChange={handleTabChange}
                 candidates={candidates}
                 applications={applications}
+                jobs={jobs}
                 onRefreshCandidates={fetchAllAdminData}
               />
             </div>
@@ -5705,7 +5756,7 @@ function AdminContent() {
           {/* TAB 11: WEBSITE MANAGEMENT -> WEBSITE BUILDER */}
           {activeTab === 'builder' && (
             <div className="space-y-4">
-              <WebsiteBuilder />
+              <WebsiteBuilder initialPageId={builderSelectedPageId} />
             </div>
           )}
 

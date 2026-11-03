@@ -4782,7 +4782,19 @@ export const serverDB = {
 
   getPublishedPageBySlug(slug: string): PageRecord['publishedContent'] | null {
     const pages = Object.values(loadDB().pages || {});
-    return pages.find(page => page.status !== 'archived' && page.publishedContent?.useOnCanonicalPath !== false && page.publishedContent?.slug === slug)?.publishedContent || null;
+    const cleanSlug = slug.startsWith('/') ? slug : '/' + slug;
+    const match = pages.find(page => page.status !== 'archived' && ((page.publishedContent?.useOnCanonicalPath !== false && page.publishedContent?.slug === cleanSlug) || (page.status === 'published' && page.slug === cleanSlug)));
+    if (!match) return null;
+    if (match.publishedContent) return match.publishedContent;
+    return {
+      useOnCanonicalPath: true,
+      slug: match.slug,
+      title: match.title,
+      metaTitle: match.metaTitle,
+      metaDescription: match.metaDescription,
+      sections: match.sections || [],
+      publishedAt: match.publishedAt || match.updatedAt
+    };
   },
 
   getPublishedPageById(id: string): PageRecord | null {

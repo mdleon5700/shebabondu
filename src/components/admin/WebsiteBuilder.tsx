@@ -31,13 +31,27 @@ import {
 } from 'lucide-react';
 import { PageRecord, PageSection, SectionType, PageRevision } from '@/lib/types';
 
-const ADMIN_REQ_HEADERS: HeadersInit = {
-  'Content-Type': 'application/json',
+const getAdminHeaders = (): HeadersInit => {
+  const pin = typeof window !== 'undefined' ? (localStorage.getItem('cs_admin_pin') || '1234') : '1234';
+  return {
+    'Content-Type': 'application/json',
+    'x-admin-secret': pin
   };
+};
 
-export default function WebsiteBuilder() {
+interface WebsiteBuilderProps {
+  initialPageId?: string;
+}
+
+export default function WebsiteBuilder({ initialPageId }: WebsiteBuilderProps = {}) {
   const [pages, setPages] = useState<PageRecord[]>([]);
-  const [selectedPageId, setSelectedPageId] = useState<string>('home');
+  const [selectedPageId, setSelectedPageId] = useState<string>(initialPageId || 'home');
+
+  useEffect(() => {
+    if (initialPageId) {
+      setSelectedPageId(initialPageId);
+    }
+  }, [initialPageId]);
   const [activeSectionId, setActiveSectionId] = useState<string | null>(null);
   const [viewport, setViewport] = useState<'desktop' | 'tablet' | 'mobile'>('desktop');
   const [previewMode, setPreviewMode] = useState<boolean>(false);
@@ -57,7 +71,7 @@ export default function WebsiteBuilder() {
     try {
       setLoading(true);
       const res = await fetch('/api/admin/pages', {
-        headers: ADMIN_REQ_HEADERS
+        headers: getAdminHeaders()
       });
       const data = await res.json();
       if (data.pages && Array.isArray(data.pages)) {
@@ -160,7 +174,7 @@ export default function WebsiteBuilder() {
       setSaveStatus(isPublish ? 'ওয়েবসাইটে প্রকাশ করা হচ্ছে...' : 'ড্রাফট সংরক্ষণ হচ্ছে...');
       const res = await fetch('/api/admin/pages/' + currentPage.id, {
         method: 'PUT',
-        headers: ADMIN_REQ_HEADERS,
+        headers: getAdminHeaders(),
         body: JSON.stringify({
           ...currentPage,
           action: isPublish ? 'publish' : 'save_draft'
@@ -191,7 +205,7 @@ export default function WebsiteBuilder() {
     try {
       const res = await fetch('/api/admin/pages/' + currentPage.id, {
         method: 'DELETE',
-        headers: ADMIN_REQ_HEADERS
+        headers: getAdminHeaders()
       });
       const data = await res.json();
       if (data.success) {
@@ -223,7 +237,7 @@ export default function WebsiteBuilder() {
     try {
       const res = await fetch('/api/admin/pages', {
         method: 'POST',
-        headers: ADMIN_REQ_HEADERS,
+        headers: getAdminHeaders(),
         body: JSON.stringify({
           title: newPageTitle,
           slug: newPageSlug

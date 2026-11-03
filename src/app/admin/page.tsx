@@ -357,6 +357,39 @@ function AdminContent() {
     }
   };
 
+  const [isSyncingAlljobs, setIsSyncingAlljobs] = useState<boolean>(false);
+
+  const handleSyncAlljobs = async () => {
+    setIsSyncingAlljobs(true);
+    try {
+      const res = await fetch('/api/admin/collector/sync', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-admin-secret': adminPin || '1234'
+        },
+        body: JSON.stringify({ limit: 35 })
+      });
+      const data = await res.json();
+      if (data.success) {
+        alert('টেলিটক অলজবস লাইভ সিঙ্ক সফল!\n' + (data.stats?.newJobsAdded || 0) + 'টি নতুন সার্কুলার যুক্ত হয়েছে, ' + (data.stats?.updatedJobs || 0) + 'টি আপডেট হয়েছে।');
+        const jobsRes = await fetch('/api/admin/jobs', {
+          headers: { 'x-admin-secret': adminPin || '1234' }
+        });
+        if (jobsRes.ok) {
+          const jData = await jobsRes.json();
+          setJobs(jData.jobs || []);
+        }
+      } else {
+        alert(data.error || 'সিঙ্ক ব্যর্থ হয়েছে');
+      }
+    } catch (e: any) {
+      alert('নেটওয়ার্ক ত্রুটি: ' + e.message);
+    } finally {
+      setIsSyncingAlljobs(false);
+    }
+  };
+
   const handleToggleJobStatus = async (job: JobCircular) => {
     const cur = (job as any).status || (job.daysRemaining > 0 ? 'OPEN' : 'EXPIRED');
     const nextStatus = cur === 'OPEN' ? 'EXPIRED' : 'OPEN';
@@ -4892,6 +4925,16 @@ function AdminContent() {
                   </div>
 
                   <div className="flex flex-wrap items-center gap-2.5">
+                    <button
+                      type="button"
+                      onClick={handleSyncAlljobs}
+                      disabled={isSyncingAlljobs}
+                      className="px-4 py-2 bg-gradient-to-r from-teal-600 to-emerald-700 hover:from-teal-700 hover:to-emerald-800 text-white rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shadow-sm shadow-emerald-900/10 disabled:opacity-50 cursor-pointer"
+                      title="Alljobs Teletalk থেকে সরাসরি সকল সরকারি সার্কুলার ও মূল PDF লিংক সিঙ্ক করুন"
+                    >
+                      <RefreshCw className={`w-3.5 h-3.5 ${isSyncingAlljobs ? 'animate-spin' : ''}`} />
+                      <span>{isSyncingAlljobs ? 'অলজবস সিঙ্ক হচ্ছে...' : 'টেলিটক অলজবস লাইভ সিঙ্ক'}</span>
+                    </button>
                     <button
                       type="button"
                       onClick={handleOpenCreateJob}

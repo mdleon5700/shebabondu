@@ -12,6 +12,8 @@
     "brain:test": "node ai-brain/cli.js test",
     "typecheck": "tsc --noEmit",
     "validate": "tsc --noEmit && next lint",
+    "sync:alljobs": "node scripts/fetch_and_populate_alljobs.js",
+    "spider:browser": "node scripts/spider/browser_agent.js",
     "test:browser": "node scripts/browser_verify.js"
   },
   "dependencies": {

@@ -43,6 +43,8 @@ export function ingestDiscoveredCandidates(
           sourceName: candidate.sourceName,
           sourceUrl: candidate.sourceUrl,
           evidenceUrl: candidate.evidenceUrl,
+          pdfUrl: candidate.pdfUrl,
+          circularPdfUrl: candidate.pdfUrl,
           extractedTitle: candidate.title,
           extractedOrg: candidate.organization,
           category: candidate.category,

@@ -144,6 +144,81 @@ export default function UniversalJobWorkspace({
   const [saveError, setSaveError] = useState<string | null>(null);
   const [showLivePreview, setShowLivePreview] = useState(false);
   const [viewMode, setViewMode] = useState<'editor' | 'split'>('editor');
+  const [scannerUrl, setScannerUrl] = useState<string>('https://dcrajbari.teletalk.com.bd/');
+  const [isScanningUrl, setIsScanningUrl] = useState<boolean>(false);
+  const [scanResult, setScanResult] = useState<any | null>(null);
+  const [scanError, setScanError] = useState<string | null>(null);
+  const [showScanner, setShowScanner] = useState<boolean>(true);
+
+  // Smart Teletalk Portal Inspector & Autofill Engine
+  const handleScanPortal = async (targetUrl?: string) => {
+    const urlToScan = (targetUrl || scannerUrl).trim();
+    if (!urlToScan) {
+      setScanError('অনুগ্রহ করে টেলিটক বা সরকারি পোর্টাল URL দিন');
+      return;
+    }
+    setIsScanningUrl(true);
+    setScanError(null);
+    setScanResult(null);
+    try {
+      const res = await fetch(`/api/admin/teletalk/inspect?url=${encodeURIComponent(urlToScan)}`, {
+        headers: ADMIN_REQ_HEADERS
+      });
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.error || `HTTP ${res.status}`);
+      }
+      const data = await res.json();
+      setScanResult(data);
+    } catch (err: any) {
+      setScanError(err.message || 'স্ক্যান করতে সমস্যা হয়েছে');
+    } finally {
+      setIsScanningUrl(false);
+    }
+  };
+
+  const handleApplyScanResult = () => {
+    if (!scanResult || !scanResult.activeCircular) return;
+    const c = scanResult.activeCircular;
+    
+    setFormData(prev => {
+      const newPositions: JobPosition[] = (c.positions && c.positions.length > 0)
+        ? c.positions.map((p: any, idx: number) => ({
+            id: p.code || `pos-${idx + 1}`,
+            title: p.title || p.titleBn || 'কর্মকর্তা',
+            grade: p.grade || '১৩তম-১৬তম গ্রেড',
+            vacancies: 1,
+            education: 'স্নাতক বা সমমানের ডিগ্রি',
+            experience: 'প্রযোজ্য নয় / ফ্রেশারদের অগ্রাধিকার',
+            govtFee: p.govtFee || c.govtFee || 100,
+            totalAmount: (p.govtFee || c.govtFee || 100) + (c.serviceFee || 12)
+          }))
+        : (prev.positions || []);
+
+      return {
+        ...prev,
+        title: c.title || prev.title,
+        // titleEn handled in title
+        organization: c.organization || prev.organization,
+        category: c.category || 'govt',
+        district: c.district || prev.district || 'ঢাকা',
+        deadline: c.deadline ? c.deadline.split('T')[0] : prev.deadline,
+        officialLink: c.applicationUrl || prev.officialLink,
+        circularPdfUrl: c.pdfUrl || prev.circularPdfUrl,
+        positions: newPositions,
+        totalPosts: newPositions.length || 1,
+        govtFee: c.govtFee || 100,
+        serviceFee: c.serviceFee || 12,
+        teletalkSmsCode: c.smsFormat?.keyword || 'TELETALK',
+        teletalkFormat: `${c.smsFormat?.keyword || 'TELETALK'} <User ID>`,
+        bengaliDescription: `${c.organization} সম্প্রতি ${c.refNo || 'অফিসিয়াল নিয়োগ বিজ্ঞপ্তি'} প্রকাশ করেছে। আগ্রহী যোগ্য প্রার্থীরা অনলাইনে ${c.deadlineRaw || 'নির্ধারিত তারিখের মধ্যে'} আবেদন ফরম পূরণ ও পরীক্ষা ফি পরিশোধ করতে পারবেন। বিস্তারিত শর্তাবলী মূল বিজ্ঞপ্তিতে উল্লিখিত রয়েছে।`,
+        seoTitle: `${c.title} ২০২৬ | চাকরি সেবা`,
+        seoDescription: `${c.organization}-এ আকর্ষণীয় ক্যারিয়ারের সুযোগ। আবেদনের শেষ তারিখ: ${c.deadlineRaw || 'শীঘ্রই'}। সঠিক নিয়ম ও সরাসরি আবেদন সহায়তায় চাকরি সেবা।`
+      };
+    });
+    setSaveSuccessToast('স্মার্ট স্ক্যান থেকে সমস্ত তথ্য সফলভাবে এডিটরে লোড হয়েছে! এখন যাচাই করে সেভ করুন।');
+    setTimeout(() => setSaveSuccessToast(null), 5000);
+  };
 
   // Smart Auto-Fill Generator (AI / Helper Engine)
   const handleSmartAutoFill = () => {
@@ -599,6 +674,21 @@ export default function UniversalJobWorkspace({
 
           {/* Header Action Controls */}
           <div className="flex items-center gap-2 flex-wrap shrink-0">
+            {/* Teletalk Smart URL Inspector Toggle */}
+            <button
+              type="button"
+              onClick={() => setShowScanner(prev => !prev)}
+              className={`px-3 py-2 rounded-xl text-xs font-bold transition-all border flex items-center gap-1.5 cursor-pointer ${
+                showScanner
+                  ? 'bg-purple-600 text-white border-purple-500 shadow-sm'
+                  : 'bg-slate-800 hover:bg-slate-700 text-purple-300 border-slate-700'
+              }`}
+              title="টেলিটক পোর্টাল অটো-স্ক্যানার চালু/বন্ধ করুন"
+            >
+              <Globe className="w-3.5 h-3.5" />
+              <span>{showScanner ? 'স্ক্যানার খোলা' : 'স্মার্ট স্ক্যানার'}</span>
+            </button>
+
             {/* One-Click Smart Auto-Fill */}
             <button
               type="button"
@@ -756,6 +846,243 @@ export default function UniversalJobWorkspace({
           {/* ------------------------------------------------------------ */}
           {activeTab === 'overview' && (
             <div className="space-y-6 max-w-5xl mx-auto">
+              {/* ------------------------------------------------------------ */}
+              {/* SMART TELETALK & OFFICIAL PORTAL INSPECTOR & AUTO-FILL SUITE */}
+              {/* ------------------------------------------------------------ */}
+              {showScanner && (
+                <div className="bg-gradient-to-br from-slate-900 via-purple-950 to-slate-900 text-white rounded-3xl p-5 sm:p-6 border border-purple-500/30 shadow-xl space-y-4 relative overflow-hidden animate-in fade-in slide-in-from-top-4">
+                  <div className="absolute right-0 top-0 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl pointer-events-none" />
+                  
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 relative z-10">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-10 h-10 rounded-2xl bg-purple-500/20 border border-purple-400/30 flex items-center justify-center text-purple-300">
+                        <Sparkles className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <h3 className="text-base font-black text-white flex items-center gap-2">
+                          <span>স্মার্ট টেলিটক সার্কুলার ইন্সপেক্টর ও অটো-ফিল</span>
+                          <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-purple-500/30 text-purple-200 border border-purple-400/40">
+                            LIVE AUDIT
+                          </span>
+                        </h3>
+                        <p className="text-xs text-purple-200/80 mt-0.5">
+                          টেলিটক বা সরকারি নিয়োগ পোর্টালের URL দিন — সিস্টেম স্বয়ংক্রিয়ভাবে রানিং সার্কুলার, রিয়েল PDF, আবেদন লিঙ্ক ও পদসমূহ এক্সট্র্যাক্ট করবে।
+                        </p>
+                      </div>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => setShowScanner(false)}
+                      className="text-xs font-bold text-slate-400 hover:text-white px-2 py-1 rounded-lg hover:bg-white/10 transition-colors self-end sm:self-auto cursor-pointer"
+                    >
+                      লুকিয়ে রাখুন
+                    </button>
+                  </div>
+
+                  {/* URL Input & Quick Preset Buttons */}
+                  <div className="space-y-2.5 relative z-10">
+                    <div className="flex flex-col sm:flex-row gap-2">
+                      <div className="relative flex-1">
+                        <Globe className="w-4 h-4 text-purple-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                        <input
+                          type="url"
+                          value={scannerUrl}
+                          onChange={(e) => setScannerUrl(e.target.value)}
+                          placeholder="https://dcrajbari.teletalk.com.bd/"
+                          className="w-full bg-slate-800/80 border border-purple-500/30 rounded-2xl pl-10 pr-4 py-2.5 text-xs sm:text-sm text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-400 transition-all font-mono"
+                        />
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => handleScanPortal()}
+                        disabled={isScanningUrl}
+                        className="px-5 py-2.5 bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-400 hover:to-indigo-500 text-white rounded-2xl text-xs sm:text-sm font-bold transition-all shadow-md flex items-center justify-center gap-2 shrink-0 cursor-pointer disabled:opacity-50"
+                      >
+                        {isScanningUrl ? (
+                          <>
+                            <RefreshCw className="w-4 h-4 animate-spin text-purple-200" />
+                            <span>পোর্টাল স্ক্যান হচ্ছে...</span>
+                          </>
+                        ) : (
+                          <>
+                            <Search className="w-4 h-4 text-purple-200" />
+                            <span>সার্কুলার স্ক্যান ও এক্সট্র্যাক্ট</span>
+                          </>
+                        )}
+                      </button>
+                    </div>
+
+                    {/* Quick Presets */}
+                    <div className="flex items-center gap-1.5 flex-wrap text-[11px]">
+                      <span className="text-purple-300 font-semibold">কুইক প্রি-সেট:</span>
+                      {[
+                        { label: 'রাজবাড়ী ডিসি অফিস', url: 'https://dcrajbari.teletalk.com.bd/' },
+                        { label: 'কোল পাওয়ার (CPGCBL)', url: 'https://cpgcbl.teletalk.com.bd/' },
+                        { label: 'ঝিনাইদহ ডিসি অফিস', url: 'https://dcjhenaidah.teletalk.com.bd/' },
+                        { label: 'আশুগঞ্জ পাওয়ার (APSCL)', url: 'https://apscl.teletalk.com.bd/' },
+                        { label: 'সশস্ত্র বাহিনী বোর্ড (BASB)', url: 'https://basb.teletalk.com.bd/' }
+                      ].map((preset) => (
+                        <button
+                          key={preset.url}
+                          type="button"
+                          onClick={() => {
+                            setScannerUrl(preset.url);
+                            handleScanPortal(preset.url);
+                          }}
+                          className="px-2.5 py-1 rounded-xl bg-purple-900/40 hover:bg-purple-800/60 border border-purple-500/20 text-purple-200 font-medium transition-colors cursor-pointer"
+                        >
+                          {preset.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Scan Error Alert */}
+                  {scanError && (
+                    <div className="p-3.5 rounded-2xl bg-rose-500/20 border border-rose-500/40 text-rose-200 text-xs flex items-center gap-2">
+                      <AlertTriangle className="w-4 h-4 shrink-0 text-rose-400" />
+                      <span>{scanError}</span>
+                    </div>
+                  )}
+
+                  {/* Scan Result Inspection View */}
+                  {scanResult && (
+                    <div className="space-y-4 pt-2 border-t border-purple-500/20 relative z-10 animate-in fade-in">
+                      {/* Active Circular Found */}
+                      {scanResult.hasActiveCircular && scanResult.activeCircular && (
+                        <div className="bg-emerald-950/40 border border-emerald-500/40 rounded-2xl p-4 space-y-3">
+                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-emerald-500/20 pb-2">
+                            <div className="flex items-center gap-2">
+                              <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                              <span className="text-xs font-black text-emerald-300 uppercase tracking-wider">
+                                চলতি নিয়োগ বিজ্ঞপ্তি শনাক্ত (Active Running Circular)
+                              </span>
+                            </div>
+                            <span className="text-[11px] font-mono text-emerald-200 bg-emerald-500/20 px-2 py-0.5 rounded-md self-start sm:self-auto">
+                              {scanResult.activeCircular.refNo || 'অফিসিয়াল সার্কুলার'}
+                            </span>
+                          </div>
+
+                          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 text-xs">
+                            <div className="bg-slate-900/60 p-2.5 rounded-xl border border-slate-700/50">
+                              <span className="text-[10px] text-slate-400 block font-semibold">শিরোনাম ও প্রতিষ্ঠান:</span>
+                              <span className="font-bold text-white block mt-0.5 truncate">{scanResult.activeCircular.title}</span>
+                              <span className="text-[11px] text-purple-300 block">{scanResult.activeCircular.organization}</span>
+                            </div>
+
+                            <div className="bg-slate-900/60 p-2.5 rounded-xl border border-slate-700/50">
+                              <span className="text-[10px] text-slate-400 block font-semibold">আবেদনের শেষ সময় (Deadline):</span>
+                              <span className="font-bold text-emerald-400 block mt-0.5 font-mono">{scanResult.activeCircular.deadlineRaw || scanResult.activeCircular.deadline}</span>
+                              <span className="text-[10px] text-slate-400 block">জেলা: {scanResult.activeCircular.district || 'ঢাকা'}</span>
+                            </div>
+
+                            <div className="bg-slate-900/60 p-2.5 rounded-xl border border-slate-700/50">
+                              <span className="text-[10px] text-slate-400 block font-semibold">পরীক্ষার ফি ও এসএমএস:</span>
+                              <span className="font-bold text-amber-300 block mt-0.5">
+                                সরকারি ফি ৳{scanResult.activeCircular.govtFee} + টেলিটক ৳{scanResult.activeCircular.serviceFee} = ৳{scanResult.activeCircular.totalFee}
+                              </span>
+                              <span className="text-[10px] text-slate-400 block font-mono">SMS: {scanResult.activeCircular.smsFormat?.keyword} &rarr; 16222</span>
+                            </div>
+                          </div>
+
+                          {/* PDF & Application Form Links */}
+                          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 pt-1">
+                            {scanResult.activeCircular.pdfUrl ? (
+                              <div className="flex-1 flex items-center justify-between p-2 rounded-xl bg-slate-900/70 border border-emerald-500/30 text-xs">
+                                <div className="flex items-center gap-1.5 truncate">
+                                  <FileCode className="w-4 h-4 text-emerald-400 shrink-0" />
+                                  <span className="font-semibold text-emerald-200 truncate font-mono text-[11px]">
+                                    {scanResult.activeCircular.pdfUrl}
+                                  </span>
+                                </div>
+                                <a
+                                  href={scanResult.activeCircular.pdfUrl}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                  className="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-[11px] font-bold shrink-0 ml-2 flex items-center gap-1 transition-colors"
+                                >
+                                  <span>PDF দেখুন</span>
+                                  <ExternalLink className="w-3 h-3" />
+                                </a>
+                              </div>
+                            ) : (
+                              <div className="flex-1 p-2 rounded-xl bg-slate-900/70 border border-slate-700 text-xs text-slate-400">
+                                সরাসরি PDF লিঙ্ক পেজে পাওয়া যায়নি (বিজ্ঞপ্তির ছবি বা টেক্সট প্রযোজ্য)
+                              </div>
+                            )}
+
+                            <a
+                              href={scanResult.activeCircular.applicationUrl}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-xl text-xs font-semibold flex items-center justify-center gap-1 shrink-0 transition-colors"
+                            >
+                              <span>আবেদন লিঙ্ক ভিজিট</span>
+                              <ExternalLink className="w-3 h-3" />
+                            </a>
+                          </div>
+
+                          {/* Extracted Positions List */}
+                          {scanResult.activeCircular.positions && scanResult.activeCircular.positions.length > 0 && (
+                            <div className="space-y-1.5 pt-1">
+                              <span className="text-[11px] font-bold text-slate-300 block">
+                                এক্সট্র্যাক্টকৃত পদসমূহ ({scanResult.activeCircular.positions.length} টি):
+                              </span>
+                              <div className="flex flex-wrap gap-1.5">
+                                {scanResult.activeCircular.positions.map((pos: any, idx: number) => (
+                                  <span
+                                    key={idx}
+                                    className="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-700 text-slate-200 text-xs font-medium flex items-center gap-1.5"
+                                  >
+                                    <Briefcase className="w-3 h-3 text-purple-400" />
+                                    <span>{pos.title}</span>
+                                    {pos.code && <span className="font-mono text-[10px] text-purple-300">({pos.code})</span>}
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Big Apply Button */}
+                          <div className="pt-2 flex justify-end">
+                            <button
+                              type="button"
+                              onClick={handleApplyScanResult}
+                              className="w-full sm:w-auto px-6 py-2.5 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white rounded-xl text-xs sm:text-sm font-black transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer"
+                            >
+                              <Sparkles className="w-4 h-4 text-emerald-200" />
+                              <span>অটো-ফিল প্রয়োগ করুন (Apply Extracted Data to Form)</span>
+                              <ArrowRight className="w-4 h-4" />
+                            </button>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Dead Circulars Alert */}
+                      {scanResult.deadCirculars && scanResult.deadCirculars.length > 0 && (
+                        <div className="bg-amber-950/30 border border-amber-500/30 rounded-2xl p-3.5 space-y-2">
+                          <div className="flex items-center gap-2">
+                            <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0" />
+                            <span className="text-xs font-bold text-amber-300">
+                              পুরনো/মেয়াদোত্তীর্ণ সার্কুলার ফিল্টার্ড ({scanResult.deadCirculars.length} টি সনাক্ত ও বাদ দেওয়া হয়েছে):
+                            </span>
+                          </div>
+                          <div className="space-y-1">
+                            {scanResult.deadCirculars.map((dc: any, idx: number) => (
+                              <div key={idx} className="text-[11px] text-amber-200/80 flex items-start gap-1.5 pl-2 border-l-2 border-amber-500/40">
+                                <span className="font-semibold">{dc.title}:</span>
+                                <span>{dc.reason}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              )}
+
               {/* Key Summary Cards */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                 <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-2xs">

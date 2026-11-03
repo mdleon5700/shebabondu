@@ -196,6 +196,92 @@ export function extractEmbeddedJsonNotices(html: string, source: JobSource): Par
   return notices;
 }
 
+
+export function extractTeletalkPortalNotices(html: string, source: JobSource): ParsedHtmlNotice[] {
+  const notices: ParsedHtmlNotice[] = [];
+  const isTeletalk = html.includes('teletalk.com.bd') || 
+                     html.includes('Powered By: Teletalk') || 
+                     html.includes('Powered By Teletalk') ||
+                     html.includes('Web Based Recruitment System') ||
+                     html.includes('select_circular.php') ||
+                     html.includes('circulars.php');
+
+  if (!isTeletalk) return notices;
+
+  let orgName = source.name;
+  const h1Match = html.match(/<h1[^>]*>(.*?)<\/h1>/i);
+  const titleMatch = html.match(/<title>(.*?)<\/title>/i);
+  if (h1Match) {
+    orgName = h1Match[1].replace(/<[^>]+>/g, '').replace(/\|.*/, '').replace(/-.*/, '').trim();
+  } else if (titleMatch) {
+    orgName = titleMatch[1].replace(/<[^>]+>/g, '').replace(/\|.*/, '').replace(/-.*/, '').trim();
+  }
+
+  let deadline = 'অপেক্ষমাণ';
+  const dlMatch = html.match(/Deadline\s*[:\]]?\s*([0-9]{1,2}\s+[A-Za-z]{3,}\s+[0-9]{4}[^\]<]*)/i) ||
+                  html.match(/আবেদনের শেষ সময়[:\s]*([^\n<]+)/i);
+  if (dlMatch) {
+    deadline = dlMatch[1].trim();
+  }
+
+  let pdfUrl: string | undefined = undefined;
+  const pdfMatch = html.match(/<a[^>]+href=["']([^"']+\.pdf)["'][^>]*>(.*?)<\/a>/i);
+  if (pdfMatch) {
+    try {
+      pdfUrl = new URL(pdfMatch[1], source.sourceUrl).toString();
+    } catch {}
+  }
+
+  let appUrl = source.sourceUrl;
+  const appMatch = html.match(/<a[^>]+href=["']([^"']*(?:circulars|apply|options|select_circular|posts)\.php)["']/i);
+  if (appMatch) {
+    try {
+      appUrl = new URL(appMatch[1], source.sourceUrl).toString();
+    } catch {}
+  }
+
+  const refMatch = html.match(/Circular No:\s*([^"'>]+)/i) || html.match(/Ref:([^\s<]+)/i);
+  const refNo = refMatch ? refMatch[0].trim() : undefined;
+
+  const postMatches: string[] = [];
+  const postRegex = /<input[^>]+name=["']post_code["'][^>]+value=["']([^"']+)["'][^>]*>([\s\S]*?)(?:<\/label>|<\/li>)/gi;
+  let pMatch;
+  while ((pMatch = postRegex.exec(html)) !== null) {
+    const rawPost = pMatch[2].replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+    if (rawPost) postMatches.push(rawPost);
+  }
+
+  const isOver = html.includes('Online Application time is over!') || html.includes('সময় শেষ');
+
+  if (postMatches.length > 0) {
+    for (const post of postMatches) {
+      notices.push({
+        refNo,
+        title: post,
+        organization: orgName,
+        deadline,
+        sourceUrl: appUrl,
+        pdfUrl,
+        isCancelledNotice: isOver,
+        rawEvidenceText: `Teletalk Portal Post: ${post} | Deadline: ${deadline}`
+      });
+    }
+  } else {
+    notices.push({
+      refNo,
+      title: `${orgName} বিভিন্ন পদে নিয়োগ বিজ্ঞপ্তি ২০২৬`,
+      organization: orgName,
+      deadline,
+      sourceUrl: appUrl,
+      pdfUrl,
+      isCancelledNotice: isOver,
+      rawEvidenceText: `Teletalk Recruitment Portal: ${orgName} | PDF: ${pdfUrl || 'None'}`
+    });
+  }
+
+  return notices;
+}
+
 export function parseTeletalkHtml(html: string, source: JobSource): ParsedHtmlResult {
   const errors: string[] = [];
   const rawNotices: ParsedHtmlNotice[] = [];
@@ -247,6 +333,32 @@ export function parseTeletalkHtml(html: string, source: JobSource): ParsedHtmlRe
   }
 
   const segments = extractBalancedSegments(cleanHtml);
+
+  // Resilient Native Teletalk Portal Detection (e.g. dcrajbari, cpgcbl)
+  if (segments.length === 0) {
+    const portalNotices = extractTeletalkPortalNotices(cleanHtml, source);
+    if (portalNotices.length > 0) {
+      for (const notice of portalNotices) {
+        rawNotices.push(notice);
+        const norm = normalizeCircularNotice(notice, source);
+        if (norm.valid && norm.candidate) {
+          candidates.push(norm.candidate);
+        } else {
+          errors.push(`Normalization error for "${notice.title}": ${norm.errors.join(', ')}`);
+        }
+      }
+      return {
+        success: true,
+        sourceId: source.id,
+        candidates,
+        rawNotices,
+        discoveredCount: rawNotices.length,
+        validCount: candidates.length,
+        needsReviewCount: rawNotices.filter(n => n.needsReview).length,
+        errors
+      };
+    }
+  }
 
   if (segments.length === 0 && isSpa) {
     return {

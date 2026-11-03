@@ -4132,6 +4132,8 @@ export interface CircularDraft {
 
 
   evidenceHash?: string;
+  pdfUrl?: string;
+  circularPdfUrl?: string;
 
 
 

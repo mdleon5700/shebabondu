@@ -22,6 +22,7 @@ export interface RawDiscoveredNotice {
   organization: string;
   sourceUrl: string;
   evidenceUrl?: string;
+  pdfUrl?: string;
   category?: string;
   grade?: string;
   vacancies?: number | string;
@@ -48,6 +49,7 @@ export interface NormalizedCircularCandidate {
   sourceName: string;
   sourceUrl: string;
   evidenceUrl?: string;
+  pdfUrl?: string;
   title: string;
   organization: string;
   category: 'govt' | 'bank' | 'railway' | 'defense' | 'teacher' | 'ngo' | 'private' | 'health';

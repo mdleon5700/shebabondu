@@ -46,7 +46,9 @@ import {
   Bold,
   Italic,
   Table as TableIcon,
-  ArrowRight
+  ArrowRight,
+  Columns,
+  ArrowLeft
 } from 'lucide-react';
 import { JobCircular, JobPosition } from '@/lib/types';
 
@@ -140,6 +142,127 @@ export default function UniversalJobWorkspace({
   const [saveSuccessToast, setSaveSuccessToast] = useState<string | null>(null);
   const [saveError, setSaveError] = useState<string | null>(null);
   const [showLivePreview, setShowLivePreview] = useState(false);
+  const [viewMode, setViewMode] = useState<'editor' | 'split'>('editor');
+
+  // Smart Auto-Fill Generator (AI / Helper Engine)
+  const handleSmartAutoFill = () => {
+    if (!formData.title?.trim() && !formData.organization?.trim()) {
+      setSaveError('স্মার্ট অটো-ফিল করার জন্য অন্তত প্রতিষ্ঠানের নাম অথবা পদের নাম লিখুন।');
+      return;
+    }
+
+    const org = formData.organization?.trim() || 'বাংলাদেশ সরকারি প্রতিষ্ঠান';
+    const rawTitle = formData.title?.trim() || 'বিভিন্ন পদে কর্মকর্তা';
+    const grade = formData.grade || '৯ম গ্রেড';
+    const edu = formData.minEducation || 'স্নাতক (সম্মান) বা সমমানের ডিগ্রি';
+
+    const cleanOrg = org.replace(/নিয়োগ বিজ্ঞপ্তি.*/g, '').trim();
+    const cleanTitle = rawTitle.replace(/নিয়োগ বিজ্ঞপ্তি.*/g, '').trim();
+
+    const generatedTitle = `${cleanOrg}-এ ${cleanTitle} পদে বিশাল নিয়োগ বিজ্ঞপ্তি ২০২৬`;
+    const cleanForSlug = (cleanOrg + '-' + cleanTitle)
+      .toLowerCase()
+      .replace(/[^\w\s-]/g, '')
+      .replace(/[\s_-]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+    const generatedSlug = cleanForSlug || `job-${Date.now().toString().slice(-6)}`;
+
+    const seoTitle = `${cleanTitle} - ${cleanOrg} নিয়োগ বিজ্ঞপ্তি ২০২৬ | চাকরি সেবা`;
+    const seoDescription = `${cleanOrg}-এ ${cleanTitle} পদে আকর্ষণীয় ক্যারিয়ারের সুযোগ। মোট পদসংখ্যা: ${formData.totalPosts || 1}টি, গ্রেড: ${grade}, শিক্ষাগত যোগ্যতা: ${edu}। আবেদনের শেষ সময়: ${formData.deadline || 'শীঘ্রই'}। অনলাইনে আবেদনের সঠিক নিয়ম ও শর্তাবলী জেনে চাকরি সেবায় আবেদন করুন।`;
+    const seoKeywords = [cleanOrg, cleanTitle, 'সরকারি চাকরি ২০২৬', 'নিয়োগ বিজ্ঞপ্তি ২০২৬', 'bd jobs circular', 'online apply'];
+
+    const defaultFaqs = [
+      {
+        question: `${cleanOrg}-এ কীভাবে অনলাইনে আবেদন করবেন?`,
+        answer: `চাকরি সেবা ওয়েবসাইটের মাধ্যমে অথবা সংশ্লিষ্ট অফিসিয়াল পোর্টাল (${formData.officialLink || 'অনলাইন পোর্টাল'}) থেকে নির্ধারিত আবেদন ফরম পূরণ করে আবেদন করতে পারবেন। প্রার্থীরা চাকরি সেবার অনলাইন আবেদন সহায়তার মাধ্যমেও ঘরে বসে নির্ভুল আবেদন সম্পন্ন করতে পারেন।`
+      },
+      {
+        question: 'আবেদনের শেষ তারিখ ও সময় কবে?',
+        answer: `এই বিজ্ঞপ্তিতে অনলাইনে আবেদনপত্র দাখিল ও ফি জমাদানের শেষ তারিখ ${formData.deadline || 'বিজ্ঞপ্তিতে উল্লেখিত তারিখ'} বিকেল ৫:০০ টা পর্যন্ত। শেষ সময়ের পূর্বেই আবেদন সম্পন্ন করার পরামর্শ দেওয়া হলো।`
+      },
+      {
+        question: 'আবেদন ফি কত টাকা এবং কীভাবে পরিশোধ করবেন?',
+        answer: `সরকারি পরীক্ষার ফি বাবদ ${formData.govtFee || 200} টাকা এবং প্ল্যাটফর্ম সার্ভিস চার্জ বাবদ ${formData.serviceFee || 80} টাকা প্রযোজ্য। টেলিটক প্রি-পেইড সিম, বিকাশ বা নগদ মোবাইল ব্যাংকিংয়ের মাধ্যমে ফি পরিশোধ করা যাবে।`
+      }
+    ];
+
+    const defaultDocs = [
+      'জাতীয় পরিচয়পত্র (NID) অথবা অনলাইন জন্মনিবন্ধন সনদ',
+      'সম্প্রতি তোলা পাসপোর্ট সাইজের রঙিন ছবি (৩০০x৩০০ পিক্সেল, ১০০ কেবি)',
+      'স্বাক্ষরের স্পষ্ট স্ক্যান কপি (৩০০x৮০ পিক্সেল, ৬০ কেবি)',
+      'সকল শিক্ষাগত যোগ্যতার মূল বা সাময়িক সনদপত্র',
+      'প্রযোজ্য ক্ষেত্রে কোটা ও নাগরিকত্ব সনদপত্র'
+    ];
+
+    const defaultRequirements = (formData.requirements && formData.requirements.length > 0)
+      ? formData.requirements
+      : [
+          `${edu} ডিগ্রি থাকতে হবে`,
+          `বয়সসীমা: ${formData.minAge || 18} থেকে ${formData.maxAge || 32} বছর`,
+          'কম্পিউটার পরিচালনায় এবং বাংলা ও ইংরেজি টাইপিংয়ে প্রয়োজনীয় দক্ষতা',
+          'বাংলাদেশের সকল জেলার নাগরিকগণ আবেদন করতে পারবেন (বিজ্ঞপ্তির শর্তসাপেক্ষে)'
+        ];
+
+    const defaultSummary = formData.bengaliDescription || `${cleanOrg} সম্প্রতি তাদের প্রশাসনিক ও কারিগরি কার্যক্রম পরিচালনার সুবিধার্থে ${cleanTitle} পদে জনবল নিয়োগের জন্য অফিসিয়াল নিয়োগ বিজ্ঞপ্তি ২০২৬ প্রকাশ করেছে। আগ্রহী ও যোগ্য প্রার্থীদের নির্ধারিত সময়ের মধ্যে অনলাইনে আবেদন ফরম পূরণ ও পরীক্ষা ফি পরিশোধের আহ্বান জানানো যাচ্ছে। সম্পূর্ণ নিয়োগ বিজ্ঞপ্তি, পদের বিবরণ, শিক্ষাগত যোগ্যতা ও আবেদন পদ্ধতি নিচে বিস্তারিত উল্লেখ করা হলো।`;
+
+    setFormData(prev => ({
+      ...prev,
+      title: generatedTitle,
+      slug: prev.slug || generatedSlug,
+      seoTitle: prev.seoTitle || seoTitle,
+      seoDescription: prev.seoDescription || seoDescription,
+      seoKeywords: (prev.seoKeywords && prev.seoKeywords.length > 0) ? prev.seoKeywords : seoKeywords,
+      faqItems: (prev.faqItems && prev.faqItems.length > 0) ? prev.faqItems : defaultFaqs,
+      documentsRequired: (prev.documentsRequired && prev.documentsRequired.length > 0) ? prev.documentsRequired : defaultDocs,
+      requirements: defaultRequirements,
+      bengaliDescription: defaultSummary,
+      govtFee: prev.govtFee || 200,
+      serviceFee: prev.serviceFee || 80,
+      salary: prev.salary || '২২,০০০ - ৫৩,০৬০ টাকা',
+      grade: prev.grade || grade,
+      minEducation: prev.minEducation || edu,
+      districts: prev.districts || 'সকল জেলা'
+    }));
+
+    setSaveSuccessToast('✨ স্মার্ট অটো-ফিল সফল! সাধারণ তথ্য, এসইও মেটা, এফএকিউ এবং শর্তাবলী স্বয়ংক্রিয়ভাবে পূর্ণ হয়েছে।');
+    setTimeout(() => setSaveSuccessToast(null), 4000);
+  };
+
+  // Completeness score
+  const completenessItems = useMemo(() => [
+    { key: 'title', label: 'শিরোনাম', done: Boolean(formData.title?.trim()) },
+    { key: 'org', label: 'প্রতিষ্ঠান', done: Boolean(formData.organization?.trim()) },
+    { key: 'edu', label: 'শিক্ষাগত যোগ্যতা', done: Boolean(formData.minEducation?.trim()) },
+    { key: 'salary', label: 'বেতন স্কেল', done: Boolean(formData.salary?.trim()) },
+    { key: 'deadline', label: 'ডেডলাইন', done: Boolean(formData.deadline?.trim()) },
+    { key: 'fee', label: 'আবেদন ফি', done: Number(formData.govtFee) > 0 },
+    { key: 'link', label: 'আবেদন লিংক', done: Boolean(formData.officialLink?.trim()) },
+    { key: 'seo', label: 'এসইও মেটা', done: Boolean(formData.seoTitle?.trim()) }
+  ], [formData]);
+
+  const completedCount = completenessItems.filter(i => i.done).length;
+  const completionPercentage = Math.round((completedCount / completenessItems.length) * 100);
+
+  // Tabs configuration with completion state
+  const TABS_CONFIG = useMemo(() => [
+    { id: 'overview' as WorkspaceTab, label: 'সারসংক্ষেপ', icon: LayoutDashboard, isDone: true },
+    { id: 'details' as WorkspaceTab, label: 'মূল তথ্য', icon: FileText, isDone: Boolean(formData.title?.trim() && formData.organization?.trim()) },
+    { id: 'positions' as WorkspaceTab, label: `পদ ও বেতন (${(formData.positions || []).length || 1})`, icon: Layers, isDone: Boolean(formData.salary?.trim()) },
+    { id: 'eligibility' as WorkspaceTab, label: 'যোগ্যতা ও শর্তাবলী', icon: GraduationCap, isDone: Boolean(formData.minEducation?.trim()) },
+    { id: 'application' as WorkspaceTab, label: 'আবেদন ও ফি', icon: Send, isDone: Boolean(formData.officialLink?.trim() && formData.deadline?.trim()) },
+    { id: 'circular' as WorkspaceTab, label: 'সার্কুলার ও সোর্স', icon: FileCode, isDone: Boolean(formData.circularPdfUrl || formData.circularImage) },
+    { id: 'content' as WorkspaceTab, label: 'বিবরণী ও কন্টেন্ট', icon: PenTool, isDone: Boolean(formData.bengaliDescription?.trim()) },
+    { id: 'seo' as WorkspaceTab, label: 'এসইও ও মেটা', icon: Search, isDone: Boolean(formData.seoTitle?.trim()) },
+    { id: 'media' as WorkspaceTab, label: 'মিডিয়া ও ছবি', icon: ImageIcon, isDone: Boolean(formData.logo) },
+    { id: 'verification' as WorkspaceTab, label: 'ভেরিফিকেশন', icon: ShieldCheck, isDone: Boolean(formData.verificationStatus) },
+    { id: 'publishing' as WorkspaceTab, label: 'পাবলিশিং', icon: Globe, isDone: Boolean(formData.status) },
+    { id: 'history' as WorkspaceTab, label: 'হিস্ট্রি ও অডিট', icon: History, isDone: true }
+  ], [formData]);
+
+  const currentTabIndex = TABS_CONFIG.findIndex(t => t.id === activeTab);
+  const prevTab = currentTabIndex > 0 ? TABS_CONFIG[currentTabIndex - 1] : null;
+  const nextTab = currentTabIndex < TABS_CONFIG.length - 1 ? TABS_CONFIG[currentTabIndex + 1] : null;
+
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [uploadingField, setUploadingField] = useState<string | null>(null);
 
@@ -421,7 +544,8 @@ export default function UniversalJobWorkspace({
 
   return (
     <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-xs flex items-center justify-center p-2 sm:p-4 overflow-hidden animate-in fade-in duration-200">
-      <div className="bg-white rounded-3xl w-full max-w-7xl h-[95vh] flex flex-col shadow-2xl border border-slate-200 overflow-hidden">
+      <div className={`bg-white rounded-3xl w-full transition-all duration-200 flex flex-col shadow-2xl border border-slate-200 overflow-hidden ${viewMode === 'split' ? 'max-w-[98vw] h-[96vh]' : 'max-w-7xl h-[95vh]'}`}>
+
         
         {/* ============================================================== */}
         {/* 1. TOP HEADER & WORKSPACE ACTION BAR */}
@@ -453,23 +577,74 @@ export default function UniversalJobWorkspace({
                   </span>
                 )}
               </div>
-              <h2 className="text-base font-black text-slate-100 truncate mt-1">
-                {formData.title ? `${formData.organization || ''} — ${formData.title}` : 'নতুন নিয়োগ বিজ্ঞপ্তি তৈরি'}
-              </h2>
+              <div className="flex items-center gap-2 mt-1">
+                <h2 className="text-base font-black text-slate-100 truncate">
+                  {isNew 
+                    ? (formData.title ? `✨ নতুন: ${formData.organization || ''} — ${formData.title}` : '✨ নতুন নিয়োগ বিজ্ঞপ্তি তৈরি করুন')
+                    : (formData.title ? `✏️ সম্পাদনা: ${formData.organization || ''} — ${formData.title}` : '✏️ সার্কুলার সম্পাদনা')
+                  }
+                </h2>
+                <div className={`hidden sm:flex text-[11px] font-bold px-2.5 py-0.5 rounded-md items-center gap-1.5 ${
+                  completionPercentage === 100 
+                    ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
+                    : 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
+                }`}>
+                  <span>${completedCount}/${completenessItems.length} সম্পন্ন</span>
+                  <span className="font-mono">(${completionPercentage}%)</span>
+                </div>
+              </div>
             </div>
           </div>
 
           {/* Header Action Controls */}
           <div className="flex items-center gap-2 flex-wrap shrink-0">
-            {/* Live Preview Button */}
+            {/* One-Click Smart Auto-Fill */}
+            <button
+              type="button"
+              onClick={handleSmartAutoFill}
+              className="px-3.5 py-2 bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-white rounded-xl text-xs font-black transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
+              title="পদবী ও প্রতিষ্ঠান অনুযায়ী এসইও, বিবরণ ও এফএকিউ স্বয়ংক্রিয়ভাবে পূর্ণ করুন"
+            >
+              <Sparkles className="w-3.5 h-3.5 text-amber-200" />
+              <span className="hidden sm:inline">স্মার্ট অটো-ফিল</span>
+            </button>
+
+            {/* Split Screen Live Preview Toggle */}
+            <button
+              type="button"
+              onClick={() => setViewMode(prev => prev === 'split' ? 'editor' : 'split')}
+              className={`px-3 py-2 rounded-xl text-xs font-bold transition-all border flex items-center gap-1.5 cursor-pointer ${
+                viewMode === 'split'
+                  ? 'bg-emerald-600 text-white border-emerald-500 shadow-sm'
+                  : 'bg-slate-800 hover:bg-slate-700 text-slate-200 border-slate-700'
+              }`}
+              title="রিয়েল-টাইম স্প্লিট প্রিভিউ চালু/বন্ধ করুন"
+            >
+              <Columns className="w-3.5 h-3.5" />
+              <span className="hidden md:inline">{viewMode === 'split' ? 'স্প্লিট মোড চালু' : 'স্প্লিট প্রিভিউ'}</span>
+            </button>
+
+            {/* Full Preview Modal Button */}
             <button
               type="button"
               onClick={() => setShowLivePreview(true)}
-              className="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl text-xs font-bold transition-all border border-slate-700 flex items-center gap-1.5"
-              title="পাবলিক পেজের মতো প্রিভিউ দেখুন"
+              className="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl text-xs font-bold transition-all border border-slate-700 flex items-center gap-1.5 cursor-pointer"
+              title="পাবলিক পেজের মতো ফুল প্রিভিউ দেখুন"
             >
               <Eye className="w-3.5 h-3.5 text-blue-400" />
               <span>প্রিভিউ</span>
+            </button>
+
+            {/* Save as Draft Button */}
+            <button
+              type="button"
+              onClick={() => handleSave('draft')}
+              disabled={isSaving}
+              className="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-amber-300 rounded-xl text-xs font-bold transition-all border border-slate-700 flex items-center gap-1.5 cursor-pointer"
+              title="খসড়া হিসেবে ড্রাফটে সংরক্ষণ করুন"
+            >
+              <FileText className="w-3.5 h-3.5" />
+              <span className="hidden lg:inline">ড্রাফট সেভ</span>
             </button>
 
             {/* Bridge to Visual Content Studio (Step 04) */}
@@ -543,36 +718,26 @@ export default function UniversalJobWorkspace({
         {/* ============================================================== */}
         {/* 2. TAB NAVIGATION BAR (11 ORGANIZED TABS) */}
         {/* ============================================================== */}
-        <div className="px-6 py-3 bg-slate-100 border-b border-slate-200 flex items-center gap-2 overflow-x-auto shrink-0 scrollbar-thin text-xs sm:text-sm">
-          {[
-            { id: 'overview', label: 'সারসংক্ষেপ', icon: LayoutDashboard },
-            { id: 'details', label: 'মূল তথ্য', icon: FileText },
-            { id: 'positions', label: `পদ ও বেতন মেট্রিক্স (${(formData.positions || []).length || 1})`, icon: Layers },
-            { id: 'eligibility', label: 'যোগ্যতা ও শর্তাবলী', icon: GraduationCap },
-            { id: 'application', label: 'আবেদন ও ফি', icon: Send },
-            { id: 'circular', label: 'সার্কুলার ও সোর্স', icon: FileCode },
-            { id: 'content', label: 'বিবরণী ও কন্টেন্ট', icon: PenTool },
-            { id: 'seo', label: 'এসইও ও মেটা', icon: Search },
-            { id: 'media', label: 'মিডিয়া ও ছবি', icon: ImageIcon },
-            { id: 'verification', label: 'ভেরিফিকেশন', icon: ShieldCheck },
-            { id: 'publishing', label: 'পাবলিশিং', icon: Globe },
-            { id: 'history', label: 'হিস্ট্রি ও অডিট', icon: History }
-          ].map(tab => {
+        <div className="px-4 sm:px-6 py-2.5 bg-slate-100 border-b border-slate-200 flex items-center gap-1.5 overflow-x-auto shrink-0 scrollbar-thin text-xs sm:text-sm">
+          {TABS_CONFIG.map(tab => {
             const Icon = tab.icon;
             const isActive = activeTab === tab.id;
             return (
               <button
                 key={tab.id}
                 type="button"
-                onClick={() => setActiveTab(tab.id as WorkspaceTab)}
-                className={`px-4 py-2 rounded-xl font-bold transition-all flex items-center gap-2 whitespace-nowrap cursor-pointer text-xs sm:text-sm ${
+                onClick={() => setActiveTab(tab.id)}
+                className={`px-3.5 py-2 rounded-xl font-bold transition-all flex items-center gap-2 whitespace-nowrap cursor-pointer text-xs sm:text-sm ${
                   isActive
                     ? 'bg-emerald-700 text-white shadow-sm'
                     : 'text-slate-600 hover:bg-slate-200/80 hover:text-slate-900'
                 }`}
               >
-                <Icon className="w-4 h-4 shrink-0" />
+                <Icon className="w-3.5 h-3.5 shrink-0" />
                 <span>{tab.label}</span>
+                {tab.isDone && !isActive && (
+                  <CheckCircle2 className="w-3 h-3 text-emerald-600 shrink-0" />
+                )}
               </button>
             );
           })}
@@ -581,7 +746,9 @@ export default function UniversalJobWorkspace({
         {/* ============================================================== */}
         {/* 3. TAB CONTENT PANELS (SCROLLABLE BODY) */}
         {/* ============================================================== */}
-        <div className="flex-1 overflow-y-auto p-6 sm:p-8 bg-slate-50/50 space-y-6">
+        <div className="flex-1 overflow-hidden flex flex-col lg:flex-row">
+        {/* Form Tab Panels Column (60% when Split) */}
+        <div className={`flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 bg-slate-50/50 space-y-6 ${viewMode === 'split' ? 'lg:w-[60%] border-r border-slate-200' : 'w-full'}`}>
           
           {/* ------------------------------------------------------------ */}
           {/* TAB 1: OVERVIEW */}
@@ -2433,7 +2600,203 @@ export default function UniversalJobWorkspace({
             </div>
           )}
 
+          {/* ============================================================== */}
+          {/* STICKY BOTTOM WIZARD NAVIGATION BAR */}
+          {/* ============================================================== */}
+          <div className="mt-8 pt-4 border-t border-slate-200 flex flex-wrap items-center justify-between gap-3 text-xs">
+            {prevTab ? (
+              <button
+                type="button"
+                onClick={() => setActiveTab(prevTab.id)}
+                className="px-4 py-2 rounded-xl bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-2xs"
+              >
+                <ArrowLeft className="w-3.5 h-3.5 text-slate-500" />
+                <span>পূর্ববর্তী: {prevTab.label}</span>
+              </button>
+            ) : <div />}
+
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => handleSave('draft')}
+                disabled={isSaving}
+                className="px-3.5 py-2 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold transition-all cursor-pointer"
+              >
+                খসড়া সেভ
+              </button>
+              <button
+                type="button"
+                onClick={() => handleSave()}
+                disabled={isSaving}
+                className="px-4 py-2 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-xs"
+              >
+                <Save className="w-3.5 h-3.5" />
+                <span>সংরক্ষণ করুন</span>
+              </button>
+              {nextTab && (
+                <button
+                  type="button"
+                  onClick={() => setActiveTab(nextTab.id)}
+                  className="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-xs"
+                >
+                  <span>পরবর্তী: {nextTab.label}</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </button>
+              )}
+            </div>
+          </div>
         </div>
+
+        {/* ============================================================== */}
+        {/* RIGHT COLUMN: REAL-TIME INTERACTIVE SPLIT PREVIEW */}
+        {/* ============================================================== */}
+        {viewMode === 'split' && (
+          <div className="hidden lg:flex lg:w-[40%] bg-slate-100 flex-col border-l border-slate-200 overflow-y-auto shrink-0">
+            <div className="sticky top-0 z-10 bg-slate-200/90 backdrop-blur-xs px-4 py-3 border-b border-slate-300/80 flex items-center justify-between text-xs font-bold text-slate-700">
+              <div className="flex items-center gap-2">
+                <Eye className="w-4 h-4 text-emerald-700" />
+                <span>রিয়েল-টাইম পাবলিক প্রিভিউ</span>
+              </div>
+              <span className="flex items-center gap-1.5 text-[11px] text-emerald-800 bg-emerald-100 px-2.5 py-0.5 rounded-full font-bold">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                লাইভ সিঙ্কড
+              </span>
+            </div>
+
+            <div className="p-4 space-y-5">
+              {/* 1. Job Card Preview */}
+              <div className="space-y-2">
+                <span className="text-[11px] font-black uppercase tracking-wider text-slate-500 block">
+                  ওয়েবসাইট কার্ড প্রিভিউ (Job Card Preview)
+                </span>
+                <div className="bg-white rounded-2xl p-5 border border-slate-200 shadow-xs space-y-4">
+                  <div className="flex items-start gap-3.5">
+                    <div className="w-12 h-12 rounded-xl bg-slate-100 border border-slate-200 overflow-hidden shrink-0 flex items-center justify-center p-1">
+                      {formData.logo ? (
+                        <img src={formData.logo} alt="" className="w-full h-full object-contain" />
+                      ) : (
+                        <Building2 className="w-6 h-6 text-slate-400" />
+                      )}
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-1.5 flex-wrap mb-1">
+                        <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                          {formData.categoryLabel || 'সরকারি চাকরি'}
+                        </span>
+                        <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-blue-50 text-blue-700 border border-blue-200">
+                          {formData.grade || '৯ম গ্রেড'}
+                        </span>
+                        {formData.featured && (
+                          <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-amber-500 text-white">
+                            ফিচার্ড
+                          </span>
+                        )}
+                      </div>
+                      <h4 className="font-black text-slate-900 text-sm leading-snug line-clamp-2">
+                        {formData.title || 'বিজ্ঞপ্তির শিরোনাম এখানে প্রদর্শিত হবে...'}
+                      </h4>
+                      <p className="text-xs text-slate-600 font-semibold mt-0.5">
+                        {formData.organization || 'প্রতিষ্ঠানের নাম'}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-2 text-[11px] pt-3 border-t border-slate-100">
+                    <div className="flex items-center gap-1.5 text-slate-600">
+                      <Layers className="w-3.5 h-3.5 text-slate-400" />
+                      <span>মোট পদ: <strong className="text-slate-900">{formData.totalPosts || 1} টি</strong></span>
+                    </div>
+                    <div className="flex items-center gap-1.5 text-slate-600">
+                      <DollarSign className="w-3.5 h-3.5 text-slate-400" />
+                      <span className="truncate">{formData.salary || 'বেতন স্কেল'}</span>
+                    </div>
+                    <div className="flex items-center gap-1.5 text-slate-600">
+                      <GraduationCap className="w-3.5 h-3.5 text-slate-400" />
+                      <span className="truncate">{formData.minEducation || 'শিক্ষাগত যোগ্যতা'}</span>
+                    </div>
+                    <div className="flex items-center gap-1.5 text-rose-600 font-bold">
+                      <Clock className="w-3.5 h-3.5 text-rose-500" />
+                      <span className="truncate">{formData.deadline ? `শেষ: ${formData.deadline}` : 'ডেডলাইন'}</span>
+                    </div>
+                  </div>
+
+                  <div className="pt-2 flex items-center justify-between">
+                    <span className="text-[10px] text-slate-500 font-medium">
+                      মোট ফি: <strong>৳{Number(formData.govtFee || 0) + Number(formData.serviceFee || 0)}</strong>
+                    </span>
+                    <span className="px-3 py-1 bg-emerald-700 text-white rounded-lg text-xs font-bold shadow-2xs">
+                      আবেদন করুন →
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* 2. Public Details Snapshot */}
+              <div className="space-y-2">
+                <span className="text-[11px] font-black uppercase tracking-wider text-slate-500 block">
+                  বিজ্ঞপ্তির পেজ স্নাপশট (Public Page Snapshot)
+                </span>
+                <div className="bg-white rounded-2xl p-5 border border-slate-200 shadow-xs space-y-4">
+                  <div className="space-y-1">
+                    <span className="text-[10px] font-mono text-emerald-700 font-bold">
+                      /jobs/{formData.slug || formData.id || 'slug'}
+                    </span>
+                    <h3 className="text-sm font-black text-slate-900">
+                      {formData.seoTitle || formData.title || 'এসইও মেটা টাইটেল'}
+                    </h3>
+                    <p className="text-[11px] text-slate-600 leading-relaxed">
+                      {formData.seoDescription || 'এসইও মেটা ডেসক্রিপশন...'}
+                    </p>
+                  </div>
+
+                  {/* Fee Calculator Box */}
+                  <div className="bg-slate-50 p-3 rounded-xl border border-slate-200/80 space-y-1.5 text-xs">
+                    <div className="flex justify-between py-1 border-b border-slate-200/60">
+                      <span className="text-slate-500">সরকারি ফি:</span>
+                      <span className="font-bold text-slate-800">৳{formData.govtFee || 0}</span>
+                    </div>
+                    <div className="flex justify-between py-1 border-b border-slate-200/60">
+                      <span className="text-slate-500">সার্ভিস ফি:</span>
+                      <span className="font-bold text-slate-800">৳{formData.serviceFee || 0}</span>
+                    </div>
+                    <div className="flex justify-between py-1">
+                      <span className="text-slate-500">মোট খরচ:</span>
+                      <span className="font-black text-emerald-800">৳{Number(formData.govtFee || 0) + Number(formData.serviceFee || 0)}</span>
+                    </div>
+                  </div>
+
+                  {/* Teletalk SMS format preview */}
+                  {formData.smsPrefix && (
+                    <div className="p-3 bg-emerald-50 rounded-xl border border-emerald-200 text-xs text-emerald-900 space-y-1">
+                      <span className="font-bold block">টেলিটক SMS ফরম্যাট:</span>
+                      <code className="bg-white px-2 py-1 rounded border border-emerald-300 font-mono font-bold block text-center">
+                        {formData.smsPrefix} &lt;space&gt; USERID send to 16222
+                      </code>
+                    </div>
+                  )}
+
+                  {/* FAQs preview */}
+                  {formData.faqItems && formData.faqItems.length > 0 && (
+                    <div className="space-y-2 pt-2 border-t border-slate-100">
+                      <span className="text-xs font-bold text-slate-700 block">
+                        সাধারণ জিজ্ঞাসা ({formData.faqItems.length}টি FAQ)
+                      </span>
+                      <div className="space-y-1.5">
+                        {formData.faqItems.slice(0, 2).map((faq, idx) => (
+                          <div key={idx} className="p-2.5 rounded-lg bg-slate-50 text-[11px] space-y-0.5 border border-slate-100">
+                            <span className="font-bold text-slate-900 block">Q: {faq.question}</span>
+                            <p className="text-slate-600 line-clamp-2">A: {faq.answer}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
 
         {/* ============================================================== */}
         {/* 4. BOTTOM FOOTER STATUS BAR */}

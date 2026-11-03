@@ -298,6 +298,16 @@ function AdminContent() {
   // Edit Job Modal & Circulars Table States
   const [editingJob, setEditingJob] = useState<JobCircular | null>(null);
   const [isCreatingNewJob, setIsCreatingNewJob] = useState(false);
+
+  const handleOpenCreateJob = () => {
+    setEditingJob(null);
+    setIsCreatingNewJob(true);
+  };
+
+  const handleOpenEditJob = (job: JobCircular) => {
+    setEditingJob({ ...job });
+    setIsCreatingNewJob(false);
+  };
   const [contentStudioDraftId, setContentStudioDraftId] = useState<string>('');
   const [isUpdatingJob, setIsUpdatingJob] = useState(false);
   const [jobSearchQuery, setJobSearchQuery] = useState('');
@@ -1927,20 +1937,13 @@ function AdminContent() {
               </button>
 
                     <button
-                      type="button"
-                      onClick={() => setIsCreatingNewJob(true)}
-                      className="px-4 py-2 bg-gradient-to-r from-teal-700 to-emerald-700 hover:from-teal-800 hover:to-emerald-800 text-white rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shadow-sm"
-                    >
-                      <Sparkles className="w-4 h-4" />
-                      <span>ইউনিভার্সাল এডিটরে নতুন সার্কুলার</span>
-                    </button>
-              <button
                 type="button"
-                onClick={() => { setActiveTab('circulars'); setEditingJob(null); setIsCreatingNewJob(true); }}
-                className="px-3.5 py-2 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold transition-all shadow-sm flex items-center gap-1.5"
+                onClick={handleOpenCreateJob}
+                className="px-4 py-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
+                title="নতুন নিয়োগ বিজ্ঞপ্তি তৈরি করুন"
               >
-                <PlusCircle className="w-3.5 h-3.5" />
-                <span>নতুন সার্কুলার পোস্ট</span>
+                <PlusCircle className="w-4 h-4" />
+                <span>+ নতুন সার্কুলার যোগ করুন</span>
               </button>
             </div>
           </div>
@@ -4816,7 +4819,7 @@ function AdminContent() {
                   <div className="flex flex-wrap items-center gap-2.5">
                     <button
                       type="button"
-                      onClick={() => { setActiveTab('circulars'); setEditingJob(null); setIsCreatingNewJob(true); }}
+                      onClick={handleOpenCreateJob}
                       className="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shadow-sm shadow-emerald-900/10"
                     >
                       <PlusCircle className="w-4 h-4" />
@@ -5075,7 +5078,7 @@ function AdminContent() {
                                   {/* Edit Button */}
                                   <button
                                     type="button"
-                                    onClick={() => setEditingJob({ ...job })}
+                                    onClick={() => handleOpenEditJob(job)}
                                     className="px-3.5 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 rounded-xl text-xs sm:text-sm font-bold transition-all border border-emerald-200/80 inline-flex items-center gap-1.5 cursor-pointer shadow-2xs"
                                     title="বিজ্ঞপ্তির তথ্য এডিট করুন"
                                   >
@@ -5122,34 +5125,7 @@ function AdminContent() {
                 </div>
               </div>
 
-                            {/* Universal Job Workspace (Phase 02 Comprehensive 11-Tab Workspace) */}
-              <UniversalJobWorkspace
-                job={editingJob}
-                isOpen={!!editingJob || isCreatingNewJob}
-                isNew={isCreatingNewJob}
-                onClose={() => {
-                  setEditingJob(null);
-                  setIsCreatingNewJob(false);
-                }}
-                onSaveSuccess={(savedJob) => {
-                  setJobs(prev => {
-                    const exists = prev.some(j => j.id === savedJob.id);
-                    if (exists) {
-                      return prev.map(j => j.id === savedJob.id ? savedJob : j);
-                    }
-                    return [savedJob, ...prev];
-                  });
-                  setEditingJob(null);
-                  setIsCreatingNewJob(false);
-                }}
-                onDelete={(id, title) => handleDeleteJob(id, title)}
-                onOpenContentStudio={(id) => {
-                  setEditingJob(null);
-                  setIsCreatingNewJob(false);
-                  setContentStudioDraftId(id);
-                  setActiveTab('content-studio');
-                }}
-              />
+              
             </div>
           )}
 
@@ -6918,6 +6894,35 @@ function AdminContent() {
           </div>
         </div>
       )}
+                {/* Universal Job Workspace (Unified Creator & Editor for All Tabs) */}
+        <UniversalJobWorkspace
+          job={editingJob}
+          isOpen={!!editingJob || isCreatingNewJob}
+          isNew={isCreatingNewJob}
+          onClose={() => {
+            setEditingJob(null);
+            setIsCreatingNewJob(false);
+          }}
+          onSaveSuccess={(savedJob) => {
+            setJobs(prev => {
+              const exists = prev.some(j => j.id === savedJob.id);
+              if (exists) {
+                return prev.map(j => j.id === savedJob.id ? savedJob : j);
+              }
+              return [savedJob, ...prev];
+            });
+            setEditingJob(null);
+            setIsCreatingNewJob(false);
+          }}
+          onDelete={(id, title) => handleDeleteJob(id, title)}
+          onOpenContentStudio={(id) => {
+            setEditingJob(null);
+            setIsCreatingNewJob(false);
+            setContentStudioDraftId(id);
+            setActiveTab('content-studio');
+          }}
+        />
+
         <AdminGlobalSearchModal
           isOpen={isGlobalSearchOpen}
           onClose={() => setIsGlobalSearchOpen(false)}

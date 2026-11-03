@@ -9,7 +9,10 @@
     "lint": "next lint",
     "brain": "node ai-brain/cli.js",
     "brain:worker": "node ai-brain/worker.js",
-    "brain:test": "node ai-brain/cli.js test"
+    "brain:test": "node ai-brain/cli.js test",
+    "typecheck": "tsc --noEmit",
+    "validate": "tsc --noEmit && next lint",
+    "test:browser": "node scripts/browser_verify.js"
   },
   "dependencies": {
     "lucide-react": "^0.453.0",

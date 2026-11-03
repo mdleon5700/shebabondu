@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "shebabondu-repo": {
+      "type": "sse",
+      "url": "https://gitmcp.io/mdleon5700/shebabondu/sse",
+      "serverUrl": "https://gitmcp.io/mdleon5700/shebabondu/sse"
+    }
+  }
+}
+

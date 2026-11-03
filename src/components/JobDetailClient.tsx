@@ -181,9 +181,19 @@ export default function JobDetailClient({ job }: { job: JobCircular }) {
     }
   }, [activeNoticePage]);
 
+  const officialPdfUrl = useMemo(() => {
+    if (job.circularPdfUrl) return job.circularPdfUrl;
+    if (job.circularImage && (job.circularImage.toLowerCase().endsWith('.pdf') || job.circularImage.includes('.pdf?'))) {
+      return job.circularImage;
+    }
+    return `/api/jobs/${job.id}/download`;
+  }, [job]);
+
   const noticePages = useMemo(() => {
     if (job.circularPages && job.circularPages.length > 0) return job.circularPages;
-    if (job.circularImage && !job.circularImage.includes('unsplash.com')) return [job.circularImage];
+    if (job.circularImage && !job.circularImage.includes('unsplash.com') && !job.circularImage.toLowerCase().endsWith('.pdf') && !job.circularImage.includes('.pdf?')) {
+      return [job.circularImage];
+    }
     return [
       `/api/circulars/${job.id}/page-1.svg`,
       `/api/circulars/${job.id}/page-2.svg`
@@ -1420,7 +1430,7 @@ export default function JobDetailClient({ job }: { job: JobCircular }) {
 
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full sm:w-auto">
             <a
-              href={`/api/jobs/${job.id}/download`}
+              href={officialPdfUrl}
               target="_blank"
               rel="noopener noreferrer"
               download={`${job.organization || 'ChakriSheba'}-Circular.pdf`}
@@ -1589,6 +1599,12 @@ export default function JobDetailClient({ job }: { job: JobCircular }) {
               <img
                 src={noticePages[activeNoticePage]}
                 alt={`${job.organization} নিয়োগ বিজ্ঞপ্তি ২০২৬ অফিসিয়াল মূল সার্কুলার গেজেট নোটিশ - পৃষ্ঠা ${toBn(activeNoticePage + 1)}`}
+                onError={(e) => {
+                  const target = e.currentTarget;
+                  if (!target.src.includes('/api/circulars/')) {
+                    target.src = `/api/circulars/${job.id}/page-1.svg`;
+                  }
+                }}
                 title={`${job.organization} সার্কুলার গেজেট কপি - পৃষ্ঠা ${toBn(activeNoticePage + 1)} (ক্লিক করে বড় করুন)`}
                 loading="eager"
                 className="w-full max-w-4xl h-auto shadow-md rounded-lg border border-slate-200/80 cursor-zoom-in block"
@@ -1619,7 +1635,7 @@ export default function JobDetailClient({ job }: { job: JobCircular }) {
 
             <div className="flex items-center gap-2">
               <a
-                href={`/api/jobs/${job.id}/download`}
+                href={officialPdfUrl}
                 download={`${job.organization || 'ChakriSheba'}-Circular.pdf`}
                 className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all whitespace-nowrap"
                 title="PDF ডাউনলোড"
@@ -1672,6 +1688,12 @@ export default function JobDetailClient({ job }: { job: JobCircular }) {
               <img
                 src={noticePages[activeNoticePage]}
                 alt={`${job.organization} সার্কুলার পূর্ণাঙ্গ কপি`}
+                onError={(e) => {
+                  const target = e.currentTarget;
+                  if (!target.src.includes('/api/circulars/')) {
+                    target.src = `/api/circulars/${job.id}/page-1.svg`;
+                  }
+                }}
                 className="w-full h-auto object-contain shadow-2xl rounded-xl border border-white/10 block pointer-events-none select-none"
                 draggable={false}
               />

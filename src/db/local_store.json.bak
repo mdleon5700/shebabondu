@@ -9679,6 +9679,51 @@
     {
       "query": "",
       "filters": {
+        "category": "teacher-jobs"
+      },
+      "resultsCount": 2,
+      "id": "SEV-1793739784787-P48X",
+      "timestamp": "2026-11-03T21:03:04.788Z"
+    },
+    {
+      "query": "",
+      "filters": {
+        "category": "bank-jobs"
+      },
+      "resultsCount": 2,
+      "id": "SEV-1793739782460-2T3D",
+      "timestamp": "2026-11-03T21:03:02.460Z"
+    },
+    {
+      "query": "",
+      "filters": {
+        "category": "bcs"
+      },
+      "resultsCount": 0,
+      "id": "SEV-1793739781184-87RD",
+      "timestamp": "2026-11-03T21:03:01.184Z"
+    },
+    {
+      "query": "",
+      "filters": {
+        "category": "bcs"
+      },
+      "resultsCount": 0,
+      "id": "SEV-1793739050956-7PI7",
+      "timestamp": "2026-11-03T20:50:50.957Z"
+    },
+    {
+      "query": "",
+      "filters": {
+        "category": "teacher-jobs"
+      },
+      "resultsCount": 2,
+      "id": "SEV-1793727670107-6LCG",
+      "timestamp": "2026-11-03T17:41:10.107Z"
+    },
+    {
+      "query": "",
+      "filters": {
         "category": "bank-jobs"
       },
       "resultsCount": 2,

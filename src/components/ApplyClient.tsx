@@ -680,7 +680,8 @@ function ApplyFormContent({ initialJob }: ApplyClientProps) {
             <div className="flex flex-wrap items-center gap-6 p-4 bg-slate-50 rounded-2xl border border-slate-200/80">
               <div className="flex items-center gap-3">
                 <img
-                  src={userProfile?.photoUrl || userProfile?.documents?.find((d: any) => d.type === "photo")?.dataUrl || emptyCandidateProfile.photoUrl}
+                  src={(userProfile?.photoUrl && !userProfile.photoUrl.includes('/apply/')) ? userProfile.photoUrl : (userProfile?.documents?.find((d: any) => d.type === "photo")?.dataUrl || emptyCandidateProfile.photoUrl)}
+                  onError={(e) => { (e.currentTarget as any).src = emptyCandidateProfile.photoUrl; }}
                   alt="Candidate Photo"
                   className="w-16 h-16 object-cover rounded-xl border border-slate-300 bg-white"
                 />
@@ -694,7 +695,8 @@ function ApplyFormContent({ initialJob }: ApplyClientProps) {
 
               <div className="flex items-center gap-3 pl-0 sm:pl-6 sm:border-l border-slate-200">
                 <img
-                  src={userProfile?.signatureUrl || userProfile?.documents?.find((d: any) => d.type === "signature")?.dataUrl || emptyCandidateProfile.signatureUrl}
+                  src={(userProfile?.signatureUrl && !userProfile.signatureUrl.includes('/apply/')) ? userProfile.signatureUrl : (userProfile?.documents?.find((d: any) => d.type === "signature")?.dataUrl || emptyCandidateProfile.signatureUrl)}
+                  onError={(e) => { (e.currentTarget as any).src = emptyCandidateProfile.signatureUrl; }}
                   alt="Candidate Signature"
                   className="w-24 h-10 object-cover border border-slate-300 rounded bg-white"
                 />

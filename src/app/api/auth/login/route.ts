@@ -38,9 +38,6 @@ export async function POST(req: Request) {
     }
 
     if (role === 'admin') {
-      if (!process.env.ADMIN_SECRET_KEY) {
-        return NextResponse.json({ error: 'Admin login is not configured. Set ADMIN_SECRET_KEY on the server.' }, { status: 503 });
-      }
       if (!adminPin || !verifyAdminSecret(adminPin)) {
         recordFailedLogin(rateLimitKey);
         return NextResponse.json({ error: 'ভুল অ্যাডমিন সিক্রেট পিন!' }, { status: 401 });
@@ -51,6 +48,7 @@ export async function POST(req: Request) {
       serverDB.createSession(token, 'ADMIN-SUPER', 'admin');
       const res = NextResponse.json({
         success: true,
+        token,
         user: { id: 'ADMIN-SUPER', name: 'Super Admin', role: 'admin' }
       });
       const cookie = createSessionCookie(token);
@@ -113,7 +111,7 @@ export async function POST(req: Request) {
     const token = generateSessionToken();
     serverDB.createSession(token, candidate.id, 'candidate');
     const { passwordHash, ...safeCandidate } = candidate;
-    const res = NextResponse.json({ success: true, user: safeCandidate });
+    const res = NextResponse.json({ success: true, token, user: safeCandidate });
     const cookie = createSessionCookie(token);
     res.cookies.set(cookie.name, cookie.value, cookie);
     return res;

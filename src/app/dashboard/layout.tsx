@@ -97,21 +97,42 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   useEffect(() => {
     setIsMounted(true);
-    setSessionChecked(false);
+
+    // 1. Synchronously restore from client storage (zero flickering & no unwanted logouts)
+    const currentAuth = storage.getAuth();
+    if (currentAuth.isLoggedIn && currentAuth.role === 'candidate') {
+      const cachedUser = storage.getUser();
+      setProfile(cachedUser);
+      setCompletion(storage.calculateProfileCompletion(cachedUser));
+      setSessionChecked(true);
+    }
+
+    // 2. Background sync with backend (does NOT wipe localStorage on transient fetch error)
     fetch('/api/auth/me', { cache: 'no-store' })
       .then(async res => {
-        if (!res.ok) throw new Error('Session expired');
+        if (!res.ok) {
+          // If server explicitly returns 401 and there is no active local login, redirect
+          if (res.status === 401 && !storage.getAuth().isLoggedIn) {
+            router.replace('/login?redirect=' + encodeURIComponent(pathname));
+          }
+          return;
+        }
         const data = await res.json();
-        if (!data.isLoggedIn || data.role !== 'candidate') throw new Error('Candidate login required');
-        storage.setAuth({ isLoggedIn: true, role: 'candidate', userId: data.user.id, name: data.user.name, phone: data.user.phone });
-        storage.updateUser(data.user);
-        setProfile(data.user);
-        setCompletion(storage.calculateProfileCompletion(data.user));
+        if (data.isLoggedIn && data.role === 'candidate') {
+          storage.setAuth({ isLoggedIn: true, role: 'candidate', userId: data.user.id, name: data.user.name, phone: data.user.phone });
+          storage.updateUser(data.user);
+          setProfile(data.user);
+          setCompletion(storage.calculateProfileCompletion(data.user));
+        } else if (!storage.getAuth().isLoggedIn) {
+          router.replace('/login?redirect=' + encodeURIComponent(pathname));
+        }
       })
-      .catch(() => {
-        storage.logout();
-        router.replace('/login?redirect=' + encodeURIComponent(pathname));
-      }).finally(() => setSessionChecked(true));
+      .catch((err) => {
+        console.warn('Dashboard session background sync warning:', err);
+      })
+      .finally(() => {
+        setSessionChecked(true);
+      });
 
     const handleUserChange = () => {
       const u = storage.getUser();
@@ -121,7 +142,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
     window.addEventListener('cs_user_changed', handleUserChange);
     return () => window.removeEventListener('cs_user_changed', handleUserChange);
-  }, [pathname, router]);
+  }, [router]);
 
   const handleLogout = async () => {
     try {

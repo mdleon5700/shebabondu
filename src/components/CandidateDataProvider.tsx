@@ -44,8 +44,12 @@ export function CandidateDataProvider({ children }: { children: React.ReactNode 
       setDocuments(docs.documents || []);
     } catch {
       if (current === generation.current) {
-        setProfile(null);
-        setDocuments([]);
+        // Fallback to cached profile instead of wiping to empty!
+        const auth = storage.getAuth();
+        if (auth.isLoggedIn && auth.role === 'candidate') {
+          setProfile(storage.getUser());
+          setDocuments(storage.getDocuments());
+        }
       }
     } finally {
       if (current === generation.current) setLoading(false);

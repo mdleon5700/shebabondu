@@ -1609,6 +1609,14 @@ function AdminContent() {
           ]
         },
         { 
+          id: 'gemini-browser-spider', 
+          label: 'জেমিনি স্পাইডার ও স্ক্র্যাপার', 
+          icon: Sparkles, 
+          badge: 'AI LIVE',
+          badgeColor: 'bg-purple-600 text-white',
+          keywords: ['gemini', 'spider', 'জেমিনি', 'স্পাইডার', 'স্ক্র্যাপার', 'alljobs', 'টেলিটক', 'ai'],
+        },
+        { 
           id: 'candidate-directory', 
           label: 'প্রার্থী ও প্রতিষ্ঠান হাব', 
           icon: Users, 
@@ -1706,7 +1714,7 @@ function AdminContent() {
       
       'deadline-alert-manager': 'circulars',
       'create-circular': 'circulars',
-      'gemini-browser-spider': 'circulars',
+      'gemini-browser-spider': 'gemini-browser-spider',
       
       'invoices': 'transactions',
       'service-fees': 'transactions',
@@ -1898,6 +1906,16 @@ function AdminContent() {
               className="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors"
             >
               <RefreshCw className={'w-4 h-4 ' + (isLoading ? 'animate-spin text-emerald-400' : '')} />
+            </button>
+
+            <button
+              type="button"
+              onClick={() => handleTabChange('gemini-browser-spider')}
+              className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gradient-to-r from-purple-700 to-indigo-700 hover:from-purple-800 hover:to-indigo-800 text-xs font-bold text-white transition-all shadow-sm cursor-pointer"
+              title="জেমিনি ব্রাউজার স্পাইডার হাব খুলুন"
+            >
+              <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+              <span>জেমিনি স্পাইডার</span>
             </button>
 
             <Link

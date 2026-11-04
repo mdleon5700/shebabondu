@@ -418,6 +418,7 @@ export interface JobCircular {
   applicationStartDate?: string;
   applicationMethod?: string;
   applicationInstructions?: string;
+  selectionProcess?: string;
   experienceYears?: string;
   skills?: string[];
   canonicalUrl?: string;

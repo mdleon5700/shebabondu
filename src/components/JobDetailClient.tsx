@@ -255,13 +255,47 @@ export default function JobDetailClient({ job }: { job: JobCircular }) {
     return String(num).replace(/\d/g, (d) => bnNums[parseInt(d, 10)]);
   };
 
+  // Safe Date parser for Bengali/English cutoff dates
+  const parseCutoffDate = (dateStr?: string): Date => {
+    if (!dateStr) return new Date(2026, 11, 31);
+    try {
+      const d = new Date(dateStr);
+      if (!isNaN(d.getTime())) return d;
+    } catch {}
+
+    const normalized = dateStr.replace(/[০-৯]/g, d => '0123456789'['০১২৩৪৫৬৭৮৯'.indexOf(d)]);
+    const bnMonths = ['জানুয়ারি', 'ফেব্রুয়ারি', 'মার্চ', 'এপ্রিল', 'মে', 'জুন', 'জুলাই', 'আগস্ট', 'সেপ্টেম্বর', 'অক্টোবর', 'নভেম্বর', 'ডিসেম্বর'];
+    const enMonths = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
+    
+    const tokens = normalized.split(/\s+/);
+    let day = 1;
+    let month = 11;
+    let year = 2026;
+
+    for (const token of tokens) {
+      const num = parseInt(token, 10);
+      if (!isNaN(num)) {
+        if (num > 1900 && num < 2100) year = num;
+        else if (num >= 1 && num <= 31) day = num;
+      } else {
+        const mIdx = bnMonths.findIndex(m => token.includes(m));
+        if (mIdx !== -1) month = mIdx;
+        else {
+          const enIdx = enMonths.findIndex(m => token.toLowerCase().includes(m));
+          if (enIdx !== -1) month = enIdx;
+        }
+      }
+    }
+    return new Date(year, month, day);
+  };
+
   // Calculate Age dynamically
   const ageResult = useMemo(() => {
     const d = parseInt(birthDay, 10) || 1;
     const m = parseInt(birthMonth, 10) - 1 || 0;
     const y = parseInt(birthYear, 10) || 1998;
     
-    const targetDate = new Date(2026, 9, 28);
+    const targetDate = parseCutoffDate(job.ageCutOffDate || job.deadline);
     const birthDate = new Date(y, m, d);
 
     if (isNaN(birthDate.getTime()) || birthDate > targetDate) {
@@ -296,7 +330,7 @@ export default function JobDetailClient({ job }: { job: JobCircular }) {
       minAllowedAge,
       maxAllowedAge
     };
-  }, [birthDay, birthMonth, birthYear, selectedQuota, job.minAge, job.maxAge]);
+  }, [birthDay, birthMonth, birthYear, selectedQuota, job.minAge, job.maxAge, job.ageCutOffDate, job.deadline]);
 
   const teletalkCode = job.smsPrefix || (job.id.includes('teletalk') ? job.id.split('-')[2]?.toUpperCase() : job.id.split('-')[0].toUpperCase());
 
@@ -345,10 +379,10 @@ export default function JobDetailClient({ job }: { job: JobCircular }) {
     );
   };
   const toggleAllRules = () => {
-    if (openRulesIndices.length === 5) {
+    if (openRulesIndices.length >= 5) {
       setOpenRulesIndices([]);
     } else {
-      setOpenRulesIndices([0, 1, 2, 3, 4]);
+      setOpenRulesIndices([0, 1, 2, 3, 4, 5, 6]);
     }
   };
 
@@ -1188,7 +1222,7 @@ export default function JobDetailClient({ job }: { job: JobCircular }) {
                     <div className="flex items-start gap-2">
                       <AlertCircle className="w-4 h-4 text-amber-700 mt-0.5 flex-shrink-0" />
                       <span className="font-semibold text-slate-900 leading-relaxed">
-                        <strong>বয়স নির্ধারণের তারিখ:</strong> প্রার্থীর বয়স ২৬ অক্টোবর ২০২৬ তারিখের হিসেবে ন্যূনতম <strong>{toBn(job.minAge)} বছর</strong> এবং সর্বোচ্চ <strong>{toBn(job.maxAge)} বছর</strong> হতে হবে।
+                        <strong>বয়স নির্ধারণের তারিখ:</strong> প্রার্থীর বয়স <strong>{job.ageCutOffDate || job.deadline || "বিজ্ঞপ্তি অনুযায়ী"}</strong> তারিখের হিসেবে ন্যূনতম <strong>{toBn(job.minAge)} বছর</strong> এবং সর্বোচ্চ <strong>{toBn(job.maxAge)} বছর</strong> হতে হবে।
                       </span>
                     </div>
                     <div className="flex items-start gap-2">
@@ -1203,6 +1237,98 @@ export default function JobDetailClient({ job }: { job: JobCircular }) {
                         বয়স প্রমাণের ক্ষেত্রে কেবল এসএসসি বা সমমানের পরীক্ষার সনদপত্র বিবেচিত হবে। কোনো এফিডেভিট (Affidavit) গ্রহণযোগ্য নয়।
                       </span>
                     </div>
+
+                    {/* Interactive Live Age Calculator Widget */}
+                    <div className="mt-4 p-4 sm:p-5 bg-white rounded-2xl border border-amber-200/90 shadow-sm space-y-4">
+                      <div className="flex items-center justify-between flex-wrap gap-2">
+                        <span className="font-bold text-slate-900 text-sm flex items-center gap-2">
+                          <span>🧮</span>
+                          <span>আপনার বয়স ও যোগ্যতা যাচাই করুন (Live Age Checker)</span>
+                        </span>
+                        <span className="text-xs text-amber-800 bg-amber-100 font-semibold px-2.5 py-1 rounded-full">
+                          কাট-অফ তারিখ: {job.ageCutOffDate || job.deadline}
+                        </span>
+                      </div>
+
+                      <div className="grid grid-cols-3 sm:grid-cols-4 gap-2.5 text-xs">
+                        <div>
+                          <label className="text-slate-600 font-medium block mb-1">দিন</label>
+                          <select 
+                            value={birthDay} 
+                            onChange={e => setBirthDay(e.target.value)}
+                            className="w-full bg-slate-50 border border-slate-300 rounded-xl p-2 text-slate-900 font-semibold text-sm focus:ring-2 focus:ring-emerald-500 outline-none"
+                          >
+                            {Array.from({ length: 31 }, (_, i) => i + 1).map(d => (
+                              <option key={d} value={d}>{toBn(d)}</option>
+                            ))}
+                          </select>
+                        </div>
+
+                        <div>
+                          <label className="text-slate-600 font-medium block mb-1">মাস</label>
+                          <select 
+                            value={birthMonth} 
+                            onChange={e => setBirthMonth(e.target.value)}
+                            className="w-full bg-slate-50 border border-slate-300 rounded-xl p-2 text-slate-900 font-semibold text-sm focus:ring-2 focus:ring-emerald-500 outline-none"
+                          >
+                            {['জানুয়ারি', 'ফেব্রুয়ারি', 'মার্চ', 'এপ্রিল', 'মে', 'জুন', 'জুলাই', 'আগস্ট', 'সেপ্টেম্বর', 'অক্টোবর', 'নভেম্বর', 'ডিসেম্বর'].map((m, idx) => (
+                              <option key={idx + 1} value={idx + 1}>{m}</option>
+                            ))}
+                          </select>
+                        </div>
+
+                        <div>
+                          <label className="text-slate-600 font-medium block mb-1">জন্ম সাল</label>
+                          <select 
+                            value={birthYear} 
+                            onChange={e => setBirthYear(e.target.value)}
+                            className="w-full bg-slate-50 border border-slate-300 rounded-xl p-2 text-slate-900 font-semibold text-sm focus:ring-2 focus:ring-emerald-500 outline-none"
+                          >
+                            {Array.from({ length: 35 }, (_, i) => 2012 - i).map(y => (
+                              <option key={y} value={y}>{toBn(y)}</option>
+                            ))}
+                          </select>
+                        </div>
+
+                        <div className="col-span-3 sm:col-span-1">
+                          <label className="text-slate-600 font-medium block mb-1">কোটা</label>
+                          <select 
+                            value={selectedQuota} 
+                            onChange={e => setSelectedQuota(e.target.value as any)}
+                            className="w-full bg-slate-50 border border-slate-300 rounded-xl p-2 text-slate-900 font-semibold text-sm focus:ring-2 focus:ring-emerald-500 outline-none"
+                          >
+                            <option value="general">সাধারণ (১৮-৩০ বছর)</option>
+                            <option value="freedom_fighter">মুক্তিযোদ্ধা (৩২ বছর)</option>
+                            <option value="disabled">প্রতিবন্ধী (৩২ বছর)</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      {/* Result Banner */}
+                      {ageResult.valid ? (
+                        <div className={`p-3.5 rounded-xl border flex items-center justify-between flex-wrap gap-2 text-xs sm:text-sm font-semibold ${
+                          ageResult.isEligible 
+                            ? 'bg-emerald-50 border-emerald-300 text-emerald-900' 
+                            : 'bg-rose-50 border-rose-300 text-rose-900'
+                        }`}>
+                          <div className="space-y-0.5">
+                            <div>
+                              আপনার বয়স: <strong className="text-slate-950 font-black">{toBn(ageResult.years)} বছর {toBn(ageResult.months)} মাস {toBn(ageResult.days)} দিন</strong>
+                            </div>
+                            <div className="text-xs font-normal">
+                              {ageResult.isEligible 
+                                ? '🎉 অভিনন্দন! আপনি নির্ধারিত বয়সসীমার মধ্যে আছেন এবং আবেদনের সম্পূর্ণ যোগ্য।' 
+                                : `⚠️ দুঃখিত! নির্ধারিত বয়সসীমার (${toBn(ageResult.minAllowedAge)}-${toBn(ageResult.maxAllowedAge)} বছর) সাথে মিলছে না।`}
+                            </div>
+                          </div>
+                          <span className={`px-3 py-1 rounded-full text-xs font-bold ${
+                            ageResult.isEligible ? 'bg-emerald-600 text-white' : 'bg-rose-600 text-white'
+                          }`}>
+                            {ageResult.isEligible ? 'আবেদনের যোগ্য' : 'অযোগ্য'}
+                          </span>
+                        </div>
+                      ) : null}
+                    </div>
                   </div>
                 </div>
               )
@@ -1216,40 +1342,49 @@ export default function JobDetailClient({ job }: { job: JobCircular }) {
                     লিখিত পরীক্ষায় উত্তীর্ণ প্রার্থীদের মৌখিক (ভাইভা) পরীক্ষার সময় নিচের মূল সনদপত্রসমূহের মূলকপি এবং ১ সেট সত্যায়িত ফটোকপি প্রদর্শন করতে হবে:
                   </p>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs text-slate-800">
-                    <div className="p-3 bg-slate-50 rounded-xl border border-slate-200/70 flex items-start gap-2">
-                      <span className="w-5 h-5 rounded-full bg-emerald-600 text-white text-xs flex items-center justify-center font-bold flex-shrink-0 mt-0.5">১</span>
-                      <span>সকল শিক্ষাগত যোগ্যতার মূল সনদপত্র ও একাডেমিক মার্কশিট</span>
-                    </div>
-                    <div className="p-3 bg-slate-50 rounded-xl border border-slate-200/70 flex items-start gap-2">
-                      <span className="w-5 h-5 rounded-full bg-emerald-600 text-white text-xs flex items-center justify-center font-bold flex-shrink-0 mt-0.5">২</span>
-                      <span>সংশ্লিষ্ট ইউনিয়ন পরিষদ চেয়ারম্যান / পৌর মেয়র / কাউন্সিলর কর্তৃক নাগরিকত্ব সনদ</span>
-                    </div>
-                    <div className="p-3 bg-slate-50 rounded-xl border border-slate-200/70 flex items-start gap-2">
-                      <span className="w-5 h-5 rounded-full bg-emerald-600 text-white text-xs flex items-center justify-center font-bold flex-shrink-0 mt-0.5">৩</span>
-                      <span>চারিত্রিক সনদপত্র (সর্বশেষ শিক্ষা প্রতিষ্ঠানের প্রধান কর্তৃক প্রদত্ত)</span>
-                    </div>
-                    <div className="p-3 bg-slate-50 rounded-xl border border-slate-200/70 flex items-start gap-2">
-                      <span className="w-5 h-5 rounded-full bg-emerald-600 text-white text-xs flex items-center justify-center font-bold flex-shrink-0 mt-0.5">৪</span>
-                      <span>জাতীয় পরিচয়পত্র (NID) অথবা অনলাইন জন্ম নিবন্ধন সনদের মূল কপি</span>
-                    </div>
-                    <div className="p-3 bg-slate-50 rounded-xl border border-slate-200/70 flex items-start gap-2">
-                      <span className="w-5 h-5 rounded-full bg-emerald-600 text-white text-xs flex items-center justify-center font-bold flex-shrink-0 mt-0.5">৫</span>
-                      <span>১ম শ্রেণির গেজেটেড কর্মকর্তা কর্তৃক সত্যায়িত ৩ কপি পাসপোর্ট সাইজ ছবি</span>
-                    </div>
-                    <div className="p-3 bg-slate-50 rounded-xl border border-slate-200/70 flex items-start gap-2">
-                      <span className="w-5 h-5 rounded-full bg-emerald-600 text-white text-xs flex items-center justify-center font-bold flex-shrink-0 mt-0.5">৬</span>
-                      <span>কোটাধারীদের ক্ষেত্রে যথাযথ মন্ত্রণালয় বা কর্তৃপক্ষের স্বাক্ষরিত মূল প্রত্যয়নপত্র</span>
-                    </div>
-                    <div className="p-3 bg-slate-50 rounded-xl border border-slate-200/70 flex items-start gap-2 sm:col-span-2">
-                      <span className="w-5 h-5 rounded-full bg-emerald-600 text-white text-xs flex items-center justify-center font-bold flex-shrink-0 mt-0.5">৭</span>
-                      <span>সরকারি/আধা-সরকারি/স্বায়ত্তশাসিত সংস্থায় চাকরিরত প্রার্থীদের নিয়োগকারী কর্তৃপক্ষের অনাপত্তিপত্র (NOC)</span>
-                    </div>
+                    {(job.documentsRequired && job.documentsRequired.length > 0 ? job.documentsRequired : [
+                      'সকল শিক্ষাগত যোগ্যতার মূল সনদপত্র ও একাডেমিক মার্কশিটের মূলকপি ও ১ সেট সত্যায়িত ফটোকপি',
+                      'সংশ্লিষ্ট ইউনিয়ন পরিষদ চেয়ারম্যান / পৌর মেয়র / কাউন্সিলর কর্তৃক নাগরিকত্ব সনদ',
+                      'চারিত্রিক সনদপত্র (সর্বশেষ শিক্ষা প্রতিষ্ঠানের প্রধান কর্তৃক প্রদত্ত)',
+                      'জাতীয় পরিচয়পত্র (NID) অথবা অনলাইন জন্ম নিবন্ধন সনদের মূল কপি',
+                      '১ম শ্রেণির গেজেটেড কর্মকর্তা কর্তৃক সত্যায়িত ৩ কপি পাসপোর্ট সাইজ ছবি',
+                      'কোটাধারীদের ক্ষেত্রে যথাযথ মন্ত্রণালয় বা কর্তৃপক্ষের স্বাক্ষরিত মূল প্রত্যয়নপত্র',
+                      'সরকারি/আধা-সরকারি/স্বায়ত্তশাসিত সংস্থায় চাকরিরত প্রার্থীদের নিয়োগকারী কর্তৃপক্ষের অনাপত্তিপত্র (NOC)'
+                    ]).map((docItem: string, dIdx: number) => (
+                      <div key={dIdx} className={`p-3 bg-slate-50 rounded-xl border border-slate-200/70 flex items-start gap-2 ${dIdx === 6 ? 'sm:col-span-2' : ''}`}>
+                        <span className="w-5 h-5 rounded-full bg-emerald-600 text-white text-xs flex items-center justify-center font-bold flex-shrink-0 mt-0.5">{toBn(dIdx + 1)}</span>
+                        <span>{docItem}</span>
+                      </div>
+                    ))}
                   </div>
                 </div>
               )
             },
-            {
+            ...(job.applicationInstructions ? [{
               id: 4,
+              title: '৫. টেলিটক অনলাইন আবেদন ও এসএমএস নির্দেশিকা',
+              content: (
+                <div className="pt-1">
+                  <div className="bg-blue-50/70 border border-blue-200/80 rounded-2xl p-4 sm:p-5 space-y-2.5 text-sm text-slate-800 whitespace-pre-line leading-relaxed font-normal">
+                    {job.applicationInstructions}
+                  </div>
+                </div>
+              )
+            }] : []),
+            ...(job.selectionProcess ? [{
+              id: 5,
+              title: '৬. পরীক্ষা পদ্ধতি ও মানবন্টন নির্দেশিকা',
+              content: (
+                <div className="pt-1">
+                  <div className="bg-emerald-50/70 border border-emerald-200/80 rounded-2xl p-4 sm:p-5 text-sm text-slate-800 leading-relaxed">
+                    <p className="font-semibold text-emerald-950 mb-1">🏛️ নিয়োগ পরীক্ষা ও মানবন্টন বিবরণ:</p>
+                    <p>{job.selectionProcess}</p>
+                  </div>
+                </div>
+              )
+            }] : []),
+            {
+              id: 6,
               title: '৫. কর্তৃপক্ষের আইনি সতর্কবার্তা ও সাধারণ শর্তাবলী',
               content: (
                 <div className="pt-1">

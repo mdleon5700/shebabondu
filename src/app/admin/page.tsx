@@ -335,6 +335,74 @@ function AdminContent() {
   const [newPosSalary, setNewPosSalary] = useState('');
   const [newPosEdu, setNewPosEdu] = useState('');
 
+  const [selectedJobIds, setSelectedJobIds] = useState<string[]>([]);
+  const [isBulkDeletingJobs, setIsBulkDeletingJobs] = useState<boolean>(false);
+
+  const handleToggleSelectJob = (jobId: string) => {
+    setSelectedJobIds(prev => 
+      prev.includes(jobId) ? prev.filter(id => id !== jobId) : [...prev, jobId]
+    );
+  };
+
+  const handleToggleSelectAllJobs = (targetJobs: JobCircular[]) => {
+    const targetIds = targetJobs.map(j => j.id);
+    const allSelected = targetIds.length > 0 && targetIds.every(id => selectedJobIds.includes(id));
+    if (allSelected) {
+      setSelectedJobIds(prev => prev.filter(id => !targetIds.includes(id)));
+    } else {
+      setSelectedJobIds(prev => Array.from(new Set([...prev, ...targetIds])));
+    }
+  };
+
+  const handleBulkDeleteJobs = async () => {
+    if (selectedJobIds.length === 0) return;
+    if (!confirm(`আপনি কি নিশ্চিতভাবে নির্বাচিত ${selectedJobIds.length}টি সার্কুলার ডাটাবেজ থেকে মুছে ফেলতে চান? এটি আর ফিরিয়ে আনা যাবে না।`)) {
+      return;
+    }
+    setIsBulkDeletingJobs(true);
+    try {
+      const res = await fetch('/api/admin/jobs', {
+        method: 'DELETE',
+        headers: ADMIN_REQ_HEADERS,
+        body: JSON.stringify({ jobIds: selectedJobIds })
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        alert(data.message || `${selectedJobIds.length}টি সার্কুলার মুছে ফেলা হয়েছে!`);
+        const deletedSet = new Set(selectedJobIds);
+        setJobs(prev => prev.filter(j => !deletedSet.has(j.id)));
+        setSelectedJobIds([]);
+      } else {
+        alert(data.error || 'সার্কুলারগুলো মুছে ফেলা সম্ভব হয়নি।');
+      }
+    } catch (err: any) {
+      alert(`মুছে ফেলতে ত্রুটি: ${err.message}`);
+    } finally {
+      setIsBulkDeletingJobs(false);
+    }
+  };
+
+  const handleBulkUpdateJobStatus = async (status: 'OPEN' | 'DRAFT') => {
+    if (selectedJobIds.length === 0) return;
+    try {
+      const res = await fetch('/api/admin/jobs', {
+        method: 'PATCH',
+        headers: ADMIN_REQ_HEADERS,
+        body: JSON.stringify({ jobIds: selectedJobIds, status })
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        alert(data.message || 'স্ট্যাটাস আপডেট হয়েছে!');
+        fetchAllAdminData();
+        setSelectedJobIds([]);
+      } else {
+        alert(data.error || 'স্ট্যাটাস আপডেট ব্যর্থ হয়েছে।');
+      }
+    } catch (err: any) {
+      alert(`ত্রুটি: ${err.message}`);
+    }
+  };
+
   const handleDeleteJob = async (jobId: string, jobTitle: string) => {
     if (!confirm(`আপনি কি নিশ্চিত যে "${jobTitle}" সার্কুলারটি স্থায়ীভাবে মুছে ফেলতে চান?`)) return;
     setIsDeletingJobId(jobId);
@@ -5064,11 +5132,68 @@ function AdminContent() {
                   </div>
                 )}
 
+                {/* Floating Bulk Action Bar */}
+                {selectedJobIds.length > 0 && (
+                  <div className="flex flex-wrap items-center justify-between gap-3 p-3.5 bg-gradient-to-r from-slate-900 to-indigo-950 text-white rounded-2xl shadow-lg border border-indigo-800/50">
+                    <div className="flex items-center gap-2.5">
+                      <span className="flex items-center justify-center w-7 h-7 rounded-full bg-emerald-500 text-slate-950 font-black text-xs">
+                        {selectedJobIds.length}
+                      </span>
+                      <span className="text-xs font-bold text-slate-200">
+                        টি সার্কুলার নির্বাচন করা হয়েছে
+                      </span>
+                    </div>
+                    <div className="flex flex-wrap items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={() => handleBulkUpdateJobStatus('OPEN')}
+                        className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl transition-all flex items-center gap-1.5 cursor-pointer shadow-sm"
+                      >
+                        <Check className="w-3.5 h-3.5" />
+                        <span>লাইভ প্রকাশ</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleBulkUpdateJobStatus('DRAFT')}
+                        className="px-3 py-1.5 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold rounded-xl transition-all flex items-center gap-1.5 cursor-pointer shadow-sm"
+                      >
+                        <span>ড্রাফট করুন</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={handleBulkDeleteJobs}
+                        disabled={isBulkDeletingJobs}
+                        className="px-3.5 py-1.5 bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold rounded-xl transition-all flex items-center gap-1.5 shadow-sm cursor-pointer disabled:opacity-50"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                        <span>{isBulkDeletingJobs ? 'ডিলিট হচ্ছে...' : 'এক সাথে ডিলিট করুন'}</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setSelectedJobIds([])}
+                        className="p-1.5 hover:bg-white/10 text-slate-300 hover:text-white rounded-lg transition-colors cursor-pointer"
+                        title="নির্বাচন বাতিল করুন"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
+                )}
+
                 {/* The Enhanced Circulars Table */}
                 <div className="overflow-x-auto rounded-2xl border border-slate-200/90">
                   <table className="w-full text-left text-xs text-slate-700">
                     <thead className="bg-slate-50 text-slate-600 uppercase font-black text-[10px] tracking-wider border-b border-slate-200">
                       <tr>
+                        <th className="py-3 px-3 w-10 text-center">
+                          <input
+                            type="checkbox"
+                            checked={filteredJobs.length > 0 && filteredJobs.every(j => selectedJobIds.includes(j.id))}
+                            onChange={() => handleToggleSelectAllJobs(filteredJobs)}
+                            className="w-4 h-4 rounded text-emerald-600 border-slate-300 focus:ring-emerald-500 cursor-pointer"
+                            title="সবগুলো নির্বাচন করুন"
+                          />
+                        </th>
                         <th className="py-3 px-3.5">সার্কুলার ও প্রতিষ্ঠান</th>
                         <th className="py-3 px-3">ক্যাটাগরি ও গ্রেড</th>
                         <th className="py-3 px-3">পদ ও শূন্যপদ</th>
@@ -5081,7 +5206,7 @@ function AdminContent() {
                     <tbody className="divide-y divide-slate-100 font-medium">
                       {filteredJobs.length === 0 ? (
                         <tr>
-                          <td colSpan={7} className="py-12 text-center text-slate-500">
+                          <td colSpan={8} className="py-12 text-center text-slate-500">
                             <div className="max-w-xs mx-auto space-y-2">
                               <AlertCircle className="w-8 h-8 text-slate-400 mx-auto" />
                               <div className="font-bold text-sm text-slate-800">কোনো সার্কুলার পাওয়া যায়নি!</div>
@@ -5109,7 +5234,16 @@ function AdminContent() {
                           const status = isJobOpen ? 'OPEN' : (rawSt === 'UPCOMING' ? 'UPCOMING' : 'EXPIRED');
                           const hasPositions = job.positions && job.positions.length > 0;
                           return (
-                            <tr key={job.id} className="hover:bg-slate-50/80 transition-colors">
+                            <tr key={job.id} className={"transition-colors " + (selectedJobIds.includes(job.id) ? "bg-emerald-50/70" : "hover:bg-slate-50/80")}>
+                              {/* Selection Checkbox */}
+                              <td className="py-3.5 px-3 text-center">
+                                <input
+                                  type="checkbox"
+                                  checked={selectedJobIds.includes(job.id)}
+                                  onChange={() => handleToggleSelectJob(job.id)}
+                                  className="w-4 h-4 rounded text-emerald-600 border-slate-300 focus:ring-emerald-500 cursor-pointer"
+                                />
+                              </td>
                               {/* Title & Organization */}
                               <td className="py-3.5 px-3.5 max-w-[280px]">
                                 <div className="font-bold text-slate-900 text-xs line-clamp-1">{job.title}</div>

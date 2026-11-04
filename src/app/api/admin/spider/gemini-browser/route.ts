@@ -141,6 +141,60 @@ export async function POST(req: Request) {
       });
     }
 
+    if (action === 'bulk_delete') {
+      const jobIds = body.jobIds;
+      if (!Array.isArray(jobIds) || jobIds.length === 0) {
+        return NextResponse.json({ error: 'মুছে ফেলার জন্য কোনো সার্কুলার সিলেক্ট করা হয়নি।' }, { status: 400 });
+      }
+      let deletedCount = 0;
+      for (const id of jobIds) {
+        if (serverDB.deleteJob(id, 'ADMIN')) {
+          deletedCount++;
+        }
+      }
+      try {
+        revalidatePath('/jobs');
+        revalidatePath('/');
+        revalidatePath('/admin');
+      } catch {}
+      return NextResponse.json({
+        success: true,
+        message: `${deletedCount}টি সার্কুলার সফলভাবে মুছে ফেলা হয়েছে!`,
+        deletedCount
+      });
+    }
+
+    if (action === 'bulk_publish' || action === 'bulk_draft') {
+      const jobIds = body.jobIds;
+      const targetStatus = action === 'bulk_publish' ? 'PUBLISHED' : 'DRAFT';
+      if (!Array.isArray(jobIds) || jobIds.length === 0) {
+        return NextResponse.json({ error: 'সার্কুলার আইডি পাওয়া যায়নি।' }, { status: 400 });
+      }
+      let count = 0;
+      for (const id of jobIds) {
+        const job = serverDB.getJobById(id);
+        if (job) {
+          serverDB.saveJob({
+            ...job,
+            id: job.id,
+            status: targetStatus as any,
+            updatedAt: new Date().toISOString()
+          }, 'ADMIN');
+          count++;
+        }
+      }
+      try {
+        revalidatePath('/jobs');
+        revalidatePath('/');
+        revalidatePath('/admin');
+      } catch {}
+      return NextResponse.json({
+        success: true,
+        message: `${count}টি সার্কুলার সফলভাবে ${targetStatus === 'PUBLISHED' ? 'লাইভ পাবলিশ' : 'ড্রাফট'} করা হয়েছে!`,
+        count
+      });
+    }
+
     if (action === 'delete_job') {
       const jobId = body.jobId;
       if (!jobId) return NextResponse.json({ error: 'jobId is required' }, { status: 400 });

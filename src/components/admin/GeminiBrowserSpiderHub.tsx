@@ -56,6 +56,88 @@ export default function GeminiBrowserSpiderHub({
   const [verificationResult, setVerificationResult] = useState<any>(null);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [statusFilter, setStatusFilter] = useState<'ALL' | 'OPEN' | 'DRAFT'>('ALL');
+  const [selectedJobIds, setSelectedJobIds] = useState<string[]>([]);
+  const [isBulkProcessing, setIsBulkProcessing] = useState<boolean>(false);
+
+  const handleToggleSelect = (jobId: string) => {
+    setSelectedJobIds(prev =>
+      prev.includes(jobId) ? prev.filter(id => id !== jobId) : [...prev, jobId]
+    );
+  };
+
+  const handleToggleSelectAll = () => {
+    const visibleIds = displayJobs.map(j => j.id);
+    const allSelected = visibleIds.length > 0 && visibleIds.every(id => selectedJobIds.includes(id));
+    if (allSelected) {
+      setSelectedJobIds(prev => prev.filter(id => !visibleIds.includes(id)));
+    } else {
+      setSelectedJobIds(prev => Array.from(new Set([...prev, ...visibleIds])));
+    }
+  };
+
+  const handleBulkDelete = async () => {
+    if (selectedJobIds.length === 0) return;
+    if (!confirm(`আপনি কি নিশ্চিতভাবে নির্বাচিত ${selectedJobIds.length}টি সার্কুলার মুছে ফেলতে চান?`)) {
+      return;
+    }
+    setIsBulkProcessing(true);
+    addLog(`🗑️ নির্বাচিত ${selectedJobIds.length}টি সার্কুলার ডিলিট করা হচ্ছে...`);
+    try {
+      const res = await fetch('/api/admin/spider/gemini-browser', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-admin-secret': '1234'
+        },
+        body: JSON.stringify({ action: 'bulk_delete', jobIds: selectedJobIds })
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        addLog(`✅ ${data.message || 'সার্কুলারগুলো মুছে ফেলা হয়েছে'}`);
+        alert(data.message || 'সার্কুলারগুলো মুছে ফেলা হয়েছে');
+        setSelectedJobIds([]);
+        await fetchStatus();
+        if (onRefreshData) onRefreshData();
+      } else {
+        alert(data.error || 'ডিলিট করতে সমস্যা হয়েছে');
+      }
+    } catch (err: any) {
+      alert(`ত্রুটি: ${err.message}`);
+    } finally {
+      setIsBulkProcessing(false);
+    }
+  };
+
+  const handleBulkStatusChange = async (targetStatus: 'PUBLISHED' | 'DRAFT') => {
+    if (selectedJobIds.length === 0) return;
+    setIsBulkProcessing(true);
+    const action = targetStatus === 'PUBLISHED' ? 'bulk_publish' : 'bulk_draft';
+    addLog(`🔄 নির্বাচিত ${selectedJobIds.length}টি সার্কুলার ${targetStatus === 'PUBLISHED' ? 'লাইভ পাবলিশ' : 'ড্রাফট'} করা হচ্ছে...`);
+    try {
+      const res = await fetch('/api/admin/spider/gemini-browser', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-admin-secret': '1234'
+        },
+        body: JSON.stringify({ action, jobIds: selectedJobIds })
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        addLog(`✅ ${data.message}`);
+        alert(data.message);
+        setSelectedJobIds([]);
+        await fetchStatus();
+        if (onRefreshData) onRefreshData();
+      } else {
+        alert(data.error || 'স্ট্যাটাস পরিবর্তন ব্যর্থ হয়েছে');
+      }
+    } catch (err: any) {
+      alert(`ত্রুটি: ${err.message}`);
+    } finally {
+      setIsBulkProcessing(false);
+    }
+  };
 
   const [logs, setLogs] = useState<string[]>([
     '🤖 [Gemini Spider Engine] সিস্টেম ইনিশিয়ালাইজড...',
@@ -574,11 +656,70 @@ export default function GeminiBrowserSpiderHub({
           </div>
         </div>
 
+        {/* Floating Bulk Action Bar */}
+        {selectedJobIds.length > 0 && (
+          <div className="flex flex-wrap items-center justify-between gap-3 p-3.5 bg-gradient-to-r from-slate-900 to-purple-950 text-white rounded-2xl shadow-lg border border-purple-800/50 animate-fadeIn">
+            <div className="flex items-center gap-2.5">
+              <span className="flex items-center justify-center w-7 h-7 rounded-full bg-purple-500 text-white font-black text-xs">
+                {selectedJobIds.length}
+              </span>
+              <span className="text-xs font-bold text-slate-200">
+                টি সার্কুলার নির্বাচন করা হয়েছে
+              </span>
+            </div>
+            <div className="flex flex-wrap items-center gap-2">
+              <button
+                type="button"
+                onClick={() => handleBulkStatusChange('PUBLISHED')}
+                disabled={isBulkProcessing}
+                className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl transition-all flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+              >
+                <Check className="w-3.5 h-3.5" />
+                <span>লাইভ পাবলিশ</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => handleBulkStatusChange('DRAFT')}
+                disabled={isBulkProcessing}
+                className="px-3 py-1.5 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold rounded-xl transition-all flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+              >
+                <span>ড্রাফট করুন</span>
+              </button>
+              <button
+                type="button"
+                onClick={handleBulkDelete}
+                disabled={isBulkProcessing}
+                className="px-3.5 py-1.5 bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold rounded-xl transition-all flex items-center gap-1.5 shadow-sm cursor-pointer disabled:opacity-50"
+              >
+                <Trash2 className="w-3.5 h-3.5" />
+                <span>{isBulkProcessing ? 'ডিলিট হচ্ছে...' : 'এক সাথে ডিলিট করুন'}</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setSelectedJobIds([])}
+                className="p-1.5 hover:bg-white/10 text-slate-300 hover:text-white rounded-lg transition-colors cursor-pointer"
+                title="নির্বাচন বাতিল করুন"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+        )}
+
         {/* Synced Jobs Table */}
         <div className="overflow-x-auto rounded-2xl border border-slate-200/90">
           <table className="w-full text-left text-xs text-slate-700">
             <thead className="bg-slate-50 text-slate-600 uppercase font-black text-[10px] tracking-wider border-b border-slate-200">
               <tr>
+                <th className="py-3 px-3 w-10 text-center">
+                  <input
+                    type="checkbox"
+                    checked={displayJobs.length > 0 && displayJobs.every(j => selectedJobIds.includes(j.id))}
+                    onChange={handleToggleSelectAll}
+                    className="w-4 h-4 rounded text-purple-600 border-slate-300 focus:ring-purple-500 cursor-pointer"
+                    title="সবগুলো নির্বাচন করুন"
+                  />
+                </th>
                 <th className="py-3 px-3.5">সার্কুলার ও প্রতিষ্ঠান</th>
                 <th className="py-3 px-3">পদ ও শূন্যপদ</th>
                 <th className="py-3 px-3">ডেডলাইন</th>
@@ -590,7 +731,7 @@ export default function GeminiBrowserSpiderHub({
             <tbody className="divide-y divide-slate-100 font-medium">
               {displayJobs.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="py-10 text-center text-slate-500">
+                  <td colSpan={7} className="py-10 text-center text-slate-500">
                     <p className="font-bold text-sm text-slate-800">কোনো সার্কুলার পাওয়া যায়নি</p>
                     <p className="text-xs text-slate-500 mt-1">
                       ফিল্টার পরিবর্তন করুন অথবা &quot;অলজবস লাইভ সিঙ্ক চালান&quot; বাটনে ক্লিক করে নতুন সার্কুলার সংগ্রহ করুন।
@@ -604,7 +745,16 @@ export default function GeminiBrowserSpiderHub({
                   const isProcessing = actionJobId === job.id;
 
                   return (
-                    <tr key={job.id} className="hover:bg-slate-50/80 transition-colors">
+                    <tr key={job.id} className={"transition-colors " + (selectedJobIds.includes(job.id) ? "bg-purple-50/70" : "hover:bg-slate-50/80")}>
+                      {/* Checkbox */}
+                      <td className="py-3.5 px-3 text-center">
+                        <input
+                          type="checkbox"
+                          checked={selectedJobIds.includes(job.id)}
+                          onChange={() => handleToggleSelect(job.id)}
+                          className="w-4 h-4 rounded text-purple-600 border-slate-300 focus:ring-purple-500 cursor-pointer"
+                        />
+                      </td>
                       {/* Title & Organization */}
                       <td className="py-3 px-3.5 max-w-[280px]">
                         <div className="flex items-center gap-2">

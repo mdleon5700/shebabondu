@@ -173,3 +173,91 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }
+
+
+export async function DELETE(req: Request) {
+  const session = getServerSession(req);
+  if (!session || session.role !== 'admin') {
+    return NextResponse.json({ error: 'FORBIDDEN: Admin privileges required.' }, { status: 403 });
+  }
+
+  try {
+    const body = await req.json().catch(() => ({}));
+    const jobIds: string[] = Array.isArray(body.jobIds) 
+      ? body.jobIds 
+      : (body.jobId ? [body.jobId] : []);
+
+    if (jobIds.length === 0) {
+      return NextResponse.json({ error: 'মুছে ফেলার জন্য কোনো সার্কুলার আইডি পাওয়া যায়নি।' }, { status: 400 });
+    }
+
+    let deletedCount = 0;
+    for (const id of jobIds) {
+      if (serverDB.deleteJob(id, session.candidateId || 'ADMIN')) {
+        deletedCount++;
+      }
+    }
+
+    try {
+      revalidatePath('/jobs');
+      revalidatePath('/');
+      revalidatePath('/latest-jobs');
+      revalidatePath('/todays-jobs');
+      revalidatePath('/daily-jobs');
+      revalidatePath('/admin');
+    } catch {}
+
+    return NextResponse.json({
+      success: true,
+      message: `${deletedCount}টি সার্কুলার সফলভাবে ডাটাবেজ থেকে মুছে ফেলা হয়েছে।`,
+      deletedCount
+    });
+  } catch (err: any) {
+    return NextResponse.json({ error: err.message }, { status: 500 });
+  }
+}
+
+export async function PATCH(req: Request) {
+  const session = getServerSession(req);
+  if (!session || session.role !== 'admin') {
+    return NextResponse.json({ error: 'FORBIDDEN: Admin privileges required.' }, { status: 403 });
+  }
+
+  try {
+    const body = await req.json().catch(() => ({}));
+    const jobIds: string[] = Array.isArray(body.jobIds) ? body.jobIds : [];
+    const status: string = body.status;
+
+    if (jobIds.length === 0) {
+      return NextResponse.json({ error: 'কোনো সার্কুলার আইডি পাওয়া যায়নি।' }, { status: 400 });
+    }
+
+    let updatedCount = 0;
+    for (const id of jobIds) {
+      const job = serverDB.getJobById(id);
+      if (job) {
+        serverDB.saveJob({
+          ...job,
+          id: job.id,
+          status: (status || 'OPEN') as any,
+          updatedAt: new Date().toISOString()
+        }, session.candidateId || 'ADMIN');
+        updatedCount++;
+      }
+    }
+
+    try {
+      revalidatePath('/jobs');
+      revalidatePath('/');
+      revalidatePath('/admin');
+    } catch {}
+
+    return NextResponse.json({
+      success: true,
+      message: `${updatedCount}টি সার্কুলারের স্ট্যাটাস সফলভাবে আপডেট করা হয়েছে।`,
+      updatedCount
+    });
+  } catch (err: any) {
+    return NextResponse.json({ error: err.message }, { status: 500 });
+  }
+}

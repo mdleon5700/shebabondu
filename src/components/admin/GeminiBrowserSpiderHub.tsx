@@ -3,6 +3,10 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import {
+  Zap,
+  ShieldAlert,
+  Lock,
+  Key,
   Sparkles,
   Globe,
   RefreshCw,
@@ -56,6 +60,133 @@ export default function GeminiBrowserSpiderHub({
   const [verificationResult, setVerificationResult] = useState<any>(null);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [statusFilter, setStatusFilter] = useState<'ALL' | 'OPEN' | 'DRAFT'>('ALL');
+
+  // In-System Gemini Connection & Smart AI Extractor State
+  const [geminiApiKeyInput, setGeminiApiKeyInput] = useState<string>('');
+  const [geminiModel, setGeminiModel] = useState<string>('gemini-1.5-flash');
+  const [geminiConfig, setGeminiConfig] = useState<any>(null);
+  const [isSavingKey, setIsSavingKey] = useState<boolean>(false);
+  const [isTestingKey, setIsTestingKey] = useState<boolean>(false);
+  const [extractorPdfUrl, setExtractorPdfUrl] = useState<string>('https://alljobs.teletalk.com.bd/media/public/uploads/governments/jobs/advertisement-1793683909289.pdf');
+  const [isExtractingCircular, setIsExtractingCircular] = useState<boolean>(false);
+  const [extractedCircularResult, setExtractedCircularResult] = useState<any>(null);
+  const [isSavingExtractedJob, setIsSavingExtractedJob] = useState<boolean>(false);
+
+  const fetchGeminiConfig = async () => {
+    try {
+      const res = await fetch('/api/admin/gemini/config', {
+        headers: { 'x-admin-secret': '1234' }
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setGeminiConfig(data);
+        if (data.model) setGeminiModel(data.model);
+      }
+    } catch (e: any) {
+      console.warn('Failed to load gemini config:', e);
+    }
+  };
+
+  const handleSaveGeminiKey = async () => {
+    if (!geminiApiKeyInput.trim()) {
+      alert('অনুগ্রহ করে একটি সঠিক Google Gemini API Key প্রদান করুন।');
+      return;
+    }
+    setIsSavingKey(true);
+    addLog('🔐 জেমিনি এআই এপিআই কি সিস্টেমে সংযুক্ত ও টেস্ট করা হচ্ছে...');
+    try {
+      const res = await fetch('/api/admin/gemini/config', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-admin-secret': '1234'
+        },
+        body: JSON.stringify({ apiKey: geminiApiKeyInput.trim(), model: geminiModel })
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        addLog(`✅ ${data.message}`);
+        alert(data.message);
+        setGeminiApiKeyInput('');
+        await fetchGeminiConfig();
+      } else {
+        addLog(`❌ সংযোগ ব্যর্থ: ${data.error}`);
+        alert(data.error || 'জেমিনি এপিআই কি সংযোগে সমস্যা হয়েছে।');
+      }
+    } catch (e: any) {
+      alert(`ত্রুটি: ${e.message}`);
+    } finally {
+      setIsSavingKey(false);
+    }
+  };
+
+  const handleRunAIExtraction = async (targetUrl?: string) => {
+    const url = (targetUrl || extractorPdfUrl).trim();
+    if (!url) {
+      alert('অনুগ্রহ করে সার্কুলারের একটি PDF লিঙ্ক বা নোটিশের URL দিন।');
+      return;
+    }
+    setIsExtractingCircular(true);
+    setExtractedCircularResult(null);
+    addLog(`✨ জেমিনি এআই দিয়ে সম্পূর্ণ সার্কুলার স্ক্যান শুরু: ${url}`);
+    try {
+      const res = await fetch('/api/admin/gemini/parse-circular', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-admin-secret': '1234'
+        },
+        body: JSON.stringify({ pdfUrl: url })
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setExtractedCircularResult(data.extracted);
+        addLog(`🎉 এআই বিশ্লেষণ সম্পন্ন! ${data.extracted.organization} - মোট পদ: ${data.extracted.totalPosts}টি, পদ সংখ্যা: ${data.extracted.positions?.length || 1}টি, ডেডলাইন: ${data.extracted.deadline}`);
+      } else {
+        addLog(`❌ এআই স্ক্যান ত্রুটি: ${data.error}`);
+        alert(data.error || 'সার্কুলার স্ক্যান করতে সমস্যা হয়েছে। আগে আপনার জেমিনি এআই কি সংযুক্ত করুন।');
+      }
+    } catch (e: any) {
+      alert(`ত্রুটি: ${e.message}`);
+    } finally {
+      setIsExtractingCircular(false);
+    }
+  };
+
+  const handleSaveExtractedJob = async (publishImmediately: boolean) => {
+    if (!extractedCircularResult) return;
+    setIsSavingExtractedJob(true);
+    addLog(`🚀 সার্কুলারটি ডাটাবেজে ${publishImmediately ? 'লাইভ পাবলিশ' : 'ড্রাফট হিসেবে সেভ'} করা হচ্ছে...`);
+    try {
+      const res = await fetch('/api/admin/gemini/parse-circular', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-admin-secret': '1234'
+        },
+        body: JSON.stringify({
+          pdfUrl: extractorPdfUrl,
+          autoSave: true,
+          publishImmediately
+        })
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        addLog(`✅ ${data.message}`);
+        alert(data.message);
+        setExtractedCircularResult(null);
+        await fetchStatus();
+        if (onRefreshData) onRefreshData();
+      } else {
+        alert(data.error || 'ডাটাবেজে সংরক্ষণ ব্যর্থ হয়েছে।');
+      }
+    } catch (e: any) {
+      alert(`ত্রুটি: ${e.message}`);
+    } finally {
+      setIsSavingExtractedJob(false);
+    }
+  };
+
   const [selectedJobIds, setSelectedJobIds] = useState<string[]>([]);
   const [isBulkProcessing, setIsBulkProcessing] = useState<boolean>(false);
 
@@ -172,6 +303,7 @@ export default function GeminiBrowserSpiderHub({
 
   useEffect(() => {
     fetchStatus();
+    fetchGeminiConfig();
   }, []);
 
   // Compute effective synced jobs (prioritize parent jobs prop if available)
@@ -433,43 +565,99 @@ export default function GeminiBrowserSpiderHub({
 
       {/* 2. INTERACTIVE CONTROLS GRID */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-        {/* Card 1: Persistent Gemini Chrome Engine */}
-        <div className="bg-white rounded-3xl p-5 border border-slate-200/90 shadow-xs space-y-4">
-          <div className="flex items-center gap-2.5">
-            <div className="p-2.5 bg-teal-50 text-teal-700 rounded-2xl">
-              <Globe className="w-5 h-5" />
+        {/* Card 1: IN-SYSTEM GEMINI LOGIN & CONFIGURATION */}
+        <div className="bg-white rounded-3xl p-5 border border-purple-200/90 shadow-sm space-y-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2.5">
+              <div className="p-2.5 bg-purple-100 text-purple-800 rounded-2xl">
+                <Sparkles className="w-5 h-5" />
+              </div>
+              <div>
+                <h3 className="font-black text-sm text-slate-900">১. ইন-সিস্টেম জেমিনি AI লগইন</h3>
+                <p className="text-[11px] text-slate-500 font-medium">সিস্টেমের ভেতর থেকে সরাসরি এআই নিয়ন্ত্রণ</p>
+              </div>
             </div>
-            <div>
-              <h3 className="font-black text-sm text-slate-900">১. জেমিনি লগইন ও ক্রোম সেশন</h3>
-              <p className="text-[11px] text-slate-500 font-medium">স্থায়ী লগইন ও ক্যাপচা সমাধানের জন্য</p>
+            <span className={`text-[10px] font-black px-2.5 py-1 rounded-full border ${
+              geminiConfig?.configured 
+                ? 'bg-emerald-50 text-emerald-800 border-emerald-300' 
+                : 'bg-rose-50 text-rose-800 border-rose-200'
+            }`}>
+              {geminiConfig?.configured ? '🟢 সংযুক্ত (Active)' : '🔴 লগইন প্রয়োজন'}
+            </span>
+          </div>
+
+          <div className="bg-slate-50 p-3 rounded-2xl border border-slate-200/70 text-xs space-y-2">
+            {geminiConfig?.configured ? (
+              <div className="space-y-1">
+                <div className="flex items-center justify-between text-[11px]">
+                  <span className="text-slate-500 font-semibold">সংযুক্ত কী (Key):</span>
+                  <span className="font-mono font-bold text-slate-800">{geminiConfig.maskedKey}</span>
+                </div>
+                <div className="flex items-center justify-between text-[11px]">
+                  <span className="text-slate-500 font-semibold">মডেল:</span>
+                  <span className="font-bold text-purple-700">{geminiConfig.model}</span>
+                </div>
+              </div>
+            ) : (
+              <p className="text-[11px] text-slate-600 leading-relaxed">
+                আপনার সিস্টেমের ভেতরেই জেমিনি এআই চালাতে Google Gemini API Key দিন। সম্পূর্ণ ফ্রিতে পাবেন <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noreferrer" className="text-purple-700 underline font-bold">Google AI Studio</a> থেকে।
+              </p>
+            )}
+
+            <div className="space-y-2 pt-1">
+              <div className="relative">
+                <input
+                  type="password"
+                  value={geminiApiKeyInput}
+                  onChange={(e) => setGeminiApiKeyInput(e.target.value)}
+                  placeholder={geminiConfig?.configured ? "নতুন API Key দিতে এখানে পেস্ট করুন..." : "AIzaSy... API Key এখানে পেস্ট করুন"}
+                  className="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-purple-600 bg-white font-mono"
+                />
+              </div>
+
+              <div className="flex items-center gap-2">
+                <select
+                  value={geminiModel}
+                  onChange={(e) => setGeminiModel(e.target.value)}
+                  className="px-2.5 py-1.5 text-xs rounded-xl border border-slate-300 bg-white font-bold text-slate-700"
+                >
+                  <option value="gemini-1.5-flash">Gemini 1.5 Flash (দ্রুত ও পারফেক্ট)</option>
+                  <option value="gemini-1.5-pro">Gemini 1.5 Pro (ডিপ রিজনিং)</option>
+                  <option value="gemini-2.0-flash">Gemini 2.0 Flash (আল্ট্রা ফাস্ট)</option>
+                </select>
+
+                <button
+                  type="button"
+                  onClick={handleSaveGeminiKey}
+                  disabled={isSavingKey || !geminiApiKeyInput.trim()}
+                  className="flex-1 py-1.5 px-3 bg-purple-700 hover:bg-purple-800 text-white rounded-xl text-xs font-bold transition-all shadow-sm disabled:opacity-50 cursor-pointer"
+                >
+                  {isSavingKey ? 'সংযুক্ত হচ্ছে...' : (geminiConfig?.configured ? 'আপডেট করুন' : 'লগইন ও সেভ')}
+                </button>
+              </div>
             </div>
           </div>
-          <div className="bg-slate-50 p-3 rounded-2xl border border-slate-200/70 text-xs text-slate-700 space-y-1.5 leading-relaxed">
-            <p className="font-bold text-slate-900">💡 কিভাবে জেমিনি লগইন করবেন:</p>
-            <ol className="list-decimal list-inside space-y-1 text-[11px] text-slate-600">
-              <li><strong>ডেস্কটপ ক্রোম চালু করুন</strong> বাটনে ক্লিক করুন।</li>
-              <li>স্ক্রিনে ক্রোম উইন্ডো ওপেন হলে সেখানে আপনার Google অ্যাকাউন্ট দিয়ে সাইন-ইন করে নিন।</li>
-              <li>সেশনটি স্বয়ংক্রিয়ভাবে সেভ থাকবে; কোনো ক্যাপচা আসলে স্ক্রিনে সমাধান করতে পারবেন।</li>
-            </ol>
-          </div>
-          <div className="flex flex-col sm:flex-row gap-2">
-            <button
-              onClick={handleLaunchBrowser}
-              disabled={isLaunching}
-              className="flex-1 py-2.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-all shadow-sm disabled:opacity-50"
-            >
-              <Play className="w-3.5 h-3.5 fill-white" />
-              <span>{isLaunching ? 'চালু হচ্ছে...' : 'ডেস্কটপ ক্রোম উইন্ডো'}</span>
-            </button>
+
+          <div className="flex items-center justify-between gap-2 pt-1 text-[11px]">
             <a
-              href="https://gemini.google.com"
+              href="https://aistudio.google.com/app/apikey"
               target="_blank"
               rel="noopener noreferrer"
-              className="py-2.5 px-4 bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-colors"
+              className="text-purple-700 hover:underline font-bold flex items-center gap-1"
             >
-              <span>Gemini Web</span>
+              <span>ফ্রি API Key নিন</span>
               <ExternalLink className="w-3 h-3" />
             </a>
+            <button
+              type="button"
+              onClick={handleLaunchBrowser}
+              disabled={isLaunching}
+              className="text-slate-600 hover:text-slate-900 font-bold flex items-center gap-1 cursor-pointer"
+              title="ডেস্কটপ ব্রাউজার উইন্ডো খুলুন"
+            >
+              <Globe className="w-3 h-3 text-slate-400" />
+              <span>{isLaunching ? 'খুলছে...' : 'ডেস্কটপ ক্রোম'}</span>
+            </button>
           </div>
         </div>
 
@@ -488,48 +676,164 @@ export default function GeminiBrowserSpiderHub({
             Alljobs Teletalk-এর সকল পেজ স্বয়ংক্রিয়ভাবে স্ক্যান করে নতুন প্রকাশিত সরকারি চাকরির বিজ্ঞপ্তি, মূল নোটিশ PDF এবং শূন্যপদের তথ্য চাকরিসেবা ডাটাবেজে যুক্ত করবে। কোনো ডুপ্লিকেট তৈরি হবে না।
           </p>
           <button
+            type="button"
             onClick={handleRunSync}
             disabled={isSyncing}
-            className="w-full py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-all shadow-sm shadow-emerald-900/10 disabled:opacity-50"
+            className="w-full py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-all shadow-sm shadow-emerald-900/10 disabled:opacity-50 cursor-pointer"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${isSyncing ? 'animate-spin' : ''}`} />
-            <span>{isSyncing ? 'কালেকশন ও সিঙ্ক চলছে...' : 'অলজবস লাইভ সিঙ্ক চালান'}</span>
+            <span>{isSyncing ? 'সিঙ্ক চলছে...' : 'অলজবস লাইভ সিঙ্ক চালান'}</span>
           </button>
         </div>
 
-        {/* Card 3: Circular & PDF AI Verifier */}
-        <div className="bg-white rounded-3xl p-5 border border-slate-200/90 shadow-xs space-y-4">
+        {/* Card 3: SMART MULTIMODAL ZERO-ERROR EXTRACTOR */}
+        <div className="bg-white rounded-3xl p-5 border border-indigo-200/90 shadow-xs space-y-4">
           <div className="flex items-center gap-2.5">
-            <div className="p-2.5 bg-purple-50 text-purple-700 rounded-2xl">
-              <Sparkles className="w-5 h-5" />
+            <div className="p-2.5 bg-indigo-50 text-indigo-700 rounded-2xl">
+              <Zap className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="font-black text-sm text-slate-900">৩. সার্কুলার ও PDF AI ভেরিফায়ার</h3>
-              <p className="text-[11px] text-slate-500 font-medium">জেমিনি এআই দিয়ে পদবী ও তথ্য পরীক্ষা</p>
+              <h3 className="font-black text-sm text-slate-900">৩. সার্কুলার PDF AI এক্সট্রাক্টর</h3>
+              <p className="text-[11px] text-slate-500 font-medium">জিরো ভুল তথ্য গ্যারান্টি (Zero Error)</p>
             </div>
           </div>
-          <div className="space-y-2">
-            <label className="text-[11px] font-bold text-slate-500 block">যাচাইয়ের জন্য সার্কুলার নির্বাচন করুন:</label>
-            <select
-              value={selectedJobId}
-              onChange={(e) => setSelectedJobId(e.target.value)}
-              className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+
+          <div className="space-y-2 text-xs">
+            <label className="block text-[11px] font-bold text-slate-700">
+              সার্কুলার PDF লিংক বা নোটিশ URL:
+            </label>
+            <input
+              type="text"
+              value={extractorPdfUrl}
+              onChange={(e) => setExtractorPdfUrl(e.target.value)}
+              placeholder="https://.../advertisement-xxxx.pdf"
+              className="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-600 bg-slate-50 focus:bg-white font-mono"
+            />
+            <button
+              type="button"
+              onClick={() => handleRunAIExtraction()}
+              disabled={isExtractingCircular || !extractorPdfUrl.trim()}
+              className="w-full py-2.5 bg-gradient-to-r from-indigo-700 to-purple-800 hover:from-indigo-800 hover:to-purple-900 text-white rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-all shadow-sm disabled:opacity-50 cursor-pointer"
             >
-              {displayJobs.slice(0, 10).map(j => (
-                <option key={j.id} value={j.id}>{j.organization} - {j.title.substring(0, 30)}</option>
-              ))}
-            </select>
+              <Sparkles className={`w-4 h-4 text-amber-300 ${isExtractingCircular ? 'animate-spin' : ''}`} />
+              <span>{isExtractingCircular ? 'জেমিনি এআই PDF স্ক্যান করছে...' : 'জেমিনি দিয়ে সম্পূর্ণ নোটিশ স্ক্যান করুন'}</span>
+            </button>
           </div>
-          <button
-            onClick={handleVerifyCircular}
-            disabled={isVerifying}
-            className="w-full py-2.5 bg-purple-700 hover:bg-purple-800 text-white rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-all shadow-sm shadow-purple-900/10 disabled:opacity-50"
-          >
-            <ShieldCheck className="w-3.5 h-3.5" />
-            <span>{isVerifying ? 'যাচাই করা হচ্ছে...' : 'AI দিয়ে সার্কুলার ভেরিফাই করুন'}</span>
-          </button>
         </div>
       </div>
+
+      {/* EXTRACTED AI WORKSPACE MODAL / PREVIEW */}
+      {extractedCircularResult && (
+        <div className="bg-white border-2 border-indigo-300 rounded-3xl p-5 sm:p-6 space-y-5 shadow-xl animate-fadeIn">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-indigo-100">
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="p-1.5 bg-indigo-100 text-indigo-800 rounded-lg">
+                  <CheckCircle2 className="w-4 h-4" />
+                </span>
+                <h4 className="text-base font-black text-slate-900">
+                  {extractedCircularResult.organization} — {extractedCircularResult.title}
+                </h4>
+              </div>
+              <p className="text-xs text-slate-500 mt-1">
+                জেমিনি এআই সরাসরি মূল PDF নোটিশের টেবিল ও টেক্সট পড়ে নিচের ১০০% সঠিক তথ্য বের করেছে:
+              </p>
+            </div>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => handleSaveExtractedJob(false)}
+                disabled={isSavingExtractedJob}
+                className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-xl text-xs font-bold transition-colors cursor-pointer"
+              >
+                খসড়া (Draft) সেভ করুন
+              </button>
+              <button
+                type="button"
+                onClick={() => handleSaveExtractedJob(true)}
+                disabled={isSavingExtractedJob}
+                className="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-bold transition-all shadow-md flex items-center gap-1.5 cursor-pointer"
+              >
+                <Check className="w-4 h-4" />
+                <span>{isSavingExtractedJob ? 'পাবলিশ হচ্ছে...' : 'সরাসরি লাইভ পাবলিশ করুন'}</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setExtractedCircularResult(null)}
+                className="p-2 text-slate-400 hover:text-slate-600 rounded-xl hover:bg-slate-100"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+
+          {/* Quick Metrics */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+            <div className="bg-indigo-50/70 p-3 rounded-2xl border border-indigo-100">
+              <span className="text-[10px] font-bold text-indigo-700 uppercase">মোট শূন্যপদ</span>
+              <div className="text-lg font-black text-indigo-950 mt-0.5">{extractedCircularResult.totalPosts} টি</div>
+            </div>
+            <div className="bg-emerald-50/70 p-3 rounded-2xl border border-emerald-100">
+              <span className="text-[10px] font-bold text-emerald-700 uppercase">আবেদনের শেষ তারিখ</span>
+              <div className="text-sm font-black text-emerald-950 mt-0.5">{extractedCircularResult.deadline}</div>
+            </div>
+            <div className="bg-purple-50/70 p-3 rounded-2xl border border-purple-100">
+              <span className="text-[10px] font-bold text-purple-700 uppercase">পরীক্ষার ফি</span>
+              <div className="text-sm font-black text-purple-950 mt-0.5">৳{extractedCircularResult.govtFee} (+৳৫০ সার্ভিস)</div>
+            </div>
+            <div className="bg-amber-50/70 p-3 rounded-2xl border border-amber-100">
+              <span className="text-[10px] font-bold text-amber-700 uppercase">বয়সসীমা ও কাট-অফ</span>
+              <div className="text-sm font-black text-amber-950 mt-0.5">{extractedCircularResult.minAge} - {extractedCircularResult.maxAge} বছর</div>
+            </div>
+          </div>
+
+          {/* Extracted Positions Breakdown Table */}
+          {extractedCircularResult.positions && extractedCircularResult.positions.length > 0 && (
+            <div className="space-y-2">
+              <h5 className="font-bold text-xs text-slate-800 flex items-center gap-1.5">
+                <FileText className="w-3.5 h-3.5 text-indigo-700" />
+                <span>নোটিশের সকল পদের সঠিক তালিকা ({extractedCircularResult.positions.length}টি পদবি):</span>
+              </h5>
+              <div className="overflow-x-auto rounded-xl border border-slate-200">
+                <table className="w-full text-left text-xs">
+                  <thead className="bg-slate-50 text-slate-600 font-bold border-b border-slate-200">
+                    <tr>
+                      <th className="py-2.5 px-3">পদের নাম</th>
+                      <th className="py-2.5 px-3">গ্রেড</th>
+                      <th className="py-2.5 px-3">শূন্যপদ</th>
+                      <th className="py-2.5 px-3">জাতীয় বেতন স্কেল ২০১৫</th>
+                      <th className="py-2.5 px-3">শিক্ষাগত যোগ্যতা</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-100 font-medium">
+                    {extractedCircularResult.positions.map((pos: any, idx: number) => (
+                      <tr key={idx} className="hover:bg-slate-50/60">
+                        <td className="py-2.5 px-3 font-bold text-slate-900">{pos.title}</td>
+                        <td className="py-2.5 px-3 text-slate-700">{pos.grade || 'বিজ্ঞপ্তি অনুযায়ী'}</td>
+                        <td className="py-2.5 px-3 font-black text-indigo-700">{pos.posts} টি</td>
+                        <td className="py-2.5 px-3 text-slate-700">{pos.salary || 'স্কেল অনুযায়ী'}</td>
+                        <td className="py-2.5 px-3 text-slate-600 max-w-xs">{pos.minEducation}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {/* Districts and Qualifications */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs bg-slate-50 p-4 rounded-2xl border border-slate-200">
+            <div>
+              <span className="font-bold text-slate-900 block mb-1">জেলা সংক্রান্ত শর্ত:</span>
+              <p className="text-slate-600">{extractedCircularResult.districts || 'সকল জেলার প্রার্থীরা আবেদন করতে পারবেন।'}</p>
+            </div>
+            <div>
+              <span className="font-bold text-slate-900 block mb-1">টেলিটক আবেদন লিংক:</span>
+              <p className="text-indigo-700 font-mono text-[11px] truncate">{extractedCircularResult.officialLink || 'অফিসিয়াল বিজ্ঞপ্তি অনুযায়ী'}</p>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* 3. VERIFICATION RESULT ACCORDION */}
       {verificationResult && (

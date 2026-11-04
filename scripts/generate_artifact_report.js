@@ -77,3 +77,4 @@ md += `---
 const targetArtifactPath = 'C:\\Users\\Leon Rahman\\.gemini\\antigravity\\brain\\28ee63ba-098a-42e1-8ed2-67073b8967cd\\chakri_sheba_site_wide_123_pages_deep_audit_report.md';
 fs.writeFileSync(targetArtifactPath, md, 'utf8');
 console.log('Artifact report written successfully to:', targetArtifactPath);
+

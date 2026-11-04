@@ -5289,12 +5289,22 @@ function AdminContent() {
           )}
 
           {activeTab === 'gemini-browser-spider' && (
-            <GeminiBrowserSpiderHub />
+            <GeminiBrowserSpiderHub
+              jobs={jobs}
+              onRefreshData={fetchAllAdminData}
+              onOpenEditJob={handleOpenEditJob}
+              onDeleteJob={handleDeleteJob}
+            />
           )}
 
           {activeTab === 'source-monitoring' && (
             <div className="space-y-6">
-              <GeminiBrowserSpiderHub />
+              <GeminiBrowserSpiderHub
+                jobs={jobs}
+                onRefreshData={fetchAllAdminData}
+                onOpenEditJob={handleOpenEditJob}
+                onDeleteJob={handleDeleteJob}
+              />
               <SourceRegistryManagement />
             </div>
           )}

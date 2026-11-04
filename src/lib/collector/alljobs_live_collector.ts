@@ -183,7 +183,7 @@ export async function runAlljobsLiveSync(maxOrgs = 15): Promise<SyncStats> {
           daysRemaining: daysRemaining,
           publishedDate: formatBnDate(d.advertisement_published_date || d.published_date || new Date().toISOString()),
           officialLink: d.application_site || `https://${orgShort}.teletalk.com.bd`,
-          circularImage: pdfUrl || 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=600&q=80',
+          circularImage: (pdfUrl && !pdfUrl.toLowerCase().endsWith('.pdf')) ? pdfUrl : 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=600&q=80',
           circularPdfUrl: pdfUrl,
           govtFee: 200,
           serviceFee: 50,
@@ -197,6 +197,13 @@ export async function runAlljobsLiveSync(maxOrgs = 15): Promise<SyncStats> {
           audioSummary: `${orgBn}-এ বিভিন্ন পদে মোট ${totalPosts} জনের নিয়োগ বিজ্ঞপ্তি প্রকাশিত হয়েছে। আবেদনের শেষ সময় ${deadlineBn}।`,
           positions: positions
         };
+
+        // Deduplicate against legacy IDs for this circular code (e.g. job-teletalk-15083-...)
+        for (const ej of existingJobs) {
+          if (ej.id !== jobId && (ej.id.includes(`-${d.id}`) || ej.id.includes(`-${d.id}-`))) {
+            serverDB.deleteJob(ej.id, 'COLLECTOR_DEDUPE');
+          }
+        }
 
         serverDB.saveJob(jobRecord);
         stats.totalJobsSynced++;

@@ -51,6 +51,11 @@ if (!fs.existsSync(USER_DATA_DIR)) {
     console.log('👉 যদি কখনো কোনো ক্যাপচা আসে, এই ব্রাউজারে সমাধান করে দিন।');
     console.log('👉 ব্রাউজার বন্ধ না করে ব্যাকগ্রাউন্ডে রেখে দিন। অটোমেটেড এজেন্ট কাজ চালিয়ে যাবে।\n');
 
+    // Keep browser process active indefinitely until user manually closes the window
+    console.log('Browser window is live and standing by. Waiting for user interaction...');
+    await new Promise(resolve => {
+      context.on('close', resolve);
+    });
   } catch (err) {
     console.error('Browser launch error:', err.message);
   }

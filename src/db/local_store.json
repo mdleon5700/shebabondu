@@ -133,6 +133,20 @@
   "adminAuditLogs": [
     {
       "adminId": "ADMIN-SUPER",
+      "action": "job_publish",
+      "targetId": "job-71ded927-d84e-437a-ad71-42c44682ed5f",
+      "targetType": "order",
+      "changes": {
+        "job": {
+          "new": "বাংলাদেশ মৎস্য উন্নয়ন কর্পোরেশন (BFDC) নতুন নিয়োগ বিজ্ঞপ্তি ২০২৬"
+        }
+      },
+      "notes": "Job circular published: বাংলাদেশ মৎস্য উন্নয়ন কর্পোরেশন (BFDC) নতুন নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "id": "AUDIT-1793834654769-610VP",
+      "timestamp": "2026-11-04T23:24:14.769Z"
+    },
+    {
+      "adminId": "ADMIN-SUPER",
       "action": "job_delete",
       "targetId": "test-job-02",
       "targetType": "order",
@@ -301,6 +315,115 @@
       "verificationConfidence": 99,
       "createdAt": "2026-11-04T23:08:52.583Z",
       "updatedAt": "2026-11-04T23:08:52.583Z"
+    },
+    "job-71ded927-d84e-437a-ad71-42c44682ed5f": {
+      "id": "job-71ded927-d84e-437a-ad71-42c44682ed5f",
+      "title": "বাংলাদেশ মৎস্য উন্নয়ন কর্পোরেশন (BFDC) নতুন নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "organization": "বাংলাদেশ মৎস্য উন্নয়ন কর্পোরেশন (BFDC)",
+      "logo": "https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=120&q=80",
+      "category": "govt",
+      "categoryLabel": "সরকারি চাকরি",
+      "grade": "১০ম গ্রেড",
+      "totalPosts": 1,
+      "salary": "জাতীয় বেতন স্কেল ২০১৫ অনুযায়ী",
+      "minEducation": "স্নাতক বা সমমানের ডিগ্রি",
+      "minAge": 18,
+      "maxAge": 30,
+      "districts": "সকল জেলার প্রার্থীরা আবেদন করতে পারবেন",
+      "deadline": "৩০ নভেম্বর ২০২৬",
+      "daysRemaining": 25,
+      "govtFee": 200,
+      "serviceFee": 50,
+      "officialLink": "http://alljobs.teletalk.com.bd",
+      "circularImage": "https://images.unsplash.com/photo-1586281380349-632531db7ed4?auto=format&fit=crop&w=600&q=80",
+      "circularPdfUrl": "",
+      "circularPages": [],
+      "audioSummary": "বাংলাদেশ মৎস্য উন্নয়ন কর্পোরেশন (BFDC) নতুন নিয়োগ বিজ্ঞপ্তি ২০২৬ - বাংলাদেশ মৎস্য উন্নয়ন কর্পোরেশন (BFDC)-এ নতুন নিয়োগ বিজ্ঞপ্তি।",
+      "publishedDate": "৫/১১/২০২৬",
+      "requirements": [
+        "স্বীকৃত বিশ্ববিদ্যালয় বা শিক্ষা বোর্ড থেকে ন্যূনতম প্রয়োজনীয় শিক্ষাগত যোগ্যতা থাকতে হবে।",
+        "শিক্ষা জীবনের কোনো পর্যায়ে ৩য় বিভাগ বা শ্রেণি অথবা সমমানের সিজিপিএ গ্রহণযোগ্য হবে না।",
+        "প্রার্থীর বয়স ১৮ থেকে ৩০ বছরের মধ্যে হতে হবে (বীর মুক্তিযোদ্ধা কোটায় ৩২ বছর)।",
+        "কম্পিউটার পরিচালনায় সন্তোষজনক ব্যবহারিক জ্ঞান থাকতে হবে।"
+      ],
+      "positions": [
+        {
+          "title": "সহকারী মৎস্য কর্মকর্তা",
+          "grade": "১০ম গ্রেড",
+          "posts": 1,
+          "salary": "১৬,০০০ - ৩৮,৬৪০ টাকা",
+          "minEducation": "স্বীকৃত বিশ্ববিদ্যালয় হতে স্নাতক ডিগ্রি",
+          "govtFee": 200
+        }
+      ],
+      "feeRange": "৳২০০",
+      "ageCutOffDate": "০১ নভেম্বর ২০২৬",
+      "smsPrefix": "",
+      "allowThirdDivision": true,
+      "minFirstDivisionsCount": 0,
+      "documentsRequired": [
+        "সকল শিক্ষাগত যোগ্যতার মূল সনদপত্র ও একাডেমিক মার্কশিটের মূলকপি এবং ১ সেট সত্যায়িত ফটোকপি।",
+        "নাগরিকত্ব সনদপত্র ও চারিত্রিক সনদপত্র।",
+        "জাতীয় পরিচয়পত্র (NID) অথবা অনলাইন জন্ম নিবন্ধন সনদের মূল ও সত্যায়িত কপি।",
+        "১ম শ্রেণির গেজেটেড কর্মকর্তা কর্তৃক সত্যায়িত ৩ কপি পাসপোর্ট সাইজ রঙিন ছবি।"
+      ],
+      "bengaliDescription": "বাংলাদেশ মৎস্য উন্নয়ন কর্পোরেশন (BFDC) নিয়োগ বিজ্ঞপ্তি ২০২৬।",
+      "faqItems": [
+        {
+          "question": "অনলাইনে আবেদনের শেষ সময় কখন?",
+          "answer": "অনলাইনে নির্ধারিত শেষ তারিখের পূর্বেই আবেদনপত্র সাবমিট করে টেলিটকের মাধ্যমে ফি জমা দিতে হবে।"
+        },
+        {
+          "question": "আবেদন ফি কত এবং কীভাবে পরিশোধ করতে হবে?",
+          "answer": "নির্ধারিত পরীক্ষার ফি টেলিটক প্রিপেইড সিম থেকে দুটি এসএমএস পাঠিয়ে ৭২ ঘণ্টার মধ্যে পরিশোধ করতে হবে।"
+        }
+      ],
+      "seoTitle": "বাংলাদেশ মৎস্য উন্নয়ন কর্পোরেশন (BFDC) নতুন নিয়োগ বিজ্ঞপ্তি ২০২৬ - বাংলাদেশ মৎস্য উন্নয়ন কর্পোরেশন (BFDC) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "seoDescription": "বাংলাদেশ মৎস্য উন্নয়ন কর্পোরেশন (BFDC)-এ মোট 1 পদে নতুন নিয়োগ বিজ্ঞপ্তি ২০২৬।",
+      "seoKeywords": [],
+      "slug": "",
+      "refNo": "",
+      "designation": "বাংলাদেশ মৎস্য উন্নয়ন কর্পোরেশন (BFDC) নতুন নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "eligibility": "",
+      "status": "OPEN",
+      "featured": true,
+      "isHot": false,
+      "orgType": "",
+      "subCategory": "",
+      "employmentType": "full_time",
+      "workArrangement": "on_site",
+      "division": "",
+      "district": "",
+      "upazila": "",
+      "salaryType": "range",
+      "applicationStartDate": "",
+      "applicationMethod": "online_teletalk",
+      "applicationInstructions": "১. অনলাইনে নির্ধারিত পোর্টালে ফর্ম পূরণ করুন।\n২. ছবি (৩০০x৩০০) ও স্বাক্ষর (৩০০x৮০) আপলোড করুন।\n৩. ৭২ ঘণ্টার মধ্যে টেলিটক প্রিপেইড সিম থেকে দুটি এসএমএস পাঠিয়ে ফি পরিশোধ করুন।",
+      "selectionProcess": "১. প্রিলিমিনারি/লিখিত পরীক্ষা (এমসিকিউ/রচনামূলক), ২. ব্যবহারিক পরীক্ষা (প্রযোজ্য ক্ষেত্রে), এবং ৩. মৌখিক পরীক্ষা (ভাইভা)।",
+      "experienceYears": "",
+      "skills": [],
+      "canonicalUrl": "",
+      "robotsDirective": "index, follow",
+      "ogImage": "",
+      "twitterImage": "",
+      "verificationStatus": "MANUAL_ENTERED",
+      "verificationConfidence": 100,
+      "verificationNotes": "ম্যানুয়ালি অ্যাডমিন কর্তৃক তৈরিকৃত",
+      "lastVerifiedAt": "2026-11-04T23:24:14.754Z",
+      "verifiedBy": "ADMIN-SUPER",
+      "createdAt": "2026-11-04T23:24:14.754Z",
+      "updatedAt": "2026-11-04T23:24:14.755Z",
+      "revisionHistory": [
+        {
+          "timestamp": "2026-11-04T23:24:14.755Z",
+          "adminId": "ADMIN-SUPER",
+          "action": "create",
+          "changedFields": [
+            "initial_creation"
+          ],
+          "summary": "সার্কুলার সফলভাবে তৈরি হয়েছে"
+        }
+      ]
     }
   },
   "pages": {

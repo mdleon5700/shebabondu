@@ -141,6 +141,7 @@ export async function POST(req: Request) {
       applicationStartDate: jobData.applicationStartDate?.trim() || '',
       applicationMethod: jobData.applicationMethod || 'online_teletalk',
       applicationInstructions: jobData.applicationInstructions?.trim() || '',
+      selectionProcess: jobData.selectionProcess?.trim() || '',
       experienceYears: jobData.experienceYears?.trim() || '',
       skills: Array.isArray(jobData.skills) ? jobData.skills.filter(Boolean) : [],
       canonicalUrl: jobData.canonicalUrl?.trim() || '',

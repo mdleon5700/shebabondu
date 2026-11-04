@@ -1658,31 +1658,18 @@ function AdminContent() {
             { id: 'documents', label: 'অ্যাপ্লিক্যান্ট ডকুমেন্টস' }
           ]
         },
-        { 
+                { 
           id: 'circulars', 
           label: 'সার্কুলার ও নিয়োগ হাব', 
           icon: Briefcase, 
           badge: drafts.length ? drafts.length + ' খসড়া' : (jobs.length || stats.totalJobs || 0),
           badgeColor: drafts.length ? 'bg-blue-600 text-white' : undefined,
-          keywords: ['সার্কুলার', 'চাকরি', 'খসড়া', 'draft', 'spider', 'স্পাইডার', 'ক্যাটাগরি', 'ফিড'],
+          keywords: ['সার্কুলার', 'চাকরি', 'খসড়া', 'draft', 'alljobs', 'জব'],
           subTabs: [
-            { id: 'circulars', label: 'সকল সার্কুলার' },
-            { id: 'gemini-browser-spider', label: 'জেমিনি ব্রাউজার স্পাইডার' },
-            { id: 'imported-drafts', label: 'খসড়া ও ভেরিফিকেশন কিউ' },
-            { id: 'publishing-center', label: 'পাবলিশিং সেন্টার' },
-            { id: 'category-search-manager', label: 'ক্যাটাগরি ও সার্চ' },
-            { id: 'source-monitoring', label: 'সোর্স স্পাইডার' },
-            { id: 'job-feed-manager', label: 'জব ফিড ও ফিচার্ড' },
-            { id: 'smart-job-matching', label: 'স্মার্ট ম্যাচিং' }
+            { id: 'circulars', label: 'সব সার্কুলার' },
+            { id: 'imported-drafts', label: 'খসড়া ও অনুমোদন' },
+            { id: 'category-search-manager', label: 'ক্যাটাগরি' }
           ]
-        },
-        { 
-          id: 'gemini-browser-spider', 
-          label: 'জেমিনি স্পাইডার ও স্ক্র্যাপার', 
-          icon: Sparkles, 
-          badge: 'AI LIVE',
-          badgeColor: 'bg-purple-600 text-white',
-          keywords: ['gemini', 'spider', 'জেমিনি', 'স্পাইডার', 'স্ক্র্যাপার', 'alljobs', 'টেলিটক', 'ai'],
         },
         { 
           id: 'candidate-directory', 
@@ -1782,7 +1769,7 @@ function AdminContent() {
       
       'deadline-alert-manager': 'circulars',
       'create-circular': 'circulars',
-      'gemini-browser-spider': 'gemini-browser-spider',
+      'gemini-browser-spider': 'circulars',
       
       'invoices': 'transactions',
       'service-fees': 'transactions',
@@ -1976,15 +1963,7 @@ function AdminContent() {
               <RefreshCw className={'w-4 h-4 ' + (isLoading ? 'animate-spin text-emerald-400' : '')} />
             </button>
 
-            <button
-              type="button"
-              onClick={() => handleTabChange('gemini-browser-spider')}
-              className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gradient-to-r from-purple-700 to-indigo-700 hover:from-purple-800 hover:to-indigo-800 text-xs font-bold text-white transition-all shadow-sm cursor-pointer"
-              title="জেমিনি ব্রাউজার স্পাইডার হাব খুলুন"
-            >
-              <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-              <span>জেমিনি স্পাইডার</span>
-            </button>
+            
 
             <Link
               href="/"
@@ -5014,15 +4993,7 @@ function AdminContent() {
                   </div>
 
                   <div className="flex flex-wrap items-center gap-2.5">
-                    <button
-                      type="button"
-                      onClick={() => handleTabChange('gemini-browser-spider')}
-                      className="px-4 py-2 bg-gradient-to-r from-purple-700 to-indigo-700 hover:from-purple-800 hover:to-indigo-800 text-white rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shadow-sm shadow-purple-900/10 cursor-pointer"
-                      title="জেমিনি ব্রাউজার স্পাইডার ও এআই স্ক্র্যাপার কনসোল খুলুন"
-                    >
-                      <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-                      <span>জেমিনি স্পাইডার কনসোল</span>
-                    </button>
+                    
                     <button
                       type="button"
                       onClick={handleSyncAlljobs}

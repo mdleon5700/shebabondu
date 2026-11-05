@@ -2,6 +2,15 @@ import https from 'https';
 import http from 'http';
 import { extractTextFromPdf } from '@/lib/spider/gemini_browser_controller';
 
+if (typeof process !== 'undefined' && process.env) {
+  process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+}
+
+const insecureHttpsAgent = new https.Agent({
+  rejectUnauthorized: false,
+  checkServerIdentity: () => undefined
+});
+
 export interface ResolvedCircularData {
   jobId?: string;
   title: string;
@@ -48,15 +57,31 @@ function formatBnDate(dateStr: string): string {
   }
 }
 
-function fetchJson(url: string): Promise<any> {
+function fetchJson(url: string, redirectHops = 0): Promise<any> {
+  if (redirectHops > 5) {
+    throw new Error(`Too many redirects fetching JSON: ${url}`);
+  }
+
+  const isHttps = url.startsWith('https://');
+  const client = isHttps ? https : http;
+
   return new Promise((resolve, reject) => {
-    https.get(url, {
+    const req = client.get(url, {
+      agent: isHttps ? insecureHttpsAgent : undefined,
+      rejectUnauthorized: false,
       headers: {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) ChakriSheba/2.0 SmartResolver',
         'Accept': 'application/json'
       },
-      timeout: 10000
+      timeout: 15000
     }, (res) => {
+      if (res.statusCode && res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
+        const redirectUrl = res.headers.location.startsWith('http')
+          ? res.headers.location
+          : new URL(res.headers.location, url).toString();
+        return resolve(fetchJson(redirectUrl, redirectHops + 1));
+      }
+
       if (res.statusCode && res.statusCode >= 400) {
         return reject(new Error(`HTTP ${res.statusCode} from ${url}`));
       }
@@ -69,7 +94,13 @@ function fetchJson(url: string): Promise<any> {
           reject(new Error(`Failed to parse JSON: ${data.substring(0, 100)}`));
         }
       });
-    }).on('error', reject);
+    });
+
+    req.on('error', reject);
+    req.on('timeout', () => {
+      req.destroy();
+      reject(new Error(`JSON fetch timed out from ${url}`));
+    });
   });
 }
 

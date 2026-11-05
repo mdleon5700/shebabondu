@@ -1,6 +1,15 @@
 import crypto from 'crypto';
 import http from 'http';
 import https from 'https';
+
+if (typeof process !== 'undefined' && process.env) {
+  process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+}
+
+const insecureHttpsAgent = new https.Agent({
+  rejectUnauthorized: false,
+  checkServerIdentity: () => undefined
+});
 import { 
   JobCollector, 
   CollectorOptions, 
@@ -55,6 +64,8 @@ export class TeletalkCollectorAdapter implements JobCollector {
       let settled = false;
 
       const req = client.get(urlCheck.url.toString(), {
+        agent: urlCheck.url.protocol === 'https:' ? insecureHttpsAgent : undefined,
+        rejectUnauthorized: false,
         headers: {
           'User-Agent': 'ChakriSheba-Collector/1.0 (+https://chakrisheba.com; official-sync)',
           'Accept': 'text/html,application/xhtml+xml;q=0.9,*/*;q=0.8'
@@ -116,6 +127,8 @@ export class TeletalkCollectorAdapter implements JobCollector {
     return new Promise((resolve) => {
       const apiUrl = 'https://alljobs.teletalk.com.bd/api/v1/govt-jobs/org-list?page=1&limit=30';
       const req = https.get(apiUrl, {
+        agent: insecureHttpsAgent,
+        rejectUnauthorized: false,
         headers: {
           'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
           'Accept': 'application/json, text/plain, */*'

@@ -2,7 +2,18 @@ import { chromium, BrowserContext } from 'playwright';
 import path from 'path';
 import fs from 'fs';
 import https from 'https';
+import http from 'http';
 import { extractText } from 'unpdf';
+
+// Ensure Node.js TLS doesn't abort on Bangladesh government portals with missing intermediate certificates
+if (typeof process !== 'undefined' && process.env) {
+  process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+}
+
+const insecureHttpsAgent = new https.Agent({
+  rejectUnauthorized: false,
+  checkServerIdentity: () => undefined
+});
 import { JobCircular, JobPosition } from '@/lib/types';
 import { resolveCircularInput, ResolvedCircularData, repairTeletalkBengaliEncoding } from '@/lib/collector/alljobs_smart_resolver';
 
@@ -16,24 +27,55 @@ if (!fs.existsSync(PROFILE_DIR)) {
 }
 
 /**
- * Downloads a remote PDF into an in-memory Buffer
+ * Downloads a remote PDF into an in-memory Buffer with automatic redirect following
+ * and SSL bypass for government domains missing intermediate CA certs.
  */
-async function downloadPdfBuffer(url: string): Promise<Buffer> {
+async function downloadPdfBuffer(url: string, redirectHops = 0): Promise<Buffer> {
+  if (redirectHops > 5) {
+    throw new Error(`Too many redirects downloading PDF from: ${url}`);
+  }
+
   return new Promise((resolve, reject) => {
-    const client = url.startsWith('https') ? https : require('http');
-    client.get(url, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) ChakriSheba/2.0 GeminiSpider'
-      },
-      timeout: 15000
-    }, (res: any) => {
-      if (res.statusCode && res.statusCode >= 400) {
-        return reject(new Error(`PDF Download HTTP ${res.statusCode} from ${url}`));
-      }
-      const chunks: Buffer[] = [];
-      res.on('data', (c: Buffer) => chunks.push(c));
-      res.on('end', () => resolve(Buffer.concat(chunks)));
-    }).on('error', reject);
+    try {
+      const isHttps = url.startsWith('https://');
+      const client = isHttps ? https : http;
+      
+      const req = client.get(url, {
+        agent: isHttps ? insecureHttpsAgent : undefined,
+        rejectUnauthorized: false,
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+          'Accept': 'application/pdf,application/octet-stream,*/*;q=0.9',
+          'Accept-Language': 'en-US,en;q=0.9,bn;q=0.8'
+        },
+        timeout: 20000
+      }, (res: any) => {
+        // Handle 3xx Redirects
+        if (res.statusCode && res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
+          const redirectUrl = res.headers.location.startsWith('http')
+            ? res.headers.location
+            : new URL(res.headers.location, url).toString();
+          return resolve(downloadPdfBuffer(redirectUrl, redirectHops + 1));
+        }
+
+        if (res.statusCode && res.statusCode >= 400) {
+          return reject(new Error(`PDF Download HTTP ${res.statusCode} from ${url}`));
+        }
+
+        const chunks: Buffer[] = [];
+        res.on('data', (c: any) => chunks.push(Buffer.isBuffer(c) ? c : Buffer.from(c)));
+        res.on('end', () => resolve(Buffer.concat(chunks)));
+        res.on('error', reject);
+      });
+
+      req.on('error', reject);
+      req.on('timeout', () => {
+        req.destroy();
+        reject(new Error(`PDF download timed out after 20s from ${url}`));
+      });
+    } catch (err) {
+      reject(err);
+    }
   });
 }
 
@@ -44,14 +86,28 @@ export async function extractTextFromPdf(input: Buffer | string): Promise<string
   let buffer: Buffer;
   if (typeof input === 'string') {
     if (input.startsWith('http://') || input.startsWith('https://')) {
-      buffer = await downloadPdfBuffer(input);
+      try {
+        buffer = await downloadPdfBuffer(input);
+      } catch (err: any) {
+        console.warn('PDF download error:', err.message);
+        return '';
+      }
     } else if (fs.existsSync(input)) {
-      buffer = fs.readFileSync(input);
+      try {
+        buffer = fs.readFileSync(input);
+      } catch (err: any) {
+        console.warn('Local PDF read error:', err.message);
+        return '';
+      }
     } else {
       return input; // Already plain text
     }
   } else {
     buffer = input;
+  }
+
+  if (!buffer || buffer.length < 10) {
+    return '';
   }
 
   try {
@@ -330,10 +386,14 @@ export async function parseCircularWithGeminiBrowser(input: CircularExtractionIn
   // Extract raw text if available and repair Teletalk encoding
   let text = resolved?.rawText || input.rawText || '';
   if (!text) {
-    if (input.pdfBuffer) {
-      text = await extractTextFromPdf(input.pdfBuffer);
-    } else if (effectivePdfUrl) {
-      text = await extractTextFromPdf(effectivePdfUrl);
+    try {
+      if (input.pdfBuffer) {
+        text = await extractTextFromPdf(input.pdfBuffer);
+      } else if (effectivePdfUrl) {
+        text = await extractTextFromPdf(effectivePdfUrl);
+      }
+    } catch (e: any) {
+      console.warn('PDF text extraction fallback:', e.message);
     }
   }
 

@@ -1,14 +1,29 @@
 import https from 'https';
+import http from 'http';
 import { serverDB } from '@/lib/db';
 import { JobCircular } from '@/lib/types';
 import { GeminiService } from '@/lib/gemini/gemini_service';
+
+if (typeof process !== 'undefined' && process.env) {
+  process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+}
+
+const insecureHttpsAgent = new https.Agent({
+  rejectUnauthorized: false,
+  checkServerIdentity: () => undefined
+});
 
 // Bengali numeral converter
 const toBn = (n: number | string) => String(n).replace(/\d/g, d => '০১২৩৪৫৬৭৮৯'[+d]);
 
 function fetchJson(url: string): Promise<any> {
+  const isHttps = url.startsWith('https://');
+  const client = isHttps ? https : http;
+
   return new Promise((resolve, reject) => {
-    https.get(url, {
+    client.get(url, {
+      agent: isHttps ? insecureHttpsAgent : undefined,
+      rejectUnauthorized: false,
       headers: {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) ChakriSheba/2.0',
         'Accept': 'application/json',

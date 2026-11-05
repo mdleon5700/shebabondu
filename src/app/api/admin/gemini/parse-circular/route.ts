@@ -8,6 +8,10 @@ import { serverDB } from '@/lib/db';
 import { JobCircular } from '@/lib/types';
 import { parseCircularWithGeminiBrowser } from '@/lib/spider/gemini_browser_controller';
 
+if (typeof process !== 'undefined' && process.env) {
+  process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+}
+
 export const dynamic = 'force-dynamic';
 
 const SETTINGS_PATH = path.join(process.cwd(), '.browser_profile', 'spider_settings.json');

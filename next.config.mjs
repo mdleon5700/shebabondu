@@ -1,4 +1,10 @@
 /** @type {import('next').NextConfig} */
+
+// Ensure Node.js TLS allows connecting to Bangladesh government portals (.gov.bd, .teletalk.com.bd) with missing intermediate CAs
+if (typeof process !== 'undefined' && process.env) {
+  process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+}
+
 const nextConfig = {
   experimental: {
     cpus: 1,

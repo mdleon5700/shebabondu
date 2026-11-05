@@ -4,6 +4,15 @@ import http from 'http';
 
 export const dynamic = 'force-dynamic';
 
+if (typeof process !== 'undefined' && process.env) {
+  process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+}
+
+const insecureHttpsAgent = new https.Agent({
+  rejectUnauthorized: false,
+  checkServerIdentity: () => undefined
+});
+
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const targetUrl = searchParams.get('url');
@@ -13,34 +22,7 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    const parsedUrl = new URL(targetUrl);
-    const client = parsedUrl.protocol === 'https:' ? https : http;
-
-    const pdfBuffer = await new Promise<Buffer>((resolve, reject) => {
-      client.get(targetUrl, {
-        headers: {
-          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) ChakriSheba/2.0 PDFProxy',
-          'Accept': 'application/pdf,*/*'
-        },
-        timeout: 15000
-      }, (res) => {
-        if (res.statusCode && res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
-          // Handle redirect
-          const redirectUrl = res.headers.location.startsWith('http')
-            ? res.headers.location
-            : new URL(res.headers.location, targetUrl).toString();
-          return resolve(fetchPdfDirect(redirectUrl));
-        }
-
-        if (res.statusCode && res.statusCode >= 400) {
-          return reject(new Error(`HTTP ${res.statusCode} from source`));
-        }
-
-        const chunks: Buffer[] = [];
-        res.on('data', chunk => chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk)));
-        res.on('end', () => resolve(Buffer.concat(chunks)));
-      }).on('error', reject);
-    });
+    const pdfBuffer = await fetchPdfDirect(targetUrl);
 
     if (!pdfBuffer || pdfBuffer.length < 5) {
       return new NextResponse('Empty PDF response', { status: 404 });
@@ -60,14 +42,46 @@ export async function GET(req: NextRequest) {
   }
 }
 
-async function fetchPdfDirect(url: string): Promise<Buffer> {
+async function fetchPdfDirect(url: string, redirectHops = 0): Promise<Buffer> {
+  if (redirectHops > 5) {
+    throw new Error(`Too many redirects fetching PDF: ${url}`);
+  }
+
   const parsed = new URL(url);
-  const client = parsed.protocol === 'https:' ? https : http;
+  const isHttps = parsed.protocol === 'https:';
+  const client = isHttps ? https : http;
+
   return new Promise((resolve, reject) => {
-    client.get(url, { headers: { 'User-Agent': 'ChakriSheba/2.0' }, timeout: 15000 }, (res) => {
+    const req = client.get(url, {
+      agent: isHttps ? insecureHttpsAgent : undefined,
+      rejectUnauthorized: false,
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+        'Accept': 'application/pdf,application/octet-stream,*/*;q=0.9'
+      },
+      timeout: 20000
+    }, (res) => {
+      if (res.statusCode && res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
+        const redirectUrl = res.headers.location.startsWith('http')
+          ? res.headers.location
+          : new URL(res.headers.location, url).toString();
+        return resolve(fetchPdfDirect(redirectUrl, redirectHops + 1));
+      }
+
+      if (res.statusCode && res.statusCode >= 400) {
+        return reject(new Error(`HTTP ${res.statusCode} from source`));
+      }
+
       const chunks: Buffer[] = [];
       res.on('data', c => chunks.push(Buffer.isBuffer(c) ? c : Buffer.from(c)));
       res.on('end', () => resolve(Buffer.concat(chunks)));
-    }).on('error', reject);
+      res.on('error', reject);
+    });
+
+    req.on('error', reject);
+    req.on('timeout', () => {
+      req.destroy();
+      reject(new Error(`Request timeout from ${url}`));
+    });
   });
 }

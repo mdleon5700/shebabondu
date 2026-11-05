@@ -14,6 +14,7 @@
     "validate": "tsc --noEmit && next lint",
     "sync:alljobs": "node scripts/fetch_and_populate_alljobs.js",
     "spider:browser": "node scripts/spider/browser_agent.js",
+    "audit": "node scripts/test_audit_api.js",
     "test:browser": "node scripts/browser_verify.js"
   },
   "dependencies": {

@@ -3,6 +3,10 @@ import { getServerSession } from '@/lib/auth';
 import { serverDB } from '@/lib/db';
 import { validateSafeUrl } from '@/lib/collector/security';
 
+if (typeof process !== 'undefined' && process.env) {
+  process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+}
+
 export async function POST(req: Request, { params }: { params: { id: string } }) {
   const session = getServerSession(req);
   if (!session) {

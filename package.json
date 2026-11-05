@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "node --max-old-space-size=4096 ./node_modules/next/dist/bin/next build",
-    "start": "next start",
+    "start": "node -r ./scripts/preload-env.js ./node_modules/next/dist/bin/next start",
     "lint": "next lint",
     "brain": "node ai-brain/cli.js",
     "brain:worker": "node ai-brain/worker.js",

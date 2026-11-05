@@ -59,36 +59,6 @@ const INITIAL_STAFF: StaffMember[] = [
     status: 'active',
     lastActive: 'এইমাত্র সক্রিয়',
     permissions: ['সকল পারমিশন', 'ডাটাবেস এক্সেস', 'পেমেন্ট কন্ট্রোল', 'সার্কুলার ম্যানেজমেন্ট', 'ইউজার ভল্ট']
-  },
-  {
-    id: 'STF-002',
-    name: 'তানভীর আহমেদ',
-    email: 'tanvir.ops@chakrisheba.com',
-    phone: '01819283746',
-    role: 'টেলিটক অপারেটর',
-    status: 'active',
-    lastActive: '১৫ মিনিট পূর্বে',
-    permissions: ['টেলিটক প্রসেসিং', 'অ্যাডমিট কপি আপলোড', 'আবেদন ট্র্যাকিং']
-  },
-  {
-    id: 'STF-003',
-    name: 'মাকসুদা সুলতানা',
-    email: 'maksuda.acc@chakrisheba.com',
-    phone: '01912345678',
-    role: 'ফাইন্যান্স অফিসার',
-    status: 'active',
-    lastActive: '২ ঘণ্টা পূর্বে',
-    permissions: ['পেমেন্ট ভেরিফিকেশন', 'ইনভয়েস অনুমোদন', 'ট্রানজেকশন রিপোর্ট']
-  },
-  {
-    id: 'STF-004',
-    name: 'কামরুল হাসান',
-    email: 'kamrul.qc@chakrisheba.com',
-    phone: '01678912345',
-    role: 'অপারেশনস মডারেটর',
-    status: 'active',
-    lastActive: 'গতকাল',
-    permissions: ['সার্কুলার ড্রাফট রিভিউ', 'স্ক্র্যাপার মনিটরিং']
   }
 ];
 

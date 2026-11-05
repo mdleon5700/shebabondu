@@ -148,39 +148,6 @@ export const INITIAL_STAFF_MEMBERS: StaffMemberRecord[] = [
     lastActive: new Date().toISOString(),
     createdAt: '2026-01-01T00:00:00.000Z',
     updatedAt: new Date().toISOString()
-  },
-  {
-    id: 'STF-002',
-    name: 'ফারহানা ইসলাম তন্বী',
-    email: 'farhana@chakrisheba.com',
-    phone: '01819283746',
-    role: 'verification_officer',
-    status: 'active',
-    lastActive: new Date().toISOString(),
-    createdAt: '2026-02-15T00:00:00.000Z',
-    updatedAt: new Date().toISOString()
-  },
-  {
-    id: 'STF-003',
-    name: 'সাকিব আল হাসান',
-    email: 'sakib@chakrisheba.com',
-    phone: '01918273645',
-    role: 'job_manager',
-    status: 'active',
-    lastActive: new Date().toISOString(),
-    createdAt: '2026-03-01T00:00:00.000Z',
-    updatedAt: new Date().toISOString()
-  },
-  {
-    id: 'STF-004',
-    name: 'কামরুল হাসান',
-    email: 'kamrul@chakrisheba.com',
-    phone: '01678912345',
-    role: 'support_staff',
-    status: 'active',
-    lastActive: new Date().toISOString(),
-    createdAt: '2026-03-10T00:00:00.000Z',
-    updatedAt: new Date().toISOString()
   }
 ];
 

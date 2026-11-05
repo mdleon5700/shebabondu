@@ -38,7 +38,7 @@ export default function Navbar() {
   const [expandedMobileAccordions, setExpandedMobileAccordions] = useState<Record<string, boolean>>({});
   const [isMounted, setIsMounted] = useState(false);
   const [auth, setAuth] = useState<AuthState>({ isLoggedIn: false, role: null, name: '' });
-  const [walletBalance, setWalletBalance] = useState<number>(450);
+  const [walletBalance, setWalletBalance] = useState<number>(0);
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const [platformSettings, setPlatformSettings] = useState<any>(null);
   const navRef = useRef<HTMLDivElement>(null);

@@ -94,9 +94,9 @@ export default function UniversalJobWorkspace({
   const [minEducation, setMinEducation] = useState('স্নাতক বা সমমানের ডিগ্রি');
   const [minAge, setMinAge] = useState(18);
   const [maxAge, setMaxAge] = useState(30);
-  const [ageCutOffDate, setAgeCutOffDate] = useState('০১ নভেম্বর ২০২৬');
+  const [ageCutOffDate, setAgeCutOffDate] = useState('');
   const [districts, setDistricts] = useState('সকল জেলার প্রার্থীরা আবেদন করতে পারবেন');
-  const [deadline, setDeadline] = useState('৩০ নভেম্বর ২০২৬');
+  const [deadline, setDeadline] = useState('');
   const [applicationStartDate, setApplicationStartDate] = useState('');
   const [govtFee, setGovtFee] = useState(200);
   const [serviceFee, setServiceFee] = useState(50);
@@ -134,9 +134,9 @@ export default function UniversalJobWorkspace({
         setMinEducation(job.minEducation || 'স্নাতক বা সমমানের ডিগ্রি');
         setMinAge(job.minAge || 18);
         setMaxAge(job.maxAge || 30);
-        setAgeCutOffDate(job.ageCutOffDate || '০১ নভেম্বর ২০২৬');
+        setAgeCutOffDate(job.ageCutOffDate || '');
         setDistricts(job.districts || 'সকল জেলার প্রার্থীরা আবেদন করতে পারবেন');
-        setDeadline(job.deadline || '৩০ নভেম্বর ২০২৬');
+        setDeadline(job.deadline || '');
         setApplicationStartDate(job.applicationStartDate || '');
         setGovtFee(job.govtFee ?? 200);
         setServiceFee(job.serviceFee ?? 50);
@@ -184,9 +184,9 @@ export default function UniversalJobWorkspace({
         setMinEducation('স্নাতক বা সমমানের ডিগ্রি');
         setMinAge(18);
         setMaxAge(30);
-        setAgeCutOffDate('০১ নভেম্বর ২০২৬');
+        setAgeCutOffDate('');
         setDistricts('সকল জেলার প্রার্থীরা আবেদন করতে পারবেন');
-        setDeadline('৩০ নভেম্বর ২০২৬');
+        setDeadline('');
         setApplicationStartDate('');
         setGovtFee(200);
         setServiceFee(50);

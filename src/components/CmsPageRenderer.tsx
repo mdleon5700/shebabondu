@@ -54,14 +54,7 @@ export default function CmsPageRenderer({ page, fallbackContent }: CmsPageRender
         </div>
       )}
 
-      {/* 3. Fallback content attached below if sections are short */}
-      {sections.length > 0 && fallbackContent && (
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 mt-12">
-          <div className="bg-white rounded-3xl border border-slate-200 p-8 shadow-sm">
-            {fallbackContent}
-          </div>
-        </div>
-      )}
+      
 
     </div>
   );

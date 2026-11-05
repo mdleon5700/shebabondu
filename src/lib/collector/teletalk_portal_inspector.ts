@@ -1,4 +1,63 @@
 import { URL } from 'url';
+import https from 'https';
+import http from 'http';
+
+if (typeof process !== 'undefined' && process.env) {
+  process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+}
+
+const insecureHttpsAgent = new https.Agent({
+  rejectUnauthorized: false,
+  checkServerIdentity: () => undefined
+});
+
+async function safeFetchText(url: string, timeoutMs = 12000, redirectHops = 0, referer?: string): Promise<{ ok: boolean; status: number; text: string }> {
+  if (redirectHops > 5) {
+    return { ok: false, status: 508, text: 'Too many redirects' };
+  }
+
+  return new Promise((resolve) => {
+    try {
+      const isHttps = url.startsWith('https://');
+      const client = isHttps ? https : http;
+      const headers: Record<string, string> = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
+      };
+      if (referer) headers['Referer'] = referer;
+
+      const req = client.get(url, {
+        agent: isHttps ? insecureHttpsAgent : undefined,
+        rejectUnauthorized: false,
+        headers,
+        timeout: timeoutMs
+      }, (res) => {
+        if (res.statusCode && res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
+          const nextUrl = res.headers.location.startsWith('http')
+            ? res.headers.location
+            : new URL(res.headers.location, url).toString();
+          return resolve(safeFetchText(nextUrl, timeoutMs, redirectHops + 1, referer));
+        }
+
+        const statusCode = res.statusCode || 200;
+        const ok = statusCode >= 200 && statusCode < 300;
+        let body = '';
+        res.on('data', chunk => body += chunk);
+        res.on('end', () => resolve({ ok, status: statusCode, text: body }));
+        res.on('error', () => resolve({ ok: false, status: 500, text: '' }));
+      });
+
+      req.on('error', () => resolve({ ok: false, status: 500, text: '' }));
+      req.on('timeout', () => {
+        req.destroy();
+        resolve({ ok: false, status: 504, text: '' });
+      });
+    } catch {
+      resolve({ ok: false, status: 500, text: '' });
+    }
+  });
+}
+
 
 export interface TeletalkPosition {
   title: string;
@@ -100,13 +159,7 @@ export async function inspectTeletalkPortal(rawUrl: string, timeoutMs = 8000): P
     const timer = setTimeout(() => controller.abort(), timeoutMs);
 
     // 1. Fetch Root Page
-    const rootRes = await fetch(baseUrl, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
-      },
-      signal: controller.signal
-    });
+    const rootRes = await safeFetchText(baseUrl, timeoutMs);
     clearTimeout(timer);
 
     if (!rootRes.ok) {
@@ -121,7 +174,7 @@ export async function inspectTeletalkPortal(rawUrl: string, timeoutMs = 8000): P
       };
     }
 
-    const rootHtml = await rootRes.text();
+    const rootHtml = rootRes.text;
     logs.push(`Root portal fetched (${rootHtml.length} bytes)`);
 
     // 2. Organization Extraction & District resolution
@@ -189,11 +242,9 @@ export async function inspectTeletalkPortal(rawUrl: string, timeoutMs = 8000): P
     // 4. Verify Root select_circular.php status
     const selectCircularUrl = new URL('select_circular.php', baseUrl).toString();
     try {
-      const scRes = await fetch(selectCircularUrl, {
-        headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0.0.0 Safari/537.36' }
-      });
+      const scRes = await safeFetchText(selectCircularUrl, 6000);
       if (scRes.ok) {
-        const scHtml = await scRes.text();
+        const scHtml = scRes.text;
         if (scHtml.includes('time is over') || scHtml.includes('সময় শেষ') || scHtml.includes('Application time is over')) {
           deadCirculars.push({
             title: 'Root select_circular.php',
@@ -211,11 +262,9 @@ export async function inspectTeletalkPortal(rawUrl: string, timeoutMs = 8000): P
     for (const dirUrl of dirsArray) {
       logs.push(`Checking portal directory: ${dirUrl}`);
       try {
-        const dirRes = await fetch(dirUrl, {
-          headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0.0.0 Safari/537.36' }
-        });
+        const dirRes = await safeFetchText(dirUrl, 8000);
         if (!dirRes.ok) continue;
-        const dirHtml = await dirRes.text();
+        const dirHtml = dirRes.text;
 
         // Deadline check
         let deadlineIso = '';
@@ -253,10 +302,8 @@ export async function inspectTeletalkPortal(rawUrl: string, timeoutMs = 8000): P
         }
 
         if (appUrl) {
-          const appRes = await fetch(appUrl, {
-            headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0.0.0 Safari/537.36' }
-          });
-          const appHtml = await appRes.text();
+          const appRes = await safeFetchText(appUrl, 8000);
+          const appHtml = appRes.text;
 
           if (appHtml.includes('time is over') || appHtml.includes('সময় শেষ')) {
             deadCirculars.push({
@@ -283,13 +330,8 @@ export async function inspectTeletalkPortal(rawUrl: string, timeoutMs = 8000): P
             const circularId = circIdMatch[1];
             const postsUrl = new URL(`posts.php?circular_id=${encodeURIComponent(circularId)}&submitCircular=`, dirUrl).toString();
             logs.push(`Fetching active positions from ${postsUrl}`);
-            const postsRes = await fetch(postsUrl, {
-              headers: {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0.0.0 Safari/537.36',
-                'Referer': appUrl
-              }
-            });
-            const postsHtml = await postsRes.text();
+            const postsRes = await safeFetchText(postsUrl, 8000, 0, appUrl);
+            const postsHtml = postsRes.text;
 
             const postRegex = /<input[^>]+name=["']post_code["'][^>]+value=["']([^"']+)["'][^>]*>([\s\S]*?)(?:<\/label>|<\/li>)/gi;
             let pMatch;

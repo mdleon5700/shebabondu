@@ -15,7 +15,7 @@ const insecureHttpsAgent = new https.Agent({
   checkServerIdentity: () => undefined
 });
 import { JobCircular, JobPosition } from '@/lib/types';
-import { resolveCircularInput, ResolvedCircularData, repairTeletalkBengaliEncoding } from '@/lib/collector/alljobs_smart_resolver';
+import { resolveCircularInput, ResolvedCircularData, repairTeletalkBengaliEncoding, parseDetailsFromPdfText } from '@/lib/collector/alljobs_smart_resolver';
 
 export const PROFILE_DIR = path.join(process.cwd(), '.browser_profile', 'gemini_session');
 
@@ -374,23 +374,14 @@ export async function parseCircularWithGeminiBrowser(input: CircularExtractionIn
     }
   }
 
-  const effectiveOrg = resolved?.organization || input.organization || 'বাংলাদেশ সরকারি প্রতিষ্ঠান';
-  const effectiveTitle = resolved?.title || `${effectiveOrg} নতুন নিয়োগ বিজ্ঞপ্তি ২০২৬`;
-  const effectiveDeadline = resolved?.deadline || input.deadline || '২৫ নভেম্বর ২০২৬';
-  const effectivePosts = resolved?.totalPosts || 1;
-  const effectiveOfficialLink = resolved?.officialLink || input.pdfUrl || 'https://alljobs.teletalk.com.bd';
-  const effectivePdfUrl = resolved?.circularPdfUrl || input.pdfUrl || '';
-  const effectiveCategory = (resolved?.category || 'govt') as any;
-  const effectiveCategoryLabel = resolved?.categoryLabel || 'সরকারি চাকরি';
-
   // Extract raw text if available and repair Teletalk encoding
   let text = resolved?.rawText || input.rawText || '';
   if (!text) {
     try {
       if (input.pdfBuffer) {
         text = await extractTextFromPdf(input.pdfBuffer);
-      } else if (effectivePdfUrl) {
-        text = await extractTextFromPdf(effectivePdfUrl);
+      } else if (input.pdfUrl) {
+        text = await extractTextFromPdf(input.pdfUrl);
       }
     } catch (e: any) {
       console.warn('PDF text extraction fallback:', e.message);
@@ -398,6 +389,31 @@ export async function parseCircularWithGeminiBrowser(input: CircularExtractionIn
   }
 
   text = repairTeletalkBengaliEncoding(text);
+
+  // Deep parse extracted text directly
+  let textParsed: ReturnType<typeof parseDetailsFromPdfText> | null = null;
+  if (text && text.length > 50) {
+    try {
+      textParsed = parseDetailsFromPdfText(text, input.pdfUrl || '');
+    } catch (e: any) {
+      console.warn('Text deep parse notice:', e.message);
+    }
+  }
+
+  const effectiveOrg = (resolved?.organization && resolved.organization !== 'বাংলাদেশ সরকারি প্রতিষ্ঠান')
+    ? resolved.organization
+    : (textParsed?.org && textParsed.org !== 'বাংলাদেশ সরকারি প্রতিষ্ঠান')
+    ? textParsed.org
+    : input.organization || 'বাংলাদেশ সরকারি প্রতিষ্ঠান';
+
+  const effectiveTitle = resolved?.title || textParsed?.title || `${effectiveOrg} নতুন নিয়োগ বিজ্ঞপ্তি ২০২৬`;
+  const effectiveDeadline = resolved?.deadline || textParsed?.deadline || input.deadline || '২৫ নভেম্বর ২০২৬';
+  const effectivePosts = resolved?.totalPosts || textParsed?.totalPosts || 1;
+  const effectiveOfficialLink = resolved?.officialLink || textParsed?.officialLink || input.pdfUrl || 'https://alljobs.teletalk.com.bd';
+  const effectivePdfUrl = resolved?.circularPdfUrl || input.pdfUrl || '';
+  const effectiveCategory = (resolved?.category || 'govt') as any;
+  const effectiveCategoryLabel = resolved?.categoryLabel || 'সরকারি চাকরি';
+
   const excerpt = text ? text.substring(0, 5000) : `${effectiveOrg}-এর অফিশিয়াল নিয়োগ বিজ্ঞপ্তি।`;
 
   // 2. Prepare Prompt
@@ -486,9 +502,16 @@ You MUST respond ONLY with a valid JSON block inside \`\`\`json ... \`\`\` witho
   const finalDeadline = parsed?.deadline || effectiveDeadline;
 
   // Prefer verified deep parser positions if it found structured positions
-  const resolvedPositions = (resolved?.positions && resolved.positions.length > 0) ? resolved.positions : [];
-  const positions: JobPosition[] = (resolvedPositions.length > 0)
-    ? resolvedPositions
+  const deepPositions = (resolved?.positions && resolved.positions.length > 0 && resolved.positions[0].title !== 'কম্পিউটার মুদ্রাক্ষরিক / সমমান পদ')
+    ? resolved.positions
+    : (textParsed?.positions && textParsed.positions.length > 0)
+    ? textParsed.positions
+    : (resolved?.positions && resolved.positions.length > 0)
+    ? resolved.positions
+    : [];
+
+  const positions: JobPosition[] = (deepPositions.length > 0)
+    ? deepPositions
     : (Array.isArray(parsed?.positions) && parsed.positions.length > 0)
     ? parsed.positions.map((p: any) => ({
         title: p.title || 'পদবি',
@@ -500,7 +523,7 @@ You MUST respond ONLY with a valid JSON block inside \`\`\`json ... \`\`\` witho
       }))
     : [
         {
-          title: 'কম্পিউটার মুদ্রাক্ষরিক / অফিস সহকারী',
+          title: 'অফিস সহকারী / সমমান পদ',
           posts: effectivePosts,
           salary: '৯,৩০০ - ২২,৪৯০/- টাকা',
           grade: '১৬তম গ্রেড',

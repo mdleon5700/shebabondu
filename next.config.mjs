@@ -9,6 +9,7 @@ const nextConfig = {
   experimental: {
     cpus: 1,
     workerThreads: false,
+    instrumentationHook: true,
   },
   images: {
     domains: ["images.unsplash.com", "placehold.co"],

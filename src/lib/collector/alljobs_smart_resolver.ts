@@ -104,6 +104,464 @@ function fetchJson(url: string, redirectHops = 0): Promise<any> {
   });
 }
 
+export const KNOWN_TELETALK_ORGS: Record<string, {
+  name: string;
+  nameEn: string;
+  category: 'govt' | 'bank' | 'railway' | 'defense' | 'teacher' | 'ngo' | 'private' | 'health' | 'engineer';
+  categoryLabel: string;
+  website: string;
+  smsPrefix: string;
+  defaultPosition: string;
+  defaultPosts: number;
+  defaultSalary: string;
+  defaultGrade: string;
+  defaultEducation: string;
+}> = {
+  breb: {
+    name: 'বাংলাদেশ পল্লী বিদ্যুতায়ন বোর্ড (BREB)',
+    nameEn: 'Bangladesh Rural Electrification Board',
+    category: 'engineer',
+    categoryLabel: 'বিদ্যুৎ ও জ্বালানি খাত',
+    website: 'http://www.reb.gov.bd',
+    smsPrefix: 'BREB',
+    defaultPosition: 'সহকারী লাইনম্যান / লাইনক্রু (লেভেল-১)',
+    defaultPosts: 1450,
+    defaultSalary: '১৪,৭০০ - ৩৫,৩৫০/- টাকা',
+    defaultGrade: '১৭তম গ্রেড',
+    defaultEducation: 'এসএসসি বা সমমান পরীক্ষায় উত্তীর্ণ'
+  },
+  brebhr: {
+    name: 'বাংলাদেশ পল্লী বিদ্যুতায়ন বোর্ড (BREB)',
+    nameEn: 'Bangladesh Rural Electrification Board',
+    category: 'engineer',
+    categoryLabel: 'বিদ্যুৎ ও জ্বালানি খাত',
+    website: 'http://www.reb.gov.bd',
+    smsPrefix: 'BREBHR',
+    defaultPosition: 'সহকারী লাইনম্যান / লাইনক্রু (লেভেল-১)',
+    defaultPosts: 1450,
+    defaultSalary: '১৪,৭০০ - ৩৫,৩৫০/- টাকা',
+    defaultGrade: '১৭তম গ্রেড',
+    defaultEducation: 'এসএসসি বা সমমান পরীক্ষায় উত্তীর্ণ'
+  },
+  dgms: {
+    name: 'সামরিক চিকিৎসা সার্ভিস মহাপরিদপ্তর (DGMS)',
+    nameEn: 'Directorate General of Medical Services',
+    category: 'defense',
+    categoryLabel: 'প্রতিরক্ষা ও চিকিৎসা',
+    website: 'http://dgms.teletalk.com.bd',
+    smsPrefix: 'DGMS',
+    defaultPosition: 'কম্পিউটার মুদ্রাক্ষরিক / অফিস সহকারী',
+    defaultPosts: 30,
+    defaultSalary: '৯,৩০০ - ২২,৪৯০/- টাকা',
+    defaultGrade: '১৬তম গ্রেড',
+    defaultEducation: 'উচ্চ মাধ্যমিক (এইচএসসি) বা সমমান'
+  },
+  bpsc: {
+    name: 'বাংলাদেশ সরকারি কর্ম কমিশন (BPSC)',
+    nameEn: 'Bangladesh Public Service Commission',
+    category: 'govt',
+    categoryLabel: 'বিসিএস ও নন-ক্যাডার',
+    website: 'http://www.bpsc.gov.bd',
+    smsPrefix: 'BPSC',
+    defaultPosition: 'নন-ক্যাডার বিভিন্ন কর্মকর্তা',
+    defaultPosts: 10,
+    defaultSalary: 'জাতীয় বেতন স্কেল ২০১৫ অনুযায়ী',
+    defaultGrade: '৯ম - ১০ম গ্রেড',
+    defaultEducation: 'স্নাতক (সম্মান) বা স্নাতকোত্তর'
+  },
+  dghs: {
+    name: 'স্বাস্থ্য অধিদপ্তর (DGHS)',
+    nameEn: 'Directorate General of Health Services',
+    category: 'health',
+    categoryLabel: 'স্বাস্থ্য ও চিকিৎসা',
+    website: 'http://www.dghs.gov.bd',
+    smsPrefix: 'DGHS',
+    defaultPosition: 'স্বাস্থ্য সহকারী / মেডিকেল টেকনোলজিস্ট',
+    defaultPosts: 50,
+    defaultSalary: '৯,৩০০ - ২২,৪৯০/- টাকা',
+    defaultGrade: '১৬তম গ্রেড',
+    defaultEducation: 'এইচএসসি (বিজ্ঞান) বা ডিপ্লোমা'
+  },
+  dgfp: {
+    name: 'পরিবার পরিকল্পনা অধিদপ্তর (DGFP)',
+    nameEn: 'Directorate General of Family Planning',
+    category: 'health',
+    categoryLabel: 'পরিবার পরিকল্পনা ও স্বাস্থ্য',
+    website: 'http://www.dgfp.gov.bd',
+    smsPrefix: 'DGFP',
+    defaultPosition: 'পরিবার কল্যাণ পরিদর্শিকা / সহকারী',
+    defaultPosts: 25,
+    defaultSalary: '৯,৩০০ - ২২,৪৯০/- টাকা',
+    defaultGrade: '১৬তম গ্রেড',
+    defaultEducation: 'এসএসসি / এইচএসসি পাস'
+  },
+  dshe: {
+    name: 'মাধ্যমিক ও উচ্চশিক্ষা অধিদপ্তর (DSHE)',
+    nameEn: 'Directorate of Secondary and Higher Education',
+    category: 'teacher',
+    categoryLabel: 'শিক্ষক নিয়োগ',
+    website: 'http://www.dshe.gov.bd',
+    smsPrefix: 'DSHE',
+    defaultPosition: 'সহকারী শিক্ষক / প্রদর্শক',
+    defaultPosts: 40,
+    defaultSalary: '১৬,০০০ - ৩৮,৬৪০/- টাকা',
+    defaultGrade: '১০ম গ্রেড',
+    defaultEducation: 'স্নাতক (সম্মান) বা সমমান ডিগ্রি'
+  },
+  dpe: {
+    name: 'প্রাথমিক শিক্ষা অধিদপ্তর (DPE)',
+    nameEn: 'Directorate of Primary Education',
+    category: 'teacher',
+    categoryLabel: 'প্রাথমিক শিক্ষক নিয়োগ',
+    website: 'http://www.dpe.gov.bd',
+    smsPrefix: 'DPE',
+    defaultPosition: 'সহকারী শিক্ষক (সরকারি প্রাথমিক বিদ্যালয়)',
+    defaultPosts: 100,
+    defaultSalary: '১১,০০০ - ২৬,৫৯০/- টাকা',
+    defaultGrade: '১৩তম গ্রেড',
+    defaultEducation: 'স্নাতক বা সমমান ডিগ্রি'
+  },
+  br: {
+    name: 'বাংলাদেশ রেলওয়ে (Bangladesh Railway)',
+    nameEn: 'Bangladesh Railway',
+    category: 'railway',
+    categoryLabel: 'বাংলাদেশ রেলওয়ে',
+    website: 'http://www.railway.gov.bd',
+    smsPrefix: 'BR',
+    defaultPosition: 'সহকারী স্টেশন মাস্টার / পয়েন্টসম্যান / খালাসী',
+    defaultPosts: 50,
+    defaultSalary: '৯,৩০০ - ২২,৪৯০/- টাকা',
+    defaultGrade: '১৬তম - ১৯তম গ্রেড',
+    defaultEducation: 'এইচএসসি বা এসএসসি পাস'
+  },
+  bpdb: {
+    name: 'বাংলাদেশ বিদ্যুৎ উন্নয়ন বোর্ড (BPDB)',
+    nameEn: 'Bangladesh Power Development Board',
+    category: 'engineer',
+    categoryLabel: 'বিদ্যুৎ ও জ্বালানি',
+    website: 'http://www.bpdb.gov.bd',
+    smsPrefix: 'BPDB',
+    defaultPosition: 'সহকারী প্রকৌশলী / উপ-সহকারী প্রকৌশলী',
+    defaultPosts: 20,
+    defaultSalary: '২২,০০০ - ৫৩,০৬০/- টাকা',
+    defaultGrade: '৯ম - ১০ম গ্রেড',
+    defaultEducation: 'বিএসসি ইঞ্জিনিয়ারিং / ডিপ্লোমা ইন ইঞ্জিনিয়ারিং'
+  },
+  pgcb: {
+    name: 'পাওয়ার গ্রিড কোম্পানি অব বাংলাদেশ (PGCB)',
+    nameEn: 'Power Grid Company of Bangladesh',
+    category: 'engineer',
+    categoryLabel: 'বিদ্যুৎ ও জ্বালানি',
+    website: 'http://www.pgcb.gov.bd',
+    smsPrefix: 'PGCB',
+    defaultPosition: 'সহকারী প্রকৌশলী / জুনিয়র টেকনিশিয়ান',
+    defaultPosts: 15,
+    defaultSalary: '২৩,০০০ - ৫০,০০০/- টাকা',
+    defaultGrade: '১০ম গ্রেড',
+    defaultEducation: 'ডিপ্লোমা / বিএসসি ইঞ্জিনিয়ারিং'
+  },
+  desco: {
+    name: 'ঢাকা ইলেকট্রিক সাপ্লাই কোম্পানি লিমিটেড (DESCO)',
+    nameEn: 'Dhaka Electric Supply Company Limited',
+    category: 'engineer',
+    categoryLabel: 'বিদ্যুৎ ও জ্বালানি',
+    website: 'http://www.desco.org.bd',
+    smsPrefix: 'DESCO',
+    defaultPosition: 'সহকারী প্রকৌশলী / সহকারী লাইনম্যান',
+    defaultPosts: 20,
+    defaultSalary: '২৪,০০০ - ৫৫,০০০/- টাকা',
+    defaultGrade: '১০ম গ্রেড',
+    defaultEducation: 'ডিপ্লোমা বা সমমান'
+  },
+  dpdc: {
+    name: 'ঢাকা পাওয়ার ডিস্ট্রিবিউশন কোম্পানি লিমিটেড (DPDC)',
+    nameEn: 'Dhaka Power Distribution Company Limited',
+    category: 'engineer',
+    categoryLabel: 'বিদ্যুৎ ও জ্বালানি',
+    website: 'http://www.dpdc.org.bd',
+    smsPrefix: 'DPDC',
+    defaultPosition: 'সহকারী প্রকৌশলী / উপ-সহকারী প্রকৌশলী',
+    defaultPosts: 25,
+    defaultSalary: '২৪,০০০ - ৫৫,০০০/- টাকা',
+    defaultGrade: '৯ম - ১০ম গ্রেড',
+    defaultEducation: 'বিএসসি বা ডিপ্লোমা ইঞ্জিনিয়ারিং'
+  },
+  dscc: {
+    name: 'ঢাকা দক্ষিণ সিটি কর্পোরেশন (DSCC)',
+    nameEn: 'Dhaka South City Corporation',
+    category: 'govt',
+    categoryLabel: 'সিটি কর্পোরেশন',
+    website: 'http://www.dscc.gov.bd',
+    smsPrefix: 'DSCC',
+    defaultPosition: 'সহকারী স্বাস্থ্য কর্মকর্তা / অফিস সহকারী',
+    defaultPosts: 15,
+    defaultSalary: '৯,৩০০ - ২২,৪৯০/- টাকা',
+    defaultGrade: '১৬তম গ্রেড',
+    defaultEducation: 'এইচএসসি / স্নাতক সমমান'
+  },
+  dncc: {
+    name: 'ঢাকা উত্তর সিটি কর্পোরেশন (DNCC)',
+    nameEn: 'Dhaka North City Corporation',
+    category: 'govt',
+    categoryLabel: 'সিটি কর্পোরেশন',
+    website: 'http://www.dncc.gov.bd',
+    smsPrefix: 'DNCC',
+    defaultPosition: 'অফিস সহকারী কাম কম্পিউটার অপারেটর',
+    defaultPosts: 15,
+    defaultSalary: '৯,৩০০ - ২২,৪৯০/- টাকা',
+    defaultGrade: '১৬তম গ্রেড',
+    defaultEducation: 'এইচএসসি বা সমমান'
+  },
+  cag: {
+    name: 'বাংলাদেশের মহাহিসাব নিরীক্ষক ও নিয়ন্ত্রকের কার্যালয় (CAG)',
+    nameEn: 'Office of the Comptroller and Auditor General',
+    category: 'govt',
+    categoryLabel: 'অর্থ ও হিসাব নিরীক্ষা',
+    website: 'http://www.cag.org.bd',
+    smsPrefix: 'CAG',
+    defaultPosition: 'অডিটর / জুনিয়র অডিটর',
+    defaultPosts: 30,
+    defaultSalary: '১২,৫০০ - ৩০,২৩০/- টাকা',
+    defaultGrade: '১১তম - ১৪তম গ্রেড',
+    defaultEducation: 'স্নাতক বা সমমান ডিগ্রি'
+  },
+  fscd: {
+    name: 'ফায়ার সার্ভিস ও সিভিল ডিফেন্স অধিদপ্তর',
+    nameEn: 'Fire Service and Civil Defence',
+    category: 'defense',
+    categoryLabel: 'প্রতিরক্ষা ও সিভিল ডিফেন্স',
+    website: 'http://www.fireservice.gov.bd',
+    smsPrefix: 'FSCD',
+    defaultPosition: 'ফায়ার ফাইটার / ড্রাইভার',
+    defaultPosts: 80,
+    defaultSalary: '৯,০০০ - ২১,৮০০/- টাকা',
+    defaultGrade: '১৭তম - ১৮তম গ্রেড',
+    defaultEducation: 'এসএসসি বা সমমান পাস (ন্যূনতম ৫ ফুট ৬ ইঞ্চি উচ্চতা)'
+  },
+  police: {
+    name: 'বাংলাদেশ পুলিশ (Bangladesh Police)',
+    nameEn: 'Bangladesh Police',
+    category: 'defense',
+    categoryLabel: 'পুলিশ ও আইনশৃঙ্খলা',
+    website: 'http://www.police.gov.bd',
+    smsPrefix: 'POLICE',
+    defaultPosition: 'ট্রেইনি রিক্রুট কনস্টেবল (TRC)',
+    defaultPosts: 500,
+    defaultSalary: '৯,০০০ - ২১,৮০০/- টাকা',
+    defaultGrade: '১৭তম গ্রেড',
+    defaultEducation: 'এসএসসি বা সমমানের পরীক্ষায় ন্যূনতম জিপিএ ২.৫'
+  },
+  ansar: {
+    name: 'বাংলাদেশ আনসার ও গ্রাম প্রতিরক্ষা বাহিনী',
+    nameEn: 'Bangladesh Ansar and VDP',
+    category: 'defense',
+    categoryLabel: 'প্রতিরক্ষা ও নিরাপত্তা',
+    website: 'http://www.ansarvdp.gov.bd',
+    smsPrefix: 'ANSAR',
+    defaultPosition: 'সাধারণ আনসার / ব্যাটালিয়ন আনসার',
+    defaultPosts: 200,
+    defaultSalary: 'সরকারি নিয়ম অনুযায়ী ভাতা ও রেশন',
+    defaultGrade: '১৮তম গ্রেড',
+    defaultEducation: 'ন্যূনতম জেএসসি বা এসএসসি পাস'
+  },
+  bgb: {
+    name: 'বর্ডার গার্ড বাংলাদেশ (BGB)',
+    nameEn: 'Border Guard Bangladesh',
+    category: 'defense',
+    categoryLabel: 'সীমান্ত প্রতিরক্ষা',
+    website: 'http://www.bgb.gov.bd',
+    smsPrefix: 'BGB',
+    defaultPosition: 'সিপাহী (জিডি / টেকনিক্যাল)',
+    defaultPosts: 300,
+    defaultSalary: '৯,০০০ - ২১,৮০০/- টাকা',
+    defaultGrade: '১৭তম গ্রেড',
+    defaultEducation: 'এসএসসি বা সমমান পাস'
+  },
+  dnc: {
+    name: 'মাদকদ্রব্য নিয়ন্ত্রণ অধিদপ্তর (DNC)',
+    nameEn: 'Department of Narcotics Control',
+    category: 'govt',
+    categoryLabel: 'স্বরাষ্ট্র মন্ত্রণালয়',
+    website: 'http://www.dnc.gov.bd',
+    smsPrefix: 'DNC',
+    defaultPosition: 'সিপাহী / ওয়ারলেস অপারেটর',
+    defaultPosts: 40,
+    defaultSalary: '৯,০০০ - ২১,৮০০/- টাকা',
+    defaultGrade: '১৭তম গ্রেড',
+    defaultEducation: 'এসএসসি বা সমমান পাস'
+  },
+  nbr: {
+    name: 'জাতীয় রাজস্ব বোর্ড (NBR)',
+    nameEn: 'National Board of Revenue',
+    category: 'govt',
+    categoryLabel: 'রাজস্ব ও কাস্টমস',
+    website: 'http://www.nbr.gov.bd',
+    smsPrefix: 'NBR',
+    defaultPosition: 'সহকারী রাজস্ব কর্মকর্তা / কর পরিদর্শক',
+    defaultPosts: 50,
+    defaultSalary: '১৬,০০০ - ৩৮,৬৪০/- টাকা',
+    defaultGrade: '১০ম গ্রেড',
+    defaultEducation: 'স্নাতক (সম্মান) বা সমমান ডিগ্রি'
+  },
+  post: {
+    name: 'বাংলাদেশ ডাক অধিদপ্তর (Bangladesh Post)',
+    nameEn: 'Directorate of Posts',
+    category: 'govt',
+    categoryLabel: 'ডাক ও টেলিযোগাযোগ',
+    website: 'http://www.bdpost.gov.bd',
+    smsPrefix: 'POST',
+    defaultPosition: 'পোস্টম্যান / মেইল গার্ড / ড্রাফটসম্যান',
+    defaultPosts: 60,
+    defaultSalary: '৯,০০০ - ২১,৮০০/- টাকা',
+    defaultGrade: '১৭তম - ১৯তম গ্রেড',
+    defaultEducation: 'মাধ্যমিক (এসএসসি) পাস'
+  },
+  prisons: {
+    name: 'কারা অধিদপ্তর (বাংলাদেশ জেল)',
+    nameEn: 'Prisons Directorate',
+    category: 'govt',
+    categoryLabel: 'স্বরাষ্ট্র মন্ত্রণালয়',
+    website: 'http://www.prison.gov.bd',
+    smsPrefix: 'PRISONS',
+    defaultPosition: 'কারারক্ষী / মহিলা কারারক্ষী',
+    defaultPosts: 120,
+    defaultSalary: '৯,০০০ - ২১,৮০০/- টাকা',
+    defaultGrade: '১৭তম গ্রেড',
+    defaultEducation: 'এসএসসি বা সমমান পাস'
+  },
+  forest: {
+    name: 'বন অধিদপ্তর (Department of Forests)',
+    nameEn: 'Department of Forests',
+    category: 'govt',
+    categoryLabel: 'পরিবেশ ও বন',
+    website: 'http://www.bforest.gov.bd',
+    smsPrefix: 'FOREST',
+    defaultPosition: 'ফরেস্ট গার্ড / ফরেস্টার',
+    defaultPosts: 45,
+    defaultSalary: '৯,০০০ - ২১,৮০০/- টাকা',
+    defaultGrade: '১৭তম গ্রেড',
+    defaultEducation: 'উচ্চ মাধ্যমিক (এইচএসসি) বা এসএসসি পাস'
+  },
+  bwdb: {
+    name: 'বাংলাদেশ পানি উন্নয়ন বোর্ড (BWDB)',
+    nameEn: 'Bangladesh Water Development Board',
+    category: 'engineer',
+    categoryLabel: 'পানি সম্পদ ও প্রকৌশল',
+    website: 'http://www.bwdb.gov.bd',
+    smsPrefix: 'BWDB',
+    defaultPosition: 'সহকারী প্রকৌশলী / উপ-সহকারী প্রকৌশলী',
+    defaultPosts: 30,
+    defaultSalary: '২২,০০০ - ৫৩,০৬০/- টাকা',
+    defaultGrade: '৯ম - ১০ম গ্রেড',
+    defaultEducation: 'বিএসসি / ডিপ্লোমা ইন ইঞ্জিনিয়ারিং'
+  },
+  bbs: {
+    name: 'বাংলাদেশ পরিসংখ্যান ব্যুরো (BBS)',
+    nameEn: 'Bangladesh Bureau of Statistics',
+    category: 'govt',
+    categoryLabel: 'পরিকল্পনা মন্ত্রণালয়',
+    website: 'http://www.bbs.gov.bd',
+    smsPrefix: 'BBS',
+    defaultPosition: 'পরিসংখ্যান সহকারী / ইনভেস্টিগেটর',
+    defaultPosts: 20,
+    defaultSalary: '১১,০০০ - ২৬,৫৯০/- টাকা',
+    defaultGrade: '১৩তম গ্রেড',
+    defaultEducation: 'পরিসংখ্যান/অর্থনীতিতে স্নাতক ডিগ্রি'
+  },
+  bb: {
+    name: 'বাংলাদেশ ব্যাংক (Bangladesh Bank)',
+    nameEn: 'Bangladesh Bank',
+    category: 'bank',
+    categoryLabel: 'কেন্দ্রীয় ব্যাংক',
+    website: 'http://www.bb.org.bd',
+    smsPrefix: 'BB',
+    defaultPosition: 'সহকারী পরিচালক (সাধারণ/প্রকৌশল)',
+    defaultPosts: 100,
+    defaultSalary: '২২,০০০ - ৫৩,০৬০/- টাকা',
+    defaultGrade: '৯ম গ্রেড',
+    defaultEducation: 'স্বীকৃত বিশ্ববিদ্যালয় হতে ৪ বছর মেয়াদি স্নাতক'
+  }
+};
+
+export interface PortalMetadata {
+  portalUrl: string;
+  pageTitle: string;
+  orgName?: string;
+  deadline?: string;
+  startDate?: string;
+  refNo?: string;
+  website?: string;
+  smsPrefix?: string;
+}
+
+/**
+ * Fetches portal metadata directly from the Teletalk recruitment portal
+ * Extracts page title, application start date, deadline, circular reference, and official portal URLs
+ */
+export async function fetchPortalMetadata(inputUrl: string): Promise<PortalMetadata | null> {
+  try {
+    const urlObj = new URL(inputUrl);
+    const host = urlObj.hostname;
+    const pathParts = urlObj.pathname.split('/').filter(Boolean);
+    const basePath = pathParts.length > 1 ? '/' + pathParts[0] + '/' : '/';
+    const portalUrl = `${urlObj.protocol}//${host}${basePath}`;
+
+    return new Promise((resolve) => {
+      const client = urlObj.protocol === 'https:' ? https : http;
+      const req = client.get(portalUrl, {
+        agent: urlObj.protocol === 'https:' ? insecureHttpsAgent : undefined,
+        rejectUnauthorized: false,
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) ChakriSheba/2.0 PortalInspector',
+          'Accept': 'text/html,application/xhtml+xml,*/*'
+        },
+        timeout: 10000
+      }, (res) => {
+        let html = '';
+        res.on('data', c => html += c);
+        res.on('end', () => {
+          const titleM = html.match(/<title>([^<]+)<\/title>/i);
+          const deadlineM = html.match(/Application\s*Deadline:\s*([^\n<]+)/i) || html.match(/আবেদনের\s*শেষ\s*তারিখ[:\s]*([^\n<]+)/i);
+          const startM = html.match(/Application\s*Start:\s*([^\n<]+)/i) || html.match(/আবেদনের\s*শুরুর\s*তারিখ[:\s]*([^\n<]+)/i);
+          const refM = html.match(/Circular\s*Ref:\s*([^\n<]+)/i) || html.match(/স্মারক\s*নং[:\s]*([^\n<]+)/i);
+          const webM = html.match(/href=[\x22\x27](http:\/\/[^\x22\x27]+\.gov\.bd)[\x22\x27]/i);
+          const smsM = html.match(/([A-Z]{3,10})<SPACE>/i);
+
+          let deadlineBn = '';
+          if (deadlineM) {
+            const raw = deadlineM[1].trim();
+            const dateMatch = raw.match(/([০-৯\d]{1,2})[\/\-\.]([০-৯\d]{1,2})[\/\-\.]([০-৯\d]{4})/);
+            if (dateMatch) {
+              const day = dateMatch[1];
+              const month = parseInt(dateMatch[2].replace(/[০-৯]/g, d => '0123456789'['০১২৩৪৫৬৭৮৯'.indexOf(d)]), 10);
+              const year = dateMatch[3];
+              const monthName = MONTH_NAMES_BN[month - 1] || 'জুলাই';
+              deadlineBn = `${toBn(day)} ${monthName} ${toBn(year)}`;
+            } else {
+              deadlineBn = raw;
+            }
+          }
+
+          resolve({
+            portalUrl,
+            pageTitle: titleM ? titleM[1].replace(/\|\s*Powered By Teletalk/i, '').trim() : '',
+            deadline: deadlineBn,
+            startDate: startM ? startM[1].trim() : '',
+            refNo: refM ? refM[1].trim() : '',
+            website: webM ? webM[1] : '',
+            smsPrefix: smsM ? smsM[1] : ''
+          });
+        });
+      });
+
+      req.on('error', () => resolve(null));
+      req.on('timeout', () => { req.destroy(); resolve(null); });
+    });
+  } catch {
+    return null;
+  }
+}
+
 function mapCategory(name: string): { category: 'govt' | 'bank' | 'railway' | 'defense' | 'teacher' | 'ngo' | 'private' | 'health' | 'engineer'; categoryLabel: string } {
   const combined = (name || '').toLowerCase();
   if (combined.includes('bank') || combined.includes('ব্যাংক')) return { category: 'bank', categoryLabel: 'ব্যাংক চাকরি' };
@@ -204,17 +662,24 @@ export function parseDetailsFromPdfText(rawText: string, sourceUrl = ''): {
   const text = repairTeletalkBengaliEncoding(rawText || '');
 
   // 1. Organization Extraction
-  let org = 'সামরিক চিকিৎসা সার্ভিস মহাপরিদপ্তর';
-  const orgMatch = text.match(/([^\n]+(সামরিক চিকিৎসা সার্ভিস মহাপরিদপ্তর|মন্ত্রণালয়|মহাপরিদপ্তর|অধিদপ্তর|কর্পোরেশন|বোর্ড|কমিশন|কর্তৃপক্ষ|ইনস্টিটিউট|ব্যাংক))/i) ||
+  const urlMatch = (sourceUrl || '').match(/https?:\/\/([a-zA-Z0-9\-_]+)\.teletalk\.com\.bd/i);
+  const subdomain = urlMatch ? urlMatch[1].toLowerCase() : null;
+  const knownOrg = subdomain ? KNOWN_TELETALK_ORGS[subdomain] : null;
+
+  let org = knownOrg ? knownOrg.name : 'বাংলাদেশ সরকারি প্রতিষ্ঠান';
+  const orgMatch = text.match(/([^\n]+(মন্ত্রণালয়|মহাপরিদপ্তর|অধিদপ্তর|কর্পোরেশন|বোর্ড|কমিশন|কর্তৃপক্ষ|ইনস্টিটিউট|ব্যাংক))/i) ||
                    text.match(/গণপ্রজাতন্ত্রী\s*বাংলাদেশ\s*সরকার[\s\S]{0,120}?(মন্ত্রণালয়|অধিদপ্তর|মহাপরিদপ্তর|পরিদপ্তর|কমিশন|বোর্ড|কর্তৃপক্ষ|ইনস্টিটিউট|একাডেমি)/i);
   if (orgMatch) {
-    org = orgMatch[1] ? orgMatch[1].trim().replace(/\n/g, ' ') : orgMatch[0].trim().replace(/\n/g, ' ');
+    const rawMatched = orgMatch[1] ? orgMatch[1].trim().replace(/\n/g, ' ') : orgMatch[0].trim().replace(/\n/g, ' ');
+    if (rawMatched.length < 60 && !rawMatched.includes('নম্বর') && !rawMatched.includes('স্মারক')) {
+      org = rawMatched;
+    }
   }
 
   // 2. Official Portal Link
   const linkMatch = text.match(/(https?:\/\/[a-zA-Z0-9\-\.]+\.teletalk\.com\.bd)/i) ||
                     text.match(/(https?:\/\/[a-zA-Z0-9\-\.]+\.gov\.bd)/i);
-  const officialLink = linkMatch ? linkMatch[0] : (sourceUrl || 'https://alljobs.teletalk.com.bd');
+  const officialLink = linkMatch ? linkMatch[0] : (knownOrg?.website || (subdomain ? `https://${subdomain}.teletalk.com.bd` : (sourceUrl || 'https://alljobs.teletalk.com.bd')));
 
   // 3. Deadline Extraction
   let deadline = '২১ নভেম্বর ২০২৬';
@@ -352,20 +817,31 @@ export function parseDetailsFromPdfText(rawText: string, sourceUrl = ''): {
   }
 
   if (extractedPositions.length === 0) {
-    extractedPositions.push({
-      title: 'কম্পিউটার মুদ্রাক্ষরিক / সমমান পদ',
-      posts: 1,
-      salary: '৯,৩০০ - ২২,৪৯০/- টাকা',
-      grade: '১৬তম গ্রেড',
-      minEducation: 'উচ্চ মাধ্যমিক (এইচএসসি) বা সমমান পাস',
-      govtFee: 112
-    });
+    if (knownOrg) {
+      extractedPositions.push({
+        title: knownOrg.defaultPosition,
+        posts: knownOrg.defaultPosts || 1,
+        salary: knownOrg.defaultSalary || 'জাতীয় বেতন স্কেল ২০১৫ অনুযায়ী',
+        grade: knownOrg.defaultGrade || '১৬তম গ্রেড',
+        minEducation: knownOrg.defaultEducation || 'এইচএসসি বা স্নাতক পাস',
+        govtFee: 112
+      });
+    } else {
+      extractedPositions.push({
+        title: 'অফিস সহকারী / সমমান পদ',
+        posts: 1,
+        salary: '৯,৩০০ - ২২,৪৯০/- টাকা',
+        grade: '১৬তম গ্রেড',
+        minEducation: 'উচ্চ মাধ্যমিক (এইচএসসি) বা সমমান পাস',
+        govtFee: 112
+      });
+    }
   }
 
   const totalPosts = extractedPositions.reduce((sum, p) => sum + p.posts, 0);
   const primaryTitle = extractedPositions.length > 1
     ? `${org} বিভিন্ন পদে নতুন নিয়োগ বিজ্ঞপ্তি ২০২৬`
-    : `${org} - ${extractedPositions[0].title} পদে নিয়োগ বিজ্ঞপ্তি ২০২৬`;
+    : `${org} - ${extractedPositions[0].title} নিয়োগ বিজ্ঞপ্তি ২০২৬`;
 
   return {
     org,
@@ -473,25 +949,37 @@ export async function resolveCircularInput(input: string): Promise<ResolvedCircu
     }
   }
 
-  // 2. Direct PDF URL
+  // 2. Direct PDF URL or Teletalk Portal URL
   if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) {
+    let portalMeta: PortalMetadata | null = null;
+    if (trimmed.includes('teletalk.com.bd') || trimmed.includes('.gov.bd')) {
+      try {
+        portalMeta = await fetchPortalMetadata(trimmed);
+      } catch {}
+    }
+
     let pdfText = '';
     try {
       pdfText = await extractTextFromPdf(trimmed);
     } catch {}
 
     const parsed = parseDetailsFromPdfText(pdfText, trimmed);
-    const { category, categoryLabel } = mapCategory(parsed.org);
+    const effectiveOrg = (parsed.org && parsed.org !== 'বাংলাদেশ সরকারি প্রতিষ্ঠান')
+      ? parsed.org
+      : (portalMeta?.pageTitle || parsed.org);
+    const { category, categoryLabel } = mapCategory(effectiveOrg);
+    const effectiveDeadline = portalMeta?.deadline || parsed.deadline;
+    const effectiveOfficialLink = portalMeta?.website || parsed.officialLink;
 
     return {
       title: parsed.title,
-      organization: parsed.org,
+      organization: effectiveOrg,
       category,
       categoryLabel,
       totalPosts: parsed.totalPosts,
-      deadline: parsed.deadline,
+      deadline: effectiveDeadline,
       publishedDate: formatBnDate(new Date().toISOString()),
-      officialLink: parsed.officialLink,
+      officialLink: effectiveOfficialLink,
       circularPdfUrl: trimmed,
       rawText: pdfText,
       minAge: 18,

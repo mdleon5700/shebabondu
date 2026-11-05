@@ -37,3 +37,4 @@ if (!fs.existsSync(PROFILE_DIR)) {
     process.exit(1);
   }
 })();
+

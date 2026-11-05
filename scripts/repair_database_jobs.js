@@ -18,3 +18,4 @@ for (const [id, job] of Object.entries(jobs)) {
 
 fs.writeFileSync(storePath, JSON.stringify(db, null, 2), 'utf8');
 console.log('✅ Repaired and enriched all database jobs with real PDF URLs and rich editorial overviews!');
+

@@ -67,3 +67,4 @@ if (db.jobs['job-71ded927-d84e-437a-ad71-42c44682ed5f']) {
 
 fs.writeFileSync(localStorePath, JSON.stringify(db, null, 2), 'utf8');
 console.log(`✅ Successfully enriched and saved ${Object.keys(db.jobs).length} jobs into local_store.json! Every job now has a rich 4-paragraph Bengali editorial overview and verified PDF URL.`);
+

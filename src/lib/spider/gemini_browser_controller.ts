@@ -4,7 +4,7 @@ import fs from 'fs';
 import https from 'https';
 import { extractText } from 'unpdf';
 import { JobCircular, JobPosition } from '@/lib/types';
-import { resolveCircularInput, ResolvedCircularData } from '@/lib/collector/alljobs_smart_resolver';
+import { resolveCircularInput, ResolvedCircularData, repairTeletalkBengaliEncoding } from '@/lib/collector/alljobs_smart_resolver';
 
 export const PROFILE_DIR = path.join(process.cwd(), '.browser_profile', 'gemini_session');
 
@@ -327,7 +327,7 @@ export async function parseCircularWithGeminiBrowser(input: CircularExtractionIn
   const effectiveCategory = (resolved?.category || 'govt') as any;
   const effectiveCategoryLabel = resolved?.categoryLabel || 'সরকারি চাকরি';
 
-  // Extract raw text if available
+  // Extract raw text if available and repair Teletalk encoding
   let text = resolved?.rawText || input.rawText || '';
   if (!text) {
     if (input.pdfBuffer) {
@@ -337,6 +337,7 @@ export async function parseCircularWithGeminiBrowser(input: CircularExtractionIn
     }
   }
 
+  text = repairTeletalkBengaliEncoding(text);
   const excerpt = text ? text.substring(0, 5000) : `${effectiveOrg}-এর অফিশিয়াল নিয়োগ বিজ্ঞপ্তি।`;
 
   // 2. Prepare Prompt
@@ -366,17 +367,17 @@ You MUST respond ONLY with a valid JSON block inside \`\`\`json ... \`\`\` witho
   "totalPosts": ${effectivePosts},
   "officialLink": "${effectiveOfficialLink}",
   "salary": "৯,৩০০ - ৫৩,০৬০/- টাকা",
-  "grade": "১০ম থেকে ১৬তম গ্রেড",
+  "grade": "১০ম থেকে ২০তম গ্রেড",
   "education": "এইচএসসি / স্নাতক বা সমমান পাস",
   "editorialOverview": "৩ থেকে ৪ প্যারাগ্রাফের আকর্ষণীয় প্রমিত বাংলা সম্পাদকীয় ওভারভিউ।",
   "positions": [
     {
       "title": "${resolved?.positions?.[0]?.title || 'কম্পিউটার মুদ্রাক্ষরিক'}",
-      "posts": ${effectivePosts},
-      "salary": "৯,৩০০ - ২২,৪৯০/- টাকা",
-      "grade": "১৬তম গ্রেড",
-      "minEducation": "উচ্চ মাধ্যমিক (এইচএসসি) বা সমমান",
-      "govtFee": 112
+      "posts": ${resolved?.positions?.[0]?.posts || effectivePosts},
+      "salary": "${resolved?.positions?.[0]?.salary || '৯,৩০০ - ২২,৪৯০/- টাকা'}",
+      "grade": "${resolved?.positions?.[0]?.grade || '১৬তম গ্রেড'}",
+      "minEducation": "${resolved?.positions?.[0]?.minEducation || 'উচ্চ মাধ্যমিক (এইচএসসি) বা সমমান'}",
+      "govtFee": ${resolved?.positions?.[0]?.govtFee || 112}
     }
   ],
   "requirements": [
@@ -423,9 +424,12 @@ You MUST respond ONLY with a valid JSON block inside \`\`\`json ... \`\`\` witho
   const finalOrg = parsed?.organization || effectiveOrg;
   const finalTitle = parsed?.title || effectiveTitle;
   const finalDeadline = parsed?.deadline || effectiveDeadline;
-  const finalPosts = parsed?.totalPosts || effectivePosts;
 
-  const positions: JobPosition[] = (Array.isArray(parsed?.positions) && parsed.positions.length > 0)
+  // Prefer verified deep parser positions if it found structured positions
+  const resolvedPositions = (resolved?.positions && resolved.positions.length > 0) ? resolved.positions : [];
+  const positions: JobPosition[] = (resolvedPositions.length >= (parsed?.positions?.length || 0))
+    ? resolvedPositions
+    : (Array.isArray(parsed?.positions) && parsed.positions.length > 0)
     ? parsed.positions.map((p: any) => ({
         title: p.title || 'পদবি',
         posts: parseInt(String(p.posts || p.vacancies || '1').replace(/\D/g, '')) || 1,
@@ -434,17 +438,18 @@ You MUST respond ONLY with a valid JSON block inside \`\`\`json ... \`\`\` witho
         minEducation: p.minEducation || p.education || 'এইচএসসি / স্নাতক পাস',
         govtFee: typeof p.govtFee === 'number' ? p.govtFee : 112
       }))
-    : (resolved?.positions || [
+    : [
         {
           title: 'কম্পিউটার মুদ্রাক্ষরিক / অফিস সহকারী',
-          posts: finalPosts,
+          posts: effectivePosts,
           salary: '৯,৩০০ - ২২,৪৯০/- টাকা',
           grade: '১৬তম গ্রেড',
           minEducation: 'উচ্চ মাধ্যমিক (এইচএসসি) বা সমমানের ডিগ্রি',
           govtFee: 112
         }
-      ]);
+      ];
 
+  const finalPosts = positions.reduce((sum, p) => sum + (p.posts || 1), 0);
   const svgBanner = generateCircularSvgBanner(finalOrg, finalTitle, finalPosts, finalDeadline);
 
   const defaultEditorial = `

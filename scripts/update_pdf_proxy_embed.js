@@ -29,3 +29,4 @@ code = code.replace(
 
 fs.writeFileSync(clientPath, code, 'utf8');
 console.log('✅ Updated JobDetailClient.tsx with embedPdfUrl proxy!');
+

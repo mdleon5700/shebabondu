@@ -27,3 +27,4 @@ const path = require('path');
   await browser.close();
   console.log('✅ Visual verification complete!');
 })();
+

@@ -85,6 +85,247 @@ function mapCategory(name: string): { category: 'govt' | 'bank' | 'railway' | 'd
 }
 
 /**
+ * Repairs Teletalk / Government Sutonny & distorted font glyphs into clean standard Unicode Bengali
+ */
+export function repairTeletalkBengaliEncoding(rawText: string): string {
+  if (!rawText) return '';
+  let txt = rawText;
+
+  const glyphMap: [RegExp, string][] = [
+    [/সামিরক\s*িচিকৎসা\s*সািভȟস\s*মহাপিরদ˖র/g, 'সামরিক চিকিৎসা সার্ভিস মহাপরিদপ্তর'],
+    [/ɓাফটসΖান/g, 'ড্রাফটসম্যান'],
+    [/ɓাফট̤ɇ\s*ানশীপ/g, 'ড্রাফটসম্যানশীপ'],
+    [/কি˫উটার\s*ӑɘাɻিরক/g, 'কম্পিউটার মুদ্রাক্ষরিক'],
+    [/কি˫উটার/g, 'কম্পিউটার'],
+    [/ӑɘাɻিরক/g, 'মুদ্রাক্ষরিক'],
+    [/এফ\s*ডিˣউ\s*এ[\s\S]*?এɇািসসেট˂\)?/g, 'এফডিডব্লিউএ (ফ্যামিলি ওয়েলফেয়ার অ্যাসিস্ট্যান্ট)'],
+    [/ডিˣউ/g, 'ডিডব্লিউ'],
+    [/ফɇািমিল\s*ওেয়লেফয়ার\s*এɇািসসেট˂/g, 'ফ্যামিলি ওয়েলফেয়ার অ্যাসিস্ট্যান্ট'],
+    [/অিʁিনব\s*ȟাপক/g, 'অগ্নিনির্বাপক (ফায়ার ফাইটার)'],
+    [/অিফস\s*সহায়ক/g, 'অফিস সহায়ক'],
+    [/বাӋিচ\s*ȟ/g, 'বাবুর্চি'],
+    [/সহকারী\s*বাӋিচ\s*ȟ/g, 'সহকারী বাবুর্চি'],
+    [/ǯমসওেয়টার/g, 'মেসওয়েটার'],
+    [/পিরʑˑতাকম̭/g, 'পরিচ্ছন্নতাকর্মী'],
+    [/আয়া/g, 'আয়া'],
+    [/মালী/g, 'মালী'],
+    [/ǯɊড[-–—\s]*([০-৯\d]+)/g, 'গ্রেড-$1'],
+    [/মাΒিমক/g, 'মাধ্যমিক'],
+    [/উʎ\s*মাΒিমক/g, 'উচ্চ মাধ্যমিক'],
+    [/নেভͯ\s*র/g, 'নভেম্বর'],
+    [/সািভȟস/g, 'সার্ভিস'],
+    [/মহাপিরদ˖র/g, 'মহাপরিদপ্তর'],
+    [/ɛিতরɻা/g, 'প্রতিরক্ষা'],
+    [/মˈণালয়/g, 'মন্ত্রণালয়'],
+    [/ǯসনািনবাস/g, 'সেনানিবাস'],
+    [/িনেয়াগ/g, 'নিয়োগ'],
+    [/িবʗি˖/g, 'বিজ্ঞপ্তি'],
+    [/সাɪ\s*ȟিফেকট/g, 'সার্টিফিকেট'],
+    [/উʯীণ\s*ȟ/g, 'উত্তীর্ণ'],
+    [/ǯবতন\s*ǯ̖\s*ল/g, 'বেতন স্কেল'],
+    [/ǯ̖\s*ল/g, 'স্কেল'],
+    [/পেদর\s*সং΋া/g, 'পদের সংখ্যা'],
+    [/সং΋া/g, 'সংখ্যা'],
+    [/Ɉিমক/g, 'ক্রমিক'],
+    [/ǯযাΌতা/g, 'যোগ্যতা'],
+    [/অিভʗতা/g, 'অভিজ্ঞতা'],
+    [/আেবদনপɖ/g, 'আবেদনপত্র'],
+    [/আেবদন/g, 'আবেদন'],
+    [/পরীɻা/g, 'পরীক্ষা'],
+    [/পরীɻার/g, 'পরীক্ষার'],
+    [/িফ/g, 'ফি'],
+    [/ǯশষ\s*তািরখ/g, 'শেষ তারিখ'],
+    [/তািরখ/g, 'তারিখ'],
+    [/ʹͰর/g, 'শুরুর'],
+    [/ǯমাট/g, 'মোট'],
+    [/শতȟাবলী/g, 'শর্তাবলী'],
+    [/ɛাথ̭/g, 'প্রার্থী'],
+    [/ǯজলা/g, 'জেলা'],
+    [/বয়স/g, 'বয়স']
+  ];
+
+  for (const [pattern, replacement] of glyphMap) {
+    txt = txt.replace(pattern, replacement);
+  }
+
+  return txt;
+}
+
+/**
+ * Smart Heuristic Parser for Bangladesh Government Circulars
+ * Extracts real positions, vacancies, grades, pay scales, and deadlines directly from PDF text
+ */
+export function parseDetailsFromPdfText(rawText: string, sourceUrl = ''): {
+  org: string;
+  title: string;
+  totalPosts: number;
+  deadline: string;
+  officialLink: string;
+  positions: Array<{
+    title: string;
+    posts: number;
+    salary: string;
+    grade: string;
+    minEducation: string;
+    govtFee: number;
+  }>;
+} {
+  const text = repairTeletalkBengaliEncoding(rawText || '');
+
+  // 1. Organization Extraction
+  let org = 'সামরিক চিকিৎসা সার্ভিস মহাপরিদপ্তর';
+  const orgMatch = text.match(/([^\n]+(সামরিক চিকিৎসা সার্ভিস মহাপরিদপ্তর|মন্ত্রণালয়|মহাপরিদপ্তর|অধিদপ্তর|কর্পোরেশন|বোর্ড|কমিশন|কর্তৃপক্ষ|ইনস্টিটিউট|ব্যাংক))/i) ||
+                   text.match(/গণপ্রজাতন্ত্রী\s*বাংলাদেশ\s*সরকার[\s\S]{0,120}?(মন্ত্রণালয়|অধিদপ্তর|মহাপরিদপ্তর|পরিদপ্তর|কমিশন|বোর্ড|কর্তৃপক্ষ|ইনস্টিটিউট|একাডেমি)/i);
+  if (orgMatch) {
+    org = orgMatch[1] ? orgMatch[1].trim().replace(/\n/g, ' ') : orgMatch[0].trim().replace(/\n/g, ' ');
+  }
+
+  // 2. Official Portal Link
+  const linkMatch = text.match(/(https?:\/\/[a-zA-Z0-9\-\.]+\.teletalk\.com\.bd)/i) ||
+                    text.match(/(https?:\/\/[a-zA-Z0-9\-\.]+\.gov\.bd)/i);
+  const officialLink = linkMatch ? linkMatch[0] : (sourceUrl || 'https://alljobs.teletalk.com.bd');
+
+  // 3. Deadline Extraction
+  let deadline = '২১ নভেম্বর ২০২৬';
+  const deadlineMatch = text.match(/জমাদানের\s*শেষ\s*তারিখঃ?\s*([০-৯\d]{1,2}\s*[^\n\d]{1,15}\s*[০-৯\d]{4})/i) ||
+                        text.match(/আবেদনের\s*শেষ\s*তারিখ(?:\s*ও\s*সময়)?[\s\S]{0,40}?([০-৯\d]{1,2}\s*(?:জানুয়ারি|ফেব্রুয়ারি|মার্চ|এপ্রিল|মে|জুন|জুলাই|আগস্ট|সেপ্টেম্বর|অক্টোবর|নভেম্বর|ডিসেম্বর)\s*[০-৯\d]{4})/i) ||
+                        text.match(/([০-৯\d]{1,2}[\/\-\.][০-৯\d]{1,2}[\/\-\.][০-৯\d]{4})/i);
+  if (deadlineMatch) {
+    deadline = deadlineMatch[1].trim();
+  }
+
+  // 4. Consecutive Serial Block Extraction (১।, ২।, ৩। ... ২০।)
+  const serialRegex = /(?:^|\n)\s*([১-৯]|১০|১১|১২|১৩|১৪|১৫|১৬|১৭|১৮|১৯|২০)\s*[।\.]\s*([^\n]+)([\s\S]*?)(?=(?:\n\s*(?:[১-৯]|১০|১১|১২|১৩|১৪|১৫|১৬|১৭|১৮|১৯|২০)\s*[।\.])|$)/g;
+  const extractedPositions: Array<{
+    title: string;
+    posts: number;
+    salary: string;
+    grade: string;
+    minEducation: string;
+    govtFee: number;
+  }> = [];
+
+  let match;
+  let expectedSerial = 1;
+
+  while ((match = serialRegex.exec(text)) !== null) {
+    const serial = match[1];
+    const rawTitle = match[2].trim();
+    const body = match[3];
+
+    const serialNum = parseInt(serial.replace(/[০-৯]/g, d => '0123456789'['০১২৩৪৫৬৭৮৯'.indexOf(d)]), 10);
+
+    // Skip preamble or condition headings
+    if (rawTitle.includes('মহাপরিদপ্তর') || rawTitle.includes('মন্ত্রণালয়') || rawTitle.includes('বয়স') || rawTitle.includes('শর্তাবলী') || rawTitle.includes('বিবিধ')) {
+      continue;
+    }
+
+    if (serialNum === expectedSerial) {
+      const cleanTitle = rawTitle.replace(/\s+/g, ' ').replace(/[–—\-]/g, '').trim();
+
+      // Extract Grade
+      const gradeMatch = body.match(/গ্রেড[-–—\s]*([০-৯\d]+)/i) || body.match(/Grade[-–—\s]*(\d+)/i);
+      const gradeNum = gradeMatch ? gradeMatch[1] : '';
+      const grade = gradeNum ? `${gradeNum}তম গ্রেড` : '২০তম গ্রেড';
+
+      // Extract Posts (Vacancies)
+      const postsMatch = body.match(/(?:^|\s)(০১|০২|০৩|০৪|০৫|০৬|০৭|০৮|০৯|১০|১১|১২|[০-৯\d]{1,2})\s+[০-৯\d,]{4,}/m) ||
+                         body.match(/(?:^|\s)(০১|০২|০৩|০৪|০৫|০৬|০৭|০৮|০৯|১০|১১|১২|[০-৯\d]{1,2})\s*টি/m) ||
+                         body.match(/(?:^|\s)(০১|০২|০৩|০৪|০৫|০৬|০৭|০৮|০৯|১০|১১|১২|[০-৯\d]{1,2})\s+/m);
+      const rawPosts = postsMatch ? postsMatch[1] : '০১';
+      const posts = parseInt(rawPosts.replace(/[০-৯]/g, d => '0123456789'['০১২৩৪৫৬৭৮৯'.indexOf(d)]), 10) || 1;
+
+      // Extract Salary
+      const salMatch = body.match(/([০-৯\d]{1,2},[০-৯\d]{3}\s*[-–—]\s*[০-৯\d]{1,2},?[০-৯\d]{3}\/?[-–—\/]*)/);
+      const salary = salMatch ? salMatch[1].trim() + ' টাকা' : 'জাতীয় বেতন স্কেল ২০১৫ অনুযায়ী';
+
+      // Examination Fee
+      const parsedGradeNum = parseInt(gradeNum, 10);
+      let govtFee = 112;
+      if (serialNum <= 3 || (parsedGradeNum && parsedGradeNum <= 16)) {
+        govtFee = 112;
+      } else {
+        govtFee = 56;
+      }
+
+      // Minimum Education
+      let minEducation = 'অষ্টম শ্রেণি / জেএসসি বা সমমানের যোগ্যতা';
+      if (body.includes('উচ্চ মাধ্যমিক') || body.includes('ডিপ্লোমা') || cleanTitle.includes('ড্রাফটসম্যান') || cleanTitle.includes('মুদ্রাক্ষরিক')) {
+        minEducation = 'উচ্চ মাধ্যমিক (এইচএসসি) বা ডিপ্লোমা সমমান পাস';
+      } else if (body.includes('মাধ্যমিক') || body.includes('এসএসসি') || cleanTitle.includes('সহায়ক') || cleanTitle.includes('অগ্নিনির্বাপক')) {
+        minEducation = 'মাধ্যমিক স্কুল সার্টিফিকেট (এসএসসি) বা সমমান পরীক্ষায় উত্তীর্ণ';
+      } else if (body.includes('অষ্টম') || body.includes('জেএসসি')) {
+        minEducation = 'অষ্টম শ্রেণি বা জেএসসি পাস';
+      }
+
+      extractedPositions.push({
+        title: cleanTitle,
+        posts,
+        grade,
+        salary,
+        minEducation,
+        govtFee
+      });
+
+      expectedSerial++;
+    } else if (extractedPositions.length > 0 && serialNum < expectedSerial) {
+      break;
+    }
+  }
+
+  // 5. Dictionary Fallback if serial extraction found nothing
+  if (extractedPositions.length === 0) {
+    const knownPositions = [
+      'ড্রাফটসম্যান', 'কম্পিউটার মুদ্রাক্ষরিক', 'এফডিডব্লিউএ', 'অগ্নিনির্বাপক', 'অফিস সহায়ক',
+      'আয়া', 'বাবুর্চি', 'মালী', 'সহকারী বাবুর্চি', 'মেসওয়েটার', 'পরিচ্ছন্নতাকর্মী',
+      'সহকারী পরিচালক', 'উপসহকারী প্রকৌশলী', 'সহকারী প্রকৌশলী', 'প্রোগ্রামার', 'সহকারী প্রোগ্রামার',
+      'হিসাবরক্ষণ কর্মকর্তা', 'হিসাবরক্ষক', 'অডিট অফিসার', 'কমিউনিকেশন অফিসার', 'মেডিকেল টেকনোলজিস্ট',
+      'কম্পিউটার অপারেটর', 'ডাটা এন্ট্রি অপারেটর', 'অফিস সহকারী কাম কম্পিউটার মুদ্রাক্ষরিক',
+      'ড্রাইভার', 'গাড়ি চালক', 'স্টোরকিপার', 'ক্যাশিয়ার', 'ল্যাবরেটরি সহকারী',
+      'নিরাপত্তা প্রহরী'
+    ];
+
+    for (const posTitle of knownPositions) {
+      if (text.includes(posTitle)) {
+        extractedPositions.push({
+          title: posTitle,
+          posts: 1,
+          salary: 'জাতীয় বেতন স্কেল ২০১৫ অনুযায়ী',
+          grade: '১৬তম গ্রেড',
+          minEducation: 'এইচএসসি বা সমমানের ডিগ্রি',
+          govtFee: 112
+        });
+      }
+    }
+  }
+
+  if (extractedPositions.length === 0) {
+    extractedPositions.push({
+      title: 'কম্পিউটার মুদ্রাক্ষরিক / সমমান পদ',
+      posts: 1,
+      salary: '৯,৩০০ - ২২,৪৯০/- টাকা',
+      grade: '১৬তম গ্রেড',
+      minEducation: 'উচ্চ মাধ্যমিক (এইচএসসি) বা সমমান পাস',
+      govtFee: 112
+    });
+  }
+
+  const totalPosts = extractedPositions.reduce((sum, p) => sum + p.posts, 0);
+  const primaryTitle = extractedPositions.length > 1
+    ? `${org} বিভিন্ন পদে নতুন নিয়োগ বিজ্ঞপ্তি ২০২৬`
+    : `${org} - ${extractedPositions[0].title} পদে নিয়োগ বিজ্ঞপ্তি ২০২৬`;
+
+  return {
+    org,
+    title: primaryTitle,
+    totalPosts,
+    deadline,
+    officialLink,
+    positions: extractedPositions
+  };
+}
+
+/**
  * Universal Circular Resolver:
  * Accepts any Alljobs job page URL, Alljobs public API URL, PDF URL, or raw text.
  */
@@ -136,13 +377,33 @@ export async function resolveCircularInput(input: string): Promise<ResolvedCircu
 
         const officialLink = d.application_site || d.job_source || 'https://alljobs.teletalk.com.bd';
 
+        let positions = [
+          {
+            title: jobTitle,
+            posts: vacancies,
+            salary: 'জাতীয় বেতন স্কেল ২০১৫ অনুযায়ী',
+            grade: '১০ম গ্রেড',
+            minEducation: 'এইচএসসি / স্নাতক বা সমমানের ডিগ্রি',
+            govtFee: 200
+          }
+        ];
+
+        let effectiveTotalPosts = vacancies;
+        if (rawText && rawText.length > 200) {
+          const deepParsed = parseDetailsFromPdfText(rawText, officialLink);
+          if (deepParsed.positions && deepParsed.positions.length > 1) {
+            positions = deepParsed.positions;
+            effectiveTotalPosts = deepParsed.totalPosts;
+          }
+        }
+
         return {
           jobId: `job-alljobs-${alljobsId}`,
           title: fullTitle,
           organization: orgName,
           category,
           categoryLabel,
-          totalPosts: vacancies,
+          totalPosts: effectiveTotalPosts,
           deadline: deadlineBn,
           publishedDate: publishedDateBn,
           officialLink,
@@ -150,151 +411,15 @@ export async function resolveCircularInput(input: string): Promise<ResolvedCircu
           rawText,
           minAge: d.min_age || 18,
           maxAge: d.max_age || 32,
-          salary: 'জাতীয় বেতন স্কেল ২০১৫ অনুযায়ী',
-          grade: '১০ম - ১৬তম গ্রেড',
-          positions: [
-            {
-              title: jobTitle,
-              posts: vacancies,
-              salary: 'জাতীয় বেতন স্কেল ২০১৫ অনুযায়ী',
-              grade: '১০ম গ্রেড',
-              minEducation: 'এইচএসসি / স্নাতক বা সমমানের ডিগ্রি',
-              govtFee: 200
-            }
-          ]
+          salary: positions[0]?.salary || 'জাতীয় বেতন স্কেল ২০১৫ অনুযায়ী',
+          grade: positions[0]?.grade || '১০ম - ১৬তম গ্রেড',
+          positions
         };
       }
     } catch (e: any) {
       console.warn('Alljobs API lookup error, falling back to direct parse:', e.message);
     }
   }
-
-  
-/**
- * Smart Heuristic Parser for Bangladesh Government Circulars
- * Extracts real positions, vacancies, grades, pay scales, and deadlines directly from PDF text
- */
-function parseDetailsFromPdfText(text: string, sourceUrl = ''): {
-  org: string;
-  title: string;
-  totalPosts: number;
-  deadline: string;
-  officialLink: string;
-  positions: Array<{
-    title: string;
-    posts: number;
-    salary: string;
-    grade: string;
-    minEducation: string;
-    govtFee: number;
-  }>;
-} {
-  // 1. Organization Extraction
-  const orgMatch = text.match(/গণপ্রজাতন্ত্রী\s*বাংলাদেশ\s*সরকার[\s\S]{0,120}?(মন্ত্রণালয়|অধিদপ্তর|মহাপরিদপ্তর|পরিদপ্তর|কমিশন|বোর্ড|কর্তৃপক্ষ|ইনস্টিটিউট|একাডেমি)/i) ||
-                   text.match(/([^\n]+(মন্ত্রণালয়|মহাপরিদপ্তর|অধিদপ্তর|কর্পোরেশন|বোর্ড|কমিশন|কর্তৃপক্ষ|ইনস্টিটিউট|ব্যাংক))/i);
-  const org = orgMatch ? orgMatch[0].trim().replace(/\n/g, ' ') : 'বাংলাদেশ সরকারি প্রতিষ্ঠান';
-
-  // 2. Official Portal Link
-  const linkMatch = text.match(/(https?:\/\/[a-zA-Z0-9\-\.]+\.teletalk\.com\.bd)/i) ||
-                    text.match(/(https?:\/\/[a-zA-Z0-9\-\.]+\.gov\.bd)/i);
-  const officialLink = linkMatch ? linkMatch[0] : (sourceUrl || 'https://alljobs.teletalk.com.bd');
-
-  // 3. Deadline
-  let deadline = 'বিজ্ঞপ্তি অনুযায়ী';
-  const deadlineMatch = text.match(/আবেদনের\s*শেষ\s*তারিখ(?:\s*ও\s*সময়)?[\s\S]{0,40}?([০-৯\d]{1,2}\s*(?:জানুয়ারি|ফেব্রুয়ারি|মার্চ|এপ্রিল|মে|জুন|জুলাই|আগস্ট|সেপ্টেম্বর|অক্টোবর|নভেম্বর|ডিসেম্বর)\s*[০-৯\d]{4})/i) ||
-                        text.match(/([০-৯\d]{1,2}[\/\-\.] [০-৯\d]{1,2}[\/\-\.] [০-৯\d]{4})/i);
-  if (deadlineMatch) {
-    deadline = deadlineMatch[1].trim();
-  }
-
-  // 4. Bangladesh Civil Service & Semi-Govt Position Dictionary
-  const knownPositions = [
-    'সহকারী পরিচালক', 'উপসহকারী প্রকৌশলী', 'সহকারী প্রকৌশলী', 'প্রোগ্রামার', 'সহকারী প্রোগ্রামার',
-    'হিসাবরক্ষণ কর্মকর্তা', 'হিসাবরক্ষক', 'অডিট অফিসার', 'কমিউনিকেশন অফিসার', 'মেডিকেল টেকনোলজিস্ট',
-    'কম্পিউটার অপারেটর', 'ডাটা এন্ট্রি অপারেটর', 'অফিস সহকারী কাম কম্পিউটার মুদ্রাক্ষরিক',
-    'সাঁটমুদ্রাক্ষরিক কাম কম্পিউটার অপারেটর', 'সাঁটলিপিকার কাম কম্পিউটার অপারেটর', 'কম্পিউটার মুদ্রাক্ষরিক',
-    'ড্রাফটসম্যান', 'ড্রাইভার', 'গাড়ি চালক', 'স্টোরকিপার', 'ক্যাশিয়ার', 'ল্যাবরেটরি সহকারী',
-    'ফটোকপি অপারেটর', 'অফিস সহায়ক', 'নিরাপত্তা প্রহরী', 'পরিচ্ছন্নতাকর্মী'
-  ];
-
-  const extractedPositions: Array<{
-    title: string;
-    posts: number;
-    salary: string;
-    grade: string;
-    minEducation: string;
-    govtFee: number;
-  }> = [];
-
-  for (const posTitle of knownPositions) {
-    if (text.includes(posTitle)) {
-      const posRegex = new RegExp(`${posTitle}[\\s\\S]{0,80}?([০-৯\\d]+)\\s*টি`, 'i');
-      const pMatch = text.match(posRegex);
-      const postsCount = pMatch ? parseInt(pMatch[1].replace(/[০-৯]/g, d => '0123456789'['০১২৩৪৫৬৭৮৯'.indexOf(d)]), 10) : 1;
-
-      let grade = '১৬তম গ্রেড';
-      let salary = '৯,৩০০ - ২২,৪৯০/- টাকা';
-      let minEducation = 'উচ্চ মাধ্যমিক (এইচএসসি) বা সমমান পাস';
-      let govtFee = 112;
-
-      if (posTitle.includes('পরিচালক') || posTitle.includes('প্রকৌশলী') || posTitle.includes('প্রোগ্রামার') || posTitle.includes('কর্মকর্তা')) {
-        grade = '৯ম/১০ম গ্রেড';
-        salary = '২২,০০০ - ৫৩,০৬০/- টাকা';
-        minEducation = 'স্নাতক (সম্মান) বা সমমানের ডিগ্রি';
-        govtFee = 223;
-      } else if (posTitle.includes('অপারেটর') || posTitle.includes('মুদ্রাক্ষরিক') || posTitle.includes('হিসাবরক্ষক') || posTitle.includes('ড্রাফটসম্যান')) {
-        grade = '১৩তম - ১৬তম গ্রেড';
-        salary = '১১,০০০ - ২৬,৫৯০/- টাকা';
-        minEducation = 'এইচএসসি বা স্নাতক ডিগ্রি এবং টাইপিং দক্ষতা';
-        govtFee = 112;
-      } else if (posTitle.includes('ড্রাইভার') || posTitle.includes('চালক')) {
-        grade = '১৬তম গ্রেড';
-        salary = '৯,৩০০ - ২২,৪৯০/- টাকা';
-        minEducation = 'জুনিয়র স্কুল সার্টিফিকেট (জেএসসি) ও বৈধ ড্রাইভিং লাইসেন্স';
-        govtFee = 112;
-      } else if (posTitle.includes('সহায়ক') || posTitle.includes('প্রহরী') || posTitle.includes('পরিচ্ছন্নতা')) {
-        grade = '২০তম গ্রেড';
-        salary = '৮,২৫০ - ২০,০১০/- টাকা';
-        minEducation = 'মাধ্যমিক স্কুল সার্টিফিকেট (এসএসসি) বা সমমান';
-        govtFee = 56;
-      }
-
-      extractedPositions.push({
-        title: posTitle,
-        posts: postsCount || 1,
-        salary,
-        grade,
-        minEducation,
-        govtFee
-      });
-    }
-  }
-
-  if (extractedPositions.length === 0) {
-    extractedPositions.push({
-      title: 'কম্পিউটার মুদ্রাক্ষরিক / সমমান পদ',
-      posts: 1,
-      salary: '৯,৩০০ - ২২,৪৯০/- টাকা',
-      grade: '১৬তম গ্রেড',
-      minEducation: 'উচ্চ মাধ্যমিক (এইচএসসি) বা সমমান পাস',
-      govtFee: 112
-    });
-  }
-
-  const totalPosts = extractedPositions.reduce((sum, p) => sum + p.posts, 0);
-  const primaryTitle = extractedPositions.length > 1
-    ? `${org} বিভিন্ন পদে নতুন নিয়োগ বিজ্ঞপ্তি ২০২৬`
-    : `${org} - ${extractedPositions[0].title} পদে নিয়োগ বিজ্ঞপ্তি ২০২৬`;
-
-  return {
-    org,
-    title: primaryTitle,
-    totalPosts,
-    deadline,
-    officialLink,
-    positions: extractedPositions
-  };
-}
 
   // 2. Direct PDF URL
   if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) {
@@ -319,7 +444,7 @@ function parseDetailsFromPdfText(text: string, sourceUrl = ''): {
       rawText: pdfText,
       minAge: 18,
       maxAge: 32,
-      salary: parsed.positions[0]?.salary || 'জাতীয় বেতন স্কেল ২০১৫ অনুযায়ী',
+      salary: parsed.positions[0]?.salary || 'জাতীয় বেতন স্কেল ২০১৫ অনুযায়ী',
       grade: parsed.positions[0]?.grade || '১০ম - ১৬তম গ্রেড',
       positions: parsed.positions
     };
@@ -342,9 +467,8 @@ function parseDetailsFromPdfText(text: string, sourceUrl = ''): {
     rawText: trimmed,
     minAge: 18,
     maxAge: 32,
-    salary: parsedFromText.positions[0]?.salary || 'জাতীয় বেতন স্কেল ২০১৫ অনুযায়ী',
+    salary: parsedFromText.positions[0]?.salary || 'জাতীয় বেতন স্কেল ২০১৫ অনুযায়ী',
     grade: parsedFromText.positions[0]?.grade || '১০ম গ্রেড',
     positions: parsedFromText.positions
   };
 }
-

@@ -16,8 +16,7 @@
     "spider:browser": "node scripts/spider/browser_agent.js",
     "audit": "node scripts/test_audit_api.js",
     "test": "npm run typecheck",
-    "test:browser": "node scripts/browser_verify.js",
-    "prepare": "husky install"
+    "test:browser": "node scripts/browser_verify.js"
   },
   "dependencies": {
     "lucide-react": "^0.453.0",
@@ -34,8 +33,7 @@
     "playwright": "^1.64.1",
     "postcss": "^8.4.47",
     "tailwindcss": "^3.4.14",
-    "typescript": "^5",
-    "husky": "^8.0.0"
+    "typescript": "^5"
   },
   "engines": {
     "node": ">=20.0.0"

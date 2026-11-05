@@ -196,8 +196,10 @@ export default function SingleJobPage({ params }: Props) {
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://chakrisheba.com';
   const canonicalUrl = `${siteUrl}/jobs/${job.slug || job.id}`;
-  const datePosted = parseBengaliDateToIso(job.publishedDate) || new Date().toISOString().split('T')[0];
-  const validThrough = parseBengaliDateToIso(job.deadline);
+  const datePostedRaw = parseBengaliDateToIso(job.publishedDate);
+  const datePosted = datePostedRaw ? `${datePostedRaw}T09:00:00+06:00` : new Date().toISOString();
+  const validThroughRaw = parseBengaliDateToIso(job.deadline);
+  const validThrough = validThroughRaw ? `${validThroughRaw}T17:00:00+06:00` : undefined;
   const salaryRange = parseSalaryRange(job.salary);
 
   // 1. Google for Jobs - Rich JobPosting Schema
@@ -251,7 +253,11 @@ export default function SingleJobPage({ params }: Props) {
       "@type": "OccupationalExperienceRequirements",
       "monthsOfExperience": 0
     },
-    "totalJobOpenings": job.totalPosts || 1
+    "totalJobOpenings": job.totalPosts || 1,
+    "potentialAction": {
+      "@type": "ApplyAction",
+      "target": job.officialLink || canonicalUrl
+    }
   };
 
   if (salaryRange && salaryRange.min) {

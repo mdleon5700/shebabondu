@@ -50,7 +50,6 @@ import {
   Scale,
   BadgeCheck
 } from 'lucide-react';
-import { mockJobs } from '@/data/mockJobs';
 import JobLogo from '@/components/JobLogo';
 import { useCandidateData } from '@/components/CandidateDataProvider';
 import { storage, AuthState } from '@/lib/store';

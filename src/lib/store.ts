@@ -8,7 +8,7 @@ import {
   NotificationItem, 
   EligibilityResult 
 } from './types';
-import { mockJobs, mockUserProfile, mockApplications } from '@/data/mockJobs';
+
 
 export interface AuthState {
   isLoggedIn: boolean;

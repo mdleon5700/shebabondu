@@ -52,7 +52,6 @@ import {
   HeartHandshake,
   MessageSquare
 } from 'lucide-react';
-import { mockJobs } from '@/data/mockJobs';
 import { JobCircular } from '@/lib/types';
 
 // Bengali numeral converter helper

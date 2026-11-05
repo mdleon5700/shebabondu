@@ -69,7 +69,7 @@ import {
 
 
 
-import { mockUserProfile, mockApplications, mockJobs } from '../data/mockJobs';
+import { mockUserProfile, mockApplications } from '../data/mockJobs';
 import { SyntheticUserManager } from './testing/synthetic/synthetic-user-manager';
 import { generateSmartTransactionId, generateSmartNotificationId } from './id-generator';
 import { SyntheticJobManager } from './testing/synthetic/synthetic-job-manager';
@@ -1003,11 +1003,11 @@ function getInitialState(): DatabaseState {
 
 
 
-  const mockJobsMap: Record<string, JobCircular> = {};
+  // mockJobs purged
 
 
 
-  mockJobs.forEach(j => { mockJobsMap[j.id] = j; });
+
 
 
 
@@ -1735,7 +1735,7 @@ function getInitialState(): DatabaseState {
 
 
 
-    jobs: mockJobsMap,
+    jobs: {},
 
 
 

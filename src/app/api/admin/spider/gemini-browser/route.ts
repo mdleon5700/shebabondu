@@ -1,36 +1,62 @@
 import { NextResponse } from 'next/server';
-import { spawn } from 'child_process';
 import path from 'path';
 import fs from 'fs';
 import { revalidatePath } from 'next/cache';
 import { runAlljobsLiveSync } from '@/lib/collector/alljobs_live_collector';
 import { serverDB } from '@/lib/db';
 import { verifyAdminSecret } from '@/lib/auth';
+import {
+  getGeminiBrowserStatus,
+  launchLoginBrowser,
+  parseCircularWithGeminiBrowser,
+  PROFILE_DIR
+} from '@/lib/spider/gemini_browser_controller';
+import { JobCircular } from '@/lib/types';
 
 export const dynamic = 'force-dynamic';
 
-const PROFILE_DIR = path.join(process.cwd(), '.browser_profile', 'gemini_session');
+const SETTINGS_PATH = path.join(process.cwd(), '.browser_profile', 'spider_settings.json');
+
+function getSpiderSettings(): { autoPublish: boolean; lastSyncTime?: string } {
+  try {
+    if (fs.existsSync(SETTINGS_PATH)) {
+      return JSON.parse(fs.readFileSync(SETTINGS_PATH, 'utf-8'));
+    }
+  } catch {}
+  return { autoPublish: false };
+}
+
+function saveSpiderSettings(settings: { autoPublish: boolean; lastSyncTime?: string }) {
+  try {
+    const dir = path.dirname(SETTINGS_PATH);
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+    fs.writeFileSync(SETTINGS_PATH, JSON.stringify(settings, null, 2), 'utf-8');
+  } catch {}
+}
 
 export async function GET(req: Request) {
   try {
-    const profileExists = fs.existsSync(PROFILE_DIR);
+    const browserStatus = await getGeminiBrowserStatus();
+    const settings = getSpiderSettings();
     const jobs = serverDB.getJobs();
     const alljobsJobs = jobs.filter(j => j.id.includes('alljobs') || (j as any).source === 'Alljobs Teletalk');
 
     return NextResponse.json({
       success: true,
-      status: 'READY',
-      profileExists,
-      profileDirectory: PROFILE_DIR,
+      status: browserStatus.isConnected ? 'CONNECTED' : 'STANDBY',
+      browserStatus,
+      autoPublish: settings.autoPublish,
       totalJobs: jobs.length,
       alljobsSyncedCount: alljobsJobs.length,
       syncedJobs: alljobsJobs,
       features: [
-        'Persistent Headful Chrome Automation',
-        'Direct Gemini Web Multimodal Session',
-        'Human-in-the-loop CAPTCHA Resolver',
-        'Zero API Cost PDF Parser',
-        'Direct Edit, Update & Instant Publish Controls'
+        'Internal Playwright Standalone Chromium',
+        'Direct Gemini Web Multimodal Session (Zero API Cost)',
+        'Persistent Google Session in .browser_profile',
+        'Auto-Generated Bilingual SEO Titles & Keywords',
+        'Smart Elementor-Ready Rich Content Blocks',
+        'High-Resolution SVG Featured Image Banner',
+        'Configurable Auto-Publish vs. Admin Verification Queue'
       ]
     });
   } catch (err: any) {
@@ -49,60 +75,125 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json().catch(() => ({}));
-    const action = body.action || 'launch';
+    const action = body.action || 'check_status';
 
-    if (action === 'launch') {
-      const chromePath = 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
-      const profileDir = PROFILE_DIR;
-      if (!fs.existsSync(profileDir)) {
-        fs.mkdirSync(profileDir, { recursive: true });
-      }
-
-      if (fs.existsSync(chromePath)) {
-        // Launch real Google Chrome desktop window with dedicated persistent profile
-        const child = spawn(chromePath, [
-          `--user-data-dir=${profileDir}`,
-          '--no-first-run',
-          '--no-default-browser-check',
-          'https://gemini.google.com',
-          'https://alljobs.teletalk.com.bd'
-        ], {
-          detached: true,
-          stdio: 'ignore'
-        });
-        child.unref();
-
-        return NextResponse.json({
-          success: true,
-          message: 'গুগল ক্রোম ব্রাউজার সফলভাবে চালু হয়েছে! স্ক্রিনে প্রদর্শিত ব্রাউজারে জেমিনিতে আপনার গুগল অ্যাকাউন্ট দিয়ে সাইন-ইন করে নিন। সেশনটি স্থায়ীভাবে সংরক্ষিত থাকবে।',
-          profileDir: PROFILE_DIR
-        });
-      } else {
-        // Fallback to playwright script
-        const scriptPath = path.join(process.cwd(), 'scripts', 'spider', 'browser_agent.js');
-        const child = spawn(process.execPath, [scriptPath], {
-          detached: true,
-          stdio: 'ignore',
-          cwd: process.cwd()
-        });
-        child.unref();
-
-        return NextResponse.json({
-          success: true,
-          message: 'ব্রাউজার এজেন্ট চালু হয়েছে।',
-          profileDir: PROFILE_DIR
-        });
-      }
+    // 1. Launch Login in System Standalone Chromium
+    if (action === 'launch' || action === 'launch_login') {
+      const launchResult = await launchLoginBrowser();
+      return NextResponse.json({
+        success: launchResult.success,
+        message: launchResult.message,
+        profileDir: PROFILE_DIR
+      });
     }
 
+    // 2. Check Login & Browser Connection Status
+    if (action === 'check_status') {
+      const status = await getGeminiBrowserStatus();
+      const settings = getSpiderSettings();
+      return NextResponse.json({
+        success: true,
+        isConnected: status.isConnected,
+        browserStatus: status,
+        autoPublish: settings.autoPublish
+      });
+    }
+
+    // 3. Toggle Auto-Publish Permission
+    if (action === 'toggle_auto_publish') {
+      const currentSettings = getSpiderSettings();
+      const updated = {
+        ...currentSettings,
+        autoPublish: typeof body.autoPublish === 'boolean' ? body.autoPublish : !currentSettings.autoPublish
+      };
+      saveSpiderSettings(updated);
+      return NextResponse.json({
+        success: true,
+        autoPublish: updated.autoPublish,
+        message: updated.autoPublish
+          ? 'স্বয়ংক্রিয় প্রকাশনা (Auto-Publish) সক্রিয় করা হয়েছে! নতুন সার্কুলার সাথে সাথে লাইভ হবে।'
+          : 'অ্যাডমিন ভেরিফিকেশন ড্রাফট (Draft for Review) মোড সক্রিয় করা হয়েছে। নতুন সার্কুলার ড্রাফটে জমা থাকবে।'
+      });
+    }
+
+    // 4. Parse Circular with In-System Gemini Browser Agent
+    if (action === 'parse_circular') {
+      const { pdfUrl, rawText, organization, teletalkSlug, deadline } = body;
+      if (!pdfUrl && !rawText && !organization) {
+        return NextResponse.json({ error: 'সার্কুলার PDF লিংক, টেক্সট অথবা প্রতিষ্ঠানের নাম প্রদান করুন।' }, { status: 400 });
+      }
+
+      const extraction = await parseCircularWithGeminiBrowser({
+        pdfUrl,
+        rawText,
+        organization,
+        teletalkSlug,
+        deadline
+      });
+
+      return NextResponse.json({
+        success: true,
+        job: extraction.job,
+        rawGeminiResponse: extraction.rawGeminiResponse,
+        message: 'জেমিনি ব্রাউজার এজেন্ট সফলভাবে সম্পূর্ণ সার্কুলার বিশ্লেষণ ও স্ট্রাকচারড ডাটা তৈরি করেছে!'
+      });
+    }
+
+    // 5. Save Extracted Job into Database
+    if (action === 'save_extracted_job') {
+      const incomingJob = body.job;
+      if (!incomingJob || !incomingJob.title) {
+        return NextResponse.json({ error: 'সংরক্ষণ করার মতো সঠিক সার্কুলার ডাটা পাওয়া যায়নি।' }, { status: 400 });
+      }
+
+      const settings = getSpiderSettings();
+      const targetStatus = settings.autoPublish ? 'PUBLISHED' : 'DRAFT';
+      const jobId = incomingJob.id || `job-alljobs-${Date.now().toString(36)}-${Math.random().toString(36).substring(2, 6)}`;
+
+      const jobToSave: JobCircular = {
+        ...incomingJob,
+        id: jobId,
+        status: targetStatus as any,
+        publicationStatus: targetStatus as any,
+        source: 'Alljobs Teletalk',
+        updatedAt: new Date().toISOString()
+      };
+
+      const saved = serverDB.saveJob(jobToSave, 'ADMIN');
+
+      try {
+        revalidatePath('/jobs');
+        revalidatePath(`/jobs/${jobId}`);
+        revalidatePath('/');
+        revalidatePath('/admin');
+      } catch {}
+
+      return NextResponse.json({
+        success: true,
+        message: targetStatus === 'PUBLISHED'
+          ? `বিজ্ঞপ্তিটি সফলভাবে ওয়েবসাইটে লাইভ প্রকাশ করা হয়েছে! (আইডি: ${jobId})`
+          : `বিজ্ঞপ্তিটি ড্রাফট / অ্যাডমিন অনুমোদনের অপেক্ষায় সংরক্ষিত হয়েছে। (আইডি: ${jobId})`,
+        job: saved
+      });
+    }
+
+    // 6. Live Sync Alljobs with Browser Controller
     if (action === 'sync') {
-      const limit = typeof body.limit === 'number' ? body.limit : 35;
+      const limit = typeof body.limit === 'number' ? body.limit : 20;
       const stats = await runAlljobsLiveSync(limit);
+      
+      const currentSettings = getSpiderSettings();
+      saveSpiderSettings({
+        ...currentSettings,
+        lastSyncTime: new Date().toISOString()
+      });
+
       try {
         revalidatePath('/jobs');
         revalidatePath('/');
         revalidatePath('/admin');
       } catch {}
+
       return NextResponse.json({
         success: stats.success,
         message: `টেলিটক ও জেমিনি লাইভ সিঙ্ক সম্পন্ন! ${stats.newJobsAdded}টি নতুন সার্কুলার যুক্ত হয়েছে, ${stats.updatedJobs}টি আপডেট হয়েছে।`,
@@ -110,6 +201,7 @@ export async function POST(req: Request) {
       });
     }
 
+    // 7. Toggle Publish / Draft
     if (action === 'toggle_publish') {
       const jobId = body.jobId;
       if (!jobId) return NextResponse.json({ error: 'jobId is required' }, { status: 400 });
@@ -141,6 +233,7 @@ export async function POST(req: Request) {
       });
     }
 
+    // 8. Bulk Operations
     if (action === 'bulk_delete') {
       const jobIds = body.jobIds;
       if (!Array.isArray(jobIds) || jobIds.length === 0) {

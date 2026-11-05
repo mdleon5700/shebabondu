@@ -1,4 +1,4 @@
-﻿# Dependencies
+# Dependencies
 /node_modules
 /.pnp
 .pnp.js
@@ -38,3 +38,7 @@ test-evidence/
 Thumbs.db
 *.pem
 /private/uploads/
+
+.browser_profile/
+*.before_user_reset.json
+*.bak

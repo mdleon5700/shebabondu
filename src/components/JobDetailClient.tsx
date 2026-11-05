@@ -94,6 +94,7 @@ export default function JobDetailClient({ job, relatedJobs = [] }: { job: JobCir
   const [copiedSms1, setCopiedSms1] = useState(false);
   const [copiedSms2, setCopiedSms2] = useState(false);
   const [activeNoticePage, setActiveNoticePage] = useState(0);
+  const [viewerTab, setViewerTab] = useState<'pdf' | 'summary'>('pdf');
   const [noticeZoom, setNoticeZoom] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -180,6 +181,11 @@ export default function JobDetailClient({ job, relatedJobs = [] }: { job: JobCir
       });
     }
   }, [activeNoticePage]);
+
+  const isPdfNotice = useMemo(() => {
+    const url = job.circularPdfUrl || job.circularImage || '';
+    return Boolean(url && (url.toLowerCase().includes('.pdf') || url.includes('/uploads/') || url.includes('advertisement')));
+  }, [job]);
 
   const officialPdfUrl = useMemo(() => {
     if (job.circularPdfUrl) return job.circularPdfUrl;
@@ -1564,6 +1570,24 @@ export default function JobDetailClient({ job, relatedJobs = [] }: { job: JobCir
           </div>
 
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full sm:w-auto">
+            {isPdfNotice && (
+              <div className="inline-flex p-1 bg-slate-100 rounded-xl border border-slate-200 text-xs font-bold mr-1">
+                <button
+                  type="button"
+                  onClick={() => setViewerTab('pdf')}
+                  className={`px-3 py-1.5 rounded-lg transition-all ${viewerTab === 'pdf' ? 'bg-emerald-700 text-white shadow-xs' : 'text-slate-700 hover:text-slate-900'}`}
+                >
+                  📄 মূল অফিশিয়াল PDF
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setViewerTab('summary')}
+                  className={`px-3 py-1.5 rounded-lg transition-all ${viewerTab === 'summary' ? 'bg-emerald-700 text-white shadow-xs' : 'text-slate-700 hover:text-slate-900'}`}
+                >
+                  🖼️ সারসংক্ষেপ পাতা
+                </button>
+              </div>
+            )}
             <a
               href={officialPdfUrl}
               target="_blank"
@@ -1725,6 +1749,29 @@ export default function JobDetailClient({ job, relatedJobs = [] }: { job: JobCir
         </div>
 
         {/* Semantic Figure with Image and SEO Markup */}
+        {isPdfNotice && viewerTab === 'pdf' ? (
+          <div className="w-full rounded-2xl sm:rounded-3xl border border-slate-200/90 bg-slate-900 shadow-md overflow-hidden flex flex-col">
+            <div className="px-4 py-2 bg-slate-800 text-slate-200 text-xs flex items-center justify-between border-b border-slate-700">
+              <span className="font-bold flex items-center gap-1.5 text-emerald-400">
+                <FileText className="w-3.5 h-3.5" />
+                <span>{job.organization} মূল অফিশিয়াল সার্কুলার গেজেট (হাই-রেজোলিউশন PDF)</span>
+              </span>
+              <a
+                href={officialPdfUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs text-white hover:text-emerald-300 font-bold flex items-center gap-1 underline"
+              >
+                নতুন ট্যাবে বড় করে দেখুন ↗
+              </a>
+            </div>
+            <iframe
+              src={`${officialPdfUrl}#view=FitH&toolbar=1`}
+              className="w-full h-[650px] sm:h-[850px] border-0 bg-white"
+              title={`${job.organization} অফিসিয়াল সার্কুলার PDF`}
+            />
+          </div>
+        ) : (
         <figure className="relative rounded-2xl sm:rounded-3xl border border-slate-200/90 bg-slate-100/60 p-2 sm:p-4 transition-all">
           <div className="overflow-auto w-full min-h-[400px] max-h-[95vh] sm:max-h-[1200px] flex justify-center items-start rounded-xl sm:rounded-2xl bg-white p-1 sm:p-4 shadow-xs">
             <div 
@@ -1752,6 +1799,7 @@ export default function JobDetailClient({ job, relatedJobs = [] }: { job: JobCir
             <span className="text-emerald-700 font-bold">• সম্পূর্ণ দেখতে ছবিতে ক্লিক করুন</span>
           </figcaption>
         </figure>
+        )}
       </section>
 
       {/* Fullscreen Interactive Lightbox Modal - 100% Pan & Drag + Zoom Support */}

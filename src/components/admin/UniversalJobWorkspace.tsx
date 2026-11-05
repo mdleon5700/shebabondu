@@ -292,7 +292,7 @@ export default function UniversalJobWorkspace({
       setServiceFee(ext.serviceFee || 50);
       setFeeRange(ext.feeRange || `৳${ext.govtFee || govtFee}`);
       setOfficialLink(ext.officialLink || officialLink);
-      setCircularPdfUrl(aiInputUrl.trim());
+      setCircularPdfUrl(ext.circularPdfUrl || aiInputUrl.trim());
       setSmsPrefix(ext.smsPrefix || '');
 
       // Content & Guidelines

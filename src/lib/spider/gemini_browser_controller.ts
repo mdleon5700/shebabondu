@@ -54,11 +54,6 @@ export async function extractTextFromPdf(input: Buffer | string): Promise<string
     buffer = input;
   }
 
-  // Guard against non-PDF or HTML downloads
-  if (!buffer || buffer.length < 5 || buffer.toString('utf8', 0, 4) !== '%PDF') {
-    return '';
-  }
-
   try {
     const { text } = await extractText(new Uint8Array(buffer));
     if (Array.isArray(text)) {
@@ -228,10 +223,6 @@ export async function launchLoginBrowser(): Promise<{ success: boolean; message:
  * Query Gemini Web autonomously using Playwright Standalone Chromium
  */
 export async function queryGeminiBrowserAgent(promptText: string, timeoutMs = 45000): Promise<string> {
-  if (!fs.existsSync(PROFILE_DIR)) {
-    throw new Error('Gemini browser profile is not initialized. Operating in autonomous synthesis mode.');
-  }
-
   let context: BrowserContext | null = null;
   try {
     context = await chromium.launchPersistentContext(PROFILE_DIR, {
@@ -243,14 +234,6 @@ export async function queryGeminiBrowserAgent(promptText: string, timeoutMs = 45
         '--disable-gpu'
       ]
     });
-
-    const cookies = await context.cookies();
-    const hasGoogleAuth = cookies.some(c => c.domain.includes('google.com') && (c.name.includes('SID') || c.name.includes('HSID') || c.name.includes('SSID')));
-    if (!hasGoogleAuth) {
-      await context.close();
-      context = null;
-      throw new Error('Gemini session is not logged in. Operating in autonomous synthesis mode.');
-    }
 
     const page = await context.newPage();
     await page.goto('https://gemini.google.com/app', { waitUntil: 'domcontentloaded', timeout: 25000 });

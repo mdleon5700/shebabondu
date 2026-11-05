@@ -94,3 +94,4 @@ if (!code.includes('হাই-রেজোলিউশন PDF')) {
 
 fs.writeFileSync(clientPath, code, 'utf8');
 console.log('✅ Successfully upgraded JobDetailClient with Real Embedded PDF Viewer!');
+

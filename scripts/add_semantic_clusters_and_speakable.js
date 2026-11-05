@@ -146,3 +146,4 @@ if (!clientCode.includes('Semantic Related Jobs & Topic Clusters')) {
 
 fs.writeFileSync(clientPath, clientCode, 'utf8');
 console.log('✅ Updated JobDetailClient.tsx with Semantic Clusters & Speakable Selectors!');
+

@@ -24,3 +24,4 @@ if (code.includes('const allJobs = serverDB.getJobs();')) {
   fs.writeFileSync(pagePath, code, 'utf8');
   console.log('✅ Updated relatedJobs smart fallback!');
 }
+

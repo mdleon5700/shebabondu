@@ -12,6 +12,12 @@ import {
   parseCircularWithGeminiBrowser,
   PROFILE_DIR
 } from '@/lib/spider/gemini_browser_controller';
+import {
+  captureLiveScreen,
+  launchVisibleDesktopChrome,
+  runLiveAutomationPipeline,
+  checkGoogleAuthStatus
+} from '@/lib/spider/gemini_live_studio';
 import { JobCircular } from '@/lib/types';
 
 export const dynamic = 'force-dynamic';
@@ -79,12 +85,43 @@ export async function POST(req: Request) {
     const action = body.action || 'check_status';
 
     // 1. Launch Login in System Standalone Chromium
-    if (action === 'launch' || action === 'launch_login') {
-      const launchResult = await launchLoginBrowser();
+    if (action === 'launch' || action === 'launch_login' || action === 'launch_visible_chrome') {
+      const launchResult = await launchVisibleDesktopChrome();
       return NextResponse.json({
         success: launchResult.success,
         message: launchResult.message,
         profileDir: PROFILE_DIR
+      });
+    }
+
+    // 1.1 Capture Live Browser Screen
+    if (action === 'get_live_screen') {
+      const targetUrl = body.url || 'https://gemini.google.com/app';
+      const screenResult = await captureLiveScreen(targetUrl);
+      return NextResponse.json(screenResult);
+    }
+
+    // 1.2 Run Step-by-Step Live Automation Pipeline (Watch it work live)
+    if (action === 'run_live_automation') {
+      const circularUrl = body.url || 'https://alljobs.teletalk.com.bd/jobs/government/459?jobId=15127';
+      const autoResult = await runLiveAutomationPipeline(circularUrl);
+      if (autoResult.success) {
+        try {
+          revalidatePath('/jobs');
+          revalidatePath('/');
+          revalidatePath('/admin');
+        } catch {}
+      }
+      return NextResponse.json(autoResult);
+    }
+
+    // 1.3 Check Google Authentication Status
+    if (action === 'check_google_auth') {
+      const auth = await checkGoogleAuthStatus();
+      return NextResponse.json({
+        success: true,
+        isLoggedIn: auth.isLoggedIn,
+        cookiesCount: auth.count
       });
     }
 

@@ -195,6 +195,12 @@ export default function JobDetailClient({ job, relatedJobs = [] }: { job: JobCir
     return `/api/jobs/${job.id}/download`;
   }, [job]);
 
+  const embedPdfUrl = useMemo(() => {
+    if (!officialPdfUrl) return '';
+    if (officialPdfUrl.startsWith('/api/') || officialPdfUrl.startsWith('/')) return officialPdfUrl;
+    return `/api/pdf-proxy?url=${encodeURIComponent(officialPdfUrl)}`;
+  }, [officialPdfUrl]);
+
   const noticePages = useMemo(() => {
     if (job.circularPages && job.circularPages.length > 0) return job.circularPages;
     if (job.circularImage && !job.circularImage.includes('unsplash.com') && !job.circularImage.toLowerCase().endsWith('.pdf') && !job.circularImage.includes('.pdf?')) {
@@ -1766,7 +1772,7 @@ export default function JobDetailClient({ job, relatedJobs = [] }: { job: JobCir
               </a>
             </div>
             <iframe
-              src={`${officialPdfUrl}#view=FitH&toolbar=1`}
+              src={`${embedPdfUrl}#view=FitH&toolbar=1`}
               className="w-full h-[650px] sm:h-[850px] border-0 bg-white"
               title={`${job.organization} অফিসিয়াল সার্কুলার PDF`}
             />

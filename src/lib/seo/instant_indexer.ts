@@ -50,3 +50,4 @@ export async function triggerInstantSearchIndexing(jobSlugOrId: string, siteUrl 
 
   return result;
 }
+

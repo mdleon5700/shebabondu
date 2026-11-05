@@ -26,3 +26,4 @@ const path = require('path');
   await browser.close();
   console.log('Verification completed!');
 })().catch(e => { console.error('Playwright verification error:', e); process.exit(1); });
+

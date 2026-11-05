@@ -41,3 +41,4 @@ if (code.includes(target)) {
 
 fs.writeFileSync(pagePath, code, 'utf8');
 console.log('Fixed page schema successfully!');
+

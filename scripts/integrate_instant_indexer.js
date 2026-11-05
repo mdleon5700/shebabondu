@@ -26,3 +26,4 @@ if (!code.includes('triggerInstantSearchIndexing')) {
   fs.writeFileSync(filePath, code, 'utf8');
   console.log('✅ Integrated triggerInstantSearchIndexing in spider route!');
 }
+

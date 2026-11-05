@@ -195,3 +195,4 @@ if (!code.includes('parseDetailsFromPdfText')) {
 } else {
   console.log('Already upgraded.');
 }
+

@@ -632,9 +632,21 @@ export default function UniversalJobWorkspace({
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-slate-800">
-                      সার্কুলার PDF লিঙ্ক বা টেলিটক URL দিন:
-                    </label>
+                    <div className="flex items-center justify-between">
+                      <label className="text-xs font-bold text-slate-800">
+                        সার্কুলার PDF লিঙ্ক বা টেলিটক URL দিন:
+                      </label>
+                      <a
+                        href="/admin?tab=gemini-browser-spider"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-1.5 text-[11px] font-black text-amber-700 bg-amber-50 hover:bg-amber-100 border border-amber-200 px-2.5 py-1 rounded-lg transition-colors cursor-pointer shadow-sm"
+                        title="সার্ভারে ব্রাউজার এজেন্ট কীভাবে লাইভ কাজ করছে দেখুন"
+                      >
+                        <Sparkles className="w-3 h-3 text-amber-600 animate-pulse" />
+                        <span>🖥️ লাইভ ব্রাউজার এজেন্ট ভিউ</span>
+                      </a>
+                    </div>
                     <div className="flex gap-2">
                       <input
                         type="text"

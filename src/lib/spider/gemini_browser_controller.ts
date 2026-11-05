@@ -487,7 +487,7 @@ You MUST respond ONLY with a valid JSON block inside \`\`\`json ... \`\`\` witho
 
   // Prefer verified deep parser positions if it found structured positions
   const resolvedPositions = (resolved?.positions && resolved.positions.length > 0) ? resolved.positions : [];
-  const positions: JobPosition[] = (resolvedPositions.length >= (parsed?.positions?.length || 0))
+  const positions: JobPosition[] = (resolvedPositions.length > 0)
     ? resolvedPositions
     : (Array.isArray(parsed?.positions) && parsed.positions.length > 0)
     ? parsed.positions.map((p: any) => ({

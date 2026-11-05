@@ -1667,8 +1667,21 @@ function AdminContent() {
           keywords: ['সার্কুলার', 'চাকরি', 'খসড়া', 'draft', 'alljobs', 'জব'],
           subTabs: [
             { id: 'circulars', label: 'সব সার্কুলার' },
+            { id: 'gemini-browser-spider', label: '🤖 লাইভ ব্রাউজার ও এআই এজেন্ট হাব' },
             { id: 'imported-drafts', label: 'খসড়া ও অনুমোদন' },
             { id: 'category-search-manager', label: 'ক্যাটাগরি' }
+          ]
+        },
+        { 
+          id: 'gemini-browser-spider', 
+          label: 'লাইভ ব্রাউজার এজেন্ট', 
+          icon: Globe, 
+          badge: 'LIVE VIEW',
+          badgeColor: 'bg-amber-500 text-slate-900',
+          keywords: ['ব্রাউজার', 'browser', 'agent', 'gemini', 'লাইভ', 'chrome', 'ক্রোম', 'spider', 'স্টুডিও'],
+          subTabs: [
+            { id: 'gemini-browser-spider', label: 'লাইভ ব্রাউজার স্ক্রিন ও অটোমেশন' },
+            { id: 'source-monitoring', label: 'সোর্স স্ক্র্যাপার মনিটরিং' }
           ]
         },
         { 
@@ -1769,7 +1782,8 @@ function AdminContent() {
       
       'deadline-alert-manager': 'circulars',
       'create-circular': 'circulars',
-      'gemini-browser-spider': 'circulars',
+      'gemini-browser-spider': 'gemini-browser-spider',
+      'source-monitoring': 'gemini-browser-spider',
       
       'invoices': 'transactions',
       'service-fees': 'transactions',

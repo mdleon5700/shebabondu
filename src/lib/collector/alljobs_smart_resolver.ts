@@ -134,8 +134,8 @@ export function repairTeletalkBengaliEncoding(rawText: string): string {
     [/ফɇািমিল\s*ওেয়লেফয়ার\s*এɇািসসেট˂/g, 'ফ্যামিলি ওয়েলফেয়ার অ্যাসিস্ট্যান্ট'],
     [/অিʁিনব\s*ȟাপক/g, 'অগ্নিনির্বাপক (ফায়ার ফাইটার)'],
     [/অিফস\s*সহায়ক/g, 'অফিস সহায়ক'],
-    [/বাӋিচ\s*ȟ/g, 'বাবুর্চি'],
-    [/সহকারী\s*বাӋিচ\s*ȟ/g, 'সহকারী বাবুর্চি'],
+    [/বা[Ӌb]িচ\s*[ȟh]/g, 'বাবুর্চি'],
+    [/সহকারী\s*বা[Ӌb]িচ\s*[ȟh]/g, 'সহকারী বাবুর্চি'],
     [/ǯমসওেয়টার/g, 'মেসওয়েটার'],
     [/পিরʑˑতাকম̭/g, 'পরিচ্ছন্নতাকর্মী'],
     [/আয়া/g, 'আয়া'],
@@ -225,8 +225,8 @@ export function parseDetailsFromPdfText(rawText: string, sourceUrl = ''): {
     deadline = deadlineMatch[1].trim();
   }
 
-  // 4. Consecutive Serial Block Extraction (১।, ২।, ৩। ... ২০।)
-  const serialRegex = /(?:^|\n)\s*([১-৯]|১০|১১|১২|১৩|১৪|১৫|১৬|১৭|১৮|১৯|২০)\s*[।\.]\s*([^\n]+)([\s\S]*?)(?=(?:\n\s*(?:[১-৯]|১০|১১|১২|১৩|১৪|১৫|১৬|১৭|১৮|১৯|২০)\s*[।\.])|$)/g;
+  // 4. Multi-Position Table Parser (Extracts all positions ১ to ৫০ without arbitrary limits)
+  const serialRegex = /(?:^|\n)\s*([১-৯]|[১-৪][০-৯]|৫০)\s*[।\.]\s*([^\n]+)([\s\S]*?)(?=(?:\n\s*(?:[১-৯]|[১-৪][০-৯]|৫০)\s*[।\.])|$)/g;
   const extractedPositions: Array<{
     title: string;
     posts: number;
@@ -237,25 +237,48 @@ export function parseDetailsFromPdfText(rawText: string, sourceUrl = ''): {
   }> = [];
 
   let match;
-  let expectedSerial = 1;
 
   while ((match = serialRegex.exec(text)) !== null) {
     const serial = match[1];
     const rawTitle = match[2].trim();
     const body = match[3];
 
-    const serialNum = parseInt(serial.replace(/[০-৯]/g, d => '0123456789'['০১২৩৪৫৬৭৮৯'.indexOf(d)]), 10);
-
-    // Skip preamble or condition headings
-    if (rawTitle.includes('মহাপরিদপ্তর') || rawTitle.includes('মন্ত্রণালয়') || rawTitle.includes('বয়স') || rawTitle.includes('শর্তাবলী') || rawTitle.includes('বিবিধ')) {
+    // Filter out preambles, notes, rules, and condition headings
+    if (
+      rawTitle.length > 55 ||
+      rawTitle.includes('আহবান') ||
+      rawTitle.includes('দরখাস্ত') ||
+      rawTitle.includes('বয়স') ||
+      rawTitle.includes('শর্তাবলী') ||
+      rawTitle.includes('মহাপরিচালক') ||
+      rawTitle.includes('মহাপরিদর্শক') ||
+      rawTitle.includes('মহাপরিদপ্তর') ||
+      rawTitle.includes('মন্ত্রণালয়') ||
+      rawTitle.includes('সংরক্ষণ') ||
+      rawTitle.includes('হ্রাস') ||
+      rawTitle.includes('বাতিল') ||
+      rawTitle.includes('অধিকার') ||
+      rawTitle.includes('আবেদনকারী') ||
+      rawTitle.includes('পরীক্ষায়') ||
+      rawTitle.includes('অনলাইনে')
+    ) {
       continue;
     }
 
-    if (serialNum === expectedSerial) {
-      const cleanTitle = rawTitle.replace(/\s+/g, ' ').replace(/[–—\-]/g, '').trim();
+    // Must contain evidence of a legitimate post (Grade, Salary, or Vacancies count)
+    const hasGrade = /গ্রেড|Grade|[০-৯\d]{1,2}তম/i.test(body) || /গ্রেড|Grade|[০-৯\d]{1,2}তম/i.test(rawTitle);
+    const hasSalary = /[০-৯\d]{1,2},[০-৯\d]{3}/.test(body);
+    const hasPosts = /(?:^|\s)(০১|০২|০৩|০৪|০৫|০৬|০৭|০৮|০৯|১০|১১|১২|[০-৯\d]{1,2})\s+/m.test(body);
+
+    if (hasGrade || hasSalary || hasPosts) {
+      let cleanTitle = rawTitle
+        .replace(/গ্রেড.*$/, '')
+        .replace(/[–—\-]/g, '')
+        .replace(/\s+/g, ' ')
+        .trim();
 
       // Extract Grade
-      const gradeMatch = body.match(/গ্রেড[-–—\s]*([০-৯\d]+)/i) || body.match(/Grade[-–—\s]*(\d+)/i);
+      const gradeMatch = body.match(/গ্রেড[-–—\s]*([০-৯\d]+)/i) || rawTitle.match(/গ্রেড[-–—\s]*([০-৯\d]+)/i);
       const gradeNum = gradeMatch ? gradeMatch[1] : '';
       const grade = gradeNum ? `${gradeNum}তম গ্রেড` : '২০তম গ্রেড';
 
@@ -270,23 +293,25 @@ export function parseDetailsFromPdfText(rawText: string, sourceUrl = ''): {
       const salMatch = body.match(/([০-৯\d]{1,2},[০-৯\d]{3}\s*[-–—]\s*[০-৯\d]{1,2},?[০-৯\d]{3}\/?[-–—\/]*)/);
       const salary = salMatch ? salMatch[1].trim() + ' টাকা' : 'জাতীয় বেতন স্কেল ২০১৫ অনুযায়ী';
 
-      // Examination Fee
-      const parsedGradeNum = parseInt(gradeNum, 10);
-      let govtFee = 112;
-      if (serialNum <= 3 || (parsedGradeNum && parsedGradeNum <= 16)) {
-        govtFee = 112;
-      } else {
-        govtFee = 56;
+      // Minimum Education
+      let minEducation = 'অষ্টম শ্রেণি / জেএসসি পাস';
+      if (body.includes('স্নাতক') || body.includes('ডিগ্রি')) {
+        minEducation = 'স্বীকৃত বিশ্ববিদ্যালয় হতে স্নাতক বা সমমানের ডিগ্রি';
+      } else if (body.includes('উচ্চ মাধ্যমিক') || body.includes('এইচএসসি') || cleanTitle.includes('মুদ্রাক্ষরিক')) {
+        minEducation = 'উচ্চ মাধ্যমিক (এইচএসসি) বা সমমান পরীক্ষায় উত্তীর্ণ';
+      } else if (body.includes('মাধ্যমিক') || body.includes('এসএসসি') || cleanTitle.includes('সহায়ক') || cleanTitle.includes('অফিস সহায়ক')) {
+        minEducation = 'মাধ্যমিক স্কুল সার্টিফিকেট (এসএসসি) বা সমমান পাস';
+      } else if (body.includes('ডিপ্লোমা') || cleanTitle.includes('ড্রাফটসম্যান')) {
+        minEducation = 'এইচএসসি বা ডিপ্লোমা সমমান ডিগ্রি';
       }
 
-      // Minimum Education
-      let minEducation = 'অষ্টম শ্রেণি / জেএসসি বা সমমানের যোগ্যতা';
-      if (body.includes('উচ্চ মাধ্যমিক') || body.includes('ডিপ্লোমা') || cleanTitle.includes('ড্রাফটসম্যান') || cleanTitle.includes('মুদ্রাক্ষরিক')) {
-        minEducation = 'উচ্চ মাধ্যমিক (এইচএসসি) বা ডিপ্লোমা সমমান পাস';
-      } else if (body.includes('মাধ্যমিক') || body.includes('এসএসসি') || cleanTitle.includes('সহায়ক') || cleanTitle.includes('অগ্নিনির্বাপক')) {
-        minEducation = 'মাধ্যমিক স্কুল সার্টিফিকেট (এসএসসি) বা সমমান পরীক্ষায় উত্তীর্ণ';
-      } else if (body.includes('অষ্টম') || body.includes('জেএসসি')) {
-        minEducation = 'অষ্টম শ্রেণি বা জেএসসি পাস';
+      // Examination Fee
+      let govtFee = 112;
+      const parsedGradeNum = parseInt(gradeNum, 10);
+      if (parsedGradeNum && parsedGradeNum <= 16) {
+        govtFee = 112;
+      } else if (parsedGradeNum && parsedGradeNum > 16) {
+        govtFee = 56;
       }
 
       extractedPositions.push({
@@ -297,10 +322,6 @@ export function parseDetailsFromPdfText(rawText: string, sourceUrl = ''): {
         minEducation,
         govtFee
       });
-
-      expectedSerial++;
-    } else if (extractedPositions.length > 0 && serialNum < expectedSerial) {
-      break;
     }
   }
 

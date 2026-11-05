@@ -15,7 +15,9 @@
     "sync:alljobs": "node scripts/fetch_and_populate_alljobs.js",
     "spider:browser": "node scripts/spider/browser_agent.js",
     "audit": "node scripts/test_audit_api.js",
-    "test:browser": "node scripts/browser_verify.js"
+    "test": "npm run typecheck",
+    "test:browser": "node scripts/browser_verify.js",
+    "prepare": "husky install"
   },
   "dependencies": {
     "lucide-react": "^0.453.0",
@@ -32,7 +34,8 @@
     "playwright": "^1.64.1",
     "postcss": "^8.4.47",
     "tailwindcss": "^3.4.14",
-    "typescript": "^5"
+    "typescript": "^5",
+    "husky": "^8.0.0"
   },
   "engines": {
     "node": ">=20.0.0"

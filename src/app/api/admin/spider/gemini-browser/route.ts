@@ -1,3 +1,4 @@
+import { triggerInstantSearchIndexing } from '@/lib/seo/instant_indexer';
 import { NextResponse } from 'next/server';
 import path from 'path';
 import fs from 'fs';
@@ -160,6 +161,9 @@ export async function POST(req: Request) {
       };
 
       const saved = serverDB.saveJob(jobToSave, 'ADMIN');
+      if (targetStatus === 'PUBLISHED') {
+        triggerInstantSearchIndexing(jobToSave.slug || jobId).catch(() => {});
+      }
 
       try {
         revalidatePath('/jobs');
@@ -217,6 +221,10 @@ export async function POST(req: Request) {
         status: newStatus as any,
         updatedAt: new Date().toISOString()
       }, 'ADMIN');
+
+      if (newStatus === 'PUBLISHED') {
+        triggerInstantSearchIndexing(job.slug || job.id).catch(() => {});
+      }
 
       try {
         revalidatePath('/jobs');

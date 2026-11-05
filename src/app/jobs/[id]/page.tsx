@@ -351,6 +351,31 @@ export default function SingleJobPage({ params }: Props) {
     ]
   };
 
+  // 4. Voice Search Speakable Schema (Google Assistant & Siri)
+  const speakableSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": job.title,
+    "speakable": {
+      "@type": "SpeakableSpecification",
+      "cssSelector": [
+        ".job-hero-headline",
+        ".job-summary-facts",
+        ".job-editorial-lead"
+      ]
+    }
+  };
+
+  // 5. Semantic Internal Related Jobs (Topic Clusters)
+  const allJobs = serverDB.getJobs();
+  const activeJobs = allJobs.filter(j => j.id !== job.id && (j.status === 'OPEN' || j.status === 'PUBLISHED' || (j as any).publicationStatus === 'PUBLISHED'));
+  let relatedJobs = activeJobs.filter(j => j.category === job.category || j.organization === job.organization || j.minEducation === job.minEducation);
+  if (relatedJobs.length === 0 && activeJobs.length > 0) {
+    relatedJobs = activeJobs.slice(0, 4);
+  } else {
+    relatedJobs = relatedJobs.slice(0, 4);
+  }
+
   return (
     <>
       <script
@@ -365,7 +390,11 @@ export default function SingleJobPage({ params }: Props) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
-      <JobDetailClient job={job} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(speakableSchema) }}
+      />
+      <JobDetailClient job={job} relatedJobs={relatedJobs} />
     </>
   );
 }

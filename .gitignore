@@ -42,3 +42,8 @@ Thumbs.db
 .browser_profile/
 *.before_user_reset.json
 *.bak
+test-results/
+playwright-report/
+ai-brain/storage/checkpoints/
+ai-brain/storage/queues/
+ai-brain/storage/memory/

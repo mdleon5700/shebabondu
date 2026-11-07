@@ -493,18 +493,69 @@ You MUST respond ONLY with a valid JSON block inside \`\`\`json ... \`\`\` witho
   ]
 }`;
 
-  // 3. Attempt Gemini Browser Agent with Self-Healing Fallback
+  // 3. Attempt Gemini Browser Agent or Direct REST API with Self-Healing Fallback
   let parsed: any = null;
   let rawResponse = '';
 
+  // Only attempt headless browser automation if a persistent Google login session is confirmed connected
+  let browserStatus = { isConnected: false };
   try {
-    rawResponse = await queryGeminiBrowserAgent(prompt, 30000);
-    const jsonMatch = rawResponse.match(/```json\s*([\s\S]*?)\s*```/) || rawResponse.match(/\{[\s\S]*\}/);
-    if (jsonMatch) {
-      parsed = JSON.parse(jsonMatch[1] || jsonMatch[0]);
+    browserStatus = await getGeminiBrowserStatus();
+  } catch {}
+
+  if (browserStatus.isConnected) {
+    try {
+      rawResponse = await queryGeminiBrowserAgent(prompt, 15000);
+      const jsonMatch = rawResponse.match(/```json\s*([\s\S]*?)\s*```/) || rawResponse.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        parsed = JSON.parse(jsonMatch[1] || jsonMatch[0]);
+      }
+    } catch (err: any) {
+      console.warn('Gemini Browser Standby (Falling back):', err.message);
     }
-  } catch (err: any) {
-    console.warn('Gemini Browser Standby (Self-Healing Fallback engaged):', err.message);
+  }
+
+  // If browser agent was not connected or did not parse, check for official Gemini API Key for direct REST generation
+  if (!parsed) {
+    const apiKey = process.env.GEMINI_API_KEY?.trim() || (() => {
+      try {
+        const envPath = path.resolve(process.cwd(), '.env.local');
+        if (fs.existsSync(envPath)) {
+          const text = fs.readFileSync(envPath, 'utf8');
+          const m = text.match(/GEMINI_API_KEY=(.+)/);
+          return m ? m[1].trim() : null;
+        }
+      } catch {}
+      return null;
+    })();
+
+    if (apiKey && apiKey.length > 10) {
+      try {
+        const directRes = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: prompt }] }],
+            generationConfig: {
+              temperature: 0.2,
+              maxOutputTokens: 2048
+            }
+          }),
+          signal: AbortSignal.timeout(6000)
+        });
+
+        if (directRes.ok) {
+          const resJson = await directRes.json();
+          rawResponse = resJson?.candidates?.[0]?.content?.parts?.[0]?.text || '';
+          const jsonMatch = rawResponse.match(/```json\s*([\s\S]*?)\s*```/) || rawResponse.match(/\{[\s\S]*\}/);
+          if (jsonMatch) {
+            parsed = JSON.parse(jsonMatch[1] || jsonMatch[0]);
+          }
+        }
+      } catch (apiErr: any) {
+        console.warn('Direct Gemini REST API notice (engaged instant deterministic generator):', apiErr.message);
+      }
+    }
   }
 
   // 4. Build 100% Robust Output (Guaranteed Complete & Crash-Free)

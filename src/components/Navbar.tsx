@@ -255,18 +255,20 @@ export default function Navbar({ initialSettings }: { initialSettings?: any } = 
       if (!navRef.current) return;
       const headerWidth = navRef.current.clientWidth;
       
-      // Determine real or reliable fallback right area width based on auth state
-      const expectedRightWidth = auth.isLoggedIn 
-        ? (auth.role === 'admin' ? 255 : 435) 
-        : 515;
+      // Determine real or reliable fallback right area width based on actual DOM measurement and auth state
       const measuredRightWidth = rightAreaRef.current?.offsetWidth || 0;
-      // Guard against measuring unmounted skeleton or partial width
-      const rightWidth = isMounted && measuredRightWidth > 200 
-        ? Math.max(measuredRightWidth, expectedRightWidth) 
-        : expectedRightWidth;
+      const rightWidth = measuredRightWidth > 80
+        ? (measuredRightWidth + 12)
+        : (auth.isLoggedIn ? (auth.role === 'admin' ? 220 : 360) : 490);
 
-      const logoWidth = headerWidth >= 1800 ? 360 : 220;
-      const containerDeduction = 96; // 64px container padding (px-8) + 32px flex gaps
+      // Determine real or reliable logo width
+      const measuredLogoWidth = logoRef.current?.offsetWidth || 0;
+      const logoWidth = measuredLogoWidth > 80
+        ? measuredLogoWidth
+        : (headerWidth >= 1800 ? 350 : 205);
+
+      // Container horizontal padding (64px on lg) + flex item gaps (24px) + safety buffer (16px)
+      const containerDeduction = 104;
       
       const availableSpace = headerWidth - logoWidth - rightWidth - containerDeduction;
 
@@ -275,16 +277,16 @@ export default function Navbar({ initialSettings }: { initialSettings?: any } = 
         return;
       }
 
-      // Exact pixel width mapping (including 6px flex gap) based on rendered Bengali typography
+      // Exact pixel width mapping (including flex gap) based on rendered Bengali typography
       const itemWidthsMap: Record<string, number> = {
-        'home': 51,
-        'all-jobs': 141,
-        'govt': 130,
-        'private': 145,
-        'categories': 147,
-        'exam': 155,
-        'career': 135,
-        'urgent-jobs': 149
+        'home': 48,
+        'all-jobs': 136,
+        'govt': 125,
+        'private': 140,
+        'categories': 136,
+        'exam': 142,
+        'career': 122,
+        'urgent-jobs': 126
       };
 
       const getItemEstimatedWidth = (item: NavMenuItem) => {
@@ -292,12 +294,12 @@ export default function Navbar({ initialSettings }: { initialSettings?: any } = 
         const textLen = (item.label || '').length;
         const hasDropdown = Boolean(item.dropdown && item.dropdown.length > 0);
         const hasBadge = Boolean(item.badge);
-        return Math.max(50, Math.round(20 + (textLen * 7.5) + (hasDropdown ? 16 : 0) + (hasBadge ? 28 : 0) + 6));
+        return Math.max(45, Math.round(16 + (textLen * 7.2) + (hasDropdown ? 14 : 0) + (hasBadge ? 24 : 0) + 4));
       };
 
       let accumulatedWidth = 0;
       let count = 0;
-      const moreButtonWidth = 70;
+      const moreButtonWidth = 60;
 
       for (let i = 0; i < navItems.length; i++) {
         const item = navItems[i];

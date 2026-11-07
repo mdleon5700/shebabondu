@@ -495,6 +495,32 @@ export const KNOWN_TELETALK_ORGS: Record<string, {
     defaultSalary: '২২,০০০ - ৫৩,০৬০/- টাকা',
     defaultGrade: '৯ম গ্রেড',
     defaultEducation: 'স্বীকৃত বিশ্ববিদ্যালয় হতে ৪ বছর মেয়াদি স্নাতক'
+  },
+  bogmc: {
+    name: 'বাংলাদেশ তৈল, গ্যাস ও খনিজ সম্পদ করপোরেশন (পেট্রোবাংলা) / BOGMC',
+    nameEn: 'Bangladesh Oil, Gas & Mineral Corporation (Petrobangla) BOGMC',
+    category: 'engineer',
+    categoryLabel: 'বিদ্যুৎ ও জ্বালানি খাত',
+    website: 'http://bogmc.teletalk.com.bd',
+    smsPrefix: 'BOGMC',
+    defaultPosition: 'সহকারী ব্যবস্থাপক (আইন / সাধারণ)',
+    defaultPosts: 6,
+    defaultSalary: '২২,০০০ - ৫৩,০৬০/- টাকা',
+    defaultGrade: '৯ম গ্রেড',
+    defaultEducation: 'আইন বা সংশ্লিষ্ট বিষয়ে প্রথম শ্রেণী বা সমমানের সিজিপিএসহ স্নাতক (সম্মান) বা স্নাতকোত্তর'
+  },
+  petrobangla: {
+    name: 'বাংলাদেশ তৈল, গ্যাস ও খনিজ সম্পদ করপোরেশন (পেট্রোবাংলা) / BOGMC',
+    nameEn: 'Bangladesh Oil, Gas & Mineral Corporation (Petrobangla) BOGMC',
+    category: 'engineer',
+    categoryLabel: 'বিদ্যুৎ ও জ্বালানি খাত',
+    website: 'http://bogmc.teletalk.com.bd',
+    smsPrefix: 'BOGMC',
+    defaultPosition: 'সহকারী ব্যবস্থাপক (আইন / সাধারণ)',
+    defaultPosts: 6,
+    defaultSalary: '২২,০০০ - ৫৩,০৬০/- টাকা',
+    defaultGrade: '৯ম গ্রেড',
+    defaultEducation: 'আইন বা সংশ্লিষ্ট বিষয়ে প্রথম শ্রেণী বা সমমানের সিজিপিএসহ স্নাতক (সম্মান) বা স্নাতকোত্তর'
   }
 };
 
@@ -948,6 +974,9 @@ export async function resolveCircularInput(input: string): Promise<ResolvedCircu
         if (orgName.includes('Coal Power Generation Company') || orgName.includes('CPGCBL')) {
           orgName = 'কোল পাওয়ার জেনারেশন কোম্পানি বাংলাদেশ লিমিটেড (CPGCBL)';
         }
+        if (orgName.includes('Bangladesh Oil, Gas & Mineral') || orgName.includes('Petrobangla') || orgName.includes('BOGMC')) {
+          orgName = 'বাংলাদেশ তৈল, গ্যাস ও খনিজ সম্পদ করপোরেশন (পেট্রোবাংলা) / BOGMC';
+        }
         const jobTitle = d.job_title_bn || d.job_title || 'নতুন নিয়োগ বিজ্ঞপ্তি';
         const fullTitle = `${orgName} - ${jobTitle} নিয়োগ বিজ্ঞপ্তি ২০২৬`;
         const { category, categoryLabel } = mapCategory(orgName + ' ' + (orgInfo.details || ''));
@@ -960,23 +989,14 @@ export async function resolveCircularInput(input: string): Promise<ResolvedCircu
         if (d.advertisement_file) {
           pdfUrl = d.advertisement_file.startsWith('http')
             ? d.advertisement_file
-            : (d.advertisement_file.startsWith('public/')
-                ? `https://alljobs.teletalk.com.bd/${d.advertisement_file}`
-                : `https://alljobs.teletalk.com.bd/media/${d.advertisement_file}`);
+            : `https://alljobs.teletalk.com.bd/media/${d.advertisement_file.replace(/^media\//, '')}`;
         } else if (d.application_site) {
           pdfUrl = `${d.application_site.replace(/\/$/, '')}/docs/advertisement.pdf`;
         }
 
-        // Try extracting text from PDF if available
-        let rawText = '';
-        if (pdfUrl) {
-          try {
-            rawText = await extractTextFromPdf(pdfUrl);
-          } catch {}
-        }
-        if (!rawText && orgInfo.details) {
-          rawText = `${orgName}\n${orgInfo.details}\nপদ: ${jobTitle}\nশূন্যপদ: ${vacancies}`;
-        }
+        // Generate immediate high-quality text representation from official API metadata
+        // Do not block client with synchronous heavy 2-10MB external PDF downloads
+        let rawText = `${orgName}\n${orgInfo.details || ''}\nপদবি: ${jobTitle}\nশূন্যপদ: ${vacancies}টি\nআবেদনের শেষ তারিখ: ${deadlineBn}\nঅফিশিয়াল ওয়েবসাইট: ${d.application_site || d.job_source || ''}`;
 
         const officialLink = d.application_site || d.job_source || 'https://alljobs.teletalk.com.bd';
 

@@ -76,7 +76,7 @@ export default function CvBuilderPage() {
         <div className="space-y-1.5">
           <h3 className="text-xs font-bold uppercase tracking-wider text-emerald-800 border-b pb-1">ক্যারিয়ার উদ্দেশ্য</h3>
           <p className="text-xs text-slate-600 leading-relaxed">
-            একজন উদ্যমী এবং দায়িত্বশীল স্নাতক হিসেবে বাংলাদেশের সম্মানিত সরকারি/ব্যাংক প্রতিষ্ঠানে নিষ্ঠার সাথে দায়িত্ব পালন করতে আগ্রহী।
+            {(profile as any).about || (profile as any).careerPreferences?.careerObjective || (profile as any).careerPreferences?.objective || 'একজন উদ্যমী এবং দায়িত্বশীল স্নাতক হিসেবে বাংলাদেশের সম্মানিত সরকারি/স্বায়ত্তশাসিত প্রতিষ্ঠানে নিষ্ঠা ও সততার সাথে দায়িত্ব পালন করতে আগ্রহী।'}
           </p>
         </div>
 
@@ -84,25 +84,50 @@ export default function CvBuilderPage() {
         <div className="space-y-2">
           <h3 className="text-xs font-bold uppercase tracking-wider text-emerald-800 border-b pb-1">শিক্ষাগত যোগ্যতা</h3>
           <div className="space-y-2 text-xs">
-            {profile.education?.map((edu, idx) => (
-              <div key={idx} className="flex justify-between items-start">
-                <div>
-                  <div className="font-bold text-slate-900">{edu.degree} - {edu.boardOrUni}</div>
-                  <div className="text-slate-500 text-[11px]">{edu.majorSubject || 'সাধারণ'} | পাস: {edu.year}</div>
+            {profile.education && profile.education.length > 0 ? (
+              profile.education.map((edu, idx) => (
+                <div key={idx} className="flex justify-between items-start">
+                  <div>
+                    <div className="font-bold text-slate-900">{edu.degree} - {edu.boardOrUni}</div>
+                    <div className="text-slate-500 text-[11px]">{edu.majorSubject || 'সাধারণ'} | পাস: {edu.year}</div>
+                  </div>
+                  <span className="font-mono font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded">
+                    জিপিএ: {edu.result}
+                  </span>
                 </div>
-                <span className="font-mono font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded">
-                  জিপিএ: {edu.result}
-                </span>
-              </div>
-            ))}
+              ))
+            ) : (
+              <p className="text-xs text-slate-400 italic">কোনো শিক্ষাগত তথ্য যোগ করা হয়নি।</p>
+            )}
           </div>
         </div>
+
+        {/* Work Experience Section (If present) */}
+        {((profile.experiences && profile.experiences.length > 0) || ((profile as any).experience && (profile as any).experience.length > 0)) && (
+          <div className="space-y-2">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-emerald-800 border-b pb-1">কর্মঅভিজ্ঞতা</h3>
+            <div className="space-y-2 text-xs">
+              {((profile.experiences || (profile as any).experience) as any[]).map((exp, idx) => (
+                <div key={idx} className="flex justify-between items-start">
+                  <div>
+                    <div className="font-bold text-slate-900">{exp.designation || exp.title || 'কর্মকর্তা'} - {exp.company || exp.organization}</div>
+                    <div className="text-slate-500 text-[11px]">{exp.duration || (exp.startDate ? `${exp.startDate} - ${exp.endDate || 'বর্তমান'}` : '')}</div>
+                    {exp.description && <div className="text-slate-600 text-[11px] mt-0.5">{exp.description}</div>}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Skills & Certifications */}
         <div className="space-y-2">
           <h3 className="text-xs font-bold uppercase tracking-wider text-emerald-800 border-b pb-1">দক্ষতা ও ভাষা</h3>
           <div className="flex flex-wrap gap-2 text-xs">
-            {['বাংলা (মাতৃভাষা)', 'ইংরেজি (প্রফেশনাল)', 'কম্পিউটার টাইপিং (বাংলা ও ইংরেজি)', 'MS Office & Excel'].map((sk, idx) => (
+            {((profile.skills && profile.skills.length > 0)
+              ? profile.skills.map(s => typeof s === 'string' ? s : (s as any).name || (s as any).skillName || String(s))
+              : ['বাংলা (মাতৃভাষা)', 'ইংরেজি (প্রফেশনাল)', 'কম্পিউটার টাইপিং (বাংলা ও ইংরেজি)', 'MS Office & Excel']
+            ).map((sk, idx) => (
               <span key={idx} className="px-2.5 py-1 bg-slate-100 rounded-lg text-slate-700 font-medium">
                 {sk}
               </span>

@@ -1,11 +1,299 @@
 {
-  "candidates": {},
-  "documents": {},
-  "applications": {},
-  "savedJobs": {},
-  "transactions": {},
+  "candidates": {
+    "CS-USR-26-999888": {
+      "id": "CS-USR-26-999888",
+      "name": "Candidate B",
+      "nameBn": "Candidate B",
+      "fatherName": "",
+      "motherName": "",
+      "email": "",
+      "phone": "01811999888",
+      "username": "candidate.b.9888",
+      "dob": "",
+      "gender": "male",
+      "nid": "",
+      "division": "",
+      "district": "ঢাকা",
+      "address": "",
+      "permanentAddress": "",
+      "photoUrl": "data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"120\" height=\"120\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"%2394a3b8\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect width=\"100%\" height=\"100%\" fill=\"%23f1f5f9\"/><path d=\"M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2\"></path><circle cx=\"12\" cy=\"7\" r=\"4\"></circle></svg>",
+      "signatureUrl": "data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"200\" height=\"60\" viewBox=\"0 0 200 60\"><rect width=\"200\" height=\"60\" fill=\"%23f8fafc\" rx=\"6\"/><text x=\"100\" y=\"35\" font-family=\"sans-serif\" font-size=\"12\" fill=\"%2394a3b8\" text-anchor=\"middle\">স্বাক্ষর যুক্ত করুন</text></svg>",
+      "walletBalance": 50,
+      "maritalStatus": "single",
+      "quota": "none",
+      "education": [],
+      "passwordHash": "scrypt$30d5acab64485ca2f1c010505dad19ae$d6aa54a3a72a84c865889de25ccfa62c7f9d750ff05e63da43dc83751b09d75e6948f8aaf9aa168629ff7855e96054979eebb4528797ca37a19d17a0b06cb153",
+      "role": "candidate",
+      "createdAt": "2026-11-07T03:58:09.105Z",
+      "updatedAt": "2026-11-07T03:58:09.105Z"
+    }
+  },
+  "documents": {
+    "CS-USR-26-999888": []
+  },
+  "applications": {
+    "CS-USR-26-999888": []
+  },
+  "savedJobs": {
+    "CS-USR-26-999888": []
+  },
+  "transactions": {
+    "CS-USR-26-999888": []
+  },
   "notifications": {
     "admin": [
+      {
+        "id": "notif_adm_job-alljobs-csrajshah-12949_1794024094996",
+        "title": "সার্কুলার সম্পাদিত: সিভিল সার্জন কার্যালয় রাজবাড়ী নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "LIVE_COLLECTOR দ্বারা সিভিল সার্জন কার্যালয় রাজবাড়ী এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "type": "system",
+        "read": false,
+        "date": "2026-11-07T04:01:34.996Z",
+        "link": "/jobs/job-alljobs-csrajshah-12949"
+      },
+      {
+        "id": "notif_adm_job-alljobs-cid-14913_1794024094888",
+        "title": "সার্কুলার সম্পাদিত: বাংলাদেশ পুলিশ , সিআইডি নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "LIVE_COLLECTOR দ্বারা বাংলাদেশ পুলিশ , সিআইডি এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "type": "system",
+        "read": false,
+        "date": "2026-11-07T04:01:34.888Z",
+        "link": "/jobs/job-alljobs-cid-14913"
+      },
+      {
+        "id": "notif_adm_job-alljobs-dcnetrokona-14935_1794024094761",
+        "title": "সার্কুলার সম্পাদিত: DC Office Netrokona (DCNETROKONA) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "LIVE_COLLECTOR দ্বারা DC Office Netrokona (DCNETROKONA) এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "type": "system",
+        "read": false,
+        "date": "2026-11-07T04:01:34.761Z",
+        "link": "/jobs/job-alljobs-dcnetrokona-14935"
+      },
+      {
+        "id": "notif_adm_job-alljobs-bcic-14936_1794024094632",
+        "title": "সার্কুলার সম্পাদিত: Bangladesh Chemical Industries Corporation (BCIC) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "LIVE_COLLECTOR দ্বারা Bangladesh Chemical Industries Corporation (BCIC) এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "type": "system",
+        "read": false,
+        "date": "2026-11-07T04:01:34.632Z",
+        "link": "/jobs/job-alljobs-bcic-14936"
+      },
+      {
+        "id": "notif_adm_job-alljobs-hbri-14968_1794024094545",
+        "title": "সার্কুলার সম্পাদিত: Housing & Building Research Institute(HBRI) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "LIVE_COLLECTOR দ্বারা Housing & Building Research Institute(HBRI) এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "type": "system",
+        "read": false,
+        "date": "2026-11-07T04:01:34.545Z",
+        "link": "/jobs/job-alljobs-hbri-14968"
+      },
+      {
+        "id": "notif_adm_job-alljobs-dcpatuakhali-14984_1794024094446",
+        "title": "সার্কুলার সম্পাদিত: DC Office Patuakhali (DCPATUAKHALI) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "LIVE_COLLECTOR দ্বারা DC Office Patuakhali (DCPATUAKHALI) এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "type": "system",
+        "read": false,
+        "date": "2026-11-07T04:01:34.446Z",
+        "link": "/jobs/job-alljobs-dcpatuakhali-14984"
+      },
+      {
+        "id": "notif_adm_job-alljobs-dcbogura-14986_1794024094339",
+        "title": "সার্কুলার সম্পাদিত: DC Office Bogura (DCBOGURA) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "LIVE_COLLECTOR দ্বারা DC Office Bogura (DCBOGURA) এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "type": "system",
+        "read": false,
+        "date": "2026-11-07T04:01:34.339Z",
+        "link": "/jobs/job-alljobs-dcbogura-14986"
+      },
+      {
+        "id": "notif_adm_job-alljobs-policedinaj-14987_1794024094251",
+        "title": "সার্কুলার সম্পাদিত: পুলিশ সুপারের কার্যালয়, দিনাজপুর নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "LIVE_COLLECTOR দ্বারা পুলিশ সুপারের কার্যালয়, দিনাজপুর এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "type": "system",
+        "read": false,
+        "date": "2026-11-07T04:01:34.251Z",
+        "link": "/jobs/job-alljobs-policedinaj-14987"
+      },
+      {
+        "id": "notif_adm_job-alljobs-bogmc-14989_1794024094172",
+        "title": "সার্কুলার সম্পাদিত: Bangladesh Oil, Gas & Mineral Corporation (Petrobangla) BOGMC নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "LIVE_COLLECTOR দ্বারা Bangladesh Oil, Gas & Mineral Corporation (Petrobangla) BOGMC এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "type": "system",
+        "read": false,
+        "date": "2026-11-07T04:01:34.172Z",
+        "link": "/jobs/job-alljobs-bogmc-14989"
+      },
+      {
+        "id": "notif_adm_job-alljobs-tax6-15024_1794024094077",
+        "title": "সার্কুলার সম্পাদিত: কর কমিশনারের কার্যালয় কর অঞ্চল-৬, ঢাকা নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "LIVE_COLLECTOR দ্বারা কর কমিশনারের কার্যালয় কর অঞ্চল-৬, ঢাকা এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "type": "system",
+        "read": false,
+        "date": "2026-11-07T04:01:34.077Z",
+        "link": "/jobs/job-alljobs-tax6-15024"
+      },
+      {
+        "id": "notif_adm_job-alljobs-dcnoakhali-15031_1794024093965",
+        "title": "সার্কুলার সম্পাদিত: Deputy Commissioner Office, Noakhali (DCNOAKHALI) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "LIVE_COLLECTOR দ্বারা Deputy Commissioner Office, Noakhali (DCNOAKHALI) এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "type": "system",
+        "read": false,
+        "date": "2026-11-07T04:01:33.965Z",
+        "link": "/jobs/job-alljobs-dcnoakhali-15031"
+      },
+      {
+        "id": "notif_adm_job-alljobs-tax9-15038_1794024093784",
+        "title": "সার্কুলার সম্পাদিত: Taxes Zone-9, Dhaka (TAX9) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "LIVE_COLLECTOR দ্বারা Taxes Zone-9, Dhaka (TAX9) এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "type": "system",
+        "read": false,
+        "date": "2026-11-07T04:01:33.784Z",
+        "link": "/jobs/job-alljobs-tax9-15038"
+      },
+      {
+        "id": "notif_adm_job-alljobs-sposherpur-15044_1794024093699",
+        "title": "সার্কুলার সম্পাদিত: পুলিশ সুপারের কার্যালয় শেরপুর নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "LIVE_COLLECTOR দ্বারা পুলিশ সুপারের কার্যালয় শেরপুর এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "type": "system",
+        "read": false,
+        "date": "2026-11-07T04:01:33.699Z",
+        "link": "/jobs/job-alljobs-sposherpur-15044"
+      },
+      {
+        "id": "notif_adm_job-alljobs-dcchuadanga-15047_1794024093589",
+        "title": "সার্কুলার সম্পাদিত: DC Office Chuadanga (DCCHUADANGA) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "LIVE_COLLECTOR দ্বারা DC Office Chuadanga (DCCHUADANGA) এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "type": "system",
+        "read": false,
+        "date": "2026-11-07T04:01:33.589Z",
+        "link": "/jobs/job-alljobs-dcchuadanga-15047"
+      },
+      {
+        "id": "notif_adm_job-alljobs-taxnar-15056_1794024093468",
+        "title": "সার্কুলার সম্পাদিত: কর কমিশনারের কার্যালয় কর অঞ্চল নারায়ণগঞ্জ নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "LIVE_COLLECTOR দ্বারা কর কমিশনারের কার্যালয় কর অঞ্চল নারায়ণগঞ্জ এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "type": "system",
+        "read": false,
+        "date": "2026-11-07T04:01:33.468Z",
+        "link": "/jobs/job-alljobs-taxnar-15056"
+      },
+      {
+        "id": "notif_adm_job-alljobs-nsd-15060_1794024093359",
+        "title": "সার্কুলার সম্পাদিত: জাতীয় সঞ্চয় অধিদপ্তর নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "LIVE_COLLECTOR দ্বারা জাতীয় সঞ্চয় অধিদপ্তর এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "type": "system",
+        "read": false,
+        "date": "2026-11-07T04:01:33.359Z",
+        "link": "/jobs/job-alljobs-nsd-15060"
+      },
+      {
+        "id": "notif_adm_job-alljobs-dcnarail-15068_1794024093256",
+        "title": "সার্কুলার সম্পাদিত: Narail Distric (DCNARAIL) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "LIVE_COLLECTOR দ্বারা Narail Distric (DCNARAIL) এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "type": "system",
+        "read": false,
+        "date": "2026-11-07T04:01:33.256Z",
+        "link": "/jobs/job-alljobs-dcnarail-15068"
+      },
+      {
+        "id": "notif_adm_job-alljobs-tax19-15076_1794024092883",
+        "title": "সার্কুলার সম্পাদিত: কর অঞ্চল 19 নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "LIVE_COLLECTOR দ্বারা কর অঞ্চল 19 এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "type": "system",
+        "read": false,
+        "date": "2026-11-07T04:01:32.883Z",
+        "link": "/jobs/job-alljobs-tax19-15076"
+      },
+      {
+        "id": "notif_adm_job-alljobs-itiiu-15083_1794024092768",
+        "title": "সার্কুলার সম্পাদিত: আয়কর গোয়েন্দা ও তদন্ত ইউনিট নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "LIVE_COLLECTOR দ্বারা আয়কর গোয়েন্দা ও তদন্ত ইউনিট এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "type": "system",
+        "read": false,
+        "date": "2026-11-07T04:01:32.769Z",
+        "link": "/jobs/job-alljobs-itiiu-15083"
+      },
+      {
+        "id": "notif_adm_job-alljobs-basb-15085_1794024092681",
+        "title": "সার্কুলার সম্পাদিত: বাংলাদেশ সশস্ত্র বাহিনী বোর্ড নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "LIVE_COLLECTOR দ্বারা বাংলাদেশ সশস্ত্র বাহিনী বোর্ড এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "type": "system",
+        "read": false,
+        "date": "2026-11-07T04:01:32.681Z",
+        "link": "/jobs/job-alljobs-basb-15085"
+      },
+      {
+        "id": "notif_adm_job-alljobs-apscl-15090_1794024092586",
+        "title": "সার্কুলার সম্পাদিত: আশুগঞ্জ পাওয়ার স্টেশন কোম্পানী লিঃ নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "LIVE_COLLECTOR দ্বারা আশুগঞ্জ পাওয়ার স্টেশন কোম্পানী লিঃ এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "type": "system",
+        "read": false,
+        "date": "2026-11-07T04:01:32.586Z",
+        "link": "/jobs/job-alljobs-apscl-15090"
+      },
+      {
+        "id": "notif_adm_job-alljobs-dcjhenaidah-15102_1794024092477",
+        "title": "সার্কুলার সম্পাদিত: জেলা প্রশাসকের কার্যালয় ঝিনাইদহ নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "LIVE_COLLECTOR দ্বারা জেলা প্রশাসকের কার্যালয় ঝিনাইদহ এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "type": "system",
+        "read": false,
+        "date": "2026-11-07T04:01:32.477Z",
+        "link": "/jobs/job-alljobs-dcjhenaidah-15102"
+      },
+      {
+        "id": "notif_adm_job-alljobs-cpgcbl-15104_1794024092367",
+        "title": "সার্কুলার সম্পাদিত: Coal Power Generation Company Bangladesh Limited (CPGCBL) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "LIVE_COLLECTOR দ্বারা Coal Power Generation Company Bangladesh Limited (CPGCBL) এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "type": "system",
+        "read": false,
+        "date": "2026-11-07T04:01:32.368Z",
+        "link": "/jobs/job-alljobs-cpgcbl-15104"
+      },
+      {
+        "id": "notif_adm_job-alljobs-dscc-15113_1794024092279",
+        "title": "সার্কুলার সম্পাদিত: Dhaka South City Corporation (DSCC) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "LIVE_COLLECTOR দ্বারা Dhaka South City Corporation (DSCC) এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "type": "system",
+        "read": false,
+        "date": "2026-11-07T04:01:32.279Z",
+        "link": "/jobs/job-alljobs-dscc-15113"
+      },
+      {
+        "id": "notif_adm_job-alljobs-dcrajbari-15121_1794024092048",
+        "title": "সার্কুলার সম্পাদিত: DC OFFICE RAJBARI (DCRAJBARI) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "LIVE_COLLECTOR দ্বারা DC OFFICE RAJBARI (DCRAJBARI) এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "type": "system",
+        "read": false,
+        "date": "2026-11-07T04:01:32.048Z",
+        "link": "/jobs/job-alljobs-dcrajbari-15121"
+      },
+      {
+        "id": "notif_adm_job-alljobs-cag-15122_1794024091900",
+        "title": "সার্কুলার সম্পাদিত: বাংলাদেশের কম্পট্রোলার অ্যান্ড অডিটর জেনারেল নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "LIVE_COLLECTOR দ্বারা বাংলাদেশের কম্পট্রোলার অ্যান্ড অডিটর জেনারেল এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "type": "system",
+        "read": false,
+        "date": "2026-11-07T04:01:31.900Z",
+        "link": "/jobs/job-alljobs-cag-15122"
+      },
+      {
+        "id": "notif_adm_job-alljobs-dgms-15127_1794024091790",
+        "title": "সার্কুলার সম্পাদিত: Directorate General of Medical Service (DGMS) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "LIVE_COLLECTOR দ্বারা Directorate General of Medical Service (DGMS) এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "type": "system",
+        "read": false,
+        "date": "2026-11-07T04:01:31.790Z",
+        "link": "/jobs/job-alljobs-dgms-15127"
+      },
+      {
+        "id": "notif_adm_job-alljobs-dcjamalpur-15137_1794024091692",
+        "title": "সার্কুলার সম্পাদিত: DC OFFICE JAMALPUR (DCJAMALPUR) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "LIVE_COLLECTOR দ্বারা DC OFFICE JAMALPUR (DCJAMALPUR) এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "type": "system",
+        "read": false,
+        "date": "2026-11-07T04:01:31.692Z",
+        "link": "/jobs/job-alljobs-dcjamalpur-15137"
+      },
       {
         "id": "notif_1794016681041_egw4",
         "title": {
@@ -207,257 +495,259 @@
         "read": false,
         "date": "2026-11-07T00:08:09.217Z",
         "link": "/jobs/job-alljobs-basb-15085"
-      },
+      }
+    ],
+    "CS-USR-26-999888": [
       {
-        "id": "notif_adm_job-alljobs-apscl-15090_1794010089120",
-        "title": "সার্কুলার সম্পাদিত: আশুগঞ্জ পাওয়ার স্টেশন কোম্পানী লিঃ নিয়োগ বিজ্ঞপ্তি ২০২৬",
-        "message": "LIVE_COLLECTOR দ্বারা আশুগঞ্জ পাওয়ার স্টেশন কোম্পানী লিঃ এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "id": "notif_job_job-alljobs-csrajshah-12949_1794024094996_4k6p",
+        "title": "আপডেট: সিভিল সার্জন কার্যালয় রাজবাড়ী নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "সিভিল সার্জন কার্যালয় রাজবাড়ী কর্তৃক স্বাস্থ্য ও চিকিৎসা বিজ্ঞপ্তি প্রকাশিত হয়েছে। পদ সংখ্যা: 1। আবেদনের শেষ সময়: ১৪ ডিসেম্বর ২০২৬।",
         "type": "system",
         "read": false,
-        "date": "2026-11-07T00:08:09.120Z",
-        "link": "/jobs/job-alljobs-apscl-15090"
+        "date": "2026-11-07T04:01:34.996Z",
+        "link": "/jobs/job-alljobs-csrajshah-12949"
       },
       {
-        "id": "notif_adm_job-alljobs-dcjhenaidah-15102_1794010089016",
-        "title": "সার্কুলার সম্পাদিত: জেলা প্রশাসকের কার্যালয় ঝিনাইদহ নিয়োগ বিজ্ঞপ্তি ২০২৬",
-        "message": "LIVE_COLLECTOR দ্বারা জেলা প্রশাসকের কার্যালয় ঝিনাইদহ এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "id": "notif_job_job-alljobs-cid-14913_1794024094888_wpyy",
+        "title": "আপডেট: বাংলাদেশ পুলিশ , সিআইডি নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "বাংলাদেশ পুলিশ , সিআইডি কর্তৃক প্রতিরক্ষা ও পুলিশ বিজ্ঞপ্তি প্রকাশিত হয়েছে। পদ সংখ্যা: 3। আবেদনের শেষ সময়: ৮ নভেম্বর ২০২৬।",
         "type": "system",
         "read": false,
-        "date": "2026-11-07T00:08:09.016Z",
-        "link": "/jobs/job-alljobs-dcjhenaidah-15102"
+        "date": "2026-11-07T04:01:34.888Z",
+        "link": "/jobs/job-alljobs-cid-14913"
       },
       {
-        "id": "notif_adm_job-alljobs-cpgcbl-15104_1794010088907",
-        "title": "সার্কুলার সম্পাদিত: Coal Power Generation Company Bangladesh Limited (CPGCBL) নিয়োগ বিজ্ঞপ্তি ২০২৬",
-        "message": "LIVE_COLLECTOR দ্বারা Coal Power Generation Company Bangladesh Limited (CPGCBL) এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "id": "notif_job_job-alljobs-dcnetrokona-14935_1794024094761_fccz",
+        "title": "আপডেট: DC Office Netrokona (DCNETROKONA) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "DC Office Netrokona (DCNETROKONA) কর্তৃক সরকারি চাকরি বিজ্ঞপ্তি প্রকাশিত হয়েছে। পদ সংখ্যা: 1। আবেদনের শেষ সময়: ১২ নভেম্বর ২০২৬।",
         "type": "system",
         "read": false,
-        "date": "2026-11-07T00:08:08.907Z",
-        "link": "/jobs/job-alljobs-cpgcbl-15104"
+        "date": "2026-11-07T04:01:34.761Z",
+        "link": "/jobs/job-alljobs-dcnetrokona-14935"
       },
       {
-        "id": "notif_adm_job-alljobs-dscc-15113_1794010088817",
-        "title": "সার্কুলার সম্পাদিত: Dhaka South City Corporation (DSCC) নিয়োগ বিজ্ঞপ্তি ২০২৬",
-        "message": "LIVE_COLLECTOR দ্বারা Dhaka South City Corporation (DSCC) এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "id": "notif_job_job-alljobs-bcic-14936_1794024094632_iprt",
+        "title": "আপডেট: Bangladesh Chemical Industries Corporation (BCIC) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "Bangladesh Chemical Industries Corporation (BCIC) কর্তৃক ইঞ্জিনিয়ারিং ও টেকনিক্যাল বিজ্ঞপ্তি প্রকাশিত হয়েছে। পদ সংখ্যা: 19। আবেদনের শেষ সময়: ১২ নভেম্বর ২০২৬।",
         "type": "system",
         "read": false,
-        "date": "2026-11-07T00:08:08.817Z",
-        "link": "/jobs/job-alljobs-dscc-15113"
+        "date": "2026-11-07T04:01:34.632Z",
+        "link": "/jobs/job-alljobs-bcic-14936"
       },
       {
-        "id": "notif_adm_job-alljobs-dcrajbari-15121_1794010088669",
-        "title": "সার্কুলার সম্পাদিত: DC OFFICE RAJBARI (DCRAJBARI) নিয়োগ বিজ্ঞপ্তি ২০২৬",
-        "message": "LIVE_COLLECTOR দ্বারা DC OFFICE RAJBARI (DCRAJBARI) এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "id": "notif_job_job-alljobs-hbri-14968_1794024094545_ieg2",
+        "title": "আপডেট: Housing & Building Research Institute(HBRI) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "Housing & Building Research Institute(HBRI) কর্তৃক সরকারি চাকরি বিজ্ঞপ্তি প্রকাশিত হয়েছে। পদ সংখ্যা: 7। আবেদনের শেষ সময়: ১৫ নভেম্বর ২০২৬।",
         "type": "system",
         "read": false,
-        "date": "2026-11-07T00:08:08.669Z",
-        "link": "/jobs/job-alljobs-dcrajbari-15121"
+        "date": "2026-11-07T04:01:34.545Z",
+        "link": "/jobs/job-alljobs-hbri-14968"
       },
       {
-        "id": "notif_adm_job-alljobs-cag-15122_1794010088531",
-        "title": "সার্কুলার সম্পাদিত: বাংলাদেশের কম্পট্রোলার অ্যান্ড অডিটর জেনারেল নিয়োগ বিজ্ঞপ্তি ২০২৬",
-        "message": "LIVE_COLLECTOR দ্বারা বাংলাদেশের কম্পট্রোলার অ্যান্ড অডিটর জেনারেল এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "id": "notif_job_job-alljobs-dcpatuakhali-14984_1794024094446_miua",
+        "title": "আপডেট: DC Office Patuakhali (DCPATUAKHALI) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "DC Office Patuakhali (DCPATUAKHALI) কর্তৃক সরকারি চাকরি বিজ্ঞপ্তি প্রকাশিত হয়েছে। পদ সংখ্যা: 2। আবেদনের শেষ সময়: ১৭ নভেম্বর ২০২৬।",
         "type": "system",
         "read": false,
-        "date": "2026-11-07T00:08:08.531Z",
-        "link": "/jobs/job-alljobs-cag-15122"
+        "date": "2026-11-07T04:01:34.446Z",
+        "link": "/jobs/job-alljobs-dcpatuakhali-14984"
       },
       {
-        "id": "notif_adm_job-alljobs-dgms-15127_1794010088441",
-        "title": "সার্কুলার সম্পাদিত: Directorate General of Medical Service (DGMS) নিয়োগ বিজ্ঞপ্তি ২০২৬",
-        "message": "LIVE_COLLECTOR দ্বারা Directorate General of Medical Service (DGMS) এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "id": "notif_job_job-alljobs-dcbogura-14986_1794024094339_yt1n",
+        "title": "আপডেট: DC Office Bogura (DCBOGURA) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "DC Office Bogura (DCBOGURA) কর্তৃক সরকারি চাকরি বিজ্ঞপ্তি প্রকাশিত হয়েছে। পদ সংখ্যা: 2। আবেদনের শেষ সময়: ৭ নভেম্বর ২০২৬।",
         "type": "system",
         "read": false,
-        "date": "2026-11-07T00:08:08.441Z",
-        "link": "/jobs/job-alljobs-dgms-15127"
+        "date": "2026-11-07T04:01:34.339Z",
+        "link": "/jobs/job-alljobs-dcbogura-14986"
       },
       {
-        "id": "notif_adm_job-alljobs-dcjamalpur-15137_1794010088340",
-        "title": "সার্কুলার সম্পাদিত: DC OFFICE JAMALPUR (DCJAMALPUR) নিয়োগ বিজ্ঞপ্তি ২০২৬",
-        "message": "LIVE_COLLECTOR দ্বারা DC OFFICE JAMALPUR (DCJAMALPUR) এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "id": "notif_job_job-alljobs-policedinaj-14987_1794024094250_fxmj",
+        "title": "আপডেট: পুলিশ সুপারের কার্যালয়, দিনাজপুর নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "পুলিশ সুপারের কার্যালয়, দিনাজপুর কর্তৃক প্রতিরক্ষা ও পুলিশ বিজ্ঞপ্তি প্রকাশিত হয়েছে। পদ সংখ্যা: 1। আবেদনের শেষ সময়: ১৭ নভেম্বর ২০২৬।",
         "type": "system",
         "read": false,
-        "date": "2026-11-07T00:08:08.340Z",
-        "link": "/jobs/job-alljobs-dcjamalpur-15137"
+        "date": "2026-11-07T04:01:34.250Z",
+        "link": "/jobs/job-alljobs-policedinaj-14987"
       },
       {
-        "id": "notif_adm_job-alljobs-bogmc-14989_1794009916431",
-        "title": "সার্কুলার সম্পাদিত: Bangladesh Oil, Gas & Mineral Corporation (Petrobangla) BOGMC নিয়োগ বিজ্ঞপ্তি ২০২৬",
-        "message": "ADMIN দ্বারা Bangladesh Oil, Gas & Mineral Corporation (Petrobangla) BOGMC এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "id": "notif_job_job-alljobs-bogmc-14989_1794024094172_600t",
+        "title": "আপডেট: Bangladesh Oil, Gas & Mineral Corporation (Petrobangla) BOGMC নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "Bangladesh Oil, Gas & Mineral Corporation (Petrobangla) BOGMC কর্তৃক ইঞ্জিনিয়ারিং ও টেকনিক্যাল বিজ্ঞপ্তি প্রকাশিত হয়েছে। পদ সংখ্যা: 36। আবেদনের শেষ সময়: ১৭ নভেম্বর ২০২৬।",
         "type": "system",
         "read": false,
-        "date": "2026-11-07T00:05:16.431Z",
+        "date": "2026-11-07T04:01:34.172Z",
         "link": "/jobs/job-alljobs-bogmc-14989"
       },
       {
-        "id": "notif_adm_job-alljobs-tax6-15024_1794009916328",
-        "title": "সার্কুলার সম্পাদিত: কর কমিশনারের কার্যালয় কর অঞ্চল-৬, ঢাকা নিয়োগ বিজ্ঞপ্তি ২০২৬",
-        "message": "ADMIN দ্বারা কর কমিশনারের কার্যালয় কর অঞ্চল-৬, ঢাকা এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "id": "notif_job_job-alljobs-tax6-15024_1794024094077_ro62",
+        "title": "আপডেট: কর কমিশনারের কার্যালয় কর অঞ্চল-৬, ঢাকা নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "কর কমিশনারের কার্যালয় কর অঞ্চল-৬, ঢাকা কর্তৃক সরকারি চাকরি বিজ্ঞপ্তি প্রকাশিত হয়েছে। পদ সংখ্যা: 7। আবেদনের শেষ সময়: ১৪ নভেম্বর ২০২৬।",
         "type": "system",
         "read": false,
-        "date": "2026-11-07T00:05:16.328Z",
+        "date": "2026-11-07T04:01:34.077Z",
         "link": "/jobs/job-alljobs-tax6-15024"
       },
       {
-        "id": "notif_adm_job-alljobs-dcnoakhali-15031_1794009916238",
-        "title": "সার্কুলার সম্পাদিত: Deputy Commissioner Office, Noakhali (DCNOAKHALI) নিয়োগ বিজ্ঞপ্তি ২০২৬",
-        "message": "ADMIN দ্বারা Deputy Commissioner Office, Noakhali (DCNOAKHALI) এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "id": "notif_job_job-alljobs-dcnoakhali-15031_1794024093965_xivd",
+        "title": "আপডেট: Deputy Commissioner Office, Noakhali (DCNOAKHALI) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "Deputy Commissioner Office, Noakhali (DCNOAKHALI) কর্তৃক সরকারি চাকরি বিজ্ঞপ্তি প্রকাশিত হয়েছে। পদ সংখ্যা: 4। আবেদনের শেষ সময়: ২৬ নভেম্বর ২০২৬।",
         "type": "system",
         "read": false,
-        "date": "2026-11-07T00:05:16.238Z",
+        "date": "2026-11-07T04:01:33.965Z",
         "link": "/jobs/job-alljobs-dcnoakhali-15031"
       },
       {
-        "id": "notif_adm_job-alljobs-tax9-15038_1794009916078",
-        "title": "সার্কুলার সম্পাদিত: Taxes Zone-9, Dhaka (TAX9) নিয়োগ বিজ্ঞপ্তি ২০২৬",
-        "message": "ADMIN দ্বারা Taxes Zone-9, Dhaka (TAX9) এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "id": "notif_job_job-alljobs-tax9-15038_1794024093784_tso5",
+        "title": "আপডেট: Taxes Zone-9, Dhaka (TAX9) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "Taxes Zone-9, Dhaka (TAX9) কর্তৃক সরকারি চাকরি বিজ্ঞপ্তি প্রকাশিত হয়েছে। পদ সংখ্যা: 9। আবেদনের শেষ সময়: ১৪ নভেম্বর ২০২৬।",
         "type": "system",
         "read": false,
-        "date": "2026-11-07T00:05:16.078Z",
+        "date": "2026-11-07T04:01:33.784Z",
         "link": "/jobs/job-alljobs-tax9-15038"
       },
       {
-        "id": "notif_adm_job-alljobs-sposherpur-15044_1794009915997",
-        "title": "সার্কুলার সম্পাদিত: পুলিশ সুপারের কার্যালয় শেরপুর নিয়োগ বিজ্ঞপ্তি ২০২৬",
-        "message": "ADMIN দ্বারা পুলিশ সুপারের কার্যালয় শেরপুর এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "id": "notif_job_job-alljobs-sposherpur-15044_1794024093699_kvsc",
+        "title": "আপডেট: পুলিশ সুপারের কার্যালয় শেরপুর নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "পুলিশ সুপারের কার্যালয় শেরপুর কর্তৃক প্রতিরক্ষা ও পুলিশ বিজ্ঞপ্তি প্রকাশিত হয়েছে। পদ সংখ্যা: 3। আবেদনের শেষ সময়: ২৬ নভেম্বর ২০২৬।",
         "type": "system",
         "read": false,
-        "date": "2026-11-07T00:05:15.997Z",
+        "date": "2026-11-07T04:01:33.699Z",
         "link": "/jobs/job-alljobs-sposherpur-15044"
       },
       {
-        "id": "notif_adm_job-alljobs-dcchuadanga-15047_1794009915908",
-        "title": "সার্কুলার সম্পাদিত: DC Office Chuadanga (DCCHUADANGA) নিয়োগ বিজ্ঞপ্তি ২০২৬",
-        "message": "ADMIN দ্বারা DC Office Chuadanga (DCCHUADANGA) এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "id": "notif_job_job-alljobs-dcchuadanga-15047_1794024093589_zunv",
+        "title": "আপডেট: DC Office Chuadanga (DCCHUADANGA) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "DC Office Chuadanga (DCCHUADANGA) কর্তৃক সরকারি চাকরি বিজ্ঞপ্তি প্রকাশিত হয়েছে। পদ সংখ্যা: 7। আবেদনের শেষ সময়: ২১ নভেম্বর ২০২৬।",
         "type": "system",
         "read": false,
-        "date": "2026-11-07T00:05:15.908Z",
+        "date": "2026-11-07T04:01:33.589Z",
         "link": "/jobs/job-alljobs-dcchuadanga-15047"
       },
       {
-        "id": "notif_adm_job-alljobs-taxnar-15056_1794009915804",
-        "title": "সার্কুলার সম্পাদিত: কর কমিশনারের কার্যালয় কর অঞ্চল নারায়ণগঞ্জ নিয়োগ বিজ্ঞপ্তি ২০২৬",
-        "message": "ADMIN দ্বারা কর কমিশনারের কার্যালয় কর অঞ্চল নারায়ণগঞ্জ এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "id": "notif_job_job-alljobs-taxnar-15056_1794024093468_ums2",
+        "title": "আপডেট: কর কমিশনারের কার্যালয় কর অঞ্চল নারায়ণগঞ্জ নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "কর কমিশনারের কার্যালয় কর অঞ্চল নারায়ণগঞ্জ কর্তৃক সরকারি চাকরি বিজ্ঞপ্তি প্রকাশিত হয়েছে। পদ সংখ্যা: 6। আবেদনের শেষ সময়: ১৭ নভেম্বর ২০২৬।",
         "type": "system",
         "read": false,
-        "date": "2026-11-07T00:05:15.804Z",
+        "date": "2026-11-07T04:01:33.468Z",
         "link": "/jobs/job-alljobs-taxnar-15056"
       },
       {
-        "id": "notif_adm_job-alljobs-nsd-15060_1794009915696",
-        "title": "সার্কুলার সম্পাদিত: জাতীয় সঞ্চয় অধিদপ্তর নিয়োগ বিজ্ঞপ্তি ২০২৬",
-        "message": "ADMIN দ্বারা জাতীয় সঞ্চয় অধিদপ্তর এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "id": "notif_job_job-alljobs-nsd-15060_1794024093358_mq93",
+        "title": "আপডেট: জাতীয় সঞ্চয় অধিদপ্তর নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "জাতীয় সঞ্চয় অধিদপ্তর কর্তৃক সরকারি চাকরি বিজ্ঞপ্তি প্রকাশিত হয়েছে। পদ সংখ্যা: 8। আবেদনের শেষ সময়: ২৬ নভেম্বর ২০২৬।",
         "type": "system",
         "read": false,
-        "date": "2026-11-07T00:05:15.696Z",
+        "date": "2026-11-07T04:01:33.358Z",
         "link": "/jobs/job-alljobs-nsd-15060"
       },
       {
-        "id": "notif_adm_job-alljobs-dcnarail-15068_1794009915597",
-        "title": "সার্কুলার সম্পাদিত: Narail Distric (DCNARAIL) নিয়োগ বিজ্ঞপ্তি ২০২৬",
-        "message": "ADMIN দ্বারা Narail Distric (DCNARAIL) এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "id": "notif_job_job-alljobs-dcnarail-15068_1794024093256_l9no",
+        "title": "আপডেট: Narail Distric (DCNARAIL) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "Narail Distric (DCNARAIL) কর্তৃক সরকারি চাকরি বিজ্ঞপ্তি প্রকাশিত হয়েছে। পদ সংখ্যা: 7। আবেদনের শেষ সময়: ২২ নভেম্বর ২০২৬।",
         "type": "system",
         "read": false,
-        "date": "2026-11-07T00:05:15.597Z",
+        "date": "2026-11-07T04:01:33.256Z",
         "link": "/jobs/job-alljobs-dcnarail-15068"
       },
       {
-        "id": "notif_adm_job-alljobs-tax19-15076_1794009915363",
-        "title": "সার্কুলার সম্পাদিত: কর অঞ্চল 19 নিয়োগ বিজ্ঞপ্তি ২০২৬",
-        "message": "ADMIN দ্বারা কর অঞ্চল 19 এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "id": "notif_job_job-alljobs-tax19-15076_1794024092883_7gib",
+        "title": "আপডেট: কর অঞ্চল 19 নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "কর অঞ্চল 19 কর্তৃক সরকারি চাকরি বিজ্ঞপ্তি প্রকাশিত হয়েছে। পদ সংখ্যা: 7। আবেদনের শেষ সময়: ২১ নভেম্বর ২০২৬।",
         "type": "system",
         "read": false,
-        "date": "2026-11-07T00:05:15.363Z",
+        "date": "2026-11-07T04:01:32.883Z",
         "link": "/jobs/job-alljobs-tax19-15076"
       },
       {
-        "id": "notif_adm_job-alljobs-itiiu-15083_1794009915275",
-        "title": "সার্কুলার সম্পাদিত: আয়কর গোয়েন্দা ও তদন্ত ইউনিট নিয়োগ বিজ্ঞপ্তি ২০২৬",
-        "message": "ADMIN দ্বারা আয়কর গোয়েন্দা ও তদন্ত ইউনিট এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "id": "notif_job_job-alljobs-itiiu-15083_1794024092768_ifdg",
+        "title": "আপডেট: আয়কর গোয়েন্দা ও তদন্ত ইউনিট নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "আয়কর গোয়েন্দা ও তদন্ত ইউনিট কর্তৃক সরকারি চাকরি বিজ্ঞপ্তি প্রকাশিত হয়েছে। পদ সংখ্যা: 3। আবেদনের শেষ সময়: ২৩ নভেম্বর ২০২৬।",
         "type": "system",
         "read": false,
-        "date": "2026-11-07T00:05:15.275Z",
+        "date": "2026-11-07T04:01:32.768Z",
         "link": "/jobs/job-alljobs-itiiu-15083"
       },
       {
-        "id": "notif_adm_job-alljobs-basb-15085_1794009915169",
-        "title": "সার্কুলার সম্পাদিত: বাংলাদেশ সশস্ত্র বাহিনী বোর্ড নিয়োগ বিজ্ঞপ্তি ২০২৬",
-        "message": "ADMIN দ্বারা বাংলাদেশ সশস্ত্র বাহিনী বোর্ড এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "id": "notif_job_job-alljobs-basb-15085_1794024092680_dvoz",
+        "title": "আপডেট: বাংলাদেশ সশস্ত্র বাহিনী বোর্ড নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "বাংলাদেশ সশস্ত্র বাহিনী বোর্ড কর্তৃক প্রতিরক্ষা ও পুলিশ বিজ্ঞপ্তি প্রকাশিত হয়েছে। পদ সংখ্যা: 1। আবেদনের শেষ সময়: ২১ নভেম্বর ২০২৬।",
         "type": "system",
         "read": false,
-        "date": "2026-11-07T00:05:15.169Z",
+        "date": "2026-11-07T04:01:32.681Z",
         "link": "/jobs/job-alljobs-basb-15085"
       },
       {
-        "id": "notif_adm_job-alljobs-apscl-15090_1794009915076",
-        "title": "সার্কুলার সম্পাদিত: আশুগঞ্জ পাওয়ার স্টেশন কোম্পানী লিঃ নিয়োগ বিজ্ঞপ্তি ২০২৬",
-        "message": "ADMIN দ্বারা আশুগঞ্জ পাওয়ার স্টেশন কোম্পানী লিঃ এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "id": "notif_job_job-alljobs-apscl-15090_1794024092586_mmg0",
+        "title": "আপডেট: আশুগঞ্জ পাওয়ার স্টেশন কোম্পানী লিঃ নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "আশুগঞ্জ পাওয়ার স্টেশন কোম্পানী লিঃ কর্তৃক ইঞ্জিনিয়ারিং ও টেকনিক্যাল বিজ্ঞপ্তি প্রকাশিত হয়েছে। পদ সংখ্যা: 15। আবেদনের শেষ সময়: ৩০ নভেম্বর ২০২৬।",
         "type": "system",
         "read": false,
-        "date": "2026-11-07T00:05:15.076Z",
+        "date": "2026-11-07T04:01:32.586Z",
         "link": "/jobs/job-alljobs-apscl-15090"
       },
       {
-        "id": "notif_adm_job-alljobs-dcjhenaidah-15102_1794009914980",
-        "title": "সার্কুলার সম্পাদিত: জেলা প্রশাসকের কার্যালয় ঝিনাইদহ নিয়োগ বিজ্ঞপ্তি ২০২৬",
-        "message": "ADMIN দ্বারা জেলা প্রশাসকের কার্যালয় ঝিনাইদহ এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "id": "notif_job_job-alljobs-dcjhenaidah-15102_1794024092477_2k62",
+        "title": "আপডেট: জেলা প্রশাসকের কার্যালয় ঝিনাইদহ নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "জেলা প্রশাসকের কার্যালয় ঝিনাইদহ কর্তৃক সরকারি চাকরি বিজ্ঞপ্তি প্রকাশিত হয়েছে। পদ সংখ্যা: 2। আবেদনের শেষ সময়: ২২ নভেম্বর ২০২৬।",
         "type": "system",
         "read": false,
-        "date": "2026-11-07T00:05:14.980Z",
+        "date": "2026-11-07T04:01:32.477Z",
         "link": "/jobs/job-alljobs-dcjhenaidah-15102"
       },
       {
-        "id": "notif_adm_job-alljobs-cpgcbl-15104_1794009914898",
-        "title": "সার্কুলার সম্পাদিত: Coal Power Generation Company Bangladesh Limited (CPGCBL) নিয়োগ বিজ্ঞপ্তি ২০২৬",
-        "message": "ADMIN দ্বারা Coal Power Generation Company Bangladesh Limited (CPGCBL) এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "id": "notif_job_job-alljobs-cpgcbl-15104_1794024092367_v1l2",
+        "title": "আপডেট: Coal Power Generation Company Bangladesh Limited (CPGCBL) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "Coal Power Generation Company Bangladesh Limited (CPGCBL) কর্তৃক ইঞ্জিনিয়ারিং ও টেকনিক্যাল বিজ্ঞপ্তি প্রকাশিত হয়েছে। পদ সংখ্যা: 7। আবেদনের শেষ সময়: ২৩ নভেম্বর ২০২৬।",
         "type": "system",
         "read": false,
-        "date": "2026-11-07T00:05:14.898Z",
+        "date": "2026-11-07T04:01:32.367Z",
         "link": "/jobs/job-alljobs-cpgcbl-15104"
       },
       {
-        "id": "notif_adm_job-alljobs-dscc-15113_1794009914813",
-        "title": "সার্কুলার সম্পাদিত: Dhaka South City Corporation (DSCC) নিয়োগ বিজ্ঞপ্তি ২০২৬",
-        "message": "ADMIN দ্বারা Dhaka South City Corporation (DSCC) এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "id": "notif_job_job-alljobs-dscc-15113_1794024092279_23gx",
+        "title": "আপডেট: Dhaka South City Corporation (DSCC) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "Dhaka South City Corporation (DSCC) কর্তৃক ইঞ্জিনিয়ারিং ও টেকনিক্যাল বিজ্ঞপ্তি প্রকাশিত হয়েছে। পদ সংখ্যা: 6। আবেদনের শেষ সময়: ২৬ নভেম্বর ২০২৬।",
         "type": "system",
         "read": false,
-        "date": "2026-11-07T00:05:14.813Z",
+        "date": "2026-11-07T04:01:32.279Z",
         "link": "/jobs/job-alljobs-dscc-15113"
       },
       {
-        "id": "notif_adm_job-alljobs-dcrajbari-15121_1794009914691",
-        "title": "সার্কুলার সম্পাদিত: DC OFFICE RAJBARI (DCRAJBARI) নিয়োগ বিজ্ঞপ্তি ২০২৬",
-        "message": "ADMIN দ্বারা DC OFFICE RAJBARI (DCRAJBARI) এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "id": "notif_job_job-alljobs-dcrajbari-15121_1794024092048_eqx2",
+        "title": "আপডেট: DC OFFICE RAJBARI (DCRAJBARI) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "DC OFFICE RAJBARI (DCRAJBARI) কর্তৃক সরকারি চাকরি বিজ্ঞপ্তি প্রকাশিত হয়েছে। পদ সংখ্যা: 1। আবেদনের শেষ সময়: ৩০ নভেম্বর ২০২৬।",
         "type": "system",
         "read": false,
-        "date": "2026-11-07T00:05:14.691Z",
+        "date": "2026-11-07T04:01:32.048Z",
         "link": "/jobs/job-alljobs-dcrajbari-15121"
       },
       {
-        "id": "notif_adm_job-alljobs-cag-15122_1794009914603",
-        "title": "সার্কুলার সম্পাদিত: বাংলাদেশের কম্পট্রোলার অ্যান্ড অডিটর জেনারেল নিয়োগ বিজ্ঞপ্তি ২০২৬",
-        "message": "ADMIN দ্বারা বাংলাদেশের কম্পট্রোলার অ্যান্ড অডিটর জেনারেল এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "id": "notif_job_job-alljobs-cag-15122_1794024091900_dnvz",
+        "title": "আপডেট: বাংলাদেশের কম্পট্রোলার অ্যান্ড অডিটর জেনারেল নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "বাংলাদেশের কম্পট্রোলার অ্যান্ড অডিটর জেনারেল কর্তৃক সরকারি চাকরি বিজ্ঞপ্তি প্রকাশিত হয়েছে। পদ সংখ্যা: 4। আবেদনের শেষ সময়: ২৫ নভেম্বর ২০২৬।",
         "type": "system",
         "read": false,
-        "date": "2026-11-07T00:05:14.603Z",
+        "date": "2026-11-07T04:01:31.900Z",
         "link": "/jobs/job-alljobs-cag-15122"
       },
       {
-        "id": "notif_adm_job-alljobs-dgms-15127_1794009914514",
-        "title": "সার্কুলার সম্পাদিত: Directorate General of Medical Service (DGMS) নিয়োগ বিজ্ঞপ্তি ২০২৬",
-        "message": "ADMIN দ্বারা Directorate General of Medical Service (DGMS) এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "id": "notif_job_job-alljobs-dgms-15127_1794024091790_1loa",
+        "title": "আপডেট: Directorate General of Medical Service (DGMS) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "Directorate General of Medical Service (DGMS) কর্তৃক স্বাস্থ্য ও চিকিৎসা বিজ্ঞপ্তি প্রকাশিত হয়েছে। পদ সংখ্যা: 11। আবেদনের শেষ সময়: ২১ নভেম্বর ২০২৬।",
         "type": "system",
         "read": false,
-        "date": "2026-11-07T00:05:14.514Z",
+        "date": "2026-11-07T04:01:31.790Z",
         "link": "/jobs/job-alljobs-dgms-15127"
       },
       {
-        "id": "notif_adm_job-alljobs-dcjamalpur-15137_1794009914419",
-        "title": "সার্কুলার সম্পাদিত: DC OFFICE JAMALPUR (DCJAMALPUR) নিয়োগ বিজ্ঞপ্তি ২০২৬",
-        "message": "ADMIN দ্বারা DC OFFICE JAMALPUR (DCJAMALPUR) এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "id": "notif_job_job-alljobs-dcjamalpur-15137_1794024091692_ehcq",
+        "title": "আপডেট: DC OFFICE JAMALPUR (DCJAMALPUR) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "DC OFFICE JAMALPUR (DCJAMALPUR) কর্তৃক সরকারি চাকরি বিজ্ঞপ্তি প্রকাশিত হয়েছে। পদ সংখ্যা: 11। আবেদনের শেষ সময়: ২৫ নভেম্বর ২০২৬।",
         "type": "system",
         "read": false,
-        "date": "2026-11-07T00:05:14.419Z",
+        "date": "2026-11-07T04:01:31.692Z",
         "link": "/jobs/job-alljobs-dcjamalpur-15137"
       }
     ]
@@ -467,6 +757,11 @@
       "candidateId": "ADMIN-SUPER",
       "role": "admin",
       "expiresAt": "2026-11-14T02:48:58.320Z"
+    },
+    "8a1d326b58ae389df6c1dfe01089ac5f0274b9d2e0c7d04814b94fc868a80eeb": {
+      "candidateId": "CS-USR-26-999888",
+      "role": "candidate",
+      "expiresAt": "2026-11-14T03:58:09.136Z"
     }
   },
   "coupons": {},
@@ -474,6 +769,398 @@
   "couponRedemptions": {},
   "raffleEntries": {},
   "adminAuditLogs": [
+    {
+      "adminId": "LIVE_COLLECTOR",
+      "action": "job_edit",
+      "targetId": "job-alljobs-csrajshah-12949",
+      "targetType": "order",
+      "changes": {
+        "job": {
+          "new": "সিভিল সার্জন কার্যালয় রাজবাড়ী নিয়োগ বিজ্ঞপ্তি ২০২৬"
+        }
+      },
+      "notes": "Job circular updated: সিভিল সার্জন কার্যালয় রাজবাড়ী নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "id": "AUDIT-1794024094977-PJDF4",
+      "timestamp": "2026-11-07T04:01:34.977Z"
+    },
+    {
+      "adminId": "LIVE_COLLECTOR",
+      "action": "job_edit",
+      "targetId": "job-alljobs-cid-14913",
+      "targetType": "order",
+      "changes": {
+        "job": {
+          "new": "বাংলাদেশ পুলিশ , সিআইডি নিয়োগ বিজ্ঞপ্তি ২০২৬"
+        }
+      },
+      "notes": "Job circular updated: বাংলাদেশ পুলিশ , সিআইডি নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "id": "AUDIT-1794024094873-EGUJN",
+      "timestamp": "2026-11-07T04:01:34.873Z"
+    },
+    {
+      "adminId": "LIVE_COLLECTOR",
+      "action": "job_edit",
+      "targetId": "job-alljobs-dcnetrokona-14935",
+      "targetType": "order",
+      "changes": {
+        "job": {
+          "new": "DC Office Netrokona (DCNETROKONA) নিয়োগ বিজ্ঞপ্তি ২০২৬"
+        }
+      },
+      "notes": "Job circular updated: DC Office Netrokona (DCNETROKONA) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "id": "AUDIT-1794024094745-JQ9N2",
+      "timestamp": "2026-11-07T04:01:34.745Z"
+    },
+    {
+      "adminId": "LIVE_COLLECTOR",
+      "action": "job_edit",
+      "targetId": "job-alljobs-bcic-14936",
+      "targetType": "order",
+      "changes": {
+        "job": {
+          "new": "Bangladesh Chemical Industries Corporation (BCIC) নিয়োগ বিজ্ঞপ্তি ২০২৬"
+        }
+      },
+      "notes": "Job circular updated: Bangladesh Chemical Industries Corporation (BCIC) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "id": "AUDIT-1794024094615-B4R8M",
+      "timestamp": "2026-11-07T04:01:34.615Z"
+    },
+    {
+      "adminId": "LIVE_COLLECTOR",
+      "action": "job_edit",
+      "targetId": "job-alljobs-hbri-14968",
+      "targetType": "order",
+      "changes": {
+        "job": {
+          "new": "Housing & Building Research Institute(HBRI) নিয়োগ বিজ্ঞপ্তি ২০২৬"
+        }
+      },
+      "notes": "Job circular updated: Housing & Building Research Institute(HBRI) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "id": "AUDIT-1794024094528-TUEUV",
+      "timestamp": "2026-11-07T04:01:34.528Z"
+    },
+    {
+      "adminId": "LIVE_COLLECTOR",
+      "action": "job_edit",
+      "targetId": "job-alljobs-dcpatuakhali-14984",
+      "targetType": "order",
+      "changes": {
+        "job": {
+          "new": "DC Office Patuakhali (DCPATUAKHALI) নিয়োগ বিজ্ঞপ্তি ২০২৬"
+        }
+      },
+      "notes": "Job circular updated: DC Office Patuakhali (DCPATUAKHALI) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "id": "AUDIT-1794024094432-NLKTG",
+      "timestamp": "2026-11-07T04:01:34.432Z"
+    },
+    {
+      "adminId": "LIVE_COLLECTOR",
+      "action": "job_edit",
+      "targetId": "job-alljobs-dcbogura-14986",
+      "targetType": "order",
+      "changes": {
+        "job": {
+          "new": "DC Office Bogura (DCBOGURA) নিয়োগ বিজ্ঞপ্তি ২০২৬"
+        }
+      },
+      "notes": "Job circular updated: DC Office Bogura (DCBOGURA) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "id": "AUDIT-1794024094325-B4BOK",
+      "timestamp": "2026-11-07T04:01:34.325Z"
+    },
+    {
+      "adminId": "LIVE_COLLECTOR",
+      "action": "job_edit",
+      "targetId": "job-alljobs-policedinaj-14987",
+      "targetType": "order",
+      "changes": {
+        "job": {
+          "new": "পুলিশ সুপারের কার্যালয়, দিনাজপুর নিয়োগ বিজ্ঞপ্তি ২০২৬"
+        }
+      },
+      "notes": "Job circular updated: পুলিশ সুপারের কার্যালয়, দিনাজপুর নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "id": "AUDIT-1794024094238-6VPAF",
+      "timestamp": "2026-11-07T04:01:34.238Z"
+    },
+    {
+      "adminId": "LIVE_COLLECTOR",
+      "action": "job_edit",
+      "targetId": "job-alljobs-bogmc-14989",
+      "targetType": "order",
+      "changes": {
+        "job": {
+          "new": "Bangladesh Oil, Gas & Mineral Corporation (Petrobangla) BOGMC নিয়োগ বিজ্ঞপ্তি ২০২৬"
+        }
+      },
+      "notes": "Job circular updated: Bangladesh Oil, Gas & Mineral Corporation (Petrobangla) BOGMC নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "id": "AUDIT-1794024094162-V6LLR",
+      "timestamp": "2026-11-07T04:01:34.162Z"
+    },
+    {
+      "adminId": "LIVE_COLLECTOR",
+      "action": "job_edit",
+      "targetId": "job-alljobs-tax6-15024",
+      "targetType": "order",
+      "changes": {
+        "job": {
+          "new": "কর কমিশনারের কার্যালয় কর অঞ্চল-৬, ঢাকা নিয়োগ বিজ্ঞপ্তি ২০২৬"
+        }
+      },
+      "notes": "Job circular updated: কর কমিশনারের কার্যালয় কর অঞ্চল-৬, ঢাকা নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "id": "AUDIT-1794024094058-7JYO6",
+      "timestamp": "2026-11-07T04:01:34.058Z"
+    },
+    {
+      "adminId": "LIVE_COLLECTOR",
+      "action": "job_edit",
+      "targetId": "job-alljobs-dcnoakhali-15031",
+      "targetType": "order",
+      "changes": {
+        "job": {
+          "new": "Deputy Commissioner Office, Noakhali (DCNOAKHALI) নিয়োগ বিজ্ঞপ্তি ২০২৬"
+        }
+      },
+      "notes": "Job circular updated: Deputy Commissioner Office, Noakhali (DCNOAKHALI) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "id": "AUDIT-1794024093948-WE9MV",
+      "timestamp": "2026-11-07T04:01:33.948Z"
+    },
+    {
+      "adminId": "LIVE_COLLECTOR",
+      "action": "job_edit",
+      "targetId": "job-alljobs-tax9-15038",
+      "targetType": "order",
+      "changes": {
+        "job": {
+          "new": "Taxes Zone-9, Dhaka (TAX9) নিয়োগ বিজ্ঞপ্তি ২০২৬"
+        }
+      },
+      "notes": "Job circular updated: Taxes Zone-9, Dhaka (TAX9) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "id": "AUDIT-1794024093769-B0P5M",
+      "timestamp": "2026-11-07T04:01:33.769Z"
+    },
+    {
+      "adminId": "LIVE_COLLECTOR",
+      "action": "job_edit",
+      "targetId": "job-alljobs-sposherpur-15044",
+      "targetType": "order",
+      "changes": {
+        "job": {
+          "new": "পুলিশ সুপারের কার্যালয় শেরপুর নিয়োগ বিজ্ঞপ্তি ২০২৬"
+        }
+      },
+      "notes": "Job circular updated: পুলিশ সুপারের কার্যালয় শেরপুর নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "id": "AUDIT-1794024093686-3WRO9",
+      "timestamp": "2026-11-07T04:01:33.686Z"
+    },
+    {
+      "adminId": "LIVE_COLLECTOR",
+      "action": "job_edit",
+      "targetId": "job-alljobs-dcchuadanga-15047",
+      "targetType": "order",
+      "changes": {
+        "job": {
+          "new": "DC Office Chuadanga (DCCHUADANGA) নিয়োগ বিজ্ঞপ্তি ২০২৬"
+        }
+      },
+      "notes": "Job circular updated: DC Office Chuadanga (DCCHUADANGA) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "id": "AUDIT-1794024093570-FBSBJ",
+      "timestamp": "2026-11-07T04:01:33.570Z"
+    },
+    {
+      "adminId": "LIVE_COLLECTOR",
+      "action": "job_edit",
+      "targetId": "job-alljobs-taxnar-15056",
+      "targetType": "order",
+      "changes": {
+        "job": {
+          "new": "কর কমিশনারের কার্যালয় কর অঞ্চল নারায়ণগঞ্জ নিয়োগ বিজ্ঞপ্তি ২০২৬"
+        }
+      },
+      "notes": "Job circular updated: কর কমিশনারের কার্যালয় কর অঞ্চল নারায়ণগঞ্জ নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "id": "AUDIT-1794024093453-DF5DQ",
+      "timestamp": "2026-11-07T04:01:33.453Z"
+    },
+    {
+      "adminId": "LIVE_COLLECTOR",
+      "action": "job_edit",
+      "targetId": "job-alljobs-nsd-15060",
+      "targetType": "order",
+      "changes": {
+        "job": {
+          "new": "জাতীয় সঞ্চয় অধিদপ্তর নিয়োগ বিজ্ঞপ্তি ২০২৬"
+        }
+      },
+      "notes": "Job circular updated: জাতীয় সঞ্চয় অধিদপ্তর নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "id": "AUDIT-1794024093346-J1L29",
+      "timestamp": "2026-11-07T04:01:33.346Z"
+    },
+    {
+      "adminId": "LIVE_COLLECTOR",
+      "action": "job_edit",
+      "targetId": "job-alljobs-dcnarail-15068",
+      "targetType": "order",
+      "changes": {
+        "job": {
+          "new": "Narail Distric (DCNARAIL) নিয়োগ বিজ্ঞপ্তি ২০২৬"
+        }
+      },
+      "notes": "Job circular updated: Narail Distric (DCNARAIL) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "id": "AUDIT-1794024093243-I4RK0",
+      "timestamp": "2026-11-07T04:01:33.243Z"
+    },
+    {
+      "adminId": "LIVE_COLLECTOR",
+      "action": "job_edit",
+      "targetId": "job-alljobs-tax19-15076",
+      "targetType": "order",
+      "changes": {
+        "job": {
+          "new": "কর অঞ্চল 19 নিয়োগ বিজ্ঞপ্তি ২০২৬"
+        }
+      },
+      "notes": "Job circular updated: কর অঞ্চল 19 নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "id": "AUDIT-1794024092869-JQ3II",
+      "timestamp": "2026-11-07T04:01:32.869Z"
+    },
+    {
+      "adminId": "LIVE_COLLECTOR",
+      "action": "job_edit",
+      "targetId": "job-alljobs-itiiu-15083",
+      "targetType": "order",
+      "changes": {
+        "job": {
+          "new": "আয়কর গোয়েন্দা ও তদন্ত ইউনিট নিয়োগ বিজ্ঞপ্তি ২০২৬"
+        }
+      },
+      "notes": "Job circular updated: আয়কর গোয়েন্দা ও তদন্ত ইউনিট নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "id": "AUDIT-1794024092754-SMVXL",
+      "timestamp": "2026-11-07T04:01:32.754Z"
+    },
+    {
+      "adminId": "LIVE_COLLECTOR",
+      "action": "job_edit",
+      "targetId": "job-alljobs-basb-15085",
+      "targetType": "order",
+      "changes": {
+        "job": {
+          "new": "বাংলাদেশ সশস্ত্র বাহিনী বোর্ড নিয়োগ বিজ্ঞপ্তি ২০২৬"
+        }
+      },
+      "notes": "Job circular updated: বাংলাদেশ সশস্ত্র বাহিনী বোর্ড নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "id": "AUDIT-1794024092665-54YZ1",
+      "timestamp": "2026-11-07T04:01:32.665Z"
+    },
+    {
+      "adminId": "LIVE_COLLECTOR",
+      "action": "job_edit",
+      "targetId": "job-alljobs-apscl-15090",
+      "targetType": "order",
+      "changes": {
+        "job": {
+          "new": "আশুগঞ্জ পাওয়ার স্টেশন কোম্পানী লিঃ নিয়োগ বিজ্ঞপ্তি ২০২৬"
+        }
+      },
+      "notes": "Job circular updated: আশুগঞ্জ পাওয়ার স্টেশন কোম্পানী লিঃ নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "id": "AUDIT-1794024092570-V3LSX",
+      "timestamp": "2026-11-07T04:01:32.570Z"
+    },
+    {
+      "adminId": "LIVE_COLLECTOR",
+      "action": "job_edit",
+      "targetId": "job-alljobs-dcjhenaidah-15102",
+      "targetType": "order",
+      "changes": {
+        "job": {
+          "new": "জেলা প্রশাসকের কার্যালয় ঝিনাইদহ নিয়োগ বিজ্ঞপ্তি ২০২৬"
+        }
+      },
+      "notes": "Job circular updated: জেলা প্রশাসকের কার্যালয় ঝিনাইদহ নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "id": "AUDIT-1794024092460-2LA86",
+      "timestamp": "2026-11-07T04:01:32.460Z"
+    },
+    {
+      "adminId": "LIVE_COLLECTOR",
+      "action": "job_edit",
+      "targetId": "job-alljobs-cpgcbl-15104",
+      "targetType": "order",
+      "changes": {
+        "job": {
+          "new": "Coal Power Generation Company Bangladesh Limited (CPGCBL) নিয়োগ বিজ্ঞপ্তি ২০২৬"
+        }
+      },
+      "notes": "Job circular updated: Coal Power Generation Company Bangladesh Limited (CPGCBL) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "id": "AUDIT-1794024092348-W1X6P",
+      "timestamp": "2026-11-07T04:01:32.349Z"
+    },
+    {
+      "adminId": "LIVE_COLLECTOR",
+      "action": "job_edit",
+      "targetId": "job-alljobs-dscc-15113",
+      "targetType": "order",
+      "changes": {
+        "job": {
+          "new": "Dhaka South City Corporation (DSCC) নিয়োগ বিজ্ঞপ্তি ২০২৬"
+        }
+      },
+      "notes": "Job circular updated: Dhaka South City Corporation (DSCC) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "id": "AUDIT-1794024092259-72PCR",
+      "timestamp": "2026-11-07T04:01:32.259Z"
+    },
+    {
+      "adminId": "LIVE_COLLECTOR",
+      "action": "job_edit",
+      "targetId": "job-alljobs-dcrajbari-15121",
+      "targetType": "order",
+      "changes": {
+        "job": {
+          "new": "DC OFFICE RAJBARI (DCRAJBARI) নিয়োগ বিজ্ঞপ্তি ২০২৬"
+        }
+      },
+      "notes": "Job circular updated: DC OFFICE RAJBARI (DCRAJBARI) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "id": "AUDIT-1794024092027-ELN4R",
+      "timestamp": "2026-11-07T04:01:32.027Z"
+    },
+    {
+      "adminId": "LIVE_COLLECTOR",
+      "action": "job_edit",
+      "targetId": "job-alljobs-cag-15122",
+      "targetType": "order",
+      "changes": {
+        "job": {
+          "new": "বাংলাদেশের কম্পট্রোলার অ্যান্ড অডিটর জেনারেল নিয়োগ বিজ্ঞপ্তি ২০২৬"
+        }
+      },
+      "notes": "Job circular updated: বাংলাদেশের কম্পট্রোলার অ্যান্ড অডিটর জেনারেল নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "id": "AUDIT-1794024091885-1H3G6",
+      "timestamp": "2026-11-07T04:01:31.885Z"
+    },
+    {
+      "adminId": "LIVE_COLLECTOR",
+      "action": "job_edit",
+      "targetId": "job-alljobs-dgms-15127",
+      "targetType": "order",
+      "changes": {
+        "job": {
+          "new": "Directorate General of Medical Service (DGMS) নিয়োগ বিজ্ঞপ্তি ২০২৬"
+        }
+      },
+      "notes": "Job circular updated: Directorate General of Medical Service (DGMS) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "id": "AUDIT-1794024091775-SK1XB",
+      "timestamp": "2026-11-07T04:01:31.775Z"
+    },
+    {
+      "adminId": "LIVE_COLLECTOR",
+      "action": "job_edit",
+      "targetId": "job-alljobs-dcjamalpur-15137",
+      "targetType": "order",
+      "changes": {
+        "job": {
+          "new": "DC OFFICE JAMALPUR (DCJAMALPUR) নিয়োগ বিজ্ঞপ্তি ২০২৬"
+        }
+      },
+      "notes": "Job circular updated: DC OFFICE JAMALPUR (DCJAMALPUR) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "id": "AUDIT-1794024091678-G22GB",
+      "timestamp": "2026-11-07T04:01:31.678Z"
+    },
     {
       "action": "UPLOAD_MEDIA",
       "adminId": "ADMIN-SUPER",
@@ -4702,7 +5389,7 @@
       "verificationStatus": "VERIFIED",
       "verificationConfidence": 100,
       "verifiedBy": "ALLJOBS-LIVE-COLLECTOR",
-      "lastVerifiedAt": "2026-11-07T00:08:08.313Z",
+      "lastVerifiedAt": "2026-11-07T04:01:31.659Z",
       "requirements": [
         "প্রার্থীকে জন্মসূত্রে বাংলাদেশের স্থায়ী নাগরিক হতে হবে।",
         "আবেদনের নির্ধারিত তারিখে প্রার্থীর বয়স ১৮ থেকে ৩২ বছরের মধ্যে হতে হবে (বীর মুক্তিযোদ্ধা ও শারীরিক প্রতিবন্ধী কোটায় ৩২ বছর পর্যন্ত শিথিলযোগ্য)।",
@@ -4864,9 +5551,19 @@
           "govtFee": 200
         }
       ],
-      "createdAt": "2026-11-07T00:08:08.313Z",
-      "updatedAt": "2026-11-07T00:08:08.315Z",
+      "createdAt": "2026-11-07T04:01:31.659Z",
+      "updatedAt": "2026-11-07T04:01:31.660Z",
       "revisionHistory": [
+        {
+          "timestamp": "2026-11-07T04:01:31.660Z",
+          "adminId": "LIVE_COLLECTOR",
+          "action": "update",
+          "changedFields": [
+            "lastVerifiedAt",
+            "createdAt"
+          ],
+          "summary": "2টি ফিল্ড পরিবর্তিত হয়েছে (lastVerifiedAt, createdAt)"
+        },
         {
           "timestamp": "2026-11-07T00:08:08.315Z",
           "adminId": "LIVE_COLLECTOR",
@@ -4962,7 +5659,7 @@
       "verificationStatus": "VERIFIED",
       "verificationConfidence": 100,
       "verifiedBy": "ALLJOBS-LIVE-COLLECTOR",
-      "lastVerifiedAt": "2026-11-07T00:08:08.413Z",
+      "lastVerifiedAt": "2026-11-07T04:01:31.761Z",
       "requirements": [
         "প্রার্থীকে জন্মসূত্রে বাংলাদেশের স্থায়ী নাগরিক হতে হবে।",
         "আবেদনের নির্ধারিত তারিখে প্রার্থীর বয়স ১৮ থেকে ৩২ বছরের মধ্যে হতে হবে (বীর মুক্তিযোদ্ধা ও শারীরিক প্রতিবন্ধী কোটায় ৩২ বছর পর্যন্ত শিথিলযোগ্য)।",
@@ -5124,9 +5821,19 @@
           "govtFee": 200
         }
       ],
-      "createdAt": "2026-11-07T00:08:08.413Z",
-      "updatedAt": "2026-11-07T00:08:08.414Z",
+      "createdAt": "2026-11-07T04:01:31.761Z",
+      "updatedAt": "2026-11-07T04:01:31.762Z",
       "revisionHistory": [
+        {
+          "timestamp": "2026-11-07T04:01:31.762Z",
+          "adminId": "LIVE_COLLECTOR",
+          "action": "update",
+          "changedFields": [
+            "lastVerifiedAt",
+            "createdAt"
+          ],
+          "summary": "2টি ফিল্ড পরিবর্তিত হয়েছে (lastVerifiedAt, createdAt)"
+        },
         {
           "timestamp": "2026-11-07T00:08:08.414Z",
           "adminId": "LIVE_COLLECTOR",
@@ -5222,7 +5929,7 @@
       "verificationStatus": "VERIFIED",
       "verificationConfidence": 100,
       "verifiedBy": "ALLJOBS-LIVE-COLLECTOR",
-      "lastVerifiedAt": "2026-11-07T00:08:08.505Z",
+      "lastVerifiedAt": "2026-11-07T04:01:31.865Z",
       "requirements": [
         "প্রার্থীকে জন্মসূত্রে বাংলাদেশের স্থায়ী নাগরিক হতে হবে।",
         "আবেদনের নির্ধারিত তারিখে প্রার্থীর বয়স ১৮ থেকে ৩২ বছরের মধ্যে হতে হবে (বীর মুক্তিযোদ্ধা ও শারীরিক প্রতিবন্ধী কোটায় ৩২ বছর পর্যন্ত শিথিলযোগ্য)।",
@@ -5314,9 +6021,19 @@
           "govtFee": 100
         }
       ],
-      "createdAt": "2026-11-07T00:08:08.505Z",
-      "updatedAt": "2026-11-07T00:08:08.506Z",
+      "createdAt": "2026-11-07T04:01:31.865Z",
+      "updatedAt": "2026-11-07T04:01:31.866Z",
       "revisionHistory": [
+        {
+          "timestamp": "2026-11-07T04:01:31.866Z",
+          "adminId": "LIVE_COLLECTOR",
+          "action": "update",
+          "changedFields": [
+            "lastVerifiedAt",
+            "createdAt"
+          ],
+          "summary": "2টি ফিল্ড পরিবর্তিত হয়েছে (lastVerifiedAt, createdAt)"
+        },
         {
           "timestamp": "2026-11-07T00:08:08.506Z",
           "adminId": "LIVE_COLLECTOR",
@@ -5414,7 +6131,7 @@
       "verificationStatus": "VERIFIED",
       "verificationConfidence": 100,
       "verifiedBy": "ALLJOBS-LIVE-COLLECTOR",
-      "lastVerifiedAt": "2026-11-07T00:08:08.635Z",
+      "lastVerifiedAt": "2026-11-07T04:01:32.005Z",
       "requirements": [
         "প্রার্থীকে জন্মসূত্রে বাংলাদেশের স্থায়ী নাগরিক হতে হবে।",
         "আবেদনের নির্ধারিত তারিখে প্রার্থীর বয়স ১৮ থেকে ৩২ বছরের মধ্যে হতে হবে (বীর মুক্তিযোদ্ধা ও শারীরিক প্রতিবন্ধী কোটায় ৩২ বছর পর্যন্ত শিথিলযোগ্য)।",
@@ -5476,9 +6193,19 @@
           "govtFee": 600
         }
       ],
-      "createdAt": "2026-11-07T00:08:08.635Z",
-      "updatedAt": "2026-11-07T00:08:08.636Z",
+      "createdAt": "2026-11-07T04:01:32.005Z",
+      "updatedAt": "2026-11-07T04:01:32.006Z",
       "revisionHistory": [
+        {
+          "timestamp": "2026-11-07T04:01:32.006Z",
+          "adminId": "LIVE_COLLECTOR",
+          "action": "update",
+          "changedFields": [
+            "lastVerifiedAt",
+            "createdAt"
+          ],
+          "summary": "2টি ফিল্ড পরিবর্তিত হয়েছে (lastVerifiedAt, createdAt)"
+        },
         {
           "timestamp": "2026-11-07T00:08:08.636Z",
           "adminId": "LIVE_COLLECTOR",
@@ -5576,7 +6303,7 @@
       "verificationStatus": "VERIFIED",
       "verificationConfidence": 100,
       "verifiedBy": "ALLJOBS-LIVE-COLLECTOR",
-      "lastVerifiedAt": "2026-11-07T00:08:08.793Z",
+      "lastVerifiedAt": "2026-11-07T04:01:32.238Z",
       "requirements": [
         "প্রার্থীকে জন্মসূত্রে বাংলাদেশের স্থায়ী নাগরিক হতে হবে।",
         "আবেদনের নির্ধারিত তারিখে প্রার্থীর বয়স ১৮ থেকে ৩২ বছরের মধ্যে হতে হবে (বীর মুক্তিযোদ্ধা ও শারীরিক প্রতিবন্ধী কোটায় ৩২ বছর পর্যন্ত শিথিলযোগ্য)।",
@@ -5688,9 +6415,19 @@
           "govtFee": 600
         }
       ],
-      "createdAt": "2026-11-07T00:08:08.793Z",
-      "updatedAt": "2026-11-07T00:08:08.793Z",
+      "createdAt": "2026-11-07T04:01:32.238Z",
+      "updatedAt": "2026-11-07T04:01:32.239Z",
       "revisionHistory": [
+        {
+          "timestamp": "2026-11-07T04:01:32.239Z",
+          "adminId": "LIVE_COLLECTOR",
+          "action": "update",
+          "changedFields": [
+            "lastVerifiedAt",
+            "createdAt"
+          ],
+          "summary": "2টি ফিল্ড পরিবর্তিত হয়েছে (lastVerifiedAt, createdAt)"
+        },
         {
           "timestamp": "2026-11-07T00:08:08.793Z",
           "adminId": "LIVE_COLLECTOR",
@@ -5788,7 +6525,7 @@
       "verificationStatus": "VERIFIED",
       "verificationConfidence": 100,
       "verifiedBy": "ALLJOBS-LIVE-COLLECTOR",
-      "lastVerifiedAt": "2026-11-07T00:08:08.873Z",
+      "lastVerifiedAt": "2026-11-07T04:01:32.334Z",
       "requirements": [
         "প্রার্থীকে জন্মসূত্রে বাংলাদেশের স্থায়ী নাগরিক হতে হবে।",
         "আবেদনের নির্ধারিত তারিখে প্রার্থীর বয়স ১৮ থেকে ৩২ বছরের মধ্যে হতে হবে (বীর মুক্তিযোদ্ধা ও শারীরিক প্রতিবন্ধী কোটায় ৩২ বছর পর্যন্ত শিথিলযোগ্য)।",
@@ -5910,9 +6647,19 @@
           "govtFee": 600
         }
       ],
-      "createdAt": "2026-11-07T00:08:08.873Z",
-      "updatedAt": "2026-11-07T00:08:08.874Z",
+      "createdAt": "2026-11-07T04:01:32.334Z",
+      "updatedAt": "2026-11-07T04:01:32.335Z",
       "revisionHistory": [
+        {
+          "timestamp": "2026-11-07T04:01:32.335Z",
+          "adminId": "LIVE_COLLECTOR",
+          "action": "update",
+          "changedFields": [
+            "lastVerifiedAt",
+            "createdAt"
+          ],
+          "summary": "2টি ফিল্ড পরিবর্তিত হয়েছে (lastVerifiedAt, createdAt)"
+        },
         {
           "timestamp": "2026-11-07T00:08:08.874Z",
           "adminId": "LIVE_COLLECTOR",
@@ -6010,7 +6757,7 @@
       "verificationStatus": "VERIFIED",
       "verificationConfidence": 100,
       "verifiedBy": "ALLJOBS-LIVE-COLLECTOR",
-      "lastVerifiedAt": "2026-11-07T00:08:08.990Z",
+      "lastVerifiedAt": "2026-11-07T04:01:32.445Z",
       "requirements": [
         "প্রার্থীকে জন্মসূত্রে বাংলাদেশের স্থায়ী নাগরিক হতে হবে।",
         "আবেদনের নির্ধারিত তারিখে প্রার্থীর বয়স ১৮ থেকে ৩২ বছরের মধ্যে হতে হবে (বীর মুক্তিযোদ্ধা ও শারীরিক প্রতিবন্ধী কোটায় ৩২ বছর পর্যন্ত শিথিলযোগ্য)।",
@@ -6082,9 +6829,19 @@
           "govtFee": 200
         }
       ],
-      "createdAt": "2026-11-07T00:08:08.990Z",
-      "updatedAt": "2026-11-07T00:08:08.990Z",
+      "createdAt": "2026-11-07T04:01:32.445Z",
+      "updatedAt": "2026-11-07T04:01:32.445Z",
       "revisionHistory": [
+        {
+          "timestamp": "2026-11-07T04:01:32.445Z",
+          "adminId": "LIVE_COLLECTOR",
+          "action": "update",
+          "changedFields": [
+            "lastVerifiedAt",
+            "createdAt"
+          ],
+          "summary": "2টি ফিল্ড পরিবর্তিত হয়েছে (lastVerifiedAt, createdAt)"
+        },
         {
           "timestamp": "2026-11-07T00:08:08.990Z",
           "adminId": "LIVE_COLLECTOR",
@@ -6180,7 +6937,7 @@
       "verificationStatus": "VERIFIED",
       "verificationConfidence": 100,
       "verifiedBy": "ALLJOBS-LIVE-COLLECTOR",
-      "lastVerifiedAt": "2026-11-07T00:08:09.089Z",
+      "lastVerifiedAt": "2026-11-07T04:01:32.550Z",
       "requirements": [
         "প্রার্থীকে জন্মসূত্রে বাংলাদেশের স্থায়ী নাগরিক হতে হবে।",
         "আবেদনের নির্ধারিত তারিখে প্রার্থীর বয়স ১৮ থেকে ৩২ বছরের মধ্যে হতে হবে (বীর মুক্তিযোদ্ধা ও শারীরিক প্রতিবন্ধী কোটায় ৩২ বছর পর্যন্ত শিথিলযোগ্য)।",
@@ -6382,9 +7139,19 @@
           "govtFee": 600
         }
       ],
-      "createdAt": "2026-11-07T00:08:09.089Z",
-      "updatedAt": "2026-11-07T00:08:09.090Z",
+      "createdAt": "2026-11-07T04:01:32.550Z",
+      "updatedAt": "2026-11-07T04:01:32.550Z",
       "revisionHistory": [
+        {
+          "timestamp": "2026-11-07T04:01:32.550Z",
+          "adminId": "LIVE_COLLECTOR",
+          "action": "update",
+          "changedFields": [
+            "lastVerifiedAt",
+            "createdAt"
+          ],
+          "summary": "2টি ফিল্ড পরিবর্তিত হয়েছে (lastVerifiedAt, createdAt)"
+        },
         {
           "timestamp": "2026-11-07T00:08:09.090Z",
           "adminId": "LIVE_COLLECTOR",
@@ -6482,7 +7249,7 @@
       "verificationStatus": "VERIFIED",
       "verificationConfidence": 100,
       "verifiedBy": "ALLJOBS-LIVE-COLLECTOR",
-      "lastVerifiedAt": "2026-11-07T00:08:09.191Z",
+      "lastVerifiedAt": "2026-11-07T04:01:32.646Z",
       "requirements": [
         "প্রার্থীকে জন্মসূত্রে বাংলাদেশের স্থায়ী নাগরিক হতে হবে।",
         "আবেদনের নির্ধারিত তারিখে প্রার্থীর বয়স ১৮ থেকে ৩২ বছরের মধ্যে হতে হবে (বীর মুক্তিযোদ্ধা ও শারীরিক প্রতিবন্ধী কোটায় ৩২ বছর পর্যন্ত শিথিলযোগ্য)।",
@@ -6544,9 +7311,19 @@
           "govtFee": 600
         }
       ],
-      "createdAt": "2026-11-07T00:08:09.191Z",
-      "updatedAt": "2026-11-07T00:08:09.192Z",
+      "createdAt": "2026-11-07T04:01:32.646Z",
+      "updatedAt": "2026-11-07T04:01:32.647Z",
       "revisionHistory": [
+        {
+          "timestamp": "2026-11-07T04:01:32.647Z",
+          "adminId": "LIVE_COLLECTOR",
+          "action": "update",
+          "changedFields": [
+            "lastVerifiedAt",
+            "createdAt"
+          ],
+          "summary": "2টি ফিল্ড পরিবর্তিত হয়েছে (lastVerifiedAt, createdAt)"
+        },
         {
           "timestamp": "2026-11-07T00:08:09.192Z",
           "adminId": "LIVE_COLLECTOR",
@@ -6648,7 +7425,7 @@
       "verificationStatus": "VERIFIED",
       "verificationConfidence": 100,
       "verifiedBy": "ALLJOBS-LIVE-COLLECTOR",
-      "lastVerifiedAt": "2026-11-07T00:08:09.295Z",
+      "lastVerifiedAt": "2026-11-07T04:01:32.740Z",
       "requirements": [
         "প্রার্থীকে জন্মসূত্রে বাংলাদেশের স্থায়ী নাগরিক হতে হবে।",
         "আবেদনের নির্ধারিত তারিখে প্রার্থীর বয়স ১৮ থেকে ৩২ বছরের মধ্যে হতে হবে (বীর মুক্তিযোদ্ধা ও শারীরিক প্রতিবন্ধী কোটায় ৩২ বছর পর্যন্ত শিথিলযোগ্য)।",
@@ -6730,9 +7507,19 @@
           "govtFee": 100
         }
       ],
-      "createdAt": "2026-11-07T00:08:09.295Z",
-      "updatedAt": "2026-11-07T00:08:09.296Z",
+      "createdAt": "2026-11-07T04:01:32.740Z",
+      "updatedAt": "2026-11-07T04:01:32.740Z",
       "revisionHistory": [
+        {
+          "timestamp": "2026-11-07T04:01:32.740Z",
+          "adminId": "LIVE_COLLECTOR",
+          "action": "update",
+          "changedFields": [
+            "lastVerifiedAt",
+            "createdAt"
+          ],
+          "summary": "2টি ফিল্ড পরিবর্তিত হয়েছে (lastVerifiedAt, createdAt)"
+        },
         {
           "timestamp": "2026-11-07T00:08:09.296Z",
           "adminId": "LIVE_COLLECTOR",
@@ -6828,7 +7615,7 @@
       "verificationStatus": "VERIFIED",
       "verificationConfidence": 100,
       "verifiedBy": "ALLJOBS-LIVE-COLLECTOR",
-      "lastVerifiedAt": "2026-11-07T00:08:09.392Z",
+      "lastVerifiedAt": "2026-11-07T04:01:32.855Z",
       "requirements": [
         "প্রার্থীকে জন্মসূত্রে বাংলাদেশের স্থায়ী নাগরিক হতে হবে।",
         "আবেদনের নির্ধারিত তারিখে প্রার্থীর বয়স ১৮ থেকে ৩২ বছরের মধ্যে হতে হবে (বীর মুক্তিযোদ্ধা ও শারীরিক প্রতিবন্ধী কোটায় ৩২ বছর পর্যন্ত শিথিলযোগ্য)।",
@@ -6950,9 +7737,19 @@
           "govtFee": 100
         }
       ],
-      "createdAt": "2026-11-07T00:08:09.392Z",
-      "updatedAt": "2026-11-07T00:08:09.392Z",
+      "createdAt": "2026-11-07T04:01:32.855Z",
+      "updatedAt": "2026-11-07T04:01:32.855Z",
       "revisionHistory": [
+        {
+          "timestamp": "2026-11-07T04:01:32.855Z",
+          "adminId": "LIVE_COLLECTOR",
+          "action": "update",
+          "changedFields": [
+            "lastVerifiedAt",
+            "createdAt"
+          ],
+          "summary": "2টি ফিল্ড পরিবর্তিত হয়েছে (lastVerifiedAt, createdAt)"
+        },
         {
           "timestamp": "2026-11-07T00:08:09.392Z",
           "adminId": "LIVE_COLLECTOR",
@@ -7048,7 +7845,7 @@
       "verificationStatus": "VERIFIED",
       "verificationConfidence": 100,
       "verifiedBy": "ALLJOBS-LIVE-COLLECTOR",
-      "lastVerifiedAt": "2026-11-07T00:08:09.492Z",
+      "lastVerifiedAt": "2026-11-07T04:01:33.206Z",
       "requirements": [
         "প্রার্থীকে জন্মসূত্রে বাংলাদেশের স্থায়ী নাগরিক হতে হবে।",
         "আবেদনের নির্ধারিত তারিখে প্রার্থীর বয়স ১৮ থেকে ৩২ বছরের মধ্যে হতে হবে (বীর মুক্তিযোদ্ধা ও শারীরিক প্রতিবন্ধী কোটায় ৩২ বছর পর্যন্ত শিথিলযোগ্য)।",
@@ -7170,9 +7967,19 @@
           "govtFee": 100
         }
       ],
-      "createdAt": "2026-11-07T00:08:09.492Z",
-      "updatedAt": "2026-11-07T00:08:09.493Z",
+      "createdAt": "2026-11-07T04:01:33.206Z",
+      "updatedAt": "2026-11-07T04:01:33.207Z",
       "revisionHistory": [
+        {
+          "timestamp": "2026-11-07T04:01:33.207Z",
+          "adminId": "LIVE_COLLECTOR",
+          "action": "update",
+          "changedFields": [
+            "lastVerifiedAt",
+            "createdAt"
+          ],
+          "summary": "2টি ফিল্ড পরিবর্তিত হয়েছে (lastVerifiedAt, createdAt)"
+        },
         {
           "timestamp": "2026-11-07T00:08:09.493Z",
           "adminId": "LIVE_COLLECTOR",
@@ -7268,7 +8075,7 @@
       "verificationStatus": "VERIFIED",
       "verificationConfidence": 100,
       "verifiedBy": "ALLJOBS-LIVE-COLLECTOR",
-      "lastVerifiedAt": "2026-11-07T00:08:09.577Z",
+      "lastVerifiedAt": "2026-11-07T04:01:33.330Z",
       "requirements": [
         "প্রার্থীকে জন্মসূত্রে বাংলাদেশের স্থায়ী নাগরিক হতে হবে।",
         "আবেদনের নির্ধারিত তারিখে প্রার্থীর বয়স ১৮ থেকে ৩২ বছরের মধ্যে হতে হবে (বীর মুক্তিযোদ্ধা ও শারীরিক প্রতিবন্ধী কোটায় ৩২ বছর পর্যন্ত শিথিলযোগ্য)।",
@@ -7400,9 +8207,19 @@
           "govtFee": 200
         }
       ],
-      "createdAt": "2026-11-07T00:08:09.577Z",
-      "updatedAt": "2026-11-07T00:08:09.578Z",
+      "createdAt": "2026-11-07T04:01:33.330Z",
+      "updatedAt": "2026-11-07T04:01:33.330Z",
       "revisionHistory": [
+        {
+          "timestamp": "2026-11-07T04:01:33.330Z",
+          "adminId": "LIVE_COLLECTOR",
+          "action": "update",
+          "changedFields": [
+            "lastVerifiedAt",
+            "createdAt"
+          ],
+          "summary": "2টি ফিল্ড পরিবর্তিত হয়েছে (lastVerifiedAt, createdAt)"
+        },
         {
           "timestamp": "2026-11-07T00:08:09.578Z",
           "adminId": "LIVE_COLLECTOR",
@@ -7500,7 +8317,7 @@
       "verificationStatus": "VERIFIED",
       "verificationConfidence": 100,
       "verifiedBy": "ALLJOBS-LIVE-COLLECTOR",
-      "lastVerifiedAt": "2026-11-07T00:08:09.669Z",
+      "lastVerifiedAt": "2026-11-07T04:01:33.439Z",
       "requirements": [
         "প্রার্থীকে জন্মসূত্রে বাংলাদেশের স্থায়ী নাগরিক হতে হবে।",
         "আবেদনের নির্ধারিত তারিখে প্রার্থীর বয়স ১৮ থেকে ৩২ বছরের মধ্যে হতে হবে (বীর মুক্তিযোদ্ধা ও শারীরিক প্রতিবন্ধী কোটায় ৩২ বছর পর্যন্ত শিথিলযোগ্য)।",
@@ -7612,9 +8429,19 @@
           "govtFee": 200
         }
       ],
-      "createdAt": "2026-11-07T00:08:09.669Z",
-      "updatedAt": "2026-11-07T00:08:09.669Z",
+      "createdAt": "2026-11-07T04:01:33.439Z",
+      "updatedAt": "2026-11-07T04:01:33.440Z",
       "revisionHistory": [
+        {
+          "timestamp": "2026-11-07T04:01:33.440Z",
+          "adminId": "LIVE_COLLECTOR",
+          "action": "update",
+          "changedFields": [
+            "lastVerifiedAt",
+            "createdAt"
+          ],
+          "summary": "2টি ফিল্ড পরিবর্তিত হয়েছে (lastVerifiedAt, createdAt)"
+        },
         {
           "timestamp": "2026-11-07T00:08:09.669Z",
           "adminId": "LIVE_COLLECTOR",
@@ -7710,7 +8537,7 @@
       "verificationStatus": "VERIFIED",
       "verificationConfidence": 100,
       "verifiedBy": "ALLJOBS-LIVE-COLLECTOR",
-      "lastVerifiedAt": "2026-11-07T00:08:09.765Z",
+      "lastVerifiedAt": "2026-11-07T04:01:33.551Z",
       "requirements": [
         "প্রার্থীকে জন্মসূত্রে বাংলাদেশের স্থায়ী নাগরিক হতে হবে।",
         "আবেদনের নির্ধারিত তারিখে প্রার্থীর বয়স ১৮ থেকে ৩২ বছরের মধ্যে হতে হবে (বীর মুক্তিযোদ্ধা ও শারীরিক প্রতিবন্ধী কোটায় ৩২ বছর পর্যন্ত শিথিলযোগ্য)।",
@@ -7832,9 +8659,19 @@
           "govtFee": 100
         }
       ],
-      "createdAt": "2026-11-07T00:08:09.765Z",
-      "updatedAt": "2026-11-07T00:08:09.766Z",
+      "createdAt": "2026-11-07T04:01:33.551Z",
+      "updatedAt": "2026-11-07T04:01:33.552Z",
       "revisionHistory": [
+        {
+          "timestamp": "2026-11-07T04:01:33.552Z",
+          "adminId": "LIVE_COLLECTOR",
+          "action": "update",
+          "changedFields": [
+            "lastVerifiedAt",
+            "createdAt"
+          ],
+          "summary": "2টি ফিল্ড পরিবর্তিত হয়েছে (lastVerifiedAt, createdAt)"
+        },
         {
           "timestamp": "2026-11-07T00:08:09.766Z",
           "adminId": "LIVE_COLLECTOR",
@@ -7930,7 +8767,7 @@
       "verificationStatus": "VERIFIED",
       "verificationConfidence": 100,
       "verifiedBy": "ALLJOBS-LIVE-COLLECTOR",
-      "lastVerifiedAt": "2026-11-07T00:08:09.849Z",
+      "lastVerifiedAt": "2026-11-07T04:01:33.666Z",
       "requirements": [
         "প্রার্থীকে জন্মসূত্রে বাংলাদেশের স্থায়ী নাগরিক হতে হবে।",
         "আবেদনের নির্ধারিত তারিখে প্রার্থীর বয়স ১৮ থেকে ৩২ বছরের মধ্যে হতে হবে (বীর মুক্তিযোদ্ধা ও শারীরিক প্রতিবন্ধী কোটায় ৩২ বছর পর্যন্ত শিথিলযোগ্য)।",
@@ -8012,9 +8849,19 @@
           "govtFee": 200
         }
       ],
-      "createdAt": "2026-11-07T00:08:09.849Z",
-      "updatedAt": "2026-11-07T00:08:09.850Z",
+      "createdAt": "2026-11-07T04:01:33.666Z",
+      "updatedAt": "2026-11-07T04:01:33.667Z",
       "revisionHistory": [
+        {
+          "timestamp": "2026-11-07T04:01:33.667Z",
+          "adminId": "LIVE_COLLECTOR",
+          "action": "update",
+          "changedFields": [
+            "lastVerifiedAt",
+            "createdAt"
+          ],
+          "summary": "2টি ফিল্ড পরিবর্তিত হয়েছে (lastVerifiedAt, createdAt)"
+        },
         {
           "timestamp": "2026-11-07T00:08:09.850Z",
           "adminId": "LIVE_COLLECTOR",
@@ -8112,7 +8959,7 @@
       "verificationStatus": "VERIFIED",
       "verificationConfidence": 100,
       "verifiedBy": "ALLJOBS-LIVE-COLLECTOR",
-      "lastVerifiedAt": "2026-11-07T00:08:09.941Z",
+      "lastVerifiedAt": "2026-11-07T04:01:33.754Z",
       "requirements": [
         "প্রার্থীকে জন্মসূত্রে বাংলাদেশের স্থায়ী নাগরিক হতে হবে।",
         "আবেদনের নির্ধারিত তারিখে প্রার্থীর বয়স ১৮ থেকে ৩২ বছরের মধ্যে হতে হবে (বীর মুক্তিযোদ্ধা ও শারীরিক প্রতিবন্ধী কোটায় ৩২ বছর পর্যন্ত শিথিলযোগ্য)।",
@@ -8254,9 +9101,19 @@
           "govtFee": 200
         }
       ],
-      "createdAt": "2026-11-07T00:08:09.941Z",
-      "updatedAt": "2026-11-07T00:08:09.941Z",
+      "createdAt": "2026-11-07T04:01:33.754Z",
+      "updatedAt": "2026-11-07T04:01:33.754Z",
       "revisionHistory": [
+        {
+          "timestamp": "2026-11-07T04:01:33.754Z",
+          "adminId": "LIVE_COLLECTOR",
+          "action": "update",
+          "changedFields": [
+            "lastVerifiedAt",
+            "createdAt"
+          ],
+          "summary": "2টি ফিল্ড পরিবর্তিত হয়েছে (lastVerifiedAt, createdAt)"
+        },
         {
           "timestamp": "2026-11-07T00:08:09.941Z",
           "adminId": "LIVE_COLLECTOR",
@@ -8352,7 +9209,7 @@
       "verificationStatus": "VERIFIED",
       "verificationConfidence": 100,
       "verifiedBy": "ALLJOBS-LIVE-COLLECTOR",
-      "lastVerifiedAt": "2026-11-07T00:08:10.078Z",
+      "lastVerifiedAt": "2026-11-07T04:01:33.922Z",
       "requirements": [
         "প্রার্থীকে জন্মসূত্রে বাংলাদেশের স্থায়ী নাগরিক হতে হবে।",
         "আবেদনের নির্ধারিত তারিখে প্রার্থীর বয়স ১৮ থেকে ৩২ বছরের মধ্যে হতে হবে (বীর মুক্তিযোদ্ধা ও শারীরিক প্রতিবন্ধী কোটায় ৩২ বছর পর্যন্ত শিথিলযোগ্য)।",
@@ -8444,9 +9301,19 @@
           "govtFee": 100
         }
       ],
-      "createdAt": "2026-11-07T00:08:10.078Z",
-      "updatedAt": "2026-11-07T00:08:10.079Z",
+      "createdAt": "2026-11-07T04:01:33.922Z",
+      "updatedAt": "2026-11-07T04:01:33.923Z",
       "revisionHistory": [
+        {
+          "timestamp": "2026-11-07T04:01:33.923Z",
+          "adminId": "LIVE_COLLECTOR",
+          "action": "update",
+          "changedFields": [
+            "lastVerifiedAt",
+            "createdAt"
+          ],
+          "summary": "2টি ফিল্ড পরিবর্তিত হয়েছে (lastVerifiedAt, createdAt)"
+        },
         {
           "timestamp": "2026-11-07T00:08:10.079Z",
           "adminId": "LIVE_COLLECTOR",
@@ -8546,7 +9413,7 @@
       "verificationStatus": "VERIFIED",
       "verificationConfidence": 100,
       "verifiedBy": "ALLJOBS-LIVE-COLLECTOR",
-      "lastVerifiedAt": "2026-11-07T00:08:10.153Z",
+      "lastVerifiedAt": "2026-11-07T04:01:34.039Z",
       "requirements": [
         "প্রার্থীকে জন্মসূত্রে বাংলাদেশের স্থায়ী নাগরিক হতে হবে।",
         "আবেদনের নির্ধারিত তারিখে প্রার্থীর বয়স ১৮ থেকে ৩২ বছরের মধ্যে হতে হবে (বীর মুক্তিযোদ্ধা ও শারীরিক প্রতিবন্ধী কোটায় ৩২ বছর পর্যন্ত শিথিলযোগ্য)।",
@@ -8668,9 +9535,19 @@
           "govtFee": 200
         }
       ],
-      "createdAt": "2026-11-07T00:08:10.153Z",
-      "updatedAt": "2026-11-07T00:08:10.154Z",
+      "createdAt": "2026-11-07T04:01:34.039Z",
+      "updatedAt": "2026-11-07T04:01:34.040Z",
       "revisionHistory": [
+        {
+          "timestamp": "2026-11-07T04:01:34.040Z",
+          "adminId": "LIVE_COLLECTOR",
+          "action": "update",
+          "changedFields": [
+            "lastVerifiedAt",
+            "createdAt"
+          ],
+          "summary": "2টি ফিল্ড পরিবর্তিত হয়েছে (lastVerifiedAt, createdAt)"
+        },
         {
           "timestamp": "2026-11-07T00:08:10.154Z",
           "adminId": "LIVE_COLLECTOR",
@@ -8766,7 +9643,7 @@
       "verificationStatus": "VERIFIED",
       "verificationConfidence": 100,
       "verifiedBy": "ALLJOBS-LIVE-COLLECTOR",
-      "lastVerifiedAt": "2026-11-07T00:08:10.246Z",
+      "lastVerifiedAt": "2026-11-07T04:01:34.147Z",
       "requirements": [
         "প্রার্থীকে জন্মসূত্রে বাংলাদেশের স্থায়ী নাগরিক হতে হবে।",
         "আবেদনের নির্ধারিত তারিখে প্রার্থীর বয়স ১৮ থেকে ৩২ বছরের মধ্যে হতে হবে (বীর মুক্তিযোদ্ধা ও শারীরিক প্রতিবন্ধী কোটায় ৩২ বছর পর্যন্ত শিথিলযোগ্য)।",
@@ -9178,9 +10055,19 @@
           "govtFee": 600
         }
       ],
-      "createdAt": "2026-11-07T00:08:10.246Z",
-      "updatedAt": "2026-11-07T00:08:10.247Z",
+      "createdAt": "2026-11-07T04:01:34.147Z",
+      "updatedAt": "2026-11-07T04:01:34.148Z",
       "revisionHistory": [
+        {
+          "timestamp": "2026-11-07T04:01:34.148Z",
+          "adminId": "LIVE_COLLECTOR",
+          "action": "update",
+          "changedFields": [
+            "lastVerifiedAt",
+            "createdAt"
+          ],
+          "summary": "2টি ফিল্ড পরিবর্তিত হয়েছে (lastVerifiedAt, createdAt)"
+        },
         {
           "timestamp": "2026-11-07T00:08:10.247Z",
           "adminId": "LIVE_COLLECTOR",
@@ -9282,7 +10169,7 @@
       "verificationStatus": "VERIFIED",
       "verificationConfidence": 100,
       "verifiedBy": "ALLJOBS-LIVE-COLLECTOR",
-      "lastVerifiedAt": "2026-11-07T00:08:10.339Z",
+      "lastVerifiedAt": "2026-11-07T04:01:34.221Z",
       "requirements": [
         "প্রার্থীকে জন্মসূত্রে বাংলাদেশের স্থায়ী নাগরিক হতে হবে।",
         "আবেদনের নির্ধারিত তারিখে প্রার্থীর বয়স ১৮ থেকে ৩২ বছরের মধ্যে হতে হবে (বীর মুক্তিযোদ্ধা ও শারীরিক প্রতিবন্ধী কোটায় ৩২ বছর পর্যন্ত শিথিলযোগ্য)।",
@@ -9344,9 +10231,19 @@
           "govtFee": 100
         }
       ],
-      "createdAt": "2026-11-07T00:08:10.339Z",
-      "updatedAt": "2026-11-07T00:08:10.339Z",
+      "createdAt": "2026-11-07T04:01:34.221Z",
+      "updatedAt": "2026-11-07T04:01:34.222Z",
       "revisionHistory": [
+        {
+          "timestamp": "2026-11-07T04:01:34.222Z",
+          "adminId": "LIVE_COLLECTOR",
+          "action": "update",
+          "changedFields": [
+            "lastVerifiedAt",
+            "createdAt"
+          ],
+          "summary": "2টি ফিল্ড পরিবর্তিত হয়েছে (lastVerifiedAt, createdAt)"
+        },
         {
           "timestamp": "2026-11-07T00:08:10.339Z",
           "adminId": "LIVE_COLLECTOR",
@@ -9396,7 +10293,7 @@
       "verificationStatus": "VERIFIED",
       "verificationConfidence": 100,
       "verifiedBy": "ALLJOBS-LIVE-COLLECTOR",
-      "lastVerifiedAt": "2026-11-07T00:08:10.422Z",
+      "lastVerifiedAt": "2026-11-07T04:01:34.307Z",
       "requirements": [
         "প্রার্থীকে জন্মসূত্রে বাংলাদেশের স্থায়ী নাগরিক হতে হবে।",
         "আবেদনের নির্ধারিত তারিখে প্রার্থীর বয়স ১৮ থেকে ৩২ বছরের মধ্যে হতে হবে (বীর মুক্তিযোদ্ধা ও শারীরিক প্রতিবন্ধী কোটায় ৩২ বছর পর্যন্ত শিথিলযোগ্য)।",
@@ -9468,9 +10365,19 @@
           "govtFee": 200
         }
       ],
-      "createdAt": "2026-11-07T00:08:10.422Z",
-      "updatedAt": "2026-11-07T00:08:10.423Z",
+      "createdAt": "2026-11-07T04:01:34.307Z",
+      "updatedAt": "2026-11-07T04:01:34.308Z",
       "revisionHistory": [
+        {
+          "timestamp": "2026-11-07T04:01:34.308Z",
+          "adminId": "LIVE_COLLECTOR",
+          "action": "update",
+          "changedFields": [
+            "lastVerifiedAt",
+            "createdAt"
+          ],
+          "summary": "2টি ফিল্ড পরিবর্তিত হয়েছে (lastVerifiedAt, createdAt)"
+        },
         {
           "timestamp": "2026-11-07T00:08:10.423Z",
           "adminId": "LIVE_COLLECTOR",
@@ -9520,7 +10427,7 @@
       "verificationStatus": "VERIFIED",
       "verificationConfidence": 100,
       "verifiedBy": "ALLJOBS-LIVE-COLLECTOR",
-      "lastVerifiedAt": "2026-11-07T00:08:10.514Z",
+      "lastVerifiedAt": "2026-11-07T04:01:34.413Z",
       "requirements": [
         "প্রার্থীকে জন্মসূত্রে বাংলাদেশের স্থায়ী নাগরিক হতে হবে।",
         "আবেদনের নির্ধারিত তারিখে প্রার্থীর বয়স ১৮ থেকে ৩২ বছরের মধ্যে হতে হবে (বীর মুক্তিযোদ্ধা ও শারীরিক প্রতিবন্ধী কোটায় ৩২ বছর পর্যন্ত শিথিলযোগ্য)।",
@@ -9592,9 +10499,19 @@
           "govtFee": 200
         }
       ],
-      "createdAt": "2026-11-07T00:08:10.514Z",
-      "updatedAt": "2026-11-07T00:08:10.515Z",
+      "createdAt": "2026-11-07T04:01:34.413Z",
+      "updatedAt": "2026-11-07T04:01:34.414Z",
       "revisionHistory": [
+        {
+          "timestamp": "2026-11-07T04:01:34.414Z",
+          "adminId": "LIVE_COLLECTOR",
+          "action": "update",
+          "changedFields": [
+            "lastVerifiedAt",
+            "createdAt"
+          ],
+          "summary": "2টি ফিল্ড পরিবর্তিত হয়েছে (lastVerifiedAt, createdAt)"
+        },
         {
           "timestamp": "2026-11-07T00:08:10.515Z",
           "adminId": "LIVE_COLLECTOR",
@@ -9644,7 +10561,7 @@
       "verificationStatus": "VERIFIED",
       "verificationConfidence": 100,
       "verifiedBy": "ALLJOBS-LIVE-COLLECTOR",
-      "lastVerifiedAt": "2026-11-07T00:08:10.596Z",
+      "lastVerifiedAt": "2026-11-07T04:01:34.514Z",
       "requirements": [
         "প্রার্থীকে জন্মসূত্রে বাংলাদেশের স্থায়ী নাগরিক হতে হবে।",
         "আবেদনের নির্ধারিত তারিখে প্রার্থীর বয়স ১৮ থেকে ৩২ বছরের মধ্যে হতে হবে (বীর মুক্তিযোদ্ধা ও শারীরিক প্রতিবন্ধী কোটায় ৩২ বছর পর্যন্ত শিথিলযোগ্য)।",
@@ -9766,9 +10683,19 @@
           "govtFee": 100
         }
       ],
-      "createdAt": "2026-11-07T00:08:10.596Z",
-      "updatedAt": "2026-11-07T00:08:10.597Z",
+      "createdAt": "2026-11-07T04:01:34.514Z",
+      "updatedAt": "2026-11-07T04:01:34.515Z",
       "revisionHistory": [
+        {
+          "timestamp": "2026-11-07T04:01:34.515Z",
+          "adminId": "LIVE_COLLECTOR",
+          "action": "update",
+          "changedFields": [
+            "lastVerifiedAt",
+            "createdAt"
+          ],
+          "summary": "2টি ফিল্ড পরিবর্তিত হয়েছে (lastVerifiedAt, createdAt)"
+        },
         {
           "timestamp": "2026-11-07T00:08:10.597Z",
           "adminId": "LIVE_COLLECTOR",
@@ -9818,7 +10745,7 @@
       "verificationStatus": "VERIFIED",
       "verificationConfidence": 100,
       "verifiedBy": "ALLJOBS-LIVE-COLLECTOR",
-      "lastVerifiedAt": "2026-11-07T00:08:10.680Z",
+      "lastVerifiedAt": "2026-11-07T04:01:34.595Z",
       "requirements": [
         "প্রার্থীকে জন্মসূত্রে বাংলাদেশের স্থায়ী নাগরিক হতে হবে।",
         "আবেদনের নির্ধারিত তারিখে প্রার্থীর বয়স ১৮ থেকে ৩২ বছরের মধ্যে হতে হবে (বীর মুক্তিযোদ্ধা ও শারীরিক প্রতিবন্ধী কোটায় ৩২ বছর পর্যন্ত শিথিলযোগ্য)।",
@@ -10060,9 +10987,19 @@
           "govtFee": 600
         }
       ],
-      "createdAt": "2026-11-07T00:08:10.680Z",
-      "updatedAt": "2026-11-07T00:08:10.681Z",
+      "createdAt": "2026-11-07T04:01:34.595Z",
+      "updatedAt": "2026-11-07T04:01:34.596Z",
       "revisionHistory": [
+        {
+          "timestamp": "2026-11-07T04:01:34.596Z",
+          "adminId": "LIVE_COLLECTOR",
+          "action": "update",
+          "changedFields": [
+            "lastVerifiedAt",
+            "createdAt"
+          ],
+          "summary": "2টি ফিল্ড পরিবর্তিত হয়েছে (lastVerifiedAt, createdAt)"
+        },
         {
           "timestamp": "2026-11-07T00:08:10.681Z",
           "adminId": "LIVE_COLLECTOR",
@@ -10112,7 +11049,7 @@
       "verificationStatus": "VERIFIED",
       "verificationConfidence": 100,
       "verifiedBy": "ALLJOBS-LIVE-COLLECTOR",
-      "lastVerifiedAt": "2026-11-07T00:08:10.767Z",
+      "lastVerifiedAt": "2026-11-07T04:01:34.727Z",
       "requirements": [
         "প্রার্থীকে জন্মসূত্রে বাংলাদেশের স্থায়ী নাগরিক হতে হবে।",
         "আবেদনের নির্ধারিত তারিখে প্রার্থীর বয়স ১৮ থেকে ৩২ বছরের মধ্যে হতে হবে (বীর মুক্তিযোদ্ধা ও শারীরিক প্রতিবন্ধী কোটায় ৩২ বছর পর্যন্ত শিথিলযোগ্য)।",
@@ -10174,9 +11111,19 @@
           "govtFee": 200
         }
       ],
-      "createdAt": "2026-11-07T00:08:10.767Z",
-      "updatedAt": "2026-11-07T00:08:10.768Z",
+      "createdAt": "2026-11-07T04:01:34.727Z",
+      "updatedAt": "2026-11-07T04:01:34.728Z",
       "revisionHistory": [
+        {
+          "timestamp": "2026-11-07T04:01:34.728Z",
+          "adminId": "LIVE_COLLECTOR",
+          "action": "update",
+          "changedFields": [
+            "lastVerifiedAt",
+            "createdAt"
+          ],
+          "summary": "2টি ফিল্ড পরিবর্তিত হয়েছে (lastVerifiedAt, createdAt)"
+        },
         {
           "timestamp": "2026-11-07T00:08:10.768Z",
           "adminId": "LIVE_COLLECTOR",
@@ -10226,7 +11173,7 @@
       "verificationStatus": "VERIFIED",
       "verificationConfidence": 100,
       "verifiedBy": "ALLJOBS-LIVE-COLLECTOR",
-      "lastVerifiedAt": "2026-11-07T00:08:10.848Z",
+      "lastVerifiedAt": "2026-11-07T04:01:34.854Z",
       "requirements": [
         "প্রার্থীকে জন্মসূত্রে বাংলাদেশের স্থায়ী নাগরিক হতে হবে।",
         "আবেদনের নির্ধারিত তারিখে প্রার্থীর বয়স ১৮ থেকে ৩২ বছরের মধ্যে হতে হবে (বীর মুক্তিযোদ্ধা ও শারীরিক প্রতিবন্ধী কোটায় ৩২ বছর পর্যন্ত শিথিলযোগ্য)।",
@@ -10308,9 +11255,19 @@
           "govtFee": 200
         }
       ],
-      "createdAt": "2026-11-07T00:08:10.848Z",
-      "updatedAt": "2026-11-07T00:08:10.849Z",
+      "createdAt": "2026-11-07T04:01:34.854Z",
+      "updatedAt": "2026-11-07T04:01:34.854Z",
       "revisionHistory": [
+        {
+          "timestamp": "2026-11-07T04:01:34.854Z",
+          "adminId": "LIVE_COLLECTOR",
+          "action": "update",
+          "changedFields": [
+            "lastVerifiedAt",
+            "createdAt"
+          ],
+          "summary": "2টি ফিল্ড পরিবর্তিত হয়েছে (lastVerifiedAt, createdAt)"
+        },
         {
           "timestamp": "2026-11-07T00:08:10.849Z",
           "adminId": "LIVE_COLLECTOR",
@@ -10507,7 +11464,7 @@
       "verificationStatus": "VERIFIED",
       "verificationConfidence": 100,
       "verifiedBy": "ALLJOBS-LIVE-COLLECTOR",
-      "lastVerifiedAt": "2026-11-07T00:08:10.929Z",
+      "lastVerifiedAt": "2026-11-07T04:01:34.957Z",
       "requirements": [
         "প্রার্থীকে জন্মসূত্রে বাংলাদেশের স্থায়ী নাগরিক হতে হবে।",
         "আবেদনের নির্ধারিত তারিখে প্রার্থীর বয়স ১৮ থেকে ৩২ বছরের মধ্যে হতে হবে (বীর মুক্তিযোদ্ধা ও শারীরিক প্রতিবন্ধী কোটায় ৩২ বছর পর্যন্ত শিথিলযোগ্য)।",
@@ -10569,9 +11526,19 @@
           "govtFee": 200
         }
       ],
-      "createdAt": "2026-11-07T00:08:10.929Z",
-      "updatedAt": "2026-11-07T00:08:10.930Z",
+      "createdAt": "2026-11-07T04:01:34.957Z",
+      "updatedAt": "2026-11-07T04:01:34.958Z",
       "revisionHistory": [
+        {
+          "timestamp": "2026-11-07T04:01:34.958Z",
+          "adminId": "LIVE_COLLECTOR",
+          "action": "update",
+          "changedFields": [
+            "lastVerifiedAt",
+            "createdAt"
+          ],
+          "summary": "2টি ফিল্ড পরিবর্তিত হয়েছে (lastVerifiedAt, createdAt)"
+        },
         {
           "timestamp": "2026-11-07T00:08:10.930Z",
           "adminId": "LIVE_COLLECTOR",

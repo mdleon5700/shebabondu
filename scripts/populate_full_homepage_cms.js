@@ -172,3 +172,4 @@ db.pages.home.updatedAt = new Date().toISOString();
 
 fs.writeFileSync(dbPath, JSON.stringify(db, null, 2), 'utf8');
 console.log('✅ Successfully populated full Home Page sections in local_store.json!');
+

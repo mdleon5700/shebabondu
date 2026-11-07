@@ -314,8 +314,13 @@ export default function ProfilePage() {
 
   const syncProfileToServer = async (profileToSave: CandidateProfile): Promise<boolean> => {
     try {
+      const token = typeof window !== 'undefined' ? localStorage.getItem('cs_session_token') : null;
+      const headers: Record<string, string> = {
+        'Content-Type': 'application/json',
+        ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+      };
       const response = await fetch('/api/profile', {
-        method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(profileToSave)
+        method: 'PUT', headers, body: JSON.stringify(profileToSave)
       });
       const data = await response.json();
       if (!response.ok || !data.profile) throw new Error(data.error || 'প্রোফাইল সংরক্ষণ ব্যর্থ হয়েছে');

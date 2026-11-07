@@ -4161,6 +4161,26 @@
       "candidateId": "ADMIN-SUPER",
       "role": "admin",
       "expiresAt": "2026-11-14T18:03:55.469Z"
+    },
+    "b70fe4621f07b1ab8228864490050a44c117e8a290bb6e55313a50352cc231f7": {
+      "candidateId": "SYNTH-USR-1794076775783",
+      "role": "candidate",
+      "expiresAt": "2026-11-14T18:39:35.868Z"
+    },
+    "40328a580b36e882a6cdeebcc5017c6545ec710a2739ac08dd933ff3c3e9bd1b": {
+      "candidateId": "SYNTH-USR-1794076777643",
+      "role": "candidate",
+      "expiresAt": "2026-11-14T18:39:37.712Z"
+    },
+    "bd459f5dea25052759fb5aff7f996b1c36c6fea22fc5889c8ce77c114a1081a7": {
+      "candidateId": "SYNTH-USR-1794076777643",
+      "role": "candidate",
+      "expiresAt": "2026-11-14T18:39:40.902Z"
+    },
+    "f58d24f4bd513743f277858a4931c5b65f1ff14e635d15075c108ecb994f3428": {
+      "candidateId": "ADMIN-SUPER",
+      "role": "admin",
+      "expiresAt": "2026-11-14T18:39:46.770Z"
     }
   },
   "coupons": {},
@@ -4168,6 +4188,394 @@
   "couponRedemptions": {},
   "raffleEntries": {},
   "adminAuditLogs": [
+    {
+      "action": "UPDATE_PLATFORM_SETTINGS",
+      "adminId": "ADMIN-SUPER",
+      "targetType": "SYSTEM_SETTINGS",
+      "targetId": "GLOBAL_CONFIG",
+      "notes": "প্ল্যাটফর্মের কেন্দ্রীয় সেটিংস ও কনফিগারেশন হালনাগাদ করা হয়েছে",
+      "changes": {
+        "settings": {
+          "new": {
+            "general": {
+              "siteName": "চাকরি সেবা",
+              "siteDescription": "বাংলাদেশের একমাত্র ১০০% সম্পূর্ণ ফ্রি সরকারি ও বেসরকারি চাকরি পোর্টাল",
+              "logoUrl": "/icons/icon-192x192.png",
+              "announcementText": "⚡ [লাইভ টেস্ট] নতুন সরকারি ও ব্যাংক চাকরির আবেদন প্রক্রিয়া শুরু হয়েছে!",
+              "announcementUrl": "/jobs",
+              "announcementEnabled": true,
+              "whatsappNumber": "8801774366643",
+              "whatsappButtonText": "লাইভ সাপোর্ট",
+              "footerAboutText": "বাংলাদেশের চাকরিপ্রার্থীদের বিশ্বস্ত ডিজিটাল প্ল্যাটফর্ম। ঘরে বসেই সকল সরকারি, ব্যাংক ও শীর্ষ বেসরকারি চাকরির শতভাগ যাচাইকৃত বিজ্ঞপ্তি ও সঠিক নিয়মে অনলাইন আবেদন সহায়তা।",
+              "footerColumns": [
+                {
+                  "id": "col-jobs",
+                  "title": "চাকরি ও পরীক্ষা",
+                  "links": [
+                    {
+                      "label": "চলমান সকল চাকরি",
+                      "url": "/jobs"
+                    },
+                    {
+                      "label": "সরকারি চাকরির বিজ্ঞপ্তি",
+                      "url": "/government-jobs"
+                    },
+                    {
+                      "label": "বেসরকারি ও কোম্পানি জবস",
+                      "url": "/private-jobs"
+                    },
+                    {
+                      "label": "ব্যাংক ও ফাইন্যান্স চাকরি",
+                      "url": "/bank-jobs"
+                    },
+                    {
+                      "label": "আবেদনের শেষ সময় কাছাকাছি",
+                      "url": "/deadline-approaching"
+                    },
+                    {
+                      "label": "পরীক্ষার নোটিশ ও সময়সূচি",
+                      "url": "/exam-notices"
+                    },
+                    {
+                      "label": "প্রবেশপত্র / অ্যাডমিট কার্ড",
+                      "url": "/admit-cards"
+                    },
+                    {
+                      "label": "বিগত বছরের প্রশ্ন ও সমাধান",
+                      "url": "/previous-year-questions"
+                    },
+                    {
+                      "label": "অনলাইন মডেল টেস্ট",
+                      "url": "/model-tests"
+                    }
+                  ]
+                },
+                {
+                  "id": "col-guides",
+                  "title": "ক্যারিয়ার গাইড ও সার্ভিস",
+                  "links": [
+                    {
+                      "label": "সকল চাকরির ক্যাটাগরি",
+                      "url": "/job-categories"
+                    },
+                    {
+                      "label": "সকল নিয়োগকারী প্রতিষ্ঠান",
+                      "url": "/organizations"
+                    },
+                    {
+                      "label": "ক্যারিয়ার গাইড হাব",
+                      "url": "/career-guides"
+                    },
+                    {
+                      "label": "সিভি লেখার সঠিক নিয়ম",
+                      "url": "/career-guides/cv-writing"
+                    },
+                    {
+                      "label": "অনলাইনে চাকরির আবেদন গাইড",
+                      "url": "/career-guides/online-job-application"
+                    },
+                    {
+                      "label": "ইন্টারভিউ ও ভাইভা প্রস্তুতি",
+                      "url": "/career-guides/interview-preparation"
+                    },
+                    {
+                      "label": "সব ব্লগ ও ক্যারিয়ার আর্টিকেল",
+                      "url": "/blog"
+                    },
+                    {
+                      "label": "ফ্রি জব এলার্ট নোটিফিকেশন",
+                      "url": "/job-alerts"
+                    }
+                  ]
+                },
+                {
+                  "id": "col-policies",
+                  "title": "নীতিমালা ও সহায়তা",
+                  "links": [
+                    {
+                      "label": "আমাদের সম্পর্কে (About Us)",
+                      "url": "/about-us"
+                    },
+                    {
+                      "label": "যোগাযোগ করুন (Contact)",
+                      "url": "/contact-us"
+                    },
+                    {
+                      "label": "সাধারণ জিজ্ঞাসা (FAQ)",
+                      "url": "/faq"
+                    },
+                    {
+                      "label": "সম্পাদকীয় নীতিমালা",
+                      "url": "/editorial-policy"
+                    },
+                    {
+                      "label": "চাকরি যাচাই নীতিমালা",
+                      "url": "/job-verification-policy"
+                    },
+                    {
+                      "label": "ভুল তথ্য সংশোধন নীতিমালা",
+                      "url": "/corrections-policy"
+                    },
+                    {
+                      "label": "ভুল বিজ্ঞপ্তি রিপোর্ট করুন",
+                      "url": "/report-a-job"
+                    }
+                  ]
+                },
+                {
+                  "id": "col-1794076665889",
+                  "title": "নতুন কলাম",
+                  "links": [
+                    {
+                      "label": "নতুন লিংক",
+                      "url": "/jobs"
+                    }
+                  ]
+                }
+              ],
+              "footerDisclaimer": "সতর্কতা: চাকরি সেবা কোনো সরকারি বা নিয়োগকারী প্রতিষ্ঠান নয়। আমরা বিভিন্ন অফিশিয়াল ওয়েবসাইট ও জাতীয় পত্রিকা থেকে সংগৃহীত চাকরির তথ্য ও সার্কুলার প্রকাশ করি এবং চাকরিপ্রার্থীদের সুবিধার্থে সঠিক নিয়মে ফর্ম পূরণে পেশাদার সহায়তা প্রদান করি।",
+              "copyrightText": "© ২০২৬ চাকরিসেবা BD (ChakriSheba.com) • সর্বস্বত্ব সংরক্ষিত।",
+              "headerMenuItems": [
+                {
+                  "id": "all-jobs",
+                  "label": "সকল চাকরি",
+                  "href": "/jobs",
+                  "badge": "হট",
+                  "dropdown": [
+                    {
+                      "label": "চলমান সকল বিজ্ঞপ্তি",
+                      "href": "/jobs"
+                    },
+                    {
+                      "label": "সর্বশেষ প্রকাশিত চাকরি",
+                      "href": "/latest-jobs"
+                    },
+                    {
+                      "label": "আবেদনের শেষ সময় কাছাকাছি",
+                      "href": "/deadline-approaching"
+                    },
+                    {
+                      "label": "সকল চাকরির প্রতিষ্ঠান",
+                      "href": "/organizations"
+                    },
+                    {
+                      "label": "যোগ্যতা অনুযায়ী চাকরি",
+                      "href": "/job-categories"
+                    }
+                  ]
+                },
+                {
+                  "id": "home",
+                  "label": "হোম",
+                  "href": "/"
+                },
+                {
+                  "id": "govt",
+                  "label": "সরকারি চাকরি",
+                  "href": "/government-jobs",
+                  "dropdown": [
+                    {
+                      "label": "সকল সরকারি চাকরি",
+                      "href": "/government-jobs"
+                    },
+                    {
+                      "label": "বিপিএসসি (BPSC) চাকরি",
+                      "href": "/organizations/bpsc"
+                    },
+                    {
+                      "label": "বাংলাদেশ ব্যাংক নিয়োগ",
+                      "href": "/organizations/bangladesh-bank"
+                    },
+                    {
+                      "label": "সরকারি মন্ত্রণালয়সমূহ",
+                      "href": "/organizations/government-ministries"
+                    },
+                    {
+                      "label": "সরকারি অধিদপ্তরসমূহ",
+                      "href": "/organizations/government-directorates"
+                    }
+                  ]
+                },
+                {
+                  "id": "private",
+                  "label": "বেসরকারি চাকরি",
+                  "href": "/private-jobs",
+                  "dropdown": [
+                    {
+                      "label": "সকল বেসরকারি চাকরি",
+                      "href": "/private-jobs"
+                    },
+                    {
+                      "label": "ব্যাংক ও আর্থিক প্রতিষ্ঠান",
+                      "href": "/bank-jobs"
+                    },
+                    {
+                      "label": "এনজিও (NGO) চাকরি",
+                      "href": "/ngo-jobs"
+                    },
+                    {
+                      "label": "আইটি ও সফটওয়্যার জবস",
+                      "href": "/it-jobs"
+                    },
+                    {
+                      "label": "মেডিকেল ও ফার্মাসিউটিক্যাল",
+                      "href": "/medical-jobs"
+                    }
+                  ]
+                },
+                {
+                  "id": "categories",
+                  "label": "চাকরির ক্যাটাগরি",
+                  "href": "/job-categories",
+                  "dropdown": [
+                    {
+                      "label": "সকল ক্যাটাগরি ব্রাউজ করুন",
+                      "href": "/job-categories"
+                    },
+                    {
+                      "label": "শিক্ষক নিয়োগ",
+                      "href": "/teacher-jobs"
+                    },
+                    {
+                      "label": "ইঞ্জিনিয়ারিং চাকরি",
+                      "href": "/engineering-jobs"
+                    },
+                    {
+                      "label": "মার্কেটিং ও সেলস",
+                      "href": "/marketing-jobs"
+                    },
+                    {
+                      "label": "ফ্রেশারদের চাকরি",
+                      "href": "/fresher-jobs"
+                    },
+                    {
+                      "label": "পার্ট-টাইম ও ইন্টার্নশিপ",
+                      "href": "/part-time-jobs"
+                    }
+                  ]
+                },
+                {
+                  "id": "exam",
+                  "label": "পরীক্ষা ও ফলাফল",
+                  "href": "/exam-notices",
+                  "dropdown": [
+                    {
+                      "label": "পরীক্ষার নোটিশ ও তারিখ",
+                      "href": "/exam-notices"
+                    },
+                    {
+                      "label": "প্রবেশপত্র / Admit Card",
+                      "href": "/admit-cards"
+                    },
+                    {
+                      "label": "লিখিত পরীক্ষার ফলাফল",
+                      "href": "/written-exam-results"
+                    },
+                    {
+                      "label": "মৌখিক পরীক্ষার নোটিশ (Viva)",
+                      "href": "/viva-notices"
+                    },
+                    {
+                      "label": "সকল পরীক্ষার ফলাফল",
+                      "href": "/exam-results"
+                    },
+                    {
+                      "label": "বিগত বছরের প্রশ্ন ও সমাধান",
+                      "href": "/previous-year-questions"
+                    },
+                    {
+                      "label": "অনলাইন মডেল টেস্ট",
+                      "href": "/model-tests"
+                    }
+                  ]
+                },
+                {
+                  "id": "career",
+                  "label": "ক্যারিয়ার গাইড",
+                  "href": "/career-guides",
+                  "dropdown": [
+                    {
+                      "label": "ক্যারিয়ার গাইড হাব",
+                      "href": "/career-guides"
+                    },
+                    {
+                      "label": "সিভি লেখার সঠিক নিয়ম",
+                      "href": "/career-guides/cv-writing"
+                    },
+                    {
+                      "label": "অনলাইনে চাকরির আবেদন গাইড",
+                      "href": "/career-guides/online-job-application"
+                    },
+                    {
+                      "label": "ইন্টারভিউ ও ভাইভা প্রস্তুতি",
+                      "href": "/career-guides/interview-preparation"
+                    },
+                    {
+                      "label": "চাকরির পরীক্ষার প্রস্তুতি",
+                      "href": "/career-guides/job-exam-preparation"
+                    },
+                    {
+                      "label": "ক্যারিয়ার পরামর্শ ও ব্লগ",
+                      "href": "/blog"
+                    }
+                  ]
+                },
+                {
+                  "id": "urgent-jobs",
+                  "label": "জরুরি বিজ্ঞপ্তি",
+                  "href": "/latest-jobs",
+                  "badge": "জরুরি",
+                  "badgeColor": "rose"
+                },
+                {
+                  "id": "menu-1794076664510",
+                  "label": "নতুন মেনু",
+                  "href": "/jobs"
+                }
+              ],
+              "guestButtons": {
+                "showLogin": true,
+                "loginText": "লগইন",
+                "showRegister": true,
+                "registerText": "ফ্রি রেজিস্ট্রেশন",
+                "showTrackApplication": true,
+                "trackApplicationText": "আবেদন ট্র্যাক",
+                "showWhatsApp": true,
+                "whatsAppText": "হোয়াটসঅ্যাপ"
+              },
+              "userWidgets": {
+                "showWalletBalance": true,
+                "showNotificationBell": true,
+                "showDashboardButton": true,
+                "dashboardButtonText": "ড্যাশবোর্ড",
+                "showAvatarDropdown": true
+              },
+              "stickyHeader": true
+            }
+          }
+        }
+      },
+      "id": "AUDIT-1794076667448-XYSI4",
+      "timestamp": "2026-11-07T18:37:47.448Z"
+    },
+    {
+      "action": "UPDATE_PLATFORM_SETTINGS",
+      "adminId": "ADMIN-SUPER",
+      "targetType": "SYSTEM_SETTINGS",
+      "targetId": "GLOBAL_CONFIG",
+      "notes": "প্ল্যাটফর্মের কেন্দ্রীয় সেটিংস ও কনফিগারেশন হালনাগাদ করা হয়েছে",
+      "changes": {
+        "settings": {
+          "new": {
+            "general": {
+              "siteName": "চাকরি সেবা"
+            }
+          }
+        }
+      },
+      "id": "AUDIT-1794075760149-2PYHR",
+      "timestamp": "2026-11-07T18:22:40.149Z"
+    },
     {
       "adminId": "LIVE_COLLECTOR",
       "action": "job_edit",
@@ -26213,7 +26621,7 @@
       "telegramUrl": "https://t.me/chakrisheba",
       "youtubeUrl": "https://youtube.com/@chakrisheba",
       "footerDisclaimer": "সতর্কতা: চাকরি সেবা কোনো সরকারি বা নিয়োগকারী প্রতিষ্ঠান নয়। আমরা বিভিন্ন অফিশিয়াল ওয়েবসাইট ও জাতীয় পত্রিকা থেকে সংগৃহীত চাকরির তথ্য ও সার্কুলার প্রকাশ করি এবং চাকরিপ্রার্থীদের সুবিধার্থে সঠিক নিয়মে ফর্ম পূরণে পেশাদার সহায়তা প্রদান করি।",
-      "copyrightText": "© ২০২৬ চাকরি সেবা বাংলাদেশ (ChakriSheba.com) • সর্বস্বত্ব সংরক্ষিত।",
+      "copyrightText": "© ২০২৬ চাকরিসেবা BD (ChakriSheba.com) • সর্বস্বত্ব সংরক্ষিত।",
       "guestButtons": {
         "showLogin": true,
         "loginText": "লগইন",
@@ -26270,7 +26678,7 @@
       "officialNagadNumber": "01812345678",
       "officialRocketNumber": "01912345678"
     },
-    "updatedAt": "2026-11-07T17:43:06.589Z",
+    "updatedAt": "2026-11-07T18:37:47.412Z",
     "updatedBy": "ADMIN-SUPER"
   },
   "mediaItems": {

@@ -302,6 +302,8 @@ export default function WebsiteCmsSeoManagement({
   const [isSaving, setIsSaving] = useState(false);
   const [headerMenuItems, setHeaderMenuItems] = useState<NavMenuItem[]>(DEFAULT_HEADER_ITEMS);
   const [footerColumns, setFooterColumns] = useState<any[]>(DEFAULT_FOOTER_COLS);
+  const [footerDisclaimer, setFooterDisclaimer] = useState('সতর্কতা: চাকরি সেবা কোনো সরকারি বা নিয়োগকারী প্রতিষ্ঠান নয়। আমরা বিভিন্ন অফিশিয়াল ওয়েবসাইট ও জাতীয় পত্রিকা থেকে সংগৃহীত চাকরির তথ্য ও সার্কুলার প্রকাশ করি এবং চাকরিপ্রার্থীদের সুবিধার্থে সঠিক নিয়মে ফর্ম পূরণে পেশাদার সহায়তা প্রদান করি।');
+  const [copyrightText, setCopyrightText] = useState('© ২০২৬ চাকরিসেবা BD (ChakriSheba.com) • সর্বস্বত্ব সংরক্ষিত।');
   const [expandedDropdownId, setExpandedDropdownId] = useState<string | null>(null);
   const [previewViewport, setPreviewViewport] = useState<'desktop' | 'mobile'>('desktop');
   const [previewActiveDropdown, setPreviewActiveDropdown] = useState<string | null>(null);
@@ -368,13 +370,15 @@ export default function WebsiteCmsSeoManagement({
             if (s.general.announcementUrl) setAnnouncementUrl(s.general.announcementUrl);
             if (s.general.announcementEnabled !== undefined) setAnnouncementEnabled(s.general.announcementEnabled);
             if (s.general.footerAboutText) setFooterAboutText(s.general.footerAboutText);
+            if (s.general.footerDisclaimer) setFooterDisclaimer(s.general.footerDisclaimer);
+            if (s.general.copyrightText) setCopyrightText(s.general.copyrightText);
             if (s.general.facebookUrl) setFacebookUrl(s.general.facebookUrl);
             if (s.general.telegramUrl) setTelegramUrl(s.general.telegramUrl);
             if (s.general.youtubeUrl) setYoutubeUrl(s.general.youtubeUrl);
-            if (s.general.headerMenuItems && Array.isArray(s.general.headerMenuItems) && s.general.headerMenuItems.length > 0) {
+            if (s.general.headerMenuItems && Array.isArray(s.general.headerMenuItems)) {
               setHeaderMenuItems(s.general.headerMenuItems);
             }
-            if (s.general.footerColumns && Array.isArray(s.general.footerColumns) && s.general.footerColumns.length > 0) {
+            if (s.general.footerColumns && Array.isArray(s.general.footerColumns)) {
               setFooterColumns(s.general.footerColumns);
             }
           }
@@ -414,6 +418,8 @@ export default function WebsiteCmsSeoManagement({
           headerMenuItems,
           footerColumns,
           footerAboutText,
+          footerDisclaimer,
+          copyrightText,
           facebookUrl,
           telegramUrl,
           youtubeUrl
@@ -1270,13 +1276,30 @@ export default function WebsiteCmsSeoManagement({
                       <p className="text-[11px] text-slate-500">ফুটারের কলাম শিরোনাম এবং প্রতিটি কলামের লিংকসমূহ সম্পাদন করুন</p>
                     </div>
                   </div>
-                  <button
-                    type="button"
-                    onClick={() => setFooterColumns(DEFAULT_FOOTER_COLS)}
-                    className="text-[11px] font-bold text-slate-500 hover:text-slate-800 px-2.5 py-1 bg-slate-100 rounded-lg cursor-pointer"
-                  >
-                    ডিফল্ট কলাম রিস্টোর
-                  </button>
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const newCol = {
+                          id: `col-${Date.now()}`,
+                          title: 'নতুন কলাম',
+                          links: [{ label: 'নতুন লিংক', url: '/jobs' }]
+                        };
+                        setFooterColumns(prev => [...prev, newCol]);
+                      }}
+                      className="text-[11px] font-bold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 px-2.5 py-1 rounded-lg flex items-center gap-1 cursor-pointer"
+                    >
+                      <Plus className="w-3.5 h-3.5" />
+                      <span>+ নতুন কলাম যোগ</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setFooterColumns(DEFAULT_FOOTER_COLS)}
+                      className="text-[11px] font-bold text-slate-500 hover:text-slate-800 px-2.5 py-1 bg-slate-100 rounded-lg cursor-pointer"
+                    >
+                      ডিফল্ট কলাম রিস্টোর
+                    </button>
+                  </div>
                 </div>
 
                 <div className="space-y-4">
@@ -1296,18 +1319,62 @@ export default function WebsiteCmsSeoManagement({
                             className="px-2.5 py-1 bg-white border border-slate-300 rounded-lg text-xs font-bold text-slate-900 w-44"
                           />
                         </div>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            const cols = [...footerColumns];
-                            cols[cIdx].links = [...(cols[cIdx].links || []), { label: 'নতুন লিংক', url: '/jobs' }];
-                            setFooterColumns(cols);
-                          }}
-                          className="text-[10px] font-bold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 px-2.5 py-1 rounded-lg border border-emerald-300 flex items-center gap-1 cursor-pointer"
-                        >
-                          <Plus className="w-3 h-3" />
-                          <span>+ লিংক যোগ</span>
-                        </button>
+                        <div className="flex items-center gap-1.5">
+                          <button
+                            type="button"
+                            disabled={cIdx === 0}
+                            onClick={() => {
+                              const cols = [...footerColumns];
+                              const temp = cols[cIdx];
+                              cols[cIdx] = cols[cIdx - 1];
+                              cols[cIdx - 1] = temp;
+                              setFooterColumns(cols);
+                            }}
+                            className="p-1 text-slate-500 hover:text-slate-800 disabled:opacity-20 cursor-pointer"
+                            title="কলাম উপরে নিন"
+                          >
+                            <ArrowUp className="w-3.5 h-3.5" />
+                          </button>
+                          <button
+                            type="button"
+                            disabled={cIdx === footerColumns.length - 1}
+                            onClick={() => {
+                              const cols = [...footerColumns];
+                              const temp = cols[cIdx];
+                              cols[cIdx] = cols[cIdx + 1];
+                              cols[cIdx + 1] = temp;
+                              setFooterColumns(cols);
+                            }}
+                            className="p-1 text-slate-500 hover:text-slate-800 disabled:opacity-20 cursor-pointer"
+                            title="কলাম নিচে নিন"
+                          >
+                            <ArrowDown className="w-3.5 h-3.5" />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              if (confirm(`আপনি কি "${col.title}" কলামটি মুছে ফেলতে চান?`)) {
+                                setFooterColumns(prev => prev.filter((_, i) => i !== cIdx));
+                              }
+                            }}
+                            className="p-1 text-red-500 hover:text-red-700 cursor-pointer"
+                            title="কলাম মুছে ফেলুন"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const cols = [...footerColumns];
+                              cols[cIdx].links = [...(cols[cIdx].links || []), { label: 'নতুন লিংক', url: '/jobs' }];
+                              setFooterColumns(cols);
+                            }}
+                            className="text-[10px] font-bold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 px-2.5 py-1 rounded-lg border border-emerald-300 flex items-center gap-1 cursor-pointer"
+                          >
+                            <Plus className="w-3 h-3" />
+                            <span>+ লিংক যোগ</span>
+                          </button>
+                        </div>
                       </div>
 
                       <div className="space-y-1.5 max-h-48 overflow-y-auto pr-1">
@@ -1408,6 +1475,31 @@ export default function WebsiteCmsSeoManagement({
                       onChange={(e) => setYoutubeUrl(e.target.value)}
                       placeholder="https://youtube.com/@..."
                       className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs font-mono text-slate-800"
+                    />
+                  </div>
+                </div>
+
+                {/* Footer Disclaimer & Copyright Text */}
+                <div className="space-y-3 pt-3 border-t border-slate-100">
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 mb-1">ফুটার সতর্কবার্তা ও দায়-অস্বীকার (Disclaimer)</label>
+                    <textarea
+                      rows={2}
+                      value={footerDisclaimer}
+                      onChange={(e) => setFooterDisclaimer(e.target.value)}
+                      className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium"
+                      placeholder="সতর্কতা: চাকরি সেবা কোনো সরকারি বা নিয়োগকারী প্রতিষ্ঠান নয়..."
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 mb-1">কপিরাইট নোটিশ (Copyright Text)</label>
+                    <input
+                      type="text"
+                      value={copyrightText}
+                      onChange={(e) => setCopyrightText(e.target.value)}
+                      className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs font-medium text-slate-800"
+                      placeholder="© ২০২৬ চাকরিসেবা BD (ChakriSheba.com) • সর্বস্বত্ব সংরক্ষিত।"
                     />
                   </div>
                 </div>

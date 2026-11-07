@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
+import Footer, { DEFAULT_FOOTER_COLUMNS } from '@/components/Footer';
 import { 
   Monitor, 
   Tablet, 
@@ -99,6 +99,10 @@ export default function WebsiteBuilder({ initialPageId, onNavigateToPages }: Web
   const [chromeWhatsapp, setChromeWhatsapp] = useState('8801774366643');
   const [chromeWhatsappButtonText, setChromeWhatsappButtonText] = useState('WhatsApp');
   const [chromeFooterAbout, setChromeFooterAbout] = useState('বাংলাদেশের চাকরিপ্রার্থীদের বিশ্বস্ত ডিজিটাল প্ল্যাটফর্ম। ঘরে বসেই সকল সরকারি, ব্যাংক ও শীর্ষ বেসরকারি চাকরির শতভাগ যাচাইকৃত বিজ্ঞপ্তি ও সঠিক নিয়মে অনলাইন আবেদন সহায়তা।');
+  const [chromeFooterColumns, setChromeFooterColumns] = useState<{ id: string; title: string; links: { label: string; url: string }[] }[]>(DEFAULT_FOOTER_COLUMNS);
+  const [chromeFooterDisclaimer, setChromeFooterDisclaimer] = useState('সতর্কতা: চাকরি সেবা কোনো সরকারি বা নিয়োগকারী প্রতিষ্ঠান নয়। আমরা বিভিন্ন অফিশিয়াল ওয়েবসাইট ও জাতীয় পত্রিকা থেকে সংগৃহীত চাকরির তথ্য ও সার্কুলার প্রকাশ করি এবং চাকরিপ্রার্থীদের সুবিধার্থে সঠিক নিয়মে ফর্ম পূরণে পেশাদার সহায়তা প্রদান করি।');
+  const [chromeCopyrightText, setChromeCopyrightText] = useState('© ২০২৬ চাকরিসেবা BD (ChakriSheba.com) • সর্বস্বত্ব সংরক্ষিত।');
+  const [chromeExpandedFooterColId, setChromeExpandedFooterColId] = useState<string | null>(null);
   const [chromeMenuItems, setChromeMenuItems] = useState<{ id: string; label: string; href: string; badge?: string; badgeColor?: string; dropdown?: { label: string; href: string }[] }[]>([]);
   const [chromeModalTab, setChromeModalTab] = useState<'general' | 'menu' | 'auth-buttons' | 'footer'>('general');
   const [chromeExpandedDropdownId, setChromeExpandedDropdownId] = useState<string | null>(null);
@@ -175,7 +179,7 @@ export default function WebsiteBuilder({ initialPageId, onNavigateToPages }: Web
           });
         }
         if (g.stickyHeader !== undefined) setChromeStickyHeader(g.stickyHeader);
-        if (g.headerMenuItems && Array.isArray(g.headerMenuItems) && g.headerMenuItems.length > 0) {
+        if (g.headerMenuItems && Array.isArray(g.headerMenuItems)) {
           setChromeMenuItems(g.headerMenuItems);
         } else {
           setChromeMenuItems([
@@ -188,6 +192,13 @@ export default function WebsiteBuilder({ initialPageId, onNavigateToPages }: Web
             { id: 'career', label: 'ক্যারিয়ার গাইড', href: '/career-guides' }
           ]);
         }
+        if (g.footerColumns && Array.isArray(g.footerColumns)) {
+          setChromeFooterColumns(g.footerColumns);
+        } else {
+          setChromeFooterColumns(DEFAULT_FOOTER_COLUMNS);
+        }
+        if (g.footerDisclaimer) setChromeFooterDisclaimer(g.footerDisclaimer);
+        if (g.copyrightText) setChromeCopyrightText(g.copyrightText);
       }
     } catch (err) {
       console.warn('Failed to load platform settings', err);
@@ -209,6 +220,9 @@ export default function WebsiteBuilder({ initialPageId, onNavigateToPages }: Web
           whatsappNumber: chromeWhatsapp.trim(),
           whatsappButtonText: chromeWhatsappButtonText.trim(),
           footerAboutText: chromeFooterAbout.trim(),
+          footerColumns: chromeFooterColumns,
+          footerDisclaimer: chromeFooterDisclaimer.trim(),
+          copyrightText: chromeCopyrightText.trim(),
           headerMenuItems: chromeMenuItems,
           guestButtons: chromeGuestButtons,
           userWidgets: chromeUserWidgets,
@@ -2643,7 +2657,7 @@ export default function WebsiteBuilder({ initialPageId, onNavigateToPages }: Web
                   chromeModalTab === 'footer' ? 'bg-white text-emerald-800 shadow-xs' : 'text-slate-600 hover:text-slate-900'
                 }`}
               >
-                ফুটার পরিচিতি
+                ফুটার ও কলাম লিংক ({chromeFooterColumns.length}টি)
               </button>
             </div>
 
@@ -3145,17 +3159,233 @@ export default function WebsiteBuilder({ initialPageId, onNavigateToPages }: Web
               </div>
             )}
 
-            {/* TAB 3: FOOTER ABOUT TEXT */}
+            {/* TAB 4: FOOTER COLUMNS & LEGAL/ABOUT SETTINGS */}
             {chromeModalTab === 'footer' && (
               <div className="space-y-4 text-xs">
-                <div>
+                {/* 1. Header with Add Column CTA */}
+                <div className="flex items-center justify-between pb-1">
+                  <div>
+                    <h4 className="text-xs font-black text-slate-800">ফুটার নেভিগেশন কলাম ও লিংকসমূহ</h4>
+                    <p className="text-[11px] text-slate-500">ফুটারের কলাম শিরোনাম, লিংকসমূহ যোগ/সম্পাদনা/ডিলিট এবং পুনর্বিন্যাস করুন</p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const newCol = {
+                        id: `col-${Date.now()}`,
+                        title: 'নতুন কলাম',
+                        links: [{ label: 'নতুন লিংক', url: '/jobs' }]
+                      };
+                      setChromeFooterColumns(prev => [...prev, newCol]);
+                      setChromeExpandedFooterColId(newCol.id);
+                    }}
+                    className="px-3 py-1.5 bg-emerald-50 text-emerald-800 hover:bg-emerald-100 border border-emerald-300 rounded-xl text-xs font-bold flex items-center gap-1 cursor-pointer"
+                  >
+                    <Plus className="w-3.5 h-3.5" />
+                    <span>+ নতুন কলাম যোগ</span>
+                  </button>
+                </div>
+
+                {/* 2. Column List */}
+                <div className="space-y-3 max-h-[340px] overflow-y-auto pr-1">
+                  {chromeFooterColumns.length === 0 ? (
+                    <div className="p-4 bg-slate-50 border border-dashed border-slate-300 rounded-2xl text-center text-slate-500">
+                      কোনো ফুটার কলাম নেই। &quot;+ নতুন কলাম যোগ&quot; বাটনে ক্লিক করে কলাম যুক্ত করুন।
+                    </div>
+                  ) : (
+                    chromeFooterColumns.map((col, cIdx) => {
+                      const isExpanded = chromeExpandedFooterColId === (col.id || `col-${cIdx}`);
+                      const linksCount = Array.isArray(col.links) ? col.links.length : 0;
+
+                      return (
+                        <div key={col.id || cIdx} className="p-3 bg-slate-50 border border-slate-200 rounded-2xl space-y-2.5">
+                          {/* Column Action Bar */}
+                          <div className="flex items-center justify-between">
+                            <span className="text-[10px] font-bold text-slate-500 font-mono">#{cIdx + 1} ফুটার কলাম</span>
+                            <div className="flex items-center gap-1">
+                              <button
+                                type="button"
+                                disabled={cIdx === 0}
+                                onClick={() => {
+                                  const cols = [...chromeFooterColumns];
+                                  const temp = cols[cIdx];
+                                  cols[cIdx] = cols[cIdx - 1];
+                                  cols[cIdx - 1] = temp;
+                                  setChromeFooterColumns(cols);
+                                }}
+                                className="p-1 text-slate-500 hover:text-slate-800 disabled:opacity-20 cursor-pointer"
+                                title="কলাম উপরে নিন"
+                              >
+                                <ArrowUp className="w-3.5 h-3.5" />
+                              </button>
+                              <button
+                                type="button"
+                                disabled={cIdx === chromeFooterColumns.length - 1}
+                                onClick={() => {
+                                  const cols = [...chromeFooterColumns];
+                                  const temp = cols[cIdx];
+                                  cols[cIdx] = cols[cIdx + 1];
+                                  cols[cIdx + 1] = temp;
+                                  setChromeFooterColumns(cols);
+                                }}
+                                className="p-1 text-slate-500 hover:text-slate-800 disabled:opacity-20 cursor-pointer"
+                                title="কলাম নিচে নিন"
+                              >
+                                <ArrowDown className="w-3.5 h-3.5" />
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  if (confirm(`আপনি কি "${col.title}" কলামটি মুছে ফেলতে চান?`)) {
+                                    setChromeFooterColumns(prev => prev.filter((_, i) => i !== cIdx));
+                                  }
+                                }}
+                                className="p-1 text-red-500 hover:text-red-700 cursor-pointer"
+                                title="কলাম মুছে ফেলুন"
+                              >
+                                <Trash2 className="w-3.5 h-3.5" />
+                              </button>
+                            </div>
+                          </div>
+
+                          {/* Column Title Input */}
+                          <div>
+                            <label className="text-[10px] font-bold text-slate-600 block mb-0.5">কলাম শিরোনাম</label>
+                            <input
+                              type="text"
+                              value={col.title}
+                              onChange={(e) => {
+                                const cols = [...chromeFooterColumns];
+                                cols[cIdx] = { ...cols[cIdx], title: e.target.value };
+                                setChromeFooterColumns(cols);
+                              }}
+                              placeholder="যেমন: চাকরি ও পরীক্ষা"
+                              className="w-full px-2.5 py-1.5 bg-white border border-slate-300 rounded-lg text-xs font-bold text-slate-900"
+                            />
+                          </div>
+
+                          {/* Links in Column */}
+                          <div className="pt-2 border-t border-slate-200">
+                            <div className="flex items-center justify-between">
+                              <button
+                                type="button"
+                                onClick={() => setChromeExpandedFooterColId(isExpanded ? null : (col.id || `col-${cIdx}`))}
+                                className="text-xs font-bold text-emerald-800 hover:text-emerald-900 flex items-center gap-1 cursor-pointer"
+                              >
+                                <ChevronDown className={`w-3.5 h-3.5 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
+                                <span>কলামের লিংকসমূহ ({linksCount}টি)</span>
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  const cols = [...chromeFooterColumns];
+                                  cols[cIdx] = {
+                                    ...cols[cIdx],
+                                    links: [...(cols[cIdx].links || []), { label: 'নতুন লিংক', url: '/jobs' }]
+                                  };
+                                  setChromeFooterColumns(cols);
+                                  setChromeExpandedFooterColId(col.id || `col-${cIdx}`);
+                                }}
+                                className="text-[10px] font-bold text-emerald-800 bg-white hover:bg-emerald-50 px-2 py-0.5 rounded border border-emerald-300 flex items-center gap-1 cursor-pointer"
+                              >
+                                <Plus className="w-3 h-3" />
+                                <span>+ লিংক যোগ</span>
+                              </button>
+                            </div>
+
+                            {isExpanded && (
+                              <div className="mt-2 pl-3 border-l-2 border-emerald-500 space-y-1.5">
+                                {linksCount === 0 ? (
+                                  <p className="text-[11px] text-slate-400 py-1 italic">কোনো লিংক যুক্ত করা হয়নি।</p>
+                                ) : (
+                                  col.links.map((link, lIdx) => (
+                                    <div key={lIdx} className="grid grid-cols-12 gap-1.5 items-center bg-white p-1.5 rounded-lg border border-slate-200">
+                                      <input
+                                        type="text"
+                                        value={link.label}
+                                        onChange={(e) => {
+                                          const cols = [...chromeFooterColumns];
+                                          const lnks = [...cols[cIdx].links];
+                                          lnks[lIdx] = { ...lnks[lIdx], label: e.target.value };
+                                          cols[cIdx] = { ...cols[cIdx], links: lnks };
+                                          setChromeFooterColumns(cols);
+                                        }}
+                                        placeholder="লিংক নাম"
+                                        className="col-span-6 px-2 py-1 bg-slate-50 border border-slate-300 rounded text-xs font-semibold"
+                                      />
+                                      <input
+                                        type="text"
+                                        value={link.url}
+                                        onChange={(e) => {
+                                          const cols = [...chromeFooterColumns];
+                                          const lnks = [...cols[cIdx].links];
+                                          lnks[lIdx] = { ...lnks[lIdx], url: e.target.value };
+                                          cols[cIdx] = { ...cols[cIdx], links: lnks };
+                                          setChromeFooterColumns(cols);
+                                        }}
+                                        placeholder="/path"
+                                        className="col-span-5 px-2 py-1 bg-slate-50 border border-slate-300 rounded text-xs font-mono"
+                                      />
+                                      <button
+                                        type="button"
+                                        onClick={() => {
+                                          const cols = [...chromeFooterColumns];
+                                          cols[cIdx] = {
+                                            ...cols[cIdx],
+                                            links: cols[cIdx].links.filter((_, i) => i !== lIdx)
+                                          };
+                                          setChromeFooterColumns(cols);
+                                        }}
+                                        className="col-span-1 text-red-500 hover:text-red-700 text-xs font-bold text-center cursor-pointer"
+                                        title="মুছে ফেলুন"
+                                      >
+                                        ✕
+                                      </button>
+                                    </div>
+                                  ))
+                                )}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      );
+                    })
+                  )}
+                </div>
+
+                {/* 3. About Paragraph */}
+                <div className="pt-2 border-t border-slate-200">
                   <label className="font-bold text-slate-700 block mb-1">ফুটার পরিচিতি টেক্সট (About Paragraph)</label>
                   <textarea
-                    rows={4}
+                    rows={3}
                     value={chromeFooterAbout}
                     onChange={(e) => setChromeFooterAbout(e.target.value)}
                     className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900"
                     placeholder="বাংলাদেশের চাকরিপ্রার্থীদের বিশ্বস্ত ডিজিটাল প্ল্যাটফর্ম..."
+                  />
+                </div>
+
+                {/* 4. Legal Disclaimer */}
+                <div>
+                  <label className="font-bold text-slate-700 block mb-1">ফুটার দায়-অস্বীকার ও সতর্কতা (Disclaimer)</label>
+                  <textarea
+                    rows={2}
+                    value={chromeFooterDisclaimer}
+                    onChange={(e) => setChromeFooterDisclaimer(e.target.value)}
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 text-xs"
+                    placeholder="সতর্কতা: চাকরি সেবা কোনো সরকারি বা নিয়োগকারী প্রতিষ্ঠান নয়..."
+                  />
+                </div>
+
+                {/* 5. Copyright Text */}
+                <div>
+                  <label className="font-bold text-slate-700 block mb-1">কপিরাইট নোটিশ (Copyright Text)</label>
+                  <input
+                    type="text"
+                    value={chromeCopyrightText}
+                    onChange={(e) => setChromeCopyrightText(e.target.value)}
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 text-xs font-semibold"
+                    placeholder="© ২০২৬ চাকরিসেবা BD (ChakriSheba.com) • সর্বস্বত্ব সংরক্ষিত।"
                   />
                 </div>
               </div>

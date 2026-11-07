@@ -90,13 +90,13 @@ export default function Footer({ initialSettings }: { initialSettings?: any } = 
   const fbUrl = settings?.general?.facebookUrl || 'https://facebook.com/chakrisheba.bd';
   const tgUrl = settings?.general?.telegramUrl || 'https://t.me/chakrisheba';
   const ytUrl = settings?.general?.youtubeUrl || 'https://youtube.com/@chakrisheba';
-  const footerCols: FooterColumnItem[] = (settings?.general?.footerColumns && Array.isArray(settings.general.footerColumns) && settings.general.footerColumns.length > 0)
+  const footerCols: FooterColumnItem[] = (settings?.general?.footerColumns && Array.isArray(settings.general.footerColumns))
     ? settings.general.footerColumns
     : DEFAULT_FOOTER_COLUMNS;
   return (
     <footer className="bg-slate-900 text-slate-300 border-t border-slate-800 text-sm mt-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className={`grid grid-cols-1 sm:grid-cols-2 ${footerCols.length >= 4 ? 'lg:grid-cols-5' : 'lg:grid-cols-4'} gap-8`}>
           
           {/* Col 1: About & Trust & Socials */}
           <div className="space-y-4">

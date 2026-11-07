@@ -239,7 +239,7 @@ export default function Navbar({ initialSettings }: { initialSettings?: any } = 
     }
   ];
 
-  const navItems: NavMenuItem[] = (platformSettings?.general?.headerMenuItems && platformSettings.general.headerMenuItems.length > 0)
+  const navItems: NavMenuItem[] = (platformSettings?.general?.headerMenuItems && Array.isArray(platformSettings.general.headerMenuItems))
     ? platformSettings.general.headerMenuItems
     : DEFAULT_NAV_ITEMS;
 
@@ -250,7 +250,7 @@ export default function Navbar({ initialSettings }: { initialSettings?: any } = 
       {/* 1. TOP ANNOUNCEMENT TICKER (Dynamic from Admin CMS) */}
       {(platformSettings?.general?.announcementEnabled !== false) && (
         <div className="bg-gradient-to-r from-slate-950 via-emerald-950 to-slate-900 text-white text-[11px] sm:text-xs py-1.5 px-4 border-b border-emerald-900/40">
-          <div className="w-full max-w-[1800px] mx-auto flex items-center justify-between">
+          <div className="w-full max-w-[1920px] mx-auto flex items-center justify-between">
             <div className="flex items-center gap-2 overflow-hidden">
               <span className="bg-red-600 text-white px-2 py-0.5 rounded-full text-[12px] sm:text-[13px] font-black uppercase tracking-wider animate-pulse flex-shrink-0">
                 জরুরি নোটিশ
@@ -281,7 +281,7 @@ export default function Navbar({ initialSettings }: { initialSettings?: any } = 
       )}
 
       {/* 2. MAIN HEADER NAVIGATION BAR */}
-      <div className="w-full max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="w-full max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 sm:h-20 gap-2 sm:gap-4">
           
           {/* Logo (Preserved branding, logo icon and badges, with dynamic customizer support) */}
@@ -311,13 +311,13 @@ export default function Navbar({ initialSettings }: { initialSettings?: any } = 
                   BD
                 </span>
               </div>
-              <p className="text-[11px] text-slate-500 font-medium -mt-1 hidden 2xl:block">
+              <p className="text-[11px] text-slate-500 font-medium -mt-1 hidden min-[1800px]:block">
                 {platformSettings?.general?.siteDescription || 'নিউজ ও ১০০% নির্ভুল আবেদন পোর্টাল'}
               </p>
             </div>
           </Link>
 
-          {/* Desktop Navigation Links (Ordered: হোম | সরকারি চাকরি | বেসরকারি চাকরি | পরীক্ষা ও ফলাফল | আবেদন নির্দেশনা | জব টিপস) */}
+          {/* Desktop Navigation Links */}
           <nav className="hidden lg:flex items-center gap-0.5 xl:gap-1 2xl:gap-1.5 font-bold text-slate-800 whitespace-nowrap flex-shrink-0">
             {navItems.map((item, index) => {
               const hasDropdown = Boolean(item.dropdown && item.dropdown.length > 0);
@@ -327,11 +327,13 @@ export default function Navbar({ initialSettings }: { initialSettings?: any } = 
               // Responsive visibility: keeps navbar clean without overflow across screen sizes
               let visibilityClass = 'flex';
               if (index >= 6) {
-                visibilityClass = 'hidden min-[1750px]:flex';
+                visibilityClass = 'hidden min-[1950px]:flex';
               } else if (index === 5) {
-                visibilityClass = 'hidden 2xl:flex';
+                visibilityClass = 'hidden min-[1800px]:flex';
               } else if (index === 4) {
-                visibilityClass = 'hidden xl:flex';
+                visibilityClass = 'hidden 2xl:flex';
+              } else if (index === 3) {
+                visibilityClass = 'hidden min-[1360px]:flex';
               }
 
               return (
@@ -395,9 +397,15 @@ export default function Navbar({ initialSettings }: { initialSettings?: any } = 
             })}
 
             {/* "আরও" (More) Dropdown for items that overflow the current viewport */}
-            {navItems.length > 4 && (
+            {navItems.length > 3 && (
               <div 
-                className="relative min-[1750px]:hidden"
+                className={`relative ${
+                  navItems.length <= 3 ? 'hidden' :
+                  navItems.length <= 4 ? 'min-[1360px]:hidden' :
+                  navItems.length <= 5 ? '2xl:hidden' :
+                  navItems.length <= 6 ? 'min-[1800px]:hidden' :
+                  'min-[1950px]:hidden'
+                }`}
                 onMouseEnter={() => setActiveDropdown('more-nav-items')}
                 onMouseLeave={() => setActiveDropdown(null)}
               >
@@ -422,14 +430,16 @@ export default function Navbar({ initialSettings }: { initialSettings?: any } = 
                     <div className="bg-white rounded-2xl shadow-xl border border-slate-200 py-2 divide-y divide-slate-100 animate-in fade-in slide-in-from-top-1 duration-150">
                       {navItems.map((item, index) => {
                         let hideClass = '';
-                        if (index < 4) {
+                        if (index < 3) {
                           return null;
+                        } else if (index === 3) {
+                          hideClass = 'min-[1360px]:hidden';
                         } else if (index === 4) {
-                          hideClass = 'xl:hidden';
-                        } else if (index === 5) {
                           hideClass = '2xl:hidden';
+                        } else if (index === 5) {
+                          hideClass = 'min-[1800px]:hidden';
                         } else if (index >= 6) {
-                          hideClass = 'min-[1750px]:hidden';
+                          hideClass = 'min-[1950px]:hidden';
                         }
 
                         return (
@@ -529,7 +539,7 @@ export default function Navbar({ initialSettings }: { initialSettings?: any } = 
                 {auth.role === 'candidate' && platformSettings?.general?.userWidgets?.showDashboardButton !== false && (
                   <Link 
                     href="/dashboard"
-                    className="px-3 py-1.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-black shadow-xs flex items-center gap-1.5 transition-all"
+                    className="hidden xl:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-black shadow-xs transition-all whitespace-nowrap"
                   >
                     <Briefcase className="w-3.5 h-3.5" />
                     <span>{platformSettings?.general?.userWidgets?.dashboardButtonText || 'ড্যাশবোর্ড'}</span>

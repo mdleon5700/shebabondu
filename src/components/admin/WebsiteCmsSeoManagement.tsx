@@ -731,7 +731,7 @@ export default function WebsiteCmsSeoManagement({
                   {filteredPages.length === 0 && (
                     <tr>
                       <td colSpan={6} className="py-8 text-center text-slate-400 font-bold">
-                        কোনো পেজ পাওয়া যায়নি
+                        {isLoadingPages ? 'পেইজ তালিকা লোড হচ্ছে...' : 'কোনো পেজ পাওয়া যায়নি'}
                       </td>
                     </tr>
                   )}

@@ -1,11 +1,299 @@
 {
-  "candidates": {},
-  "documents": {},
-  "applications": {},
-  "savedJobs": {},
-  "transactions": {},
+  "candidates": {
+    "CS-USR-26-999888": {
+      "id": "CS-USR-26-999888",
+      "name": "Candidate B",
+      "nameBn": "Candidate B",
+      "fatherName": "",
+      "motherName": "",
+      "email": "",
+      "phone": "01811999888",
+      "username": "candidate.b.9888",
+      "dob": "",
+      "gender": "male",
+      "nid": "",
+      "division": "",
+      "district": "ঢাকা",
+      "address": "",
+      "permanentAddress": "",
+      "photoUrl": "data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"120\" height=\"120\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"%2394a3b8\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect width=\"100%\" height=\"100%\" fill=\"%23f1f5f9\"/><path d=\"M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2\"></path><circle cx=\"12\" cy=\"7\" r=\"4\"></circle></svg>",
+      "signatureUrl": "data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"200\" height=\"60\" viewBox=\"0 0 200 60\"><rect width=\"200\" height=\"60\" fill=\"%23f8fafc\" rx=\"6\"/><text x=\"100\" y=\"35\" font-family=\"sans-serif\" font-size=\"12\" fill=\"%2394a3b8\" text-anchor=\"middle\">স্বাক্ষর যুক্ত করুন</text></svg>",
+      "walletBalance": 50,
+      "maritalStatus": "single",
+      "quota": "none",
+      "education": [],
+      "passwordHash": "scrypt$30d5acab64485ca2f1c010505dad19ae$d6aa54a3a72a84c865889de25ccfa62c7f9d750ff05e63da43dc83751b09d75e6948f8aaf9aa168629ff7855e96054979eebb4528797ca37a19d17a0b06cb153",
+      "role": "candidate",
+      "createdAt": "2026-11-07T03:58:09.105Z",
+      "updatedAt": "2026-11-07T03:58:09.105Z"
+    }
+  },
+  "documents": {
+    "CS-USR-26-999888": []
+  },
+  "applications": {
+    "CS-USR-26-999888": []
+  },
+  "savedJobs": {
+    "CS-USR-26-999888": []
+  },
+  "transactions": {
+    "CS-USR-26-999888": []
+  },
   "notifications": {
     "admin": [
+      {
+        "id": "notif_adm_job-alljobs-csrajshah-12949_1794024094996",
+        "title": "সার্কুলার সম্পাদিত: সিভিল সার্জন কার্যালয় রাজবাড়ী নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "LIVE_COLLECTOR দ্বারা সিভিল সার্জন কার্যালয় রাজবাড়ী এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "type": "system",
+        "read": false,
+        "date": "2026-11-07T04:01:34.996Z",
+        "link": "/jobs/job-alljobs-csrajshah-12949"
+      },
+      {
+        "id": "notif_adm_job-alljobs-cid-14913_1794024094888",
+        "title": "সার্কুলার সম্পাদিত: বাংলাদেশ পুলিশ , সিআইডি নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "LIVE_COLLECTOR দ্বারা বাংলাদেশ পুলিশ , সিআইডি এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "type": "system",
+        "read": false,
+        "date": "2026-11-07T04:01:34.888Z",
+        "link": "/jobs/job-alljobs-cid-14913"
+      },
+      {
+        "id": "notif_adm_job-alljobs-dcnetrokona-14935_1794024094761",
+        "title": "সার্কুলার সম্পাদিত: DC Office Netrokona (DCNETROKONA) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "LIVE_COLLECTOR দ্বারা DC Office Netrokona (DCNETROKONA) এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "type": "system",
+        "read": false,
+        "date": "2026-11-07T04:01:34.761Z",
+        "link": "/jobs/job-alljobs-dcnetrokona-14935"
+      },
+      {
+        "id": "notif_adm_job-alljobs-bcic-14936_1794024094632",
+        "title": "সার্কুলার সম্পাদিত: Bangladesh Chemical Industries Corporation (BCIC) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "LIVE_COLLECTOR দ্বারা Bangladesh Chemical Industries Corporation (BCIC) এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "type": "system",
+        "read": false,
+        "date": "2026-11-07T04:01:34.632Z",
+        "link": "/jobs/job-alljobs-bcic-14936"
+      },
+      {
+        "id": "notif_adm_job-alljobs-hbri-14968_1794024094545",
+        "title": "সার্কুলার সম্পাদিত: Housing & Building Research Institute(HBRI) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "LIVE_COLLECTOR দ্বারা Housing & Building Research Institute(HBRI) এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "type": "system",
+        "read": false,
+        "date": "2026-11-07T04:01:34.545Z",
+        "link": "/jobs/job-alljobs-hbri-14968"
+      },
+      {
+        "id": "notif_adm_job-alljobs-dcpatuakhali-14984_1794024094446",
+        "title": "সার্কুলার সম্পাদিত: DC Office Patuakhali (DCPATUAKHALI) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "LIVE_COLLECTOR দ্বারা DC Office Patuakhali (DCPATUAKHALI) এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "type": "system",
+        "read": false,
+        "date": "2026-11-07T04:01:34.446Z",
+        "link": "/jobs/job-alljobs-dcpatuakhali-14984"
+      },
+      {
+        "id": "notif_adm_job-alljobs-dcbogura-14986_1794024094339",
+        "title": "সার্কুলার সম্পাদিত: DC Office Bogura (DCBOGURA) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "LIVE_COLLECTOR দ্বারা DC Office Bogura (DCBOGURA) এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "type": "system",
+        "read": false,
+        "date": "2026-11-07T04:01:34.339Z",
+        "link": "/jobs/job-alljobs-dcbogura-14986"
+      },
+      {
+        "id": "notif_adm_job-alljobs-policedinaj-14987_1794024094251",
+        "title": "সার্কুলার সম্পাদিত: পুলিশ সুপারের কার্যালয়, দিনাজপুর নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "LIVE_COLLECTOR দ্বারা পুলিশ সুপারের কার্যালয়, দিনাজপুর এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "type": "system",
+        "read": false,
+        "date": "2026-11-07T04:01:34.251Z",
+        "link": "/jobs/job-alljobs-policedinaj-14987"
+      },
+      {
+        "id": "notif_adm_job-alljobs-bogmc-14989_1794024094172",
+        "title": "সার্কুলার সম্পাদিত: Bangladesh Oil, Gas & Mineral Corporation (Petrobangla) BOGMC নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "LIVE_COLLECTOR দ্বারা Bangladesh Oil, Gas & Mineral Corporation (Petrobangla) BOGMC এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "type": "system",
+        "read": false,
+        "date": "2026-11-07T04:01:34.172Z",
+        "link": "/jobs/job-alljobs-bogmc-14989"
+      },
+      {
+        "id": "notif_adm_job-alljobs-tax6-15024_1794024094077",
+        "title": "সার্কুলার সম্পাদিত: কর কমিশনারের কার্যালয় কর অঞ্চল-৬, ঢাকা নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "LIVE_COLLECTOR দ্বারা কর কমিশনারের কার্যালয় কর অঞ্চল-৬, ঢাকা এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "type": "system",
+        "read": false,
+        "date": "2026-11-07T04:01:34.077Z",
+        "link": "/jobs/job-alljobs-tax6-15024"
+      },
+      {
+        "id": "notif_adm_job-alljobs-dcnoakhali-15031_1794024093965",
+        "title": "সার্কুলার সম্পাদিত: Deputy Commissioner Office, Noakhali (DCNOAKHALI) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "LIVE_COLLECTOR দ্বারা Deputy Commissioner Office, Noakhali (DCNOAKHALI) এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "type": "system",
+        "read": false,
+        "date": "2026-11-07T04:01:33.965Z",
+        "link": "/jobs/job-alljobs-dcnoakhali-15031"
+      },
+      {
+        "id": "notif_adm_job-alljobs-tax9-15038_1794024093784",
+        "title": "সার্কুলার সম্পাদিত: Taxes Zone-9, Dhaka (TAX9) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "LIVE_COLLECTOR দ্বারা Taxes Zone-9, Dhaka (TAX9) এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "type": "system",
+        "read": false,
+        "date": "2026-11-07T04:01:33.784Z",
+        "link": "/jobs/job-alljobs-tax9-15038"
+      },
+      {
+        "id": "notif_adm_job-alljobs-sposherpur-15044_1794024093699",
+        "title": "সার্কুলার সম্পাদিত: পুলিশ সুপারের কার্যালয় শেরপুর নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "LIVE_COLLECTOR দ্বারা পুলিশ সুপারের কার্যালয় শেরপুর এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "type": "system",
+        "read": false,
+        "date": "2026-11-07T04:01:33.699Z",
+        "link": "/jobs/job-alljobs-sposherpur-15044"
+      },
+      {
+        "id": "notif_adm_job-alljobs-dcchuadanga-15047_1794024093589",
+        "title": "সার্কুলার সম্পাদিত: DC Office Chuadanga (DCCHUADANGA) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "LIVE_COLLECTOR দ্বারা DC Office Chuadanga (DCCHUADANGA) এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "type": "system",
+        "read": false,
+        "date": "2026-11-07T04:01:33.589Z",
+        "link": "/jobs/job-alljobs-dcchuadanga-15047"
+      },
+      {
+        "id": "notif_adm_job-alljobs-taxnar-15056_1794024093468",
+        "title": "সার্কুলার সম্পাদিত: কর কমিশনারের কার্যালয় কর অঞ্চল নারায়ণগঞ্জ নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "LIVE_COLLECTOR দ্বারা কর কমিশনারের কার্যালয় কর অঞ্চল নারায়ণগঞ্জ এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "type": "system",
+        "read": false,
+        "date": "2026-11-07T04:01:33.468Z",
+        "link": "/jobs/job-alljobs-taxnar-15056"
+      },
+      {
+        "id": "notif_adm_job-alljobs-nsd-15060_1794024093359",
+        "title": "সার্কুলার সম্পাদিত: জাতীয় সঞ্চয় অধিদপ্তর নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "LIVE_COLLECTOR দ্বারা জাতীয় সঞ্চয় অধিদপ্তর এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "type": "system",
+        "read": false,
+        "date": "2026-11-07T04:01:33.359Z",
+        "link": "/jobs/job-alljobs-nsd-15060"
+      },
+      {
+        "id": "notif_adm_job-alljobs-dcnarail-15068_1794024093256",
+        "title": "সার্কুলার সম্পাদিত: Narail Distric (DCNARAIL) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "LIVE_COLLECTOR দ্বারা Narail Distric (DCNARAIL) এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "type": "system",
+        "read": false,
+        "date": "2026-11-07T04:01:33.256Z",
+        "link": "/jobs/job-alljobs-dcnarail-15068"
+      },
+      {
+        "id": "notif_adm_job-alljobs-tax19-15076_1794024092883",
+        "title": "সার্কুলার সম্পাদিত: কর অঞ্চল 19 নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "LIVE_COLLECTOR দ্বারা কর অঞ্চল 19 এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "type": "system",
+        "read": false,
+        "date": "2026-11-07T04:01:32.883Z",
+        "link": "/jobs/job-alljobs-tax19-15076"
+      },
+      {
+        "id": "notif_adm_job-alljobs-itiiu-15083_1794024092768",
+        "title": "সার্কুলার সম্পাদিত: আয়কর গোয়েন্দা ও তদন্ত ইউনিট নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "LIVE_COLLECTOR দ্বারা আয়কর গোয়েন্দা ও তদন্ত ইউনিট এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "type": "system",
+        "read": false,
+        "date": "2026-11-07T04:01:32.769Z",
+        "link": "/jobs/job-alljobs-itiiu-15083"
+      },
+      {
+        "id": "notif_adm_job-alljobs-basb-15085_1794024092681",
+        "title": "সার্কুলার সম্পাদিত: বাংলাদেশ সশস্ত্র বাহিনী বোর্ড নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "LIVE_COLLECTOR দ্বারা বাংলাদেশ সশস্ত্র বাহিনী বোর্ড এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "type": "system",
+        "read": false,
+        "date": "2026-11-07T04:01:32.681Z",
+        "link": "/jobs/job-alljobs-basb-15085"
+      },
+      {
+        "id": "notif_adm_job-alljobs-apscl-15090_1794024092586",
+        "title": "সার্কুলার সম্পাদিত: আশুগঞ্জ পাওয়ার স্টেশন কোম্পানী লিঃ নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "LIVE_COLLECTOR দ্বারা আশুগঞ্জ পাওয়ার স্টেশন কোম্পানী লিঃ এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "type": "system",
+        "read": false,
+        "date": "2026-11-07T04:01:32.586Z",
+        "link": "/jobs/job-alljobs-apscl-15090"
+      },
+      {
+        "id": "notif_adm_job-alljobs-dcjhenaidah-15102_1794024092477",
+        "title": "সার্কুলার সম্পাদিত: জেলা প্রশাসকের কার্যালয় ঝিনাইদহ নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "LIVE_COLLECTOR দ্বারা জেলা প্রশাসকের কার্যালয় ঝিনাইদহ এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "type": "system",
+        "read": false,
+        "date": "2026-11-07T04:01:32.477Z",
+        "link": "/jobs/job-alljobs-dcjhenaidah-15102"
+      },
+      {
+        "id": "notif_adm_job-alljobs-cpgcbl-15104_1794024092367",
+        "title": "সার্কুলার সম্পাদিত: Coal Power Generation Company Bangladesh Limited (CPGCBL) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "LIVE_COLLECTOR দ্বারা Coal Power Generation Company Bangladesh Limited (CPGCBL) এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "type": "system",
+        "read": false,
+        "date": "2026-11-07T04:01:32.368Z",
+        "link": "/jobs/job-alljobs-cpgcbl-15104"
+      },
+      {
+        "id": "notif_adm_job-alljobs-dscc-15113_1794024092279",
+        "title": "সার্কুলার সম্পাদিত: Dhaka South City Corporation (DSCC) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "LIVE_COLLECTOR দ্বারা Dhaka South City Corporation (DSCC) এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "type": "system",
+        "read": false,
+        "date": "2026-11-07T04:01:32.279Z",
+        "link": "/jobs/job-alljobs-dscc-15113"
+      },
+      {
+        "id": "notif_adm_job-alljobs-dcrajbari-15121_1794024092048",
+        "title": "সার্কুলার সম্পাদিত: DC OFFICE RAJBARI (DCRAJBARI) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "LIVE_COLLECTOR দ্বারা DC OFFICE RAJBARI (DCRAJBARI) এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "type": "system",
+        "read": false,
+        "date": "2026-11-07T04:01:32.048Z",
+        "link": "/jobs/job-alljobs-dcrajbari-15121"
+      },
+      {
+        "id": "notif_adm_job-alljobs-cag-15122_1794024091900",
+        "title": "সার্কুলার সম্পাদিত: বাংলাদেশের কম্পট্রোলার অ্যান্ড অডিটর জেনারেল নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "LIVE_COLLECTOR দ্বারা বাংলাদেশের কম্পট্রোলার অ্যান্ড অডিটর জেনারেল এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "type": "system",
+        "read": false,
+        "date": "2026-11-07T04:01:31.900Z",
+        "link": "/jobs/job-alljobs-cag-15122"
+      },
+      {
+        "id": "notif_adm_job-alljobs-dgms-15127_1794024091790",
+        "title": "সার্কুলার সম্পাদিত: Directorate General of Medical Service (DGMS) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "LIVE_COLLECTOR দ্বারা Directorate General of Medical Service (DGMS) এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "type": "system",
+        "read": false,
+        "date": "2026-11-07T04:01:31.790Z",
+        "link": "/jobs/job-alljobs-dgms-15127"
+      },
+      {
+        "id": "notif_adm_job-alljobs-dcjamalpur-15137_1794024091692",
+        "title": "সার্কুলার সম্পাদিত: DC OFFICE JAMALPUR (DCJAMALPUR) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "LIVE_COLLECTOR দ্বারা DC OFFICE JAMALPUR (DCJAMALPUR) এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "type": "system",
+        "read": false,
+        "date": "2026-11-07T04:01:31.692Z",
+        "link": "/jobs/job-alljobs-dcjamalpur-15137"
+      },
       {
         "id": "notif_1794016681041_egw4",
         "title": {
@@ -207,267 +495,1535 @@
         "read": false,
         "date": "2026-11-07T00:08:09.217Z",
         "link": "/jobs/job-alljobs-basb-15085"
-      },
+      }
+    ],
+    "CS-USR-26-999888": [
       {
-        "id": "notif_adm_job-alljobs-apscl-15090_1794010089120",
-        "title": "সার্কুলার সম্পাদিত: আশুগঞ্জ পাওয়ার স্টেশন কোম্পানী লিঃ নিয়োগ বিজ্ঞপ্তি ২০২৬",
-        "message": "LIVE_COLLECTOR দ্বারা আশুগঞ্জ পাওয়ার স্টেশন কোম্পানী লিঃ এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "id": "notif_job_job-alljobs-csrajshah-12949_1794024094996_4k6p",
+        "title": "আপডেট: সিভিল সার্জন কার্যালয় রাজবাড়ী নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "সিভিল সার্জন কার্যালয় রাজবাড়ী কর্তৃক স্বাস্থ্য ও চিকিৎসা বিজ্ঞপ্তি প্রকাশিত হয়েছে। পদ সংখ্যা: 1। আবেদনের শেষ সময়: ১৪ ডিসেম্বর ২০২৬।",
         "type": "system",
         "read": false,
-        "date": "2026-11-07T00:08:09.120Z",
-        "link": "/jobs/job-alljobs-apscl-15090"
+        "date": "2026-11-07T04:01:34.996Z",
+        "link": "/jobs/job-alljobs-csrajshah-12949"
       },
       {
-        "id": "notif_adm_job-alljobs-dcjhenaidah-15102_1794010089016",
-        "title": "সার্কুলার সম্পাদিত: জেলা প্রশাসকের কার্যালয় ঝিনাইদহ নিয়োগ বিজ্ঞপ্তি ২০২৬",
-        "message": "LIVE_COLLECTOR দ্বারা জেলা প্রশাসকের কার্যালয় ঝিনাইদহ এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "id": "notif_job_job-alljobs-cid-14913_1794024094888_wpyy",
+        "title": "আপডেট: বাংলাদেশ পুলিশ , সিআইডি নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "বাংলাদেশ পুলিশ , সিআইডি কর্তৃক প্রতিরক্ষা ও পুলিশ বিজ্ঞপ্তি প্রকাশিত হয়েছে। পদ সংখ্যা: 3। আবেদনের শেষ সময়: ৮ নভেম্বর ২০২৬।",
         "type": "system",
         "read": false,
-        "date": "2026-11-07T00:08:09.016Z",
-        "link": "/jobs/job-alljobs-dcjhenaidah-15102"
+        "date": "2026-11-07T04:01:34.888Z",
+        "link": "/jobs/job-alljobs-cid-14913"
       },
       {
-        "id": "notif_adm_job-alljobs-cpgcbl-15104_1794010088907",
-        "title": "সার্কুলার সম্পাদিত: Coal Power Generation Company Bangladesh Limited (CPGCBL) নিয়োগ বিজ্ঞপ্তি ২০২৬",
-        "message": "LIVE_COLLECTOR দ্বারা Coal Power Generation Company Bangladesh Limited (CPGCBL) এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "id": "notif_job_job-alljobs-dcnetrokona-14935_1794024094761_fccz",
+        "title": "আপডেট: DC Office Netrokona (DCNETROKONA) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "DC Office Netrokona (DCNETROKONA) কর্তৃক সরকারি চাকরি বিজ্ঞপ্তি প্রকাশিত হয়েছে। পদ সংখ্যা: 1। আবেদনের শেষ সময়: ১২ নভেম্বর ২০২৬।",
         "type": "system",
         "read": false,
-        "date": "2026-11-07T00:08:08.907Z",
-        "link": "/jobs/job-alljobs-cpgcbl-15104"
+        "date": "2026-11-07T04:01:34.761Z",
+        "link": "/jobs/job-alljobs-dcnetrokona-14935"
       },
       {
-        "id": "notif_adm_job-alljobs-dscc-15113_1794010088817",
-        "title": "সার্কুলার সম্পাদিত: Dhaka South City Corporation (DSCC) নিয়োগ বিজ্ঞপ্তি ২০২৬",
-        "message": "LIVE_COLLECTOR দ্বারা Dhaka South City Corporation (DSCC) এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "id": "notif_job_job-alljobs-bcic-14936_1794024094632_iprt",
+        "title": "আপডেট: Bangladesh Chemical Industries Corporation (BCIC) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "Bangladesh Chemical Industries Corporation (BCIC) কর্তৃক ইঞ্জিনিয়ারিং ও টেকনিক্যাল বিজ্ঞপ্তি প্রকাশিত হয়েছে। পদ সংখ্যা: 19। আবেদনের শেষ সময়: ১২ নভেম্বর ২০২৬।",
         "type": "system",
         "read": false,
-        "date": "2026-11-07T00:08:08.817Z",
-        "link": "/jobs/job-alljobs-dscc-15113"
+        "date": "2026-11-07T04:01:34.632Z",
+        "link": "/jobs/job-alljobs-bcic-14936"
       },
       {
-        "id": "notif_adm_job-alljobs-dcrajbari-15121_1794010088669",
-        "title": "সার্কুলার সম্পাদিত: DC OFFICE RAJBARI (DCRAJBARI) নিয়োগ বিজ্ঞপ্তি ২০২৬",
-        "message": "LIVE_COLLECTOR দ্বারা DC OFFICE RAJBARI (DCRAJBARI) এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "id": "notif_job_job-alljobs-hbri-14968_1794024094545_ieg2",
+        "title": "আপডেট: Housing & Building Research Institute(HBRI) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "Housing & Building Research Institute(HBRI) কর্তৃক সরকারি চাকরি বিজ্ঞপ্তি প্রকাশিত হয়েছে। পদ সংখ্যা: 7। আবেদনের শেষ সময়: ১৫ নভেম্বর ২০২৬।",
         "type": "system",
         "read": false,
-        "date": "2026-11-07T00:08:08.669Z",
-        "link": "/jobs/job-alljobs-dcrajbari-15121"
+        "date": "2026-11-07T04:01:34.545Z",
+        "link": "/jobs/job-alljobs-hbri-14968"
       },
       {
-        "id": "notif_adm_job-alljobs-cag-15122_1794010088531",
-        "title": "সার্কুলার সম্পাদিত: বাংলাদেশের কম্পট্রোলার অ্যান্ড অডিটর জেনারেল নিয়োগ বিজ্ঞপ্তি ২০২৬",
-        "message": "LIVE_COLLECTOR দ্বারা বাংলাদেশের কম্পট্রোলার অ্যান্ড অডিটর জেনারেল এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "id": "notif_job_job-alljobs-dcpatuakhali-14984_1794024094446_miua",
+        "title": "আপডেট: DC Office Patuakhali (DCPATUAKHALI) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "DC Office Patuakhali (DCPATUAKHALI) কর্তৃক সরকারি চাকরি বিজ্ঞপ্তি প্রকাশিত হয়েছে। পদ সংখ্যা: 2। আবেদনের শেষ সময়: ১৭ নভেম্বর ২০২৬।",
         "type": "system",
         "read": false,
-        "date": "2026-11-07T00:08:08.531Z",
-        "link": "/jobs/job-alljobs-cag-15122"
+        "date": "2026-11-07T04:01:34.446Z",
+        "link": "/jobs/job-alljobs-dcpatuakhali-14984"
       },
       {
-        "id": "notif_adm_job-alljobs-dgms-15127_1794010088441",
-        "title": "সার্কুলার সম্পাদিত: Directorate General of Medical Service (DGMS) নিয়োগ বিজ্ঞপ্তি ২০২৬",
-        "message": "LIVE_COLLECTOR দ্বারা Directorate General of Medical Service (DGMS) এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "id": "notif_job_job-alljobs-dcbogura-14986_1794024094339_yt1n",
+        "title": "আপডেট: DC Office Bogura (DCBOGURA) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "DC Office Bogura (DCBOGURA) কর্তৃক সরকারি চাকরি বিজ্ঞপ্তি প্রকাশিত হয়েছে। পদ সংখ্যা: 2। আবেদনের শেষ সময়: ৭ নভেম্বর ২০২৬।",
         "type": "system",
         "read": false,
-        "date": "2026-11-07T00:08:08.441Z",
-        "link": "/jobs/job-alljobs-dgms-15127"
+        "date": "2026-11-07T04:01:34.339Z",
+        "link": "/jobs/job-alljobs-dcbogura-14986"
       },
       {
-        "id": "notif_adm_job-alljobs-dcjamalpur-15137_1794010088340",
-        "title": "সার্কুলার সম্পাদিত: DC OFFICE JAMALPUR (DCJAMALPUR) নিয়োগ বিজ্ঞপ্তি ২০২৬",
-        "message": "LIVE_COLLECTOR দ্বারা DC OFFICE JAMALPUR (DCJAMALPUR) এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "id": "notif_job_job-alljobs-policedinaj-14987_1794024094250_fxmj",
+        "title": "আপডেট: পুলিশ সুপারের কার্যালয়, দিনাজপুর নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "পুলিশ সুপারের কার্যালয়, দিনাজপুর কর্তৃক প্রতিরক্ষা ও পুলিশ বিজ্ঞপ্তি প্রকাশিত হয়েছে। পদ সংখ্যা: 1। আবেদনের শেষ সময়: ১৭ নভেম্বর ২০২৬।",
         "type": "system",
         "read": false,
-        "date": "2026-11-07T00:08:08.340Z",
-        "link": "/jobs/job-alljobs-dcjamalpur-15137"
+        "date": "2026-11-07T04:01:34.250Z",
+        "link": "/jobs/job-alljobs-policedinaj-14987"
       },
       {
-        "id": "notif_adm_job-alljobs-bogmc-14989_1794009916431",
-        "title": "সার্কুলার সম্পাদিত: Bangladesh Oil, Gas & Mineral Corporation (Petrobangla) BOGMC নিয়োগ বিজ্ঞপ্তি ২০২৬",
-        "message": "ADMIN দ্বারা Bangladesh Oil, Gas & Mineral Corporation (Petrobangla) BOGMC এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "id": "notif_job_job-alljobs-bogmc-14989_1794024094172_600t",
+        "title": "আপডেট: Bangladesh Oil, Gas & Mineral Corporation (Petrobangla) BOGMC নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "Bangladesh Oil, Gas & Mineral Corporation (Petrobangla) BOGMC কর্তৃক ইঞ্জিনিয়ারিং ও টেকনিক্যাল বিজ্ঞপ্তি প্রকাশিত হয়েছে। পদ সংখ্যা: 36। আবেদনের শেষ সময়: ১৭ নভেম্বর ২০২৬।",
         "type": "system",
         "read": false,
-        "date": "2026-11-07T00:05:16.431Z",
+        "date": "2026-11-07T04:01:34.172Z",
         "link": "/jobs/job-alljobs-bogmc-14989"
       },
       {
-        "id": "notif_adm_job-alljobs-tax6-15024_1794009916328",
-        "title": "সার্কুলার সম্পাদিত: কর কমিশনারের কার্যালয় কর অঞ্চল-৬, ঢাকা নিয়োগ বিজ্ঞপ্তি ২০২৬",
-        "message": "ADMIN দ্বারা কর কমিশনারের কার্যালয় কর অঞ্চল-৬, ঢাকা এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "id": "notif_job_job-alljobs-tax6-15024_1794024094077_ro62",
+        "title": "আপডেট: কর কমিশনারের কার্যালয় কর অঞ্চল-৬, ঢাকা নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "কর কমিশনারের কার্যালয় কর অঞ্চল-৬, ঢাকা কর্তৃক সরকারি চাকরি বিজ্ঞপ্তি প্রকাশিত হয়েছে। পদ সংখ্যা: 7। আবেদনের শেষ সময়: ১৪ নভেম্বর ২০২৬।",
         "type": "system",
         "read": false,
-        "date": "2026-11-07T00:05:16.328Z",
+        "date": "2026-11-07T04:01:34.077Z",
         "link": "/jobs/job-alljobs-tax6-15024"
       },
       {
-        "id": "notif_adm_job-alljobs-dcnoakhali-15031_1794009916238",
-        "title": "সার্কুলার সম্পাদিত: Deputy Commissioner Office, Noakhali (DCNOAKHALI) নিয়োগ বিজ্ঞপ্তি ২০২৬",
-        "message": "ADMIN দ্বারা Deputy Commissioner Office, Noakhali (DCNOAKHALI) এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "id": "notif_job_job-alljobs-dcnoakhali-15031_1794024093965_xivd",
+        "title": "আপডেট: Deputy Commissioner Office, Noakhali (DCNOAKHALI) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "Deputy Commissioner Office, Noakhali (DCNOAKHALI) কর্তৃক সরকারি চাকরি বিজ্ঞপ্তি প্রকাশিত হয়েছে। পদ সংখ্যা: 4। আবেদনের শেষ সময়: ২৬ নভেম্বর ২০২৬।",
         "type": "system",
         "read": false,
-        "date": "2026-11-07T00:05:16.238Z",
+        "date": "2026-11-07T04:01:33.965Z",
         "link": "/jobs/job-alljobs-dcnoakhali-15031"
       },
       {
-        "id": "notif_adm_job-alljobs-tax9-15038_1794009916078",
-        "title": "সার্কুলার সম্পাদিত: Taxes Zone-9, Dhaka (TAX9) নিয়োগ বিজ্ঞপ্তি ২০২৬",
-        "message": "ADMIN দ্বারা Taxes Zone-9, Dhaka (TAX9) এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "id": "notif_job_job-alljobs-tax9-15038_1794024093784_tso5",
+        "title": "আপডেট: Taxes Zone-9, Dhaka (TAX9) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "Taxes Zone-9, Dhaka (TAX9) কর্তৃক সরকারি চাকরি বিজ্ঞপ্তি প্রকাশিত হয়েছে। পদ সংখ্যা: 9। আবেদনের শেষ সময়: ১৪ নভেম্বর ২০২৬।",
         "type": "system",
         "read": false,
-        "date": "2026-11-07T00:05:16.078Z",
+        "date": "2026-11-07T04:01:33.784Z",
         "link": "/jobs/job-alljobs-tax9-15038"
       },
       {
-        "id": "notif_adm_job-alljobs-sposherpur-15044_1794009915997",
-        "title": "সার্কুলার সম্পাদিত: পুলিশ সুপারের কার্যালয় শেরপুর নিয়োগ বিজ্ঞপ্তি ২০২৬",
-        "message": "ADMIN দ্বারা পুলিশ সুপারের কার্যালয় শেরপুর এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "id": "notif_job_job-alljobs-sposherpur-15044_1794024093699_kvsc",
+        "title": "আপডেট: পুলিশ সুপারের কার্যালয় শেরপুর নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "পুলিশ সুপারের কার্যালয় শেরপুর কর্তৃক প্রতিরক্ষা ও পুলিশ বিজ্ঞপ্তি প্রকাশিত হয়েছে। পদ সংখ্যা: 3। আবেদনের শেষ সময়: ২৬ নভেম্বর ২০২৬।",
         "type": "system",
         "read": false,
-        "date": "2026-11-07T00:05:15.997Z",
+        "date": "2026-11-07T04:01:33.699Z",
         "link": "/jobs/job-alljobs-sposherpur-15044"
       },
       {
-        "id": "notif_adm_job-alljobs-dcchuadanga-15047_1794009915908",
-        "title": "সার্কুলার সম্পাদিত: DC Office Chuadanga (DCCHUADANGA) নিয়োগ বিজ্ঞপ্তি ২০২৬",
-        "message": "ADMIN দ্বারা DC Office Chuadanga (DCCHUADANGA) এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "id": "notif_job_job-alljobs-dcchuadanga-15047_1794024093589_zunv",
+        "title": "আপডেট: DC Office Chuadanga (DCCHUADANGA) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "DC Office Chuadanga (DCCHUADANGA) কর্তৃক সরকারি চাকরি বিজ্ঞপ্তি প্রকাশিত হয়েছে। পদ সংখ্যা: 7। আবেদনের শেষ সময়: ২১ নভেম্বর ২০২৬।",
         "type": "system",
         "read": false,
-        "date": "2026-11-07T00:05:15.908Z",
+        "date": "2026-11-07T04:01:33.589Z",
         "link": "/jobs/job-alljobs-dcchuadanga-15047"
       },
       {
-        "id": "notif_adm_job-alljobs-taxnar-15056_1794009915804",
-        "title": "সার্কুলার সম্পাদিত: কর কমিশনারের কার্যালয় কর অঞ্চল নারায়ণগঞ্জ নিয়োগ বিজ্ঞপ্তি ২০২৬",
-        "message": "ADMIN দ্বারা কর কমিশনারের কার্যালয় কর অঞ্চল নারায়ণগঞ্জ এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "id": "notif_job_job-alljobs-taxnar-15056_1794024093468_ums2",
+        "title": "আপডেট: কর কমিশনারের কার্যালয় কর অঞ্চল নারায়ণগঞ্জ নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "কর কমিশনারের কার্যালয় কর অঞ্চল নারায়ণগঞ্জ কর্তৃক সরকারি চাকরি বিজ্ঞপ্তি প্রকাশিত হয়েছে। পদ সংখ্যা: 6। আবেদনের শেষ সময়: ১৭ নভেম্বর ২০২৬।",
         "type": "system",
         "read": false,
-        "date": "2026-11-07T00:05:15.804Z",
+        "date": "2026-11-07T04:01:33.468Z",
         "link": "/jobs/job-alljobs-taxnar-15056"
       },
       {
-        "id": "notif_adm_job-alljobs-nsd-15060_1794009915696",
-        "title": "সার্কুলার সম্পাদিত: জাতীয় সঞ্চয় অধিদপ্তর নিয়োগ বিজ্ঞপ্তি ২০২৬",
-        "message": "ADMIN দ্বারা জাতীয় সঞ্চয় অধিদপ্তর এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "id": "notif_job_job-alljobs-nsd-15060_1794024093358_mq93",
+        "title": "আপডেট: জাতীয় সঞ্চয় অধিদপ্তর নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "জাতীয় সঞ্চয় অধিদপ্তর কর্তৃক সরকারি চাকরি বিজ্ঞপ্তি প্রকাশিত হয়েছে। পদ সংখ্যা: 8। আবেদনের শেষ সময়: ২৬ নভেম্বর ২০২৬।",
         "type": "system",
         "read": false,
-        "date": "2026-11-07T00:05:15.696Z",
+        "date": "2026-11-07T04:01:33.358Z",
         "link": "/jobs/job-alljobs-nsd-15060"
       },
       {
-        "id": "notif_adm_job-alljobs-dcnarail-15068_1794009915597",
-        "title": "সার্কুলার সম্পাদিত: Narail Distric (DCNARAIL) নিয়োগ বিজ্ঞপ্তি ২০২৬",
-        "message": "ADMIN দ্বারা Narail Distric (DCNARAIL) এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "id": "notif_job_job-alljobs-dcnarail-15068_1794024093256_l9no",
+        "title": "আপডেট: Narail Distric (DCNARAIL) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "Narail Distric (DCNARAIL) কর্তৃক সরকারি চাকরি বিজ্ঞপ্তি প্রকাশিত হয়েছে। পদ সংখ্যা: 7। আবেদনের শেষ সময়: ২২ নভেম্বর ২০২৬।",
         "type": "system",
         "read": false,
-        "date": "2026-11-07T00:05:15.597Z",
+        "date": "2026-11-07T04:01:33.256Z",
         "link": "/jobs/job-alljobs-dcnarail-15068"
       },
       {
-        "id": "notif_adm_job-alljobs-tax19-15076_1794009915363",
-        "title": "সার্কুলার সম্পাদিত: কর অঞ্চল 19 নিয়োগ বিজ্ঞপ্তি ২০২৬",
-        "message": "ADMIN দ্বারা কর অঞ্চল 19 এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "id": "notif_job_job-alljobs-tax19-15076_1794024092883_7gib",
+        "title": "আপডেট: কর অঞ্চল 19 নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "কর অঞ্চল 19 কর্তৃক সরকারি চাকরি বিজ্ঞপ্তি প্রকাশিত হয়েছে। পদ সংখ্যা: 7। আবেদনের শেষ সময়: ২১ নভেম্বর ২০২৬।",
         "type": "system",
         "read": false,
-        "date": "2026-11-07T00:05:15.363Z",
+        "date": "2026-11-07T04:01:32.883Z",
         "link": "/jobs/job-alljobs-tax19-15076"
       },
       {
-        "id": "notif_adm_job-alljobs-itiiu-15083_1794009915275",
-        "title": "সার্কুলার সম্পাদিত: আয়কর গোয়েন্দা ও তদন্ত ইউনিট নিয়োগ বিজ্ঞপ্তি ২০২৬",
-        "message": "ADMIN দ্বারা আয়কর গোয়েন্দা ও তদন্ত ইউনিট এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "id": "notif_job_job-alljobs-itiiu-15083_1794024092768_ifdg",
+        "title": "আপডেট: আয়কর গোয়েন্দা ও তদন্ত ইউনিট নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "আয়কর গোয়েন্দা ও তদন্ত ইউনিট কর্তৃক সরকারি চাকরি বিজ্ঞপ্তি প্রকাশিত হয়েছে। পদ সংখ্যা: 3। আবেদনের শেষ সময়: ২৩ নভেম্বর ২০২৬।",
         "type": "system",
         "read": false,
-        "date": "2026-11-07T00:05:15.275Z",
+        "date": "2026-11-07T04:01:32.768Z",
         "link": "/jobs/job-alljobs-itiiu-15083"
       },
       {
-        "id": "notif_adm_job-alljobs-basb-15085_1794009915169",
-        "title": "সার্কুলার সম্পাদিত: বাংলাদেশ সশস্ত্র বাহিনী বোর্ড নিয়োগ বিজ্ঞপ্তি ২০২৬",
-        "message": "ADMIN দ্বারা বাংলাদেশ সশস্ত্র বাহিনী বোর্ড এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "id": "notif_job_job-alljobs-basb-15085_1794024092680_dvoz",
+        "title": "আপডেট: বাংলাদেশ সশস্ত্র বাহিনী বোর্ড নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "বাংলাদেশ সশস্ত্র বাহিনী বোর্ড কর্তৃক প্রতিরক্ষা ও পুলিশ বিজ্ঞপ্তি প্রকাশিত হয়েছে। পদ সংখ্যা: 1। আবেদনের শেষ সময়: ২১ নভেম্বর ২০২৬।",
         "type": "system",
         "read": false,
-        "date": "2026-11-07T00:05:15.169Z",
+        "date": "2026-11-07T04:01:32.681Z",
         "link": "/jobs/job-alljobs-basb-15085"
       },
       {
-        "id": "notif_adm_job-alljobs-apscl-15090_1794009915076",
-        "title": "সার্কুলার সম্পাদিত: আশুগঞ্জ পাওয়ার স্টেশন কোম্পানী লিঃ নিয়োগ বিজ্ঞপ্তি ২০২৬",
-        "message": "ADMIN দ্বারা আশুগঞ্জ পাওয়ার স্টেশন কোম্পানী লিঃ এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "id": "notif_job_job-alljobs-apscl-15090_1794024092586_mmg0",
+        "title": "আপডেট: আশুগঞ্জ পাওয়ার স্টেশন কোম্পানী লিঃ নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "আশুগঞ্জ পাওয়ার স্টেশন কোম্পানী লিঃ কর্তৃক ইঞ্জিনিয়ারিং ও টেকনিক্যাল বিজ্ঞপ্তি প্রকাশিত হয়েছে। পদ সংখ্যা: 15। আবেদনের শেষ সময়: ৩০ নভেম্বর ২০২৬।",
         "type": "system",
         "read": false,
-        "date": "2026-11-07T00:05:15.076Z",
+        "date": "2026-11-07T04:01:32.586Z",
         "link": "/jobs/job-alljobs-apscl-15090"
       },
       {
-        "id": "notif_adm_job-alljobs-dcjhenaidah-15102_1794009914980",
-        "title": "সার্কুলার সম্পাদিত: জেলা প্রশাসকের কার্যালয় ঝিনাইদহ নিয়োগ বিজ্ঞপ্তি ২০২৬",
-        "message": "ADMIN দ্বারা জেলা প্রশাসকের কার্যালয় ঝিনাইদহ এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "id": "notif_job_job-alljobs-dcjhenaidah-15102_1794024092477_2k62",
+        "title": "আপডেট: জেলা প্রশাসকের কার্যালয় ঝিনাইদহ নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "জেলা প্রশাসকের কার্যালয় ঝিনাইদহ কর্তৃক সরকারি চাকরি বিজ্ঞপ্তি প্রকাশিত হয়েছে। পদ সংখ্যা: 2। আবেদনের শেষ সময়: ২২ নভেম্বর ২০২৬।",
         "type": "system",
         "read": false,
-        "date": "2026-11-07T00:05:14.980Z",
+        "date": "2026-11-07T04:01:32.477Z",
         "link": "/jobs/job-alljobs-dcjhenaidah-15102"
       },
       {
-        "id": "notif_adm_job-alljobs-cpgcbl-15104_1794009914898",
-        "title": "সার্কুলার সম্পাদিত: Coal Power Generation Company Bangladesh Limited (CPGCBL) নিয়োগ বিজ্ঞপ্তি ২০২৬",
-        "message": "ADMIN দ্বারা Coal Power Generation Company Bangladesh Limited (CPGCBL) এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "id": "notif_job_job-alljobs-cpgcbl-15104_1794024092367_v1l2",
+        "title": "আপডেট: Coal Power Generation Company Bangladesh Limited (CPGCBL) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "Coal Power Generation Company Bangladesh Limited (CPGCBL) কর্তৃক ইঞ্জিনিয়ারিং ও টেকনিক্যাল বিজ্ঞপ্তি প্রকাশিত হয়েছে। পদ সংখ্যা: 7। আবেদনের শেষ সময়: ২৩ নভেম্বর ২০২৬।",
         "type": "system",
         "read": false,
-        "date": "2026-11-07T00:05:14.898Z",
+        "date": "2026-11-07T04:01:32.367Z",
         "link": "/jobs/job-alljobs-cpgcbl-15104"
       },
       {
-        "id": "notif_adm_job-alljobs-dscc-15113_1794009914813",
-        "title": "সার্কুলার সম্পাদিত: Dhaka South City Corporation (DSCC) নিয়োগ বিজ্ঞপ্তি ২০২৬",
-        "message": "ADMIN দ্বারা Dhaka South City Corporation (DSCC) এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "id": "notif_job_job-alljobs-dscc-15113_1794024092279_23gx",
+        "title": "আপডেট: Dhaka South City Corporation (DSCC) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "Dhaka South City Corporation (DSCC) কর্তৃক ইঞ্জিনিয়ারিং ও টেকনিক্যাল বিজ্ঞপ্তি প্রকাশিত হয়েছে। পদ সংখ্যা: 6। আবেদনের শেষ সময়: ২৬ নভেম্বর ২০২৬।",
         "type": "system",
         "read": false,
-        "date": "2026-11-07T00:05:14.813Z",
+        "date": "2026-11-07T04:01:32.279Z",
         "link": "/jobs/job-alljobs-dscc-15113"
       },
       {
-        "id": "notif_adm_job-alljobs-dcrajbari-15121_1794009914691",
-        "title": "সার্কুলার সম্পাদিত: DC OFFICE RAJBARI (DCRAJBARI) নিয়োগ বিজ্ঞপ্তি ২০২৬",
-        "message": "ADMIN দ্বারা DC OFFICE RAJBARI (DCRAJBARI) এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "id": "notif_job_job-alljobs-dcrajbari-15121_1794024092048_eqx2",
+        "title": "আপডেট: DC OFFICE RAJBARI (DCRAJBARI) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "DC OFFICE RAJBARI (DCRAJBARI) কর্তৃক সরকারি চাকরি বিজ্ঞপ্তি প্রকাশিত হয়েছে। পদ সংখ্যা: 1। আবেদনের শেষ সময়: ৩০ নভেম্বর ২০২৬।",
         "type": "system",
         "read": false,
-        "date": "2026-11-07T00:05:14.691Z",
+        "date": "2026-11-07T04:01:32.048Z",
         "link": "/jobs/job-alljobs-dcrajbari-15121"
       },
       {
-        "id": "notif_adm_job-alljobs-cag-15122_1794009914603",
-        "title": "সার্কুলার সম্পাদিত: বাংলাদেশের কম্পট্রোলার অ্যান্ড অডিটর জেনারেল নিয়োগ বিজ্ঞপ্তি ২০২৬",
-        "message": "ADMIN দ্বারা বাংলাদেশের কম্পট্রোলার অ্যান্ড অডিটর জেনারেল এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "id": "notif_job_job-alljobs-cag-15122_1794024091900_dnvz",
+        "title": "আপডেট: বাংলাদেশের কম্পট্রোলার অ্যান্ড অডিটর জেনারেল নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "বাংলাদেশের কম্পট্রোলার অ্যান্ড অডিটর জেনারেল কর্তৃক সরকারি চাকরি বিজ্ঞপ্তি প্রকাশিত হয়েছে। পদ সংখ্যা: 4। আবেদনের শেষ সময়: ২৫ নভেম্বর ২০২৬।",
         "type": "system",
         "read": false,
-        "date": "2026-11-07T00:05:14.603Z",
+        "date": "2026-11-07T04:01:31.900Z",
         "link": "/jobs/job-alljobs-cag-15122"
       },
       {
-        "id": "notif_adm_job-alljobs-dgms-15127_1794009914514",
-        "title": "সার্কুলার সম্পাদিত: Directorate General of Medical Service (DGMS) নিয়োগ বিজ্ঞপ্তি ২০২৬",
-        "message": "ADMIN দ্বারা Directorate General of Medical Service (DGMS) এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "id": "notif_job_job-alljobs-dgms-15127_1794024091790_1loa",
+        "title": "আপডেট: Directorate General of Medical Service (DGMS) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "Directorate General of Medical Service (DGMS) কর্তৃক স্বাস্থ্য ও চিকিৎসা বিজ্ঞপ্তি প্রকাশিত হয়েছে। পদ সংখ্যা: 11। আবেদনের শেষ সময়: ২১ নভেম্বর ২০২৬।",
         "type": "system",
         "read": false,
-        "date": "2026-11-07T00:05:14.514Z",
+        "date": "2026-11-07T04:01:31.790Z",
         "link": "/jobs/job-alljobs-dgms-15127"
       },
       {
-        "id": "notif_adm_job-alljobs-dcjamalpur-15137_1794009914419",
-        "title": "সার্কুলার সম্পাদিত: DC OFFICE JAMALPUR (DCJAMALPUR) নিয়োগ বিজ্ঞপ্তি ২০২৬",
-        "message": "ADMIN দ্বারা DC OFFICE JAMALPUR (DCJAMALPUR) এর সার্কুলার সফলভাবে সংরক্ষিত হয়েছে।",
+        "id": "notif_job_job-alljobs-dcjamalpur-15137_1794024091692_ehcq",
+        "title": "আপডেট: DC OFFICE JAMALPUR (DCJAMALPUR) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "message": "DC OFFICE JAMALPUR (DCJAMALPUR) কর্তৃক সরকারি চাকরি বিজ্ঞপ্তি প্রকাশিত হয়েছে। পদ সংখ্যা: 11। আবেদনের শেষ সময়: ২৫ নভেম্বর ২০২৬।",
         "type": "system",
         "read": false,
-        "date": "2026-11-07T00:05:14.419Z",
+        "date": "2026-11-07T04:01:31.692Z",
         "link": "/jobs/job-alljobs-dcjamalpur-15137"
       }
     ]
   },
-  "sessions": {},
+  "sessions": {
+    "92922126ec7c3b78154ae2be6303d47afe6f5d951e5235b7ad0b15c4056a0df2": {
+      "candidateId": "ADMIN-SUPER",
+      "role": "admin",
+      "expiresAt": "2026-11-14T02:48:58.320Z"
+    },
+    "8a1d326b58ae389df6c1dfe01089ac5f0274b9d2e0c7d04814b94fc868a80eeb": {
+      "candidateId": "CS-USR-26-999888",
+      "role": "candidate",
+      "expiresAt": "2026-11-14T03:58:09.136Z"
+    }
+  },
   "coupons": {},
   "raffleCampaigns": {},
   "couponRedemptions": {},
   "raffleEntries": {},
   "adminAuditLogs": [
+    {
+      "adminId": "ADMIN-SUPER",
+      "action": "page_publish",
+      "targetId": "home",
+      "targetType": "order",
+      "changes": {
+        "version": {
+          "old": 19,
+          "new": 20
+        }
+      },
+      "notes": "Page হোমপেজ — চাকরি সেবা published",
+      "id": "AUDIT-1794025848519-426J6",
+      "timestamp": "2026-11-07T04:30:48.519Z"
+    },
+    {
+      "adminId": "LIVE_COLLECTOR",
+      "action": "job_edit",
+      "targetId": "job-alljobs-csrajshah-12949",
+      "targetType": "order",
+      "changes": {
+        "job": {
+          "new": "সিভিল সার্জন কার্যালয় রাজবাড়ী নিয়োগ বিজ্ঞপ্তি ২০২৬"
+        }
+      },
+      "notes": "Job circular updated: সিভিল সার্জন কার্যালয় রাজবাড়ী নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "id": "AUDIT-1794024094977-PJDF4",
+      "timestamp": "2026-11-07T04:01:34.977Z"
+    },
+    {
+      "adminId": "LIVE_COLLECTOR",
+      "action": "job_edit",
+      "targetId": "job-alljobs-cid-14913",
+      "targetType": "order",
+      "changes": {
+        "job": {
+          "new": "বাংলাদেশ পুলিশ , সিআইডি নিয়োগ বিজ্ঞপ্তি ২০২৬"
+        }
+      },
+      "notes": "Job circular updated: বাংলাদেশ পুলিশ , সিআইডি নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "id": "AUDIT-1794024094873-EGUJN",
+      "timestamp": "2026-11-07T04:01:34.873Z"
+    },
+    {
+      "adminId": "LIVE_COLLECTOR",
+      "action": "job_edit",
+      "targetId": "job-alljobs-dcnetrokona-14935",
+      "targetType": "order",
+      "changes": {
+        "job": {
+          "new": "DC Office Netrokona (DCNETROKONA) নিয়োগ বিজ্ঞপ্তি ২০২৬"
+        }
+      },
+      "notes": "Job circular updated: DC Office Netrokona (DCNETROKONA) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "id": "AUDIT-1794024094745-JQ9N2",
+      "timestamp": "2026-11-07T04:01:34.745Z"
+    },
+    {
+      "adminId": "LIVE_COLLECTOR",
+      "action": "job_edit",
+      "targetId": "job-alljobs-bcic-14936",
+      "targetType": "order",
+      "changes": {
+        "job": {
+          "new": "Bangladesh Chemical Industries Corporation (BCIC) নিয়োগ বিজ্ঞপ্তি ২০২৬"
+        }
+      },
+      "notes": "Job circular updated: Bangladesh Chemical Industries Corporation (BCIC) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "id": "AUDIT-1794024094615-B4R8M",
+      "timestamp": "2026-11-07T04:01:34.615Z"
+    },
+    {
+      "adminId": "LIVE_COLLECTOR",
+      "action": "job_edit",
+      "targetId": "job-alljobs-hbri-14968",
+      "targetType": "order",
+      "changes": {
+        "job": {
+          "new": "Housing & Building Research Institute(HBRI) নিয়োগ বিজ্ঞপ্তি ২০২৬"
+        }
+      },
+      "notes": "Job circular updated: Housing & Building Research Institute(HBRI) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "id": "AUDIT-1794024094528-TUEUV",
+      "timestamp": "2026-11-07T04:01:34.528Z"
+    },
+    {
+      "adminId": "LIVE_COLLECTOR",
+      "action": "job_edit",
+      "targetId": "job-alljobs-dcpatuakhali-14984",
+      "targetType": "order",
+      "changes": {
+        "job": {
+          "new": "DC Office Patuakhali (DCPATUAKHALI) নিয়োগ বিজ্ঞপ্তি ২০২৬"
+        }
+      },
+      "notes": "Job circular updated: DC Office Patuakhali (DCPATUAKHALI) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "id": "AUDIT-1794024094432-NLKTG",
+      "timestamp": "2026-11-07T04:01:34.432Z"
+    },
+    {
+      "adminId": "LIVE_COLLECTOR",
+      "action": "job_edit",
+      "targetId": "job-alljobs-dcbogura-14986",
+      "targetType": "order",
+      "changes": {
+        "job": {
+          "new": "DC Office Bogura (DCBOGURA) নিয়োগ বিজ্ঞপ্তি ২০২৬"
+        }
+      },
+      "notes": "Job circular updated: DC Office Bogura (DCBOGURA) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "id": "AUDIT-1794024094325-B4BOK",
+      "timestamp": "2026-11-07T04:01:34.325Z"
+    },
+    {
+      "adminId": "LIVE_COLLECTOR",
+      "action": "job_edit",
+      "targetId": "job-alljobs-policedinaj-14987",
+      "targetType": "order",
+      "changes": {
+        "job": {
+          "new": "পুলিশ সুপারের কার্যালয়, দিনাজপুর নিয়োগ বিজ্ঞপ্তি ২০২৬"
+        }
+      },
+      "notes": "Job circular updated: পুলিশ সুপারের কার্যালয়, দিনাজপুর নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "id": "AUDIT-1794024094238-6VPAF",
+      "timestamp": "2026-11-07T04:01:34.238Z"
+    },
+    {
+      "adminId": "LIVE_COLLECTOR",
+      "action": "job_edit",
+      "targetId": "job-alljobs-bogmc-14989",
+      "targetType": "order",
+      "changes": {
+        "job": {
+          "new": "Bangladesh Oil, Gas & Mineral Corporation (Petrobangla) BOGMC নিয়োগ বিজ্ঞপ্তি ২০২৬"
+        }
+      },
+      "notes": "Job circular updated: Bangladesh Oil, Gas & Mineral Corporation (Petrobangla) BOGMC নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "id": "AUDIT-1794024094162-V6LLR",
+      "timestamp": "2026-11-07T04:01:34.162Z"
+    },
+    {
+      "adminId": "LIVE_COLLECTOR",
+      "action": "job_edit",
+      "targetId": "job-alljobs-tax6-15024",
+      "targetType": "order",
+      "changes": {
+        "job": {
+          "new": "কর কমিশনারের কার্যালয় কর অঞ্চল-৬, ঢাকা নিয়োগ বিজ্ঞপ্তি ২০২৬"
+        }
+      },
+      "notes": "Job circular updated: কর কমিশনারের কার্যালয় কর অঞ্চল-৬, ঢাকা নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "id": "AUDIT-1794024094058-7JYO6",
+      "timestamp": "2026-11-07T04:01:34.058Z"
+    },
+    {
+      "adminId": "LIVE_COLLECTOR",
+      "action": "job_edit",
+      "targetId": "job-alljobs-dcnoakhali-15031",
+      "targetType": "order",
+      "changes": {
+        "job": {
+          "new": "Deputy Commissioner Office, Noakhali (DCNOAKHALI) নিয়োগ বিজ্ঞপ্তি ২০২৬"
+        }
+      },
+      "notes": "Job circular updated: Deputy Commissioner Office, Noakhali (DCNOAKHALI) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "id": "AUDIT-1794024093948-WE9MV",
+      "timestamp": "2026-11-07T04:01:33.948Z"
+    },
+    {
+      "adminId": "LIVE_COLLECTOR",
+      "action": "job_edit",
+      "targetId": "job-alljobs-tax9-15038",
+      "targetType": "order",
+      "changes": {
+        "job": {
+          "new": "Taxes Zone-9, Dhaka (TAX9) নিয়োগ বিজ্ঞপ্তি ২০২৬"
+        }
+      },
+      "notes": "Job circular updated: Taxes Zone-9, Dhaka (TAX9) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "id": "AUDIT-1794024093769-B0P5M",
+      "timestamp": "2026-11-07T04:01:33.769Z"
+    },
+    {
+      "adminId": "LIVE_COLLECTOR",
+      "action": "job_edit",
+      "targetId": "job-alljobs-sposherpur-15044",
+      "targetType": "order",
+      "changes": {
+        "job": {
+          "new": "পুলিশ সুপারের কার্যালয় শেরপুর নিয়োগ বিজ্ঞপ্তি ২০২৬"
+        }
+      },
+      "notes": "Job circular updated: পুলিশ সুপারের কার্যালয় শেরপুর নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "id": "AUDIT-1794024093686-3WRO9",
+      "timestamp": "2026-11-07T04:01:33.686Z"
+    },
+    {
+      "adminId": "LIVE_COLLECTOR",
+      "action": "job_edit",
+      "targetId": "job-alljobs-dcchuadanga-15047",
+      "targetType": "order",
+      "changes": {
+        "job": {
+          "new": "DC Office Chuadanga (DCCHUADANGA) নিয়োগ বিজ্ঞপ্তি ২০২৬"
+        }
+      },
+      "notes": "Job circular updated: DC Office Chuadanga (DCCHUADANGA) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "id": "AUDIT-1794024093570-FBSBJ",
+      "timestamp": "2026-11-07T04:01:33.570Z"
+    },
+    {
+      "adminId": "LIVE_COLLECTOR",
+      "action": "job_edit",
+      "targetId": "job-alljobs-taxnar-15056",
+      "targetType": "order",
+      "changes": {
+        "job": {
+          "new": "কর কমিশনারের কার্যালয় কর অঞ্চল নারায়ণগঞ্জ নিয়োগ বিজ্ঞপ্তি ২০২৬"
+        }
+      },
+      "notes": "Job circular updated: কর কমিশনারের কার্যালয় কর অঞ্চল নারায়ণগঞ্জ নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "id": "AUDIT-1794024093453-DF5DQ",
+      "timestamp": "2026-11-07T04:01:33.453Z"
+    },
+    {
+      "adminId": "LIVE_COLLECTOR",
+      "action": "job_edit",
+      "targetId": "job-alljobs-nsd-15060",
+      "targetType": "order",
+      "changes": {
+        "job": {
+          "new": "জাতীয় সঞ্চয় অধিদপ্তর নিয়োগ বিজ্ঞপ্তি ২০২৬"
+        }
+      },
+      "notes": "Job circular updated: জাতীয় সঞ্চয় অধিদপ্তর নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "id": "AUDIT-1794024093346-J1L29",
+      "timestamp": "2026-11-07T04:01:33.346Z"
+    },
+    {
+      "adminId": "LIVE_COLLECTOR",
+      "action": "job_edit",
+      "targetId": "job-alljobs-dcnarail-15068",
+      "targetType": "order",
+      "changes": {
+        "job": {
+          "new": "Narail Distric (DCNARAIL) নিয়োগ বিজ্ঞপ্তি ২০২৬"
+        }
+      },
+      "notes": "Job circular updated: Narail Distric (DCNARAIL) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "id": "AUDIT-1794024093243-I4RK0",
+      "timestamp": "2026-11-07T04:01:33.243Z"
+    },
+    {
+      "adminId": "LIVE_COLLECTOR",
+      "action": "job_edit",
+      "targetId": "job-alljobs-tax19-15076",
+      "targetType": "order",
+      "changes": {
+        "job": {
+          "new": "কর অঞ্চল 19 নিয়োগ বিজ্ঞপ্তি ২০২৬"
+        }
+      },
+      "notes": "Job circular updated: কর অঞ্চল 19 নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "id": "AUDIT-1794024092869-JQ3II",
+      "timestamp": "2026-11-07T04:01:32.869Z"
+    },
+    {
+      "adminId": "LIVE_COLLECTOR",
+      "action": "job_edit",
+      "targetId": "job-alljobs-itiiu-15083",
+      "targetType": "order",
+      "changes": {
+        "job": {
+          "new": "আয়কর গোয়েন্দা ও তদন্ত ইউনিট নিয়োগ বিজ্ঞপ্তি ২০২৬"
+        }
+      },
+      "notes": "Job circular updated: আয়কর গোয়েন্দা ও তদন্ত ইউনিট নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "id": "AUDIT-1794024092754-SMVXL",
+      "timestamp": "2026-11-07T04:01:32.754Z"
+    },
+    {
+      "adminId": "LIVE_COLLECTOR",
+      "action": "job_edit",
+      "targetId": "job-alljobs-basb-15085",
+      "targetType": "order",
+      "changes": {
+        "job": {
+          "new": "বাংলাদেশ সশস্ত্র বাহিনী বোর্ড নিয়োগ বিজ্ঞপ্তি ২০২৬"
+        }
+      },
+      "notes": "Job circular updated: বাংলাদেশ সশস্ত্র বাহিনী বোর্ড নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "id": "AUDIT-1794024092665-54YZ1",
+      "timestamp": "2026-11-07T04:01:32.665Z"
+    },
+    {
+      "adminId": "LIVE_COLLECTOR",
+      "action": "job_edit",
+      "targetId": "job-alljobs-apscl-15090",
+      "targetType": "order",
+      "changes": {
+        "job": {
+          "new": "আশুগঞ্জ পাওয়ার স্টেশন কোম্পানী লিঃ নিয়োগ বিজ্ঞপ্তি ২০২৬"
+        }
+      },
+      "notes": "Job circular updated: আশুগঞ্জ পাওয়ার স্টেশন কোম্পানী লিঃ নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "id": "AUDIT-1794024092570-V3LSX",
+      "timestamp": "2026-11-07T04:01:32.570Z"
+    },
+    {
+      "adminId": "LIVE_COLLECTOR",
+      "action": "job_edit",
+      "targetId": "job-alljobs-dcjhenaidah-15102",
+      "targetType": "order",
+      "changes": {
+        "job": {
+          "new": "জেলা প্রশাসকের কার্যালয় ঝিনাইদহ নিয়োগ বিজ্ঞপ্তি ২০২৬"
+        }
+      },
+      "notes": "Job circular updated: জেলা প্রশাসকের কার্যালয় ঝিনাইদহ নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "id": "AUDIT-1794024092460-2LA86",
+      "timestamp": "2026-11-07T04:01:32.460Z"
+    },
+    {
+      "adminId": "LIVE_COLLECTOR",
+      "action": "job_edit",
+      "targetId": "job-alljobs-cpgcbl-15104",
+      "targetType": "order",
+      "changes": {
+        "job": {
+          "new": "Coal Power Generation Company Bangladesh Limited (CPGCBL) নিয়োগ বিজ্ঞপ্তি ২০২৬"
+        }
+      },
+      "notes": "Job circular updated: Coal Power Generation Company Bangladesh Limited (CPGCBL) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "id": "AUDIT-1794024092348-W1X6P",
+      "timestamp": "2026-11-07T04:01:32.349Z"
+    },
+    {
+      "adminId": "LIVE_COLLECTOR",
+      "action": "job_edit",
+      "targetId": "job-alljobs-dscc-15113",
+      "targetType": "order",
+      "changes": {
+        "job": {
+          "new": "Dhaka South City Corporation (DSCC) নিয়োগ বিজ্ঞপ্তি ২০২৬"
+        }
+      },
+      "notes": "Job circular updated: Dhaka South City Corporation (DSCC) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "id": "AUDIT-1794024092259-72PCR",
+      "timestamp": "2026-11-07T04:01:32.259Z"
+    },
+    {
+      "adminId": "LIVE_COLLECTOR",
+      "action": "job_edit",
+      "targetId": "job-alljobs-dcrajbari-15121",
+      "targetType": "order",
+      "changes": {
+        "job": {
+          "new": "DC OFFICE RAJBARI (DCRAJBARI) নিয়োগ বিজ্ঞপ্তি ২০২৬"
+        }
+      },
+      "notes": "Job circular updated: DC OFFICE RAJBARI (DCRAJBARI) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "id": "AUDIT-1794024092027-ELN4R",
+      "timestamp": "2026-11-07T04:01:32.027Z"
+    },
+    {
+      "adminId": "LIVE_COLLECTOR",
+      "action": "job_edit",
+      "targetId": "job-alljobs-cag-15122",
+      "targetType": "order",
+      "changes": {
+        "job": {
+          "new": "বাংলাদেশের কম্পট্রোলার অ্যান্ড অডিটর জেনারেল নিয়োগ বিজ্ঞপ্তি ২০২৬"
+        }
+      },
+      "notes": "Job circular updated: বাংলাদেশের কম্পট্রোলার অ্যান্ড অডিটর জেনারেল নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "id": "AUDIT-1794024091885-1H3G6",
+      "timestamp": "2026-11-07T04:01:31.885Z"
+    },
+    {
+      "adminId": "LIVE_COLLECTOR",
+      "action": "job_edit",
+      "targetId": "job-alljobs-dgms-15127",
+      "targetType": "order",
+      "changes": {
+        "job": {
+          "new": "Directorate General of Medical Service (DGMS) নিয়োগ বিজ্ঞপ্তি ২০২৬"
+        }
+      },
+      "notes": "Job circular updated: Directorate General of Medical Service (DGMS) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "id": "AUDIT-1794024091775-SK1XB",
+      "timestamp": "2026-11-07T04:01:31.775Z"
+    },
+    {
+      "adminId": "LIVE_COLLECTOR",
+      "action": "job_edit",
+      "targetId": "job-alljobs-dcjamalpur-15137",
+      "targetType": "order",
+      "changes": {
+        "job": {
+          "new": "DC OFFICE JAMALPUR (DCJAMALPUR) নিয়োগ বিজ্ঞপ্তি ২০২৬"
+        }
+      },
+      "notes": "Job circular updated: DC OFFICE JAMALPUR (DCJAMALPUR) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "id": "AUDIT-1794024091678-G22GB",
+      "timestamp": "2026-11-07T04:01:31.678Z"
+    },
+    {
+      "action": "UPLOAD_MEDIA",
+      "adminId": "ADMIN-SUPER",
+      "targetType": "MEDIA",
+      "targetId": "med_bb_logo",
+      "notes": "নতুন মিডিয়া ফাইল আপলোড: বাংলাদেশ ব্যাংক লোগো.png",
+      "changes": {
+        "media": {
+          "new": {
+            "id": "med_bb_logo",
+            "filename": "bangladesh-bank-logo.png",
+            "originalName": "বাংলাদেশ ব্যাংক লোগো.png",
+            "mimeType": "image/png",
+            "size": 61800,
+            "url": "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=300&q=80",
+            "altText": "বাংলাদেশ ব্যাংক রিক্রুটমেন্ট মনোগ্রাম",
+            "caption": "ব্যাংকার্স সিলেকশন কমিটি সচিবালয় (BSCS) সার্কুলার ব্যানার",
+            "uploadedBy": "ADMIN-SUPER",
+            "createdAt": "2026-11-07T03:26:01.881Z"
+          }
+        }
+      },
+      "id": "AUDIT-1794021961968-K6T2P",
+      "timestamp": "2026-11-07T03:26:01.968Z"
+    },
+    {
+      "action": "UPLOAD_MEDIA",
+      "adminId": "ADMIN-SUPER",
+      "targetType": "MEDIA",
+      "targetId": "med_teletalk",
+      "notes": "নতুন মিডিয়া ফাইল আপলোড: Teletalk AllJobs Banner.png",
+      "changes": {
+        "media": {
+          "new": {
+            "id": "med_teletalk",
+            "filename": "teletalk-alljobs.png",
+            "originalName": "Teletalk AllJobs Banner.png",
+            "mimeType": "image/png",
+            "size": 92400,
+            "url": "https://images.unsplash.com/photo-1586281380349-632531db7ed4?auto=format&fit=crop&w=600&q=80",
+            "altText": "টেলিটক অলজবস নিয়োগ ব্যানার",
+            "caption": "টেলিটক জব সার্কুলার ও ফর্ম-ফিল সার্ভিস ব্যানার",
+            "uploadedBy": "ADMIN-SUPER",
+            "createdAt": "2026-11-07T03:26:01.881Z"
+          }
+        }
+      },
+      "id": "AUDIT-1794021961935-LJ4OA",
+      "timestamp": "2026-11-07T03:26:01.935Z"
+    },
+    {
+      "action": "UPLOAD_MEDIA",
+      "adminId": "ADMIN-SUPER",
+      "targetType": "MEDIA",
+      "targetId": "med_bd_gov",
+      "notes": "নতুন মিডিয়া ফাইল আপলোড: বাংলাদেশ সরকার মনোগ্রাম.png",
+      "changes": {
+        "media": {
+          "new": {
+            "id": "med_bd_gov",
+            "filename": "bd-gov-emblem.png",
+            "originalName": "বাংলাদেশ সরকার মনোগ্রাম.png",
+            "mimeType": "image/png",
+            "size": 45200,
+            "url": "https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=300&q=80",
+            "altText": "গণপ্রজাতন্ত্রী বাংলাদেশ সরকার মনোগ্রাম",
+            "caption": "সরকারি চাকরির সার্কুলার ও অফিসিয়াল বিজ্ঞপ্তির জন্য অনুমোদিত লোগো",
+            "uploadedBy": "ADMIN-SUPER",
+            "createdAt": "2026-11-07T03:26:01.881Z"
+          }
+        }
+      },
+      "id": "AUDIT-1794021961898-PQPXJ",
+      "timestamp": "2026-11-07T03:26:01.898Z"
+    },
+    {
+      "adminId": "ADMIN-SUPER",
+      "action": "page_publish",
+      "targetId": "home",
+      "targetType": "order",
+      "changes": {
+        "version": {
+          "old": 18,
+          "new": 19
+        }
+      },
+      "notes": "Page হোমপেজ — চাকরি সেবা published",
+      "id": "AUDIT-1794021796524-935DG",
+      "timestamp": "2026-11-07T03:23:16.524Z"
+    },
+    {
+      "adminId": "ADMIN-SUPER",
+      "action": "page_publish",
+      "targetId": "home",
+      "targetType": "order",
+      "changes": {
+        "version": {
+          "old": 17,
+          "new": 18
+        }
+      },
+      "notes": "Page হোমপেজ — চাকরি সেবা published",
+      "id": "AUDIT-1794021496509-IHYM8",
+      "timestamp": "2026-11-07T03:18:16.509Z"
+    },
+    {
+      "adminId": "ADMIN-SUPER",
+      "action": "page_publish",
+      "targetId": "home",
+      "targetType": "order",
+      "changes": {
+        "version": {
+          "old": 15,
+          "new": 16
+        }
+      },
+      "notes": "Page হোমপেজ — চাকরি সেবা published",
+      "id": "AUDIT-1794019831906-5YXVT",
+      "timestamp": "2026-11-07T02:50:31.906Z"
+    },
+    {
+      "action": "UPDATE_PLATFORM_SETTINGS",
+      "adminId": "ADMIN-SUPER",
+      "targetType": "SYSTEM_SETTINGS",
+      "targetId": "GLOBAL_CONFIG",
+      "notes": "প্ল্যাটফর্মের কেন্দ্রীয় সেটিংস ও কনফিগারেশন হালনাগাদ করা হয়েছে",
+      "changes": {
+        "settings": {
+          "new": {
+            "general": {
+              "siteName": "চাকরি সেবা BD (অফিশিয়াল পোর্টাল)",
+              "siteDescription": "বাংলাদেশের একমাত্র ১০০% সম্পূর্ণ ফ্রি সরকারি ও বেসরকারি চাকরি পোর্টাল",
+              "logoUrl": "/icons/icon-192x192.png",
+              "faviconUrl": "/favicon.ico",
+              "supportPhone": "+৮৮০ ১৭৭৪-৩৬৬৬৪৩",
+              "supportEmail": "support@chakrisheba.com",
+              "officeAddress": "ধানমন্ডি ৩২, ঢাকা-১২০৯, বাংলাদেশ",
+              "whatsappNumber": "8801774366643",
+              "whatsappButtonText": "জরুরি সহায়তা",
+              "loginButtonText": "লগইন / রেজিস্ট্রেশন",
+              "announcementText": "⚡ জরুরি বিজ্ঞপ্তি: ২০২৬ সালের সকল সরকারি ও ব্যাংক চাকরির ১০০% নির্ভুল অনলাইন আবেদন সেবা চলমান!",
+              "announcementUrl": "/jobs",
+              "announcementEnabled": true,
+              "headerMenuItems": [
+                {
+                  "id": "home",
+                  "label": "হোম",
+                  "href": "/"
+                },
+                {
+                  "id": "all-jobs",
+                  "label": "সকল চাকরি",
+                  "href": "/jobs",
+                  "badge": "হট",
+                  "dropdown": [
+                    {
+                      "label": "চলমান সকল বিজ্ঞপ্তি",
+                      "href": "/jobs"
+                    },
+                    {
+                      "label": "সর্বশেষ প্রকাশিত চাকরি",
+                      "href": "/latest-jobs"
+                    },
+                    {
+                      "label": "আবেদনের শেষ সময় কাছাকাছি",
+                      "href": "/deadline-approaching"
+                    },
+                    {
+                      "label": "সকল চাকরির প্রতিষ্ঠান",
+                      "href": "/organizations"
+                    },
+                    {
+                      "label": "যোগ্যতা অনুযায়ী চাকরি",
+                      "href": "/job-categories"
+                    }
+                  ]
+                },
+                {
+                  "id": "govt",
+                  "label": "সরকারি চাকরি",
+                  "href": "/government-jobs",
+                  "dropdown": [
+                    {
+                      "label": "সকল সরকারি চাকরি",
+                      "href": "/government-jobs"
+                    },
+                    {
+                      "label": "বিপিএসসি (BPSC) চাকরি",
+                      "href": "/organizations/bpsc"
+                    },
+                    {
+                      "label": "বাংলাদেশ ব্যাংক নিয়োগ",
+                      "href": "/organizations/bangladesh-bank"
+                    },
+                    {
+                      "label": "সরকারি মন্ত্রণালয়সমূহ",
+                      "href": "/organizations/government-ministries"
+                    },
+                    {
+                      "label": "সরকারি অধিদপ্তরসমূহ",
+                      "href": "/organizations/government-directorates"
+                    }
+                  ]
+                },
+                {
+                  "id": "private",
+                  "label": "বেসরকারি চাকরি",
+                  "href": "/private-jobs",
+                  "dropdown": [
+                    {
+                      "label": "সকল বেসরকারি চাকরি",
+                      "href": "/private-jobs"
+                    },
+                    {
+                      "label": "ব্যাংক ও আর্থিক প্রতিষ্ঠান",
+                      "href": "/bank-jobs"
+                    },
+                    {
+                      "label": "এনজিও (NGO) চাকরি",
+                      "href": "/ngo-jobs"
+                    },
+                    {
+                      "label": "আইটি ও সফটওয়্যার জবস",
+                      "href": "/it-jobs"
+                    },
+                    {
+                      "label": "মেডিকেল ও ফার্মাসিউটিক্যাল",
+                      "href": "/medical-jobs"
+                    }
+                  ]
+                },
+                {
+                  "id": "categories",
+                  "label": "চাকরির ক্যাটাগরি",
+                  "href": "/job-categories",
+                  "dropdown": [
+                    {
+                      "label": "সকল ক্যাটাগরি ব্রাউজ করুন",
+                      "href": "/job-categories"
+                    },
+                    {
+                      "label": "শিক্ষক নিয়োগ",
+                      "href": "/teacher-jobs"
+                    },
+                    {
+                      "label": "ইঞ্জিনিয়ারিং চাকরি",
+                      "href": "/engineering-jobs"
+                    },
+                    {
+                      "label": "মার্কেটিং ও সেলস",
+                      "href": "/marketing-jobs"
+                    },
+                    {
+                      "label": "ফ্রেশারদের চাকরি",
+                      "href": "/fresher-jobs"
+                    },
+                    {
+                      "label": "পার্ট-টাইম ও ইন্টার্নশিপ",
+                      "href": "/part-time-jobs"
+                    }
+                  ]
+                },
+                {
+                  "id": "exam",
+                  "label": "পরীক্ষা ও ফলাফল",
+                  "href": "/exam-notices",
+                  "dropdown": [
+                    {
+                      "label": "পরীক্ষার নোটিশ ও তারিখ",
+                      "href": "/exam-notices"
+                    },
+                    {
+                      "label": "প্রবেশপত্র / Admit Card",
+                      "href": "/admit-cards"
+                    },
+                    {
+                      "label": "লিখিত পরীক্ষার ফলাফল",
+                      "href": "/written-exam-results"
+                    },
+                    {
+                      "label": "মৌখিক পরীক্ষার নোটিশ (Viva)",
+                      "href": "/viva-notices"
+                    },
+                    {
+                      "label": "সকল পরীক্ষার ফলাফল",
+                      "href": "/exam-results"
+                    },
+                    {
+                      "label": "বিগত বছরের প্রশ্ন ও সমাধান",
+                      "href": "/previous-year-questions"
+                    },
+                    {
+                      "label": "অনলাইন মডেল টেস্ট",
+                      "href": "/model-tests"
+                    }
+                  ]
+                },
+                {
+                  "id": "career",
+                  "label": "ক্যারিয়ার গাইড",
+                  "href": "/career-guides",
+                  "dropdown": [
+                    {
+                      "label": "ক্যারিয়ার গাইড হাব",
+                      "href": "/career-guides"
+                    },
+                    {
+                      "label": "সিভি লেখার সঠিক নিয়ম",
+                      "href": "/career-guides/cv-writing"
+                    },
+                    {
+                      "label": "অনলাইনে চাকরির আবেদন গাইড",
+                      "href": "/career-guides/online-job-application"
+                    },
+                    {
+                      "label": "ইন্টারভিউ ও ভাইভা প্রস্তুতি",
+                      "href": "/career-guides/interview-preparation"
+                    },
+                    {
+                      "label": "চাকরির পরীক্ষার প্রস্তুতি",
+                      "href": "/career-guides/job-exam-preparation"
+                    },
+                    {
+                      "label": "ক্যারিয়ার পরামর্শ ও ব্লগ",
+                      "href": "/blog"
+                    }
+                  ]
+                }
+              ],
+              "footerColumns": [
+                {
+                  "id": "col-jobs",
+                  "title": "চাকরি ও পরীক্ষা",
+                  "links": [
+                    {
+                      "label": "চলমান সকল চাকরি",
+                      "url": "/jobs"
+                    },
+                    {
+                      "label": "সরকারি চাকরির বিজ্ঞপ্তি",
+                      "url": "/government-jobs"
+                    },
+                    {
+                      "label": "বেসরকারি ও কোম্পানি জবস",
+                      "url": "/private-jobs"
+                    },
+                    {
+                      "label": "ব্যাংক ও ফাইন্যান্স চাকরি",
+                      "url": "/bank-jobs"
+                    },
+                    {
+                      "label": "আবেদনের শেষ সময় কাছাকাছি",
+                      "url": "/deadline-approaching"
+                    },
+                    {
+                      "label": "পরীক্ষার নোটিশ ও সময়সূচি",
+                      "url": "/exam-notices"
+                    },
+                    {
+                      "label": "প্রবেশপত্র / অ্যাডমিট কার্ড",
+                      "url": "/admit-cards"
+                    },
+                    {
+                      "label": "বিগত বছরের প্রশ্ন ও সমাধান",
+                      "url": "/previous-year-questions"
+                    },
+                    {
+                      "label": "অনলাইন মডেল টেস্ট",
+                      "url": "/model-tests"
+                    }
+                  ]
+                },
+                {
+                  "id": "col-guides",
+                  "title": "ক্যারিয়ার গাইড ও সার্ভিস",
+                  "links": [
+                    {
+                      "label": "সকল চাকরির ক্যাটাগরি",
+                      "url": "/job-categories"
+                    },
+                    {
+                      "label": "সকল নিয়োগকারী প্রতিষ্ঠান",
+                      "url": "/organizations"
+                    },
+                    {
+                      "label": "ক্যারিয়ার গাইড হাব",
+                      "url": "/career-guides"
+                    },
+                    {
+                      "label": "সিভি লেখার সঠিক নিয়ম",
+                      "url": "/career-guides/cv-writing"
+                    },
+                    {
+                      "label": "অনলাইনে চাকরির আবেদন গাইড",
+                      "url": "/career-guides/online-job-application"
+                    },
+                    {
+                      "label": "ইন্টারভিউ ও ভাইভা প্রস্তুতি",
+                      "url": "/career-guides/interview-preparation"
+                    },
+                    {
+                      "label": "সব ব্লগ ও ক্যারিয়ার আর্টিকেল",
+                      "url": "/blog"
+                    },
+                    {
+                      "label": "ফ্রি জব এলার্ট নোটিফিকেশন",
+                      "url": "/job-alerts"
+                    }
+                  ]
+                },
+                {
+                  "id": "col-policies",
+                  "title": "নীতিমালা ও সহায়তা",
+                  "links": [
+                    {
+                      "label": "আমাদের সম্পর্কে (About Us)",
+                      "url": "/about-us"
+                    },
+                    {
+                      "label": "যোগাযোগ করুন (Contact)",
+                      "url": "/contact-us"
+                    },
+                    {
+                      "label": "সাধারণ জিজ্ঞাসা (FAQ)",
+                      "url": "/faq"
+                    },
+                    {
+                      "label": "সম্পাদকীয় নীতিমালা",
+                      "url": "/editorial-policy"
+                    },
+                    {
+                      "label": "চাকরি যাচাই নীতিমালা",
+                      "url": "/job-verification-policy"
+                    },
+                    {
+                      "label": "ভুল তথ্য সংশোধন নীতিমালা",
+                      "url": "/corrections-policy"
+                    },
+                    {
+                      "label": "ভুল বিজ্ঞপ্তি রিপোর্ট করুন",
+                      "url": "/report-a-job"
+                    }
+                  ]
+                }
+              ],
+              "footerAboutText": "বাংলাদেশের চাকরিপ্রার্থীদের বিশ্বস্ত ডিজিটাল প্ল্যাটফর্ম। ঘরে বসেই সকল সরকারি, ব্যাংক ও শীর্ষ বেসরকারি চাকরির শতভাগ যাচাইকৃত বিজ্ঞপ্তি ও সঠিক নিয়মে অনলাইন আবেদন সহায়তা।",
+              "facebookUrl": "https://facebook.com/chakrisheba.bd",
+              "telegramUrl": "https://t.me/chakrisheba",
+              "youtubeUrl": "https://youtube.com/@chakrisheba"
+            },
+            "seo": {
+              "defaultTitle": "চাকরি সেবা — সরকারি ও বেসরকারি চাকরির খবর ও আবেদন পোর্টাল",
+              "defaultDescription": "টেলিটক জব সার্কুলার, ব্যাংক জব, সরকারি মন্ত্রণালয় ও বেসরকারি প্রতিষ্ঠানের চাকরির সকল আপডেট সম্পূর্ণ বিনামূল্যে।",
+              "defaultKeywords": [
+                "চাকরি সেবা",
+                "সরকারি চাকরি",
+                "টেলিটক জব সার্কুলার",
+                "ব্যাংক জব",
+                "chakri sheba"
+              ],
+              "defaultOgImage": "https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1200&q=80",
+              "googleSiteVerification": "google-site-verification=cs_live_bd_2026_verify_meta"
+            }
+          }
+        }
+      },
+      "id": "AUDIT-1794019794560-XEJYZ",
+      "timestamp": "2026-11-07T02:49:54.560Z"
+    },
+    {
+      "adminId": "ADMIN-SUPER",
+      "action": "page_publish",
+      "targetId": "home",
+      "targetType": "order",
+      "changes": {
+        "version": {
+          "old": 14,
+          "new": 15
+        }
+      },
+      "notes": "Page হোমপেজ — চাকরি সেবা published",
+      "id": "AUDIT-1794019760594-U2B5H",
+      "timestamp": "2026-11-07T02:49:20.594Z"
+    },
+    {
+      "action": "UPDATE_PLATFORM_SETTINGS",
+      "adminId": "ADMIN-SUPER",
+      "targetType": "SYSTEM_SETTINGS",
+      "targetId": "GLOBAL_CONFIG",
+      "notes": "প্ল্যাটফর্মের কেন্দ্রীয় সেটিংস ও কনফিগারেশন হালনাগাদ করা হয়েছে",
+      "changes": {
+        "settings": {
+          "new": {
+            "general": {
+              "siteName": "চাকরি সেবা বাংলাদেশ (অফিশিয়াল)",
+              "siteDescription": "বাংলাদেশের একমাত্র ১০০% সম্পূর্ণ ফ্রি সরকারি ও বেসরকারি চাকরি পোর্টাল",
+              "logoUrl": "/icons/icon-192x192.png",
+              "faviconUrl": "/favicon.ico",
+              "supportPhone": "+৮৮০ ১৭৭৪-৩৬৬৬৪৩",
+              "supportEmail": "support@chakrisheba.com",
+              "officeAddress": "ধানমন্ডি ৩২, ঢাকা-১২০৯, বাংলাদেশ",
+              "whatsappNumber": "8801774366643",
+              "whatsappButtonText": "জরুরি সহায়তা",
+              "loginButtonText": "লগইন / রেজিস্ট্রেশন",
+              "announcementText": "⚡ জরুরি আপডেট: ২০২৬ সালের সকল সরকারি ও ব্যাংক চাকরির অনলাইন আবেদন সহায়তা পুরোদমে চালু রয়েছে!",
+              "announcementUrl": "/jobs",
+              "announcementEnabled": true,
+              "headerMenuItems": [
+                {
+                  "id": "home",
+                  "label": "হোম",
+                  "href": "/"
+                },
+                {
+                  "id": "all-jobs",
+                  "label": "সকল চাকরি",
+                  "href": "/jobs",
+                  "badge": "হট",
+                  "dropdown": [
+                    {
+                      "label": "চলমান সকল বিজ্ঞপ্তি",
+                      "href": "/jobs"
+                    },
+                    {
+                      "label": "সর্বশেষ প্রকাশিত চাকরি",
+                      "href": "/latest-jobs"
+                    },
+                    {
+                      "label": "আবেদনের শেষ সময় কাছাকাছি",
+                      "href": "/deadline-approaching"
+                    },
+                    {
+                      "label": "সকল চাকরির প্রতিষ্ঠান",
+                      "href": "/organizations"
+                    },
+                    {
+                      "label": "যোগ্যতা অনুযায়ী চাকরি",
+                      "href": "/job-categories"
+                    }
+                  ]
+                },
+                {
+                  "id": "govt",
+                  "label": "সরকারি চাকরি",
+                  "href": "/government-jobs",
+                  "dropdown": [
+                    {
+                      "label": "সকল সরকারি চাকরি",
+                      "href": "/government-jobs"
+                    },
+                    {
+                      "label": "বিপিএসসি (BPSC) চাকরি",
+                      "href": "/organizations/bpsc"
+                    },
+                    {
+                      "label": "বাংলাদেশ ব্যাংক নিয়োগ",
+                      "href": "/organizations/bangladesh-bank"
+                    },
+                    {
+                      "label": "সরকারি মন্ত্রণালয়সমূহ",
+                      "href": "/organizations/government-ministries"
+                    },
+                    {
+                      "label": "সরকারি অধিদপ্তরসমূহ",
+                      "href": "/organizations/government-directorates"
+                    }
+                  ]
+                },
+                {
+                  "id": "private",
+                  "label": "বেসরকারি চাকরি",
+                  "href": "/private-jobs",
+                  "dropdown": [
+                    {
+                      "label": "সকল বেসরকারি চাকরি",
+                      "href": "/private-jobs"
+                    },
+                    {
+                      "label": "ব্যাংক ও আর্থিক প্রতিষ্ঠান",
+                      "href": "/bank-jobs"
+                    },
+                    {
+                      "label": "এনজিও (NGO) চাকরি",
+                      "href": "/ngo-jobs"
+                    },
+                    {
+                      "label": "আইটি ও সফটওয়্যার জবস",
+                      "href": "/it-jobs"
+                    },
+                    {
+                      "label": "মেডিকেল ও ফার্মাসিউটিক্যাল",
+                      "href": "/medical-jobs"
+                    }
+                  ]
+                },
+                {
+                  "id": "categories",
+                  "label": "চাকরির ক্যাটাগরি",
+                  "href": "/job-categories",
+                  "dropdown": [
+                    {
+                      "label": "সকল ক্যাটাগরি ব্রাউজ করুন",
+                      "href": "/job-categories"
+                    },
+                    {
+                      "label": "শিক্ষক নিয়োগ",
+                      "href": "/teacher-jobs"
+                    },
+                    {
+                      "label": "ইঞ্জিনিয়ারিং চাকরি",
+                      "href": "/engineering-jobs"
+                    },
+                    {
+                      "label": "মার্কেটিং ও সেলস",
+                      "href": "/marketing-jobs"
+                    },
+                    {
+                      "label": "ফ্রেশারদের চাকরি",
+                      "href": "/fresher-jobs"
+                    },
+                    {
+                      "label": "পার্ট-টাইম ও ইন্টার্নশিপ",
+                      "href": "/part-time-jobs"
+                    }
+                  ]
+                },
+                {
+                  "id": "exam",
+                  "label": "পরীক্ষা ও ফলাফল",
+                  "href": "/exam-notices",
+                  "dropdown": [
+                    {
+                      "label": "পরীক্ষার নোটিশ ও তারিখ",
+                      "href": "/exam-notices"
+                    },
+                    {
+                      "label": "প্রবেশপত্র / Admit Card",
+                      "href": "/admit-cards"
+                    },
+                    {
+                      "label": "লিখিত পরীক্ষার ফলাফল",
+                      "href": "/written-exam-results"
+                    },
+                    {
+                      "label": "মৌখিক পরীক্ষার নোটিশ (Viva)",
+                      "href": "/viva-notices"
+                    },
+                    {
+                      "label": "সকল পরীক্ষার ফলাফল",
+                      "href": "/exam-results"
+                    },
+                    {
+                      "label": "বিগত বছরের প্রশ্ন ও সমাধান",
+                      "href": "/previous-year-questions"
+                    },
+                    {
+                      "label": "অনলাইন মডেল টেস্ট",
+                      "href": "/model-tests"
+                    }
+                  ]
+                },
+                {
+                  "id": "career",
+                  "label": "ক্যারিয়ার গাইড",
+                  "href": "/career-guides",
+                  "dropdown": [
+                    {
+                      "label": "ক্যারিয়ার গাইড হাব",
+                      "href": "/career-guides"
+                    },
+                    {
+                      "label": "সিভি লেখার সঠিক নিয়ম",
+                      "href": "/career-guides/cv-writing"
+                    },
+                    {
+                      "label": "অনলাইনে চাকরির আবেদন গাইড",
+                      "href": "/career-guides/online-job-application"
+                    },
+                    {
+                      "label": "ইন্টারভিউ ও ভাইভা প্রস্তুতি",
+                      "href": "/career-guides/interview-preparation"
+                    },
+                    {
+                      "label": "চাকরির পরীক্ষার প্রস্তুতি",
+                      "href": "/career-guides/job-exam-preparation"
+                    },
+                    {
+                      "label": "ক্যারিয়ার পরামর্শ ও ব্লগ",
+                      "href": "/blog"
+                    }
+                  ]
+                }
+              ],
+              "footerColumns": [
+                {
+                  "id": "col-jobs",
+                  "title": "চাকরি ও পরীক্ষা",
+                  "links": [
+                    {
+                      "label": "চলমান সকল চাকরি",
+                      "url": "/jobs"
+                    },
+                    {
+                      "label": "সরকারি চাকরির বিজ্ঞপ্তি",
+                      "url": "/government-jobs"
+                    },
+                    {
+                      "label": "বেসরকারি ও কোম্পানি জবস",
+                      "url": "/private-jobs"
+                    },
+                    {
+                      "label": "ব্যাংক ও ফাইন্যান্স চাকরি",
+                      "url": "/bank-jobs"
+                    },
+                    {
+                      "label": "আবেদনের শেষ সময় কাছাকাছি",
+                      "url": "/deadline-approaching"
+                    },
+                    {
+                      "label": "পরীক্ষার নোটিশ ও সময়সূচি",
+                      "url": "/exam-notices"
+                    },
+                    {
+                      "label": "প্রবেশপত্র / অ্যাডমিট কার্ড",
+                      "url": "/admit-cards"
+                    },
+                    {
+                      "label": "বিগত বছরের প্রশ্ন ও সমাধান",
+                      "url": "/previous-year-questions"
+                    },
+                    {
+                      "label": "অনলাইন মডেল টেস্ট",
+                      "url": "/model-tests"
+                    }
+                  ]
+                },
+                {
+                  "id": "col-guides",
+                  "title": "ক্যারিয়ার গাইড ও সার্ভিস",
+                  "links": [
+                    {
+                      "label": "সকল চাকরির ক্যাটাগরি",
+                      "url": "/job-categories"
+                    },
+                    {
+                      "label": "সকল নিয়োগকারী প্রতিষ্ঠান",
+                      "url": "/organizations"
+                    },
+                    {
+                      "label": "ক্যারিয়ার গাইড হাব",
+                      "url": "/career-guides"
+                    },
+                    {
+                      "label": "সিভি লেখার সঠিক নিয়ম",
+                      "url": "/career-guides/cv-writing"
+                    },
+                    {
+                      "label": "অনলাইনে চাকরির আবেদন গাইড",
+                      "url": "/career-guides/online-job-application"
+                    },
+                    {
+                      "label": "ইন্টারভিউ ও ভাইভা প্রস্তুতি",
+                      "url": "/career-guides/interview-preparation"
+                    },
+                    {
+                      "label": "সব ব্লগ ও ক্যারিয়ার আর্টিকেল",
+                      "url": "/blog"
+                    },
+                    {
+                      "label": "ফ্রি জব এলার্ট নোটিফিকেশন",
+                      "url": "/job-alerts"
+                    }
+                  ]
+                },
+                {
+                  "id": "col-policies",
+                  "title": "নীতিমালা ও সহায়তা",
+                  "links": [
+                    {
+                      "label": "আমাদের সম্পর্কে (About Us)",
+                      "url": "/about-us"
+                    },
+                    {
+                      "label": "যোগাযোগ করুন (Contact)",
+                      "url": "/contact-us"
+                    },
+                    {
+                      "label": "সাধারণ জিজ্ঞাসা (FAQ)",
+                      "url": "/faq"
+                    },
+                    {
+                      "label": "সম্পাদকীয় নীতিমালা",
+                      "url": "/editorial-policy"
+                    },
+                    {
+                      "label": "চাকরি যাচাই নীতিমালা",
+                      "url": "/job-verification-policy"
+                    },
+                    {
+                      "label": "ভুল তথ্য সংশোধন নীতিমালা",
+                      "url": "/corrections-policy"
+                    },
+                    {
+                      "label": "ভুল বিজ্ঞপ্তি রিপোর্ট করুন",
+                      "url": "/report-a-job"
+                    }
+                  ]
+                }
+              ],
+              "footerAboutText": "বাংলাদেশের চাকরিপ্রার্থীদের বিশ্বস্ত ডিজিটাল প্ল্যাটফর্ম। ঘরে বসেই সকল সরকারি, ব্যাংক ও শীর্ষ বেসরকারি চাকরির শতভাগ যাচাইকৃত বিজ্ঞপ্তি ও সঠিক নিয়মে অনলাইন আবেদন সহায়তা।",
+              "facebookUrl": "https://facebook.com/chakrisheba.bd",
+              "telegramUrl": "https://t.me/chakrisheba",
+              "youtubeUrl": "https://youtube.com/@chakrisheba"
+            },
+            "seo": {
+              "defaultTitle": "চাকরি সেবা — সরকারি ও বেসরকারি চাকরির খবর ও আবেদন পোর্টাল",
+              "defaultDescription": "টেলিটক জব সার্কুলার, ব্যাংক জব, সরকারি মন্ত্রণালয় ও বেসরকারি প্রতিষ্ঠানের চাকরির সকল আপডেট সম্পূর্ণ বিনামূল্যে।",
+              "defaultKeywords": [
+                "চাকরি সেবা",
+                "সরকারি চাকরি",
+                "টেলিটক জব সার্কুলার",
+                "ব্যাংক জব",
+                "chakri sheba"
+              ],
+              "defaultOgImage": "https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1200&q=80",
+              "googleSiteVerification": "google-site-verification=cs_live_bd_2026_verify_meta"
+            }
+          }
+        }
+      },
+      "id": "AUDIT-1794019747339-P7VHI",
+      "timestamp": "2026-11-07T02:49:07.340Z"
+    },
+    {
+      "adminId": "ADMIN-SUPER",
+      "action": "page_publish",
+      "targetId": "home",
+      "targetType": "order",
+      "changes": {
+        "version": {
+          "old": 13,
+          "new": 14
+        }
+      },
+      "notes": "Page হোমপেজ — চাকরি সেবা published",
+      "id": "AUDIT-1794018921037-LVQZA",
+      "timestamp": "2026-11-07T02:35:21.037Z"
+    },
     {
       "action": "UPDATE_PLATFORM_SETTINGS",
       "adminId": "ADMIN-SUPER",
@@ -3848,7 +5404,7 @@
       "verificationStatus": "VERIFIED",
       "verificationConfidence": 100,
       "verifiedBy": "ALLJOBS-LIVE-COLLECTOR",
-      "lastVerifiedAt": "2026-11-07T00:08:08.313Z",
+      "lastVerifiedAt": "2026-11-07T04:01:31.659Z",
       "requirements": [
         "প্রার্থীকে জন্মসূত্রে বাংলাদেশের স্থায়ী নাগরিক হতে হবে।",
         "আবেদনের নির্ধারিত তারিখে প্রার্থীর বয়স ১৮ থেকে ৩২ বছরের মধ্যে হতে হবে (বীর মুক্তিযোদ্ধা ও শারীরিক প্রতিবন্ধী কোটায় ৩২ বছর পর্যন্ত শিথিলযোগ্য)।",
@@ -4010,9 +5566,19 @@
           "govtFee": 200
         }
       ],
-      "createdAt": "2026-11-07T00:08:08.313Z",
-      "updatedAt": "2026-11-07T00:08:08.315Z",
+      "createdAt": "2026-11-07T04:01:31.659Z",
+      "updatedAt": "2026-11-07T04:01:31.660Z",
       "revisionHistory": [
+        {
+          "timestamp": "2026-11-07T04:01:31.660Z",
+          "adminId": "LIVE_COLLECTOR",
+          "action": "update",
+          "changedFields": [
+            "lastVerifiedAt",
+            "createdAt"
+          ],
+          "summary": "2টি ফিল্ড পরিবর্তিত হয়েছে (lastVerifiedAt, createdAt)"
+        },
         {
           "timestamp": "2026-11-07T00:08:08.315Z",
           "adminId": "LIVE_COLLECTOR",
@@ -4108,7 +5674,7 @@
       "verificationStatus": "VERIFIED",
       "verificationConfidence": 100,
       "verifiedBy": "ALLJOBS-LIVE-COLLECTOR",
-      "lastVerifiedAt": "2026-11-07T00:08:08.413Z",
+      "lastVerifiedAt": "2026-11-07T04:01:31.761Z",
       "requirements": [
         "প্রার্থীকে জন্মসূত্রে বাংলাদেশের স্থায়ী নাগরিক হতে হবে।",
         "আবেদনের নির্ধারিত তারিখে প্রার্থীর বয়স ১৮ থেকে ৩২ বছরের মধ্যে হতে হবে (বীর মুক্তিযোদ্ধা ও শারীরিক প্রতিবন্ধী কোটায় ৩২ বছর পর্যন্ত শিথিলযোগ্য)।",
@@ -4270,9 +5836,19 @@
           "govtFee": 200
         }
       ],
-      "createdAt": "2026-11-07T00:08:08.413Z",
-      "updatedAt": "2026-11-07T00:08:08.414Z",
+      "createdAt": "2026-11-07T04:01:31.761Z",
+      "updatedAt": "2026-11-07T04:01:31.762Z",
       "revisionHistory": [
+        {
+          "timestamp": "2026-11-07T04:01:31.762Z",
+          "adminId": "LIVE_COLLECTOR",
+          "action": "update",
+          "changedFields": [
+            "lastVerifiedAt",
+            "createdAt"
+          ],
+          "summary": "2টি ফিল্ড পরিবর্তিত হয়েছে (lastVerifiedAt, createdAt)"
+        },
         {
           "timestamp": "2026-11-07T00:08:08.414Z",
           "adminId": "LIVE_COLLECTOR",
@@ -4368,7 +5944,7 @@
       "verificationStatus": "VERIFIED",
       "verificationConfidence": 100,
       "verifiedBy": "ALLJOBS-LIVE-COLLECTOR",
-      "lastVerifiedAt": "2026-11-07T00:08:08.505Z",
+      "lastVerifiedAt": "2026-11-07T04:01:31.865Z",
       "requirements": [
         "প্রার্থীকে জন্মসূত্রে বাংলাদেশের স্থায়ী নাগরিক হতে হবে।",
         "আবেদনের নির্ধারিত তারিখে প্রার্থীর বয়স ১৮ থেকে ৩২ বছরের মধ্যে হতে হবে (বীর মুক্তিযোদ্ধা ও শারীরিক প্রতিবন্ধী কোটায় ৩২ বছর পর্যন্ত শিথিলযোগ্য)।",
@@ -4460,9 +6036,19 @@
           "govtFee": 100
         }
       ],
-      "createdAt": "2026-11-07T00:08:08.505Z",
-      "updatedAt": "2026-11-07T00:08:08.506Z",
+      "createdAt": "2026-11-07T04:01:31.865Z",
+      "updatedAt": "2026-11-07T04:01:31.866Z",
       "revisionHistory": [
+        {
+          "timestamp": "2026-11-07T04:01:31.866Z",
+          "adminId": "LIVE_COLLECTOR",
+          "action": "update",
+          "changedFields": [
+            "lastVerifiedAt",
+            "createdAt"
+          ],
+          "summary": "2টি ফিল্ড পরিবর্তিত হয়েছে (lastVerifiedAt, createdAt)"
+        },
         {
           "timestamp": "2026-11-07T00:08:08.506Z",
           "adminId": "LIVE_COLLECTOR",
@@ -4560,7 +6146,7 @@
       "verificationStatus": "VERIFIED",
       "verificationConfidence": 100,
       "verifiedBy": "ALLJOBS-LIVE-COLLECTOR",
-      "lastVerifiedAt": "2026-11-07T00:08:08.635Z",
+      "lastVerifiedAt": "2026-11-07T04:01:32.005Z",
       "requirements": [
         "প্রার্থীকে জন্মসূত্রে বাংলাদেশের স্থায়ী নাগরিক হতে হবে।",
         "আবেদনের নির্ধারিত তারিখে প্রার্থীর বয়স ১৮ থেকে ৩২ বছরের মধ্যে হতে হবে (বীর মুক্তিযোদ্ধা ও শারীরিক প্রতিবন্ধী কোটায় ৩২ বছর পর্যন্ত শিথিলযোগ্য)।",
@@ -4622,9 +6208,19 @@
           "govtFee": 600
         }
       ],
-      "createdAt": "2026-11-07T00:08:08.635Z",
-      "updatedAt": "2026-11-07T00:08:08.636Z",
+      "createdAt": "2026-11-07T04:01:32.005Z",
+      "updatedAt": "2026-11-07T04:01:32.006Z",
       "revisionHistory": [
+        {
+          "timestamp": "2026-11-07T04:01:32.006Z",
+          "adminId": "LIVE_COLLECTOR",
+          "action": "update",
+          "changedFields": [
+            "lastVerifiedAt",
+            "createdAt"
+          ],
+          "summary": "2টি ফিল্ড পরিবর্তিত হয়েছে (lastVerifiedAt, createdAt)"
+        },
         {
           "timestamp": "2026-11-07T00:08:08.636Z",
           "adminId": "LIVE_COLLECTOR",
@@ -4722,7 +6318,7 @@
       "verificationStatus": "VERIFIED",
       "verificationConfidence": 100,
       "verifiedBy": "ALLJOBS-LIVE-COLLECTOR",
-      "lastVerifiedAt": "2026-11-07T00:08:08.793Z",
+      "lastVerifiedAt": "2026-11-07T04:01:32.238Z",
       "requirements": [
         "প্রার্থীকে জন্মসূত্রে বাংলাদেশের স্থায়ী নাগরিক হতে হবে।",
         "আবেদনের নির্ধারিত তারিখে প্রার্থীর বয়স ১৮ থেকে ৩২ বছরের মধ্যে হতে হবে (বীর মুক্তিযোদ্ধা ও শারীরিক প্রতিবন্ধী কোটায় ৩২ বছর পর্যন্ত শিথিলযোগ্য)।",
@@ -4834,9 +6430,19 @@
           "govtFee": 600
         }
       ],
-      "createdAt": "2026-11-07T00:08:08.793Z",
-      "updatedAt": "2026-11-07T00:08:08.793Z",
+      "createdAt": "2026-11-07T04:01:32.238Z",
+      "updatedAt": "2026-11-07T04:01:32.239Z",
       "revisionHistory": [
+        {
+          "timestamp": "2026-11-07T04:01:32.239Z",
+          "adminId": "LIVE_COLLECTOR",
+          "action": "update",
+          "changedFields": [
+            "lastVerifiedAt",
+            "createdAt"
+          ],
+          "summary": "2টি ফিল্ড পরিবর্তিত হয়েছে (lastVerifiedAt, createdAt)"
+        },
         {
           "timestamp": "2026-11-07T00:08:08.793Z",
           "adminId": "LIVE_COLLECTOR",
@@ -4934,7 +6540,7 @@
       "verificationStatus": "VERIFIED",
       "verificationConfidence": 100,
       "verifiedBy": "ALLJOBS-LIVE-COLLECTOR",
-      "lastVerifiedAt": "2026-11-07T00:08:08.873Z",
+      "lastVerifiedAt": "2026-11-07T04:01:32.334Z",
       "requirements": [
         "প্রার্থীকে জন্মসূত্রে বাংলাদেশের স্থায়ী নাগরিক হতে হবে।",
         "আবেদনের নির্ধারিত তারিখে প্রার্থীর বয়স ১৮ থেকে ৩২ বছরের মধ্যে হতে হবে (বীর মুক্তিযোদ্ধা ও শারীরিক প্রতিবন্ধী কোটায় ৩২ বছর পর্যন্ত শিথিলযোগ্য)।",
@@ -5056,9 +6662,19 @@
           "govtFee": 600
         }
       ],
-      "createdAt": "2026-11-07T00:08:08.873Z",
-      "updatedAt": "2026-11-07T00:08:08.874Z",
+      "createdAt": "2026-11-07T04:01:32.334Z",
+      "updatedAt": "2026-11-07T04:01:32.335Z",
       "revisionHistory": [
+        {
+          "timestamp": "2026-11-07T04:01:32.335Z",
+          "adminId": "LIVE_COLLECTOR",
+          "action": "update",
+          "changedFields": [
+            "lastVerifiedAt",
+            "createdAt"
+          ],
+          "summary": "2টি ফিল্ড পরিবর্তিত হয়েছে (lastVerifiedAt, createdAt)"
+        },
         {
           "timestamp": "2026-11-07T00:08:08.874Z",
           "adminId": "LIVE_COLLECTOR",
@@ -5156,7 +6772,7 @@
       "verificationStatus": "VERIFIED",
       "verificationConfidence": 100,
       "verifiedBy": "ALLJOBS-LIVE-COLLECTOR",
-      "lastVerifiedAt": "2026-11-07T00:08:08.990Z",
+      "lastVerifiedAt": "2026-11-07T04:01:32.445Z",
       "requirements": [
         "প্রার্থীকে জন্মসূত্রে বাংলাদেশের স্থায়ী নাগরিক হতে হবে।",
         "আবেদনের নির্ধারিত তারিখে প্রার্থীর বয়স ১৮ থেকে ৩২ বছরের মধ্যে হতে হবে (বীর মুক্তিযোদ্ধা ও শারীরিক প্রতিবন্ধী কোটায় ৩২ বছর পর্যন্ত শিথিলযোগ্য)।",
@@ -5228,9 +6844,19 @@
           "govtFee": 200
         }
       ],
-      "createdAt": "2026-11-07T00:08:08.990Z",
-      "updatedAt": "2026-11-07T00:08:08.990Z",
+      "createdAt": "2026-11-07T04:01:32.445Z",
+      "updatedAt": "2026-11-07T04:01:32.445Z",
       "revisionHistory": [
+        {
+          "timestamp": "2026-11-07T04:01:32.445Z",
+          "adminId": "LIVE_COLLECTOR",
+          "action": "update",
+          "changedFields": [
+            "lastVerifiedAt",
+            "createdAt"
+          ],
+          "summary": "2টি ফিল্ড পরিবর্তিত হয়েছে (lastVerifiedAt, createdAt)"
+        },
         {
           "timestamp": "2026-11-07T00:08:08.990Z",
           "adminId": "LIVE_COLLECTOR",
@@ -5326,7 +6952,7 @@
       "verificationStatus": "VERIFIED",
       "verificationConfidence": 100,
       "verifiedBy": "ALLJOBS-LIVE-COLLECTOR",
-      "lastVerifiedAt": "2026-11-07T00:08:09.089Z",
+      "lastVerifiedAt": "2026-11-07T04:01:32.550Z",
       "requirements": [
         "প্রার্থীকে জন্মসূত্রে বাংলাদেশের স্থায়ী নাগরিক হতে হবে।",
         "আবেদনের নির্ধারিত তারিখে প্রার্থীর বয়স ১৮ থেকে ৩২ বছরের মধ্যে হতে হবে (বীর মুক্তিযোদ্ধা ও শারীরিক প্রতিবন্ধী কোটায় ৩২ বছর পর্যন্ত শিথিলযোগ্য)।",
@@ -5528,9 +7154,19 @@
           "govtFee": 600
         }
       ],
-      "createdAt": "2026-11-07T00:08:09.089Z",
-      "updatedAt": "2026-11-07T00:08:09.090Z",
+      "createdAt": "2026-11-07T04:01:32.550Z",
+      "updatedAt": "2026-11-07T04:01:32.550Z",
       "revisionHistory": [
+        {
+          "timestamp": "2026-11-07T04:01:32.550Z",
+          "adminId": "LIVE_COLLECTOR",
+          "action": "update",
+          "changedFields": [
+            "lastVerifiedAt",
+            "createdAt"
+          ],
+          "summary": "2টি ফিল্ড পরিবর্তিত হয়েছে (lastVerifiedAt, createdAt)"
+        },
         {
           "timestamp": "2026-11-07T00:08:09.090Z",
           "adminId": "LIVE_COLLECTOR",
@@ -5628,7 +7264,7 @@
       "verificationStatus": "VERIFIED",
       "verificationConfidence": 100,
       "verifiedBy": "ALLJOBS-LIVE-COLLECTOR",
-      "lastVerifiedAt": "2026-11-07T00:08:09.191Z",
+      "lastVerifiedAt": "2026-11-07T04:01:32.646Z",
       "requirements": [
         "প্রার্থীকে জন্মসূত্রে বাংলাদেশের স্থায়ী নাগরিক হতে হবে।",
         "আবেদনের নির্ধারিত তারিখে প্রার্থীর বয়স ১৮ থেকে ৩২ বছরের মধ্যে হতে হবে (বীর মুক্তিযোদ্ধা ও শারীরিক প্রতিবন্ধী কোটায় ৩২ বছর পর্যন্ত শিথিলযোগ্য)।",
@@ -5690,9 +7326,19 @@
           "govtFee": 600
         }
       ],
-      "createdAt": "2026-11-07T00:08:09.191Z",
-      "updatedAt": "2026-11-07T00:08:09.192Z",
+      "createdAt": "2026-11-07T04:01:32.646Z",
+      "updatedAt": "2026-11-07T04:01:32.647Z",
       "revisionHistory": [
+        {
+          "timestamp": "2026-11-07T04:01:32.647Z",
+          "adminId": "LIVE_COLLECTOR",
+          "action": "update",
+          "changedFields": [
+            "lastVerifiedAt",
+            "createdAt"
+          ],
+          "summary": "2টি ফিল্ড পরিবর্তিত হয়েছে (lastVerifiedAt, createdAt)"
+        },
         {
           "timestamp": "2026-11-07T00:08:09.192Z",
           "adminId": "LIVE_COLLECTOR",
@@ -5794,7 +7440,7 @@
       "verificationStatus": "VERIFIED",
       "verificationConfidence": 100,
       "verifiedBy": "ALLJOBS-LIVE-COLLECTOR",
-      "lastVerifiedAt": "2026-11-07T00:08:09.295Z",
+      "lastVerifiedAt": "2026-11-07T04:01:32.740Z",
       "requirements": [
         "প্রার্থীকে জন্মসূত্রে বাংলাদেশের স্থায়ী নাগরিক হতে হবে।",
         "আবেদনের নির্ধারিত তারিখে প্রার্থীর বয়স ১৮ থেকে ৩২ বছরের মধ্যে হতে হবে (বীর মুক্তিযোদ্ধা ও শারীরিক প্রতিবন্ধী কোটায় ৩২ বছর পর্যন্ত শিথিলযোগ্য)।",
@@ -5876,9 +7522,19 @@
           "govtFee": 100
         }
       ],
-      "createdAt": "2026-11-07T00:08:09.295Z",
-      "updatedAt": "2026-11-07T00:08:09.296Z",
+      "createdAt": "2026-11-07T04:01:32.740Z",
+      "updatedAt": "2026-11-07T04:01:32.740Z",
       "revisionHistory": [
+        {
+          "timestamp": "2026-11-07T04:01:32.740Z",
+          "adminId": "LIVE_COLLECTOR",
+          "action": "update",
+          "changedFields": [
+            "lastVerifiedAt",
+            "createdAt"
+          ],
+          "summary": "2টি ফিল্ড পরিবর্তিত হয়েছে (lastVerifiedAt, createdAt)"
+        },
         {
           "timestamp": "2026-11-07T00:08:09.296Z",
           "adminId": "LIVE_COLLECTOR",
@@ -5974,7 +7630,7 @@
       "verificationStatus": "VERIFIED",
       "verificationConfidence": 100,
       "verifiedBy": "ALLJOBS-LIVE-COLLECTOR",
-      "lastVerifiedAt": "2026-11-07T00:08:09.392Z",
+      "lastVerifiedAt": "2026-11-07T04:01:32.855Z",
       "requirements": [
         "প্রার্থীকে জন্মসূত্রে বাংলাদেশের স্থায়ী নাগরিক হতে হবে।",
         "আবেদনের নির্ধারিত তারিখে প্রার্থীর বয়স ১৮ থেকে ৩২ বছরের মধ্যে হতে হবে (বীর মুক্তিযোদ্ধা ও শারীরিক প্রতিবন্ধী কোটায় ৩২ বছর পর্যন্ত শিথিলযোগ্য)।",
@@ -6096,9 +7752,19 @@
           "govtFee": 100
         }
       ],
-      "createdAt": "2026-11-07T00:08:09.392Z",
-      "updatedAt": "2026-11-07T00:08:09.392Z",
+      "createdAt": "2026-11-07T04:01:32.855Z",
+      "updatedAt": "2026-11-07T04:01:32.855Z",
       "revisionHistory": [
+        {
+          "timestamp": "2026-11-07T04:01:32.855Z",
+          "adminId": "LIVE_COLLECTOR",
+          "action": "update",
+          "changedFields": [
+            "lastVerifiedAt",
+            "createdAt"
+          ],
+          "summary": "2টি ফিল্ড পরিবর্তিত হয়েছে (lastVerifiedAt, createdAt)"
+        },
         {
           "timestamp": "2026-11-07T00:08:09.392Z",
           "adminId": "LIVE_COLLECTOR",
@@ -6194,7 +7860,7 @@
       "verificationStatus": "VERIFIED",
       "verificationConfidence": 100,
       "verifiedBy": "ALLJOBS-LIVE-COLLECTOR",
-      "lastVerifiedAt": "2026-11-07T00:08:09.492Z",
+      "lastVerifiedAt": "2026-11-07T04:01:33.206Z",
       "requirements": [
         "প্রার্থীকে জন্মসূত্রে বাংলাদেশের স্থায়ী নাগরিক হতে হবে।",
         "আবেদনের নির্ধারিত তারিখে প্রার্থীর বয়স ১৮ থেকে ৩২ বছরের মধ্যে হতে হবে (বীর মুক্তিযোদ্ধা ও শারীরিক প্রতিবন্ধী কোটায় ৩২ বছর পর্যন্ত শিথিলযোগ্য)।",
@@ -6316,9 +7982,19 @@
           "govtFee": 100
         }
       ],
-      "createdAt": "2026-11-07T00:08:09.492Z",
-      "updatedAt": "2026-11-07T00:08:09.493Z",
+      "createdAt": "2026-11-07T04:01:33.206Z",
+      "updatedAt": "2026-11-07T04:01:33.207Z",
       "revisionHistory": [
+        {
+          "timestamp": "2026-11-07T04:01:33.207Z",
+          "adminId": "LIVE_COLLECTOR",
+          "action": "update",
+          "changedFields": [
+            "lastVerifiedAt",
+            "createdAt"
+          ],
+          "summary": "2টি ফিল্ড পরিবর্তিত হয়েছে (lastVerifiedAt, createdAt)"
+        },
         {
           "timestamp": "2026-11-07T00:08:09.493Z",
           "adminId": "LIVE_COLLECTOR",
@@ -6414,7 +8090,7 @@
       "verificationStatus": "VERIFIED",
       "verificationConfidence": 100,
       "verifiedBy": "ALLJOBS-LIVE-COLLECTOR",
-      "lastVerifiedAt": "2026-11-07T00:08:09.577Z",
+      "lastVerifiedAt": "2026-11-07T04:01:33.330Z",
       "requirements": [
         "প্রার্থীকে জন্মসূত্রে বাংলাদেশের স্থায়ী নাগরিক হতে হবে।",
         "আবেদনের নির্ধারিত তারিখে প্রার্থীর বয়স ১৮ থেকে ৩২ বছরের মধ্যে হতে হবে (বীর মুক্তিযোদ্ধা ও শারীরিক প্রতিবন্ধী কোটায় ৩২ বছর পর্যন্ত শিথিলযোগ্য)।",
@@ -6546,9 +8222,19 @@
           "govtFee": 200
         }
       ],
-      "createdAt": "2026-11-07T00:08:09.577Z",
-      "updatedAt": "2026-11-07T00:08:09.578Z",
+      "createdAt": "2026-11-07T04:01:33.330Z",
+      "updatedAt": "2026-11-07T04:01:33.330Z",
       "revisionHistory": [
+        {
+          "timestamp": "2026-11-07T04:01:33.330Z",
+          "adminId": "LIVE_COLLECTOR",
+          "action": "update",
+          "changedFields": [
+            "lastVerifiedAt",
+            "createdAt"
+          ],
+          "summary": "2টি ফিল্ড পরিবর্তিত হয়েছে (lastVerifiedAt, createdAt)"
+        },
         {
           "timestamp": "2026-11-07T00:08:09.578Z",
           "adminId": "LIVE_COLLECTOR",
@@ -6646,7 +8332,7 @@
       "verificationStatus": "VERIFIED",
       "verificationConfidence": 100,
       "verifiedBy": "ALLJOBS-LIVE-COLLECTOR",
-      "lastVerifiedAt": "2026-11-07T00:08:09.669Z",
+      "lastVerifiedAt": "2026-11-07T04:01:33.439Z",
       "requirements": [
         "প্রার্থীকে জন্মসূত্রে বাংলাদেশের স্থায়ী নাগরিক হতে হবে।",
         "আবেদনের নির্ধারিত তারিখে প্রার্থীর বয়স ১৮ থেকে ৩২ বছরের মধ্যে হতে হবে (বীর মুক্তিযোদ্ধা ও শারীরিক প্রতিবন্ধী কোটায় ৩২ বছর পর্যন্ত শিথিলযোগ্য)।",
@@ -6758,9 +8444,19 @@
           "govtFee": 200
         }
       ],
-      "createdAt": "2026-11-07T00:08:09.669Z",
-      "updatedAt": "2026-11-07T00:08:09.669Z",
+      "createdAt": "2026-11-07T04:01:33.439Z",
+      "updatedAt": "2026-11-07T04:01:33.440Z",
       "revisionHistory": [
+        {
+          "timestamp": "2026-11-07T04:01:33.440Z",
+          "adminId": "LIVE_COLLECTOR",
+          "action": "update",
+          "changedFields": [
+            "lastVerifiedAt",
+            "createdAt"
+          ],
+          "summary": "2টি ফিল্ড পরিবর্তিত হয়েছে (lastVerifiedAt, createdAt)"
+        },
         {
           "timestamp": "2026-11-07T00:08:09.669Z",
           "adminId": "LIVE_COLLECTOR",
@@ -6856,7 +8552,7 @@
       "verificationStatus": "VERIFIED",
       "verificationConfidence": 100,
       "verifiedBy": "ALLJOBS-LIVE-COLLECTOR",
-      "lastVerifiedAt": "2026-11-07T00:08:09.765Z",
+      "lastVerifiedAt": "2026-11-07T04:01:33.551Z",
       "requirements": [
         "প্রার্থীকে জন্মসূত্রে বাংলাদেশের স্থায়ী নাগরিক হতে হবে।",
         "আবেদনের নির্ধারিত তারিখে প্রার্থীর বয়স ১৮ থেকে ৩২ বছরের মধ্যে হতে হবে (বীর মুক্তিযোদ্ধা ও শারীরিক প্রতিবন্ধী কোটায় ৩২ বছর পর্যন্ত শিথিলযোগ্য)।",
@@ -6978,9 +8674,19 @@
           "govtFee": 100
         }
       ],
-      "createdAt": "2026-11-07T00:08:09.765Z",
-      "updatedAt": "2026-11-07T00:08:09.766Z",
+      "createdAt": "2026-11-07T04:01:33.551Z",
+      "updatedAt": "2026-11-07T04:01:33.552Z",
       "revisionHistory": [
+        {
+          "timestamp": "2026-11-07T04:01:33.552Z",
+          "adminId": "LIVE_COLLECTOR",
+          "action": "update",
+          "changedFields": [
+            "lastVerifiedAt",
+            "createdAt"
+          ],
+          "summary": "2টি ফিল্ড পরিবর্তিত হয়েছে (lastVerifiedAt, createdAt)"
+        },
         {
           "timestamp": "2026-11-07T00:08:09.766Z",
           "adminId": "LIVE_COLLECTOR",
@@ -7076,7 +8782,7 @@
       "verificationStatus": "VERIFIED",
       "verificationConfidence": 100,
       "verifiedBy": "ALLJOBS-LIVE-COLLECTOR",
-      "lastVerifiedAt": "2026-11-07T00:08:09.849Z",
+      "lastVerifiedAt": "2026-11-07T04:01:33.666Z",
       "requirements": [
         "প্রার্থীকে জন্মসূত্রে বাংলাদেশের স্থায়ী নাগরিক হতে হবে।",
         "আবেদনের নির্ধারিত তারিখে প্রার্থীর বয়স ১৮ থেকে ৩২ বছরের মধ্যে হতে হবে (বীর মুক্তিযোদ্ধা ও শারীরিক প্রতিবন্ধী কোটায় ৩২ বছর পর্যন্ত শিথিলযোগ্য)।",
@@ -7158,9 +8864,19 @@
           "govtFee": 200
         }
       ],
-      "createdAt": "2026-11-07T00:08:09.849Z",
-      "updatedAt": "2026-11-07T00:08:09.850Z",
+      "createdAt": "2026-11-07T04:01:33.666Z",
+      "updatedAt": "2026-11-07T04:01:33.667Z",
       "revisionHistory": [
+        {
+          "timestamp": "2026-11-07T04:01:33.667Z",
+          "adminId": "LIVE_COLLECTOR",
+          "action": "update",
+          "changedFields": [
+            "lastVerifiedAt",
+            "createdAt"
+          ],
+          "summary": "2টি ফিল্ড পরিবর্তিত হয়েছে (lastVerifiedAt, createdAt)"
+        },
         {
           "timestamp": "2026-11-07T00:08:09.850Z",
           "adminId": "LIVE_COLLECTOR",
@@ -7258,7 +8974,7 @@
       "verificationStatus": "VERIFIED",
       "verificationConfidence": 100,
       "verifiedBy": "ALLJOBS-LIVE-COLLECTOR",
-      "lastVerifiedAt": "2026-11-07T00:08:09.941Z",
+      "lastVerifiedAt": "2026-11-07T04:01:33.754Z",
       "requirements": [
         "প্রার্থীকে জন্মসূত্রে বাংলাদেশের স্থায়ী নাগরিক হতে হবে।",
         "আবেদনের নির্ধারিত তারিখে প্রার্থীর বয়স ১৮ থেকে ৩২ বছরের মধ্যে হতে হবে (বীর মুক্তিযোদ্ধা ও শারীরিক প্রতিবন্ধী কোটায় ৩২ বছর পর্যন্ত শিথিলযোগ্য)।",
@@ -7400,9 +9116,19 @@
           "govtFee": 200
         }
       ],
-      "createdAt": "2026-11-07T00:08:09.941Z",
-      "updatedAt": "2026-11-07T00:08:09.941Z",
+      "createdAt": "2026-11-07T04:01:33.754Z",
+      "updatedAt": "2026-11-07T04:01:33.754Z",
       "revisionHistory": [
+        {
+          "timestamp": "2026-11-07T04:01:33.754Z",
+          "adminId": "LIVE_COLLECTOR",
+          "action": "update",
+          "changedFields": [
+            "lastVerifiedAt",
+            "createdAt"
+          ],
+          "summary": "2টি ফিল্ড পরিবর্তিত হয়েছে (lastVerifiedAt, createdAt)"
+        },
         {
           "timestamp": "2026-11-07T00:08:09.941Z",
           "adminId": "LIVE_COLLECTOR",
@@ -7498,7 +9224,7 @@
       "verificationStatus": "VERIFIED",
       "verificationConfidence": 100,
       "verifiedBy": "ALLJOBS-LIVE-COLLECTOR",
-      "lastVerifiedAt": "2026-11-07T00:08:10.078Z",
+      "lastVerifiedAt": "2026-11-07T04:01:33.922Z",
       "requirements": [
         "প্রার্থীকে জন্মসূত্রে বাংলাদেশের স্থায়ী নাগরিক হতে হবে।",
         "আবেদনের নির্ধারিত তারিখে প্রার্থীর বয়স ১৮ থেকে ৩২ বছরের মধ্যে হতে হবে (বীর মুক্তিযোদ্ধা ও শারীরিক প্রতিবন্ধী কোটায় ৩২ বছর পর্যন্ত শিথিলযোগ্য)।",
@@ -7590,9 +9316,19 @@
           "govtFee": 100
         }
       ],
-      "createdAt": "2026-11-07T00:08:10.078Z",
-      "updatedAt": "2026-11-07T00:08:10.079Z",
+      "createdAt": "2026-11-07T04:01:33.922Z",
+      "updatedAt": "2026-11-07T04:01:33.923Z",
       "revisionHistory": [
+        {
+          "timestamp": "2026-11-07T04:01:33.923Z",
+          "adminId": "LIVE_COLLECTOR",
+          "action": "update",
+          "changedFields": [
+            "lastVerifiedAt",
+            "createdAt"
+          ],
+          "summary": "2টি ফিল্ড পরিবর্তিত হয়েছে (lastVerifiedAt, createdAt)"
+        },
         {
           "timestamp": "2026-11-07T00:08:10.079Z",
           "adminId": "LIVE_COLLECTOR",
@@ -7692,7 +9428,7 @@
       "verificationStatus": "VERIFIED",
       "verificationConfidence": 100,
       "verifiedBy": "ALLJOBS-LIVE-COLLECTOR",
-      "lastVerifiedAt": "2026-11-07T00:08:10.153Z",
+      "lastVerifiedAt": "2026-11-07T04:01:34.039Z",
       "requirements": [
         "প্রার্থীকে জন্মসূত্রে বাংলাদেশের স্থায়ী নাগরিক হতে হবে।",
         "আবেদনের নির্ধারিত তারিখে প্রার্থীর বয়স ১৮ থেকে ৩২ বছরের মধ্যে হতে হবে (বীর মুক্তিযোদ্ধা ও শারীরিক প্রতিবন্ধী কোটায় ৩২ বছর পর্যন্ত শিথিলযোগ্য)।",
@@ -7814,9 +9550,19 @@
           "govtFee": 200
         }
       ],
-      "createdAt": "2026-11-07T00:08:10.153Z",
-      "updatedAt": "2026-11-07T00:08:10.154Z",
+      "createdAt": "2026-11-07T04:01:34.039Z",
+      "updatedAt": "2026-11-07T04:01:34.040Z",
       "revisionHistory": [
+        {
+          "timestamp": "2026-11-07T04:01:34.040Z",
+          "adminId": "LIVE_COLLECTOR",
+          "action": "update",
+          "changedFields": [
+            "lastVerifiedAt",
+            "createdAt"
+          ],
+          "summary": "2টি ফিল্ড পরিবর্তিত হয়েছে (lastVerifiedAt, createdAt)"
+        },
         {
           "timestamp": "2026-11-07T00:08:10.154Z",
           "adminId": "LIVE_COLLECTOR",
@@ -7912,7 +9658,7 @@
       "verificationStatus": "VERIFIED",
       "verificationConfidence": 100,
       "verifiedBy": "ALLJOBS-LIVE-COLLECTOR",
-      "lastVerifiedAt": "2026-11-07T00:08:10.246Z",
+      "lastVerifiedAt": "2026-11-07T04:01:34.147Z",
       "requirements": [
         "প্রার্থীকে জন্মসূত্রে বাংলাদেশের স্থায়ী নাগরিক হতে হবে।",
         "আবেদনের নির্ধারিত তারিখে প্রার্থীর বয়স ১৮ থেকে ৩২ বছরের মধ্যে হতে হবে (বীর মুক্তিযোদ্ধা ও শারীরিক প্রতিবন্ধী কোটায় ৩২ বছর পর্যন্ত শিথিলযোগ্য)।",
@@ -8324,9 +10070,19 @@
           "govtFee": 600
         }
       ],
-      "createdAt": "2026-11-07T00:08:10.246Z",
-      "updatedAt": "2026-11-07T00:08:10.247Z",
+      "createdAt": "2026-11-07T04:01:34.147Z",
+      "updatedAt": "2026-11-07T04:01:34.148Z",
       "revisionHistory": [
+        {
+          "timestamp": "2026-11-07T04:01:34.148Z",
+          "adminId": "LIVE_COLLECTOR",
+          "action": "update",
+          "changedFields": [
+            "lastVerifiedAt",
+            "createdAt"
+          ],
+          "summary": "2টি ফিল্ড পরিবর্তিত হয়েছে (lastVerifiedAt, createdAt)"
+        },
         {
           "timestamp": "2026-11-07T00:08:10.247Z",
           "adminId": "LIVE_COLLECTOR",
@@ -8428,7 +10184,7 @@
       "verificationStatus": "VERIFIED",
       "verificationConfidence": 100,
       "verifiedBy": "ALLJOBS-LIVE-COLLECTOR",
-      "lastVerifiedAt": "2026-11-07T00:08:10.339Z",
+      "lastVerifiedAt": "2026-11-07T04:01:34.221Z",
       "requirements": [
         "প্রার্থীকে জন্মসূত্রে বাংলাদেশের স্থায়ী নাগরিক হতে হবে।",
         "আবেদনের নির্ধারিত তারিখে প্রার্থীর বয়স ১৮ থেকে ৩২ বছরের মধ্যে হতে হবে (বীর মুক্তিযোদ্ধা ও শারীরিক প্রতিবন্ধী কোটায় ৩২ বছর পর্যন্ত শিথিলযোগ্য)।",
@@ -8490,9 +10246,19 @@
           "govtFee": 100
         }
       ],
-      "createdAt": "2026-11-07T00:08:10.339Z",
-      "updatedAt": "2026-11-07T00:08:10.339Z",
+      "createdAt": "2026-11-07T04:01:34.221Z",
+      "updatedAt": "2026-11-07T04:01:34.222Z",
       "revisionHistory": [
+        {
+          "timestamp": "2026-11-07T04:01:34.222Z",
+          "adminId": "LIVE_COLLECTOR",
+          "action": "update",
+          "changedFields": [
+            "lastVerifiedAt",
+            "createdAt"
+          ],
+          "summary": "2টি ফিল্ড পরিবর্তিত হয়েছে (lastVerifiedAt, createdAt)"
+        },
         {
           "timestamp": "2026-11-07T00:08:10.339Z",
           "adminId": "LIVE_COLLECTOR",
@@ -8542,7 +10308,7 @@
       "verificationStatus": "VERIFIED",
       "verificationConfidence": 100,
       "verifiedBy": "ALLJOBS-LIVE-COLLECTOR",
-      "lastVerifiedAt": "2026-11-07T00:08:10.422Z",
+      "lastVerifiedAt": "2026-11-07T04:01:34.307Z",
       "requirements": [
         "প্রার্থীকে জন্মসূত্রে বাংলাদেশের স্থায়ী নাগরিক হতে হবে।",
         "আবেদনের নির্ধারিত তারিখে প্রার্থীর বয়স ১৮ থেকে ৩২ বছরের মধ্যে হতে হবে (বীর মুক্তিযোদ্ধা ও শারীরিক প্রতিবন্ধী কোটায় ৩২ বছর পর্যন্ত শিথিলযোগ্য)।",
@@ -8614,9 +10380,19 @@
           "govtFee": 200
         }
       ],
-      "createdAt": "2026-11-07T00:08:10.422Z",
-      "updatedAt": "2026-11-07T00:08:10.423Z",
+      "createdAt": "2026-11-07T04:01:34.307Z",
+      "updatedAt": "2026-11-07T04:01:34.308Z",
       "revisionHistory": [
+        {
+          "timestamp": "2026-11-07T04:01:34.308Z",
+          "adminId": "LIVE_COLLECTOR",
+          "action": "update",
+          "changedFields": [
+            "lastVerifiedAt",
+            "createdAt"
+          ],
+          "summary": "2টি ফিল্ড পরিবর্তিত হয়েছে (lastVerifiedAt, createdAt)"
+        },
         {
           "timestamp": "2026-11-07T00:08:10.423Z",
           "adminId": "LIVE_COLLECTOR",
@@ -8666,7 +10442,7 @@
       "verificationStatus": "VERIFIED",
       "verificationConfidence": 100,
       "verifiedBy": "ALLJOBS-LIVE-COLLECTOR",
-      "lastVerifiedAt": "2026-11-07T00:08:10.514Z",
+      "lastVerifiedAt": "2026-11-07T04:01:34.413Z",
       "requirements": [
         "প্রার্থীকে জন্মসূত্রে বাংলাদেশের স্থায়ী নাগরিক হতে হবে।",
         "আবেদনের নির্ধারিত তারিখে প্রার্থীর বয়স ১৮ থেকে ৩২ বছরের মধ্যে হতে হবে (বীর মুক্তিযোদ্ধা ও শারীরিক প্রতিবন্ধী কোটায় ৩২ বছর পর্যন্ত শিথিলযোগ্য)।",
@@ -8738,9 +10514,19 @@
           "govtFee": 200
         }
       ],
-      "createdAt": "2026-11-07T00:08:10.514Z",
-      "updatedAt": "2026-11-07T00:08:10.515Z",
+      "createdAt": "2026-11-07T04:01:34.413Z",
+      "updatedAt": "2026-11-07T04:01:34.414Z",
       "revisionHistory": [
+        {
+          "timestamp": "2026-11-07T04:01:34.414Z",
+          "adminId": "LIVE_COLLECTOR",
+          "action": "update",
+          "changedFields": [
+            "lastVerifiedAt",
+            "createdAt"
+          ],
+          "summary": "2টি ফিল্ড পরিবর্তিত হয়েছে (lastVerifiedAt, createdAt)"
+        },
         {
           "timestamp": "2026-11-07T00:08:10.515Z",
           "adminId": "LIVE_COLLECTOR",
@@ -8790,7 +10576,7 @@
       "verificationStatus": "VERIFIED",
       "verificationConfidence": 100,
       "verifiedBy": "ALLJOBS-LIVE-COLLECTOR",
-      "lastVerifiedAt": "2026-11-07T00:08:10.596Z",
+      "lastVerifiedAt": "2026-11-07T04:01:34.514Z",
       "requirements": [
         "প্রার্থীকে জন্মসূত্রে বাংলাদেশের স্থায়ী নাগরিক হতে হবে।",
         "আবেদনের নির্ধারিত তারিখে প্রার্থীর বয়স ১৮ থেকে ৩২ বছরের মধ্যে হতে হবে (বীর মুক্তিযোদ্ধা ও শারীরিক প্রতিবন্ধী কোটায় ৩২ বছর পর্যন্ত শিথিলযোগ্য)।",
@@ -8912,9 +10698,19 @@
           "govtFee": 100
         }
       ],
-      "createdAt": "2026-11-07T00:08:10.596Z",
-      "updatedAt": "2026-11-07T00:08:10.597Z",
+      "createdAt": "2026-11-07T04:01:34.514Z",
+      "updatedAt": "2026-11-07T04:01:34.515Z",
       "revisionHistory": [
+        {
+          "timestamp": "2026-11-07T04:01:34.515Z",
+          "adminId": "LIVE_COLLECTOR",
+          "action": "update",
+          "changedFields": [
+            "lastVerifiedAt",
+            "createdAt"
+          ],
+          "summary": "2টি ফিল্ড পরিবর্তিত হয়েছে (lastVerifiedAt, createdAt)"
+        },
         {
           "timestamp": "2026-11-07T00:08:10.597Z",
           "adminId": "LIVE_COLLECTOR",
@@ -8964,7 +10760,7 @@
       "verificationStatus": "VERIFIED",
       "verificationConfidence": 100,
       "verifiedBy": "ALLJOBS-LIVE-COLLECTOR",
-      "lastVerifiedAt": "2026-11-07T00:08:10.680Z",
+      "lastVerifiedAt": "2026-11-07T04:01:34.595Z",
       "requirements": [
         "প্রার্থীকে জন্মসূত্রে বাংলাদেশের স্থায়ী নাগরিক হতে হবে।",
         "আবেদনের নির্ধারিত তারিখে প্রার্থীর বয়স ১৮ থেকে ৩২ বছরের মধ্যে হতে হবে (বীর মুক্তিযোদ্ধা ও শারীরিক প্রতিবন্ধী কোটায় ৩২ বছর পর্যন্ত শিথিলযোগ্য)।",
@@ -9206,9 +11002,19 @@
           "govtFee": 600
         }
       ],
-      "createdAt": "2026-11-07T00:08:10.680Z",
-      "updatedAt": "2026-11-07T00:08:10.681Z",
+      "createdAt": "2026-11-07T04:01:34.595Z",
+      "updatedAt": "2026-11-07T04:01:34.596Z",
       "revisionHistory": [
+        {
+          "timestamp": "2026-11-07T04:01:34.596Z",
+          "adminId": "LIVE_COLLECTOR",
+          "action": "update",
+          "changedFields": [
+            "lastVerifiedAt",
+            "createdAt"
+          ],
+          "summary": "2টি ফিল্ড পরিবর্তিত হয়েছে (lastVerifiedAt, createdAt)"
+        },
         {
           "timestamp": "2026-11-07T00:08:10.681Z",
           "adminId": "LIVE_COLLECTOR",
@@ -9258,7 +11064,7 @@
       "verificationStatus": "VERIFIED",
       "verificationConfidence": 100,
       "verifiedBy": "ALLJOBS-LIVE-COLLECTOR",
-      "lastVerifiedAt": "2026-11-07T00:08:10.767Z",
+      "lastVerifiedAt": "2026-11-07T04:01:34.727Z",
       "requirements": [
         "প্রার্থীকে জন্মসূত্রে বাংলাদেশের স্থায়ী নাগরিক হতে হবে।",
         "আবেদনের নির্ধারিত তারিখে প্রার্থীর বয়স ১৮ থেকে ৩২ বছরের মধ্যে হতে হবে (বীর মুক্তিযোদ্ধা ও শারীরিক প্রতিবন্ধী কোটায় ৩২ বছর পর্যন্ত শিথিলযোগ্য)।",
@@ -9320,9 +11126,19 @@
           "govtFee": 200
         }
       ],
-      "createdAt": "2026-11-07T00:08:10.767Z",
-      "updatedAt": "2026-11-07T00:08:10.768Z",
+      "createdAt": "2026-11-07T04:01:34.727Z",
+      "updatedAt": "2026-11-07T04:01:34.728Z",
       "revisionHistory": [
+        {
+          "timestamp": "2026-11-07T04:01:34.728Z",
+          "adminId": "LIVE_COLLECTOR",
+          "action": "update",
+          "changedFields": [
+            "lastVerifiedAt",
+            "createdAt"
+          ],
+          "summary": "2টি ফিল্ড পরিবর্তিত হয়েছে (lastVerifiedAt, createdAt)"
+        },
         {
           "timestamp": "2026-11-07T00:08:10.768Z",
           "adminId": "LIVE_COLLECTOR",
@@ -9372,7 +11188,7 @@
       "verificationStatus": "VERIFIED",
       "verificationConfidence": 100,
       "verifiedBy": "ALLJOBS-LIVE-COLLECTOR",
-      "lastVerifiedAt": "2026-11-07T00:08:10.848Z",
+      "lastVerifiedAt": "2026-11-07T04:01:34.854Z",
       "requirements": [
         "প্রার্থীকে জন্মসূত্রে বাংলাদেশের স্থায়ী নাগরিক হতে হবে।",
         "আবেদনের নির্ধারিত তারিখে প্রার্থীর বয়স ১৮ থেকে ৩২ বছরের মধ্যে হতে হবে (বীর মুক্তিযোদ্ধা ও শারীরিক প্রতিবন্ধী কোটায় ৩২ বছর পর্যন্ত শিথিলযোগ্য)।",
@@ -9454,9 +11270,19 @@
           "govtFee": 200
         }
       ],
-      "createdAt": "2026-11-07T00:08:10.848Z",
-      "updatedAt": "2026-11-07T00:08:10.849Z",
+      "createdAt": "2026-11-07T04:01:34.854Z",
+      "updatedAt": "2026-11-07T04:01:34.854Z",
       "revisionHistory": [
+        {
+          "timestamp": "2026-11-07T04:01:34.854Z",
+          "adminId": "LIVE_COLLECTOR",
+          "action": "update",
+          "changedFields": [
+            "lastVerifiedAt",
+            "createdAt"
+          ],
+          "summary": "2টি ফিল্ড পরিবর্তিত হয়েছে (lastVerifiedAt, createdAt)"
+        },
         {
           "timestamp": "2026-11-07T00:08:10.849Z",
           "adminId": "LIVE_COLLECTOR",
@@ -9653,7 +11479,7 @@
       "verificationStatus": "VERIFIED",
       "verificationConfidence": 100,
       "verifiedBy": "ALLJOBS-LIVE-COLLECTOR",
-      "lastVerifiedAt": "2026-11-07T00:08:10.929Z",
+      "lastVerifiedAt": "2026-11-07T04:01:34.957Z",
       "requirements": [
         "প্রার্থীকে জন্মসূত্রে বাংলাদেশের স্থায়ী নাগরিক হতে হবে।",
         "আবেদনের নির্ধারিত তারিখে প্রার্থীর বয়স ১৮ থেকে ৩২ বছরের মধ্যে হতে হবে (বীর মুক্তিযোদ্ধা ও শারীরিক প্রতিবন্ধী কোটায় ৩২ বছর পর্যন্ত শিথিলযোগ্য)।",
@@ -9715,9 +11541,19 @@
           "govtFee": 200
         }
       ],
-      "createdAt": "2026-11-07T00:08:10.929Z",
-      "updatedAt": "2026-11-07T00:08:10.930Z",
+      "createdAt": "2026-11-07T04:01:34.957Z",
+      "updatedAt": "2026-11-07T04:01:34.958Z",
       "revisionHistory": [
+        {
+          "timestamp": "2026-11-07T04:01:34.958Z",
+          "adminId": "LIVE_COLLECTOR",
+          "action": "update",
+          "changedFields": [
+            "lastVerifiedAt",
+            "createdAt"
+          ],
+          "summary": "2টি ফিল্ড পরিবর্তিত হয়েছে (lastVerifiedAt, createdAt)"
+        },
         {
           "timestamp": "2026-11-07T00:08:10.930Z",
           "adminId": "LIVE_COLLECTOR",
@@ -9838,18 +11674,18 @@
       "metaTitle": "চাকরি সেবা বাংলাদেশ | সরকারি ও ব্যাংক চাকরির সার্কুলার ও অনলাইন আবেদন ২০২৬",
       "metaDescription": "বাংলাদেশের সকল সরকারি ও বেসরকারি চাকরির নিয়মিত আপডেট এবং ঘরে বসেই নির্ভুল আবেদনের বিশ্বস্ত প্ল্যাটফর্ম।",
       "status": "published",
-      "version": 14,
+      "version": 21,
       "isSystemPage": true,
-      "updatedAt": "2026-11-07T02:35:21.025Z",
-      "publishedAt": "2026-11-07T02:35:21.025Z",
+      "updatedAt": "2026-11-07T04:31:00.618Z",
+      "publishedAt": "2026-11-07T04:31:00.618Z",
       "sections": [
         {
           "id": "sec-home-hero",
           "type": "hero",
-          "title": "চাকরির খবর জানুন সবার আগে — ১০০% সঠিক ও দ্রুত আবেদন সেবা ২০২৬",
+          "title": "চাকরির খবর জানুন সবার আগে — ১০০% নির্ভুল আবেদন ও স্মার্ট ক্যারিয়ার সেবা ২০২৬",
           "subtitle": "সরকারি ও বেসরকারি চাকরির সর্বশেষ বিজ্ঞপ্তি, আবেদন প্রক্রিয়া, যোগ্যতা, প্রয়োজনীয় কাগজপত্র এবং পরীক্ষার আপডেট—সবকিছু এক জায়গায়, আপনার জন্য।",
           "content": {
-            "badge": "সঠিক তথ্য • নির্ভরযোগ্য চাকরির খবর • আপনার ক্যারিয়ারের সঙ্গী",
+            "badge": "⚡ অফিসিয়াল প্ল্যাটফর্ম • নির্ভরযোগ্য চাকরির খবর • আপনার ক্যারিয়ারের বিশ্বস্ত সঙ্গী",
             "ctaText": "চাকরির বিজ্ঞপ্তি দেখুন",
             "ctaUrl": "#circulars-section",
             "secondaryCtaText": "আবেদন প্রক্রিয়া জানুন",
@@ -9859,36 +11695,178 @@
             "backgroundColor": "#011612",
             "textColor": "#ffffff",
             "paddingY": "lg",
+            "textAlign": "left",
+            "titleFontSize": "6xl"
+          },
+          "isVisible": true
+        },
+        {
+          "id": "sec-home-jobs",
+          "type": "jobs",
+          "title": "চলমান সকল চাকরির সার্কুলার ও বিজ্ঞপ্তি",
+          "subtitle": "সরকারি, ব্যাংক ও স্বায়ত্তশাসিত প্রতিষ্ঠানের হালনাগাদ সার্কুলার থেকে সহজে আবেদন করুন",
+          "content": {
+            "showCategoryFilter": true,
+            "showStatusCards": true,
+            "showSearchBar": true,
+            "jobsPerPage": 9,
+            "columns": 3
+          },
+          "style": {
+            "backgroundColor": "#f8fafc",
+            "textColor": "#0f172a",
+            "paddingY": "lg",
             "textAlign": "left"
           },
           "isVisible": true
         },
         {
-          "id": "sec-home-features",
-          "type": "features",
-          "title": "চাকরি সেবা বিশেষ সেবাসমূহ",
-          "subtitle": "চাকরিপ্রার্থীদের সফল ক্যারিয়ার গঠনে আমাদের অনন্য সুবিধাসমূহ",
+          "id": "sec-home-how-it-works",
+          "type": "how-it-works",
+          "title": "কীভাবে ঘরে বসেই নির্ভুল চাকরি আবেদন করবেন?",
+          "subtitle": "সাইবার ক্যাফেতে ঘণ্টার পর ঘণ্টা বসে থাকার ঝামেলা শেষ! আপনার সুবিধার্থে আধুনিক স্মার্ট সিস্টেম:",
           "content": {
+            "badge": "সহজ ৩ ধাপের প্রক্রিয়া",
             "items": [
               {
-                "title": "১০০% নির্ভুল টেলিটক আবেদন",
-                "desc": "পেশাদার টিম দিয়ে সঠিক সাইজে ছবি ও স্বাক্ষর রিসাইজ করে আবেদন দাখিল ও ফি পেমেন্ট।"
+                "step": 1,
+                "title": "১ বার ডকুমেন্ট ভল্টে সেভ রাখুন",
+                "desc": "আপনার পাসপোর্ট ছবি, স্বাক্ষর, এনআইডি এবং শিক্ষাগত সনদের তথ্য মাত্র একবার আপলোড করুন। আমাদের সিস্টেম নিজে থেকেই ৩০০x৩০০ ও ৩০০x৮০ পিক্সেল সাইজে কনভার্ট করে রাখবে।"
               },
               {
-                "title": "মাস্টার ডকুমেন্ট ভল্ট",
-                "desc": "একবার প্রোফাইল সংরক্ষণ করলেই পরবর্তীতে মাত্র ১ ক্লিকে যেকোনো পদে দ্রুত আবেদন।"
+                "step": 2,
+                "title": "পছন্দের জবে আবেদন বুকিং দিন",
+                "desc": "যেকোনো সরকারি বা ব্যাংক বিজ্ঞপ্তির নিচে আবেদন করুন চাপুন। বিকাশ/নগদে সরকারি ফি ও সামান্য টিম সার্ভিস চার্জ পেমেন্ট করলেই সরাসরি রিকোয়েস্ট চলে যাবে।"
               },
               {
-                "title": "লাইভ অ্যাপ্লিকেশন ট্র্যাকিং",
-                "desc": "বিকাশ/নগদে পেমেন্টের পর উবার-স্টাইল রিয়েল-টাইম ৫ ধাপের ট্র্যাকিং ও এসএমএস অ্যালার্ট।"
+                "step": 3,
+                "title": "টিম আবেদন শেষ করে স্লিপ দেবে",
+                "desc": "আমাদের অভিজ্ঞ এক্সপার্ট টিম অফিশিয়াল পোর্টালে নিখুঁতভাবে ফর্ম পূরণ করে সরকারি ফি দিয়ে আপনার ড্যাশবোর্ডে অ্যাপ্লিকেন্ট কপি পিডিএফ আপলোড করে দেবে এবং এসএমএস যাবে!"
+              }
+            ]
+          },
+          "style": {
+            "backgroundColor": "#f8fafc",
+            "textColor": "#0f172a",
+            "titleFontSize": "3xl",
+            "subtitleFontSize": "base",
+            "fontWeight": "black",
+            "paddingY": "md",
+            "textAlign": "center"
+          },
+          "isVisible": true
+        },
+        {
+          "id": "sec-home-cta-banner",
+          "type": "cta",
+          "title": "বিসিএস ও ব্যাংক পরীক্ষার বিগত ১০ বছরের প্রশ্ন ও সমাধান (PDF)",
+          "subtitle": "প্রিলিমিনারি ও লিখিত পরীক্ষার পূর্ণাঙ্গ প্রশ্নব্যাংক ব্যাখ্যাসহ ডাউনলোড করুন সম্পূর্ণ বিনামূল্যে।",
+          "content": {
+            "badge": "ফ্রি ডাউনলোড হাব",
+            "buttonLabel": "ফ্রি প্রশ্নব্যাংক ডাউনলোড",
+            "buttonUrl": "/questions"
+          },
+          "style": {
+            "backgroundColor": "#f59e0b",
+            "textColor": "#ffffff",
+            "titleFontSize": "2xl",
+            "subtitleFontSize": "base",
+            "fontWeight": "black",
+            "paddingY": "md",
+            "textAlign": "left"
+          },
+          "isVisible": true
+        },
+        {
+          "id": "sec-home-reviews",
+          "type": "testimonials",
+          "title": "সফল চাকরিপ্রার্থীদের বাস্তব অভিজ্ঞতা ও মতামত",
+          "subtitle": "সাইবার ক্যাফেতে ঘণ্টার পর ঘণ্টা লাইনে দাঁড়ানোর ভোগান্তি ছাড়াই কীভাবে শত শত চাকরিপ্রার্থী ঘরে বসেই শতভাগ নির্ভুল আবেদন সেবা পেয়েছেন:",
+          "content": {
+            "badge": "৪.৯/৫ গড় রেটিং • ৩,৫০০+ ভেরিফাইড আবেদনকারী",
+            "items": [
+              {
+                "id": 1,
+                "name": "তানভীর আহমেদ",
+                "role": "সহকারী পরিচালক, বাংলাদেশ ব্যাংক",
+                "institution": "ঢাকা বিশ্ববিদ্যালয়",
+                "quote": "আগে সাইবার ক্যাফেতে ৩-৪ ঘণ্টা লাইনে দাঁড়িয়ে ছবি রিসাইজ করা নিয়ে ঝামেলায় পড়তাম। চাকরি সেবায় মাত্র একবার তথ্য সেভ করে রেখেছিলাম, ডেডলাইনের দিন রাতে ১ ক্লিকে রিকোয়েস্ট দিতেই ১৫ মিনিটের মাথায় টেলিটক পেমেন্ট সহ অফিশিয়াল অ্যাপ্লিকেন্ট কপি পেয়ে গেছি!"
+              },
+              {
+                "id": 2,
+                "name": "ফারহানা ইয়াসমিন",
+                "role": "সহকারী শিক্ষক, DPE নিয়োগ",
+                "institution": "চট্টগ্রাম",
+                "quote": "আমাদের গ্রামের বাড়ি রাঙ্গুনিয়ায় ভালো কম্পিউটার দোকান নেই। মোবাইলেই চাকরি সেবা থেকে প্রাথমিক শিক্ষক নিয়োগে আবেদন করেছি। টিম নিজে থেকেই ৩০০x৩০০ ছবি ও স্বাক্ষর নিখুঁতভাবে রিসাইজ করে সাবমিট করেছে। কোনো ভুল হয়নি।"
+              },
+              {
+                "id": 3,
+                "name": "মাহমুদুল হাসান",
+                "role": "স্টেশন মাস্টার ও খালাসী আবেদন",
+                "institution": "রাজশাহী কলেজ",
+                "quote": "একই সার্কুলারে একাধিক পদে আবেদনের ক্ষেত্রে ফি কীভাবে কাটবে তা নিয়ে সংশয়ে ছিলাম। এখানকার পদভেদে আলাদা ড্রয়ার সিস্টেম ও ক্লিয়ার ফি ব্রেকডাউন দেখে সাথে সাথে নিশ্চিন্তে বুকিং দিয়েছি। বিকাশ পেমেন্টের সাথে সাথেই এসএমএস পেয়েছি।"
+              },
+              {
+                "id": 4,
+                "name": "সাদিয়া আফরিন",
+                "role": "অফিসার ক্যাশ, সোনালী ব্যাংক",
+                "institution": "সিলেট",
+                "quote": "মহিলা চাকরিপ্রার্থীদের জন্য ঘরে বসে নিশ্চিন্তে আবেদন করতে পারা অনেক বড় স্বস্তি। তথ্যের সর্বোচ্চ নিরাপত্তা আর সঠিক সময়ে টেলিটকের ইউজার আইডি ও পাসওয়ার্ড ড্যাশবোর্ডে গুছিয়ে পাওয়ার সুবিধাটা অসাধারণ।"
+              },
+              {
+                "id": 5,
+                "name": "নাজমুল করিম",
+                "role": "উপ-পরিদর্শক (SI) ও সার্জেন্ট",
+                "institution": "খুলনা বিশ্ববিদ্যালয়",
+                "quote": "পুলিশের বিশাল ফর্ম পূরণ করতে গিয়ে ক্যাফেওয়ালারা প্রায়ই বানানে ভুল করে। চাকরি সেবার টিম আমার এনআইডি ও সার্টিফিকেটের প্রতিটি অক্ষর মিলিয়ে নিখুঁতভাবে সাবমিট করেছে। অ্যাপ্লিকেন্ট কপি ড্যাশবোর্ডেই পেয়েছি।"
+              }
+            ]
+          },
+          "style": {
+            "backgroundColor": "#02231b",
+            "textColor": "#ffffff",
+            "titleFontSize": "4xl",
+            "subtitleFontSize": "base",
+            "fontWeight": "black",
+            "paddingY": "lg",
+            "textAlign": "center"
+          },
+          "isVisible": true
+        },
+        {
+          "id": "sec-home-faq",
+          "type": "faq",
+          "title": "সচরাচর জিজ্ঞাসিত প্রশ্ন ও উত্তর (FAQ)",
+          "subtitle": "চাকরি সেবা প্ল্যাটফর্ম ও আবেদন প্রক্রিয়া নিয়ে সাধারণ প্রশ্নের সহজ সমাধান",
+          "content": {
+            "badge": "সহায়তা কেন্দ্র",
+            "faqs": [
+              {
+                "q": "চাকরি সেবা প্ল্যাটফর্মের মাধ্যমে কীভাবে আবেদন করবেন?",
+                "a": "পছন্দের চাকরি সার্কুলারে গিয়ে \"আবেদন করুন\" বাটনে ক্লিক করুন। আপনার তথ্য প্রদান করে বিকাশ বা নগদে ফি পরিশোধ করলেই আমাদের এক্সপার্ট টিম নির্ভুলভাবে আপনার আবেদনটি সরকারি পোর্টালে সম্পন্ন করে দেবে।"
+              },
+              {
+                "q": "আমার আবেদনের অ্যাপ্লিকেন্ট কপি ও ট্র্যাকিং স্লিপ কখন পাব?",
+                "a": "আবেদন সম্পন্ন হওয়া মাত্রই আপনার ড্যাশবোর্ডে অফিসিয়াল অ্যাপ্লিকেন্ট কপি পিডিএফ দেখতে ও ডাউনলোড করতে পারবেন। একই সাথে আপনার মোবাইলে ট্র্যাকিং আইডি সহ এসএমএস নোটিফিকেশন পৌঁছে যাবে।"
+              },
+              {
+                "q": "আমার আপলোডকৃত ছবি ও ডকুমেন্টের নিরাপত্তা কেমন?",
+                "a": "আপনার সকল ব্যক্তিগত তথ্য, ছবি ও সার্টিফিকেট আমাদের সিস্টেমে ব্যাংক-গ্রেড এনক্রিপশনের মাধ্যমে সম্পূর্ণ সুরক্ষিত থাকে। আপনার অনুমতি ছাড়া এই তথ্য অন্য কোথাও ব্যবহৃত হয় না।"
+              },
+              {
+                "q": "ভুল তথ্য বা আবেদন সংশোধন করা যায় কি?",
+                "a": "আমাদের টিম আবেদন সাবমিট করার আগে আপনার সাথে প্রতিটি তথ্য পুঙ্খানুপুঙ্খ যাচাই করে নেয়। তবে টেলিটক পোর্টালে চূড়ান্ত সাবমিটের আগে যেকোনো সময় পরিবর্তনের অনুরোধ জানাতে পারবেন।"
               }
             ]
           },
           "style": {
             "backgroundColor": "#ffffff",
             "textColor": "#0f172a",
+            "titleFontSize": "3xl",
+            "subtitleFontSize": "base",
+            "fontWeight": "black",
             "paddingY": "md",
-            "columns": 3
+            "textAlign": "center"
           },
           "isVisible": true
         }
@@ -9903,10 +11881,10 @@
           {
             "id": "sec-home-hero",
             "type": "hero",
-            "title": "চাকরির খবর জানুন সবার আগে — ১০০% সঠিক ও দ্রুত আবেদন সেবা ২০২৬",
+            "title": "চাকরির খবর জানুন সবার আগে — ১০০% নির্ভুল আবেদন ও স্মার্ট ক্যারিয়ার সেবা ২০২৬",
             "subtitle": "সরকারি ও বেসরকারি চাকরির সর্বশেষ বিজ্ঞপ্তি, আবেদন প্রক্রিয়া, যোগ্যতা, প্রয়োজনীয় কাগজপত্র এবং পরীক্ষার আপডেট—সবকিছু এক জায়গায়, আপনার জন্য।",
             "content": {
-              "badge": "সঠিক তথ্য • নির্ভরযোগ্য চাকরির খবর • আপনার ক্যারিয়ারের সঙ্গী",
+              "badge": "⚡ অফিসিয়াল প্ল্যাটফর্ম • নির্ভরযোগ্য চাকরির খবর • আপনার ক্যারিয়ারের বিশ্বস্ত সঙ্গী",
               "ctaText": "চাকরির বিজ্ঞপ্তি দেখুন",
               "ctaUrl": "#circulars-section",
               "secondaryCtaText": "আবেদন প্রক্রিয়া জানুন",
@@ -9916,43 +11894,958 @@
               "backgroundColor": "#011612",
               "textColor": "#ffffff",
               "paddingY": "lg",
+              "textAlign": "left",
+              "titleFontSize": "6xl"
+            },
+            "isVisible": true
+          },
+          {
+            "id": "sec-home-jobs",
+            "type": "jobs",
+            "title": "চলমান সকল চাকরির সার্কুলার ও বিজ্ঞপ্তি",
+            "subtitle": "সরকারি, ব্যাংক ও স্বায়ত্তশাসিত প্রতিষ্ঠানের হালনাগাদ সার্কুলার থেকে সহজে আবেদন করুন",
+            "content": {
+              "showCategoryFilter": true,
+              "showStatusCards": true,
+              "showSearchBar": true,
+              "jobsPerPage": 9,
+              "columns": 3
+            },
+            "style": {
+              "backgroundColor": "#f8fafc",
+              "textColor": "#0f172a",
+              "paddingY": "lg",
               "textAlign": "left"
             },
             "isVisible": true
           },
           {
-            "id": "sec-home-features",
-            "type": "features",
-            "title": "চাকরি সেবা বিশেষ সেবাসমূহ",
-            "subtitle": "চাকরিপ্রার্থীদের সফল ক্যারিয়ার গঠনে আমাদের অনন্য সুবিধাসমূহ",
+            "id": "sec-home-how-it-works",
+            "type": "how-it-works",
+            "title": "কীভাবে ঘরে বসেই নির্ভুল চাকরি আবেদন করবেন?",
+            "subtitle": "সাইবার ক্যাফেতে ঘণ্টার পর ঘণ্টা বসে থাকার ঝামেলা শেষ! আপনার সুবিধার্থে আধুনিক স্মার্ট সিস্টেম:",
             "content": {
+              "badge": "সহজ ৩ ধাপের প্রক্রিয়া",
               "items": [
                 {
-                  "title": "১০০% নির্ভুল টেলিটক আবেদন",
-                  "desc": "পেশাদার টিম দিয়ে সঠিক সাইজে ছবি ও স্বাক্ষর রিসাইজ করে আবেদন দাখিল ও ফি পেমেন্ট।"
+                  "step": 1,
+                  "title": "১ বার ডকুমেন্ট ভল্টে সেভ রাখুন",
+                  "desc": "আপনার পাসপোর্ট ছবি, স্বাক্ষর, এনআইডি এবং শিক্ষাগত সনদের তথ্য মাত্র একবার আপলোড করুন। আমাদের সিস্টেম নিজে থেকেই ৩০০x৩০০ ও ৩০০x৮০ পিক্সেল সাইজে কনভার্ট করে রাখবে।"
                 },
                 {
-                  "title": "মাস্টার ডকুমেন্ট ভল্ট",
-                  "desc": "একবার প্রোফাইল সংরক্ষণ করলেই পরবর্তীতে মাত্র ১ ক্লিকে যেকোনো পদে দ্রুত আবেদন।"
+                  "step": 2,
+                  "title": "পছন্দের জবে আবেদন বুকিং দিন",
+                  "desc": "যেকোনো সরকারি বা ব্যাংক বিজ্ঞপ্তির নিচে আবেদন করুন চাপুন। বিকাশ/নগদে সরকারি ফি ও সামান্য টিম সার্ভিস চার্জ পেমেন্ট করলেই সরাসরি রিকোয়েস্ট চলে যাবে।"
                 },
                 {
-                  "title": "লাইভ অ্যাপ্লিকেশন ট্র্যাকিং",
-                  "desc": "বিকাশ/নগদে পেমেন্টের পর উবার-স্টাইল রিয়েল-টাইম ৫ ধাপের ট্র্যাকিং ও এসএমএস অ্যালার্ট।"
+                  "step": 3,
+                  "title": "টিম আবেদন শেষ করে স্লিপ দেবে",
+                  "desc": "আমাদের অভিজ্ঞ এক্সপার্ট টিম অফিশিয়াল পোর্টালে নিখুঁতভাবে ফর্ম পূরণ করে সরকারি ফি দিয়ে আপনার ড্যাশবোর্ডে অ্যাপ্লিকেন্ট কপি পিডিএফ আপলোড করে দেবে এবং এসএমএস যাবে!"
+                }
+              ]
+            },
+            "style": {
+              "backgroundColor": "#f8fafc",
+              "textColor": "#0f172a",
+              "titleFontSize": "3xl",
+              "subtitleFontSize": "base",
+              "fontWeight": "black",
+              "paddingY": "md",
+              "textAlign": "center"
+            },
+            "isVisible": true
+          },
+          {
+            "id": "sec-home-cta-banner",
+            "type": "cta",
+            "title": "বিসিএস ও ব্যাংক পরীক্ষার বিগত ১০ বছরের প্রশ্ন ও সমাধান (PDF)",
+            "subtitle": "প্রিলিমিনারি ও লিখিত পরীক্ষার পূর্ণাঙ্গ প্রশ্নব্যাংক ব্যাখ্যাসহ ডাউনলোড করুন সম্পূর্ণ বিনামূল্যে।",
+            "content": {
+              "badge": "ফ্রি ডাউনলোড হাব",
+              "buttonLabel": "ফ্রি প্রশ্নব্যাংক ডাউনলোড",
+              "buttonUrl": "/questions"
+            },
+            "style": {
+              "backgroundColor": "#f59e0b",
+              "textColor": "#ffffff",
+              "titleFontSize": "2xl",
+              "subtitleFontSize": "base",
+              "fontWeight": "black",
+              "paddingY": "md",
+              "textAlign": "left"
+            },
+            "isVisible": true
+          },
+          {
+            "id": "sec-home-reviews",
+            "type": "testimonials",
+            "title": "সফল চাকরিপ্রার্থীদের বাস্তব অভিজ্ঞতা ও মতামত",
+            "subtitle": "সাইবার ক্যাফেতে ঘণ্টার পর ঘণ্টা লাইনে দাঁড়ানোর ভোগান্তি ছাড়াই কীভাবে শত শত চাকরিপ্রার্থী ঘরে বসেই শতভাগ নির্ভুল আবেদন সেবা পেয়েছেন:",
+            "content": {
+              "badge": "৪.৯/৫ গড় রেটিং • ৩,৫০০+ ভেরিফাইড আবেদনকারী",
+              "items": [
+                {
+                  "id": 1,
+                  "name": "তানভীর আহমেদ",
+                  "role": "সহকারী পরিচালক, বাংলাদেশ ব্যাংক",
+                  "institution": "ঢাকা বিশ্ববিদ্যালয়",
+                  "quote": "আগে সাইবার ক্যাফেতে ৩-৪ ঘণ্টা লাইনে দাঁড়িয়ে ছবি রিসাইজ করা নিয়ে ঝামেলায় পড়তাম। চাকরি সেবায় মাত্র একবার তথ্য সেভ করে রেখেছিলাম, ডেডলাইনের দিন রাতে ১ ক্লিকে রিকোয়েস্ট দিতেই ১৫ মিনিটের মাথায় টেলিটক পেমেন্ট সহ অফিশিয়াল অ্যাপ্লিকেন্ট কপি পেয়ে গেছি!"
+                },
+                {
+                  "id": 2,
+                  "name": "ফারহানা ইয়াসমিন",
+                  "role": "সহকারী শিক্ষক, DPE নিয়োগ",
+                  "institution": "চট্টগ্রাম",
+                  "quote": "আমাদের গ্রামের বাড়ি রাঙ্গুনিয়ায় ভালো কম্পিউটার দোকান নেই। মোবাইলেই চাকরি সেবা থেকে প্রাথমিক শিক্ষক নিয়োগে আবেদন করেছি। টিম নিজে থেকেই ৩০০x৩০০ ছবি ও স্বাক্ষর নিখুঁতভাবে রিসাইজ করে সাবমিট করেছে। কোনো ভুল হয়নি।"
+                },
+                {
+                  "id": 3,
+                  "name": "মাহমুদুল হাসান",
+                  "role": "স্টেশন মাস্টার ও খালাসী আবেদন",
+                  "institution": "রাজশাহী কলেজ",
+                  "quote": "একই সার্কুলারে একাধিক পদে আবেদনের ক্ষেত্রে ফি কীভাবে কাটবে তা নিয়ে সংশয়ে ছিলাম। এখানকার পদভেদে আলাদা ড্রয়ার সিস্টেম ও ক্লিয়ার ফি ব্রেকডাউন দেখে সাথে সাথে নিশ্চিন্তে বুকিং দিয়েছি। বিকাশ পেমেন্টের সাথে সাথেই এসএমএস পেয়েছি।"
+                },
+                {
+                  "id": 4,
+                  "name": "সাদিয়া আফরিন",
+                  "role": "অফিসার ক্যাশ, সোনালী ব্যাংক",
+                  "institution": "সিলেট",
+                  "quote": "মহিলা চাকরিপ্রার্থীদের জন্য ঘরে বসে নিশ্চিন্তে আবেদন করতে পারা অনেক বড় স্বস্তি। তথ্যের সর্বোচ্চ নিরাপত্তা আর সঠিক সময়ে টেলিটকের ইউজার আইডি ও পাসওয়ার্ড ড্যাশবোর্ডে গুছিয়ে পাওয়ার সুবিধাটা অসাধারণ।"
+                },
+                {
+                  "id": 5,
+                  "name": "নাজমুল করিম",
+                  "role": "উপ-পরিদর্শক (SI) ও সার্জেন্ট",
+                  "institution": "খুলনা বিশ্ববিদ্যালয়",
+                  "quote": "পুলিশের বিশাল ফর্ম পূরণ করতে গিয়ে ক্যাফেওয়ালারা প্রায়ই বানানে ভুল করে। চাকরি সেবার টিম আমার এনআইডি ও সার্টিফিকেটের প্রতিটি অক্ষর মিলিয়ে নিখুঁতভাবে সাবমিট করেছে। অ্যাপ্লিকেন্ট কপি ড্যাশবোর্ডেই পেয়েছি।"
+                }
+              ]
+            },
+            "style": {
+              "backgroundColor": "#02231b",
+              "textColor": "#ffffff",
+              "titleFontSize": "4xl",
+              "subtitleFontSize": "base",
+              "fontWeight": "black",
+              "paddingY": "lg",
+              "textAlign": "center"
+            },
+            "isVisible": true
+          },
+          {
+            "id": "sec-home-faq",
+            "type": "faq",
+            "title": "সচরাচর জিজ্ঞাসিত প্রশ্ন ও উত্তর (FAQ)",
+            "subtitle": "চাকরি সেবা প্ল্যাটফর্ম ও আবেদন প্রক্রিয়া নিয়ে সাধারণ প্রশ্নের সহজ সমাধান",
+            "content": {
+              "badge": "সহায়তা কেন্দ্র",
+              "faqs": [
+                {
+                  "q": "চাকরি সেবা প্ল্যাটফর্মের মাধ্যমে কীভাবে আবেদন করবেন?",
+                  "a": "পছন্দের চাকরি সার্কুলারে গিয়ে \"আবেদন করুন\" বাটনে ক্লিক করুন। আপনার তথ্য প্রদান করে বিকাশ বা নগদে ফি পরিশোধ করলেই আমাদের এক্সপার্ট টিম নির্ভুলভাবে আপনার আবেদনটি সরকারি পোর্টালে সম্পন্ন করে দেবে।"
+                },
+                {
+                  "q": "আমার আবেদনের অ্যাপ্লিকেন্ট কপি ও ট্র্যাকিং স্লিপ কখন পাব?",
+                  "a": "আবেদন সম্পন্ন হওয়া মাত্রই আপনার ড্যাশবোর্ডে অফিসিয়াল অ্যাপ্লিকেন্ট কপি পিডিএফ দেখতে ও ডাউনলোড করতে পারবেন। একই সাথে আপনার মোবাইলে ট্র্যাকিং আইডি সহ এসএমএস নোটিফিকেশন পৌঁছে যাবে।"
+                },
+                {
+                  "q": "আমার আপলোডকৃত ছবি ও ডকুমেন্টের নিরাপত্তা কেমন?",
+                  "a": "আপনার সকল ব্যক্তিগত তথ্য, ছবি ও সার্টিফিকেট আমাদের সিস্টেমে ব্যাংক-গ্রেড এনক্রিপশনের মাধ্যমে সম্পূর্ণ সুরক্ষিত থাকে। আপনার অনুমতি ছাড়া এই তথ্য অন্য কোথাও ব্যবহৃত হয় না।"
+                },
+                {
+                  "q": "ভুল তথ্য বা আবেদন সংশোধন করা যায় কি?",
+                  "a": "আমাদের টিম আবেদন সাবমিট করার আগে আপনার সাথে প্রতিটি তথ্য পুঙ্খানুপুঙ্খ যাচাই করে নেয়। তবে টেলিটক পোর্টালে চূড়ান্ত সাবমিটের আগে যেকোনো সময় পরিবর্তনের অনুরোধ জানাতে পারবেন।"
                 }
               ]
             },
             "style": {
               "backgroundColor": "#ffffff",
               "textColor": "#0f172a",
+              "titleFontSize": "3xl",
+              "subtitleFontSize": "base",
+              "fontWeight": "black",
               "paddingY": "md",
-              "columns": 3
+              "textAlign": "center"
             },
             "isVisible": true
           }
         ],
-        "publishedAt": "2026-11-07T02:35:21.025Z"
+        "publishedAt": "2026-11-07T04:31:00.618Z"
       },
       "revisions": [
+        {
+          "id": "REV-1794025860618",
+          "version": 21,
+          "savedAt": "2026-11-07T04:31:00.618Z",
+          "savedBy": "ADMIN-SUPER",
+          "status": "published",
+          "sections": [
+            {
+              "id": "sec-home-hero",
+              "type": "hero",
+              "title": "চাকরির খবর জানুন সবার আগে — ১০০% নির্ভুল আবেদন ও স্মার্ট ক্যারিয়ার সেবা ২০২৬",
+              "subtitle": "সরকারি ও বেসরকারি চাকরির সর্বশেষ বিজ্ঞপ্তি, আবেদন প্রক্রিয়া, যোগ্যতা, প্রয়োজনীয় কাগজপত্র এবং পরীক্ষার আপডেট—সবকিছু এক জায়গায়, আপনার জন্য।",
+              "content": {
+                "badge": "⚡ অফিসিয়াল প্ল্যাটফর্ম • নির্ভরযোগ্য চাকরির খবর • আপনার ক্যারিয়ারের বিশ্বস্ত সঙ্গী",
+                "ctaText": "চাকরির বিজ্ঞপ্তি দেখুন",
+                "ctaUrl": "#circulars-section",
+                "secondaryCtaText": "আবেদন প্রক্রিয়া জানুন",
+                "secondaryCtaUrl": "#how-it-works"
+              },
+              "style": {
+                "backgroundColor": "#011612",
+                "textColor": "#ffffff",
+                "paddingY": "lg",
+                "textAlign": "left",
+                "titleFontSize": "6xl"
+              },
+              "isVisible": true
+            },
+            {
+              "id": "sec-home-jobs",
+              "type": "jobs",
+              "title": "চলমান সকল চাকরির সার্কুলার ও বিজ্ঞপ্তি",
+              "subtitle": "সরকারি, ব্যাংক ও স্বায়ত্তশাসিত প্রতিষ্ঠানের হালনাগাদ সার্কুলার থেকে সহজে আবেদন করুন",
+              "content": {
+                "showCategoryFilter": true,
+                "showStatusCards": true,
+                "showSearchBar": true,
+                "jobsPerPage": 9,
+                "columns": 3
+              },
+              "style": {
+                "backgroundColor": "#f8fafc",
+                "textColor": "#0f172a",
+                "paddingY": "lg",
+                "textAlign": "left"
+              },
+              "isVisible": true
+            },
+            {
+              "id": "sec-home-how-it-works",
+              "type": "how-it-works",
+              "title": "কীভাবে ঘরে বসেই নির্ভুল চাকরি আবেদন করবেন?",
+              "subtitle": "সাইবার ক্যাফেতে ঘণ্টার পর ঘণ্টা বসে থাকার ঝামেলা শেষ! আপনার সুবিধার্থে আধুনিক স্মার্ট সিস্টেম:",
+              "content": {
+                "badge": "সহজ ৩ ধাপের প্রক্রিয়া",
+                "items": [
+                  {
+                    "step": 1,
+                    "title": "১ বার ডকুমেন্ট ভল্টে সেভ রাখুন",
+                    "desc": "আপনার পাসপোর্ট ছবি, স্বাক্ষর, এনআইডি এবং শিক্ষাগত সনদের তথ্য মাত্র একবার আপলোড করুন। আমাদের সিস্টেম নিজে থেকেই ৩০০x৩০০ ও ৩০০x৮০ পিক্সেল সাইজে কনভার্ট করে রাখবে।"
+                  },
+                  {
+                    "step": 2,
+                    "title": "পছন্দের জবে আবেদন বুকিং দিন",
+                    "desc": "যেকোনো সরকারি বা ব্যাংক বিজ্ঞপ্তির নিচে আবেদন করুন চাপুন। বিকাশ/নগদে সরকারি ফি ও সামান্য টিম সার্ভিস চার্জ পেমেন্ট করলেই সরাসরি রিকোয়েস্ট চলে যাবে।"
+                  },
+                  {
+                    "step": 3,
+                    "title": "টিম আবেদন শেষ করে স্লিপ দেবে",
+                    "desc": "আমাদের অভিজ্ঞ এক্সপার্ট টিম অফিশিয়াল পোর্টালে নিখুঁতভাবে ফর্ম পূরণ করে সরকারি ফি দিয়ে আপনার ড্যাশবোর্ডে অ্যাপ্লিকেন্ট কপি পিডিএফ আপলোড করে দেবে এবং এসএমএস যাবে!"
+                  }
+                ]
+              },
+              "style": {
+                "backgroundColor": "#f8fafc",
+                "textColor": "#0f172a",
+                "titleFontSize": "3xl",
+                "subtitleFontSize": "base",
+                "fontWeight": "black",
+                "paddingY": "md",
+                "textAlign": "center"
+              },
+              "isVisible": true
+            },
+            {
+              "id": "sec-home-cta-banner",
+              "type": "cta",
+              "title": "বিসিএস ও ব্যাংক পরীক্ষার বিগত ১০ বছরের প্রশ্ন ও সমাধান (PDF)",
+              "subtitle": "প্রিলিমিনারি ও লিখিত পরীক্ষার পূর্ণাঙ্গ প্রশ্নব্যাংক ব্যাখ্যাসহ ডাউনলোড করুন সম্পূর্ণ বিনামূল্যে।",
+              "content": {
+                "badge": "ফ্রি ডাউনলোড হাব",
+                "buttonLabel": "ফ্রি প্রশ্নব্যাংক ডাউনলোড",
+                "buttonUrl": "/questions"
+              },
+              "style": {
+                "backgroundColor": "#f59e0b",
+                "textColor": "#ffffff",
+                "titleFontSize": "2xl",
+                "subtitleFontSize": "base",
+                "fontWeight": "black",
+                "paddingY": "md",
+                "textAlign": "left"
+              },
+              "isVisible": true
+            },
+            {
+              "id": "sec-home-reviews",
+              "type": "testimonials",
+              "title": "সফল চাকরিপ্রার্থীদের বাস্তব অভিজ্ঞতা ও মতামত",
+              "subtitle": "সাইবার ক্যাফেতে ঘণ্টার পর ঘণ্টা লাইনে দাঁড়ানোর ভোগান্তি ছাড়াই কীভাবে শত শত চাকরিপ্রার্থী ঘরে বসেই শতভাগ নির্ভুল আবেদন সেবা পেয়েছেন:",
+              "content": {
+                "badge": "৪.৯/৫ গড় রেটিং • ৩,৫০০+ ভেরিফাইড আবেদনকারী",
+                "items": [
+                  {
+                    "id": 1,
+                    "name": "তানভীর আহমেদ",
+                    "role": "সহকারী পরিচালক, বাংলাদেশ ব্যাংক",
+                    "institution": "ঢাকা বিশ্ববিদ্যালয়",
+                    "quote": "আগে সাইবার ক্যাফেতে ৩-৪ ঘণ্টা লাইনে দাঁড়িয়ে ছবি রিসাইজ করা নিয়ে ঝামেলায় পড়তাম। চাকরি সেবায় মাত্র একবার তথ্য সেভ করে রেখেছিলাম, ডেডলাইনের দিন রাতে ১ ক্লিকে রিকোয়েস্ট দিতেই ১৫ মিনিটের মাথায় টেলিটক পেমেন্ট সহ অফিশিয়াল অ্যাপ্লিকেন্ট কপি পেয়ে গেছি!"
+                  },
+                  {
+                    "id": 2,
+                    "name": "ফারহানা ইয়াসমিন",
+                    "role": "সহকারী শিক্ষক, DPE নিয়োগ",
+                    "institution": "চট্টগ্রাম",
+                    "quote": "আমাদের গ্রামের বাড়ি রাঙ্গুনিয়ায় ভালো কম্পিউটার দোকান নেই। মোবাইলেই চাকরি সেবা থেকে প্রাথমিক শিক্ষক নিয়োগে আবেদন করেছি। টিম নিজে থেকেই ৩০০x৩০০ ছবি ও স্বাক্ষর নিখুঁতভাবে রিসাইজ করে সাবমিট করেছে। কোনো ভুল হয়নি।"
+                  },
+                  {
+                    "id": 3,
+                    "name": "মাহমুদুল হাসান",
+                    "role": "স্টেশন মাস্টার ও খালাসী আবেদন",
+                    "institution": "রাজশাহী কলেজ",
+                    "quote": "একই সার্কুলারে একাধিক পদে আবেদনের ক্ষেত্রে ফি কীভাবে কাটবে তা নিয়ে সংশয়ে ছিলাম। এখানকার পদভেদে আলাদা ড্রয়ার সিস্টেম ও ক্লিয়ার ফি ব্রেকডাউন দেখে সাথে সাথে নিশ্চিন্তে বুকিং দিয়েছি। বিকাশ পেমেন্টের সাথে সাথেই এসএমএস পেয়েছি।"
+                  },
+                  {
+                    "id": 4,
+                    "name": "সাদিয়া আফরিন",
+                    "role": "অফিসার ক্যাশ, সোনালী ব্যাংক",
+                    "institution": "সিলেট",
+                    "quote": "মহিলা চাকরিপ্রার্থীদের জন্য ঘরে বসে নিশ্চিন্তে আবেদন করতে পারা অনেক বড় স্বস্তি। তথ্যের সর্বোচ্চ নিরাপত্তা আর সঠিক সময়ে টেলিটকের ইউজার আইডি ও পাসওয়ার্ড ড্যাশবোর্ডে গুছিয়ে পাওয়ার সুবিধাটা অসাধারণ।"
+                  },
+                  {
+                    "id": 5,
+                    "name": "নাজমুল করিম",
+                    "role": "উপ-পরিদর্শক (SI) ও সার্জেন্ট",
+                    "institution": "খুলনা বিশ্ববিদ্যালয়",
+                    "quote": "পুলিশের বিশাল ফর্ম পূরণ করতে গিয়ে ক্যাফেওয়ালারা প্রায়ই বানানে ভুল করে। চাকরি সেবার টিম আমার এনআইডি ও সার্টিফিকেটের প্রতিটি অক্ষর মিলিয়ে নিখুঁতভাবে সাবমিট করেছে। অ্যাপ্লিকেন্ট কপি ড্যাশবোর্ডেই পেয়েছি।"
+                  }
+                ]
+              },
+              "style": {
+                "backgroundColor": "#02231b",
+                "textColor": "#ffffff",
+                "titleFontSize": "4xl",
+                "subtitleFontSize": "base",
+                "fontWeight": "black",
+                "paddingY": "lg",
+                "textAlign": "center"
+              },
+              "isVisible": true
+            },
+            {
+              "id": "sec-home-faq",
+              "type": "faq",
+              "title": "সচরাচর জিজ্ঞাসিত প্রশ্ন ও উত্তর (FAQ)",
+              "subtitle": "চাকরি সেবা প্ল্যাটফর্ম ও আবেদন প্রক্রিয়া নিয়ে সাধারণ প্রশ্নের সহজ সমাধান",
+              "content": {
+                "badge": "সহায়তা কেন্দ্র",
+                "faqs": [
+                  {
+                    "q": "চাকরি সেবা প্ল্যাটফর্মের মাধ্যমে কীভাবে আবেদন করবেন?",
+                    "a": "পছন্দের চাকরি সার্কুলারে গিয়ে \"আবেদন করুন\" বাটনে ক্লিক করুন। আপনার তথ্য প্রদান করে বিকাশ বা নগদে ফি পরিশোধ করলেই আমাদের এক্সপার্ট টিম নির্ভুলভাবে আপনার আবেদনটি সরকারি পোর্টালে সম্পন্ন করে দেবে।"
+                  },
+                  {
+                    "q": "আমার আবেদনের অ্যাপ্লিকেন্ট কপি ও ট্র্যাকিং স্লিপ কখন পাব?",
+                    "a": "আবেদন সম্পন্ন হওয়া মাত্রই আপনার ড্যাশবোর্ডে অফিসিয়াল অ্যাপ্লিকেন্ট কপি পিডিএফ দেখতে ও ডাউনলোড করতে পারবেন। একই সাথে আপনার মোবাইলে ট্র্যাকিং আইডি সহ এসএমএস নোটিফিকেশন পৌঁছে যাবে।"
+                  },
+                  {
+                    "q": "আমার আপলোডকৃত ছবি ও ডকুমেন্টের নিরাপত্তা কেমন?",
+                    "a": "আপনার সকল ব্যক্তিগত তথ্য, ছবি ও সার্টিফিকেট আমাদের সিস্টেমে ব্যাংক-গ্রেড এনক্রিপশনের মাধ্যমে সম্পূর্ণ সুরক্ষিত থাকে। আপনার অনুমতি ছাড়া এই তথ্য অন্য কোথাও ব্যবহৃত হয় না।"
+                  },
+                  {
+                    "q": "ভুল তথ্য বা আবেদন সংশোধন করা যায় কি?",
+                    "a": "আমাদের টিম আবেদন সাবমিট করার আগে আপনার সাথে প্রতিটি তথ্য পুঙ্খানুপুঙ্খ যাচাই করে নেয়। তবে টেলিটক পোর্টালে চূড়ান্ত সাবমিটের আগে যেকোনো সময় পরিবর্তনের অনুরোধ জানাতে পারবেন।"
+                  }
+                ]
+              },
+              "style": {
+                "backgroundColor": "#ffffff",
+                "textColor": "#0f172a",
+                "titleFontSize": "3xl",
+                "subtitleFontSize": "base",
+                "fontWeight": "black",
+                "paddingY": "md",
+                "textAlign": "center"
+              },
+              "isVisible": true
+            }
+          ]
+        },
+        {
+          "id": "REV-1794025848502",
+          "version": 20,
+          "savedAt": "2026-11-07T04:30:48.502Z",
+          "savedBy": "ADMIN-SUPER",
+          "status": "published",
+          "sections": [
+            {
+              "id": "sec-home-hero",
+              "type": "hero",
+              "title": "চাকরির খবর জানুন সবার আগে — ১০০% নির্ভুল আবেদন ও স্মার্ট ক্যারিয়ার সেবা ২০২৬",
+              "subtitle": "সরকারি ও বেসরকারি চাকরির সর্বশেষ বিজ্ঞপ্তি, আবেদন প্রক্রিয়া, যোগ্যতা, প্রয়োজনীয় কাগজপত্র এবং পরীক্ষার আপডেট—সবকিছু এক জায়গায়, আপনার জন্য।",
+              "content": {
+                "badge": "⚡ অফিসিয়াল প্ল্যাটফর্ম • নির্ভরযোগ্য চাকরির খবর • আপনার ক্যারিয়ারের বিশ্বস্ত সঙ্গী",
+                "ctaText": "চাকরির বিজ্ঞপ্তি দেখুন",
+                "ctaUrl": "#circulars-section",
+                "secondaryCtaText": "আবেদন প্রক্রিয়া জানুন",
+                "secondaryCtaUrl": "#how-it-works"
+              },
+              "style": {
+                "backgroundColor": "#011612",
+                "textColor": "#ffffff",
+                "paddingY": "lg",
+                "textAlign": "left",
+                "titleFontSize": "6xl"
+              },
+              "isVisible": true
+            },
+            {
+              "id": "sec-home-jobs",
+              "type": "jobs",
+              "title": "চলমান সকল চাকরির সার্কুলার ও বিজ্ঞপ্তি",
+              "subtitle": "সরকারি, ব্যাংক ও স্বায়ত্তশাসিত প্রতিষ্ঠানের হালনাগাদ সার্কুলার থেকে সহজে আবেদন করুন",
+              "content": {
+                "showCategoryFilter": true,
+                "showStatusCards": true,
+                "showSearchBar": true,
+                "jobsPerPage": 9,
+                "columns": 3
+              },
+              "style": {
+                "backgroundColor": "#f8fafc",
+                "textColor": "#0f172a",
+                "paddingY": "lg",
+                "textAlign": "left"
+              },
+              "isVisible": true
+            },
+            {
+              "id": "sec-home-how-it-works",
+              "type": "how-it-works",
+              "title": "কীভাবে ঘরে বসেই নির্ভুল চাকরি আবেদন করবেন?",
+              "subtitle": "সাইবার ক্যাফেতে ঘণ্টার পর ঘণ্টা বসে থাকার ঝামেলা শেষ! আপনার সুবিধার্থে আধুনিক স্মার্ট সিস্টেম:",
+              "content": {
+                "badge": "সহজ ৩ ধাপের প্রক্রিয়া",
+                "items": [
+                  {
+                    "step": 1,
+                    "title": "১ বার ডকুমেন্ট ভল্টে সেভ রাখুন",
+                    "desc": "আপনার পাসপোর্ট ছবি, স্বাক্ষর, এনআইডি এবং শিক্ষাগত সনদের তথ্য মাত্র একবার আপলোড করুন। আমাদের সিস্টেম নিজে থেকেই ৩০০x৩০০ ও ৩০০x৮০ পিক্সেল সাইজে কনভার্ট করে রাখবে।"
+                  },
+                  {
+                    "step": 2,
+                    "title": "পছন্দের জবে আবেদন বুকিং দিন",
+                    "desc": "যেকোনো সরকারি বা ব্যাংক বিজ্ঞপ্তির নিচে আবেদন করুন চাপুন। বিকাশ/নগদে সরকারি ফি ও সামান্য টিম সার্ভিস চার্জ পেমেন্ট করলেই সরাসরি রিকোয়েস্ট চলে যাবে।"
+                  },
+                  {
+                    "step": 3,
+                    "title": "টিম আবেদন শেষ করে স্লিপ দেবে",
+                    "desc": "আমাদের অভিজ্ঞ এক্সপার্ট টিম অফিশিয়াল পোর্টালে নিখুঁতভাবে ফর্ম পূরণ করে সরকারি ফি দিয়ে আপনার ড্যাশবোর্ডে অ্যাপ্লিকেন্ট কপি পিডিএফ আপলোড করে দেবে এবং এসএমএস যাবে!"
+                  }
+                ]
+              },
+              "style": {
+                "backgroundColor": "#f8fafc",
+                "textColor": "#0f172a",
+                "titleFontSize": "3xl",
+                "subtitleFontSize": "base",
+                "fontWeight": "black",
+                "paddingY": "md",
+                "textAlign": "center"
+              },
+              "isVisible": true
+            },
+            {
+              "id": "sec-home-cta-banner",
+              "type": "cta",
+              "title": "বিসিএস ও ব্যাংক পরীক্ষার বিগত ১০ বছরের প্রশ্ন ও সমাধান (PDF)",
+              "subtitle": "প্রিলিমিনারি ও লিখিত পরীক্ষার পূর্ণাঙ্গ প্রশ্নব্যাংক ব্যাখ্যাসহ ডাউনলোড করুন সম্পূর্ণ বিনামূল্যে।",
+              "content": {
+                "badge": "ফ্রি ডাউনলোড হাব",
+                "buttonLabel": "ফ্রি প্রশ্নব্যাংক ডাউনলোড",
+                "buttonUrl": "/questions"
+              },
+              "style": {
+                "backgroundColor": "#f59e0b",
+                "textColor": "#ffffff",
+                "titleFontSize": "2xl",
+                "subtitleFontSize": "base",
+                "fontWeight": "black",
+                "paddingY": "md",
+                "textAlign": "left"
+              },
+              "isVisible": true
+            },
+            {
+              "id": "sec-home-reviews",
+              "type": "testimonials",
+              "title": "সফল চাকরিপ্রার্থীদের বাস্তব অভিজ্ঞতা ও মতামত",
+              "subtitle": "সাইবার ক্যাফেতে ঘণ্টার পর ঘণ্টা লাইনে দাঁড়ানোর ভোগান্তি ছাড়াই কীভাবে শত শত চাকরিপ্রার্থী ঘরে বসেই শতভাগ নির্ভুল আবেদন সেবা পেয়েছেন:",
+              "content": {
+                "badge": "৪.৯/৫ গড় রেটিং • ৩,৫০০+ ভেরিফাইড আবেদনকারী",
+                "items": [
+                  {
+                    "name": "মোঃ তানভীর হাসান (লাইভ টেস্ট)",
+                    "role": "সহকারী পরিচালক • বাংলাদেশ ব্যাংক",
+                    "institution": "ঢাকা বিশ্ববিদ্যালয়",
+                    "quote": "চাকরি সেবা অ্যাডমিন প্যানেল থেকে লাইভ টেস্ট রিভিউ সফলভাবে হোমপেজে রিফ্লেক্ট হয়েছে!"
+                  }
+                ]
+              },
+              "style": {
+                "backgroundColor": "#02231b",
+                "textColor": "#ffffff",
+                "titleFontSize": "4xl",
+                "subtitleFontSize": "base",
+                "fontWeight": "black",
+                "paddingY": "lg",
+                "textAlign": "center"
+              },
+              "isVisible": true
+            },
+            {
+              "id": "sec-home-faq",
+              "type": "faq",
+              "title": "সচরাচর জিজ্ঞাসিত প্রশ্ন ও উত্তর (FAQ)",
+              "subtitle": "চাকরি সেবা প্ল্যাটফর্ম ও আবেদন প্রক্রিয়া নিয়ে সাধারণ প্রশ্নের সহজ সমাধান",
+              "content": {
+                "badge": "সহায়তা কেন্দ্র",
+                "faqs": [
+                  {
+                    "q": "চাকরি সেবা প্ল্যাটফর্মের মাধ্যমে কীভাবে আবেদন করবেন?",
+                    "a": "পছন্দের চাকরি সার্কুলারে গিয়ে \"আবেদন করুন\" বাটনে ক্লিক করুন। আপনার তথ্য প্রদান করে বিকাশ বা নগদে ফি পরিশোধ করলেই আমাদের এক্সপার্ট টিম নির্ভুলভাবে আপনার আবেদনটি সরকারি পোর্টালে সম্পন্ন করে দেবে।"
+                  },
+                  {
+                    "q": "আমার আবেদনের অ্যাপ্লিকেন্ট কপি ও ট্র্যাকিং স্লিপ কখন পাব?",
+                    "a": "আবেদন সম্পন্ন হওয়া মাত্রই আপনার ড্যাশবোর্ডে অফিসিয়াল অ্যাপ্লিকেন্ট কপি পিডিএফ দেখতে ও ডাউনলোড করতে পারবেন। একই সাথে আপনার মোবাইলে ট্র্যাকিং আইডি সহ এসএমএস নোটিফিকেশন পৌঁছে যাবে।"
+                  },
+                  {
+                    "q": "আমার আপলোডকৃত ছবি ও ডকুমেন্টের নিরাপত্তা কেমন?",
+                    "a": "আপনার সকল ব্যক্তিগত তথ্য, ছবি ও সার্টিফিকেট আমাদের সিস্টেমে ব্যাংক-গ্রেড এনক্রিপশনের মাধ্যমে সম্পূর্ণ সুরক্ষিত থাকে। আপনার অনুমতি ছাড়া এই তথ্য অন্য কোথাও ব্যবহৃত হয় না।"
+                  },
+                  {
+                    "q": "ভুল তথ্য বা আবেদন সংশোধন করা যায় কি?",
+                    "a": "আমাদের টিম আবেদন সাবমিট করার আগে আপনার সাথে প্রতিটি তথ্য পুঙ্খানুপুঙ্খ যাচাই করে নেয়। তবে টেলিটক পোর্টালে চূড়ান্ত সাবমিটের আগে যেকোনো সময় পরিবর্তনের অনুরোধ জানাতে পারবেন।"
+                  }
+                ]
+              },
+              "style": {
+                "backgroundColor": "#ffffff",
+                "textColor": "#0f172a",
+                "titleFontSize": "3xl",
+                "subtitleFontSize": "base",
+                "fontWeight": "black",
+                "paddingY": "md",
+                "textAlign": "center"
+              },
+              "isVisible": true
+            }
+          ]
+        },
+        {
+          "id": "REV-1794021796505",
+          "version": 19,
+          "savedAt": "2026-11-07T03:23:16.505Z",
+          "savedBy": "ADMIN-SUPER",
+          "status": "published",
+          "sections": [
+            {
+              "id": "sec-home-hero",
+              "type": "hero",
+              "title": "চাকরির খবর জানুন সবার আগে — ১০০% নির্ভুল আবেদন ও স্মার্ট ক্যারিয়ার সেবা ২০২৬",
+              "subtitle": "সরকারি ও বেসরকারি চাকরির সর্বশেষ বিজ্ঞপ্তি, আবেদন প্রক্রিয়া, যোগ্যতা, প্রয়োজনীয় কাগজপত্র এবং পরীক্ষার আপডেট—সবকিছু এক জায়গায়, আপনার জন্য।",
+              "content": {
+                "badge": "⚡ অফিসিয়াল প্ল্যাটফর্ম • নির্ভরযোগ্য চাকরির খবর • আপনার ক্যারিয়ারের বিশ্বস্ত সঙ্গী",
+                "ctaText": "চাকরির বিজ্ঞপ্তি দেখুন",
+                "ctaUrl": "#circulars-section",
+                "secondaryCtaText": "আবেদন প্রক্রিয়া জানুন",
+                "secondaryCtaUrl": "#how-it-works"
+              },
+              "style": {
+                "backgroundColor": "#011612",
+                "textColor": "#ffffff",
+                "paddingY": "lg",
+                "textAlign": "left",
+                "titleFontSize": "6xl"
+              },
+              "isVisible": true
+            },
+            {
+              "id": "sec-home-how-it-works",
+              "type": "how-it-works",
+              "title": "কীভাবে ঘরে বসেই নির্ভুল চাকরি আবেদন করবেন?",
+              "subtitle": "সাইবার ক্যাফেতে ঘণ্টার পর ঘণ্টা বসে থাকার ঝামেলা শেষ! আপনার সুবিধার্থে আধুনিক স্মার্ট সিস্টেম:",
+              "content": {
+                "badge": "সহজ ৩ ধাপের প্রক্রিয়া",
+                "items": [
+                  {
+                    "step": 1,
+                    "title": "১ বার ডকুমেন্ট ভল্টে সেভ রাখুন",
+                    "desc": "আপনার পাসপোর্ট ছবি, স্বাক্ষর, এনআইডি এবং শিক্ষাগত সনদের তথ্য মাত্র একবার আপলোড করুন। আমাদের সিস্টেম নিজে থেকেই ৩০০x৩০০ ও ৩০০x৮০ পিক্সেল সাইজে কনভার্ট করে রাখবে।"
+                  },
+                  {
+                    "step": 2,
+                    "title": "পছন্দের জবে আবেদন বুকিং দিন",
+                    "desc": "যেকোনো সরকারি বা ব্যাংক বিজ্ঞপ্তির নিচে আবেদন করুন চাপুন। বিকাশ/নগদে সরকারি ফি ও সামান্য টিম সার্ভিস চার্জ পেমেন্ট করলেই সরাসরি রিকোয়েস্ট চলে যাবে।"
+                  },
+                  {
+                    "step": 3,
+                    "title": "টিম আবেদন শেষ করে স্লিপ দেবে",
+                    "desc": "আমাদের অভিজ্ঞ এক্সপার্ট টিম অফিশিয়াল পোর্টালে নিখুঁতভাবে ফর্ম পূরণ করে সরকারি ফি দিয়ে আপনার ড্যাশবোর্ডে অ্যাপ্লিকেন্ট কপি পিডিএফ আপলোড করে দেবে এবং এসএমএস যাবে!"
+                  }
+                ]
+              },
+              "style": {
+                "backgroundColor": "#f8fafc",
+                "textColor": "#0f172a",
+                "titleFontSize": "3xl",
+                "subtitleFontSize": "base",
+                "fontWeight": "black",
+                "paddingY": "md",
+                "textAlign": "center"
+              },
+              "isVisible": true
+            },
+            {
+              "id": "sec-home-cta-banner",
+              "type": "cta",
+              "title": "বিসিএস ও ব্যাংক পরীক্ষার বিগত ১০ বছরের প্রশ্ন ও সমাধান (PDF)",
+              "subtitle": "প্রিলিমিনারি ও লিখিত পরীক্ষার পূর্ণাঙ্গ প্রশ্নব্যাংক ব্যাখ্যাসহ ডাউনলোড করুন সম্পূর্ণ বিনামূল্যে।",
+              "content": {
+                "badge": "ফ্রি ডাউনলোড হাব",
+                "buttonLabel": "ফ্রি প্রশ্নব্যাংক ডাউনলোড",
+                "buttonUrl": "/questions"
+              },
+              "style": {
+                "backgroundColor": "#f59e0b",
+                "textColor": "#ffffff",
+                "titleFontSize": "2xl",
+                "subtitleFontSize": "base",
+                "fontWeight": "black",
+                "paddingY": "md",
+                "textAlign": "left"
+              },
+              "isVisible": true
+            },
+            {
+              "id": "sec-home-reviews",
+              "type": "testimonials",
+              "title": "সফল চাকরিপ্রার্থীদের বাস্তব অভিজ্ঞতা ও মতামত",
+              "subtitle": "সাইবার ক্যাফেতে ঘণ্টার পর ঘণ্টা লাইনে দাঁড়ানোর ভোগান্তি ছাড়াই কীভাবে শত শত চাকরিপ্রার্থী ঘরে বসেই শতভাগ নির্ভুল আবেদন সেবা পেয়েছেন:",
+              "content": {
+                "badge": "৪.৯/৫ গড় রেটিং • ৩,৫০০+ ভেরিফাইড আবেদনকারী"
+              },
+              "style": {
+                "backgroundColor": "#02231b",
+                "textColor": "#ffffff",
+                "titleFontSize": "4xl",
+                "subtitleFontSize": "base",
+                "fontWeight": "black",
+                "paddingY": "lg",
+                "textAlign": "center"
+              },
+              "isVisible": true
+            },
+            {
+              "id": "sec-home-faq",
+              "type": "faq",
+              "title": "সচরাচর জিজ্ঞাসিত প্রশ্ন ও উত্তর (FAQ)",
+              "subtitle": "চাকরি সেবা প্ল্যাটফর্ম ও আবেদন প্রক্রিয়া নিয়ে সাধারণ প্রশ্নের সহজ সমাধান",
+              "content": {
+                "badge": "সহায়তা কেন্দ্র",
+                "faqs": [
+                  {
+                    "q": "চাকরি সেবা প্ল্যাটফর্মের মাধ্যমে কীভাবে আবেদন করবেন?",
+                    "a": "পছন্দের চাকরি সার্কুলারে গিয়ে \"আবেদন করুন\" বাটনে ক্লিক করুন। আপনার তথ্য প্রদান করে বিকাশ বা নগদে ফি পরিশোধ করলেই আমাদের এক্সপার্ট টিম নির্ভুলভাবে আপনার আবেদনটি সরকারি পোর্টালে সম্পন্ন করে দেবে।"
+                  },
+                  {
+                    "q": "আমার আবেদনের অ্যাপ্লিকেন্ট কপি ও ট্র্যাকিং স্লিপ কখন পাব?",
+                    "a": "আবেদন সম্পন্ন হওয়া মাত্রই আপনার ড্যাশবোর্ডে অফিসিয়াল অ্যাপ্লিকেন্ট কপি পিডিএফ দেখতে ও ডাউনলোড করতে পারবেন। একই সাথে আপনার মোবাইলে ট্র্যাকিং আইডি সহ এসএমএস নোটিফিকেশন পৌঁছে যাবে।"
+                  },
+                  {
+                    "q": "আমার আপলোডকৃত ছবি ও ডকুমেন্টের নিরাপত্তা কেমন?",
+                    "a": "আপনার সকল ব্যক্তিগত তথ্য, ছবি ও সার্টিফিকেট আমাদের সিস্টেমে ব্যাংক-গ্রেড এনক্রিপশনের মাধ্যমে সম্পূর্ণ সুরক্ষিত থাকে। আপনার অনুমতি ছাড়া এই তথ্য অন্য কোথাও ব্যবহৃত হয় না।"
+                  },
+                  {
+                    "q": "ভুল তথ্য বা আবেদন সংশোধন করা যায় কি?",
+                    "a": "আমাদের টিম আবেদন সাবমিট করার আগে আপনার সাথে প্রতিটি তথ্য পুঙ্খানুপুঙ্খ যাচাই করে নেয়। তবে টেলিটক পোর্টালে চূড়ান্ত সাবমিটের আগে যেকোনো সময় পরিবর্তনের অনুরোধ জানাতে পারবেন।"
+                  }
+                ]
+              },
+              "style": {
+                "backgroundColor": "#ffffff",
+                "textColor": "#0f172a",
+                "titleFontSize": "3xl",
+                "subtitleFontSize": "base",
+                "fontWeight": "black",
+                "paddingY": "md",
+                "textAlign": "center"
+              },
+              "isVisible": true
+            }
+          ]
+        },
+        {
+          "id": "REV-1794021496487",
+          "version": 18,
+          "savedAt": "2026-11-07T03:18:16.487Z",
+          "savedBy": "ADMIN-SUPER",
+          "status": "published",
+          "sections": [
+            {
+              "id": "sec-home-hero",
+              "type": "hero",
+              "title": "চাকরির খবর জানুন সবার আগে — ১০০% নির্ভুল আবেদন ও ক্যারিয়ার সেবা ২০২৬",
+              "subtitle": "সরকারি ও বেসরকারি চাকরির সর্বশেষ বিজ্ঞপ্তি, আবেদন প্রক্রিয়া, যোগ্যতা, প্রয়োজনীয় কাগজপত্র এবং পরীক্ষার আপডেট—সবকিছু এক জায়গায়, আপনার জন্য।",
+              "content": {
+                "badge": "⚡ অফিসিয়াল প্ল্যাটফর্ম • নির্ভরযোগ্য চাকরির খবর • আপনার ক্যারিয়ারের বিশ্বস্ত সঙ্গী",
+                "ctaText": "চাকরির বিজ্ঞপ্তি দেখুন",
+                "ctaUrl": "#circulars-section",
+                "secondaryCtaText": "আবেদন প্রক্রিয়া জানুন",
+                "secondaryCtaUrl": "#how-it-works"
+              },
+              "style": {
+                "backgroundColor": "#011612",
+                "textColor": "#ffffff",
+                "paddingY": "lg",
+                "textAlign": "left",
+                "titleFontSize": "6xl"
+              },
+              "isVisible": true
+            },
+            {
+              "id": "sec-home-how-it-works",
+              "type": "how-it-works",
+              "title": "কীভাবে ঘরে বসেই নির্ভুল চাকরি আবেদন করবেন?",
+              "subtitle": "সাইবার ক্যাফেতে ঘণ্টার পর ঘণ্টা বসে থাকার ঝামেলা শেষ! আপনার সুবিধার্থে আধুনিক স্মার্ট সিস্টেম:",
+              "content": {
+                "badge": "সহজ ৩ ধাপের প্রক্রিয়া",
+                "items": [
+                  {
+                    "step": 1,
+                    "title": "১ বার ডকুমেন্ট ভল্টে সেভ রাখুন",
+                    "desc": "আপনার পাসপোর্ট ছবি, স্বাক্ষর, এনআইডি এবং শিক্ষাগত সনদের তথ্য মাত্র একবার আপলোড করুন। আমাদের সিস্টেম নিজে থেকেই ৩০০x৩০০ ও ৩০০x৮০ পিক্সেল সাইজে কনভার্ট করে রাখবে।"
+                  },
+                  {
+                    "step": 2,
+                    "title": "পছন্দের জবে আবেদন বুকিং দিন",
+                    "desc": "যেকোনো সরকারি বা ব্যাংক বিজ্ঞপ্তির নিচে আবেদন করুন চাপুন। বিকাশ/নগদে সরকারি ফি ও সামান্য টিম সার্ভিস চার্জ পেমেন্ট করলেই সরাসরি রিকোয়েস্ট চলে যাবে।"
+                  },
+                  {
+                    "step": 3,
+                    "title": "টিম আবেদন শেষ করে স্লিপ দেবে",
+                    "desc": "আমাদের অভিজ্ঞ এক্সপার্ট টিম অফিশিয়াল পোর্টালে নিখুঁতভাবে ফর্ম পূরণ করে সরকারি ফি দিয়ে আপনার ড্যাশবোর্ডে অ্যাপ্লিকেন্ট কপি পিডিএফ আপলোড করে দেবে এবং এসএমএস যাবে!"
+                  }
+                ]
+              },
+              "style": {
+                "backgroundColor": "#f8fafc",
+                "textColor": "#0f172a",
+                "titleFontSize": "3xl",
+                "subtitleFontSize": "base",
+                "fontWeight": "black",
+                "paddingY": "md",
+                "textAlign": "center"
+              },
+              "isVisible": true
+            },
+            {
+              "id": "sec-home-cta-banner",
+              "type": "cta",
+              "title": "বিসিএস ও ব্যাংক পরীক্ষার বিগত ১০ বছরের প্রশ্ন ও সমাধান (PDF)",
+              "subtitle": "প্রিলিমিনারি ও লিখিত পরীক্ষার পূর্ণাঙ্গ প্রশ্নব্যাংক ব্যাখ্যাসহ ডাউনলোড করুন সম্পূর্ণ বিনামূল্যে।",
+              "content": {
+                "badge": "ফ্রি ডাউনলোড হাব",
+                "buttonLabel": "ফ্রি প্রশ্নব্যাংক ডাউনলোড",
+                "buttonUrl": "/questions"
+              },
+              "style": {
+                "backgroundColor": "#f59e0b",
+                "textColor": "#ffffff",
+                "titleFontSize": "2xl",
+                "subtitleFontSize": "base",
+                "fontWeight": "black",
+                "paddingY": "md",
+                "textAlign": "left"
+              },
+              "isVisible": true
+            },
+            {
+              "id": "sec-home-reviews",
+              "type": "testimonials",
+              "title": "সফল চাকরিপ্রার্থীদের বাস্তব অভিজ্ঞতা ও মতামত",
+              "subtitle": "সাইবার ক্যাফেতে ঘণ্টার পর ঘণ্টা লাইনে দাঁড়ানোর ভোগান্তি ছাড়াই কীভাবে শত শত চাকরিপ্রার্থী ঘরে বসেই শতভাগ নির্ভুল আবেদন সেবা পেয়েছেন:",
+              "content": {
+                "badge": "৪.৯/৫ গড় রেটিং • ৩,৫০০+ ভেরিফাইড আবেদনকারী"
+              },
+              "style": {
+                "backgroundColor": "#02231b",
+                "textColor": "#ffffff",
+                "titleFontSize": "4xl",
+                "subtitleFontSize": "base",
+                "fontWeight": "black",
+                "paddingY": "lg",
+                "textAlign": "center"
+              },
+              "isVisible": true
+            },
+            {
+              "id": "sec-home-faq",
+              "type": "faq",
+              "title": "সচরাচর জিজ্ঞাসিত প্রশ্ন ও উত্তর (FAQ)",
+              "subtitle": "চাকরি সেবা প্ল্যাটফর্ম ও আবেদন প্রক্রিয়া নিয়ে সাধারণ প্রশ্নের সহজ সমাধান",
+              "content": {
+                "badge": "সহায়তা কেন্দ্র",
+                "faqs": [
+                  {
+                    "q": "চাকরি সেবা প্ল্যাটফর্মের মাধ্যমে কীভাবে আবেদন করবেন?",
+                    "a": "পছন্দের চাকরি সার্কুলারে গিয়ে \"আবেদন করুন\" বাটনে ক্লিক করুন। আপনার তথ্য প্রদান করে বিকাশ বা নগদে ফি পরিশোধ করলেই আমাদের এক্সপার্ট টিম নির্ভুলভাবে আপনার আবেদনটি সরকারি পোর্টালে সম্পন্ন করে দেবে।"
+                  },
+                  {
+                    "q": "আমার আবেদনের অ্যাপ্লিকেন্ট কপি ও ট্র্যাকিং স্লিপ কখন পাব?",
+                    "a": "আবেদন সম্পন্ন হওয়া মাত্রই আপনার ড্যাশবোর্ডে অফিসিয়াল অ্যাপ্লিকেন্ট কপি পিডিএফ দেখতে ও ডাউনলোড করতে পারবেন। একই সাথে আপনার মোবাইলে ট্র্যাকিং আইডি সহ এসএমএস নোটিফিকেশন পৌঁছে যাবে।"
+                  },
+                  {
+                    "q": "আমার আপলোডকৃত ছবি ও ডকুমেন্টের নিরাপত্তা কেমন?",
+                    "a": "আপনার সকল ব্যক্তিগত তথ্য, ছবি ও সার্টিফিকেট আমাদের সিস্টেমে ব্যাংক-গ্রেড এনক্রিপশনের মাধ্যমে সম্পূর্ণ সুরক্ষিত থাকে। আপনার অনুমতি ছাড়া এই তথ্য অন্য কোথাও ব্যবহৃত হয় না।"
+                  },
+                  {
+                    "q": "ভুল তথ্য বা আবেদন সংশোধন করা যায় কি?",
+                    "a": "আমাদের টিম আবেদন সাবমিট করার আগে আপনার সাথে প্রতিটি তথ্য পুঙ্খানুপুঙ্খ যাচাই করে নেয়। তবে টেলিটক পোর্টালে চূড়ান্ত সাবমিটের আগে যেকোনো সময় পরিবর্তনের অনুরোধ জানাতে পারবেন।"
+                  }
+                ]
+              },
+              "style": {
+                "backgroundColor": "#ffffff",
+                "textColor": "#0f172a",
+                "titleFontSize": "3xl",
+                "subtitleFontSize": "base",
+                "fontWeight": "black",
+                "paddingY": "md",
+                "textAlign": "center"
+              },
+              "isVisible": true
+            }
+          ]
+        },
+        {
+          "id": "REV-1794019831888",
+          "version": 16,
+          "savedAt": "2026-11-07T02:50:31.888Z",
+          "savedBy": "ADMIN-SUPER",
+          "status": "published",
+          "sections": [
+            {
+              "id": "sec-home-hero",
+              "type": "hero",
+              "title": "চাকরির খবর জানুন সবার আগে — ১০০% নির্ভুল আবেদন ও ক্যারিয়ার সেবা ২০২৬",
+              "subtitle": "সরকারি ও বেসরকারি চাকরির সর্বশেষ বিজ্ঞপ্তি, আবেদন প্রক্রিয়া, যোগ্যতা, প্রয়োজনীয় কাগজপত্র এবং পরীক্ষার আপডেট—সবকিছু এক জায়গায়, আপনার জন্য।",
+              "content": {
+                "badge": "⚡ অফিসিয়াল প্ল্যাটফর্ম • নির্ভরযোগ্য চাকরির খবর • আপনার ক্যারিয়ারের বিশ্বস্ত সঙ্গী",
+                "ctaText": "চাকরির বিজ্ঞপ্তি দেখুন",
+                "ctaUrl": "#circulars-section",
+                "secondaryCtaText": "আবেদন প্রক্রিয়া জানুন",
+                "secondaryCtaUrl": "#how-it-works"
+              },
+              "style": {
+                "backgroundColor": "#011612",
+                "textColor": "#ffffff",
+                "paddingY": "lg",
+                "textAlign": "left"
+              },
+              "isVisible": true
+            },
+            {
+              "id": "sec-home-features",
+              "type": "features",
+              "title": "চাকরি সেবা বিশেষ সেবাসমূহ",
+              "subtitle": "চাকরিপ্রার্থীদের সফল ক্যারিয়ার গঠনে আমাদের অনন্য সুবিধাসমূহ",
+              "content": {
+                "items": [
+                  {
+                    "title": "১০০% নির্ভুল টেলিটক আবেদন",
+                    "desc": "পেশাদার টিম দিয়ে সঠিক সাইজে ছবি ও স্বাক্ষর রিসাইজ করে আবেদন দাখিল ও ফি পেমেন্ট।"
+                  },
+                  {
+                    "title": "মাস্টার ডকুমেন্ট ভল্ট",
+                    "desc": "একবার প্রোফাইল সংরক্ষণ করলেই পরবর্তীতে মাত্র ১ ক্লিকে যেকোনো পদে দ্রুত আবেদন।"
+                  },
+                  {
+                    "title": "লাইভ অ্যাপ্লিকেশন ট্র্যাকিং",
+                    "desc": "বিকাশ/নগদে পেমেন্টের পর উবার-স্টাইল রিয়েল-টাইম ৫ ধাপের ট্র্যাকিং ও এসএমএস অ্যালার্ট।"
+                  }
+                ]
+              },
+              "style": {
+                "backgroundColor": "#ffffff",
+                "textColor": "#0f172a",
+                "paddingY": "md",
+                "columns": 3
+              },
+              "isVisible": true
+            }
+          ]
+        },
+        {
+          "id": "REV-1794019760576",
+          "version": 15,
+          "savedAt": "2026-11-07T02:49:20.576Z",
+          "savedBy": "ADMIN-SUPER",
+          "status": "published",
+          "sections": [
+            {
+              "id": "sec-home-hero",
+              "type": "hero",
+              "title": "চাকরির খবর জানুন সবার আগে — ১০০% নির্ভুল ও দ্রুত আবেদন পোর্টাল ২০২৬",
+              "subtitle": "সরকারি ও বেসরকারি চাকরির সর্বশেষ বিজ্ঞপ্তি, আবেদন প্রক্রিয়া, যোগ্যতা, প্রয়োজনীয় কাগজপত্র এবং পরীক্ষার আপডেট—সবকিছু এক জায়গায়, আপনার জন্য।",
+              "content": {
+                "badge": "সঠিক তথ্য • নির্ভরযোগ্য চাকরির খবর • আপনার ক্যারিয়ারের সঙ্গী",
+                "ctaText": "চাকরির বিজ্ঞপ্তি দেখুন",
+                "ctaUrl": "#circulars-section",
+                "secondaryCtaText": "আবেদন প্রক্রিয়া জানুন",
+                "secondaryCtaUrl": "#how-it-works"
+              },
+              "style": {
+                "backgroundColor": "#011612",
+                "textColor": "#ffffff",
+                "paddingY": "lg",
+                "textAlign": "left"
+              },
+              "isVisible": true
+            },
+            {
+              "id": "sec-home-features",
+              "type": "features",
+              "title": "চাকরি সেবা বিশেষ সেবাসমূহ",
+              "subtitle": "চাকরিপ্রার্থীদের সফল ক্যারিয়ার গঠনে আমাদের অনন্য সুবিধাসমূহ",
+              "content": {
+                "items": [
+                  {
+                    "title": "১০০% নির্ভুল টেলিটক আবেদন",
+                    "desc": "পেশাদার টিম দিয়ে সঠিক সাইজে ছবি ও স্বাক্ষর রিসাইজ করে আবেদন দাখিল ও ফি পেমেন্ট।"
+                  },
+                  {
+                    "title": "মাস্টার ডকুমেন্ট ভল্ট",
+                    "desc": "একবার প্রোফাইল সংরক্ষণ করলেই পরবর্তীতে মাত্র ১ ক্লিকে যেকোনো পদে দ্রুত আবেদন।"
+                  },
+                  {
+                    "title": "লাইভ অ্যাপ্লিকেশন ট্র্যাকিং",
+                    "desc": "বিকাশ/নগদে পেমেন্টের পর উবার-স্টাইল রিয়েল-টাইম ৫ ধাপের ট্র্যাকিং ও এসএমএস অ্যালার্ট।"
+                  }
+                ]
+              },
+              "style": {
+                "backgroundColor": "#ffffff",
+                "textColor": "#0f172a",
+                "paddingY": "md",
+                "columns": 3
+              },
+              "isVisible": true
+            }
+          ]
+        },
         {
           "id": "REV-1794018921025",
           "version": 14,
@@ -15017,7 +17910,7 @@
   },
   "platformSettings": {
     "general": {
-      "siteName": "চাকরি সেবা বাংলাদেশ (অফিশিয়াল)",
+      "siteName": "চাকরি সেবা BD (অফিশিয়াল পোর্টাল)",
       "siteDescription": "বাংলাদেশের একমাত্র ১০০% সম্পূর্ণ ফ্রি সরকারি ও বেসরকারি চাকরি পোর্টাল",
       "siteUrl": "https://chakrisheba.com",
       "supportEmail": "support@chakrisheba.com",
@@ -15028,7 +17921,7 @@
       "faviconUrl": "/favicon.ico",
       "defaultTimezone": "Asia/Dhaka",
       "defaultLanguage": "bn",
-      "announcementText": "⚡ জরুরি আপডেট: সকল সরকারি ও ব্যাংক চাকরির অনলাইন আবেদন পোর্টাল সক্রিয় রয়েছে!",
+      "announcementText": "⚡ জরুরি বিজ্ঞপ্তি: ২০২৬ সালের সকল সরকারি ও ব্যাংক চাকরির ১০০% নির্ভুল অনলাইন আবেদন সেবা চলমান!",
       "announcementEnabled": true,
       "whatsappButtonText": "জরুরি সহায়তা",
       "loginButtonText": "লগইন / রেজিস্ট্রেশন",
@@ -15379,8 +18272,48 @@
       "officialNagadNumber": "01812345678",
       "officialRocketNumber": "01912345678"
     },
-    "updatedAt": "2026-11-07T02:35:12.212Z",
+    "updatedAt": "2026-11-07T02:49:54.546Z",
     "updatedBy": "ADMIN-SUPER"
   },
-  "mediaItems": {}
+  "mediaItems": {
+    "med_bd_gov": {
+      "id": "med_bd_gov",
+      "filename": "bd-gov-emblem.png",
+      "originalName": "বাংলাদেশ সরকার মনোগ্রাম.png",
+      "mimeType": "image/png",
+      "size": 45200,
+      "url": "https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=300&q=80",
+      "altText": "গণপ্রজাতন্ত্রী বাংলাদেশ সরকার মনোগ্রাম",
+      "caption": "সরকারি চাকরির সার্কুলার ও অফিসিয়াল বিজ্ঞপ্তির জন্য অনুমোদিত লোগো",
+      "uploadedBy": "ADMIN-SUPER",
+      "createdAt": "2026-11-07T03:26:01.881Z",
+      "updatedAt": "2026-11-07T03:26:01.881Z"
+    },
+    "med_teletalk": {
+      "id": "med_teletalk",
+      "filename": "teletalk-alljobs.png",
+      "originalName": "Teletalk AllJobs Banner.png",
+      "mimeType": "image/png",
+      "size": 92400,
+      "url": "https://images.unsplash.com/photo-1586281380349-632531db7ed4?auto=format&fit=crop&w=600&q=80",
+      "altText": "টেলিটক অলজবস নিয়োগ ব্যানার",
+      "caption": "টেলিটক জব সার্কুলার ও ফর্ম-ফিল সার্ভিস ব্যানার",
+      "uploadedBy": "ADMIN-SUPER",
+      "createdAt": "2026-11-07T03:26:01.881Z",
+      "updatedAt": "2026-11-07T03:26:01.918Z"
+    },
+    "med_bb_logo": {
+      "id": "med_bb_logo",
+      "filename": "bangladesh-bank-logo.png",
+      "originalName": "বাংলাদেশ ব্যাংক লোগো.png",
+      "mimeType": "image/png",
+      "size": 61800,
+      "url": "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=300&q=80",
+      "altText": "বাংলাদেশ ব্যাংক রিক্রুটমেন্ট মনোগ্রাম",
+      "caption": "ব্যাংকার্স সিলেকশন কমিটি সচিবালয় (BSCS) সার্কুলার ব্যানার",
+      "uploadedBy": "ADMIN-SUPER",
+      "createdAt": "2026-11-07T03:26:01.881Z",
+      "updatedAt": "2026-11-07T03:26:01.950Z"
+    }
+  }
 }

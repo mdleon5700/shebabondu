@@ -209,6 +209,33 @@ export default function HomePage() {
   const reviewsCms = homeSections?.find(s => s.type === 'testimonials' || s.id === 'sec-home-reviews');
   const faqCms = homeSections?.find(s => s.type === 'faq' || s.id === 'sec-home-faq');
 
+  const reviewsToDisplay = useMemo(() => {
+    const items = reviewsCms?.content?.items;
+    if (Array.isArray(items) && items.length > 0) {
+      const gradients = [
+        'from-emerald-500 to-teal-400',
+        'from-sky-500 to-blue-400',
+        'from-amber-500 to-orange-400',
+        'from-purple-500 to-pink-400',
+        'from-emerald-600 to-teal-500',
+        'from-teal-500 to-cyan-400',
+        'from-rose-500 to-red-600',
+        'from-indigo-500 to-blue-500'
+      ];
+      return items.map((item: any, idx: number) => ({
+        id: item.id || idx + 1,
+        name: item.name || item.title || 'বেনামী চাকরিপ্রার্থী',
+        role: item.role || 'সহকারী কর্মকর্তা • সরকারি/ব্যাংক',
+        institution: item.institution || item.desc?.slice(0, 30) || 'বাংলাদেশ',
+        initials: (item.name || item.title || 'চ')[0] || 'চ',
+        gradient: item.gradient || gradients[idx % gradients.length],
+        textInitials: 'text-white',
+        quote: item.quote || item.desc || item.title || 'চাকরি সেবা প্ল্যাটফর্মের মাধ্যমে দ্রুত আবেদন সম্পন্ন করতে পেরেছি।'
+      }));
+    }
+    return candidateReviews;
+  }, [reviewsCms]);
+
   const [searchQuery, setSearchQuery] = useState('');
   const [jobsList, setJobsList] = useState<any[]>(initialJobs && initialJobs.length > 0 ? initialJobs : []);
 
@@ -539,26 +566,29 @@ export default function HomePage() {
       <HeroSection initialData={homeHero} />
 
       {/* MODERN JOB SEARCH SECTION */}
-      <JobSearchSection 
-        searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
-        selectedJobType={selectedJobType}
-        setSelectedJobType={setSelectedJobType}
-        selectedEducation={selectedEducation}
-        setSelectedEducation={setSelectedEducation}
-        selectedOrg={selectedOrg}
-        setSelectedOrg={setSelectedOrg}
-        selectedGrade={selectedGrade}
-        setSelectedGrade={setSelectedGrade}
-        selectedSalary={selectedSalary}
-        setSelectedSalary={setSelectedSalary}
-        onSearch={handleSearch}
-        onReset={handleResetFilters}
-        activeFilterCount={activeFilterCount}
-      />
+      {(jobsCms?.content?.showSearchBar !== false) && (
+        <JobSearchSection 
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+          selectedJobType={selectedJobType}
+          setSelectedJobType={setSelectedJobType}
+          selectedEducation={selectedEducation}
+          setSelectedEducation={setSelectedEducation}
+          selectedOrg={selectedOrg}
+          setSelectedOrg={setSelectedOrg}
+          selectedGrade={selectedGrade}
+          setSelectedGrade={setSelectedGrade}
+          selectedSalary={selectedSalary}
+          setSelectedSalary={setSelectedSalary}
+          onSearch={handleSearch}
+          onReset={handleResetFilters}
+          activeFilterCount={activeFilterCount}
+        />
+      )}
 
       {/* 3. LIVE JOB STATUS DASHBOARD METRICS (4 Interactive Filter Cards) */}
-      <section className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 mt-4 sm:mt-6 lg:mt-8">
+      {(jobsCms?.content?.showStatusCards !== false) && (
+        <section className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 mt-4 sm:mt-6 lg:mt-8">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-5">
           
           {/* 1. আজ নতুন */}
@@ -780,6 +810,7 @@ export default function HomePage() {
 
         </div>
       </section>
+      )}
 
       <div className="space-y-12 mt-8">
       {/* STEP 07: DYNAMIC JOB FEED DISCOVERY STRIP */}
@@ -881,7 +912,8 @@ export default function HomePage() {
         
 
         {/* Category Pills with Perfectly Centered Left & Right Arrow Buttons */}
-        <div className="relative flex items-center my-3 group">
+        {(jobsCms?.content?.showCategoryFilter !== false) && (
+          <div className="relative flex items-center my-3 group">
           {/* Left Arrow Button (Vertically Centered with top-1/2 -translate-y-1/2) */}
           {canScrollCategoryLeft && (
             <button
@@ -934,6 +966,7 @@ export default function HomePage() {
             </button>
           )}
         </div>
+        )}
 
         {/* Circular Cards Grid */}
         {filteredJobs.length > 0 ? (
@@ -1406,7 +1439,7 @@ export default function HomePage() {
             <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-8 sm:w-16 bg-gradient-to-l from-[#02231b] to-transparent z-20" />
 
             <div className="animate-marquee-scroll flex gap-4 sm:gap-5">
-              {[...candidateReviews, ...candidateReviews].map((rev, index) => (
+              {[...reviewsToDisplay, ...reviewsToDisplay].map((rev, index) => (
                 <div
                   key={`${rev.id}-${index}`}
                   className="w-[285px] sm:w-[350px] bg-white/5 hover:bg-white/[0.09] backdrop-blur-md rounded-2xl sm:rounded-3xl p-5 border border-emerald-500/20 hover:border-emerald-500/50 transition-all flex flex-col justify-between space-y-3.5 flex-shrink-0 cursor-default select-none shadow-lg"

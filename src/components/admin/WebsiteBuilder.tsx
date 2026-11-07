@@ -902,7 +902,28 @@ export default function WebsiteBuilder({ initialPageId, onNavigateToPages }: Web
                 <Sliders className="w-4 h-4 text-emerald-700" />
                 <h3 className="text-sm font-black text-slate-900 uppercase">সেকশন ইন্সপেক্টর</h3>
               </div>
-              <button onClick={() => setActiveSectionId(null)} className="text-xs font-bold text-slate-400 hover:text-slate-700">বন্ধ করুন</button>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    const nextVisible = activeSection.isVisible === false ? true : false;
+                    updateCurrentPage(p => ({
+                      ...p,
+                      sections: p.sections.map(s => s.id === activeSection.id ? { ...s, isVisible: nextVisible } : s)
+                    }));
+                  }}
+                  className={`px-2.5 py-1 rounded-xl text-xs font-bold border transition-colors flex items-center gap-1.5 cursor-pointer ${
+                    activeSection.isVisible !== false 
+                      ? 'bg-emerald-50 text-emerald-800 border-emerald-300 shadow-2xs' 
+                      : 'bg-rose-50 text-rose-700 border-rose-300 shadow-2xs'
+                  }`}
+                  title={activeSection.isVisible !== false ? 'ক্লিক করে সেকশনটি লাইভ ওয়েবসাইটে লুকান' : 'ক্লিক করে সেকশনটি দৃশ্যমান করুন'}
+                >
+                  <Eye className={`w-3.5 h-3.5 ${activeSection.isVisible !== false ? 'text-emerald-600' : 'text-rose-600'}`} />
+                  <span>{activeSection.isVisible !== false ? 'লাইভে দৃশ্যমান' : 'লুকানো (হাইড)'}</span>
+                </button>
+                <button onClick={() => setActiveSectionId(null)} className="text-xs font-bold text-slate-400 hover:text-slate-700 p-1">✕</button>
+              </div>
             </div>
 
             {/* Content Fields */}
@@ -1498,11 +1519,13 @@ export default function WebsiteBuilder({ initialPageId, onNavigateToPages }: Web
                     </button>
                   </div>
 
-                  <div className="space-y-2 max-h-48 overflow-y-auto pr-1">
+                  <div className="space-y-2.5 max-h-56 overflow-y-auto pr-1">
                     {(activeSection.content?.items || []).map((item: any, idx: number) => (
-                      <div key={idx} className="p-2.5 bg-slate-50 border border-slate-200 rounded-xl space-y-1.5 relative">
+                      <div key={idx} className="p-2.5 bg-slate-50 border border-slate-200 rounded-xl space-y-2 relative">
                         <div className="flex items-center justify-between">
-                          <span className="text-[10px] font-bold text-slate-500">কার্ড #{idx + 1}</span>
+                          <span className="text-[10px] font-bold text-slate-500">
+                            {activeSection.type === 'testimonials' ? `রিভিউ #${idx + 1}` : activeSection.type === 'how-it-works' ? `ধাপ #${idx + 1}` : `ফিচার #${idx + 1}`}
+                          </span>
                           <button
                             type="button"
                             onClick={() => {
@@ -1515,45 +1538,104 @@ export default function WebsiteBuilder({ initialPageId, onNavigateToPages }: Web
                                 } : s)
                               }));
                             }}
-                            className="text-red-500 hover:text-red-700 text-[10px]"
+                            className="text-red-500 hover:text-red-700 text-[10px] font-bold"
                           >
                             মুছুন
                           </button>
                         </div>
-                        <input
-                          type="text"
-                          value={item.title}
-                          onChange={(e) => {
-                            const items = [...(activeSection.content?.items || [])];
-                            items[idx] = { ...items[idx], title: e.target.value };
-                            updateCurrentPage(p => ({
-                              ...p,
-                              sections: p.sections.map(s => s.id === activeSection.id ? {
-                                ...s,
-                                content: { ...s.content, items }
-                              } : s)
-                            }));
-                          }}
-                          className="w-full px-2 py-1 bg-white border border-slate-200 rounded-lg text-xs font-bold"
-                          placeholder="কার্ডের শিরোনাম"
-                        />
-                        <input
-                          type="text"
-                          value={item.desc}
-                          onChange={(e) => {
-                            const items = [...(activeSection.content?.items || [])];
-                            items[idx] = { ...items[idx], desc: e.target.value };
-                            updateCurrentPage(p => ({
-                              ...p,
-                              sections: p.sections.map(s => s.id === activeSection.id ? {
-                                ...s,
-                                content: { ...s.content, items }
-                              } : s)
-                            }));
-                          }}
-                          className="w-full px-2 py-1 bg-white border border-slate-200 rounded-lg text-xs text-slate-600"
-                          placeholder="কার্ডের বিবরণ"
-                        />
+
+                        {activeSection.type === 'testimonials' ? (
+                          <div className="space-y-1.5">
+                            <input
+                              type="text"
+                              value={item.name || item.title || ''}
+                              onChange={(e) => {
+                                const items = [...(activeSection.content?.items || [])];
+                                items[idx] = { ...items[idx], name: e.target.value, title: e.target.value };
+                                updateCurrentPage(p => ({
+                                  ...p,
+                                  sections: p.sections.map(s => s.id === activeSection.id ? {
+                                    ...s,
+                                    content: { ...s.content, items }
+                                  } : s)
+                                }));
+                              }}
+                              className="w-full px-2.5 py-1 bg-white border border-slate-200 rounded-lg text-xs font-bold"
+                              placeholder="প্রার্থীর নাম (উদা: তানভীর আহমেদ)"
+                            />
+                            <input
+                              type="text"
+                              value={item.role || ''}
+                              onChange={(e) => {
+                                const items = [...(activeSection.content?.items || [])];
+                                items[idx] = { ...items[idx], role: e.target.value };
+                                updateCurrentPage(p => ({
+                                  ...p,
+                                  sections: p.sections.map(s => s.id === activeSection.id ? {
+                                    ...s,
+                                    content: { ...s.content, items }
+                                  } : s)
+                                }));
+                              }}
+                              className="w-full px-2.5 py-1 bg-white border border-slate-200 rounded-lg text-xs text-slate-700"
+                              placeholder="পদবী ও প্রতিষ্ঠান (উদা: সহকারী পরিচালক, বাংলাদেশ ব্যাংক)"
+                            />
+                            <textarea
+                              rows={2}
+                              value={item.quote || item.desc || ''}
+                              onChange={(e) => {
+                                const items = [...(activeSection.content?.items || [])];
+                                items[idx] = { ...items[idx], quote: e.target.value, desc: e.target.value };
+                                updateCurrentPage(p => ({
+                                  ...p,
+                                  sections: p.sections.map(s => s.id === activeSection.id ? {
+                                    ...s,
+                                    content: { ...s.content, items }
+                                  } : s)
+                                }));
+                              }}
+                              className="w-full px-2.5 py-1 bg-white border border-slate-200 rounded-lg text-xs text-slate-700 leading-relaxed"
+                              placeholder="চাকরিপ্রার্থীর বাস্তব অভিজ্ঞতা / কোটেশন..."
+                            />
+                          </div>
+                        ) : (
+                          <div className="space-y-1.5">
+                            <input
+                              type="text"
+                              value={item.title || ''}
+                              onChange={(e) => {
+                                const items = [...(activeSection.content?.items || [])];
+                                items[idx] = { ...items[idx], title: e.target.value };
+                                updateCurrentPage(p => ({
+                                  ...p,
+                                  sections: p.sections.map(s => s.id === activeSection.id ? {
+                                    ...s,
+                                    content: { ...s.content, items }
+                                  } : s)
+                                }));
+                              }}
+                              className="w-full px-2.5 py-1 bg-white border border-slate-200 rounded-lg text-xs font-bold"
+                              placeholder="শিরোনাম / নাম"
+                            />
+                            <textarea
+                              rows={2}
+                              value={item.desc || ''}
+                              onChange={(e) => {
+                                const items = [...(activeSection.content?.items || [])];
+                                items[idx] = { ...items[idx], desc: e.target.value };
+                                updateCurrentPage(p => ({
+                                  ...p,
+                                  sections: p.sections.map(s => s.id === activeSection.id ? {
+                                    ...s,
+                                    content: { ...s.content, items }
+                                  } : s)
+                                }));
+                              }}
+                              className="w-full px-2.5 py-1 bg-white border border-slate-200 rounded-lg text-xs text-slate-600 leading-relaxed"
+                              placeholder="বিস্তারিত বিবরণ..."
+                            />
+                          </div>
+                        )}
                       </div>
                     ))}
                   </div>

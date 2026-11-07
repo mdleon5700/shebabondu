@@ -1,0 +1,123 @@
+{
+  "checkedRoutes": [
+    {
+      "name": "Homepage",
+      "path": "/",
+      "status": 200,
+      "title": "চাকরি সেবা বাংলাদেশ | সরকারি ও ব্যাংক চাকরির সার্কুলার ও অনল",
+      "ok": true
+    },
+    {
+      "name": "Job Listing",
+      "path": "/jobs",
+      "status": 200,
+      "title": "সকল সরকারি ও ব্যাংক চাকরির সার্কুলার ২০২৬ | চাকরি সেবা | চাক",
+      "ok": true
+    },
+    {
+      "name": "About Us",
+      "path": "/about-us",
+      "status": 200,
+      "title": "আমাদের সম্পর্কে (About Us) | চাকরি সেবা বাংলাদেশ | চাকরি সেব",
+      "ok": true
+    },
+    {
+      "name": "Contact Us",
+      "path": "/contact-us",
+      "status": 200,
+      "title": "চাকরি সেবা বাংলাদেশ | সরকারি ও ব্যাংক চাকরির সার্কুলার ও অনল",
+      "ok": true
+    },
+    {
+      "name": "Privacy Policy",
+      "path": "/privacy-policy",
+      "status": 200,
+      "title": "প্রাইভেসি ও তথ্য সুরক্ষা নীতি | চাকরি সেবা বিডি | চাকরি সেবা",
+      "ok": true
+    },
+    {
+      "name": "Terms of Service",
+      "path": "/terms-of-service",
+      "status": 200,
+      "title": "সকল সরকারি ও ব্যাংক চাকরির সার্কুলার ২০২৬ | চাকরি সেবা | চাক",
+      "ok": true
+    },
+    {
+      "name": "FAQ",
+      "path": "/faq",
+      "status": 200,
+      "title": "সাধারণ জিজ্ঞাসা ও প্রশ্নোত্তর (FAQ) | চাকরি সেবা বাংলাদেশ | ",
+      "ok": true
+    },
+    {
+      "name": "User Dashboard",
+      "path": "/dashboard",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "name": "User Profile",
+      "path": "/dashboard/profile",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "name": "User Applications",
+      "path": "/dashboard/applications",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "name": "User Saved Jobs",
+      "path": "/dashboard/saved-jobs",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "name": "Admin Dashboard",
+      "path": "/admin?tab=dashboard",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "name": "Admin Circulars",
+      "path": "/admin?tab=circulars",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "name": "Admin Candidate Directory",
+      "path": "/admin?tab=candidate-directory",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "name": "Admin Page Builder",
+      "path": "/admin?tab=builder",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "name": "Admin Financial Ledger",
+      "path": "/admin?tab=transactions",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "name": "Admin Spider Hub",
+      "path": "/admin?tab=gemini-browser-spider",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "name": "Admin Audit Logs",
+      "path": "/admin?tab=audit-logs",
+      "status": 200,
+      "ok": true
+    }
+  ],
+  "consoleErrors": [],
+  "networkFailures": [],
+  "responsiveChecks": [],
+  "authTests": []
+}

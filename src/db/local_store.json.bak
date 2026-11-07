@@ -7311,6 +7311,11 @@
       "candidateId": "ADMIN-SUPER",
       "role": "admin",
       "expiresAt": "2026-11-14T22:12:21.914Z"
+    },
+    "a10693176c7437b608f0ab646e23d57f69e2ec5bcfcecf168d3e524cee25093c": {
+      "candidateId": "ADMIN-SUPER",
+      "role": "admin",
+      "expiresAt": "2026-11-14T22:12:41.877Z"
     }
   },
   "coupons": {},

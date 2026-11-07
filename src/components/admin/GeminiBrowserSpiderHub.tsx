@@ -193,7 +193,10 @@ export default function GeminiBrowserSpiderHub({
   const fetchStatus = async () => {
     setIsLoading(true);
     try {
-      const res = await fetch('/api/admin/spider/gemini-browser');
+      const pin = typeof window !== 'undefined' ? (localStorage.getItem('cs_admin_pin') || '1234') : '1234';
+      const res = await fetch('/api/admin/spider/gemini-browser', {
+        headers: { 'x-admin-secret': pin }
+      });
       const data = await res.json();
       if (res.ok && data.success) {
         setSpiderStatus(data);

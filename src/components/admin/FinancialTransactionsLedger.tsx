@@ -81,9 +81,20 @@ export default function FinancialTransactionsLedger({
   const [reviewingId, setReviewingId] = useState<string | null>(null);
   const [ledgerError, setLedgerError] = useState<string | null>(null);
 
+  const getAdminHeaders = (): Record<string, string> => {
+    const pin = typeof window !== 'undefined' ? (localStorage.getItem('cs_admin_pin') || '1234') : '1234';
+    return {
+      'Content-Type': 'application/json',
+      'x-admin-secret': pin
+    };
+  };
+
   const loadWalletTransactions = async () => {
     try {
-      const response = await fetch('/api/admin/wallet-transactions', { cache: 'no-store' });
+      const response = await fetch('/api/admin/wallet-transactions', {
+        headers: getAdminHeaders(),
+        cache: 'no-store'
+      });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || 'লেনদেন লোড করা যায়নি');
       setWalletTransactions(data.transactions || []);
@@ -123,7 +134,8 @@ export default function FinancialTransactionsLedger({
     setLedgerError(null);
     try {
       const response = await fetch('/api/admin/wallet-transactions', {
-        method: 'PATCH', headers: { 'Content-Type': 'application/json' },
+        method: 'PATCH',
+        headers: getAdminHeaders(),
         body: JSON.stringify({ candidateId: transaction.candidateId, transactionId: transaction.id, decision })
       });
       const data = await response.json();

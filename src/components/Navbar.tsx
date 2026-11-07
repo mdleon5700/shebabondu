@@ -45,20 +45,28 @@ export default function Navbar() {
 
   // Sync auth and user state
   useEffect(() => {
+    console.log('[Navbar] useEffect mounting...');
     setIsMounted(true);
-    setAuth(storage.getAuth());
-    setWalletBalance(storage.getUser().walletBalance);
+    try {
+      setAuth(storage.getAuth());
+      setWalletBalance(storage.getUser()?.walletBalance || 0);
+    } catch (e) {
+      console.error('[Navbar] storage error:', e);
+    }
 
     const handleAuthChange = () => setAuth(storage.getAuth());
-    const handleUserChange = () => setWalletBalance(storage.getUser().walletBalance);
+    const handleUserChange = () => setWalletBalance(storage.getUser()?.walletBalance || 0);
 
     const fetchSettings = () => {
-      fetch('/api/platform/settings')
+      fetch('/api/platform/settings', { cache: 'no-store' })
         .then(res => res.json())
         .then(d => {
+          console.log('[Navbar] Settings fetched:', d?.settings?.general?.siteName);
           if (d.success && d.settings) setPlatformSettings(d.settings);
         })
-        .catch(() => {});
+        .catch(err => {
+          console.error('[Navbar] Settings fetch failed:', err);
+        });
     };
     fetchSettings();
     window.addEventListener('cs_settings_changed', fetchSettings);
@@ -264,23 +272,35 @@ export default function Navbar() {
       <div className="max-w-[1400px] mx-auto px-3 sm:px-6 lg:px-6">
         <div className="flex items-center justify-between h-16 sm:h-20 gap-2">
           
-          {/* Logo (Preserved branding, logo icon and badges) */}
+          {/* Logo (Preserved branding, logo icon and badges, with dynamic customizer support) */}
           <Link href="/" className="flex items-center gap-2.5 sm:gap-3 group flex-shrink-0">
-            <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-br from-emerald-600 via-teal-700 to-emerald-900 flex items-center justify-center text-white shadow-md shadow-emerald-800/25 group-hover:scale-105 transition-transform relative overflow-hidden">
-              <Briefcase className="w-5 h-5 text-white" />
-              <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-red-600 rounded-full border-2 border-white"></div>
-            </div>
+            {platformSettings?.general?.logoUrl && platformSettings.general.logoUrl !== '/icons/icon-192x192.png' ? (
+              <img 
+                src={platformSettings.general.logoUrl} 
+                alt={platformSettings.general.siteName || "চাকরি সেবা"} 
+                className="h-10 sm:h-11 w-auto max-w-[160px] object-contain group-hover:scale-105 transition-transform"
+              />
+            ) : (
+              <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-br from-emerald-600 via-teal-700 to-emerald-900 flex items-center justify-center text-white shadow-md shadow-emerald-800/25 group-hover:scale-105 transition-transform relative overflow-hidden">
+                <Briefcase className="w-5 h-5 text-white" />
+                <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-red-600 rounded-full border-2 border-white"></div>
+              </div>
+            )}
             <div>
               <div className="flex items-center gap-1.5">
                 <span className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
-                  চাকরি<span className="text-emerald-700">সেবা</span>
+                  {platformSettings?.general?.siteName ? (
+                    platformSettings.general.siteName
+                  ) : (
+                    <>চাকরি<span className="text-emerald-700">সেবা</span></>
+                  )}
                 </span>
                 <span className="bg-emerald-100 text-emerald-800 text-[10px] font-black px-1.5 py-0.5 rounded">
                   BD
                 </span>
               </div>
               <p className="text-[11px] text-slate-500 font-medium -mt-1 hidden xl:block">
-                নিউজ ও ১০০% নির্ভুল আবেদন পোর্টাল
+                {platformSettings?.general?.siteDescription || 'নিউজ ও ১০০% নির্ভুল আবেদন পোর্টাল'}
               </p>
             </div>
           </Link>
@@ -347,13 +367,13 @@ export default function Navbar() {
             
             {/* WhatsApp button - Outlined in green */}
             <a
-              href="https://wa.me/8801774366643"
+              href={`https://wa.me/${platformSettings?.general?.whatsappNumber || '8801774366643'}`}
               target="_blank"
               rel="noopener noreferrer"
               className="px-2.5 2xl:px-3 py-1.5 2xl:py-2 rounded-xl border-2 border-emerald-600 text-emerald-700 bg-white hover:bg-emerald-50 text-xs 2xl:text-sm font-bold transition-all flex items-center gap-1.5 shadow-sm"
             >
               <MessageSquare className="w-4 h-4 text-emerald-600" />
-              <span>WhatsApp</span>
+              <span>{platformSettings?.general?.whatsappButtonText || 'WhatsApp'}</span>
             </a>
 
             {!isMounted ? (
@@ -365,7 +385,7 @@ export default function Navbar() {
                 className="px-3 2xl:px-4 py-1.5 2xl:py-2 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white text-xs 2xl:text-sm font-black shadow-md shadow-emerald-800/20 transition-all flex items-center gap-1.5"
               >
                 <LogIn className="w-4 h-4" />
-                <span>লগইন / রেজিস্ট্রেশন</span>
+                <span>{platformSettings?.general?.loginButtonText || 'লগইন / রেজিস্ট্রেশন'}</span>
               </Link>
             ) : (
               /* LOGGED IN USER: Wallet + Profile Dropdown */

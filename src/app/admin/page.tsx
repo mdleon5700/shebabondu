@@ -1707,6 +1707,7 @@ function AdminContent() {
             { id: 'content-studio', label: 'কন্টেন্ট ও এসইও স্টুডিও' },
             { id: 'builder', label: 'ভিজ্যুয়াল পেইজ বিল্ডার' },
             { id: 'pages-sections', label: 'পেইজ ও সেকশন ম্যানেজমেন্ট' },
+            { id: 'header-footer', label: 'হেডার ও ফুটার থিম কাস্টমাইজার' },
             { id: 'media-library', label: 'মিডিয়া লাইব্রেরি' }
           ]
         },

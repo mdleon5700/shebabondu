@@ -21,3 +21,4 @@ function searchRefs(dir) {
 }
 
 searchRefs(path.join(__dirname, '../src'));
+

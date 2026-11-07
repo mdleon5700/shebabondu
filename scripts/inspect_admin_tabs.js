@@ -9,3 +9,4 @@ while ((m = regex.exec(content)) !== null) {
   tabs.add(m[1]);
 }
 console.log('Tabs in admin page:', Array.from(tabs));
+

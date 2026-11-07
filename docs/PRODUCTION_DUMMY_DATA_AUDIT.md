@@ -45,3 +45,4 @@ In compliance with the Zero Dummy Data mandate:
 - **TypeScript Compilation:** Zero errors (`npm run typecheck` returned code 0).
 - **Automated E2E Test:** `scripts/verify_real_data_and_user_mgmt.js` executed via Playwright.
 - **Evidence Screenshot:** `85_admin_dashboard_real_data_verified.png` confirmed `hasOldJobsCount: false`, `hasOldCandCount: false`, `hasRealJobsCount: true`.
+

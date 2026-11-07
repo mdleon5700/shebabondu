@@ -9,3 +9,4 @@ lines.forEach((l, i) => {
     console.log(lines.slice(Math.max(0, i - 15), Math.min(lines.length, i + 10)).join('\n'));
   }
 });
+

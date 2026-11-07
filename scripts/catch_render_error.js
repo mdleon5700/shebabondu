@@ -31,3 +31,4 @@ async function catchError() {
 }
 
 catchError();
+

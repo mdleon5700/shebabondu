@@ -54,3 +54,4 @@ flowchart TD
 1. **No Simulated Local State:** Metrics never increment or decrement using ephemeral client timer intervals (`setInterval`).
 2. **Deterministic Refresh:** The "সিস্টেমের বর্তমান অবস্থা" refresh button triggers authentic network calls to `/api/admin/stats`.
 3. **Audit Logged Modifications:** Any mutation performed via administrative modals writes an immutable record to `serverDB.recordAdminAudit(...)` with timestamp, `adminId`, and mandatory change reasoning.
+

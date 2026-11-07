@@ -43,3 +43,4 @@
 - **API Layer:** Enforced via `getServerSession(req)` and `AdminGovernanceRbac.authorizeRequest(...)`.
 - **UI Layer:** Enforced in `AdminSidebar.tsx` and module headers by conditionally rendering action triggers according to session role claims.
 - **Fail-Safe Fallback:** All destructive actions (delete candidate, permanent job removal, balance reduction) prompt for secondary confirmation and log the acting `adminId` to `serverDB.recordAdminAudit(...)`.
+

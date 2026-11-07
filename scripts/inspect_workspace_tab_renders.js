@@ -10,3 +10,4 @@ lines.forEach((l, i) => {
     console.log(`Line ${i+1}: ${l.trim()}`);
   }
 });
+

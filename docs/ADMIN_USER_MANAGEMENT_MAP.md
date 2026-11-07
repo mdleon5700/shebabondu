@@ -82,3 +82,4 @@ flowchart LR
   - **Manual Balance Adjustment Tool:** Administrators can credit (`+`) or debit (`-`) wallet funds with **mandatory reason input**.
   - Complete chronological transaction ledger: Transaction ID, date, type (deposit/fee deduction), description, payment method (bKash, Nagad, Wallet, Bank), amount, and status.
   - System automatically writes an immutable audit log entry for every manual balance change.
+

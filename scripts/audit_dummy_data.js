@@ -47,3 +47,4 @@ traverse(adminDir);
 traverse(appAdminDir);
 
 console.log(JSON.stringify(findings, null, 2));
+

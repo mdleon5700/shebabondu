@@ -30,3 +30,4 @@
 ## 2. Backward Compatibility Guard
 
 All deprecated legacy endpoints maintain non-breaking aliases or fallback handlers to prevent runtime regressions on legacy clients.
+

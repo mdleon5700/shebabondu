@@ -34,3 +34,4 @@ In accordance with **Critical Addendum — Legacy UI Modernization, Duplicate Sy
 | `CouponsRaffleManagement.tsx` | Marketing & Promotions | **KEEP** | Preserved coupon code generator, discount rules, and raffle campaign entries. |
 | `SmsNotificationsManagement.tsx` | Direct SMS Dispatcher | **KEEP** | Preserved applicant SMS gateway, template selection, and delivery tracking. |
 | `SystemSettingsDiagnostics.tsx` | System Diagnostics | **KEEP** | Preserved backup export, database status checks, and environment configurations. |
+

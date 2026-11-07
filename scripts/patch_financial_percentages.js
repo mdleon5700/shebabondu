@@ -63,3 +63,4 @@ if (!content.includes(oldBlock)) {
 content = content.replace(oldBlock, newBlock);
 fs.writeFileSync(target, content, 'utf8');
 console.log('Successfully patched FinancialTransactionsLedger.tsx with dynamic percentages!');
+

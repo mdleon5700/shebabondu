@@ -82,3 +82,4 @@ if (!normalizedContent.includes(normalizedOld)) {
 const updated = normalizedContent.replace(normalizedOld, newBlock.replace(/\r\n/g, '\n'));
 fs.writeFileSync(target, updated, 'utf8');
 console.log('Successfully replaced dummy education rolls with real data!');
+

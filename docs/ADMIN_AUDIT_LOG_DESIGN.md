@@ -49,3 +49,4 @@ export interface AdminAuditLog {
 
 - **Target-Specific Audit Trail:** Queryable via `serverDB.getAdminAuditLogs(targetId)` to populate candidate-specific or circular-specific audit histories.
 - **Global Administrative Audit Log:** Exposed via `GET /api/admin/audit-logs` for the Platform Governance & Audit Log viewer tab (`activeTab === 'audit-logs'`).
+

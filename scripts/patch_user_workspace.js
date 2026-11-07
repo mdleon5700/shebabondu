@@ -328,3 +328,4 @@ content = content.replace(oldAuditTabAnchor, newPanelsBlock);
 
 fs.writeFileSync(target, content, 'utf8');
 console.log('Successfully updated UniversalUserWorkspace with applications and wallet tabs!');
+

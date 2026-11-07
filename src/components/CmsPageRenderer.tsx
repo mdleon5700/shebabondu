@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import React from 'react';
 import Link from 'next/link';
@@ -41,6 +41,13 @@ export default function CmsPageRenderer({ page, fallbackContent }: CmsPageRender
           {sections.map((section, idx) => (
             <SectionBlock key={section.id || idx} section={section} />
           ))}
+          {fallbackContent && (
+            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+              <div className="bg-white rounded-3xl border border-slate-200 p-8 sm:p-12 shadow-sm space-y-6">
+                {fallbackContent}
+              </div>
+            </div>
+          )}
         </div>
       ) : (
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -153,7 +160,7 @@ function SectionBlock({ section }: { section: PageSection }) {
           </div>
 
           <div className="space-y-4">
-            {(section.content?.faqs || [
+            {((Array.isArray(section.content?.items) && section.content.items.length > 0 ? section.content.items : null) || section.content?.faqs || [
               { q: 'চাকরি সেবা কি সম্পূর্ণ সরকারি পোর্টাল?', a: 'না, চাকরি সেবা একটি স্বাধীন ডিজিটাল প্ল্যাটফর্ম যা সরকারি এবং ব্যাংক নিয়োগের ভেরিফাইড তথ্য সরবরাহ ও আবেদন সহায়তা প্রদান করে।' },
               { q: 'আবেদন ফি কীভাবে জমা দিতে হয়?', a: 'আপনি বিকাশ, নগদ বা ওয়ালেটের মাধ্যমে নির্ধারিত ফি পরিশোধ করতে পারেন।' },
               { q: 'আমার তথ্যের নিরাপত্তা কীভাবে নিশ্চিত হয়?', a: 'আপনার ব্যক্তিগত তথ্য ও ডকুমেন্টস ব্যাংকিং গ্রেড এনক্রিপশনে সুরক্ষিত থাকে।' }
@@ -161,10 +168,10 @@ function SectionBlock({ section }: { section: PageSection }) {
               <div key={i} className="bg-white p-5 rounded-2xl border border-slate-200 shadow-2xs space-y-2">
                 <div className="flex items-center gap-2 font-bold text-sm text-slate-900">
                   <HelpCircle className="w-4 h-4 text-emerald-600 flex-shrink-0" />
-                  <span>{faq.q || faq.question}</span>
+                  <span>{faq.q || faq.question || faq.title}</span>
                 </div>
                 <p className="text-xs sm:text-sm text-slate-600 leading-relaxed pl-6">
-                  {faq.a || faq.answer}
+                  {faq.a || faq.answer || faq.desc}
                 </p>
               </div>
             ))}

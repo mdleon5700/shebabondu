@@ -8,15 +8,31 @@ export const dynamic = 'force-dynamic';
 type Props = { params: { slug: string[] } };
 
 export function generateMetadata({ params }: Props): Metadata {
+  if (!params?.slug || !Array.isArray(params.slug) || params.slug.length === 0) {
+    return { robots: { index: false } };
+  }
+  const first = (params.slug[0] || '').toLowerCase().trim();
+  if (first === '_next' || first === 'api' || first === 'favicon.ico' || first === 'images' || first === 'icons' || first === 'uploads') {
+    return { robots: { index: false } };
+  }
   const fullPath = '/' + params.slug.join('/');
   const page = serverDB.getPublishedPageBySlug(fullPath);
   return page ? { title: page.metaTitle || page.title, description: page.metaDescription } : { robots: { index: false } };
 }
 
 export default function CustomPage({ params }: Props) {
+  if (!params?.slug || !Array.isArray(params.slug) || params.slug.length === 0) {
+    notFound();
+  }
+
   const rawPath = params.slug.join('/');
   const fullPath = '/' + rawPath;
   const first = (params.slug[0] || '').toLowerCase().trim();
+
+  // Guard against static assets or Next.js internals being intercepted
+  if (first === '_next' || first === 'api' || first === 'favicon.ico' || first === 'images' || first === 'icons' || first === 'uploads') {
+    notFound();
+  }
 
   // 1. Direct CMS Page
   const page = serverDB.getPublishedPageBySlug(fullPath);

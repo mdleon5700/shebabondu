@@ -43,9 +43,14 @@ export async function GET() {
       }
     };
 
+    const homePage = serverDB.getPageById('home') || serverDB.getPages().find(p => p.id === 'home' || p.slug === '/');
+    const homeHero = homePage?.sections?.find(s => s.type === 'hero' && s.isVisible !== false) || null;
+
     return NextResponse.json({
       success: true,
-      settings: publicSettings
+      settings: publicSettings,
+      homeHero,
+      homePage
     }, {
       headers: {
         'Cache-Control': 'no-store'

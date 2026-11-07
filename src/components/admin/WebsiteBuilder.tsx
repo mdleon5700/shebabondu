@@ -361,6 +361,17 @@ export default function WebsiteBuilder({ initialPageId, onNavigateToPages }: Web
 
         {/* Right: Actions */}
         <div className="flex flex-wrap items-center gap-2">
+          <a
+            href={currentPage?.slug === '/home-cms-draft' ? '/' : (currentPage?.slug || '/')}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-3 py-2 bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 text-emerald-800 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shadow-2xs cursor-pointer"
+            title="নতুন ট্যাবে এই লাইভ পেজটি খুলুন"
+          >
+            <ExternalLink className="w-3.5 h-3.5 text-emerald-700" />
+            <span>লাইভ পেজ দেখুন</span>
+          </a>
+
           <button
             onClick={() => setPreviewMode(!previewMode)}
             className={'px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 border ' + (

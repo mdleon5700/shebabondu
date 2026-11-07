@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { getServerSession } from '@/lib/auth';
 import { serverDB } from '@/lib/db';
 import { AdminGovernanceRbac } from '@/lib/governance';
@@ -56,6 +57,13 @@ export async function PATCH(req: Request) {
 
     const adminId = session.candidateId || 'ADMIN-SUPER';
     const updated = serverDB.updatePlatformSettings(body, adminId);
+
+    try {
+      revalidatePath('/', 'layout');
+      revalidatePath('/');
+    } catch (e) {
+      console.warn('Settings revalidation warning:', e);
+    }
 
     return NextResponse.json({
       success: true,

@@ -95,11 +95,19 @@ export default function Footer() {
           {/* Col 1: About & Trust & Socials */}
           <div className="space-y-4">
             <div className="flex items-center gap-2">
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center text-white font-bold shadow-md shadow-emerald-950/40">
-                <Briefcase className="w-5 h-5 text-white" />
-              </div>
+              {settings?.general?.logoUrl && settings.general.logoUrl !== '/icons/icon-192x192.png' ? (
+                <img 
+                  src={settings.general.logoUrl} 
+                  alt={settings.general.siteName || "চাকরি সেবা"} 
+                  className="h-9 w-auto max-w-[140px] object-contain rounded"
+                />
+              ) : (
+                <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center text-white font-bold shadow-md shadow-emerald-950/40">
+                  <Briefcase className="w-5 h-5 text-white" />
+                </div>
+              )}
               <span className="text-xl font-black text-white tracking-tight">
-                চাকরি<span className="text-emerald-400">সেবা</span>
+                {settings?.general?.siteName || <>চাকরি<span className="text-emerald-400">সেবা</span></>}
               </span>
             </div>
             <p className="text-[14px] text-slate-400 leading-relaxed">
@@ -245,10 +253,10 @@ export default function Footer() {
         {/* Disclaimer & Copyright */}
         <div className="border-t border-slate-800/80 mt-5 pt-4 text-center text-[13px] text-slate-500 space-y-1.5">
           <p className="max-w-4xl mx-auto leading-relaxed">
-            সতর্কতা: চাকরি সেবা কোনো সরকারি বা নিয়োগকারী প্রতিষ্ঠান নয়। আমরা বিভিন্ন অফিশিয়াল ওয়েবসাইট ও জাতীয় পত্রিকা থেকে সংগৃহীত চাকরির তথ্য ও সার্কুলার প্রকাশ করি এবং চাকরিপ্রার্থীদের সুবিধার্থে সঠিক নিয়মে ফর্ম পূরণে পেশাদার সহায়তা প্রদান করি।
+            {settings?.general?.footerDisclaimer || 'সতর্কতা: চাকরি সেবা কোনো সরকারি বা নিয়োগকারী প্রতিষ্ঠান নয়। আমরা বিভিন্ন অফিশিয়াল ওয়েবসাইট ও জাতীয় পত্রিকা থেকে সংগৃহীত চাকরির তথ্য ও সার্কুলার প্রকাশ করি এবং চাকরিপ্রার্থীদের সুবিধার্থে সঠিক নিয়মে ফর্ম পূরণে পেশাদার সহায়তা প্রদান করি।'}
           </p>
           <p className="text-[12px] text-slate-600 pt-1">
-            © ২০২৬ চাকরিসেবা BD (ChakriSheba.com) • সর্বস্বত্ব সংরক্ষিত।
+            {settings?.general?.copyrightText || `© ২০২৬ ${settings?.general?.siteName || 'চাকরিসেবা BD'} (ChakriSheba.com) • সর্বস্বত্ব সংরক্ষিত।`}
           </p>
         </div>
       </div>

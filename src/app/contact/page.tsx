@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Phone, 
   MessageSquare, 
@@ -20,6 +20,16 @@ export default function ContactPage() {
   const [phone, setPhone] = useState('');
   const [message, setMessage] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const [settings, setSettings] = useState<any>(null);
+
+  useEffect(() => {
+    fetch('/api/platform/settings', { cache: 'no-store' })
+      .then(r => r.json())
+      .then(d => {
+        if (d.success && d.settings) setSettings(d.settings);
+      })
+      .catch(() => {});
+  }, []);
 
   const faqs = [
     {
@@ -81,8 +91,8 @@ export default function ContactPage() {
             <Phone className="w-6 h-6" />
           </div>
           <h3 className="text-base font-bold text-slate-900">জরুরি হেল্পলাইন</h3>
-          <div className="text-lg font-black text-emerald-800">০১৮৯৪-০০০০০০</div>
-          <p className="text-[16px] text-slate-600">সকাল ৯:০০টা হতে রাত ১০:০০টা (প্রতিদিন)</p>
+          <div className="text-lg font-black text-emerald-800">{settings?.general?.supportPhone || '+৮৮০ ১৭৭৪-৩৬৬৬৪৩'}</div>
+          <p className="text-[16px] text-slate-600">সকাল ৯:০০টা হতে রাত ১১:০০টা (প্রতিদিন)</p>
         </div>
 
         {/* WhatsApp */}
@@ -92,7 +102,7 @@ export default function ContactPage() {
           </div>
           <h3 className="text-base font-bold text-slate-900">WhatsApp চ্যাট সাপোর্ট</h3>
           <a
-            href="https://wa.me/8801700000000"
+            href={`https://wa.me/${settings?.general?.whatsappNumber || '8801774366643'}`}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-block text-[17px] font-bold text-white bg-green-600 hover:bg-green-700 px-4 py-2 rounded-xl transition-colors shadow-sm"

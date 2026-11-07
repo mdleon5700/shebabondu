@@ -175,6 +175,19 @@ const DEFAULT_HEADER_ITEMS: NavMenuItem[] = [
       { label: 'লিখিত পরীক্ষার ফলাফল', href: '/written-exam-results' },
       { label: 'মৌখিক পরীক্ষার সময়সূচি', href: '/viva-notices' }
     ]
+  },
+  {
+    id: 'career',
+    label: 'ক্যারিয়ার গাইড',
+    href: '/career-guides',
+    dropdown: [
+      { label: 'ক্যারিয়ার গাইড হাব', href: '/career-guides' },
+      { label: 'সিভি লেখার সঠিক নিয়ম', href: '/career-guides/cv-writing' },
+      { label: 'অনলাইনে চাকরির আবেদন গাইড', href: '/career-guides/online-job-application' },
+      { label: 'ইন্টারভিউ ও ভাইভা প্রস্তুতি', href: '/career-guides/interview-preparation' },
+      { label: 'চাকরির পরীক্ষার প্রস্তুতি', href: '/career-guides/job-exam-preparation' },
+      { label: 'ক্যারিয়ার পরামর্শ ও ব্লগ', href: '/blog' }
+    ]
   }
 ];
 
@@ -290,6 +303,9 @@ export default function WebsiteCmsSeoManagement({
   const [headerMenuItems, setHeaderMenuItems] = useState<NavMenuItem[]>(DEFAULT_HEADER_ITEMS);
   const [footerColumns, setFooterColumns] = useState<any[]>(DEFAULT_FOOTER_COLS);
   const [expandedDropdownId, setExpandedDropdownId] = useState<string | null>(null);
+  const [previewViewport, setPreviewViewport] = useState<'desktop' | 'mobile'>('desktop');
+  const [previewActiveDropdown, setPreviewActiveDropdown] = useState<string | null>(null);
+  const [previewMobileMenuOpen, setPreviewMobileMenuOpen] = useState(false);
 
   // 4. Revisions State
   const [revisions, setRevisions] = useState<RevisionItem[]>(INITIAL_REVISIONS);
@@ -1419,18 +1435,35 @@ export default function WebsiteCmsSeoManagement({
                 <div className="flex items-center justify-between pb-2 border-b border-slate-100">
                   <div className="flex items-center gap-2">
                     <Monitor className="w-4 h-4 text-emerald-700" />
-                    <h3 className="font-black text-xs uppercase tracking-wider text-slate-700">হেডার লাইভ রিয়েল-টাইম প্রিভিউ</h3>
+                    <h3 className="font-black text-xs uppercase tracking-wider text-slate-700">লাইভ ইন্টারেক্টিভ প্রিভিউ</h3>
                   </div>
-                  <span className="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full">
-                    লাইভ সিঙ্ক
-                  </span>
+                  <div className="flex items-center gap-1 bg-slate-100 p-0.5 rounded-lg border border-slate-200">
+                    <button
+                      type="button"
+                      onClick={() => setPreviewViewport('desktop')}
+                      className={`px-2 py-0.5 rounded text-[11px] font-bold transition-all ${
+                        previewViewport === 'desktop' ? 'bg-white text-slate-900 shadow-2xs' : 'text-slate-500 hover:text-slate-800'
+                      }`}
+                    >
+                      ডেস্কটপ
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setPreviewViewport('mobile')}
+                      className={`px-2 py-0.5 rounded text-[11px] font-bold transition-all ${
+                        previewViewport === 'mobile' ? 'bg-white text-slate-900 shadow-2xs' : 'text-slate-500 hover:text-slate-800'
+                      }`}
+                    >
+                      মোবাইল
+                    </button>
+                  </div>
                 </div>
 
                 {/* Simulated Announcement */}
                 {announcementEnabled && (
                   <div className="bg-gradient-to-r from-slate-950 via-emerald-950 to-slate-900 text-white text-[11px] p-2.5 rounded-xl border border-emerald-900/40 space-y-1">
                     <div className="flex items-center gap-1.5">
-                      <span className="bg-red-600 text-white px-1.5 py-0.2 rounded text-[10px] font-black uppercase">
+                      <span className="bg-red-600 text-white px-1.5 py-0.5 rounded text-[10px] font-black uppercase">
                         জরুরি
                       </span>
                       <span className="truncate text-slate-200 font-medium">{announcementText}</span>
@@ -1443,61 +1476,150 @@ export default function WebsiteCmsSeoManagement({
                 )}
 
                 {/* Simulated Header Navbar */}
-                <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
-                  <div className="flex items-center justify-between">
-                    {/* Logo & Brand Identity */}
-                    <div className="flex items-center gap-2">
-                      {siteLogo ? (
-                        <img src={siteLogo} alt={siteName} className="h-8 max-w-[100px] object-contain" onError={() => {}} />
-                      ) : (
-                        <div className="w-8 h-8 rounded-lg bg-emerald-700 text-white flex items-center justify-center font-bold text-xs shadow-xs">
-                          <Briefcase className="w-4 h-4" />
+                {previewViewport === 'desktop' ? (
+                  /* DESKTOP PREVIEW */
+                  <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
+                    <div className="flex items-center justify-between">
+                      {/* Logo & Brand Identity */}
+                      <div className="flex items-center gap-2">
+                        {siteLogo ? (
+                          <img src={siteLogo} alt={siteName} className="h-8 max-w-[100px] object-contain" onError={() => {}} />
+                        ) : (
+                          <div className="w-8 h-8 rounded-lg bg-emerald-700 text-white flex items-center justify-center font-bold text-xs shadow-xs">
+                            <Briefcase className="w-4 h-4" />
+                          </div>
+                        )}
+                        <div>
+                          <div className="font-black text-xs text-slate-900">{siteName}</div>
+                          <div className="text-[9px] text-slate-500 font-medium">{siteTagline}</div>
                         </div>
-                      )}
-                      <div>
-                        <div className="font-black text-xs text-slate-900">{siteName}</div>
-                        <div className="text-[9px] text-slate-500 font-medium">{siteTagline}</div>
+                      </div>
+
+                      {/* Action buttons preview */}
+                      <div className="flex items-center gap-1.5">
+                        <span className="px-2 py-1 rounded-lg border border-emerald-600 text-emerald-700 bg-white text-[10px] font-bold">
+                          {whatsappButtonText}
+                        </span>
+                        <span className="px-2 py-1 rounded-lg bg-emerald-700 text-white text-[10px] font-black">
+                          {loginButtonText}
+                        </span>
                       </div>
                     </div>
 
-                    {/* Action buttons preview */}
-                    <div className="flex items-center gap-1.5">
-                      <span className="px-2 py-1 rounded-lg border border-emerald-600 text-emerald-700 bg-white text-[10px] font-bold">
-                        {whatsappButtonText}
-                      </span>
-                      <span className="px-2 py-1 rounded-lg bg-emerald-700 text-white text-[10px] font-black">
-                        {loginButtonText}
-                      </span>
+                    {/* Interactive Menu items preview */}
+                    <div className="pt-2 border-t border-slate-200 relative">
+                      <div className="flex items-center gap-1 overflow-x-auto text-[11px] font-bold text-slate-700 pb-1">
+                        {headerMenuItems.map((item, idx) => {
+                          const hasDropdown = item.dropdown && item.dropdown.length > 0;
+                          const isOpen = previewActiveDropdown === item.id;
+                          return (
+                            <div 
+                              key={item.id || idx}
+                              className="relative"
+                              onMouseEnter={() => hasDropdown && setPreviewActiveDropdown(item.id)}
+                              onMouseLeave={() => hasDropdown && setPreviewActiveDropdown(null)}
+                            >
+                              <button
+                                type="button"
+                                onClick={() => hasDropdown && setPreviewActiveDropdown(isOpen ? null : item.id)}
+                                className={`whitespace-nowrap px-2 py-1 rounded-lg transition-all flex items-center gap-1 cursor-pointer ${
+                                  isOpen ? 'bg-emerald-100 text-emerald-800' : 'hover:bg-white text-slate-800'
+                                }`}
+                              >
+                                <span>{item.label}</span>
+                                {hasDropdown && (
+                                  <ChevronDown className={`w-3 h-3 text-slate-400 transition-transform ${isOpen ? 'rotate-180 text-emerald-700' : ''}`} />
+                                )}
+                              </button>
+
+                              {/* Interactive Dropdown Preview Popover */}
+                              {hasDropdown && isOpen && (
+                                <div className="absolute top-full left-0 z-50 pt-1 w-48 animate-in fade-in slide-in-from-top-1 duration-100">
+                                  <div className="bg-white rounded-xl shadow-lg border border-slate-200 py-1.5 divide-y divide-slate-100">
+                                    {item.dropdown!.map((sub, sIdx) => (
+                                      <div
+                                        key={sIdx}
+                                        className="px-3 py-1.5 text-xs text-slate-700 hover:bg-emerald-50 hover:text-emerald-800 font-semibold cursor-pointer"
+                                      >
+                                        {sub.label}
+                                      </div>
+                                    ))}
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          );
+                        })}
+                      </div>
                     </div>
                   </div>
+                ) : (
+                  /* MOBILE PREVIEW */
+                  <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-1.5">
+                        <div className="w-7 h-7 rounded-lg bg-emerald-700 text-white flex items-center justify-center font-bold text-xs">
+                          <Briefcase className="w-3.5 h-3.5" />
+                        </div>
+                        <span className="font-black text-xs text-slate-900">{siteName}</span>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setPreviewMobileMenuOpen(!previewMobileMenuOpen)}
+                        className="p-1 text-slate-700 hover:bg-slate-200 rounded-lg cursor-pointer text-xs font-bold"
+                      >
+                        {previewMobileMenuOpen ? '✕ বন্ধ' : '☰ মেনু'}
+                      </button>
+                    </div>
 
-                  {/* Menu items preview */}
-                  <div className="pt-2 border-t border-slate-200 flex items-center gap-2 overflow-x-auto text-[11px] font-bold text-slate-700 pb-1">
-                    {headerMenuItems.slice(0, 5).map((item, idx) => (
-                      <span key={idx} className="whitespace-nowrap px-2 py-1 rounded-lg hover:bg-white flex items-center gap-0.5">
-                        {item.label}
-                        {item.dropdown && item.dropdown.length > 0 && <ChevronDown className="w-3 h-3 text-slate-400" />}
-                      </span>
-                    ))}
-                    {headerMenuItems.length > 5 && (
-                      <span className="text-slate-400 font-mono text-[10px]">+{headerMenuItems.length - 5}টি</span>
+                    {previewMobileMenuOpen && (
+                      <div className="p-2 bg-white rounded-lg border border-slate-200 divide-y divide-slate-100 space-y-1">
+                        {headerMenuItems.map((item, idx) => (
+                          <div key={idx} className="py-1 text-xs font-bold text-slate-800">
+                            <div className="flex items-center justify-between">
+                              <span>{item.label}</span>
+                              {item.dropdown && item.dropdown.length > 0 && (
+                                <span className="text-[10px] text-emerald-700">({item.dropdown.length}টি)</span>
+                              )}
+                            </div>
+                            {item.dropdown && item.dropdown.length > 0 && (
+                              <div className="pl-2 pt-1 space-y-0.5 border-l border-emerald-300 ml-1 mt-1 text-[11px] text-slate-600 font-normal">
+                                {item.dropdown.map((sub, sIdx) => (
+                                  <div key={sIdx}>• {sub.label}</div>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
                     )}
                   </div>
-                </div>
+                )}
 
                 {/* Footer Preview Mockup */}
-                <div className="bg-slate-900 text-slate-300 rounded-xl border border-slate-800 p-4 space-y-2 mt-4">
+                <div className="bg-slate-900 text-slate-300 rounded-xl border border-slate-800 p-4 space-y-3 mt-4">
                   <div className="flex items-center gap-2 pb-1.5 border-b border-slate-800 text-white text-xs font-black">
                     <Layout className="w-3.5 h-3.5 text-emerald-400" />
-                    <span>ফুটার প্রিভিউ</span>
+                    <span>ফুটার প্রিভিউ (৩টি কলাম)</span>
                   </div>
                   <div className="font-black text-white text-xs">{siteName}</div>
                   <p className="text-[10px] text-slate-400 line-clamp-2 leading-relaxed">
                     {footerAboutText}
                   </p>
+                  
+                  {/* Footer Columns Preview */}
+                  <div className="grid grid-cols-3 gap-2 pt-1 border-t border-slate-800 text-[10px]">
+                    {footerColumns.map((col, idx) => (
+                      <div key={idx} className="space-y-0.5">
+                        <span className="font-bold text-emerald-400 block truncate">{col.title}</span>
+                        <span className="text-slate-500 font-mono text-[9px]">{(col.links || []).length}টি লিংক</span>
+                      </div>
+                    ))}
+                  </div>
+
                   <div className="pt-1.5 border-t border-slate-800 flex items-center justify-between text-[10px] text-slate-400">
                     <span>হোয়াটসঅ্যাপ: {whatsappNumber}</span>
-                    <span className="text-emerald-400 font-bold">{footerColumns.length}টি কলাম সক্রিয়</span>
+                    <span className="text-emerald-400 font-bold">সক্রিয়</span>
                   </div>
                 </div>
 
@@ -1509,13 +1631,12 @@ export default function WebsiteCmsSeoManagement({
                     className="w-full py-2.5 bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-500 hover:to-teal-600 text-white rounded-xl text-xs font-bold shadow-md transition-all flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50"
                   >
                     {isSaving ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Check className="w-4 h-4" />}
-                    <span>পরিবর্তনগুলো এক ক্লিকে লাইভ করুন</span>
+                    <span>💾 সকল হেডার ও ফুটার ডিজাইন পরিবর্তন সংরক্ষণ করুন</span>
                   </button>
                 </div>
               </div>
 
             </div>
-
           </div>
         </div>
       )}

@@ -48,6 +48,7 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
     if (isPublish) {
       try {
         revalidatePath(pageToSave.slug);
+        revalidatePath('/', 'layout');
         revalidatePath('/');
       } catch (e) {}
     }

@@ -33,12 +33,14 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
   try {
     if (!serverDB.getPageById(params.id)) return NextResponse.json({ error: 'Page not found' }, { status: 404 });
     const { action, ...pageData } = await req.json();
-    if (!pageData.title || !pageData.slug || !Array.isArray(pageData.sections)) {
+    const slug = pageData.slug || pageData.path || '';
+    if (!pageData.title || !slug || !Array.isArray(pageData.sections)) {
       return NextResponse.json({ error: 'Page title, path and sections are required.' }, { status: 400 });
     }
     const isPublish = action === 'publish';
     const pageToSave: PageRecord = {
       ...pageData,
+      slug,
       id: params.id
     };
     const adminId = session?.candidateId || 'ADMIN';

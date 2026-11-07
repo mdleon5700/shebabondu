@@ -35,6 +35,7 @@ import {
   ChevronRight,
   X,
   AlertCircle,
+  Upload,
   Image as ImageIcon
 } from 'lucide-react';
 
@@ -847,6 +848,36 @@ export default function WebsiteCmsSeoManagement({
                       className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs font-mono text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                     />
                     <p className="text-[10px] text-slate-500 mt-1">খালি রাখলে সুন্দর ডিফল্ট ব্রিফকেস ব্যাজ প্রদর্শিত হবে</p>
+                    <div className="flex items-center gap-2 mt-2">
+                      <label className="cursor-pointer px-2.5 py-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 rounded-lg text-[11px] font-bold transition-all flex items-center gap-1 shadow-2xs">
+                        <Upload className="w-3 h-3" />
+                        <span>কম্পিউটার থেকে লোগো আপলোড</span>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          className="hidden"
+                          onChange={(e) => {
+                            const file = e.target.files?.[0];
+                            if (file) {
+                              const reader = new FileReader();
+                              reader.onload = (ev) => {
+                                if (ev.target?.result) setSiteLogo(ev.target.result as string);
+                              };
+                              reader.readAsDataURL(file);
+                            }
+                          }}
+                        />
+                      </label>
+                      {siteLogo && (
+                        <button
+                          type="button"
+                          onClick={() => setSiteLogo('')}
+                          className="px-2 py-1 text-red-600 hover:bg-red-50 rounded-lg text-[11px] font-bold cursor-pointer"
+                        >
+                          রিমুভ
+                        </button>
+                      )}
+                    </div>
                   </div>
 
                   <div>

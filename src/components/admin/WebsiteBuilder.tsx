@@ -41,9 +41,10 @@ const getAdminHeaders = (): HeadersInit => {
 
 interface WebsiteBuilderProps {
   initialPageId?: string;
+  onNavigateToPages?: () => void;
 }
 
-export default function WebsiteBuilder({ initialPageId }: WebsiteBuilderProps = {}) {
+export default function WebsiteBuilder({ initialPageId, onNavigateToPages }: WebsiteBuilderProps = {}) {
   const [pages, setPages] = useState<PageRecord[]>([]);
   const [selectedPageId, setSelectedPageId] = useState<string>(initialPageId || 'home');
 
@@ -277,6 +278,16 @@ export default function WebsiteBuilder({ initialPageId }: WebsiteBuilderProps = 
         
         {/* Left: Page Selector */}
         <div className="flex flex-wrap items-center gap-3">
+          {onNavigateToPages && (
+            <button
+              type="button"
+              onClick={onNavigateToPages}
+              className="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer mt-4"
+              title="সকল পেজের তালিকায় ফেরত যান"
+            >
+              <span>← সকল পেজ তালিকা</span>
+            </button>
+          )}
           <div className="space-y-1">
             <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">সম্পাদনার জন্য পৃষ্ঠা নির্বাচন</span>
             <select

@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { getServerSession } from '@/lib/auth';
 import { serverDB } from '@/lib/db';
 import { PageRecord } from '@/lib/types';
@@ -50,7 +51,7 @@ export async function POST(req: Request) {
       title: body.title,
       metaTitle: body.metaTitle || body.title + ' — চাকরি সেবা',
       metaDescription: body.metaDescription || '',
-      status: 'draft',
+      status: body.status || 'published',
       version: 1,
       isSystemPage: false,
       sections: body.sections || [
@@ -69,7 +70,14 @@ export async function POST(req: Request) {
     };
 
     const adminId = session?.candidateId || 'ADMIN';
-    const saved = serverDB.savePage(newPage, adminId, false);
+    const isPublish = body.status !== 'draft';
+    const saved = serverDB.savePage(newPage, adminId, isPublish);
+    if (isPublish) {
+      try {
+        revalidatePath(cleanSlug);
+        revalidatePath('/');
+      } catch (e) {}
+    }
     return NextResponse.json({ success: true, page: saved });
   } catch (err: any) {
     return NextResponse.json({ error: err.message }, { status: 500 });

@@ -49,9 +49,13 @@ import {
 } from '@/lib/content_studio/types';
 import { createNewBlock, blocksToMarkdown } from '@/lib/content_studio/blocks_converter';
 
-const ADMIN_REQ_HEADERS: HeadersInit = {
-  'Content-Type': 'application/json',
+const getAdminHeaders = (): HeadersInit => {
+  const pin = typeof window !== 'undefined' ? (localStorage.getItem('cs_admin_pin') || '1234') : '1234';
+  return {
+    'Content-Type': 'application/json',
+    'x-admin-secret': pin
   };
+};
 
 export default function JobContentStudio({ initialDraftId }: { initialDraftId?: string }) {
   // State
@@ -68,6 +72,15 @@ export default function JobContentStudio({ initialDraftId }: { initialDraftId?: 
   const [generating, setGenerating] = useState<boolean>(false);
   const [searchTerm, setSearchTerm] = useState<string>('');
 
+  // New Post Modal State
+  const [showNewPostModal, setShowNewPostModal] = useState<boolean>(false);
+  const [newPostTitle, setNewPostTitle] = useState<string>('');
+  const [newPostOrg, setNewPostOrg] = useState<string>('');
+  const [newPostCategory, setNewPostCategory] = useState<string>('govt');
+  const [newPostVacancies, setNewPostVacancies] = useState<string>('১');
+  const [newPostDeadline, setNewPostDeadline] = useState<string>('২০২৬-১২-৩১');
+  const [isCreatingPost, setIsCreatingPost] = useState<boolean>(false);
+
   // Load queue on mount
   useEffect(() => {
     fetchQueue();
@@ -83,7 +96,7 @@ export default function JobContentStudio({ initialDraftId }: { initialDraftId?: 
   const fetchQueue = async () => {
     try {
       setLoading(true);
-      const res = await fetch('/api/admin/content-studio', { headers: ADMIN_REQ_HEADERS });
+      const res = await fetch('/api/admin/content-studio', { headers: getAdminHeaders() });
       const data = await res.json();
       if (data.success && Array.isArray(data.queue)) {
         setQueue(data.queue);
@@ -101,7 +114,7 @@ export default function JobContentStudio({ initialDraftId }: { initialDraftId?: 
   const loadDraftStudioState = async (draftId: string) => {
     try {
       setLoading(true);
-      const res = await fetch(`/api/admin/content-studio/${draftId}`, { headers: ADMIN_REQ_HEADERS });
+      const res = await fetch(`/api/admin/content-studio/${draftId}`, { headers: getAdminHeaders() });
       const data = await res.json();
       if (data.success && data.state) {
         setStudioState(data.state);
@@ -124,7 +137,7 @@ export default function JobContentStudio({ initialDraftId }: { initialDraftId?: 
       setSaveStatusText('সংরক্ষণ করা হচ্ছে...');
       const res = await fetch(`/api/admin/content-studio/${selectedDraftId}`, {
         method: 'POST',
-        headers: ADMIN_REQ_HEADERS,
+        headers: getAdminHeaders(),
         body: JSON.stringify({
           ...studioState,
           createRevision: createRev,
@@ -143,6 +156,48 @@ export default function JobContentStudio({ initialDraftId }: { initialDraftId?: 
     }
   };
 
+  // Create New Circular Post
+  const handleCreateNewPost = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newPostTitle.trim() || !newPostOrg.trim()) {
+      alert('পদের নাম ও প্রতিষ্ঠানের নাম আবশ্যক।');
+      return;
+    }
+
+    try {
+      setIsCreatingPost(true);
+      const res = await fetch('/api/admin/content-studio', {
+        method: 'POST',
+        headers: getAdminHeaders(),
+        body: JSON.stringify({
+          title: newPostTitle.trim(),
+          organization: newPostOrg.trim(),
+          category: newPostCategory,
+          vacancies: Number(newPostVacancies) || 1,
+          deadline: newPostDeadline
+        })
+      });
+
+      const data = await res.json();
+      if (data.success && data.draftId) {
+        setShowNewPostModal(false);
+        setNewPostTitle('');
+        setNewPostOrg('');
+        await fetchQueue();
+        setSelectedDraftId(data.draftId);
+        if (data.state) {
+          setStudioState(data.state);
+        }
+      } else {
+        alert(data.error || 'নতুন পোস্ট তৈরি ব্যর্থ হয়েছে');
+      }
+    } catch (err: any) {
+      alert('ত্রুটি: ' + err.message);
+    } finally {
+      setIsCreatingPost(false);
+    }
+  };
+
   // AI Content Generation trigger
   const handleGenerateContent = async (action: 'generate_all' | 'regenerate_section' = 'generate_all', sectionId?: string) => {
     if (!selectedDraftId) return;
@@ -151,7 +206,7 @@ export default function JobContentStudio({ initialDraftId }: { initialDraftId?: 
       setSaveStatusText('AI কন্টেন্ট তৈরি হচ্ছে...');
       const res = await fetch(`/api/admin/content-studio/${selectedDraftId}/generate`, {
         method: 'POST',
-        headers: ADMIN_REQ_HEADERS,
+        headers: getAdminHeaders(),
         body: JSON.stringify({
           action,
           sectionToRegenerate: sectionId,
@@ -179,7 +234,7 @@ export default function JobContentStudio({ initialDraftId }: { initialDraftId?: 
       setLoading(true);
       const res = await fetch(`/api/admin/content-studio/${selectedDraftId}/validate`, {
         method: 'POST',
-        headers: ADMIN_REQ_HEADERS
+        headers: getAdminHeaders()
       });
       const data = await res.json();
       if (data.success) {
@@ -207,7 +262,7 @@ export default function JobContentStudio({ initialDraftId }: { initialDraftId?: 
       setLoading(true);
       const res = await fetch(`/api/admin/content-studio/${selectedDraftId}/approve`, {
         method: 'POST',
-        headers: ADMIN_REQ_HEADERS
+        headers: getAdminHeaders()
       });
       const data = await res.json();
       if (data.success) {
@@ -409,10 +464,21 @@ export default function JobContentStudio({ initialDraftId }: { initialDraftId?: 
           {/* Top Tab Switcher: Queue vs Element Library */}
           <div className="p-3 border-b border-slate-100 bg-slate-50">
             <div className="text-xs font-bold text-slate-900 mb-2 flex items-center justify-between">
-              <span>সার্কুলার ড্রাফট তালিকা</span>
-              <span className="text-[10px] bg-indigo-100 text-indigo-700 font-bold px-1.5 py-0.5 rounded-full">
-                {queue.length}
+              <span className="flex items-center gap-1.5">
+                <span>পোস্ট তালিকা</span>
+                <span className="text-[10px] bg-indigo-100 text-indigo-700 font-bold px-1.5 py-0.5 rounded-full">
+                  {queue.length}
+                </span>
               </span>
+              <button
+                type="button"
+                onClick={() => setShowNewPostModal(true)}
+                className="px-2 py-1 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-[10px] font-bold flex items-center gap-1 shadow-2xs transition-colors cursor-pointer"
+                title="নতুন চাকরির পোস্ট বা সার্কুলার লিখুন"
+              >
+                <Plus className="w-3 h-3" />
+                <span>+ নতুন পোস্ট</span>
+              </button>
             </div>
             <div className="relative">
               <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400" />
@@ -1075,7 +1141,7 @@ export default function JobContentStudio({ initialDraftId }: { initialDraftId?: 
                             try {
                               const res = await fetch(`/api/admin/content-studio/${selectedDraftId}/revisions`, {
                                 method: 'POST',
-                                headers: ADMIN_REQ_HEADERS,
+                                headers: getAdminHeaders(),
                                 body: JSON.stringify({ revisionId: rev.id })
                               });
                               const data = await res.json();
@@ -1100,6 +1166,109 @@ export default function JobContentStudio({ initialDraftId }: { initialDraftId?: 
                 <p className="text-center text-slate-400 py-6">কোনো পূর্ববর্তী রিভিশন পাওয়া যায়নি।</p>
               )}
             </div>
+          </div>
+        </div>
+      )}
+      {/* MODAL: CREATE NEW POST (WORDPRESS / ELEMENTOR STYLE) */}
+      {showNewPostModal && (
+        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl border border-slate-200 shadow-2xl max-w-lg w-full overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+            <div className="px-6 py-4 bg-gradient-to-r from-indigo-700 to-violet-800 text-white flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <PenTool className="w-5 h-5 text-indigo-300" />
+                <h3 className="font-black text-sm">নতুন সার্কুলার পোস্ট তৈরি (এলিমেন্টর স্টুডিও)</h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowNewPostModal(false)}
+                className="text-white/80 hover:text-white p-1 rounded-lg"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <form onSubmit={handleCreateNewPost} className="p-6 space-y-4">
+              <div>
+                <label className="block text-xs font-bold text-slate-700 mb-1">প্রতিষ্ঠানের নাম *</label>
+                <input
+                  type="text"
+                  required
+                  value={newPostOrg}
+                  onChange={(e) => setNewPostOrg(e.target.value)}
+                  placeholder="যেমন: বাংলাদেশ ব্যাংক অথবা শিক্ষা মন্ত্রণালয়"
+                  className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-700 mb-1">পদের নাম ও বিবরণ *</label>
+                <input
+                  type="text"
+                  required
+                  value={newPostTitle}
+                  onChange={(e) => setNewPostTitle(e.target.value)}
+                  placeholder="যেমন: সহকারী পরিচালক (জেনারেল)"
+                  className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">ক্যাটাগরি</label>
+                  <select
+                    value={newPostCategory}
+                    onChange={(e) => setNewPostCategory(e.target.value)}
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-800 focus:ring-2 focus:ring-indigo-500"
+                  >
+                    <option value="govt">সরকারি চাকরি</option>
+                    <option value="bank">ব্যাংক ও আর্থিক</option>
+                    <option value="private">বেসরকারি / কোম্পানি</option>
+                    <option value="ngo">এনজিও (NGO)</option>
+                    <option value="education">শিক্ষক নিয়োগ</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">মোট শূন্যপদ</label>
+                  <input
+                    type="number"
+                    min="1"
+                    value={newPostVacancies}
+                    onChange={(e) => setNewPostVacancies(e.target.value)}
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:ring-2 focus:ring-indigo-500"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-700 mb-1">আবেদনের শেষ তারিখ</label>
+                <input
+                  type="text"
+                  value={newPostDeadline}
+                  onChange={(e) => setNewPostDeadline(e.target.value)}
+                  placeholder="যেমন: ২০২৬-১২-৩১"
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:ring-2 focus:ring-indigo-500"
+                />
+              </div>
+
+              <div className="pt-3 flex items-center justify-end gap-2 border-t border-slate-100">
+                <button
+                  type="button"
+                  onClick={() => setShowNewPostModal(false)}
+                  className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold"
+                >
+                  বাতিল
+                </button>
+                <button
+                  type="submit"
+                  disabled={isCreatingPost}
+                  className="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-sm disabled:opacity-50 cursor-pointer"
+                >
+                  {isCreatingPost ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <Plus className="w-3.5 h-3.5" />}
+                  <span>পোস্ট তৈরি ও এডিটর খুলুন</span>
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}

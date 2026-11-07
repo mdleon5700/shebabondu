@@ -5966,7 +5966,10 @@ function AdminContent() {
           {/* TAB 11: WEBSITE MANAGEMENT -> WEBSITE BUILDER */}
           {activeTab === 'builder' && (
             <div className="space-y-4">
-              <WebsiteBuilder initialPageId={builderSelectedPageId} />
+              <WebsiteBuilder 
+                initialPageId={builderSelectedPageId} 
+                onNavigateToPages={() => handleTabChange('pages-sections')} 
+              />
             </div>
           )}
 

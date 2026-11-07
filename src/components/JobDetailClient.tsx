@@ -55,6 +55,70 @@ import { useCandidateData } from '@/components/CandidateDataProvider';
 import { storage, AuthState } from '@/lib/store';
 import { JobCircular, JobPosition, CandidateProfile, EligibilityResult } from '@/lib/types';
 
+function EditorialContentRenderer({ content }: { content: string }) {
+  if (!content) return null;
+  const paragraphs = content.split(/\n\s*\n/);
+
+  return (
+    <div className="space-y-4 text-[15px] sm:text-[16px] text-slate-800 leading-relaxed font-normal">
+      {paragraphs.map((p, pIdx) => {
+        const trimmed = p.trim();
+        if (!trimmed) return null;
+
+        if (trimmed.startsWith('# ')) {
+          return (
+            <h1 key={pIdx} className="text-xl sm:text-2xl font-black text-slate-900 mt-4 mb-2">
+              {trimmed.replace(/^#\s+/, '')}
+            </h1>
+          );
+        }
+        if (trimmed.startsWith('## ')) {
+          return (
+            <h2 key={pIdx} className="text-lg sm:text-xl font-bold text-slate-900 mt-4 mb-2 pb-1 border-b border-slate-200 flex items-center gap-2">
+              <span className="w-1.5 h-4.5 rounded-full bg-emerald-600" />
+              <span>{trimmed.replace(/^##\s+/, '')}</span>
+            </h2>
+          );
+        }
+        if (trimmed.startsWith('### ')) {
+          return (
+            <h3 key={pIdx} className="text-base sm:text-lg font-bold text-slate-900 mt-3 mb-1.5">
+              {trimmed.replace(/^###\s+/, '')}
+            </h3>
+          );
+        }
+        if (trimmed.startsWith('>')) {
+          const cleanQuote = trimmed.replace(/^>\s*(\[!NOTE\])?\s*/g, '').trim();
+          return (
+            <div key={pIdx} className="bg-amber-50/80 border-l-4 border-amber-500 p-3.5 rounded-r-xl text-slate-800 text-sm">
+              {cleanQuote}
+            </div>
+          );
+        }
+        if (trimmed.startsWith('- ') || trimmed.startsWith('* ')) {
+          const items = trimmed.split('\n').filter(line => line.trim().startsWith('- ') || line.trim().startsWith('* '));
+          return (
+            <ul key={pIdx} className="space-y-1.5 pl-2 my-2">
+              {items.map((it, itIdx) => (
+                <li key={itIdx} className="flex items-start gap-2 text-slate-700">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 mt-2 shrink-0" />
+                  <span>{it.replace(/^[-*]\s+/, '')}</span>
+                </li>
+              ))}
+            </ul>
+          );
+        }
+
+        return (
+          <p key={pIdx} className="whitespace-pre-line">
+            {trimmed}
+          </p>
+        );
+      })}
+    </div>
+  );
+}
+
 export default function JobDetailClient({ job, relatedJobs = [] }: { job: JobCircular; relatedJobs?: JobCircular[] }) {
   const candidateData = useCandidateData();
 
@@ -902,8 +966,8 @@ export default function JobDetailClient({ job, relatedJobs = [] }: { job: JobCir
         </h2>
 
         {job.bengaliDescription ? (
-          <div className="job-editorial-lead text-[15px] sm:text-[16px] text-slate-800 leading-relaxed space-y-3 font-normal whitespace-pre-line bg-slate-50/60 p-4 rounded-2xl border border-slate-200/70">
-            {job.bengaliDescription}
+          <div className="job-editorial-lead bg-slate-50/70 p-5 sm:p-6 rounded-2xl border border-slate-200/80">
+            <EditorialContentRenderer content={job.bengaliDescription} />
           </div>
         ) : (
           <p className="text-[16px] text-slate-800 leading-relaxed font-normal">

@@ -4825,6 +4825,43 @@ export interface MediaItem {
   updatedAt?: string;
 }
 
+export interface HeaderDropdownItem {
+  label: string;
+  href: string;
+  badge?: string;
+  target?: '_self' | '_blank';
+}
+
+export interface HeaderMenuItem {
+  id: string;
+  label: string;
+  href: string;
+  badge?: string;
+  badgeColor?: 'emerald' | 'rose' | 'amber' | 'blue' | 'purple';
+  target?: '_self' | '_blank';
+  visibility?: 'all' | 'guest_only' | 'user_only';
+  dropdown?: HeaderDropdownItem[];
+}
+
+export interface GuestHeaderButtons {
+  showLogin: boolean;
+  loginText: string;
+  showRegister: boolean;
+  registerText: string;
+  showTrackApplication: boolean;
+  trackApplicationText: string;
+  showWhatsApp: boolean;
+  whatsAppText: string;
+}
+
+export interface UserHeaderWidgets {
+  showWalletBalance: boolean;
+  showNotificationBell: boolean;
+  showDashboardButton: boolean;
+  dashboardButtonText: string;
+  showAvatarDropdown: boolean;
+}
+
 export interface PlatformSettings {
   general: {
     siteName: string;
@@ -4838,6 +4875,22 @@ export interface PlatformSettings {
     faviconUrl?: string;
     defaultTimezone: string;
     defaultLanguage: 'bn' | 'en';
+    headerMenuItems?: HeaderMenuItem[];
+    guestButtons?: GuestHeaderButtons;
+    userWidgets?: UserHeaderWidgets;
+    announcementText?: string;
+    announcementEnabled?: boolean;
+    announcementUrl?: string;
+    whatsappButtonText?: string;
+    loginButtonText?: string;
+    stickyHeader?: boolean;
+    footerColumns?: Array<{ id: string; title: string; links: Array<{ label: string; url: string }> }>;
+    footerAboutText?: string;
+    facebookUrl?: string;
+    telegramUrl?: string;
+    youtubeUrl?: string;
+    footerDisclaimer?: string;
+    copyrightText?: string;
   };
   seo: {
     defaultTitle: string;

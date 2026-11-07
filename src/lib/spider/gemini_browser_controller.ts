@@ -416,6 +416,26 @@ export async function parseCircularWithGeminiBrowser(input: CircularExtractionIn
 
   const excerpt = text ? text.substring(0, 5000) : `${effectiveOrg}-এর অফিশিয়াল নিয়োগ বিজ্ঞপ্তি।`;
 
+  const positionsJson = (resolved?.positions && resolved.positions.length > 0)
+    ? JSON.stringify(resolved.positions.slice(0, 15).map(p => ({
+        title: p.title,
+        posts: p.posts || 1,
+        salary: p.salary || 'জাতীয় বেতন স্কেল ২০১৫ অনুযায়ী',
+        grade: p.grade || '১০ম - ১৬তম গ্রেড',
+        minEducation: p.minEducation || 'এইচএসসি / স্নাতক পাস',
+        govtFee: p.govtFee || 200
+      })), null, 2)
+    : `[
+    {
+      "title": "${resolved?.positions?.[0]?.title || 'কম্পিউটার মুদ্রাক্ষরিক'}",
+      "posts": ${resolved?.positions?.[0]?.posts || effectivePosts},
+      "salary": "${resolved?.positions?.[0]?.salary || '৯,৩০০ - ২২,৪৯০/- টাকা'}",
+      "grade": "${resolved?.positions?.[0]?.grade || '১৬তম গ্রেড'}",
+      "minEducation": "${resolved?.positions?.[0]?.minEducation || 'উচ্চ মাধ্যমিক (এইচএসসি) বা সমমান'}",
+      "govtFee": ${resolved?.positions?.[0]?.govtFee || 200}
+    }
+  ]`;
+
   // 2. Prepare Prompt
   const prompt = `You are the lead Bangladesh Recruitment & SEO Specialist for Chakri Sheba (https://chakrisheba.com).
 Analyze this Bangladesh government/semi-government recruitment circular:
@@ -446,16 +466,7 @@ You MUST respond ONLY with a valid JSON block inside \`\`\`json ... \`\`\` witho
   "grade": "১০ম থেকে ২০তম গ্রেড",
   "education": "এইচএসসি / স্নাতক বা সমমান পাস",
   "editorialOverview": "৩ থেকে ৪ প্যারাগ্রাফের আকর্ষণীয় প্রমিত বাংলা সম্পাদকীয় ওভারভিউ।",
-  "positions": [
-    {
-      "title": "${resolved?.positions?.[0]?.title || 'কম্পিউটার মুদ্রাক্ষরিক'}",
-      "posts": ${resolved?.positions?.[0]?.posts || effectivePosts},
-      "salary": "${resolved?.positions?.[0]?.salary || '৯,৩০০ - ২২,৪৯০/- টাকা'}",
-      "grade": "${resolved?.positions?.[0]?.grade || '১৬তম গ্রেড'}",
-      "minEducation": "${resolved?.positions?.[0]?.minEducation || 'উচ্চ মাধ্যমিক (এইচএসসি) বা সমমান'}",
-      "govtFee": ${resolved?.positions?.[0]?.govtFee || 112}
-    }
-  ],
+  "positions": ${positionsJson},
   "requirements": [
     "প্রার্থীকে বাংলাদেশের স্থায়ী নাগরিক হতে হবে।",
     "বয়সসীমা: ১৮ থেকে ৩২ বছর।"

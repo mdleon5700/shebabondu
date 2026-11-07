@@ -1,6 +1,8 @@
 import https from 'https';
 import http from 'http';
 import { extractTextFromPdf } from '@/lib/spider/gemini_browser_controller';
+import { serverDB } from '@/lib/db';
+import { scrapeTeletalkPortal } from '@/lib/spider/teletalk_portal_spider';
 
 if (typeof process !== 'undefined' && process.env) {
   process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
@@ -853,12 +855,116 @@ export function parseDetailsFromPdfText(rawText: string, sourceUrl = ''): {
   };
 }
 
+export function inferPositionGradeAndSalary(title: string): { grade: string; salary: string; govtFee: number; minEducation: string } {
+  const t = (title || '').toLowerCase();
+  if (t.includes('পরিচালক') || t.includes('director') || t.includes('সহকারী সচিব') || t.includes('প্রকৌশলী') || t.includes('engineer') || t.includes('অফিসার') || t.includes('officer') || t.includes('ম্যানেজার') || t.includes('manager')) {
+    return { grade: '৯ম - ১০ম গ্রেড', salary: '১৬,০০০ - ৫৩,০৬০/- টাকা', govtFee: 600, minEducation: 'স্বীকৃত বিশ্ববিদ্যালয় হতে সংশ্লিষ্ট বিষয়ে স্নাতক (সম্মান) বা স্নাতকোত্তর ডিগ্রি' };
+  }
+  if (t.includes('অডিটর') || t.includes('auditor') || t.includes('হিসাবরক্ষক') || t.includes('accountant') || t.includes('ইন্সপেক্টর') || t.includes('inspector') || t.includes('সাব-ইন্সপেক্টর')) {
+    return { grade: '১১তম - ১২তম গ্রেড', salary: '১২,৫০০ - ৩০,২৩০/- টাকা', govtFee: 300, minEducation: 'স্বীকৃত বিশ্ববিদ্যালয় হতে বাণিজ্য/বিজ্ঞান/মানবিকে ন্যূনতম ২য় শ্রেণি বা সমমানের সিজিপিএ সহ স্নাতক ডিগ্রি' };
+  }
+  if (t.includes('অপারেটর') || t.includes('operator') || t.includes('মুদ্রাক্ষরিক') || t.includes('typist') || t.includes('সহকারী') || t.includes('assistant') || t.includes('ক্লার্ক') || t.includes('clerk') || t.includes('টেকনিশিয়ান') || t.includes('technician') || t.includes('ড্রাফটসম্যান')) {
+    return { grade: '১৩তম - ১৬তম গ্রেড', salary: '৯,৩০০ - ২৬,৫৯০/- টাকা', govtFee: 200, minEducation: 'উচ্চ মাধ্যমিক সার্টিফিকেট (এইচএসসি) বা সমমান পরীক্ষায় উত্তীর্ণ এবং কম্পিউটার ব্যবহারে পারদর্শী' };
+  }
+  if (t.includes('ড্রাইভার') || t.includes('driver') || t.includes('চালক')) {
+    return { grade: '১৬তম গ্রেড', salary: '৯,৩০০ - ২২,৪৯০/- টাকা', govtFee: 200, minEducation: 'জুনিয়র স্কুল সার্টিফিকেট (জেএসসি) বা সমমান পাস এবং বৈধ ড্রাইভিং লাইসেন্সধারী' };
+  }
+  return { grade: '১৭তম - ২০তম গ্রেড', salary: '৮,২৫০ - ২০,০১০/- টাকা', govtFee: 100, minEducation: 'মাধ্যমিক স্কুল সার্টিফিকেট (এসএসসি) বা সমমান পরীক্ষায় উত্তীর্ণ' };
+}
+
 /**
  * Universal Circular Resolver:
  * Accepts any Alljobs job page URL, Alljobs public API URL, PDF URL, or raw text.
  */
 export async function resolveCircularInput(input: string): Promise<ResolvedCircularData> {
   const trimmed = input.trim();
+
+  // 0. Database Cache & Matching Check
+  try {
+    const allJobs = serverDB.getJobs();
+    const pdfFilename = trimmed.split('/').pop()?.split('?')[0] || '';
+
+    const matchedJob = allJobs.find(j => {
+      if (!j) return false;
+      if (j.id === trimmed || j.title === trimmed) return true;
+      if (j.circularPdfUrl && (j.circularPdfUrl === trimmed || (pdfFilename && pdfFilename.length > 5 && j.circularPdfUrl.includes(pdfFilename)))) return true;
+      if (j.officialLink && (j.officialLink === trimmed || trimmed.includes(j.officialLink) || (j.officialLink.length > 10 && trimmed.includes(j.officialLink)))) return true;
+      return false;
+    });
+
+    if (matchedJob && Array.isArray(matchedJob.positions) && matchedJob.positions.length > 0) {
+      return {
+        jobId: matchedJob.id,
+        title: matchedJob.title,
+        organization: matchedJob.organization,
+        category: matchedJob.category as any,
+        categoryLabel: matchedJob.categoryLabel,
+        totalPosts: matchedJob.totalPosts || matchedJob.positions.length,
+        deadline: matchedJob.deadline,
+        publishedDate: matchedJob.publishedDate,
+        officialLink: matchedJob.officialLink,
+        circularPdfUrl: matchedJob.circularPdfUrl || trimmed,
+        rawText: matchedJob.bengaliDescription || '',
+        minAge: matchedJob.minAge || 18,
+        maxAge: matchedJob.maxAge || 32,
+        salary: matchedJob.salary,
+        grade: matchedJob.grade,
+        positions: matchedJob.positions.map(p => ({
+          title: p.title,
+          posts: Number((p as any).posts || (p as any).vacancies) || 1,
+          salary: p.salary,
+          grade: p.grade,
+          minEducation: p.minEducation || 'উচ্চ মাধ্যমিক (এইচএসসি) বা স্নাতক পাস',
+          govtFee: p.govtFee ?? matchedJob.govtFee ?? 200
+        }))
+      };
+    }
+  } catch (dbErr) {
+    console.warn('DB cache match notice:', dbErr);
+  }
+
+  // 0.1 Direct Teletalk Portal Deep Crawl
+  if (trimmed.includes('teletalk.com.bd') && !trimmed.endsWith('.pdf')) {
+    try {
+      const portalData = await scrapeTeletalkPortal(trimmed);
+      if (portalData && portalData.positions.length > 0) {
+        const org = portalData.organizationEn || 'বাংলাদেশ সরকারি প্রতিষ্ঠান';
+        const { category, categoryLabel } = mapCategory(org);
+        const mappedPositions = portalData.positions.map(pos => {
+          const inferred = inferPositionGradeAndSalary(pos.bengaliTitle + ' ' + pos.englishTitle);
+          return {
+            title: pos.bengaliTitle,
+            posts: 1,
+            salary: inferred.salary,
+            grade: inferred.grade,
+            minEducation: inferred.minEducation,
+            govtFee: inferred.govtFee
+          };
+        });
+
+        return {
+          title: `${org} বিভিন্ন পদে নতুন নিয়োগ বিজ্ঞপ্তি ২০২৬`,
+          organization: org,
+          category,
+          categoryLabel,
+          totalPosts: mappedPositions.length,
+          deadline: '২৫ নভেম্বর ২০২৬',
+          publishedDate: formatBnDate(new Date().toISOString()),
+          officialLink: portalData.portalUrl,
+          circularPdfUrl: portalData.pdfUrl || trimmed,
+          rawText: `${org}\nনিয়োগ বিজ্ঞপ্তি\nমোট পদ: ${mappedPositions.length}\n${portalData.circularRef}`,
+          minAge: 18,
+          maxAge: 32,
+          salary: mappedPositions[0]?.salary || 'জাতীয় বেতন স্কেল ২০১৫ অনুযায়ী',
+          grade: mappedPositions[0]?.grade || '১০ম - ১৬তম গ্রেড',
+          positions: mappedPositions
+        };
+      }
+    } catch (e: any) {
+      console.warn('Portal scrape fallback notice:', e.message);
+    }
+  }
+
   let alljobsId: string | null = null;
 
   // Extract jobId if Alljobs URL

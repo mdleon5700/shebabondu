@@ -7,6 +7,17 @@
   "notifications": {
     "admin": [
       {
+        "id": "notif_1794016681041_egw4",
+        "title": {
+          "title": "নতুন সার্কুলার প্রকাশিত হয়েছে",
+          "message": "বিমান বাংলাদেশ এয়ারলাইন্স-এর \"গ্রাউন্ড সার্ভিস অফিসার\" বিজ্ঞপ্তিটি সম্পাদকীয় কন্টেন্ট ও এসইও সহ সফলভাবে প্রকাশিত হয়েছে।",
+          "priority": "normal"
+        },
+        "date": "2026-11-07T01:58:01.041Z",
+        "read": false,
+        "type": "system"
+      },
+      {
         "id": "notif_1794015611272_193w",
         "title": {
           "title": "নতুন সার্কুলার প্রকাশিত হয়েছে",
@@ -457,6 +468,974 @@
   "couponRedemptions": {},
   "raffleEntries": {},
   "adminAuditLogs": [
+    {
+      "action": "UPDATE_PLATFORM_SETTINGS",
+      "adminId": "ADMIN-SUPER",
+      "targetType": "SYSTEM_SETTINGS",
+      "targetId": "GLOBAL_CONFIG",
+      "notes": "প্ল্যাটফর্মের কেন্দ্রীয় সেটিংস ও কনফিগারেশন হালনাগাদ করা হয়েছে",
+      "changes": {
+        "settings": {
+          "new": {
+            "general": {
+              "siteName": "চাকরি সেবা বাংলাদেশ",
+              "siteDescription": "বাংলাদেশের একমাত্র ১০০% সম্পূর্ণ ফ্রি সরকারি ও বেসরকারি চাকরি পোর্টাল",
+              "logoUrl": "/icons/icon-192x192.png",
+              "faviconUrl": "/favicon.ico",
+              "supportPhone": "+৮৮০ ১৭৭৪-৩৬৬৬৪৩",
+              "supportEmail": "support@chakrisheba.com",
+              "officeAddress": "ধানমন্ডি ৩২, ঢাকা-১২০৯, বাংলাদেশ",
+              "whatsappNumber": "8801774366643",
+              "whatsappButtonText": "জরুরি সহায়তা",
+              "loginButtonText": "লগইন / রেজিস্ট্রেশন",
+              "announcementText": "⚡ নতুন নিয়োগ বিজ্ঞপ্তি ২০২৬: সকল সরকারি ও ব্যাংক চাকরির অনলাইন আবেদন চালু রয়েছে!",
+              "announcementUrl": "/jobs",
+              "announcementEnabled": true,
+              "headerMenuItems": [
+                {
+                  "id": "home",
+                  "label": "হোম",
+                  "href": "/"
+                },
+                {
+                  "id": "all-jobs",
+                  "label": "সকল চাকরি",
+                  "href": "/jobs",
+                  "badge": "হট",
+                  "dropdown": [
+                    {
+                      "label": "চলমান সকল বিজ্ঞপ্তি",
+                      "href": "/jobs"
+                    },
+                    {
+                      "label": "সর্বশেষ প্রকাশিত চাকরি",
+                      "href": "/latest-jobs"
+                    },
+                    {
+                      "label": "আবেদনের শেষ সময় কাছাকাছি",
+                      "href": "/deadline-approaching"
+                    },
+                    {
+                      "label": "সকল চাকরির প্রতিষ্ঠান",
+                      "href": "/organizations"
+                    },
+                    {
+                      "label": "যোগ্যতা অনুযায়ী চাকরি",
+                      "href": "/job-categories"
+                    }
+                  ]
+                },
+                {
+                  "id": "govt",
+                  "label": "সরকারি চাকরি",
+                  "href": "/government-jobs",
+                  "dropdown": [
+                    {
+                      "label": "সকল সরকারি চাকরি",
+                      "href": "/government-jobs"
+                    },
+                    {
+                      "label": "বিপিএসসি (BPSC) চাকরি",
+                      "href": "/organizations/bpsc"
+                    },
+                    {
+                      "label": "বাংলাদেশ ব্যাংক নিয়োগ",
+                      "href": "/organizations/bangladesh-bank"
+                    },
+                    {
+                      "label": "সরকারি মন্ত্রণালয়সমূহ",
+                      "href": "/organizations/government-ministries"
+                    },
+                    {
+                      "label": "সরকারি অধিদপ্তরসমূহ",
+                      "href": "/organizations/government-directorates"
+                    }
+                  ]
+                },
+                {
+                  "id": "private",
+                  "label": "বেসরকারি চাকরি",
+                  "href": "/private-jobs",
+                  "dropdown": [
+                    {
+                      "label": "সকল বেসরকারি চাকরি",
+                      "href": "/private-jobs"
+                    },
+                    {
+                      "label": "ব্যাংক ও আর্থিক প্রতিষ্ঠান",
+                      "href": "/bank-jobs"
+                    },
+                    {
+                      "label": "এনজিও (NGO) চাকরি",
+                      "href": "/ngo-jobs"
+                    },
+                    {
+                      "label": "আইটি ও সফটওয়্যার জবস",
+                      "href": "/it-jobs"
+                    },
+                    {
+                      "label": "মেডিকেল ও ফার্মাসিউটিক্যাল",
+                      "href": "/medical-jobs"
+                    }
+                  ]
+                },
+                {
+                  "id": "categories",
+                  "label": "চাকরির ক্যাটাগরি",
+                  "href": "/job-categories",
+                  "dropdown": [
+                    {
+                      "label": "সকল ক্যাটাগরি ব্রাউজ করুন",
+                      "href": "/job-categories"
+                    },
+                    {
+                      "label": "শিক্ষক নিয়োগ",
+                      "href": "/teacher-jobs"
+                    },
+                    {
+                      "label": "ইঞ্জিনিয়ারিং চাকরি",
+                      "href": "/engineering-jobs"
+                    },
+                    {
+                      "label": "মার্কেটিং ও সেলস",
+                      "href": "/marketing-jobs"
+                    },
+                    {
+                      "label": "ফ্রেশারদের চাকরি",
+                      "href": "/fresher-jobs"
+                    },
+                    {
+                      "label": "পার্ট-টাইম ও ইন্টার্নশিপ",
+                      "href": "/part-time-jobs"
+                    }
+                  ]
+                },
+                {
+                  "id": "exam",
+                  "label": "পরীক্ষা ও ফলাফল",
+                  "href": "/exam-notices",
+                  "dropdown": [
+                    {
+                      "label": "পরীক্ষার নোটিশ ও তারিখ",
+                      "href": "/exam-notices"
+                    },
+                    {
+                      "label": "প্রবেশপত্র / Admit Card",
+                      "href": "/admit-cards"
+                    },
+                    {
+                      "label": "লিখিত পরীক্ষার ফলাফল",
+                      "href": "/written-exam-results"
+                    },
+                    {
+                      "label": "মৌখিক পরীক্ষার সময়সূচি",
+                      "href": "/viva-notices"
+                    }
+                  ]
+                },
+                {
+                  "id": "nav-1794016989774",
+                  "label": "ভর্তি ও স্কলারশিপ",
+                  "href": "/govt-scholarships",
+                  "dropdown": [
+                    {
+                      "label": "সরকারি বৃত্তি",
+                      "href": "/jobs"
+                    }
+                  ]
+                },
+                {
+                  "id": "nav-1794017034888",
+                  "label": "ভর্তি ও স্কলারশিপ",
+                  "href": "/govt-scholarships",
+                  "dropdown": [
+                    {
+                      "label": "সরকারি বৃত্তি",
+                      "href": "/jobs"
+                    }
+                  ]
+                }
+              ],
+              "footerColumns": [
+                {
+                  "id": "col-jobs",
+                  "title": "চাকরি ও পরীক্ষা",
+                  "links": [
+                    {
+                      "label": "চলমান সকল চাকরি",
+                      "url": "/jobs"
+                    },
+                    {
+                      "label": "সরকারি চাকরির বিজ্ঞপ্তি",
+                      "url": "/government-jobs"
+                    },
+                    {
+                      "label": "বেসরকারি ও কোম্পানি জবস",
+                      "url": "/private-jobs"
+                    },
+                    {
+                      "label": "ব্যাংক ও ফাইন্যান্স চাকরি",
+                      "url": "/bank-jobs"
+                    },
+                    {
+                      "label": "আবেদনের শেষ সময় কাছাকাছি",
+                      "url": "/deadline-approaching"
+                    },
+                    {
+                      "label": "পরীক্ষার নোটিশ ও সময়সূচি",
+                      "url": "/exam-notices"
+                    },
+                    {
+                      "label": "প্রবেশপত্র / অ্যাডমিট কার্ড",
+                      "url": "/admit-cards"
+                    },
+                    {
+                      "label": "বিগত বছরের প্রশ্ন ও সমাধান",
+                      "url": "/previous-year-questions"
+                    },
+                    {
+                      "label": "অনলাইন মডেল টেস্ট",
+                      "url": "/model-tests"
+                    }
+                  ]
+                },
+                {
+                  "id": "col-guides",
+                  "title": "ক্যারিয়ার গাইড ও সার্ভিস",
+                  "links": [
+                    {
+                      "label": "সকল চাকরির ক্যাটাগরি",
+                      "url": "/job-categories"
+                    },
+                    {
+                      "label": "সকল নিয়োগকারী প্রতিষ্ঠান",
+                      "url": "/organizations"
+                    },
+                    {
+                      "label": "ক্যারিয়ার গাইড হাব",
+                      "url": "/career-guides"
+                    },
+                    {
+                      "label": "সিভি লেখার সঠিক নিয়ম",
+                      "url": "/career-guides/cv-writing"
+                    },
+                    {
+                      "label": "অনলাইনে চাকরির আবেদন গাইড",
+                      "url": "/career-guides/online-job-application"
+                    },
+                    {
+                      "label": "ইন্টারভিউ ও ভাইভা প্রস্তুতি",
+                      "url": "/career-guides/interview-preparation"
+                    },
+                    {
+                      "label": "সব ব্লগ ও ক্যারিয়ার আর্টিকেল",
+                      "url": "/blog"
+                    },
+                    {
+                      "label": "ফ্রি জব এলার্ট নোটিফিকেশন",
+                      "url": "/job-alerts"
+                    }
+                  ]
+                },
+                {
+                  "id": "col-policies",
+                  "title": "নীতিমালা ও সহায়তা",
+                  "links": [
+                    {
+                      "label": "আমাদের সম্পর্কে (About Us)",
+                      "url": "/about-us"
+                    },
+                    {
+                      "label": "যোগাযোগ করুন (Contact)",
+                      "url": "/contact-us"
+                    },
+                    {
+                      "label": "সাধারণ জিজ্ঞাসা (FAQ)",
+                      "url": "/faq"
+                    },
+                    {
+                      "label": "সম্পাদকীয় নীতিমালা",
+                      "url": "/editorial-policy"
+                    },
+                    {
+                      "label": "চাকরি যাচাই নীতিমালা",
+                      "url": "/job-verification-policy"
+                    },
+                    {
+                      "label": "ভুল তথ্য সংশোধন নীতিমালা",
+                      "url": "/corrections-policy"
+                    },
+                    {
+                      "label": "ভুল বিজ্ঞপ্তি রিপোর্ট করুন",
+                      "url": "/report-a-job"
+                    }
+                  ]
+                }
+              ],
+              "footerAboutText": "বাংলাদেশের চাকরিপ্রার্থীদের বিশ্বস্ত ডিজিটাল প্ল্যাটফর্ম। ঘরে বসেই সকল সরকারি, ব্যাংক ও শীর্ষ বেসরকারি চাকরির শতভাগ যাচাইকৃত বিজ্ঞপ্তি ও সঠিক নিয়মে অনলাইন আবেদন সহায়তা।",
+              "facebookUrl": "https://facebook.com/chakrisheba.bd",
+              "telegramUrl": "https://t.me/chakrisheba",
+              "youtubeUrl": "https://youtube.com/@chakrisheba"
+            },
+            "seo": {
+              "defaultTitle": "চাকরি সেবা — সরকারি ও বেসরকারি চাকরির খবর ও আবেদন পোর্টাল",
+              "defaultDescription": "টেলিটক জব সার্কুলার, ব্যাংক জব, সরকারি মন্ত্রণালয় ও বেসরকারি প্রতিষ্ঠানের চাকরির সকল আপডেট সম্পূর্ণ বিনামূল্যে।",
+              "defaultKeywords": [
+                "চাকরি সেবা",
+                "সরকারি চাকরি",
+                "টেলিটক জব সার্কুলার",
+                "ব্যাংক জব",
+                "chakri sheba"
+              ],
+              "defaultOgImage": "https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1200&q=80",
+              "googleSiteVerification": "google-site-verification=cs_live_bd_2026_verify_meta"
+            }
+          }
+        }
+      },
+      "id": "AUDIT-1794017036498-7MC4Q",
+      "timestamp": "2026-11-07T02:03:56.498Z"
+    },
+    {
+      "action": "UPDATE_PLATFORM_SETTINGS",
+      "adminId": "ADMIN-SUPER",
+      "targetType": "SYSTEM_SETTINGS",
+      "targetId": "GLOBAL_CONFIG",
+      "notes": "প্ল্যাটফর্মের কেন্দ্রীয় সেটিংস ও কনফিগারেশন হালনাগাদ করা হয়েছে",
+      "changes": {
+        "settings": {
+          "new": {
+            "general": {
+              "siteName": "চাকরি সেবা বাংলাদেশ",
+              "siteDescription": "বাংলাদেশের একমাত্র ১০০% সম্পূর্ণ ফ্রি সরকারি ও বেসরকারি চাকরি পোর্টাল",
+              "logoUrl": "/icons/icon-192x192.png",
+              "faviconUrl": "/favicon.ico",
+              "supportPhone": "+৮৮০ ১৭৭৪-৩৬৬৬৪৩",
+              "supportEmail": "support@chakrisheba.com",
+              "officeAddress": "ধানমন্ডি ৩২, ঢাকা-১২০৯, বাংলাদেশ",
+              "whatsappNumber": "8801774366643",
+              "whatsappButtonText": "জরুরি সহায়তা",
+              "loginButtonText": "লগইন / রেজিস্ট্রেশন",
+              "announcementText": "⚡ নতুন নিয়োগ বিজ্ঞপ্তি ২০২৬: সকল সরকারি ও ব্যাংক চাকরির অনলাইন আবেদন চালু রয়েছে!",
+              "announcementUrl": "/jobs",
+              "announcementEnabled": true,
+              "headerMenuItems": [
+                {
+                  "id": "home",
+                  "label": "হোম",
+                  "href": "/"
+                },
+                {
+                  "id": "all-jobs",
+                  "label": "সকল চাকরি",
+                  "href": "/jobs",
+                  "badge": "হট",
+                  "dropdown": [
+                    {
+                      "label": "চলমান সকল বিজ্ঞপ্তি",
+                      "href": "/jobs"
+                    },
+                    {
+                      "label": "সর্বশেষ প্রকাশিত চাকরি",
+                      "href": "/latest-jobs"
+                    },
+                    {
+                      "label": "আবেদনের শেষ সময় কাছাকাছি",
+                      "href": "/deadline-approaching"
+                    },
+                    {
+                      "label": "সকল চাকরির প্রতিষ্ঠান",
+                      "href": "/organizations"
+                    },
+                    {
+                      "label": "যোগ্যতা অনুযায়ী চাকরি",
+                      "href": "/job-categories"
+                    }
+                  ]
+                },
+                {
+                  "id": "govt",
+                  "label": "সরকারি চাকরি",
+                  "href": "/government-jobs",
+                  "dropdown": [
+                    {
+                      "label": "সকল সরকারি চাকরি",
+                      "href": "/government-jobs"
+                    },
+                    {
+                      "label": "বিপিএসসি (BPSC) চাকরি",
+                      "href": "/organizations/bpsc"
+                    },
+                    {
+                      "label": "বাংলাদেশ ব্যাংক নিয়োগ",
+                      "href": "/organizations/bangladesh-bank"
+                    },
+                    {
+                      "label": "সরকারি মন্ত্রণালয়সমূহ",
+                      "href": "/organizations/government-ministries"
+                    },
+                    {
+                      "label": "সরকারি অধিদপ্তরসমূহ",
+                      "href": "/organizations/government-directorates"
+                    }
+                  ]
+                },
+                {
+                  "id": "private",
+                  "label": "বেসরকারি চাকরি",
+                  "href": "/private-jobs",
+                  "dropdown": [
+                    {
+                      "label": "সকল বেসরকারি চাকরি",
+                      "href": "/private-jobs"
+                    },
+                    {
+                      "label": "ব্যাংক ও আর্থিক প্রতিষ্ঠান",
+                      "href": "/bank-jobs"
+                    },
+                    {
+                      "label": "এনজিও (NGO) চাকরি",
+                      "href": "/ngo-jobs"
+                    },
+                    {
+                      "label": "আইটি ও সফটওয়্যার জবস",
+                      "href": "/it-jobs"
+                    },
+                    {
+                      "label": "মেডিকেল ও ফার্মাসিউটিক্যাল",
+                      "href": "/medical-jobs"
+                    }
+                  ]
+                },
+                {
+                  "id": "categories",
+                  "label": "চাকরির ক্যাটাগরি",
+                  "href": "/job-categories",
+                  "dropdown": [
+                    {
+                      "label": "সকল ক্যাটাগরি ব্রাউজ করুন",
+                      "href": "/job-categories"
+                    },
+                    {
+                      "label": "শিক্ষক নিয়োগ",
+                      "href": "/teacher-jobs"
+                    },
+                    {
+                      "label": "ইঞ্জিনিয়ারিং চাকরি",
+                      "href": "/engineering-jobs"
+                    },
+                    {
+                      "label": "মার্কেটিং ও সেলস",
+                      "href": "/marketing-jobs"
+                    },
+                    {
+                      "label": "ফ্রেশারদের চাকরি",
+                      "href": "/fresher-jobs"
+                    },
+                    {
+                      "label": "পার্ট-টাইম ও ইন্টার্নশিপ",
+                      "href": "/part-time-jobs"
+                    }
+                  ]
+                },
+                {
+                  "id": "exam",
+                  "label": "পরীক্ষা ও ফলাফল",
+                  "href": "/exam-notices",
+                  "dropdown": [
+                    {
+                      "label": "পরীক্ষার নোটিশ ও তারিখ",
+                      "href": "/exam-notices"
+                    },
+                    {
+                      "label": "প্রবেশপত্র / Admit Card",
+                      "href": "/admit-cards"
+                    },
+                    {
+                      "label": "লিখিত পরীক্ষার ফলাফল",
+                      "href": "/written-exam-results"
+                    },
+                    {
+                      "label": "মৌখিক পরীক্ষার সময়সূচি",
+                      "href": "/viva-notices"
+                    }
+                  ]
+                },
+                {
+                  "id": "nav-1794016989774",
+                  "label": "ভর্তি ও স্কলারশিপ",
+                  "href": "/govt-scholarships",
+                  "dropdown": [
+                    {
+                      "label": "সরকারি বৃত্তি",
+                      "href": "/jobs"
+                    }
+                  ]
+                }
+              ],
+              "footerColumns": [
+                {
+                  "id": "col-jobs",
+                  "title": "চাকরি ও পরীক্ষা",
+                  "links": [
+                    {
+                      "label": "চলমান সকল চাকরি",
+                      "url": "/jobs"
+                    },
+                    {
+                      "label": "সরকারি চাকরির বিজ্ঞপ্তি",
+                      "url": "/government-jobs"
+                    },
+                    {
+                      "label": "বেসরকারি ও কোম্পানি জবস",
+                      "url": "/private-jobs"
+                    },
+                    {
+                      "label": "ব্যাংক ও ফাইন্যান্স চাকরি",
+                      "url": "/bank-jobs"
+                    },
+                    {
+                      "label": "আবেদনের শেষ সময় কাছাকাছি",
+                      "url": "/deadline-approaching"
+                    },
+                    {
+                      "label": "পরীক্ষার নোটিশ ও সময়সূচি",
+                      "url": "/exam-notices"
+                    },
+                    {
+                      "label": "প্রবেশপত্র / অ্যাডমিট কার্ড",
+                      "url": "/admit-cards"
+                    },
+                    {
+                      "label": "বিগত বছরের প্রশ্ন ও সমাধান",
+                      "url": "/previous-year-questions"
+                    },
+                    {
+                      "label": "অনলাইন মডেল টেস্ট",
+                      "url": "/model-tests"
+                    }
+                  ]
+                },
+                {
+                  "id": "col-guides",
+                  "title": "ক্যারিয়ার গাইড ও সার্ভিস",
+                  "links": [
+                    {
+                      "label": "সকল চাকরির ক্যাটাগরি",
+                      "url": "/job-categories"
+                    },
+                    {
+                      "label": "সকল নিয়োগকারী প্রতিষ্ঠান",
+                      "url": "/organizations"
+                    },
+                    {
+                      "label": "ক্যারিয়ার গাইড হাব",
+                      "url": "/career-guides"
+                    },
+                    {
+                      "label": "সিভি লেখার সঠিক নিয়ম",
+                      "url": "/career-guides/cv-writing"
+                    },
+                    {
+                      "label": "অনলাইনে চাকরির আবেদন গাইড",
+                      "url": "/career-guides/online-job-application"
+                    },
+                    {
+                      "label": "ইন্টারভিউ ও ভাইভা প্রস্তুতি",
+                      "url": "/career-guides/interview-preparation"
+                    },
+                    {
+                      "label": "সব ব্লগ ও ক্যারিয়ার আর্টিকেল",
+                      "url": "/blog"
+                    },
+                    {
+                      "label": "ফ্রি জব এলার্ট নোটিফিকেশন",
+                      "url": "/job-alerts"
+                    }
+                  ]
+                },
+                {
+                  "id": "col-policies",
+                  "title": "নীতিমালা ও সহায়তা",
+                  "links": [
+                    {
+                      "label": "আমাদের সম্পর্কে (About Us)",
+                      "url": "/about-us"
+                    },
+                    {
+                      "label": "যোগাযোগ করুন (Contact)",
+                      "url": "/contact-us"
+                    },
+                    {
+                      "label": "সাধারণ জিজ্ঞাসা (FAQ)",
+                      "url": "/faq"
+                    },
+                    {
+                      "label": "সম্পাদকীয় নীতিমালা",
+                      "url": "/editorial-policy"
+                    },
+                    {
+                      "label": "চাকরি যাচাই নীতিমালা",
+                      "url": "/job-verification-policy"
+                    },
+                    {
+                      "label": "ভুল তথ্য সংশোধন নীতিমালা",
+                      "url": "/corrections-policy"
+                    },
+                    {
+                      "label": "ভুল বিজ্ঞপ্তি রিপোর্ট করুন",
+                      "url": "/report-a-job"
+                    }
+                  ]
+                }
+              ],
+              "footerAboutText": "বাংলাদেশের চাকরিপ্রার্থীদের বিশ্বস্ত ডিজিটাল প্ল্যাটফর্ম। ঘরে বসেই সকল সরকারি, ব্যাংক ও শীর্ষ বেসরকারি চাকরির শতভাগ যাচাইকৃত বিজ্ঞপ্তি ও সঠিক নিয়মে অনলাইন আবেদন সহায়তা।",
+              "facebookUrl": "https://facebook.com/chakrisheba.bd",
+              "telegramUrl": "https://t.me/chakrisheba",
+              "youtubeUrl": "https://youtube.com/@chakrisheba"
+            },
+            "seo": {
+              "defaultTitle": "চাকরি সেবা — সরকারি ও বেসরকারি চাকরির খবর ও আবেদন পোর্টাল",
+              "defaultDescription": "টেলিটক জব সার্কুলার, ব্যাংক জব, সরকারি মন্ত্রণালয় ও বেসরকারি প্রতিষ্ঠানের চাকরির সকল আপডেট সম্পূর্ণ বিনামূল্যে।",
+              "defaultKeywords": [
+                "চাকরি সেবা",
+                "সরকারি চাকরি",
+                "টেলিটক জব সার্কুলার",
+                "ব্যাংক জব",
+                "chakri sheba"
+              ],
+              "defaultOgImage": "https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1200&q=80",
+              "googleSiteVerification": "google-site-verification=cs_live_bd_2026_verify_meta"
+            }
+          }
+        }
+      },
+      "id": "AUDIT-1794016991637-C7PWX",
+      "timestamp": "2026-11-07T02:03:11.637Z"
+    },
+    {
+      "adminId": "ADMIN-SUPER",
+      "action": "source_approval",
+      "targetId": "draft-1794016677166",
+      "targetType": "order",
+      "changes": {
+        "draftId": {
+          "new": "draft-1794016677166"
+        },
+        "createdJobId": {
+          "new": "job-680999"
+        }
+      },
+      "notes": "Approved draft into live job: বিমান বাংলাদেশ এয়ারলাইন্স নিয়োগ বিজ্ঞপ্তি ২০২৬ — এক নজরে বিস্তারিত",
+      "id": "AUDIT-1794016681022-768F7",
+      "timestamp": "2026-11-07T01:58:01.022Z"
+    },
+    {
+      "action": "UPDATE_PLATFORM_SETTINGS",
+      "adminId": "ADMIN-SUPER",
+      "targetType": "SYSTEM_SETTINGS",
+      "targetId": "GLOBAL_CONFIG",
+      "notes": "প্ল্যাটফর্মের কেন্দ্রীয় সেটিংস ও কনফিগারেশন হালনাগাদ করা হয়েছে",
+      "changes": {
+        "settings": {
+          "new": {
+            "general": {
+              "siteName": "চাকরি সেবা বাংলাদেশ",
+              "siteDescription": "বাংলাদেশের একমাত্র ১০০% সম্পূর্ণ ফ্রি সরকারি ও বেসরকারি চাকরি পোর্টাল",
+              "logoUrl": "/icons/icon-192x192.png",
+              "faviconUrl": "/favicon.ico",
+              "supportPhone": "+৮৮০ ১৭৭৪-৩৬৬৬৪৩",
+              "supportEmail": "support@chakrisheba.com",
+              "officeAddress": "ধানমন্ডি ৩২, ঢাকা-১২০৯, বাংলাদেশ",
+              "whatsappNumber": "8801774366643",
+              "whatsappButtonText": "জরুরি সহায়তা",
+              "loginButtonText": "লগইন / রেজিস্ট্রেশন",
+              "announcementText": "⚡ নতুন নিয়োগ বিজ্ঞপ্তি ২০২৬: সকল সরকারি ও ব্যাংক চাকরির অনলাইন আবেদন চালু রয়েছে!",
+              "announcementUrl": "/jobs",
+              "announcementEnabled": true,
+              "headerMenuItems": [
+                {
+                  "id": "home",
+                  "label": "হোম",
+                  "href": "/"
+                },
+                {
+                  "id": "all-jobs",
+                  "label": "সকল চাকরি",
+                  "href": "/jobs",
+                  "badge": "হট",
+                  "dropdown": [
+                    {
+                      "label": "চলমান সকল বিজ্ঞপ্তি",
+                      "href": "/jobs"
+                    },
+                    {
+                      "label": "সর্বশেষ প্রকাশিত চাকরি",
+                      "href": "/latest-jobs"
+                    },
+                    {
+                      "label": "আবেদনের শেষ সময় কাছাকাছি",
+                      "href": "/deadline-approaching"
+                    },
+                    {
+                      "label": "সকল চাকরির প্রতিষ্ঠান",
+                      "href": "/organizations"
+                    },
+                    {
+                      "label": "যোগ্যতা অনুযায়ী চাকরি",
+                      "href": "/job-categories"
+                    }
+                  ]
+                },
+                {
+                  "id": "govt",
+                  "label": "সরকারি চাকরি",
+                  "href": "/government-jobs",
+                  "dropdown": [
+                    {
+                      "label": "সকল সরকারি চাকরি",
+                      "href": "/government-jobs"
+                    },
+                    {
+                      "label": "বিপিএসসি (BPSC) চাকরি",
+                      "href": "/organizations/bpsc"
+                    },
+                    {
+                      "label": "বাংলাদেশ ব্যাংক নিয়োগ",
+                      "href": "/organizations/bangladesh-bank"
+                    },
+                    {
+                      "label": "সরকারি মন্ত্রণালয়সমূহ",
+                      "href": "/organizations/government-ministries"
+                    },
+                    {
+                      "label": "সরকারি অধিদপ্তরসমূহ",
+                      "href": "/organizations/government-directorates"
+                    }
+                  ]
+                },
+                {
+                  "id": "private",
+                  "label": "বেসরকারি চাকরি",
+                  "href": "/private-jobs",
+                  "dropdown": [
+                    {
+                      "label": "সকল বেসরকারি চাকরি",
+                      "href": "/private-jobs"
+                    },
+                    {
+                      "label": "ব্যাংক ও আর্থিক প্রতিষ্ঠান",
+                      "href": "/bank-jobs"
+                    },
+                    {
+                      "label": "এনজিও (NGO) চাকরি",
+                      "href": "/ngo-jobs"
+                    },
+                    {
+                      "label": "আইটি ও সফটওয়্যার জবস",
+                      "href": "/it-jobs"
+                    },
+                    {
+                      "label": "মেডিকেল ও ফার্মাসিউটিক্যাল",
+                      "href": "/medical-jobs"
+                    }
+                  ]
+                },
+                {
+                  "id": "categories",
+                  "label": "চাকরির ক্যাটাগরি",
+                  "href": "/job-categories",
+                  "dropdown": [
+                    {
+                      "label": "সকল ক্যাটাগরি ব্রাউজ করুন",
+                      "href": "/job-categories"
+                    },
+                    {
+                      "label": "শিক্ষক নিয়োগ",
+                      "href": "/teacher-jobs"
+                    },
+                    {
+                      "label": "ইঞ্জিনিয়ারিং চাকরি",
+                      "href": "/engineering-jobs"
+                    },
+                    {
+                      "label": "মার্কেটিং ও সেলস",
+                      "href": "/marketing-jobs"
+                    },
+                    {
+                      "label": "ফ্রেশারদের চাকরি",
+                      "href": "/fresher-jobs"
+                    },
+                    {
+                      "label": "পার্ট-টাইম ও ইন্টার্নশিপ",
+                      "href": "/part-time-jobs"
+                    }
+                  ]
+                },
+                {
+                  "id": "exam",
+                  "label": "পরীক্ষা ও ফলাফল",
+                  "href": "/exam-notices",
+                  "dropdown": [
+                    {
+                      "label": "পরীক্ষার নোটিশ ও তারিখ",
+                      "href": "/exam-notices"
+                    },
+                    {
+                      "label": "প্রবেশপত্র / Admit Card",
+                      "href": "/admit-cards"
+                    },
+                    {
+                      "label": "লিখিত পরীক্ষার ফলাফল",
+                      "href": "/written-exam-results"
+                    },
+                    {
+                      "label": "মৌখিক পরীক্ষার সময়সূচি",
+                      "href": "/viva-notices"
+                    }
+                  ]
+                }
+              ],
+              "footerColumns": [
+                {
+                  "id": "col-jobs",
+                  "title": "চাকরি ও পরীক্ষা",
+                  "links": [
+                    {
+                      "label": "চলমান সকল চাকরি",
+                      "url": "/jobs"
+                    },
+                    {
+                      "label": "সরকারি চাকরির বিজ্ঞপ্তি",
+                      "url": "/government-jobs"
+                    },
+                    {
+                      "label": "বেসরকারি ও কোম্পানি জবস",
+                      "url": "/private-jobs"
+                    },
+                    {
+                      "label": "ব্যাংক ও ফাইন্যান্স চাকরি",
+                      "url": "/bank-jobs"
+                    },
+                    {
+                      "label": "আবেদনের শেষ সময় কাছাকাছি",
+                      "url": "/deadline-approaching"
+                    },
+                    {
+                      "label": "পরীক্ষার নোটিশ ও সময়সূচি",
+                      "url": "/exam-notices"
+                    },
+                    {
+                      "label": "প্রবেশপত্র / অ্যাডমিট কার্ড",
+                      "url": "/admit-cards"
+                    },
+                    {
+                      "label": "বিগত বছরের প্রশ্ন ও সমাধান",
+                      "url": "/previous-year-questions"
+                    },
+                    {
+                      "label": "অনলাইন মডেল টেস্ট",
+                      "url": "/model-tests"
+                    }
+                  ]
+                },
+                {
+                  "id": "col-guides",
+                  "title": "ক্যারিয়ার গাইড ও সার্ভিস",
+                  "links": [
+                    {
+                      "label": "সকল চাকরির ক্যাটাগরি",
+                      "url": "/job-categories"
+                    },
+                    {
+                      "label": "সকল নিয়োগকারী প্রতিষ্ঠান",
+                      "url": "/organizations"
+                    },
+                    {
+                      "label": "ক্যারিয়ার গাইড হাব",
+                      "url": "/career-guides"
+                    },
+                    {
+                      "label": "সিভি লেখার সঠিক নিয়ম",
+                      "url": "/career-guides/cv-writing"
+                    },
+                    {
+                      "label": "অনলাইনে চাকরির আবেদন গাইড",
+                      "url": "/career-guides/online-job-application"
+                    },
+                    {
+                      "label": "ইন্টারভিউ ও ভাইভা প্রস্তুতি",
+                      "url": "/career-guides/interview-preparation"
+                    },
+                    {
+                      "label": "সব ব্লগ ও ক্যারিয়ার আর্টিকেল",
+                      "url": "/blog"
+                    },
+                    {
+                      "label": "ফ্রি জব এলার্ট নোটিফিকেশন",
+                      "url": "/job-alerts"
+                    }
+                  ]
+                },
+                {
+                  "id": "col-policies",
+                  "title": "নীতিমালা ও সহায়তা",
+                  "links": [
+                    {
+                      "label": "আমাদের সম্পর্কে (About Us)",
+                      "url": "/about-us"
+                    },
+                    {
+                      "label": "যোগাযোগ করুন (Contact)",
+                      "url": "/contact-us"
+                    },
+                    {
+                      "label": "সাধারণ জিজ্ঞাসা (FAQ)",
+                      "url": "/faq"
+                    },
+                    {
+                      "label": "সম্পাদকীয় নীতিমালা",
+                      "url": "/editorial-policy"
+                    },
+                    {
+                      "label": "চাকরি যাচাই নীতিমালা",
+                      "url": "/job-verification-policy"
+                    },
+                    {
+                      "label": "ভুল তথ্য সংশোধন নীতিমালা",
+                      "url": "/corrections-policy"
+                    },
+                    {
+                      "label": "ভুল বিজ্ঞপ্তি রিপোর্ট করুন",
+                      "url": "/report-a-job"
+                    }
+                  ]
+                }
+              ],
+              "footerAboutText": "বাংলাদেশের চাকরিপ্রার্থীদের বিশ্বস্ত ডিজিটাল প্ল্যাটফর্ম। ঘরে বসেই সকল সরকারি, ব্যাংক ও শীর্ষ বেসরকারি চাকরির শতভাগ যাচাইকৃত বিজ্ঞপ্তি ও সঠিক নিয়মে অনলাইন আবেদন সহায়তা।",
+              "facebookUrl": "https://facebook.com/chakrisheba.bd",
+              "telegramUrl": "https://t.me/chakrisheba",
+              "youtubeUrl": "https://youtube.com/@chakrisheba"
+            },
+            "seo": {
+              "defaultTitle": "চাকরি সেবা — সরকারি ও বেসরকারি চাকরির খবর ও আবেদন পোর্টাল",
+              "defaultDescription": "টেলিটক জব সার্কুলার, ব্যাংক জব, সরকারি মন্ত্রণালয় ও বেসরকারি প্রতিষ্ঠানের চাকরির সকল আপডেট সম্পূর্ণ বিনামূল্যে।",
+              "defaultKeywords": [
+                "চাকরি সেবা",
+                "সরকারি চাকরি",
+                "টেলিটক জব সার্কুলার",
+                "ব্যাংক জব",
+                "chakri sheba"
+              ],
+              "defaultOgImage": "https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1200&q=80",
+              "googleSiteVerification": "google-site-verification=cs_live_bd_2026_verify_meta"
+            }
+          }
+        }
+      },
+      "id": "AUDIT-1794016664335-ZCQ5A",
+      "timestamp": "2026-11-07T01:57:44.335Z"
+    },
     {
       "adminId": "ADMIN-SUPER",
       "action": "page_delete",
@@ -8059,6 +9038,53 @@
       ],
       "aiGeneratedAt": "2026-11-07T01:40:09.342Z",
       "slug": "breb----job-circular-2026"
+    },
+    "job-680999": {
+      "id": "job-680999",
+      "title": "বিমান বাংলাদেশ এয়ারলাইন্স নিয়োগ বিজ্ঞপ্তি ২০২৬ — এক নজরে বিস্তারিত",
+      "organization": "বিমান বাংলাদেশ এয়ারলাইন্স",
+      "logo": "https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=120&q=80",
+      "category": "govt",
+      "categoryLabel": "সরকারি চাকরি",
+      "grade": "৯ম গ্রেড",
+      "totalPosts": 1,
+      "salary": "জাতীয় বেতন স্কেল অনুযায়ী",
+      "minEducation": "স্বীকৃত বিশ্ববিদ্যালয় হতে স্নাতক বা সমমান",
+      "minAge": 18,
+      "maxAge": 32,
+      "districts": "সকল জেলা",
+      "deadline": "২০২৬-১২-৩১",
+      "daysRemaining": 20,
+      "govtFee": 100,
+      "serviceFee": 80,
+      "officialLink": "http://alljobs.teletalk.com.bd",
+      "circularImage": "https://images.unsplash.com/photo-1586281380349-632531db7ed4?auto=format&fit=crop&w=600&q=80",
+      "circularPdfUrl": "",
+      "audioSummary": "গ্রাউন্ড সার্ভিস অফিসার প্রকাশিত হয়েছে।",
+      "publishedDate": "৭/১১/২০২৬",
+      "requirements": [
+        "স্বীকৃত বিশ্ববিদ্যালয় হতে স্নাতক বা সমমান",
+        "বয়স: ১৮-৩২ বছর"
+      ],
+      "ageCutOffDate": "2026-11-01",
+      "allowThirdDivision": true,
+      "seoTitle": "বিমান বাংলাদেশ এয়ারলাইন্স নিয়োগ বিজ্ঞপ্তি ২০২৬ — আবেদন করুন",
+      "seoDescription": "বিমান বাংলাদেশ এয়ারলাইন্স-এর গ্রাউন্ড সার্ভিস অফিসার পদে নতুন নিয়োগ বিজ্ঞপ্তি ২০২৬। মোট 1 টি পদে আবেদন যোগ্যতা, বেতন ও নিয়মাবলী জানুন।",
+      "seoKeywords": [
+        "বিমান বাংলাদেশ এয়ারলাইন্স নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "গ্রাউন্ড সার্ভিস অফিসার",
+        "বিমান বাংলাদেশ এয়ারলাইন্স জব সার্কুলার",
+        "সরকারি চাকরি ২০২৬"
+      ],
+      "bengaliDescription": "# বিমান বাংলাদেশ এয়ারলাইন্স নিয়োগ বিজ্ঞপ্তি ২০২৬\n\nবিমান বাংলাদেশ এয়ারলাইন্স সম্প্রতি ২০২৬ সালের নতুন নিয়োগ বিজ্ঞপ্তি প্রকাশ করেছে। উক্ত প্রতিষ্ঠানে ৯ম গ্রেড গ্রেডের \"গ্রাউন্ড সার্ভিস অফিসার\" পদে মোট 1 টি শূন্যপদে জনবল নিয়োগ প্রদান করা হবে। আগ্রহী ও যোগ্য প্রার্থীদের নির্ধারিত সময়ের মধ্যে অনলাইনে আবেদন করার আহ্বান জানানো হচ্ছে।\n\n| বিবরণ | তথ্য |\n| :--- | :--- |\n| **প্রতিষ্ঠানের নাম** | বিমান বাংলাদেশ এয়ারলাইন্স |\n| **পদের নাম** | গ্রাউন্ড সার্ভিস অফিসার |\n| **মোট পদসংখ্যা** | 1 টি |\n| **গ্রেড ও বেতন স্কেল** | জাতীয় বেতন স্কেল অনুযায়ী |\n| **শিক্ষাগত যোগ্যতা** | স্বীকৃত বিশ্ববিদ্যালয় হতে স্নাতক বা সমমান |\n| **বয়সসীমা** | ১৮ থেকে ৩০ বছর (কোটার ক্ষেত্রে ৩২ বছর) |\n| **আবেদনের শেষ তারিখ** | ২০২৬-১২-৩১ |\n\n## আবেদনের প্রয়োজনীয় শিক্ষাগত যোগ্যতা ও শর্তাবলী\n\nউক্ত পদে আবেদনের জন্য প্রার্থীকে স্বীকৃত কোনো বোর্ড বা বিশ্ববিদ্যালয় হতে স্বীকৃত বিশ্ববিদ্যালয় হতে স্নাতক বা সমমান ডিগ্রী অর্জন করতে হবে। আবেদনকারীকে বাংলাদেশের স্থায়ী নাগরিক হতে হবে। আবেদনের শেষ সময় হওয়ার পূর্বেই সঠিক নিয়মে আবেদন প্রক্রিয়া সম্পন্ন করার পরামর্শ দেওয়া যাচ্ছে।\n\n### বিমান বাংলাদেশ এয়ারলাইন্স নিয়োগে কীভাবে অনলাইনে আবেদন করবেন?\nনির্ধারিত ওয়েবসাইটে প্রবেশ করে অনলাইন আবেদন ফরম পূরণ করতে হবে এবং পরবর্তী ৭২ ঘণ্টার মধ্যে এসএমএসের মাধ্যমে ফি প্রদান করে আবেদন নিশ্চিত করতে হবে।\n\n### অনলাইনে আবেদনের শেষ সময় কবে?\nআবেদন গ্রহণের শেষ তারিখ: ২০২৬-১২-৩১ বিকেল ৫:০০ টা পর্যন্ত।",
+      "faqItems": [
+        {
+          "question": "বিমান বাংলাদেশ এয়ারলাইন্স নিয়োগে কীভাবে অনলাইনে আবেদন করবেন?",
+          "answer": "নির্ধারিত ওয়েবসাইটে প্রবেশ করে অনলাইন আবেদন ফরম পূরণ করতে হবে এবং পরবর্তী ৭২ ঘণ্টার মধ্যে এসএমএসের মাধ্যমে ফি প্রদান করতে হবে।"
+        }
+      ],
+      "aiGeneratedAt": "2026-11-07T01:57:57.178Z",
+      "slug": "job-circular-2026"
     }
   },
   "pages": {
@@ -12014,6 +13040,415 @@
         "generatedAt": "2026-11-07T01:40:09.342Z"
       },
       "approvedJobId": "job-611219"
+    },
+    "draft-1794016677166": {
+      "id": "draft-1794016677166",
+      "sourceName": "Manual Admin Entry",
+      "sourceUrl": "http://alljobs.teletalk.com.bd",
+      "extractedTitle": "গ্রাউন্ড সার্ভিস অফিসার",
+      "extractedOrg": "বিমান বাংলাদেশ এয়ারলাইন্স",
+      "category": "govt",
+      "deadline": "২০২৬-১২-৩১",
+      "vacancies": 1,
+      "salary": "জাতীয় বেতন স্কেল অনুযায়ী",
+      "grade": "৯ম গ্রেড",
+      "minEducation": "স্বীকৃত বিশ্ববিদ্যালয় হতে স্নাতক বা সমমান",
+      "govtFee": 100,
+      "confidenceScore": 98,
+      "duplicateDetected": false,
+      "status": "approved",
+      "createdAt": "2026-11-07T01:57:57.167Z",
+      "districts": "সকল জেলার প্রার্থী আবেদন করতে পারবেন",
+      "contentStudioState": {
+        "draftId": "draft-1794016677166",
+        "status": "APPROVED",
+        "lastSavedAt": "2026-11-07T01:57:57.178Z",
+        "blocks": [
+          {
+            "id": "block-title-1794016677177",
+            "type": "heading",
+            "content": "বিমান বাংলাদেশ এয়ারলাইন্স নিয়োগ বিজ্ঞপ্তি ২০২৬",
+            "settings": {
+              "headingLevel": "h1"
+            }
+          },
+          {
+            "id": "block-p1-1794016677177",
+            "type": "paragraph",
+            "content": "বিমান বাংলাদেশ এয়ারলাইন্স সম্প্রতি ২০২৬ সালের নতুন নিয়োগ বিজ্ঞপ্তি প্রকাশ করেছে। উক্ত প্রতিষ্ঠানে ৯ম গ্রেড গ্রেডের \"গ্রাউন্ড সার্ভিস অফিসার\" পদে মোট 1 টি শূন্যপদে জনবল নিয়োগ প্রদান করা হবে। আগ্রহী ও যোগ্য প্রার্থীদের নির্ধারিত সময়ের মধ্যে অনলাইনে আবেদন করার আহ্বান জানানো হচ্ছে।",
+            "settings": {}
+          },
+          {
+            "id": "block-table-1794016677177",
+            "type": "job_info_table",
+            "content": [
+              {
+                "label": "প্রতিষ্ঠানের নাম",
+                "value": "বিমান বাংলাদেশ এয়ারলাইন্স"
+              },
+              {
+                "label": "পদের নাম",
+                "value": "গ্রাউন্ড সার্ভিস অফিসার"
+              },
+              {
+                "label": "মোট পদসংখ্যা",
+                "value": "1 টি"
+              },
+              {
+                "label": "গ্রেড ও বেতন স্কেল",
+                "value": "জাতীয় বেতন স্কেল অনুযায়ী"
+              },
+              {
+                "label": "শিক্ষাগত যোগ্যতা",
+                "value": "স্বীকৃত বিশ্ববিদ্যালয় হতে স্নাতক বা সমমান"
+              },
+              {
+                "label": "বয়সসীমা",
+                "value": "১৮ থেকে ৩০ বছর (কোটার ক্ষেত্রে ৩২ বছর)"
+              },
+              {
+                "label": "আবেদনের শেষ তারিখ",
+                "value": "২০২৬-১২-৩১"
+              }
+            ],
+            "settings": {}
+          },
+          {
+            "id": "block-h2-req-1794016677177",
+            "type": "heading",
+            "content": "আবেদনের প্রয়োজনীয় শিক্ষাগত যোগ্যতা ও শর্তাবলী",
+            "settings": {
+              "headingLevel": "h2"
+            }
+          },
+          {
+            "id": "block-p2-1794016677177",
+            "type": "paragraph",
+            "content": "উক্ত পদে আবেদনের জন্য প্রার্থীকে স্বীকৃত কোনো বোর্ড বা বিশ্ববিদ্যালয় হতে স্বীকৃত বিশ্ববিদ্যালয় হতে স্নাতক বা সমমান ডিগ্রী অর্জন করতে হবে। আবেদনকারীকে বাংলাদেশের স্থায়ী নাগরিক হতে হবে। আবেদনের শেষ সময় হওয়ার পূর্বেই সঠিক নিয়মে আবেদন প্রক্রিয়া সম্পন্ন করার পরামর্শ দেওয়া যাচ্ছে।",
+            "settings": {}
+          },
+          {
+            "id": "block-faq-1794016677177",
+            "type": "faq_accordion",
+            "content": [
+              {
+                "question": "বিমান বাংলাদেশ এয়ারলাইন্স নিয়োগে কীভাবে অনলাইনে আবেদন করবেন?",
+                "answer": "নির্ধারিত ওয়েবসাইটে প্রবেশ করে অনলাইন আবেদন ফরম পূরণ করতে হবে এবং পরবর্তী ৭২ ঘণ্টার মধ্যে এসএমএসের মাধ্যমে ফি প্রদান করে আবেদন নিশ্চিত করতে হবে।"
+              },
+              {
+                "question": "অনলাইনে আবেদনের শেষ সময় কবে?",
+                "answer": "আবেদন গ্রহণের শেষ তারিখ: ২০২৬-১২-৩১ বিকেল ৫:০০ টা পর্যন্ত।"
+              }
+            ],
+            "settings": {}
+          }
+        ],
+        "internalLinks": [],
+        "brief": {
+          "jobIdOrDraftId": "draft-1794016677166",
+          "organization": "বিমান বাংলাদেশ এয়ারলাইন্স",
+          "jobTitle": "গ্রাউন্ড সার্ভিস অফিসার",
+          "primaryKeyword": "বিমান বাংলাদেশ এয়ারলাইন্স নিয়োগ বিজ্ঞপ্তি ২০২৬",
+          "secondaryKeywords": [
+            "গ্রাউন্ড সার্ভিস অফিসার",
+            "বিমান বাংলাদেশ এয়ারলাইন্স জব সার্কুলার"
+          ],
+          "relatedKeywords": [
+            "সরকারি চাকরি ২০২৬"
+          ],
+          "searchIntent": "informational",
+          "searchIntentSummary": "বিমান বাংলাদেশ এয়ারলাইন্স এর চাকরি সার্কুলার তথ্য অনুসন্ধান",
+          "requiredFacts": {
+            "vacancies": "1",
+            "deadline": "২০২৬-১২-৩১",
+            "salary": "জাতীয় বেতন স্কেল অনুযায়ী",
+            "education": "স্বীকৃত বিশ্ববিদ্যালয় হতে স্নাতক বা সমমান",
+            "experience": "প্রযোজ্য নয় / ফ্রেশার",
+            "age": "১৮-৩০ বছর",
+            "fee": "১০০ টাকা",
+            "applicationMethod": "অনলাইন",
+            "applicationUrl": "http://alljobs.teletalk.com.bd"
+          },
+          "importantEligibilityNotes": [
+            "বাংলাদেশের স্থায়ী নাগরিক হতে হবে"
+          ],
+          "officialSourceLinks": [
+            {
+              "label": "অফিশিয়াল ওয়েবসাইট",
+              "url": "http://alljobs.teletalk.com.bd"
+            }
+          ],
+          "suggestedHeadings": [
+            "আবেদনের যোগ্যতা",
+            "বেতন স্কেল",
+            "আবেদন প্রক্রিয়া"
+          ],
+          "faqTopics": [
+            "আবেদন নিয়ম",
+            "বয়সসীমা"
+          ],
+          "internalLinkOpportunities": [],
+          "warnings": [],
+          "createdAt": "2026-11-07T01:57:57.178Z",
+          "updatedAt": "2026-11-07T01:57:57.178Z"
+        },
+        "article": {
+          "draftId": "draft-1794016677166",
+          "title": "বিমান বাংলাদেশ এয়ারলাইন্স নিয়োগ বিজ্ঞপ্তি ২০২৬ — এক নজরে বিস্তারিত",
+          "contentBlocks": [
+            {
+              "id": "block-title-1794016677177",
+              "type": "heading",
+              "content": "বিমান বাংলাদেশ এয়ারলাইন্স নিয়োগ বিজ্ঞপ্তি ২০২৬",
+              "settings": {
+                "headingLevel": "h1"
+              }
+            },
+            {
+              "id": "block-p1-1794016677177",
+              "type": "paragraph",
+              "content": "বিমান বাংলাদেশ এয়ারলাইন্স সম্প্রতি ২০২৬ সালের নতুন নিয়োগ বিজ্ঞপ্তি প্রকাশ করেছে। উক্ত প্রতিষ্ঠানে ৯ম গ্রেড গ্রেডের \"গ্রাউন্ড সার্ভিস অফিসার\" পদে মোট 1 টি শূন্যপদে জনবল নিয়োগ প্রদান করা হবে। আগ্রহী ও যোগ্য প্রার্থীদের নির্ধারিত সময়ের মধ্যে অনলাইনে আবেদন করার আহ্বান জানানো হচ্ছে।",
+              "settings": {}
+            },
+            {
+              "id": "block-table-1794016677177",
+              "type": "job_info_table",
+              "content": [
+                {
+                  "label": "প্রতিষ্ঠানের নাম",
+                  "value": "বিমান বাংলাদেশ এয়ারলাইন্স"
+                },
+                {
+                  "label": "পদের নাম",
+                  "value": "গ্রাউন্ড সার্ভিস অফিসার"
+                },
+                {
+                  "label": "মোট পদসংখ্যা",
+                  "value": "1 টি"
+                },
+                {
+                  "label": "গ্রেড ও বেতন স্কেল",
+                  "value": "জাতীয় বেতন স্কেল অনুযায়ী"
+                },
+                {
+                  "label": "শিক্ষাগত যোগ্যতা",
+                  "value": "স্বীকৃত বিশ্ববিদ্যালয় হতে স্নাতক বা সমমান"
+                },
+                {
+                  "label": "বয়সসীমা",
+                  "value": "১৮ থেকে ৩০ বছর (কোটার ক্ষেত্রে ৩২ বছর)"
+                },
+                {
+                  "label": "আবেদনের শেষ তারিখ",
+                  "value": "২০২৬-১২-৩১"
+                }
+              ],
+              "settings": {}
+            },
+            {
+              "id": "block-h2-req-1794016677177",
+              "type": "heading",
+              "content": "আবেদনের প্রয়োজনীয় শিক্ষাগত যোগ্যতা ও শর্তাবলী",
+              "settings": {
+                "headingLevel": "h2"
+              }
+            },
+            {
+              "id": "block-p2-1794016677177",
+              "type": "paragraph",
+              "content": "উক্ত পদে আবেদনের জন্য প্রার্থীকে স্বীকৃত কোনো বোর্ড বা বিশ্ববিদ্যালয় হতে স্বীকৃত বিশ্ববিদ্যালয় হতে স্নাতক বা সমমান ডিগ্রী অর্জন করতে হবে। আবেদনকারীকে বাংলাদেশের স্থায়ী নাগরিক হতে হবে। আবেদনের শেষ সময় হওয়ার পূর্বেই সঠিক নিয়মে আবেদন প্রক্রিয়া সম্পন্ন করার পরামর্শ দেওয়া যাচ্ছে।",
+              "settings": {}
+            },
+            {
+              "id": "block-faq-1794016677177",
+              "type": "faq_accordion",
+              "content": [
+                {
+                  "question": "বিমান বাংলাদেশ এয়ারলাইন্স নিয়োগে কীভাবে অনলাইনে আবেদন করবেন?",
+                  "answer": "নির্ধারিত ওয়েবসাইটে প্রবেশ করে অনলাইন আবেদন ফরম পূরণ করতে হবে এবং পরবর্তী ৭২ ঘণ্টার মধ্যে এসএমএসের মাধ্যমে ফি প্রদান করে আবেদন নিশ্চিত করতে হবে।"
+                },
+                {
+                  "question": "অনলাইনে আবেদনের শেষ সময় কবে?",
+                  "answer": "আবেদন গ্রহণের শেষ তারিখ: ২০২৬-১২-৩১ বিকেল ৫:০০ টা পর্যন্ত।"
+                }
+              ],
+              "settings": {}
+            }
+          ],
+          "bengaliMarkdown": "# বিমান বাংলাদেশ এয়ারলাইন্স নিয়োগ বিজ্ঞপ্তি ২০২৬\n\nবিমান বাংলাদেশ এয়ারলাইন্স সম্প্রতি ২০২৬ সালের নতুন নিয়োগ বিজ্ঞপ্তি প্রকাশ করেছে। উক্ত প্রতিষ্ঠানে ৯ম গ্রেড গ্রেডের \"গ্রাউন্ড সার্ভিস অফিসার\" পদে মোট 1 টি শূন্যপদে জনবল নিয়োগ প্রদান করা হবে। আগ্রহী ও যোগ্য প্রার্থীদের নির্ধারিত সময়ের মধ্যে অনলাইনে আবেদন করার আহ্বান জানানো হচ্ছে।\n\n| বিবরণ | তথ্য |\n| :--- | :--- |\n| **প্রতিষ্ঠানের নাম** | বিমান বাংলাদেশ এয়ারলাইন্স |\n| **পদের নাম** | গ্রাউন্ড সার্ভিস অফিসার |\n| **মোট পদসংখ্যা** | 1 টি |\n| **গ্রেড ও বেতন স্কেল** | জাতীয় বেতন স্কেল অনুযায়ী |\n| **শিক্ষাগত যোগ্যতা** | স্বীকৃত বিশ্ববিদ্যালয় হতে স্নাতক বা সমমান |\n| **বয়সসীমা** | ১৮ থেকে ৩০ বছর (কোটার ক্ষেত্রে ৩২ বছর) |\n| **আবেদনের শেষ তারিখ** | ২০২৬-১২-৩১ |\n\n## আবেদনের প্রয়োজনীয় শিক্ষাগত যোগ্যতা ও শর্তাবলী\n\nউক্ত পদে আবেদনের জন্য প্রার্থীকে স্বীকৃত কোনো বোর্ড বা বিশ্ববিদ্যালয় হতে স্বীকৃত বিশ্ববিদ্যালয় হতে স্নাতক বা সমমান ডিগ্রী অর্জন করতে হবে। আবেদনকারীকে বাংলাদেশের স্থায়ী নাগরিক হতে হবে। আবেদনের শেষ সময় হওয়ার পূর্বেই সঠিক নিয়মে আবেদন প্রক্রিয়া সম্পন্ন করার পরামর্শ দেওয়া যাচ্ছে।\n\n### বিমান বাংলাদেশ এয়ারলাইন্স নিয়োগে কীভাবে অনলাইনে আবেদন করবেন?\nনির্ধারিত ওয়েবসাইটে প্রবেশ করে অনলাইন আবেদন ফরম পূরণ করতে হবে এবং পরবর্তী ৭২ ঘণ্টার মধ্যে এসএমএসের মাধ্যমে ফি প্রদান করে আবেদন নিশ্চিত করতে হবে।\n\n### অনলাইনে আবেদনের শেষ সময় কবে?\nআবেদন গ্রহণের শেষ তারিখ: ২০২৬-১২-৩১ বিকেল ৫:০০ টা পর্যন্ত।",
+          "primaryKeyword": "বিমান বাংলাদেশ এয়ারলাইন্স নিয়োগ বিজ্ঞপ্তি ২০২৬",
+          "secondaryKeywords": [
+            "গ্রাউন্ড সার্ভিস অফিসার",
+            "বিমান বাংলাদেশ এয়ারলাইন্স জব সার্কুলার",
+            "সরকারি চাকরি ২০২৬"
+          ],
+          "faqItems": [
+            {
+              "question": "বিমান বাংলাদেশ এয়ারলাইন্স নিয়োগে কীভাবে অনলাইনে আবেদন করবেন?",
+              "answer": "নির্ধারিত ওয়েবসাইটে প্রবেশ করে অনলাইন আবেদন ফরম পূরণ করতে হবে এবং পরবর্তী ৭২ ঘণ্টার মধ্যে এসএমএসের মাধ্যমে ফি প্রদান করতে হবে।"
+            }
+          ],
+          "articleLengthPreset": "standard",
+          "generatedAt": "2026-11-07T01:57:57.178Z",
+          "updatedAt": "2026-11-07T01:57:57.178Z",
+          "isAiGenerated": false
+        },
+        "seo": {
+          "focusKeyword": "বিমান বাংলাদেশ এয়ারলাইন্স নিয়োগ বিজ্ঞপ্তি ২০২৬",
+          "secondaryKeywords": [
+            "গ্রাউন্ড সার্ভিস অফিসার",
+            "বিমান বাংলাদেশ এয়ারলাইন্স জব সার্কুলার",
+            "সরকারি চাকরি ২০২৬"
+          ],
+          "seoTitle": "বিমান বাংলাদেশ এয়ারলাইন্স নিয়োগ বিজ্ঞপ্তি ২০২৬ — আবেদন করুন",
+          "seoDescription": "বিমান বাংলাদেশ এয়ারলাইন্স-এর গ্রাউন্ড সার্ভিস অফিসার পদে নতুন নিয়োগ বিজ্ঞপ্তি ২০২৬। মোট 1 টি পদে আবেদন যোগ্যতা, বেতন ও নিয়মাবলী জানুন।",
+          "slug": "job-circular-2026"
+        },
+        "seoAnalysis": {
+          "score": 85,
+          "checklist": [],
+          "primaryKeywordDensity": 2.1,
+          "primaryKeywordCount": 3,
+          "headingStructureValid": true,
+          "h1Count": 1,
+          "h2Count": 1,
+          "internalLinksCount": 1,
+          "externalLinksCount": 1,
+          "metaTitleLength": 45,
+          "metaDescLength": 120,
+          "wordCount": 250,
+          "readingTimeMinutes": 2,
+          "hasJobPostingSchema": true
+        },
+        "revisions": [
+          {
+            "id": "rev-1",
+            "draftId": "draft-1794016677166",
+            "versionNumber": 1,
+            "timestamp": "2026-11-07T01:57:57.178Z",
+            "author": "ADMIN-SUPER",
+            "changeSummary": "নতুন পোস্ট ড্রাফট তৈরি করা হয়েছে",
+            "blocksSnapshot": [
+              {
+                "id": "block-title-1794016677177",
+                "type": "heading",
+                "content": "বিমান বাংলাদেশ এয়ারলাইন্স নিয়োগ বিজ্ঞপ্তি ২০২৬",
+                "settings": {
+                  "headingLevel": "h1"
+                }
+              },
+              {
+                "id": "block-p1-1794016677177",
+                "type": "paragraph",
+                "content": "বিমান বাংলাদেশ এয়ারলাইন্স সম্প্রতি ২০২৬ সালের নতুন নিয়োগ বিজ্ঞপ্তি প্রকাশ করেছে। উক্ত প্রতিষ্ঠানে ৯ম গ্রেড গ্রেডের \"গ্রাউন্ড সার্ভিস অফিসার\" পদে মোট 1 টি শূন্যপদে জনবল নিয়োগ প্রদান করা হবে। আগ্রহী ও যোগ্য প্রার্থীদের নির্ধারিত সময়ের মধ্যে অনলাইনে আবেদন করার আহ্বান জানানো হচ্ছে।",
+                "settings": {}
+              },
+              {
+                "id": "block-table-1794016677177",
+                "type": "job_info_table",
+                "content": [
+                  {
+                    "label": "প্রতিষ্ঠানের নাম",
+                    "value": "বিমান বাংলাদেশ এয়ারলাইন্স"
+                  },
+                  {
+                    "label": "পদের নাম",
+                    "value": "গ্রাউন্ড সার্ভিস অফিসার"
+                  },
+                  {
+                    "label": "মোট পদসংখ্যা",
+                    "value": "1 টি"
+                  },
+                  {
+                    "label": "গ্রেড ও বেতন স্কেল",
+                    "value": "জাতীয় বেতন স্কেল অনুযায়ী"
+                  },
+                  {
+                    "label": "শিক্ষাগত যোগ্যতা",
+                    "value": "স্বীকৃত বিশ্ববিদ্যালয় হতে স্নাতক বা সমমান"
+                  },
+                  {
+                    "label": "বয়সসীমা",
+                    "value": "১৮ থেকে ৩০ বছর (কোটার ক্ষেত্রে ৩২ বছর)"
+                  },
+                  {
+                    "label": "আবেদনের শেষ তারিখ",
+                    "value": "২০২৬-১২-৩১"
+                  }
+                ],
+                "settings": {}
+              },
+              {
+                "id": "block-h2-req-1794016677177",
+                "type": "heading",
+                "content": "আবেদনের প্রয়োজনীয় শিক্ষাগত যোগ্যতা ও শর্তাবলী",
+                "settings": {
+                  "headingLevel": "h2"
+                }
+              },
+              {
+                "id": "block-p2-1794016677177",
+                "type": "paragraph",
+                "content": "উক্ত পদে আবেদনের জন্য প্রার্থীকে স্বীকৃত কোনো বোর্ড বা বিশ্ববিদ্যালয় হতে স্বীকৃত বিশ্ববিদ্যালয় হতে স্নাতক বা সমমান ডিগ্রী অর্জন করতে হবে। আবেদনকারীকে বাংলাদেশের স্থায়ী নাগরিক হতে হবে। আবেদনের শেষ সময় হওয়ার পূর্বেই সঠিক নিয়মে আবেদন প্রক্রিয়া সম্পন্ন করার পরামর্শ দেওয়া যাচ্ছে।",
+                "settings": {}
+              },
+              {
+                "id": "block-faq-1794016677177",
+                "type": "faq_accordion",
+                "content": [
+                  {
+                    "question": "বিমান বাংলাদেশ এয়ারলাইন্স নিয়োগে কীভাবে অনলাইনে আবেদন করবেন?",
+                    "answer": "নির্ধারিত ওয়েবসাইটে প্রবেশ করে অনলাইন আবেদন ফরম পূরণ করতে হবে এবং পরবর্তী ৭২ ঘণ্টার মধ্যে এসএমএসের মাধ্যমে ফি প্রদান করে আবেদন নিশ্চিত করতে হবে।"
+                  },
+                  {
+                    "question": "অনলাইনে আবেদনের শেষ সময় কবে?",
+                    "answer": "আবেদন গ্রহণের শেষ তারিখ: ২০২৬-১২-৩১ বিকেল ৫:০০ টা পর্যন্ত।"
+                  }
+                ],
+                "settings": {}
+              }
+            ],
+            "articleSnapshot": {
+              "title": "বিমান বাংলাদেশ এয়ারলাইন্স নিয়োগ বিজ্ঞপ্তি ২০২৬",
+              "bengaliMarkdown": "# বিমান বাংলাদেশ এয়ারলাইন্স নিয়োগ বিজ্ঞপ্তি ২০২৬\n\nবিমান বাংলাদেশ এয়ারলাইন্স সম্প্রতি ২০২৬ সালের নতুন নিয়োগ বিজ্ঞপ্তি প্রকাশ করেছে। উক্ত প্রতিষ্ঠানে ৯ম গ্রেড গ্রেডের \"গ্রাউন্ড সার্ভিস অফিসার\" পদে মোট 1 টি শূন্যপদে জনবল নিয়োগ প্রদান করা হবে। আগ্রহী ও যোগ্য প্রার্থীদের নির্ধারিত সময়ের মধ্যে অনলাইনে আবেদন করার আহ্বান জানানো হচ্ছে।\n\n| বিবরণ | তথ্য |\n| :--- | :--- |\n| **প্রতিষ্ঠানের নাম** | বিমান বাংলাদেশ এয়ারলাইন্স |\n| **পদের নাম** | গ্রাউন্ড সার্ভিস অফিসার |\n| **মোট পদসংখ্যা** | 1 টি |\n| **গ্রেড ও বেতন স্কেল** | জাতীয় বেতন স্কেল অনুযায়ী |\n| **শিক্ষাগত যোগ্যতা** | স্বীকৃত বিশ্ববিদ্যালয় হতে স্নাতক বা সমমান |\n| **বয়সসীমা** | ১৮ থেকে ৩০ বছর (কোটার ক্ষেত্রে ৩২ বছর) |\n| **আবেদনের শেষ তারিখ** | ২০২৬-১২-৩১ |\n\n## আবেদনের প্রয়োজনীয় শিক্ষাগত যোগ্যতা ও শর্তাবলী\n\nউক্ত পদে আবেদনের জন্য প্রার্থীকে স্বীকৃত কোনো বোর্ড বা বিশ্ববিদ্যালয় হতে স্বীকৃত বিশ্ববিদ্যালয় হতে স্নাতক বা সমমান ডিগ্রী অর্জন করতে হবে। আবেদনকারীকে বাংলাদেশের স্থায়ী নাগরিক হতে হবে। আবেদনের শেষ সময় হওয়ার পূর্বেই সঠিক নিয়মে আবেদন প্রক্রিয়া সম্পন্ন করার পরামর্শ দেওয়া যাচ্ছে।\n\n### বিমান বাংলাদেশ এয়ারলাইন্স নিয়োগে কীভাবে অনলাইনে আবেদন করবেন?\nনির্ধারিত ওয়েবসাইটে প্রবেশ করে অনলাইন আবেদন ফরম পূরণ করতে হবে এবং পরবর্তী ৭২ ঘণ্টার মধ্যে এসএমএসের মাধ্যমে ফি প্রদান করে আবেদন নিশ্চিত করতে হবে।\n\n### অনলাইনে আবেদনের শেষ সময় কবে?\nআবেদন গ্রহণের শেষ তারিখ: ২০২৬-১২-৩১ বিকেল ৫:০০ টা পর্যন্ত।",
+              "faqItems": []
+            },
+            "seoSnapshot": {
+              "focusKeyword": "বিমান বাংলাদেশ এয়ারলাইন্স নিয়োগ বিজ্ঞপ্তি ২০২৬",
+              "secondaryKeywords": [
+                "গ্রাউন্ড সার্ভিস অফিসার",
+                "সরকারি চাকরি ২০২৬"
+              ],
+              "seoTitle": "বিমান বাংলাদেশ এয়ারলাইন্স নিয়োগ বিজ্ঞপ্তি ২০২৬ — আবেদন করুন",
+              "seoDescription": "বিমান বাংলাদেশ এয়ারলাইন্স-এর গ্রাউন্ড সার্ভিস অফিসার পদে নতুন নিয়োগ বিজ্ঞপ্তি ২০২৬। মোট 1 টি পদে আবেদন যোগ্যতা, বেতন ও নিয়মাবলী জানুন।",
+              "slug": "job-circular-2026"
+            }
+          }
+        ],
+        "isPublished": true,
+        "approvedBy": "ADMIN-SUPER",
+        "approvedAt": "2026-11-07T01:58:01.032Z",
+        "publishedJobId": "job-680999"
+      },
+      "aiGeneratedContent": {
+        "bengaliDescription": "# বিমান বাংলাদেশ এয়ারলাইন্স নিয়োগ বিজ্ঞপ্তি ২০২৬\n\nবিমান বাংলাদেশ এয়ারলাইন্স সম্প্রতি ২০২৬ সালের নতুন নিয়োগ বিজ্ঞপ্তি প্রকাশ করেছে। উক্ত প্রতিষ্ঠানে ৯ম গ্রেড গ্রেডের \"গ্রাউন্ড সার্ভিস অফিসার\" পদে মোট 1 টি শূন্যপদে জনবল নিয়োগ প্রদান করা হবে। আগ্রহী ও যোগ্য প্রার্থীদের নির্ধারিত সময়ের মধ্যে অনলাইনে আবেদন করার আহ্বান জানানো হচ্ছে।\n\n| বিবরণ | তথ্য |\n| :--- | :--- |\n| **প্রতিষ্ঠানের নাম** | বিমান বাংলাদেশ এয়ারলাইন্স |\n| **পদের নাম** | গ্রাউন্ড সার্ভিস অফিসার |\n| **মোট পদসংখ্যা** | 1 টি |\n| **গ্রেড ও বেতন স্কেল** | জাতীয় বেতন স্কেল অনুযায়ী |\n| **শিক্ষাগত যোগ্যতা** | স্বীকৃত বিশ্ববিদ্যালয় হতে স্নাতক বা সমমান |\n| **বয়সসীমা** | ১৮ থেকে ৩০ বছর (কোটার ক্ষেত্রে ৩২ বছর) |\n| **আবেদনের শেষ তারিখ** | ২০২৬-১২-৩১ |\n\n## আবেদনের প্রয়োজনীয় শিক্ষাগত যোগ্যতা ও শর্তাবলী\n\nউক্ত পদে আবেদনের জন্য প্রার্থীকে স্বীকৃত কোনো বোর্ড বা বিশ্ববিদ্যালয় হতে স্বীকৃত বিশ্ববিদ্যালয় হতে স্নাতক বা সমমান ডিগ্রী অর্জন করতে হবে। আবেদনকারীকে বাংলাদেশের স্থায়ী নাগরিক হতে হবে। আবেদনের শেষ সময় হওয়ার পূর্বেই সঠিক নিয়মে আবেদন প্রক্রিয়া সম্পন্ন করার পরামর্শ দেওয়া যাচ্ছে।\n\n### বিমান বাংলাদেশ এয়ারলাইন্স নিয়োগে কীভাবে অনলাইনে আবেদন করবেন?\nনির্ধারিত ওয়েবসাইটে প্রবেশ করে অনলাইন আবেদন ফরম পূরণ করতে হবে এবং পরবর্তী ৭২ ঘণ্টার মধ্যে এসএমএসের মাধ্যমে ফি প্রদান করে আবেদন নিশ্চিত করতে হবে।\n\n### অনলাইনে আবেদনের শেষ সময় কবে?\nআবেদন গ্রহণের শেষ তারিখ: ২০২৬-১২-৩১ বিকেল ৫:০০ টা পর্যন্ত।",
+        "seoTitle": "বিমান বাংলাদেশ এয়ারলাইন্স নিয়োগ বিজ্ঞপ্তি ২০২৬ — আবেদন করুন",
+        "seoDescription": "বিমান বাংলাদেশ এয়ারলাইন্স-এর গ্রাউন্ড সার্ভিস অফিসার পদে নতুন নিয়োগ বিজ্ঞপ্তি ২০২৬। মোট 1 টি পদে আবেদন যোগ্যতা, বেতন ও নিয়মাবলী জানুন।",
+        "targetKeywords": [
+          "বিমান বাংলাদেশ এয়ারলাইন্স নিয়োগ বিজ্ঞপ্তি ২০২৬",
+          "গ্রাউন্ড সার্ভিস অফিসার",
+          "বিমান বাংলাদেশ এয়ারলাইন্স জব সার্কুলার",
+          "সরকারি চাকরি ২০২৬"
+        ],
+        "faqItems": [
+          {
+            "question": "বিমান বাংলাদেশ এয়ারলাইন্স নিয়োগে কীভাবে অনলাইনে আবেদন করবেন?",
+            "answer": "নির্ধারিত ওয়েবসাইটে প্রবেশ করে অনলাইন আবেদন ফরম পূরণ করতে হবে এবং পরবর্তী ৭২ ঘণ্টার মধ্যে এসএমএসের মাধ্যমে ফি প্রদান করতে হবে।"
+          }
+        ],
+        "generatedAt": "2026-11-07T01:57:57.178Z"
+      },
+      "approvedJobId": "job-680999"
     }
   },
   "companies": {},
@@ -13145,6 +14580,377 @@
       "approvedBy": "ADMIN-SUPER",
       "approvedAt": "2026-11-07T01:40:11.262Z",
       "publishedJobId": "job-611219"
+    },
+    "draft-1794016677166": {
+      "draftId": "draft-1794016677166",
+      "status": "APPROVED",
+      "lastSavedAt": "2026-11-07T01:57:57.178Z",
+      "blocks": [
+        {
+          "id": "block-title-1794016677177",
+          "type": "heading",
+          "content": "বিমান বাংলাদেশ এয়ারলাইন্স নিয়োগ বিজ্ঞপ্তি ২০২৬",
+          "settings": {
+            "headingLevel": "h1"
+          }
+        },
+        {
+          "id": "block-p1-1794016677177",
+          "type": "paragraph",
+          "content": "বিমান বাংলাদেশ এয়ারলাইন্স সম্প্রতি ২০২৬ সালের নতুন নিয়োগ বিজ্ঞপ্তি প্রকাশ করেছে। উক্ত প্রতিষ্ঠানে ৯ম গ্রেড গ্রেডের \"গ্রাউন্ড সার্ভিস অফিসার\" পদে মোট 1 টি শূন্যপদে জনবল নিয়োগ প্রদান করা হবে। আগ্রহী ও যোগ্য প্রার্থীদের নির্ধারিত সময়ের মধ্যে অনলাইনে আবেদন করার আহ্বান জানানো হচ্ছে।",
+          "settings": {}
+        },
+        {
+          "id": "block-table-1794016677177",
+          "type": "job_info_table",
+          "content": [
+            {
+              "label": "প্রতিষ্ঠানের নাম",
+              "value": "বিমান বাংলাদেশ এয়ারলাইন্স"
+            },
+            {
+              "label": "পদের নাম",
+              "value": "গ্রাউন্ড সার্ভিস অফিসার"
+            },
+            {
+              "label": "মোট পদসংখ্যা",
+              "value": "1 টি"
+            },
+            {
+              "label": "গ্রেড ও বেতন স্কেল",
+              "value": "জাতীয় বেতন স্কেল অনুযায়ী"
+            },
+            {
+              "label": "শিক্ষাগত যোগ্যতা",
+              "value": "স্বীকৃত বিশ্ববিদ্যালয় হতে স্নাতক বা সমমান"
+            },
+            {
+              "label": "বয়সসীমা",
+              "value": "১৮ থেকে ৩০ বছর (কোটার ক্ষেত্রে ৩২ বছর)"
+            },
+            {
+              "label": "আবেদনের শেষ তারিখ",
+              "value": "২০২৬-১২-৩১"
+            }
+          ],
+          "settings": {}
+        },
+        {
+          "id": "block-h2-req-1794016677177",
+          "type": "heading",
+          "content": "আবেদনের প্রয়োজনীয় শিক্ষাগত যোগ্যতা ও শর্তাবলী",
+          "settings": {
+            "headingLevel": "h2"
+          }
+        },
+        {
+          "id": "block-p2-1794016677177",
+          "type": "paragraph",
+          "content": "উক্ত পদে আবেদনের জন্য প্রার্থীকে স্বীকৃত কোনো বোর্ড বা বিশ্ববিদ্যালয় হতে স্বীকৃত বিশ্ববিদ্যালয় হতে স্নাতক বা সমমান ডিগ্রী অর্জন করতে হবে। আবেদনকারীকে বাংলাদেশের স্থায়ী নাগরিক হতে হবে। আবেদনের শেষ সময় হওয়ার পূর্বেই সঠিক নিয়মে আবেদন প্রক্রিয়া সম্পন্ন করার পরামর্শ দেওয়া যাচ্ছে।",
+          "settings": {}
+        },
+        {
+          "id": "block-faq-1794016677177",
+          "type": "faq_accordion",
+          "content": [
+            {
+              "question": "বিমান বাংলাদেশ এয়ারলাইন্স নিয়োগে কীভাবে অনলাইনে আবেদন করবেন?",
+              "answer": "নির্ধারিত ওয়েবসাইটে প্রবেশ করে অনলাইন আবেদন ফরম পূরণ করতে হবে এবং পরবর্তী ৭২ ঘণ্টার মধ্যে এসএমএসের মাধ্যমে ফি প্রদান করে আবেদন নিশ্চিত করতে হবে।"
+            },
+            {
+              "question": "অনলাইনে আবেদনের শেষ সময় কবে?",
+              "answer": "আবেদন গ্রহণের শেষ তারিখ: ২০২৬-১২-৩১ বিকেল ৫:০০ টা পর্যন্ত।"
+            }
+          ],
+          "settings": {}
+        }
+      ],
+      "internalLinks": [],
+      "brief": {
+        "jobIdOrDraftId": "draft-1794016677166",
+        "organization": "বিমান বাংলাদেশ এয়ারলাইন্স",
+        "jobTitle": "গ্রাউন্ড সার্ভিস অফিসার",
+        "primaryKeyword": "বিমান বাংলাদেশ এয়ারলাইন্স নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "secondaryKeywords": [
+          "গ্রাউন্ড সার্ভিস অফিসার",
+          "বিমান বাংলাদেশ এয়ারলাইন্স জব সার্কুলার"
+        ],
+        "relatedKeywords": [
+          "সরকারি চাকরি ২০২৬"
+        ],
+        "searchIntent": "informational",
+        "searchIntentSummary": "বিমান বাংলাদেশ এয়ারলাইন্স এর চাকরি সার্কুলার তথ্য অনুসন্ধান",
+        "requiredFacts": {
+          "vacancies": "1",
+          "deadline": "২০২৬-১২-৩১",
+          "salary": "জাতীয় বেতন স্কেল অনুযায়ী",
+          "education": "স্বীকৃত বিশ্ববিদ্যালয় হতে স্নাতক বা সমমান",
+          "experience": "প্রযোজ্য নয় / ফ্রেশার",
+          "age": "১৮-৩০ বছর",
+          "fee": "১০০ টাকা",
+          "applicationMethod": "অনলাইন",
+          "applicationUrl": "http://alljobs.teletalk.com.bd"
+        },
+        "importantEligibilityNotes": [
+          "বাংলাদেশের স্থায়ী নাগরিক হতে হবে"
+        ],
+        "officialSourceLinks": [
+          {
+            "label": "অফিশিয়াল ওয়েবসাইট",
+            "url": "http://alljobs.teletalk.com.bd"
+          }
+        ],
+        "suggestedHeadings": [
+          "আবেদনের যোগ্যতা",
+          "বেতন স্কেল",
+          "আবেদন প্রক্রিয়া"
+        ],
+        "faqTopics": [
+          "আবেদন নিয়ম",
+          "বয়সসীমা"
+        ],
+        "internalLinkOpportunities": [],
+        "warnings": [],
+        "createdAt": "2026-11-07T01:57:57.178Z",
+        "updatedAt": "2026-11-07T01:57:57.178Z"
+      },
+      "article": {
+        "draftId": "draft-1794016677166",
+        "title": "বিমান বাংলাদেশ এয়ারলাইন্স নিয়োগ বিজ্ঞপ্তি ২০২৬ — এক নজরে বিস্তারিত",
+        "contentBlocks": [
+          {
+            "id": "block-title-1794016677177",
+            "type": "heading",
+            "content": "বিমান বাংলাদেশ এয়ারলাইন্স নিয়োগ বিজ্ঞপ্তি ২০২৬",
+            "settings": {
+              "headingLevel": "h1"
+            }
+          },
+          {
+            "id": "block-p1-1794016677177",
+            "type": "paragraph",
+            "content": "বিমান বাংলাদেশ এয়ারলাইন্স সম্প্রতি ২০২৬ সালের নতুন নিয়োগ বিজ্ঞপ্তি প্রকাশ করেছে। উক্ত প্রতিষ্ঠানে ৯ম গ্রেড গ্রেডের \"গ্রাউন্ড সার্ভিস অফিসার\" পদে মোট 1 টি শূন্যপদে জনবল নিয়োগ প্রদান করা হবে। আগ্রহী ও যোগ্য প্রার্থীদের নির্ধারিত সময়ের মধ্যে অনলাইনে আবেদন করার আহ্বান জানানো হচ্ছে।",
+            "settings": {}
+          },
+          {
+            "id": "block-table-1794016677177",
+            "type": "job_info_table",
+            "content": [
+              {
+                "label": "প্রতিষ্ঠানের নাম",
+                "value": "বিমান বাংলাদেশ এয়ারলাইন্স"
+              },
+              {
+                "label": "পদের নাম",
+                "value": "গ্রাউন্ড সার্ভিস অফিসার"
+              },
+              {
+                "label": "মোট পদসংখ্যা",
+                "value": "1 টি"
+              },
+              {
+                "label": "গ্রেড ও বেতন স্কেল",
+                "value": "জাতীয় বেতন স্কেল অনুযায়ী"
+              },
+              {
+                "label": "শিক্ষাগত যোগ্যতা",
+                "value": "স্বীকৃত বিশ্ববিদ্যালয় হতে স্নাতক বা সমমান"
+              },
+              {
+                "label": "বয়সসীমা",
+                "value": "১৮ থেকে ৩০ বছর (কোটার ক্ষেত্রে ৩২ বছর)"
+              },
+              {
+                "label": "আবেদনের শেষ তারিখ",
+                "value": "২০২৬-১২-৩১"
+              }
+            ],
+            "settings": {}
+          },
+          {
+            "id": "block-h2-req-1794016677177",
+            "type": "heading",
+            "content": "আবেদনের প্রয়োজনীয় শিক্ষাগত যোগ্যতা ও শর্তাবলী",
+            "settings": {
+              "headingLevel": "h2"
+            }
+          },
+          {
+            "id": "block-p2-1794016677177",
+            "type": "paragraph",
+            "content": "উক্ত পদে আবেদনের জন্য প্রার্থীকে স্বীকৃত কোনো বোর্ড বা বিশ্ববিদ্যালয় হতে স্বীকৃত বিশ্ববিদ্যালয় হতে স্নাতক বা সমমান ডিগ্রী অর্জন করতে হবে। আবেদনকারীকে বাংলাদেশের স্থায়ী নাগরিক হতে হবে। আবেদনের শেষ সময় হওয়ার পূর্বেই সঠিক নিয়মে আবেদন প্রক্রিয়া সম্পন্ন করার পরামর্শ দেওয়া যাচ্ছে।",
+            "settings": {}
+          },
+          {
+            "id": "block-faq-1794016677177",
+            "type": "faq_accordion",
+            "content": [
+              {
+                "question": "বিমান বাংলাদেশ এয়ারলাইন্স নিয়োগে কীভাবে অনলাইনে আবেদন করবেন?",
+                "answer": "নির্ধারিত ওয়েবসাইটে প্রবেশ করে অনলাইন আবেদন ফরম পূরণ করতে হবে এবং পরবর্তী ৭২ ঘণ্টার মধ্যে এসএমএসের মাধ্যমে ফি প্রদান করে আবেদন নিশ্চিত করতে হবে।"
+              },
+              {
+                "question": "অনলাইনে আবেদনের শেষ সময় কবে?",
+                "answer": "আবেদন গ্রহণের শেষ তারিখ: ২০২৬-১২-৩১ বিকেল ৫:০০ টা পর্যন্ত।"
+              }
+            ],
+            "settings": {}
+          }
+        ],
+        "bengaliMarkdown": "# বিমান বাংলাদেশ এয়ারলাইন্স নিয়োগ বিজ্ঞপ্তি ২০২৬\n\nবিমান বাংলাদেশ এয়ারলাইন্স সম্প্রতি ২০২৬ সালের নতুন নিয়োগ বিজ্ঞপ্তি প্রকাশ করেছে। উক্ত প্রতিষ্ঠানে ৯ম গ্রেড গ্রেডের \"গ্রাউন্ড সার্ভিস অফিসার\" পদে মোট 1 টি শূন্যপদে জনবল নিয়োগ প্রদান করা হবে। আগ্রহী ও যোগ্য প্রার্থীদের নির্ধারিত সময়ের মধ্যে অনলাইনে আবেদন করার আহ্বান জানানো হচ্ছে।\n\n| বিবরণ | তথ্য |\n| :--- | :--- |\n| **প্রতিষ্ঠানের নাম** | বিমান বাংলাদেশ এয়ারলাইন্স |\n| **পদের নাম** | গ্রাউন্ড সার্ভিস অফিসার |\n| **মোট পদসংখ্যা** | 1 টি |\n| **গ্রেড ও বেতন স্কেল** | জাতীয় বেতন স্কেল অনুযায়ী |\n| **শিক্ষাগত যোগ্যতা** | স্বীকৃত বিশ্ববিদ্যালয় হতে স্নাতক বা সমমান |\n| **বয়সসীমা** | ১৮ থেকে ৩০ বছর (কোটার ক্ষেত্রে ৩২ বছর) |\n| **আবেদনের শেষ তারিখ** | ২০২৬-১২-৩১ |\n\n## আবেদনের প্রয়োজনীয় শিক্ষাগত যোগ্যতা ও শর্তাবলী\n\nউক্ত পদে আবেদনের জন্য প্রার্থীকে স্বীকৃত কোনো বোর্ড বা বিশ্ববিদ্যালয় হতে স্বীকৃত বিশ্ববিদ্যালয় হতে স্নাতক বা সমমান ডিগ্রী অর্জন করতে হবে। আবেদনকারীকে বাংলাদেশের স্থায়ী নাগরিক হতে হবে। আবেদনের শেষ সময় হওয়ার পূর্বেই সঠিক নিয়মে আবেদন প্রক্রিয়া সম্পন্ন করার পরামর্শ দেওয়া যাচ্ছে।\n\n### বিমান বাংলাদেশ এয়ারলাইন্স নিয়োগে কীভাবে অনলাইনে আবেদন করবেন?\nনির্ধারিত ওয়েবসাইটে প্রবেশ করে অনলাইন আবেদন ফরম পূরণ করতে হবে এবং পরবর্তী ৭২ ঘণ্টার মধ্যে এসএমএসের মাধ্যমে ফি প্রদান করে আবেদন নিশ্চিত করতে হবে।\n\n### অনলাইনে আবেদনের শেষ সময় কবে?\nআবেদন গ্রহণের শেষ তারিখ: ২০২৬-১২-৩১ বিকেল ৫:০০ টা পর্যন্ত।",
+        "primaryKeyword": "বিমান বাংলাদেশ এয়ারলাইন্স নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "secondaryKeywords": [
+          "গ্রাউন্ড সার্ভিস অফিসার",
+          "বিমান বাংলাদেশ এয়ারলাইন্স জব সার্কুলার",
+          "সরকারি চাকরি ২০২৬"
+        ],
+        "faqItems": [
+          {
+            "question": "বিমান বাংলাদেশ এয়ারলাইন্স নিয়োগে কীভাবে অনলাইনে আবেদন করবেন?",
+            "answer": "নির্ধারিত ওয়েবসাইটে প্রবেশ করে অনলাইন আবেদন ফরম পূরণ করতে হবে এবং পরবর্তী ৭২ ঘণ্টার মধ্যে এসএমএসের মাধ্যমে ফি প্রদান করতে হবে।"
+          }
+        ],
+        "articleLengthPreset": "standard",
+        "generatedAt": "2026-11-07T01:57:57.178Z",
+        "updatedAt": "2026-11-07T01:57:57.178Z",
+        "isAiGenerated": false
+      },
+      "seo": {
+        "focusKeyword": "বিমান বাংলাদেশ এয়ারলাইন্স নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "secondaryKeywords": [
+          "গ্রাউন্ড সার্ভিস অফিসার",
+          "বিমান বাংলাদেশ এয়ারলাইন্স জব সার্কুলার",
+          "সরকারি চাকরি ২০২৬"
+        ],
+        "seoTitle": "বিমান বাংলাদেশ এয়ারলাইন্স নিয়োগ বিজ্ঞপ্তি ২০২৬ — আবেদন করুন",
+        "seoDescription": "বিমান বাংলাদেশ এয়ারলাইন্স-এর গ্রাউন্ড সার্ভিস অফিসার পদে নতুন নিয়োগ বিজ্ঞপ্তি ২০২৬। মোট 1 টি পদে আবেদন যোগ্যতা, বেতন ও নিয়মাবলী জানুন।",
+        "slug": "job-circular-2026"
+      },
+      "seoAnalysis": {
+        "score": 85,
+        "checklist": [],
+        "primaryKeywordDensity": 2.1,
+        "primaryKeywordCount": 3,
+        "headingStructureValid": true,
+        "h1Count": 1,
+        "h2Count": 1,
+        "internalLinksCount": 1,
+        "externalLinksCount": 1,
+        "metaTitleLength": 45,
+        "metaDescLength": 120,
+        "wordCount": 250,
+        "readingTimeMinutes": 2,
+        "hasJobPostingSchema": true
+      },
+      "revisions": [
+        {
+          "id": "rev-1",
+          "draftId": "draft-1794016677166",
+          "versionNumber": 1,
+          "timestamp": "2026-11-07T01:57:57.178Z",
+          "author": "ADMIN-SUPER",
+          "changeSummary": "নতুন পোস্ট ড্রাফট তৈরি করা হয়েছে",
+          "blocksSnapshot": [
+            {
+              "id": "block-title-1794016677177",
+              "type": "heading",
+              "content": "বিমান বাংলাদেশ এয়ারলাইন্স নিয়োগ বিজ্ঞপ্তি ২০২৬",
+              "settings": {
+                "headingLevel": "h1"
+              }
+            },
+            {
+              "id": "block-p1-1794016677177",
+              "type": "paragraph",
+              "content": "বিমান বাংলাদেশ এয়ারলাইন্স সম্প্রতি ২০২৬ সালের নতুন নিয়োগ বিজ্ঞপ্তি প্রকাশ করেছে। উক্ত প্রতিষ্ঠানে ৯ম গ্রেড গ্রেডের \"গ্রাউন্ড সার্ভিস অফিসার\" পদে মোট 1 টি শূন্যপদে জনবল নিয়োগ প্রদান করা হবে। আগ্রহী ও যোগ্য প্রার্থীদের নির্ধারিত সময়ের মধ্যে অনলাইনে আবেদন করার আহ্বান জানানো হচ্ছে।",
+              "settings": {}
+            },
+            {
+              "id": "block-table-1794016677177",
+              "type": "job_info_table",
+              "content": [
+                {
+                  "label": "প্রতিষ্ঠানের নাম",
+                  "value": "বিমান বাংলাদেশ এয়ারলাইন্স"
+                },
+                {
+                  "label": "পদের নাম",
+                  "value": "গ্রাউন্ড সার্ভিস অফিসার"
+                },
+                {
+                  "label": "মোট পদসংখ্যা",
+                  "value": "1 টি"
+                },
+                {
+                  "label": "গ্রেড ও বেতন স্কেল",
+                  "value": "জাতীয় বেতন স্কেল অনুযায়ী"
+                },
+                {
+                  "label": "শিক্ষাগত যোগ্যতা",
+                  "value": "স্বীকৃত বিশ্ববিদ্যালয় হতে স্নাতক বা সমমান"
+                },
+                {
+                  "label": "বয়সসীমা",
+                  "value": "১৮ থেকে ৩০ বছর (কোটার ক্ষেত্রে ৩২ বছর)"
+                },
+                {
+                  "label": "আবেদনের শেষ তারিখ",
+                  "value": "২০২৬-১২-৩১"
+                }
+              ],
+              "settings": {}
+            },
+            {
+              "id": "block-h2-req-1794016677177",
+              "type": "heading",
+              "content": "আবেদনের প্রয়োজনীয় শিক্ষাগত যোগ্যতা ও শর্তাবলী",
+              "settings": {
+                "headingLevel": "h2"
+              }
+            },
+            {
+              "id": "block-p2-1794016677177",
+              "type": "paragraph",
+              "content": "উক্ত পদে আবেদনের জন্য প্রার্থীকে স্বীকৃত কোনো বোর্ড বা বিশ্ববিদ্যালয় হতে স্বীকৃত বিশ্ববিদ্যালয় হতে স্নাতক বা সমমান ডিগ্রী অর্জন করতে হবে। আবেদনকারীকে বাংলাদেশের স্থায়ী নাগরিক হতে হবে। আবেদনের শেষ সময় হওয়ার পূর্বেই সঠিক নিয়মে আবেদন প্রক্রিয়া সম্পন্ন করার পরামর্শ দেওয়া যাচ্ছে।",
+              "settings": {}
+            },
+            {
+              "id": "block-faq-1794016677177",
+              "type": "faq_accordion",
+              "content": [
+                {
+                  "question": "বিমান বাংলাদেশ এয়ারলাইন্স নিয়োগে কীভাবে অনলাইনে আবেদন করবেন?",
+                  "answer": "নির্ধারিত ওয়েবসাইটে প্রবেশ করে অনলাইন আবেদন ফরম পূরণ করতে হবে এবং পরবর্তী ৭২ ঘণ্টার মধ্যে এসএমএসের মাধ্যমে ফি প্রদান করে আবেদন নিশ্চিত করতে হবে।"
+                },
+                {
+                  "question": "অনলাইনে আবেদনের শেষ সময় কবে?",
+                  "answer": "আবেদন গ্রহণের শেষ তারিখ: ২০২৬-১২-৩১ বিকেল ৫:০০ টা পর্যন্ত।"
+                }
+              ],
+              "settings": {}
+            }
+          ],
+          "articleSnapshot": {
+            "title": "বিমান বাংলাদেশ এয়ারলাইন্স নিয়োগ বিজ্ঞপ্তি ২০২৬",
+            "bengaliMarkdown": "# বিমান বাংলাদেশ এয়ারলাইন্স নিয়োগ বিজ্ঞপ্তি ২০২৬\n\nবিমান বাংলাদেশ এয়ারলাইন্স সম্প্রতি ২০২৬ সালের নতুন নিয়োগ বিজ্ঞপ্তি প্রকাশ করেছে। উক্ত প্রতিষ্ঠানে ৯ম গ্রেড গ্রেডের \"গ্রাউন্ড সার্ভিস অফিসার\" পদে মোট 1 টি শূন্যপদে জনবল নিয়োগ প্রদান করা হবে। আগ্রহী ও যোগ্য প্রার্থীদের নির্ধারিত সময়ের মধ্যে অনলাইনে আবেদন করার আহ্বান জানানো হচ্ছে।\n\n| বিবরণ | তথ্য |\n| :--- | :--- |\n| **প্রতিষ্ঠানের নাম** | বিমান বাংলাদেশ এয়ারলাইন্স |\n| **পদের নাম** | গ্রাউন্ড সার্ভিস অফিসার |\n| **মোট পদসংখ্যা** | 1 টি |\n| **গ্রেড ও বেতন স্কেল** | জাতীয় বেতন স্কেল অনুযায়ী |\n| **শিক্ষাগত যোগ্যতা** | স্বীকৃত বিশ্ববিদ্যালয় হতে স্নাতক বা সমমান |\n| **বয়সসীমা** | ১৮ থেকে ৩০ বছর (কোটার ক্ষেত্রে ৩২ বছর) |\n| **আবেদনের শেষ তারিখ** | ২০২৬-১২-৩১ |\n\n## আবেদনের প্রয়োজনীয় শিক্ষাগত যোগ্যতা ও শর্তাবলী\n\nউক্ত পদে আবেদনের জন্য প্রার্থীকে স্বীকৃত কোনো বোর্ড বা বিশ্ববিদ্যালয় হতে স্বীকৃত বিশ্ববিদ্যালয় হতে স্নাতক বা সমমান ডিগ্রী অর্জন করতে হবে। আবেদনকারীকে বাংলাদেশের স্থায়ী নাগরিক হতে হবে। আবেদনের শেষ সময় হওয়ার পূর্বেই সঠিক নিয়মে আবেদন প্রক্রিয়া সম্পন্ন করার পরামর্শ দেওয়া যাচ্ছে।\n\n### বিমান বাংলাদেশ এয়ারলাইন্স নিয়োগে কীভাবে অনলাইনে আবেদন করবেন?\nনির্ধারিত ওয়েবসাইটে প্রবেশ করে অনলাইন আবেদন ফরম পূরণ করতে হবে এবং পরবর্তী ৭২ ঘণ্টার মধ্যে এসএমএসের মাধ্যমে ফি প্রদান করে আবেদন নিশ্চিত করতে হবে।\n\n### অনলাইনে আবেদনের শেষ সময় কবে?\nআবেদন গ্রহণের শেষ তারিখ: ২০২৬-১২-৩১ বিকেল ৫:০০ টা পর্যন্ত।",
+            "faqItems": []
+          },
+          "seoSnapshot": {
+            "focusKeyword": "বিমান বাংলাদেশ এয়ারলাইন্স নিয়োগ বিজ্ঞপ্তি ২০২৬",
+            "secondaryKeywords": [
+              "গ্রাউন্ড সার্ভিস অফিসার",
+              "সরকারি চাকরি ২০২৬"
+            ],
+            "seoTitle": "বিমান বাংলাদেশ এয়ারলাইন্স নিয়োগ বিজ্ঞপ্তি ২০২৬ — আবেদন করুন",
+            "seoDescription": "বিমান বাংলাদেশ এয়ারলাইন্স-এর গ্রাউন্ড সার্ভিস অফিসার পদে নতুন নিয়োগ বিজ্ঞপ্তি ২০২৬। মোট 1 টি পদে আবেদন যোগ্যতা, বেতন ও নিয়মাবলী জানুন।",
+            "slug": "job-circular-2026"
+          }
+        }
+      ],
+      "isPublished": true,
+      "approvedBy": "ADMIN-SUPER",
+      "approvedAt": "2026-11-07T01:58:01.032Z",
+      "publishedJobId": "job-680999"
     }
   },
   "deadlineData": {},
@@ -13228,7 +15034,7 @@
   },
   "platformSettings": {
     "general": {
-      "siteName": "চাকরি সেবা প্রো",
+      "siteName": "চাকরি সেবা বাংলাদেশ",
       "siteDescription": "বাংলাদেশের একমাত্র ১০০% সম্পূর্ণ ফ্রি সরকারি ও বেসরকারি চাকরি পোর্টাল",
       "siteUrl": "https://chakrisheba.com",
       "supportEmail": "support@chakrisheba.com",
@@ -13241,7 +15047,7 @@
       "defaultLanguage": "bn",
       "announcementText": "⚡ নতুন নিয়োগ বিজ্ঞপ্তি ২০২৬: সকল সরকারি ও ব্যাংক চাকরির অনলাইন আবেদন চালু রয়েছে!",
       "announcementEnabled": true,
-      "whatsappButtonText": "২৪/৭ হেল্পলাইন",
+      "whatsappButtonText": "জরুরি সহায়তা",
       "loginButtonText": "লগইন / রেজিস্ট্রেশন",
       "announcementUrl": "/jobs",
       "headerMenuItems": [
@@ -13383,6 +15189,28 @@
             {
               "label": "মৌখিক পরীক্ষার সময়সূচি",
               "href": "/viva-notices"
+            }
+          ]
+        },
+        {
+          "id": "nav-1794016989774",
+          "label": "ভর্তি ও স্কলারশিপ",
+          "href": "/govt-scholarships",
+          "dropdown": [
+            {
+              "label": "সরকারি বৃত্তি",
+              "href": "/jobs"
+            }
+          ]
+        },
+        {
+          "id": "nav-1794017034888",
+          "label": "ভর্তি ও স্কলারশিপ",
+          "href": "/govt-scholarships",
+          "dropdown": [
+            {
+              "label": "সরকারি বৃত্তি",
+              "href": "/jobs"
             }
           ]
         }
@@ -13545,7 +15373,7 @@
       "officialNagadNumber": "01812345678",
       "officialRocketNumber": "01912345678"
     },
-    "updatedAt": "2026-11-07T01:21:09.773Z",
+    "updatedAt": "2026-11-07T02:03:56.483Z",
     "updatedBy": "ADMIN-SUPER"
   },
   "mediaItems": {}

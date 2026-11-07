@@ -625,11 +625,16 @@ function AdminContent() {
   const ensureAdminSession = async (): Promise<boolean> => {
     try {
       const isLocallyVerified = typeof window !== 'undefined' && localStorage.getItem('cs_admin_auth') === 'verified';
-      const pin = typeof window !== 'undefined' ? (localStorage.getItem('cs_admin_pin') || '1234') : '1234';
+      const pin = typeof window !== 'undefined' ? (localStorage.getItem('cs_admin_pin') || '') : '';
 
-      const meRes = await fetch('/api/auth/me', {
-        headers: { 'x-admin-secret': pin }
-      });
+      if (!isLocallyVerified && !pin) {
+        return false;
+      }
+
+      const headers: Record<string, string> = {};
+      if (pin) headers['x-admin-secret'] = pin;
+
+      const meRes = await fetch('/api/auth/me', { headers });
       if (meRes.ok) {
         const meData = await meRes.json();
         if (meData.isLoggedIn && meData.role === 'admin') {
@@ -637,7 +642,7 @@ function AdminContent() {
         }
       }
 
-      if (isLocallyVerified) {
+      if (isLocallyVerified && pin) {
         const loginRes = await fetch('/api/auth/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },

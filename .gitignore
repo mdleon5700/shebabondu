@@ -42,8 +42,14 @@ Thumbs.db
 .browser_profile/
 *.before_user_reset.json
 *.bak
+# Test Artifacts & Screenshots
 test-results/
 playwright-report/
+artifacts_*/
+rendered_pages/
+/*.png
+/*.pdf
+*.bak
 ai-brain/storage/checkpoints/
 ai-brain/storage/queues/
 ai-brain/storage/memory/

@@ -73,7 +73,7 @@ export default function RootLayout({
   const initialJobs = serverDB.getPublicJobs();
 
   return (
-    <html lang="bn">
+    <html lang="bn" className="overflow-x-hidden max-w-full">
       <head>
         <link rel="preload" href="/fonts/solaimanlipi-normal.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
         <link rel="preload" href="/fonts/solaimanlipi-bold.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />

@@ -1,0 +1,18 @@
+# Antigravity Autonomous Engineering & Governance Rules
+# Chakri Sheba Stabilization, Routing & Quality Gate Protocol
+
+## Core Engineering Guardrails
+1. Never assume a route, mutation, or layout works without terminal test validation.
+2. Never bundle Public, User Dashboard, and Admin Dashboard logic in one patch.
+3. Every UI modification must maintain mobile (375px) and desktop (1440px) structural integrity without hydration mismatch or overflow.
+4. All internal links (anchors, router pushes, navigation items) must strictly match registered filesystem routes.
+
+## Route Protection & RBAC
+- Every dynamic route (`[id]`, `[slug]`, `[...slug]`) must have defensive null/undefined checks and graceful fallback redirection rather than unhandled 404 or 500 exceptions.
+- Non-admin attempts to access `/admin` or admin API routes without valid credentials must be cleanly handled (redirect to login or unauthorized view, never throw an uncaught server exception).
+- User dashboard routes (`/dashboard`, `/profile`, `/vault`, `/wallet`, `/applications`) must require active authentication or cleanly redirect unauthenticated users to `/login?redirect=...`.
+
+## Zero-Broken-Commit Quality Gate
+- Run `npm run typecheck` (`tsc --noEmit`) before every commit. Zero TypeScript compilation errors are permitted.
+- Preserve data integrity in `src/db/local_store.json`. Never wipe, corrupt, or truncate store collections.
+- Terminal tests (Playwright E2E) must run headlessly and verify HTTP 200 and error-free console logs.

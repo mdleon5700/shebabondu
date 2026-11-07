@@ -28,6 +28,8 @@ html, body {
   line-height: 1.6;
   background-color: #f8fafc;
   color: #0f172a;
+  overflow-x: hidden;
+  max-width: 100vw;
 }
 
 /* SolaimanLipi everywhere across headings, buttons, nav, paragraphs, inputs, etc. */

@@ -206,6 +206,12 @@ export default function JobListingView({
 
       return true;
     }).sort((a, b) => {
+      // Prioritize active/open jobs over closed/expired jobs
+      const aClosed = a.status === 'CLOSED' || a.daysRemaining <= 0;
+      const bClosed = b.status === 'CLOSED' || b.daysRemaining <= 0;
+      if (aClosed && !bClosed) return 1;
+      if (!aClosed && bClosed) return -1;
+
       if (sortBy === 'deadline') return a.daysRemaining - b.daysRemaining;
       if (sortBy === 'posts') return b.totalPosts - a.totalPosts;
       return (b.id > a.id ? 1 : -1);

@@ -14,6 +14,7 @@ const insecureHttpsAgent = new https.Agent({
 
 // Bengali numeral converter
 const toBn = (n: number | string) => String(n).replace(/\d/g, d => '০১২৩৪৫৬৭৮৯'[+d]);
+const toEn = (str: string) => String(str || '').replace(/[০-৯]/g, d => '0123456789'['০১২৩৪৫৬৭৮৯'.indexOf(d)]);
 
 const MONTH_NAMES_BN = [
   'জানুয়ারি', 'ফেব্রুয়ারি', 'মার্চ', 'এপ্রিল', 'মে', 'জুন',
@@ -22,7 +23,9 @@ const MONTH_NAMES_BN = [
 
 function formatBnDate(dateStr: string): string {
   try {
-    const d = new Date(dateStr);
+    if (!dateStr) return '';
+    const enStr = toEn(dateStr.trim());
+    const d = new Date(enStr);
     if (isNaN(d.getTime())) return dateStr;
     const day = toBn(d.getDate());
     const month = MONTH_NAMES_BN[d.getMonth()];
@@ -35,7 +38,10 @@ function formatBnDate(dateStr: string): string {
 
 function calculateDays(dateStr: string): number {
   try {
-    const d = new Date(dateStr);
+    if (!dateStr) return 15;
+    const enStr = toEn(dateStr.trim());
+    const d = new Date(enStr);
+    if (isNaN(d.getTime())) return 15;
     const now = new Date();
     const diff = d.getTime() - now.getTime();
     return Math.max(0, Math.ceil(diff / (1000 * 60 * 60 * 24)));
@@ -193,7 +199,7 @@ export interface SyncStats {
 /**
  * Execute automated live Alljobs Teletalk sync with rich human content & SEO enrichment
  */
-export async function runAlljobsLiveSync(maxOrgs = 50): Promise<SyncStats> {
+export async function runAlljobsLiveSync(maxOrgs = 100): Promise<SyncStats> {
   const stats: SyncStats = {
     success: true,
     totalOrgsFound: 0,
@@ -399,7 +405,7 @@ ${orgBn} সম্প্রতি ২০২৬ সালের জন্য র�
           feeRange: feeRange,
           featured: totalPosts >= 5 || i < 10,
           isHot: totalPosts >= 15,
-          status: (daysRemaining > 0 ? 'OPEN' : 'CLOSED') as any,
+          status: (daysRemaining > 0 ? 'PUBLISHED' : 'CLOSED') as any,
           verificationStatus: 'VERIFIED',
           verificationConfidence: 100,
           verifiedBy: 'ALLJOBS-LIVE-COLLECTOR',

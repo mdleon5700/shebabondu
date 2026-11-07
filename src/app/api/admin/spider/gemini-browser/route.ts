@@ -221,7 +221,7 @@ export async function POST(req: Request) {
 
     // 6. Live Sync Alljobs with Browser Controller
     if (action === 'sync') {
-      const limit = typeof body.limit === 'number' ? body.limit : 20;
+      const limit = typeof body.limit === 'number' ? body.limit : 100;
       const stats = await runAlljobsLiveSync(limit);
       
       const currentSettings = getSpiderSettings();

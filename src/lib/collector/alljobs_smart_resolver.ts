@@ -457,6 +457,19 @@ export const KNOWN_TELETALK_ORGS: Record<string, {
     defaultGrade: '১৭তম গ্রেড',
     defaultEducation: 'উচ্চ মাধ্যমিক (এইচএসসি) বা এসএসসি পাস'
   },
+  bforest: {
+    name: 'বন অধিদপ্তর (Department of Forests)',
+    nameEn: 'Department of Forests',
+    category: 'govt',
+    categoryLabel: 'পরিবেশ ও বন',
+    website: 'http://www.bforest.gov.bd',
+    smsPrefix: 'FOREST',
+    defaultPosition: 'ফরেস্ট গার্ড / ফরেস্টার',
+    defaultPosts: 45,
+    defaultSalary: '৯,০০০ - ২১,৮০০/- টাকা',
+    defaultGrade: '১৭তম গ্রেড',
+    defaultEducation: 'উচ্চ মাধ্যমিক (এইচএসসি) বা এসএসসি পাস'
+  },
   bwdb: {
     name: 'বাংলাদেশ পানি উন্নয়ন বোর্ড (BWDB)',
     nameEn: 'Bangladesh Water Development Board',
@@ -521,8 +534,75 @@ export const KNOWN_TELETALK_ORGS: Record<string, {
     defaultSalary: '২২,০০০ - ৫৩,০৬০/- টাকা',
     defaultGrade: '৯ম গ্রেড',
     defaultEducation: 'আইন বা সংশ্লিষ্ট বিষয়ে প্রথম শ্রেণী বা সমমানের সিজিপিএসহ স্নাতক (সম্মান) বা স্নাতকোত্তর'
+  },
+  railway: {
+    name: 'বাংলাদেশ রেলওয়ে (Bangladesh Railway)',
+    nameEn: 'Bangladesh Railway',
+    category: 'railway',
+    categoryLabel: 'বাংলাদেশ রেলওয়ে',
+    website: 'http://www.railway.gov.bd',
+    smsPrefix: 'BR',
+    defaultPosition: 'সহকারী স্টেশন মাস্টার / পয়েন্টসম্যান / খালাসী',
+    defaultPosts: 50,
+    defaultSalary: '৯,৩০০ - ২২,৪৯০/- টাকা',
+    defaultGrade: '১৬তম - ১৯তম গ্রেড',
+    defaultEducation: 'এইচএসসি বা এসএসসি পাস'
   }
 };
+
+export function normalizeBanglaOrgName(rawName: string, subdomain = ''): string {
+  const sub = (subdomain || '').toLowerCase().trim();
+  if (KNOWN_TELETALK_ORGS[sub]) {
+    return KNOWN_TELETALK_ORGS[sub].name;
+  }
+  const s = (rawName || '').trim();
+  if (s.includes('Medical Service') || s.includes('DGMS') || s.includes('সামরিক চিকিৎসা')) {
+    return 'সামরিক চিকিৎসা সার্ভিস মহাপরিদপ্তর (DGMS)';
+  }
+  if (s.includes('Coal Power Generation Company') || s.includes('CPGCBL') || s.includes('কোল পাওয়ার')) {
+    return 'কোল পাওয়ার জেনারেশন কোম্পানি বাংলাদেশ লিমিটেড (CPGCBL)';
+  }
+  if (s.includes('Petrobangla') || s.includes('Bangladesh Oil, Gas & Mineral') || s.includes('BOGMC') || s.includes('পেট্রোবাংলা')) {
+    return 'বাংলাদেশ তৈল, গ্যাস ও খনিজ সম্পদ করপোরেশন (পেট্রোবাংলা) / BOGMC';
+  }
+  if (s.includes('Rural Electrification Board') || s.includes('BREB') || s.includes('পল্লী বিদ্যুতায়ন')) {
+    return 'বাংলাদেশ পল্লী বিদ্যুতায়ন বোর্ড (BREB)';
+  }
+  if (s.includes('Public Service Commission') || s.includes('BPSC') || s.includes('কর্ম কমিশন')) {
+    return 'বাংলাদেশ সরকারি কর্ম কমিশন (BPSC)';
+  }
+  if (s.includes('Health Services') || s.includes('DGHS') || s.includes('স্বাস্থ্য অধিদপ্তর')) {
+    return 'স্বাস্থ্য অধিদপ্তর (DGHS)';
+  }
+  if (s.includes('Family Planning') || s.includes('DGFP') || s.includes('পরিবার পরিকল্পনা')) {
+    return 'পরিবার পরিকল্পনা অধিদপ্তর (DGFP)';
+  }
+  if (s.includes('Secondary and Higher Education') || s.includes('DSHE') || s.includes('মাধ্যমিক ও উচ্চশিক্ষা')) {
+    return 'মাধ্যমিক ও উচ্চশিক্ষা অধিদপ্তর (DSHE)';
+  }
+  if (s.includes('Primary Education') || s.includes('DPE') || s.includes('প্রাথমিক শিক্ষা')) {
+    return 'প্রাথমিক শিক্ষা অধিদপ্তর (DPE)';
+  }
+  if (s.includes('Power Development Board') || s.includes('BPDB') || s.includes('বিদ্যুৎ উন্নয়ন বোর্ড')) {
+    return 'বাংলাদেশ বিদ্যুৎ উন্নয়ন বোর্ড (BPDB)';
+  }
+  if (s.includes('Water Development Board') || s.includes('BWDB') || s.includes('পানি উন্নয়ন বোর্ড')) {
+    return 'বাংলাদেশ পানি উন্নয়ন বোর্ড (BWDB)';
+  }
+  if (s.includes('Forest') || s.includes('বনায়ন') || s.includes('বন অধিদপ্তর')) {
+    return 'বন অধিদপ্তর (Forest Department)';
+  }
+  if (s.includes('Bureau of Statistics') || s.includes('BBS') || s.includes('পরিসংখ্যান ব্যুরো')) {
+    return 'বাংলাদেশ পরিসংখ্যান ব্যুরো (BBS)';
+  }
+  if (s.includes('Bangladesh Bank') || s.includes('বাংলাদেশ ব্যাংক')) {
+    return 'বাংলাদেশ ব্যাংক (Bangladesh Bank)';
+  }
+  if (s.includes('Railway') || s.includes('রেলওয়ে') || s.includes('Bangladesh Railway')) {
+    return 'বাংলাদেশ রেলওয়ে (Bangladesh Railway)';
+  }
+  return s || 'বাংলাদেশ সরকারি প্রতিষ্ঠান';
+}
 
 export interface PortalMetadata {
   portalUrl: string;
@@ -713,8 +793,10 @@ export function parseDetailsFromPdfText(rawText: string, sourceUrl = ''): {
   if (orgMatch) {
     const rawMatched = orgMatch[1] ? orgMatch[1].trim().replace(/\n/g, ' ') : orgMatch[0].trim().replace(/\n/g, ' ');
     if (rawMatched.length < 60 && !rawMatched.includes('নম্বর') && !rawMatched.includes('স্মারক')) {
-      org = rawMatched;
+      org = normalizeBanglaOrgName(rawMatched, subdomain || '');
     }
+  } else if (subdomain) {
+    org = normalizeBanglaOrgName(org, subdomain);
   }
 
   // 2. Official Portal Link
@@ -970,13 +1052,9 @@ export async function resolveCircularInput(input: string): Promise<ResolvedCircu
       const d = apiRes.details;
       if (d) {
         const orgInfo = d.job_utilities_govtorganization || {};
-        let orgName = orgInfo.name_bn || orgInfo.name || 'সরকারি প্রতিষ্ঠান';
-        if (orgName.includes('Coal Power Generation Company') || orgName.includes('CPGCBL')) {
-          orgName = 'কোল পাওয়ার জেনারেশন কোম্পানি বাংলাদেশ লিমিটেড (CPGCBL)';
-        }
-        if (orgName.includes('Bangladesh Oil, Gas & Mineral') || orgName.includes('Petrobangla') || orgName.includes('BOGMC')) {
-          orgName = 'বাংলাদেশ তৈল, গ্যাস ও খনিজ সম্পদ করপোরেশন (পেট্রোবাংলা) / BOGMC';
-        }
+        const urlMatch = (d.application_site || '').match(/https?:\/\/([a-zA-Z0-9\-_]+)\.teletalk\.com\.bd/i);
+        const subdomain = urlMatch ? urlMatch[1].toLowerCase() : '';
+        let orgName = normalizeBanglaOrgName(orgInfo.name_bn || orgInfo.name || '', subdomain);
         const jobTitle = d.job_title_bn || d.job_title || 'নতুন নিয়োগ বিজ্ঞপ্তি';
         const fullTitle = `${orgName} - ${jobTitle} নিয়োগ বিজ্ঞপ্তি ২০২৬`;
         const { category, categoryLabel } = mapCategory(orgName + ' ' + (orgInfo.details || ''));
@@ -1047,9 +1125,11 @@ export async function resolveCircularInput(input: string): Promise<ResolvedCircu
   // 2. Direct Teletalk Portal Deep Crawl (Exclusively for Teletalk application engine subdomains)
   if (trimmed.includes('.teletalk.com.bd') && !trimmed.includes('alljobs.teletalk.com.bd') && !trimmed.endsWith('.pdf')) {
     try {
+      const urlMatch = trimmed.match(/https?:\/\/([a-zA-Z0-9\-_]+)\.teletalk\.com\.bd/i);
+      const subdomain = urlMatch ? urlMatch[1].toLowerCase() : '';
       const portalData = await scrapeTeletalkPortal(trimmed);
       if (portalData && portalData.positions.length > 0) {
-        const org = portalData.organizationEn || 'বাংলাদেশ সরকারি প্রতিষ্ঠান';
+        const org = normalizeBanglaOrgName(portalData.organizationBn || portalData.organizationEn || '', subdomain);
         const { category, categoryLabel } = mapCategory(org);
         const mappedPositions = portalData.positions.map(pos => {
           const inferred = inferPositionGradeAndSalary(pos.bengaliTitle + ' ' + pos.englishTitle);

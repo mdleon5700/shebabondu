@@ -46,9 +46,13 @@ import {
 import { CandidateProfile, EducationRecord, ExperienceRecord, CandidateDocument } from '@/lib/types';
 import { BD_DIVISIONS_EN } from '@/lib/constants';
 
-const ADMIN_REQ_HEADERS: HeadersInit = {
-  'Content-Type': 'application/json',
+const getAdminHeaders = (): HeadersInit => {
+  const pin = typeof window !== 'undefined' ? (localStorage.getItem('cs_admin_pin') || '1234') : '1234';
+  return {
+    'Content-Type': 'application/json',
+    'x-admin-secret': pin
   };
+};
 
 export interface UniversalUserWorkspaceProps {
   candidateId: string | null;
@@ -134,7 +138,10 @@ export default function UniversalUserWorkspace({
   const loadCandidateData = async (id: string) => {
     try {
       setLoading(true);
-      const res = await fetch(`/api/admin/candidates/${id}`, { headers: ADMIN_REQ_HEADERS });
+      const res = await fetch(`/api/admin/candidates/${id}`, {
+        headers: getAdminHeaders(),
+        credentials: 'include'
+      });
       const data = await res.json();
       if (data.success && data.candidate) {
         setFormData(data.candidate);
@@ -202,7 +209,8 @@ export default function UniversalUserWorkspace({
 
       const res = await fetch(`/api/admin/candidates/${candidateId}`, {
         method: 'PATCH',
-        headers: ADMIN_REQ_HEADERS,
+        headers: getAdminHeaders(),
+        credentials: 'include',
         body: JSON.stringify(payload)
       });
 
@@ -239,7 +247,8 @@ export default function UniversalUserWorkspace({
     try {
       const res = await fetch(`/api/admin/candidates/${candidateId}`, {
         method: 'PATCH',
-        headers: ADMIN_REQ_HEADERS,
+        headers: getAdminHeaders(),
+        credentials: 'include',
         body: JSON.stringify({
           newPassword: tempPass,
           reason: 'অ্যাডমিন কর্তৃক সিকিউর টেম্পোরারি পাসওয়ার্ড রিসেট'

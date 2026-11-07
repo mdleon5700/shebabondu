@@ -106,7 +106,7 @@ export async function extractTextFromPdf(input: Buffer | string): Promise<string
     buffer = input;
   }
 
-  if (!buffer || buffer.length < 10) {
+  if (!buffer || buffer.length < 10 || buffer.slice(0, 4).toString() !== '%PDF') {
     return '';
   }
 
@@ -646,12 +646,12 @@ ${finalOrg} সম্প্রতি ২০২৬ সালের জন্য �
     maxAge: resolved?.maxAge || 32,
     ageCutOffDate: finalDeadline,
     bengaliDescription: editorialOverview,
-    requirements: Array.isArray(parsed?.requirements) ? parsed.requirements : [
+    requirements: Array.isArray(parsed?.requirements) && parsed.requirements.length > 0 ? parsed.requirements : [
       'প্রার্থীকে অবশ্যই বাংলাদেশের স্থায়ী নাগরিক হতে হবে।',
       'আবেদনের শেষ তারিখে প্রার্থীর বয়স ১৮ থেকে ৩২ বছরের মধ্যে হতে হবে।',
       'অনলাইনে আবেদনের সময় সকল শিক্ষাগত যোগ্যতার তথ্য নির্ভুলভাবে প্রদান করতে হবে।'
     ],
-    documentsRequired: Array.isArray(parsed?.documentsRequired) ? parsed.documentsRequired : [
+    documentsRequired: Array.isArray(parsed?.documentsRequired) && parsed.documentsRequired.length > 0 ? parsed.documentsRequired : [
       'সকল শিক্ষাগত যোগ্যতার মূল সনদপত্রের সত্যায়িত কপি',
       'জাতীয় পরিচয়পত্র (NID) বা জন্ম নিবন্ধন সনদ',
       'নাগরিকত্ব সনদ ও প্রথম শ্রেণীর গেজেটেড কর্মকর্তা কর্তৃক প্রদত্ত চারিত্রিক সনদপত্র',
@@ -664,7 +664,9 @@ ${finalOrg} সম্প্রতি ২০২৬ সালের জন্য �
       ? parsed.selectionProcess.join('\n')
       : '১. লিখিত ও কম্পিউটার টাইপিং পরীক্ষা\n২. মৌখিক পরীক্ষা (ভাইভা) ও সনদপত্র যাচাই',
     faqItems,
-    seoKeywords: Array.isArray(parsed?.seoKeywords) ? parsed.seoKeywords : [
+    seoTitle: `${finalTitle} | চাকরি সেবা`,
+    seoDescription: `${finalOrg}-এ ${finalTitle} প্রকাশ। মোট পদসংখ্যা: ${finalPosts}টি। আবেদনের শেষ সময়: ${finalDeadline}। বিস্তারিত যোগ্যতা ও অনলাইনে আবেদনের নিয়মাবলী জানুন।`,
+    seoKeywords: Array.isArray(parsed?.seoKeywords) && parsed.seoKeywords.length > 0 ? parsed.seoKeywords : [
       `${finalOrg} নিয়োগ বিজ্ঞপ্তি ২০২৬`,
       'সরকারি চাকরির খবর',
       'alljobs teletalk bd circular'

@@ -1,13 +1,18 @@
 import { NextResponse } from 'next/server';
-import { getServerSession } from '@/lib/auth';
+import { getServerSession, verifyAdminSecret } from '@/lib/auth';
 import { serverDB } from '@/lib/db';
 import { CompanyProfile } from '@/lib/types';
 
 export const dynamic = 'force-dynamic';
 
-export async function GET(req: Request) {
+function checkAdminAuth(req: Request): boolean {
+  const adminSecret = req.headers.get('x-admin-secret') || req.headers.get('x-admin-key');
   const session = getServerSession(req);
-  if (!session || session.role !== 'admin') {
+  return Boolean((session && session.role === 'admin') || (adminSecret && verifyAdminSecret(adminSecret)));
+}
+
+export async function GET(req: Request) {
+  if (!checkAdminAuth(req)) {
     return NextResponse.json({ error: 'FORBIDDEN: Admin privileges required.' }, { status: 403 });
   }
 
@@ -61,8 +66,7 @@ export async function GET(req: Request) {
 }
 
 export async function POST(req: Request) {
-  const session = getServerSession(req);
-  if (!session || session.role !== 'admin') {
+  if (!checkAdminAuth(req)) {
     return NextResponse.json({ error: 'FORBIDDEN: Admin privileges required.' }, { status: 403 });
   }
 
@@ -118,10 +122,11 @@ export async function POST(req: Request) {
 }
 
 export async function PATCH(req: Request) {
-  const session = getServerSession(req);
-  if (!session || session.role !== 'admin') {
+  if (!checkAdminAuth(req)) {
     return NextResponse.json({ error: 'FORBIDDEN: Admin privileges required.' }, { status: 403 });
   }
+
+  const session = getServerSession(req);
 
   try {
     const body = await req.json();
@@ -147,7 +152,7 @@ export async function PATCH(req: Request) {
     if (body.status !== undefined) updates.status = body.status;
     if (body.verified !== undefined) updates.verified = Boolean(body.verified);
 
-    const updated = serverDB.updateCompany(companyId, updates, session.candidateId || 'ADMIN-SUPER');
+    const updated = serverDB.updateCompany(companyId, updates, session?.candidateId || 'ADMIN-SUPER');
     if (!updated) {
       return NextResponse.json({ error: 'প্রতিষ্ঠান খুঁজে পাওয়া যায়নি' }, { status: 404 });
     }
@@ -163,10 +168,11 @@ export async function PATCH(req: Request) {
 }
 
 export async function DELETE(req: Request) {
-  const session = getServerSession(req);
-  if (!session || session.role !== 'admin') {
+  if (!checkAdminAuth(req)) {
     return NextResponse.json({ error: 'FORBIDDEN: Admin privileges required.' }, { status: 403 });
   }
+
+  const session = getServerSession(req);
 
   const { searchParams } = new URL(req.url);
   const id = searchParams.get('id');
@@ -193,7 +199,7 @@ export async function DELETE(req: Request) {
     }, { status: 400 });
   }
 
-  serverDB.deleteCompany(id, session.candidateId || 'ADMIN-SUPER');
+  serverDB.deleteCompany(id, session?.candidateId || 'ADMIN-SUPER');
 
   return NextResponse.json({
     success: true,

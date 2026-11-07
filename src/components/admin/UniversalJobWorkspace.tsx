@@ -257,7 +257,7 @@ export default function UniversalJobWorkspace({
     setAiSuccessMessage(null);
 
     const savedPin = typeof window !== 'undefined' ? (localStorage.getItem('cs_admin_pin') || '') : '';
-    const adminSecret = savedPin || '1234';
+    const adminSecret = savedPin && ['1234', '123456', 'admin', 'admin123', 'chakriseba2026', 'CHAKRISEBA_SECURE_ADMIN_2026'].includes(savedPin) ? savedPin : '1234';
 
     try {
       const res = await fetch('/api/admin/gemini/parse-circular', {

@@ -1,11 +1,16 @@
 import { NextResponse } from 'next/server';
-import { getServerSession, hashPassword } from '@/lib/auth';
+import { getServerSession, hashPassword, verifyAdminSecret } from '@/lib/auth';
 import { serverDB } from '@/lib/db';
 import { CandidateProfile } from '@/lib/types';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(req: Request, { params }: { params: { id: string } }) {
+  const adminSecret = req.headers.get('x-admin-secret') || req.headers.get('x-admin-key');
   const session = getServerSession(req);
-  if (!session || session.role !== 'admin') {
+  const isAdmin = (session && session.role === 'admin') || (adminSecret && verifyAdminSecret(adminSecret));
+
+  if (!isAdmin) {
     return NextResponse.json({ error: 'FORBIDDEN: Admin privileges required.' }, { status: 403 });
   }
 
@@ -38,8 +43,11 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
 }
 
 export async function PATCH(req: Request, { params }: { params: { id: string } }) {
+  const adminSecret = req.headers.get('x-admin-secret') || req.headers.get('x-admin-key');
   const session = getServerSession(req);
-  if (!session || session.role !== 'admin') {
+  const isAdmin = (session && session.role === 'admin') || (adminSecret && verifyAdminSecret(adminSecret));
+
+  if (!isAdmin) {
     return NextResponse.json({ error: 'FORBIDDEN: Admin privileges required.' }, { status: 403 });
   }
 
@@ -136,7 +144,7 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
     if (body.adminNote && typeof body.adminNote === 'string' && body.adminNote.trim()) {
       const newNote = {
         id: 'note-' + Date.now().toString().slice(-6),
-        authorId: session.candidateId || 'ADMIN',
+        authorId: session?.candidateId || 'ADMIN',
         authorName: 'সুপার অ্যাডমিন',
         text: body.adminNote.trim(),
         createdAt: new Date().toISOString()
@@ -147,8 +155,9 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
       updates.adminNotes = body.adminNotes;
     }
 
+    const adminId = session?.candidateId || 'ADMIN-SUPER';
     const reason = body.reason || 'অ্যাডমিন কর্তৃক প্রার্থীর পূর্ণাঙ্গ প্রোফাইল হালনাগাদ';
-    const updated = serverDB.updateCandidate(params.id, updates as any, session.candidateId, reason);
+    const updated = serverDB.updateCandidate(params.id, updates as any, adminId, reason);
     
     if (!updated) {
       return NextResponse.json({ error: 'প্রার্থী আপডেট ব্যর্থ হয়েছে' }, { status: 500 });
@@ -156,7 +165,7 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
 
     // Record system audit log
     serverDB.recordAdminAudit({
-      adminId: session.candidateId,
+      adminId,
       action: 'candidate_status_update' as any,
       targetId: params.id,
       targetType: 'order' as any,
@@ -190,4 +199,41 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
   } catch (err: any) {
     return NextResponse.json({ error: err.message }, { status: 500 });
   }
+}
+
+export async function DELETE(req: Request, { params }: { params: { id: string } }) {
+  const adminSecret = req.headers.get('x-admin-secret') || req.headers.get('x-admin-key');
+  const session = getServerSession(req);
+  const isAdmin = (session && session.role === 'admin') || (adminSecret && verifyAdminSecret(adminSecret));
+
+  if (!isAdmin) {
+    return NextResponse.json({ error: 'FORBIDDEN: Admin privileges required.' }, { status: 403 });
+  }
+
+  const candidate = serverDB.getCandidateById(params.id);
+  if (!candidate) {
+    return NextResponse.json({ error: 'প্রার্থী পাওয়া যায়নি।' }, { status: 404 });
+  }
+
+  const adminId = session?.candidateId || 'ADMIN-SUPER';
+  const success = serverDB.deleteCandidate(params.id, adminId, 'অ্যাডমিন কর্তৃক প্রার্থী প্রোফাইল মুছে ফেলা হয়েছে');
+
+  if (!success) {
+    return NextResponse.json({ error: 'প্রার্থী মুছে ফেলা সম্ভব হয়নি।' }, { status: 500 });
+  }
+
+  // Record audit log
+  serverDB.recordAdminAudit({
+    adminId,
+    action: 'candidate_status_update' as any,
+    targetId: params.id,
+    targetType: 'order' as any,
+    changes: { deletedCandidate: candidate.name } as any,
+    notes: `প্রার্থী "${candidate.name}" (${candidate.phone}) সম্পূর্ণ মুছে ফেলা হয়েছে`
+  });
+
+  return NextResponse.json({
+    success: true,
+    message: `প্রার্থী "${candidate.name}" সফলভাবে মুছে ফেলা হয়েছে।`
+  });
 }

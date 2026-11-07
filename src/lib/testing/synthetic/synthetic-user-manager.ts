@@ -246,6 +246,35 @@ export class SyntheticUserManager {
     return updated;
   }
 
+  static deleteSyntheticUser(id: string): boolean {
+    const store = this.loadStore();
+    if (!store[id]) return false;
+    delete store[id];
+    this.inMemoryStore = store;
+    this.buildIndexes();
+    this.persistStore();
+
+    // Clean up associated docs
+    try {
+      const docs = this.loadDocsStore();
+      if (docs[id]) {
+        delete docs[id];
+        this.persistDocsStore();
+      }
+    } catch {}
+
+    // Clean up associated notifs
+    try {
+      const notifs = this.loadNotifsStore();
+      if (notifs[id]) {
+        delete notifs[id];
+        this.persistNotifsStore();
+      }
+    } catch {}
+
+    return true;
+  }
+
   static getSyntheticUsersByDistrict(districtBnOrEn: string): SyntheticPersona[] {
     const all = this.getAllSyntheticUsers();
     const clean = districtBnOrEn.trim().toUpperCase();

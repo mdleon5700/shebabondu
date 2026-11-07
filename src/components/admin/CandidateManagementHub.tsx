@@ -3,6 +3,9 @@
 import React, { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { 
+  Plus,
+  Trash2,
+  Wallet,
   Users, 
   UserCheck, 
   Shield, 
@@ -120,6 +123,124 @@ export default function CandidateManagementHub({
 
   // Universal User Workspace Modal State
   const [editingCandidateId, setEditingCandidateId] = useState<string | null>(null);
+
+  // Create Candidate Modal State
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [createForm, setCreateForm] = useState({
+    name: '',
+    nameBn: '',
+    phone: '',
+    email: '',
+    password: '',
+    gender: 'male',
+    dateOfBirth: '2000-01-01',
+    nid: '',
+    district: 'ঢাকা',
+    division: 'Dhaka',
+    educationLevel: 'স্নাতক / ডিগ্রি',
+    quota: 'none',
+    walletBalance: 0,
+    accountStatus: 'active'
+  });
+  const [isCreatingCandidate, setIsCreatingCandidate] = useState(false);
+  const [createCandidateError, setCreateCandidateError] = useState<string | null>(null);
+
+  const handleCreateCandidate = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setCreateCandidateError(null);
+    if (!createForm.name.trim()) {
+      setCreateCandidateError('প্রার্থীর পূর্ণ নাম আবশ্যক');
+      return;
+    }
+    const cleanPhone = createForm.phone.replace(/[^0-9]/g, '');
+    if (cleanPhone.length < 11) {
+      setCreateCandidateError('সঠিক ১১ ডিজিটের মোবাইল নম্বর দিন');
+      return;
+    }
+    setIsCreatingCandidate(true);
+    try {
+      const pin = typeof window !== 'undefined' ? (localStorage.getItem('cs_admin_pin') || '1234') : '1234';
+      const res = await fetch('/api/admin/candidates', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-admin-secret': pin
+        },
+        credentials: 'include',
+        body: JSON.stringify(createForm)
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || 'নতুন প্রার্থী তৈরি করতে ব্যর্থ হয়েছে');
+      }
+      setIsCreateModalOpen(false);
+      setActionFeedback(`নতুন প্রার্থী "${data.candidate.name}" সফলভাবে তৈরি হয়েছে!`);
+      setTimeout(() => setActionFeedback(null), 4000);
+      if (onRefreshCandidates) onRefreshCandidates();
+    } catch (err: any) {
+      setCreateCandidateError(err.message || 'সার্ভার এরর');
+    } finally {
+      setIsCreatingCandidate(false);
+    }
+  };
+
+  const handleDeleteCandidate = async (candidate: any) => {
+    if (!confirm(`⚠️ সতর্কবার্তা: আপনি কি নিশ্চিত যে প্রার্থী "${candidate.name}" (${candidate.phone}) সম্পূর্ণ মুছে ফেলতে চান?\n\nএর সাথে তার সমস্ত আবেদন ও ডকুমেন্টস মুছে যাবে!`)) {
+      return;
+    }
+    try {
+      const pin = typeof window !== 'undefined' ? (localStorage.getItem('cs_admin_pin') || '1234') : '1234';
+      const res = await fetch(`/api/admin/candidates/${candidate.id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-admin-secret': pin
+        },
+        credentials: 'include'
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || 'প্রার্থী মুছে ফেলা সম্ভব হয়নি');
+      }
+      setActionFeedback(`প্রার্থী "${candidate.name}" সফলভাবে মুছে ফেলা হয়েছে!`);
+      setTimeout(() => setActionFeedback(null), 3500);
+      if (onRefreshCandidates) onRefreshCandidates();
+    } catch (err: any) {
+      alert(err.message || 'অ্যাকশন ব্যর্থ হয়েছে');
+    }
+  };
+
+  const handleQuickAdjustWallet = async (candidate: any) => {
+    const current = Number(candidate.walletBalance) || 0;
+    const amountStr = prompt(`প্রার্থী "${candidate.name}" এর ওয়ালেটে কত টাকা যোগ বা বিয়োগ করতে চান?\nবর্তমান ব্যালেন্স: ৳${current}\n(যেমন: 200 যোগ করতে 200, অথবা 50 বিয়োগ করতে -50 লিখুন)`, '100');
+    if (!amountStr) return;
+    const delta = Number(amountStr);
+    if (isNaN(delta) || delta === 0) {
+      alert('অনুগ্রহ করে সঠিক সংখ্যা লিখুন');
+      return;
+    }
+    const newBalance = Math.max(0, current + delta);
+    try {
+      const pin = typeof window !== 'undefined' ? (localStorage.getItem('cs_admin_pin') || '1234') : '1234';
+      const res = await fetch(`/api/admin/candidates/${candidate.id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-admin-secret': pin
+        },
+        credentials: 'include',
+        body: JSON.stringify({ walletBalance: newBalance, reason: `অ্যাডমিন ওয়ালেট এডজাস্টমেন্ট (${delta >= 0 ? '+' : ''}${delta} ৳)` })
+      });
+      if (res.ok) {
+        candidate.walletBalance = newBalance;
+        setActionFeedback(`"${candidate.name}" এর ওয়ালেট ব্যালেন্স সফলভাবে আপডেট হয়েছে: ৳${newBalance}`);
+        setTimeout(() => setActionFeedback(null), 3500);
+        if (onRefreshCandidates) onRefreshCandidates();
+      }
+    } catch {
+      alert('ওয়ালেট ব্যালেন্স আপডেট ব্যর্থ হয়েছে');
+    }
+  };
 
   const copyToClipboard = (text: string, label: string) => {
     navigator.clipboard.writeText(text);
@@ -307,6 +428,36 @@ export default function CandidateManagementHub({
           <p className="text-xs text-slate-500 mt-1">
             নিবন্ধিত চাকরিপ্রার্থী ডিরেক্টরি, ৩৬০° প্রোফাইল ও সনদ ইন্সপেক্টর, এবং অ্যাকাউন্ট মডারেশন
           </p>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => {
+              setCreateCandidateError(null);
+              setCreateForm({
+                name: '',
+                nameBn: '',
+                phone: '',
+                email: '',
+                password: '',
+                gender: 'male',
+                dateOfBirth: '2000-01-01',
+                nid: '',
+                district: 'ঢাকা',
+                division: 'Dhaka',
+                educationLevel: 'স্নাতক / ডিগ্রি',
+                quota: 'none',
+                walletBalance: 0,
+                accountStatus: 'active'
+              });
+              setIsCreateModalOpen(true);
+            }}
+            className="px-3.5 py-2 bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-700 hover:to-teal-800 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-sm transition-all cursor-pointer shrink-0"
+          >
+            <Plus className="w-4 h-4" />
+            <span>+ নতুন প্রার্থী তৈরি করুন</span>
+          </button>
         </div>
 
         {/* Sub-tab Pill Switcher */}
@@ -1599,6 +1750,221 @@ export default function CandidateManagementHub({
           setSmsMessage(`চাকরি সেবা: জনাব ${cand.name}, আপনার প্রোফাইল সংক্রান্ত জরুরি নোটিশ...`);
         }}
       />
+
+            {/* =========================================================================
+          MODAL 0: CREATE CANDIDATE MODAL
+         ========================================================================= */}
+      {isCreateModalOpen && (
+        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto">
+          <div className="bg-white rounded-3xl max-w-xl w-full p-6 space-y-5 shadow-2xl border border-slate-200 my-8">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+              <div className="flex items-center gap-2.5">
+                <div className="w-10 h-10 rounded-2xl bg-emerald-100 text-emerald-800 flex items-center justify-center">
+                  <Plus className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="font-black text-base text-slate-900">নতুন চাকরিপ্রার্থী নিবন্ধন করুন</h3>
+                  <p className="text-xs text-slate-500">অ্যাডমিন কনসোল থেকে সরাসরি ভল্ট প্রোফাইল তৈরি</p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsCreateModalOpen(false)}
+                className="p-2 text-slate-400 hover:text-slate-700 rounded-xl hover:bg-slate-100 transition-colors cursor-pointer"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {createCandidateError && (
+              <div className="p-3 bg-rose-50 border border-rose-200 text-rose-700 rounded-xl text-xs font-bold flex items-center gap-2">
+                <AlertCircle className="w-4 h-4 shrink-0" />
+                <span>{createCandidateError}</span>
+              </div>
+            )}
+
+            <form onSubmit={handleCreateCandidate} className="space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">পূর্ণ নাম (ইংরেজি) *</label>
+                  <input
+                    type="text"
+                    required
+                    value={createForm.name}
+                    onChange={(e) => setCreateForm({ ...createForm, name: e.target.value })}
+                    placeholder="MD. RAHIM MIA"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 uppercase"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">পূর্ণ নাম (বাংলা)</label>
+                  <input
+                    type="text"
+                    value={createForm.nameBn}
+                    onChange={(e) => setCreateForm({ ...createForm, nameBn: e.target.value })}
+                    placeholder="মোঃ রহিম মিয়া"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">মোবাইল নম্বর (১১ ডিজিট) *</label>
+                  <input
+                    type="tel"
+                    required
+                    value={createForm.phone}
+                    onChange={(e) => setCreateForm({ ...createForm, phone: e.target.value })}
+                    placeholder="01700000000"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold font-mono text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">ইমেইল অ্যাড্রেস</label>
+                  <input
+                    type="email"
+                    value={createForm.email}
+                    onChange={(e) => setCreateForm({ ...createForm, email: e.target.value })}
+                    placeholder="rahim@gmail.com"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">পাসওয়ার্ড (ডিফল্ট: 123456)</label>
+                  <input
+                    type="text"
+                    value={createForm.password}
+                    onChange={(e) => setCreateForm({ ...createForm, password: e.target.value })}
+                    placeholder="123456"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold font-mono text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">জাতীয় পরিচয়পত্র (NID)</label>
+                  <input
+                    type="text"
+                    value={createForm.nid}
+                    onChange={(e) => setCreateForm({ ...createForm, nid: e.target.value })}
+                    placeholder="১০ বা ১৭ ডিজিটের NID"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold font-mono text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">নিজ জেলা</label>
+                  <input
+                    type="text"
+                    value={createForm.district}
+                    onChange={(e) => setCreateForm({ ...createForm, district: e.target.value })}
+                    placeholder="ঢাকা"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">বিভাগ</label>
+                  <select
+                    value={createForm.division}
+                    onChange={(e) => setCreateForm({ ...createForm, division: e.target.value })}
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                  >
+                    <option value="Dhaka">ঢাকা (Dhaka)</option>
+                    <option value="Chittagong">চট্টগ্রাম (Chattogram)</option>
+                    <option value="Rajshahi">রাজশাহী (Rajshahi)</option>
+                    <option value="Khulna">খুলনা (Khulna)</option>
+                    <option value="Barisal">বরিশাল (Barishal)</option>
+                    <option value="Sylhet">সিলেট (Sylhet)</option>
+                    <option value="Rangpur">রংপুর (Rangpur)</option>
+                    <option value="Mymensingh">ময়মনসিংহ (Mymensingh)</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">শিক্ষাগত ডিগ্রি</label>
+                  <select
+                    value={createForm.educationLevel}
+                    onChange={(e) => setCreateForm({ ...createForm, educationLevel: e.target.value })}
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                  >
+                    <option value="স্নাতক / ডিগ্রি">স্নাতক / অনার্স / ডিগ্রি</option>
+                    <option value="মাস্টার্স">মাস্টার্স / স্নাতকোত্তর</option>
+                    <option value="HSC">এইচএসসি / আলিম / ডিপ্লোমা</option>
+                    <option value="SSC">এসএসসি / দাখিল</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">বিশেষ কোটা</label>
+                  <select
+                    value={createForm.quota}
+                    onChange={(e) => setCreateForm({ ...createForm, quota: e.target.value })}
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                  >
+                    <option value="none">সাধারণ (কোনো কোটা নেই)</option>
+                    <option value="freedom_fighter">বীর মুক্তিযোদ্ধা কোটা</option>
+                    <option value="disabled">প্রতিবন্ধী কোটা</option>
+                    <option value="ethnic_minority">ক্ষুদ্র নৃগোষ্ঠী কোটা</option>
+                    <option value="ansar">আনসার ও ভিডিপি কোটা</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">প্রাথমিক ওয়ালেট ব্যালেন্স (৳)</label>
+                  <input
+                    type="number"
+                    value={createForm.walletBalance}
+                    onChange={(e) => setCreateForm({ ...createForm, walletBalance: Number(e.target.value) || 0 })}
+                    placeholder="0"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold font-mono text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">অ্যাকাউন্ট স্ট্যাটাস</label>
+                  <select
+                    value={createForm.accountStatus}
+                    onChange={(e) => setCreateForm({ ...createForm, accountStatus: e.target.value })}
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                  >
+                    <option value="active">সক্রিয় (Active)</option>
+                    <option value="suspended">স্থগিত (Suspended)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-end gap-2 pt-3 border-t border-slate-100">
+                <button
+                  type="button"
+                  onClick={() => setIsCreateModalOpen(false)}
+                  className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition-colors cursor-pointer"
+                >
+                  বাতিল
+                </button>
+                <button
+                  type="submit"
+                  disabled={isCreatingCandidate}
+                  className="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-md transition-all cursor-pointer disabled:opacity-50"
+                >
+                  {isCreatingCandidate ? (
+                    <>
+                      <RefreshCw className="w-4 h-4 animate-spin" />
+                      <span>তৈরি হচ্ছে...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Check className="w-4 h-4" />
+                      <span>প্রার্থী সংরক্ষণ করুন</span>
+                    </>
+                  )}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
 
       {/* =========================================================================
           MODAL 3: PASSWORD RESET SUCCESS MODAL

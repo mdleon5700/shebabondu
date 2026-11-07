@@ -2665,6 +2665,31 @@ export const serverDB = {
     return updated;
   },
 
+  deleteCandidate(id: string, adminId = 'ADMIN', reason?: string): boolean {
+    if (id.startsWith('SYNTH-')) {
+      return SyntheticUserManager.deleteSyntheticUser(id);
+    }
+    const db = loadDB();
+    const existing = db.candidates[id];
+    if (!existing) {
+      return SyntheticUserManager.deleteSyntheticUser(id);
+    }
+
+    delete db.candidates[id];
+    if (db.documents && db.documents[id]) delete db.documents[id];
+    if (db.applications && db.applications[id]) delete db.applications[id];
+    if (db.savedJobs && db.savedJobs[id]) delete db.savedJobs[id];
+    if (db.transactions && db.transactions[id]) delete db.transactions[id];
+    if (db.notifications && db.notifications[id]) delete db.notifications[id];
+    saveDB(db);
+
+    try {
+      SyntheticUserManager.deleteSyntheticUser(id);
+    } catch {}
+
+    return true;
+  },
+
 
 
 

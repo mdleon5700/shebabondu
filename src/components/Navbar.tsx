@@ -257,18 +257,18 @@ export default function Navbar({ initialSettings }: { initialSettings?: any } = 
       
       // Determine real or reliable fallback right area width based on actual DOM measurement and auth state
       const measuredRightWidth = rightAreaRef.current?.offsetWidth || 0;
-      const rightWidth = measuredRightWidth > 80
-        ? (measuredRightWidth + 12)
-        : (auth.isLoggedIn ? (auth.role === 'admin' ? 220 : 360) : 490);
+      const rightWidth = measuredRightWidth > 60
+        ? measuredRightWidth
+        : (auth.isLoggedIn ? (auth.role === 'admin' ? 205 : 350) : 375);
 
       // Determine real or reliable logo width
       const measuredLogoWidth = logoRef.current?.offsetWidth || 0;
-      const logoWidth = measuredLogoWidth > 80
+      const logoWidth = measuredLogoWidth > 60
         ? measuredLogoWidth
         : (headerWidth >= 1800 ? 350 : 205);
 
-      // Container horizontal padding (64px on lg) + flex item gaps (24px) + safety buffer (16px)
-      const containerDeduction = 104;
+      // Container horizontal padding (64px on lg) + flex item gaps (12px)
+      const containerDeduction = 76;
       
       const availableSpace = headerWidth - logoWidth - rightWidth - containerDeduction;
 
@@ -279,14 +279,14 @@ export default function Navbar({ initialSettings }: { initialSettings?: any } = 
 
       // Exact pixel width mapping (including flex gap) based on rendered Bengali typography
       const itemWidthsMap: Record<string, number> = {
-        'home': 48,
-        'all-jobs': 136,
-        'govt': 125,
-        'private': 140,
-        'categories': 136,
-        'exam': 142,
-        'career': 122,
-        'urgent-jobs': 126
+        'home': 45,
+        'all-jobs': 122,
+        'govt': 116,
+        'private': 126,
+        'categories': 128,
+        'exam': 130,
+        'career': 114,
+        'urgent-jobs': 116
       };
 
       const getItemEstimatedWidth = (item: NavMenuItem) => {
@@ -294,12 +294,12 @@ export default function Navbar({ initialSettings }: { initialSettings?: any } = 
         const textLen = (item.label || '').length;
         const hasDropdown = Boolean(item.dropdown && item.dropdown.length > 0);
         const hasBadge = Boolean(item.badge);
-        return Math.max(45, Math.round(16 + (textLen * 7.2) + (hasDropdown ? 14 : 0) + (hasBadge ? 24 : 0) + 4));
+        return Math.max(45, Math.round(14 + (textLen * 7.0) + (hasDropdown ? 12 : 0) + (hasBadge ? 22 : 0)));
       };
 
       let accumulatedWidth = 0;
       let count = 0;
-      const moreButtonWidth = 60;
+      const moreButtonWidth = 50;
 
       for (let i = 0; i < navItems.length; i++) {
         const item = navItems[i];
@@ -321,8 +321,25 @@ export default function Navbar({ initialSettings }: { initialSettings?: any } = 
     };
 
     calculateVisibleItems();
-    const timer = setTimeout(calculateVisibleItems, 60);
+    const timer = setTimeout(calculateVisibleItems, 80);
+    const timer2 = setTimeout(calculateVisibleItems, 250);
+
+    let resizeObserver: ResizeObserver | null = null;
+    if (typeof ResizeObserver !== 'undefined') {
+      resizeObserver = new ResizeObserver(() => {
+        calculateVisibleItems();
+      });
+      if (navRef.current) resizeObserver.observe(navRef.current);
+      if (rightAreaRef.current) resizeObserver.observe(rightAreaRef.current);
+    }
+
     window.addEventListener('resize', calculateVisibleItems);
+    return () => {
+      clearTimeout(timer);
+      clearTimeout(timer2);
+      if (resizeObserver) resizeObserver.disconnect();
+      window.removeEventListener('resize', calculateVisibleItems);
+    };
     return () => {
       clearTimeout(timer);
       window.removeEventListener('resize', calculateVisibleItems);

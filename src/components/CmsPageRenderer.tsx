@@ -81,19 +81,68 @@ function SectionBlock({ section }: { section: PageSection }) {
           className={`w-full ${pyClass} px-4 sm:px-6 lg:px-8 text-white relative overflow-hidden`}
           style={{ backgroundColor: bg !== 'transparent' ? bg : '#0f172a', color: textCol }}
         >
-          <div className={`max-w-4xl mx-auto text-${textAlign} space-y-4`}>
-            {section.content?.badge && (
-              <span className="inline-block px-3 py-1 bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 rounded-full text-xs font-bold uppercase tracking-wider">
-                {section.content.badge}
-              </span>
+          <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+            <div className={section.content?.imageUrl ? 'md:col-span-7 space-y-4 text-left' : `md:col-span-12 text-${textAlign} space-y-4`}>
+              {section.content?.badge && (
+                <span className="inline-block px-3 py-1 bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 rounded-full text-xs font-bold uppercase tracking-wider">
+                  {section.content.badge}
+                </span>
+              )}
+              <h1 className="text-3xl sm:text-5xl font-black tracking-tight leading-tight">
+                {section.title}
+              </h1>
+              {section.subtitle && (
+                <p className="text-base sm:text-xl text-slate-300 max-w-2xl leading-relaxed">
+                  {section.subtitle}
+                </p>
+              )}
+            </div>
+            {section.content?.imageUrl && (
+              <div className="md:col-span-5 flex justify-center">
+                <img 
+                  src={section.content.imageUrl} 
+                  alt={section.title} 
+                  className="rounded-3xl shadow-2xl border border-white/20 max-h-80 object-cover" 
+                />
+              </div>
             )}
-            <h1 className="text-3xl sm:text-5xl font-black tracking-tight leading-tight">
-              {section.title}
-            </h1>
-            {section.subtitle && (
-              <p className="text-base sm:text-xl text-slate-300 max-w-2xl mx-auto leading-relaxed">
-                {section.subtitle}
-              </p>
+          </div>
+        </div>
+      );
+
+    case 'banner-image':
+      return (
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="relative overflow-hidden rounded-3xl border border-slate-200/90 shadow-md group">
+            <img 
+              src={section.content?.imageUrl || 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=1200&auto=format&fit=crop&q=80'} 
+              alt={section.title || 'ব্যানার'}
+              style={{
+                height: section.style?.imageHeight === 'sm' ? '200px' : section.style?.imageHeight === 'lg' ? '450px' : '320px',
+                width: '100%',
+                objectFit: 'cover'
+              }}
+              className="w-full transition-transform duration-300 group-hover:scale-105"
+            />
+            {(section.title || section.content?.badge || section.content?.buttonLabel) && (
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/30 to-transparent flex flex-col justify-end p-6 sm:p-10 text-white space-y-3">
+                {section.content?.badge && (
+                  <span className="inline-block px-3 py-1 bg-emerald-600 text-white rounded-full text-xs font-bold uppercase tracking-wider w-fit">
+                    {section.content.badge}
+                  </span>
+                )}
+                <h2 className="text-2xl sm:text-3xl font-black">{section.title}</h2>
+                {section.subtitle && <p className="text-sm sm:text-base text-slate-200 max-w-xl">{section.subtitle}</p>}
+                {(section.content?.buttonUrl || section.content?.linkUrl) && (
+                  <Link
+                    href={section.content?.buttonUrl || section.content?.linkUrl}
+                    className="inline-flex items-center gap-2 px-5 py-2.5 bg-white text-slate-950 rounded-xl font-bold text-xs sm:text-sm shadow-md hover:bg-emerald-50 transition-colors w-fit"
+                  >
+                    <span>{section.content?.buttonLabel || 'বিস্তারিত দেখুন'}</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </Link>
+                )}
+              </div>
             )}
           </div>
         </div>

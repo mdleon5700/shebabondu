@@ -12,6 +12,8 @@ interface HeroCmsData {
     ctaUrl?: string;
     secondaryCtaText?: string;
     secondaryCtaUrl?: string;
+    imageUrl?: string;
+    imagePosition?: string;
     items?: Array<{ title: string; desc: string }>;
   };
   style?: {
@@ -22,6 +24,7 @@ interface HeroCmsData {
     textColor?: string;
     textAlign?: string;
     paddingY?: string;
+    imageWidth?: string;
   };
 }
 
@@ -180,6 +183,22 @@ export default function HeroSection({ initialData }: { initialData?: HeroCmsData
           </div>
 
           <div className="hidden lg:flex lg:col-span-5 relative items-center justify-center">
+            {cmsData?.content?.imageUrl ? (
+              <div className="relative w-full flex items-center justify-center py-4">
+                <div className="relative overflow-hidden rounded-3xl border border-emerald-500/30 shadow-2xl">
+                  <img 
+                    src={cmsData.content.imageUrl} 
+                    alt={heroTitle}
+                    style={{
+                      maxWidth: cmsData.style?.imageWidth === 'sm' ? '250px' : cmsData.style?.imageWidth === 'lg' ? '450px' : cmsData.style?.imageWidth === 'full' ? '100%' : '360px',
+                      maxHeight: '400px',
+                      objectFit: 'cover'
+                    }}
+                    className="rounded-3xl"
+                  />
+                </div>
+              </div>
+            ) : (
             <div className="relative w-full max-w-[480px] flex items-center justify-center py-4">
               <div className="absolute w-[300px] h-[300px] sm:w-[380px] sm:h-[380px] rounded-full bg-emerald-500/20 blur-3xl pointer-events-none" />
               <div className="absolute w-[220px] h-[220px] sm:w-[280px] sm:h-[280px] rounded-full bg-teal-400/20 blur-2xl pointer-events-none" />
@@ -211,6 +230,7 @@ export default function HeroSection({ initialData }: { initialData?: HeroCmsData
                 </div>
               </div>
             </div>
+            )}
           </div>
         </div>
       </div>

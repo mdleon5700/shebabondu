@@ -6,10 +6,13 @@ import CmsPageRenderer from '@/components/CmsPageRenderer';
 
 export const dynamic = 'force-dynamic';
 
-export const metadata: Metadata = {
-  title: 'ব্যবহারের শর্তাবলী (Terms & Conditions) | চাকরি সেবা',
-  description: 'চাকরি সেবা ওয়েবসাইট ব্যবহারের সাধারণ নিয়মাবলী ও শর্তাবলী।',
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const page = serverDB.getPublishedPageById('terms-and-conditions') as unknown as PageRecord;
+  return {
+    title: page?.metaTitle || page?.title || 'ব্যবহারের শর্তাবলী (Terms & Conditions) | চাকরি সেবা',
+    description: page?.metaDescription || 'চাকরি সেবা ওয়েবসাইট ব্যবহারের সাধারণ নিয়মাবলী ও শর্তাবলী।',
+  };
+}
 
 export default function TermsPage() {
   const page = serverDB.getPublishedPageById('terms-and-conditions') as unknown as PageRecord || { id: 'terms-and-conditions', slug: '/terms-and-conditions', title: 'terms-and-conditions', metaTitle: '', metaDescription: '', status: 'published', version: 1, sections: [], updatedAt: '', publishedAt: '' } as unknown as PageRecord;

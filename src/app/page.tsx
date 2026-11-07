@@ -1608,6 +1608,87 @@ export default function HomePage() {
         </section>
       )}
 
+      {/* 9. DYNAMIC CUSTOM CMS SECTIONS ADDED FROM BUILDER */}
+      {(homeSections || [])
+        .filter((s: any) => s.isVisible !== false && !['hero', 'how-it-works', 'cta', 'testimonials', 'faq', 'jobs'].includes(s.type) && !['sec-home-hero', 'sec-home-how-it-works', 'sec-home-cta-banner', 'sec-home-reviews', 'sec-home-faq', 'sec-home-jobs'].includes(s.id))
+        .map((sec: any, idx: number) => {
+          if (sec.type === 'banner-image') {
+            return (
+              <section key={sec.id || idx} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+                <div className="relative overflow-hidden rounded-3xl border border-slate-200/90 shadow-lg group">
+                  <img 
+                    src={sec.content?.imageUrl || 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=1200&auto=format&fit=crop&q=80'} 
+                    alt={sec.title || 'ব্যানার'}
+                    style={{
+                      height: sec.style?.imageHeight === 'sm' ? '200px' : sec.style?.imageHeight === 'lg' ? '450px' : '320px',
+                      width: '100%',
+                      objectFit: 'cover'
+                    }}
+                    className="w-full transition-transform duration-300 group-hover:scale-105"
+                  />
+                  {(sec.title || sec.content?.badge || sec.content?.buttonLabel) && (
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/30 to-transparent flex flex-col justify-end p-6 sm:p-10 text-white space-y-3">
+                      {sec.content?.badge && (
+                        <span className="inline-block px-3 py-1 bg-emerald-600 text-white rounded-full text-xs font-bold uppercase tracking-wider w-fit">
+                          {sec.content.badge}
+                        </span>
+                      )}
+                      <h3 className="text-2xl sm:text-3xl font-black">{sec.title}</h3>
+                      {sec.subtitle && <p className="text-sm sm:text-base text-slate-200 max-w-xl">{sec.subtitle}</p>}
+                      {(sec.content?.buttonUrl || sec.content?.linkUrl) && (
+                        <Link
+                          href={sec.content?.buttonUrl || sec.content?.linkUrl}
+                          className="inline-flex items-center gap-2 px-5 py-2.5 bg-white text-slate-950 rounded-xl font-bold text-xs sm:text-sm shadow-md hover:bg-emerald-50 transition-colors w-fit"
+                        >
+                          <span>{sec.content?.buttonLabel || 'বিস্তারিত দেখুন'}</span>
+                          <ArrowRight className="w-4 h-4" />
+                        </Link>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </section>
+            );
+          }
+
+          if (sec.type === 'features') {
+            return (
+              <section key={sec.id || idx} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+                <div className="text-center mb-8 space-y-2">
+                  <h3 className="text-2xl sm:text-3xl font-black text-slate-900">{sec.title}</h3>
+                  {sec.subtitle && <p className="text-sm sm:text-base text-slate-600">{sec.subtitle}</p>}
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {(sec.content?.items || []).map((item: any, i: number) => (
+                    <div key={i} className="bg-white p-6 rounded-2xl border border-slate-200/90 shadow-2xs space-y-2">
+                      <h4 className="font-bold text-base text-slate-900">{item.title}</h4>
+                      <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">{item.desc || item.description}</p>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            );
+          }
+
+          if (sec.type === 'text') {
+            return (
+              <section key={sec.id || idx} className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+                <div className="bg-white rounded-3xl border border-slate-200 p-8 sm:p-10 shadow-sm space-y-4">
+                  <h3 className="text-xl sm:text-2xl font-black text-slate-900 border-l-4 border-emerald-600 pl-3">
+                    {sec.title}
+                  </h3>
+                  {sec.subtitle && <p className="text-sm text-slate-600 leading-relaxed pl-4">{sec.subtitle}</p>}
+                  {sec.content?.bodyText && (
+                    <p className="text-sm text-slate-700 leading-relaxed pl-4 whitespace-pre-line">{sec.content.bodyText}</p>
+                  )}
+                </div>
+              </section>
+            );
+          }
+
+          return null;
+        })}
+
       </div>
     </div>
   );

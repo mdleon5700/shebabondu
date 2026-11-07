@@ -46,15 +46,17 @@ const defaultMetadata: Metadata = {
 };
 
 export function generateMetadata(): Metadata {
+  const homePage = serverDB.getPageById('home') || serverDB.getPages().find(p => p.id === 'home' || p.slug === '/');
   const settings = serverDB.getPlatformSettings();
-  const title = settings.seo?.defaultTitle || 'চাকরি সেবা • Chakri Sheba | বিডি চাকরির খবর ও আবেদন সার্ভিস';
-  const description = settings.seo?.defaultDescription || 'বাংলাদেশের সকল সরকারি ও বেসরকারি চাকরির নিয়মিত আপডেট এবং ঘরে বসেই নির্ভুল আবেদনের বিশ্বস্ত প্ল্যাটফর্ম।';
+  const title = homePage?.metaTitle || homePage?.title || settings.seo?.defaultTitle || 'চাকরি সেবা • Chakri Sheba | বিডি চাকরির খবর ও আবেদন সার্ভিস';
+  const description = homePage?.metaDescription || settings.seo?.defaultDescription || 'বাংলাদেশের সকল সরকারি ও বেসরকারি চাকরির নিয়মিত আপডেট এবং ঘরে বসেই নির্ভুল আবেদনের বিশ্বস্ত প্ল্যাটফর্ম।';
+  const ogImage = (homePage as any)?.ogImage || (homePage as any)?.content?.ogImage || settings.seo?.defaultOgImage;
   return {
     ...defaultMetadata,
     title: { default: title, template: '%s | চাকরি সেবা' },
     description,
     keywords: settings.seo?.defaultKeywords,
-    openGraph: { ...defaultMetadata.openGraph, title, description, images: settings.seo?.defaultOgImage ? [settings.seo.defaultOgImage] : [] },
+    openGraph: { ...defaultMetadata.openGraph, title, description, images: ogImage ? [ogImage] : [] },
     twitter: { ...defaultMetadata.twitter, title, description }
   };
 }

@@ -3015,7 +3015,7 @@ export interface AdminAuditLog {
 
 
 
-export type SectionType = 'hero' | 'features' | 'jobs' | 'cta' | 'faq' | 'text' | 'stats' | 'how-it-works' | 'testimonials';
+export type SectionType = 'hero' | 'features' | 'jobs' | 'cta' | 'faq' | 'text' | 'stats' | 'how-it-works' | 'testimonials' | 'banner-image' | 'media-gallery';
 
 
 
@@ -3059,6 +3059,11 @@ export interface SectionStyle {
   titleFontSize?: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl' | '6xl' | string;
   subtitleFontSize?: 'xs' | 'sm' | 'base' | 'lg' | 'xl' | string;
   fontWeight?: 'normal' | 'medium' | 'semibold' | 'bold' | 'black';
+  imageWidth?: 'sm' | 'md' | 'lg' | 'full' | string;
+  imageHeight?: 'auto' | 'sm' | 'md' | 'lg' | string;
+  imageFit?: 'contain' | 'cover' | 'fill' | string;
+  imageBorderRadius?: 'none' | 'md' | 'xl' | '2xl' | 'full' | string;
+  imageAlignment?: 'left' | 'center' | 'right' | string;
 
 
 

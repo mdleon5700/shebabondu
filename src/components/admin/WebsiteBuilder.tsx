@@ -150,6 +150,7 @@ export default function WebsiteBuilder({ initialPageId, onNavigateToPages }: Web
       id: 'sec-' + Date.now(),
       type,
       title: type === 'hero' ? 'নতুন ব্যানার শিরোনাম' :
+             type === 'banner-image' ? 'প্রচারণামূলক ব্যানার ও ছবি' :
              type === 'jobs' ? 'চলমান সকল চাকরির সার্কুলার ও বিজ্ঞপ্তি' :
              type === 'how-it-works' ? 'কীভাবে ঘরে বসেই নির্ভুল চাকরি আবেদন করবেন?' :
              type === 'testimonials' ? 'সফল চাকরিপ্রার্থীদের বাস্তব অভিজ্ঞতা ও মতামত' :
@@ -190,6 +191,12 @@ export default function WebsiteBuilder({ initialPageId, onNavigateToPages }: Web
         ]
       } : type === 'cta' ? {
         buttonLabel: 'আবেদন করুন',
+        buttonUrl: '/jobs'
+      } : type === 'banner-image' ? {
+        imageUrl: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=1200&auto=format&fit=crop&q=80',
+        imageAlt: 'চাকরি সেবা ব্যানার',
+        badge: 'অফিসিয়াল আপডেট',
+        buttonLabel: 'সার্কুলার দেখুন',
         buttonUrl: '/jobs'
       } : type === 'hero' ? {
         badge: '⚡ বিশেষ বিজ্ঞপ্তি',
@@ -349,6 +356,15 @@ export default function WebsiteBuilder({ initialPageId, onNavigateToPages }: Web
           </div>
 
           <div className="flex items-center gap-1.5 mt-4">
+            <button
+              onClick={() => setShowPageSettingsModal(true)}
+              className="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shadow-2xs"
+              title="পৃষ্ঠা সেটিংস ও এসইও (Meta Title, Description, Slug)"
+            >
+              <Settings className="w-3.5 h-3.5 text-slate-700" />
+              <span>পৃষ্ঠা এসইও ও সেটিংস</span>
+            </button>
+
             <button
               onClick={() => setShowNewPageModal(true)}
               className="px-3 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shadow-xs"
@@ -621,8 +637,22 @@ export default function WebsiteBuilder({ initialPageId, onNavigateToPages }: Web
                                 </div>
                               </div>
 
-                              {/* Right Side 3D Floating Orb Emblems */}
+                              {/* Right Side 3D Floating Orb Emblems or Custom Hero Image */}
                               <div className="hidden lg:flex lg:col-span-4 flex-col items-center justify-center">
+                                {sec.content?.imageUrl ? (
+                                  <div className="relative overflow-hidden rounded-2xl border border-emerald-500/30 shadow-2xl">
+                                    <img 
+                                      src={sec.content.imageUrl} 
+                                      alt={sec.title} 
+                                      style={{
+                                        maxWidth: sec.style?.imageWidth === 'sm' ? '200px' : sec.style?.imageWidth === 'lg' ? '400px' : sec.style?.imageWidth === 'full' ? '100%' : '300px',
+                                        maxHeight: '320px',
+                                        objectFit: 'cover'
+                                      }}
+                                      className="rounded-2xl"
+                                    />
+                                  </div>
+                                ) : (
                                 <div className="relative p-6 rounded-3xl bg-emerald-900/30 border border-emerald-500/30 backdrop-blur-md text-center space-y-3 shadow-2xl">
                                   <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-emerald-500 to-teal-400 mx-auto flex items-center justify-center shadow-lg shadow-emerald-500/30">
                                     <Briefcase className="w-8 h-8 text-slate-950" />
@@ -638,6 +668,7 @@ export default function WebsiteBuilder({ initialPageId, onNavigateToPages }: Web
                                     <span className="text-white text-[11px] font-bold ml-1">৫.০ রেটিং</span>
                                   </div>
                                 </div>
+                                )}
                               </div>
                             </div>
                           </div>
@@ -824,6 +855,34 @@ export default function WebsiteBuilder({ initialPageId, onNavigateToPages }: Web
                           </div>
                         )}
 
+                        {sec.type === 'banner-image' && (
+                          <div className="max-w-4xl mx-auto px-4 space-y-3">
+                            <div className="relative overflow-hidden rounded-2xl border border-slate-200 shadow-md">
+                              <img 
+                                src={sec.content?.imageUrl || 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=1200&auto=format&fit=crop&q=80'} 
+                                alt={sec.title || 'ব্যানার'}
+                                style={{
+                                  height: sec.style?.imageHeight === 'sm' ? '180px' : sec.style?.imageHeight === 'lg' ? '450px' : '300px',
+                                  width: '100%',
+                                  objectFit: 'cover'
+                                }}
+                                className="w-full"
+                              />
+                              {(sec.title || sec.content?.badge) && (
+                                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/35 to-transparent flex flex-col justify-end p-6 text-white text-left space-y-2">
+                                  {sec.content?.badge && (
+                                    <span className="inline-block px-2.5 py-0.5 bg-emerald-600 text-white rounded-md text-[10px] font-bold uppercase w-fit">
+                                      {sec.content.badge}
+                                    </span>
+                                  )}
+                                  <h3 className="text-xl sm:text-2xl font-black">{sec.title}</h3>
+                                  {sec.subtitle && <p className="text-xs sm:text-sm text-slate-200">{sec.subtitle}</p>}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        )}
+
                         {sec.type === 'stats' && (
                           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 py-2">
                             <div className="p-3 bg-white/10 rounded-xl">
@@ -887,6 +946,7 @@ export default function WebsiteBuilder({ initialPageId, onNavigateToPages }: Web
                     <button onClick={() => handleAddSection('stats')} className="px-3 py-1.5 bg-white border border-slate-300 hover:border-emerald-500 rounded-xl text-xs font-bold text-slate-800 transition-all">+ পরিসংখ্যান</button>
                     <button onClick={() => handleAddSection('faq')} className="px-3 py-1.5 bg-white border border-slate-300 hover:border-emerald-500 rounded-xl text-xs font-bold text-slate-800 transition-all">+ সাধারণ জিজ্ঞাসা (FAQ)</button>
                     <button onClick={() => handleAddSection('text')} className="px-3 py-1.5 bg-white border border-slate-300 hover:border-emerald-500 rounded-xl text-xs font-bold text-slate-800 transition-all">+ অনুচ্ছেদ / বডি টেক্সট</button>
+                    <button onClick={() => handleAddSection('banner-image')} className="px-3 py-1.5 bg-indigo-50 border border-indigo-300 hover:border-indigo-500 rounded-xl text-xs font-bold text-indigo-900 transition-all">+ ব্যানার ইমেজ ও মিডিয়া</button>
                   </div>
                 </div>
               )}
@@ -1368,6 +1428,168 @@ export default function WebsiteBuilder({ initialPageId, onNavigateToPages }: Web
                         />
                       </div>
                     </div>
+                  </div>
+
+                  {/* Hero Graphic & Image Resizing */}
+                  <div className="p-3 bg-slate-50 rounded-2xl border border-slate-200 space-y-2">
+                    <span className="text-[11px] font-extrabold text-indigo-800 flex items-center gap-1.5">
+                      <Palette className="w-3.5 h-3.5 text-indigo-600" />
+                      <span>হিরো ইমেজ ও গ্রাফিক্স (Hero Image & Resizing)</span>
+                    </span>
+                    <div>
+                      <label className="text-[10px] font-bold text-slate-500 block mb-1">ইমেজ URL (Hero Image URL)</label>
+                      <input
+                        type="text"
+                        value={activeSection.content?.imageUrl || ''}
+                        onChange={(e) => {
+                          const imageUrl = e.target.value;
+                          updateCurrentPage(p => ({
+                            ...p,
+                            sections: p.sections.map(s => s.id === activeSection.id ? {
+                              ...s,
+                              content: { ...s.content, imageUrl }
+                            } : s)
+                          }));
+                        }}
+                        placeholder="https://... বা /images/hero-illustration.png"
+                        className="w-full px-2.5 py-1.5 bg-white border border-slate-300 rounded-xl text-xs font-mono"
+                      />
+                    </div>
+                    <div className="grid grid-cols-2 gap-2">
+                      <div>
+                        <label className="text-[10px] font-bold text-slate-500 block mb-1">পজিশন (Position)</label>
+                        <select
+                          value={activeSection.content?.imagePosition || 'right'}
+                          onChange={(e) => {
+                            const imagePosition = e.target.value;
+                            updateCurrentPage(p => ({
+                              ...p,
+                              sections: p.sections.map(s => s.id === activeSection.id ? {
+                                ...s,
+                                content: { ...s.content, imagePosition }
+                              } : s)
+                            }));
+                          }}
+                          className="w-full px-2 py-1.5 bg-white border border-slate-300 rounded-xl text-xs font-bold"
+                        >
+                          <option value="right">ডানপাশে (Right)</option>
+                          <option value="center">কেন্দ্রে (Center)</option>
+                          <option value="background">ব্যাকগ্রাউন্ড (Background)</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label className="text-[10px] font-bold text-slate-500 block mb-1">ইমেজ সাইজ (Size)</label>
+                        <select
+                          value={activeSection.style?.imageWidth || 'md'}
+                          onChange={(e) => {
+                            const imageWidth = e.target.value;
+                            updateCurrentPage(p => ({
+                              ...p,
+                              sections: p.sections.map(s => s.id === activeSection.id ? {
+                                ...s,
+                                style: { ...s.style, imageWidth }
+                              } : s)
+                            }));
+                          }}
+                          className="w-full px-2 py-1.5 bg-white border border-slate-300 rounded-xl text-xs font-bold"
+                        >
+                          <option value="sm">ছোট (Small)</option>
+                          <option value="md">মাঝারি (Medium)</option>
+                          <option value="lg">বড় (Large)</option>
+                          <option value="full">সম্পূর্ণ (Full)</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Banner Image Specific */}
+              {activeSection.type === 'banner-image' && (
+                <div className="space-y-3 pt-2 border-t border-slate-100">
+                  <div>
+                    <label className="text-[11px] font-bold text-slate-600 block mb-1">ইমেজ URL (Banner Image URL)</label>
+                    <input
+                      type="text"
+                      value={activeSection.content?.imageUrl || ''}
+                      onChange={(e) => {
+                        const imageUrl = e.target.value;
+                        updateCurrentPage(p => ({
+                          ...p,
+                          sections: p.sections.map(s => s.id === activeSection.id ? {
+                            ...s,
+                            content: { ...s.content, imageUrl }
+                          } : s)
+                        }));
+                      }}
+                      placeholder="https://... বা /images/banner.jpg"
+                      className="w-full px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-mono"
+                    />
+                  </div>
+                  <div className="grid grid-cols-2 gap-2">
+                    <div>
+                      <label className="text-[10px] font-bold text-slate-500 block mb-1">ব্যানার উচ্চতা (Height)</label>
+                      <select
+                        value={activeSection.style?.imageHeight || 'md'}
+                        onChange={(e) => {
+                          const imageHeight = e.target.value;
+                          updateCurrentPage(p => ({
+                            ...p,
+                            sections: p.sections.map(s => s.id === activeSection.id ? {
+                              ...s,
+                              style: { ...s.style, imageHeight }
+                            } : s)
+                          }));
+                        }}
+                        className="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold"
+                      >
+                        <option value="sm">কম উচ্চতা (Small - 180px)</option>
+                        <option value="md">মাঝারি (Medium - 300px)</option>
+                        <option value="lg">উচ্চ (Large - 450px)</option>
+                        <option value="auto">স্বাভাবিক (Auto)</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="text-[10px] font-bold text-slate-500 block mb-1">বর্ডার রেডিয়াস (Radius)</label>
+                      <select
+                        value={activeSection.style?.imageBorderRadius || '2xl'}
+                        onChange={(e) => {
+                          const imageBorderRadius = e.target.value;
+                          updateCurrentPage(p => ({
+                            ...p,
+                            sections: p.sections.map(s => s.id === activeSection.id ? {
+                              ...s,
+                              style: { ...s.style, imageBorderRadius }
+                            } : s)
+                          }));
+                        }}
+                        className="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold"
+                      >
+                        <option value="none">সোজা (Square)</option>
+                        <option value="md">হালকা গোল (Medium)</option>
+                        <option value="2xl">বেশি গোল (Curved 2XL)</option>
+                        <option value="full">সম্পূর্ণ গোল (Pill)</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div>
+                    <label className="text-[10px] font-bold text-slate-500 block mb-1">ক্লিক লিংক URL (ঐচ্ছিক)</label>
+                    <input
+                      type="text"
+                      value={activeSection.content?.buttonUrl || activeSection.content?.linkUrl || ''}
+                      onChange={(e) => {
+                        const linkUrl = e.target.value;
+                        updateCurrentPage(p => ({
+                          ...p,
+                          sections: p.sections.map(s => s.id === activeSection.id ? {
+                            ...s,
+                            content: { ...s.content, linkUrl, buttonUrl: linkUrl }
+                          } : s)
+                        }));
+                      }}
+                      placeholder="/jobs বা https://..."
+                      className="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-mono"
+                    />
                   </div>
                 </div>
               )}

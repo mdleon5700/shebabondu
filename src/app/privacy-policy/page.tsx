@@ -6,10 +6,13 @@ import CmsPageRenderer from '@/components/CmsPageRenderer';
 
 export const dynamic = 'force-dynamic';
 
-export const metadata: Metadata = {
-  title: 'গোপনীয়তা নীতিমালা (Privacy Policy) | চাকরি সেবা',
-  description: 'প্রার্থীদের এনআইডি, ছবি ও ব্যক্তিগত তথ্যের সর্বোচ্চ ব্যাংকিং গ্রেড নিরাপত্তা।',
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const page = serverDB.getPublishedPageById('privacy-policy') as unknown as PageRecord;
+  return {
+    title: page?.metaTitle || page?.title || 'গোপনীয়তা নীতিমালা (Privacy Policy) | চাকরি সেবা',
+    description: page?.metaDescription || 'প্রার্থীদের এনআইডি, ছবি ও ব্যক্তিগত তথ্যের সর্বোচ্চ ব্যাংকিং গ্রেড নিরাপত্তা।',
+  };
+}
 
 export default function PrivacyPolicyPage() {
   const page = serverDB.getPublishedPageById('privacy-policy') as unknown as PageRecord || { id: 'privacy-policy', slug: '/privacy-policy', title: 'privacy-policy', metaTitle: '', metaDescription: '', status: 'published', version: 1, sections: [], updatedAt: '', publishedAt: '' } as unknown as PageRecord;

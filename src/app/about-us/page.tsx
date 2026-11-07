@@ -6,10 +6,13 @@ import CmsPageRenderer from '@/components/CmsPageRenderer';
 
 export const dynamic = 'force-dynamic';
 
-export const metadata: Metadata = {
-  title: 'আমাদের সম্পর্কে (About Us) | চাকরি সেবা',
-  description: 'চাকরি সেবা প্ল্যাটফর্মের উদ্দেশ্য, মিশন ও প্রতিশ্রুতি।',
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const page = serverDB.getPublishedPageById('about-us') as unknown as PageRecord;
+  return {
+    title: page?.metaTitle || page?.title || 'আমাদের সম্পর্কে (About Us) | চাকরি সেবা',
+    description: page?.metaDescription || 'চাকরি সেবা প্ল্যাটফর্মের উদ্দেশ্য, মিশন ও প্রতিশ্রুতি।',
+  };
+}
 
 export default function AboutUsPage() {
   const page = serverDB.getPublishedPageById('about-us') as unknown as PageRecord || { id: 'about-us', slug: '/about-us', title: 'about-us', metaTitle: '', metaDescription: '', status: 'published', version: 1, sections: [], updatedAt: '', publishedAt: '' } as unknown as PageRecord;

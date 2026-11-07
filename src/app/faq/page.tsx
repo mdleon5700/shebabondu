@@ -6,10 +6,13 @@ import CmsPageRenderer from '@/components/CmsPageRenderer';
 
 export const dynamic = 'force-dynamic';
 
-export const metadata: Metadata = {
-  title: 'সাধারণ জিজ্ঞাসা ও প্রশ্নোত্তর (FAQ) | চাকরি সেবা',
-  description: 'চাকরি সেবার সার্ভিস, পেমেন্ট, আবেদন ও নিরাপত্তা সম্পর্কিত সকল সাধারণ প্রশ্নের উত্তর।',
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const page = serverDB.getPublishedPageById('faq') as unknown as PageRecord;
+  return {
+    title: page?.metaTitle || page?.title || 'সাধারণ জিজ্ঞাসা ও প্রশ্নোত্তর (FAQ) | চাকরি সেবা',
+    description: page?.metaDescription || 'চাকরি সেবার সার্ভিস, পেমেন্ট, আবেদন ও নিরাপত্তা সম্পর্কিত সকল সাধারণ প্রশ্নের উত্তর।',
+  };
+}
 
 export default function FaqPage() {
   const page = serverDB.getPublishedPageById('faq') as unknown as PageRecord || { id: 'faq', slug: '/faq', title: 'faq', metaTitle: '', metaDescription: '', status: 'published', version: 1, sections: [], updatedAt: '', publishedAt: '' } as unknown as PageRecord;

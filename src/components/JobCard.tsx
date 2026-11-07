@@ -11,7 +11,6 @@ import {
   GraduationCap, 
   Banknote, 
   CheckCircle2, 
-  Volume2, 
   ArrowRight,
   Send,
   Sparkles
@@ -25,25 +24,6 @@ interface JobCardProps {
 }
 
 export default function JobCard({ job }: JobCardProps) {
-  const [isPlayingAudio, setIsPlayingAudio] = useState(false);
-
-  const handlePlayAudio = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIsPlayingAudio(true);
-    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
-      window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(job.audioSummary);
-      utterance.lang = 'bn-BD';
-      utterance.rate = 0.95;
-      utterance.onend = () => setIsPlayingAudio(false);
-      utterance.onerror = () => setIsPlayingAudio(false);
-      window.speechSynthesis.speak(utterance);
-    } else {
-      setTimeout(() => setIsPlayingAudio(false), 4000);
-    }
-  };
-
   const isExpired = Boolean(
     CentralDeadlineEngine.evaluateDeadline(job).isClosed ||
     (job as any).status === 'EXPIRED' || 
@@ -122,23 +102,9 @@ export default function JobCard({ job }: JobCardProps) {
         </div>
 
         {/* Smart Eligibility Matcher Badge */}
-        <div className="flex items-center justify-between text-[15px] mb-4 bg-emerald-50/70 border border-emerald-200/50 p-2 rounded-lg">
-          <div className="flex items-center gap-1.5 text-emerald-800 font-bold">
-            <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-            <JobEligibilityLabel job={job} />
-          </div>
-          <button
-            onClick={handlePlayAudio}
-            className={`flex items-center gap-1 px-2 py-1 rounded text-[14px] font-semibold transition-all ${
-              isPlayingAudio 
-                ? 'bg-emerald-600 text-white animate-pulse' 
-                : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-100'
-            }`}
-            title="সার্কুলারের অডিও সারাংশ শুনুন"
-          >
-            <Volume2 className="w-3.5 h-3.5 text-emerald-600" />
-            <span>{isPlayingAudio ? 'বলছে...' : 'অডিও শুনুন'}</span>
-          </button>
+        <div className="flex items-center gap-1.5 text-emerald-800 font-bold text-[14px] mb-3">
+          <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+          <JobEligibilityLabel job={job} />
         </div>
       </div>
 

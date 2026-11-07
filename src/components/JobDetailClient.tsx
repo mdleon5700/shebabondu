@@ -13,7 +13,6 @@ import {
   GraduationCap, 
   Banknote, 
   CheckCircle2, 
-  Volume2, 
   ArrowRight,
   Send,
   Calendar,
@@ -123,7 +122,6 @@ export default function JobDetailClient({ job, relatedJobs = [] }: { job: JobCir
   const candidateData = useCandidateData();
 
   // States
-  const [isPlayingAudio, setIsPlayingAudio] = useState(false);
   const [copiedLink, setCopiedLink] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
 
@@ -298,22 +296,6 @@ export default function JobDetailClient({ job, relatedJobs = [] }: { job: JobCir
   // Teletalk SMS generator state
   const [userIdInput, setUserIdInput] = useState('ABCDEF');
   const [pinInput, setPinInput] = useState('12345678');
-
-  // Audio Playback
-  const handlePlayAudio = () => {
-    setIsPlayingAudio(true);
-    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
-      window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(job.audioSummary);
-      utterance.lang = 'bn-BD';
-      utterance.rate = 0.95;
-      utterance.onend = () => setIsPlayingAudio(false);
-      utterance.onerror = () => setIsPlayingAudio(false);
-      window.speechSynthesis.speak(utterance);
-    } else {
-      setTimeout(() => setIsPlayingAudio(false), 4000);
-    }
-  };
 
   const handleCopy = () => {
     if (typeof window !== 'undefined') {

@@ -26,7 +26,6 @@ import {
   Building2,
   Users,
   Banknote,
-  Volume2,
   Calendar,
   Filter,
   Flame,
@@ -260,8 +259,6 @@ export default function HomePage() {
   const [calcAge, setCalcAge] = useState<number>(26);
   const [matcherActive, setMatcherActive] = useState(false);
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
-
-  const [activeAudioJobId, setActiveAudioJobId] = useState<string | null>(null);
   const [expandedJobId, setExpandedJobId] = useState<string | null>(null);
 
   const togglePositions = (jobId: string) => {
@@ -502,32 +499,6 @@ export default function HomePage() {
     const startIndex = (currentPage - 1) * JOBS_PER_PAGE;
     return filteredJobs.slice(startIndex, startIndex + JOBS_PER_PAGE);
   }, [filteredJobs, currentPage]);
-
-  const handlePlayVoice = (job: JobCircular, e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-
-    if (activeAudioJobId === job.id) {
-      if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
-        window.speechSynthesis.cancel();
-      }
-      setActiveAudioJobId(null);
-      return;
-    }
-
-    setActiveAudioJobId(job.id);
-    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
-      window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(job.audioSummary);
-      utterance.lang = 'bn-BD';
-      utterance.rate = 0.95;
-      utterance.onend = () => setActiveAudioJobId(null);
-      utterance.onerror = () => setActiveAudioJobId(null);
-      window.speechSynthesis.speak(utterance);
-    } else {
-      setTimeout(() => setActiveAudioJobId(null), 4000);
-    }
-  };
 
   const currentLive = liveApplicants[liveApplicantIndex];
 
@@ -980,7 +951,6 @@ export default function HomePage() {
                 (job.deadline && (job.deadline.includes('সমাপ্ত') || job.deadline.includes('শেষ')))
               );
               const isUrgent = !isExpired && job.daysRemaining <= 3;
-              const isPlaying = activeAudioJobId === job.id;
 
               return (
                 <div 
@@ -1137,25 +1107,7 @@ export default function HomePage() {
                       </div>
                     )}
 
-                    {/* Audio Summary Voice Trigger */}
-                    <div className="flex items-center justify-between bg-emerald-50/60 border border-emerald-200/50 p-2 rounded-xl text-xs">
-                      <div className="flex items-center gap-1.5 text-emerald-800 font-bold text-[14px]">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-                        <span>১০০% নির্ভুল আবেদন গ্যারান্টি</span>
-                      </div>
-                      <button
-                        onClick={(e) => handlePlayVoice(job, e)}
-                        className={`px-2.5 py-1 rounded-lg text-[14px] font-bold transition-all flex items-center gap-1 ${
-                          isPlaying 
-                            ? 'bg-emerald-600 text-white animate-pulse' 
-                            : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-100'
-                        }`}
-                        title="সার্কুলারের অডিও সামারি শুনুন"
-                      >
-                        <Volume2 className="w-3 h-3 text-emerald-600" />
-                        <span>{isPlaying ? 'বলছে...' : 'অডিও শুনুন'}</span>
-                      </button>
-                    </div>
+                    {/* Position Accordion (if exists) */}
 
                   </div>
 

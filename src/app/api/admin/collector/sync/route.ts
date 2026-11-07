@@ -1,26 +1,17 @@
 import { NextResponse } from 'next/server';
 import { runAlljobsLiveSync } from '@/lib/collector/alljobs_live_collector';
-import { verifyAdminSecret } from '@/lib/auth';
+import { getServerSession, verifyAdminSecret } from '@/lib/auth';
 
 export const dynamic = 'force-dynamic';
 
 export async function POST(req: Request) {
   try {
     const adminSecret = req.headers.get('x-admin-secret') || req.headers.get('x-admin-key');
-    const authHeader = req.headers.get('authorization');
-    const isToken = authHeader?.startsWith('Bearer ');
+    const session = getServerSession(req);
+    const hasAdminAccess = (session && session.role === 'admin') || (adminSecret && verifyAdminSecret(adminSecret));
 
-    // Security Gate
-    if (!adminSecret && !isToken) {
-      // Check session cookie
-      const cookie = req.headers.get('cookie') || '';
-      if (!cookie.includes('cs_session_token')) {
-        return NextResponse.json({ error: 'UNAUTHORIZED: Admin credentials required' }, { status: 401 });
-      }
-    }
-
-    if (adminSecret && !verifyAdminSecret(adminSecret)) {
-      return NextResponse.json({ error: 'FORBIDDEN: Invalid admin secret' }, { status: 403 });
+    if (!hasAdminAccess) {
+      return NextResponse.json({ error: 'FORBIDDEN: Admin privileges required.' }, { status: 403 });
     }
 
     const body = await req.json().catch(() => ({}));

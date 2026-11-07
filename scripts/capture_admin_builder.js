@@ -21,3 +21,4 @@ const { chromium } = require('@playwright/test');
   console.log('5. Admin Builder captured successfully!');
   await browser.close();
 })();
+

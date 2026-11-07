@@ -8,12 +8,12 @@
 
 | Suite Name | Spec File | Tests Count | Status | Execution Time |
 |---|---|---|---|---|
-| **Suite 1: Public Pages Routing & Health** | `tests/e2e/01-public-routing.spec.ts` | 26 | ✅ **PASS** | ~50s |
-| **Suite 2: Authentication & RBAC Route Guards** | `tests/e2e/02-auth-rbac.spec.ts` | 3 | ✅ **PASS** | ~14s |
-| **Suite 3: Candidate Dashboard & Profile Mutations** | `tests/e2e/03-user-panel.spec.ts` | 2 | ✅ **PASS** | ~17s |
-| **Suite 4: Admin Panel Workflows & Builder** | `tests/e2e/04-admin-panel.spec.ts` | 3 | ✅ **PASS** | ~22s |
-| **Suite 5: Responsive Layout (375px & 1440px)** | `tests/e2e/05-responsive-ui.spec.ts` | 3 | ✅ **PASS** | ~7s |
-| **Total Automated Playwright Regression Suite** | `playwright.config.ts` | **37** | ✅ **37/37 PASS (100%)** | **2.0m** |
+| **Suite 1: Public Pages Routing & Health** | `tests/e2e/01-public-routing.spec.ts` | 26 | ✅ **PASS** | ~48s |
+| **Suite 2: Authentication & RBAC Route Guards (Hardened)** | `tests/e2e/02-auth-rbac.spec.ts` | 3 | ✅ **PASS** | ~14s |
+| **Suite 3: Candidate Dashboard & Profile Mutations (Hardened)** | `tests/e2e/03-user-panel.spec.ts` | 2 | ✅ **PASS** | ~11s |
+| **Suite 4: Admin Panel Workflows & Builder** | `tests/e2e/04-admin-panel.spec.ts` | 3 | ✅ **PASS** | ~24s |
+| **Suite 5: Responsive Layout (375px & 1440px)** | `tests/e2e/05-responsive-ui.spec.ts` | 3 | ✅ **PASS** | ~8s |
+| **Total Automated Playwright Regression Suite** | `playwright.config.ts` | **37** | ✅ **37/37 PASS (100% Verified)** | **1.8m** |
 
 ---
 

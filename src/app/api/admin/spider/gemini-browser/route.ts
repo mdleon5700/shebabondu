@@ -5,7 +5,7 @@ import fs from 'fs';
 import { revalidatePath } from 'next/cache';
 import { runAlljobsLiveSync } from '@/lib/collector/alljobs_live_collector';
 import { serverDB } from '@/lib/db';
-import { verifyAdminSecret } from '@/lib/auth';
+import { getServerSession, verifyAdminSecret } from '@/lib/auth';
 import {
   getGeminiBrowserStatus,
   launchLoginBrowser,
@@ -74,10 +74,11 @@ export async function GET(req: Request) {
 export async function POST(req: Request) {
   try {
     const adminSecret = req.headers.get('x-admin-secret') || req.headers.get('x-admin-key');
-    const cookie = req.headers.get('cookie') || '';
-    
+    const session = getServerSession(req);
+    const hasAdminAccess = (session && session.role === 'admin') || (adminSecret && verifyAdminSecret(adminSecret));
+
     // Auth Check
-    if ((!adminSecret || !verifyAdminSecret(adminSecret)) && !cookie.includes('cs_session_token')) {
+    if (!hasAdminAccess) {
       return NextResponse.json({ error: 'UNAUTHORIZED: Admin credentials required' }, { status: 401 });
     }
 

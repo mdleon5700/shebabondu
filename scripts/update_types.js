@@ -1,129 +1,96 @@
-﻿const fs = require("fs");
-const path = require("path");
-const typesFile = path.join(__dirname, "..", "src", "lib", "types.ts");
-let content = fs.readFileSync(typesFile, "utf8");
+const fs = require('fs');
 
-if (!content.includes("export interface PageRecord")) {
-  const extra = `
-// ==========================================
-// WEBSITE BUILDER (ELEMENTOR-LIKE) TYPES
-// ==========================================
-export type SectionType = 'hero' | 'features' | 'jobs' | 'cta' | 'faq' | 'text' | 'stats';
+let content = fs.readFileSync('src/lib/types.ts', 'utf8');
 
-export interface SectionStyle {
-  backgroundColor?: string;
-  textColor?: string;
-  accentColor?: string;
-  paddingY?: 'sm' | 'md' | 'lg' | 'xl';
-  maxWidth?: 'sm' | 'md' | 'lg' | 'full';
-  columns?: 1 | 2 | 3 | 4;
-  textAlign?: 'left' | 'center' | 'right';
-  borderRadius?: 'none' | 'md' | 'xl' | '2xl';
+const target = `export interface PlatformSettings {
+  general: {
+    siteName: string;
+    siteDescription: string;
+    siteUrl: string;
+    supportEmail: string;
+    supportPhone: string;
+    officeAddress: string;
+    whatsappNumber?: string;
+    logoUrl?: string;
+    faviconUrl?: string;
+    defaultTimezone: string;
+    defaultLanguage: 'bn' | 'en';
+  };`;
+
+const replacement = `export interface HeaderDropdownItem {
+  label: string;
+  href: string;
+  badge?: string;
+  target?: '_self' | '_blank';
 }
 
-export interface PageSection {
+export interface HeaderMenuItem {
   id: string;
-  type: SectionType;
-  title: string;
-  subtitle?: string;
-  content: Record<string, any>;
-  style: SectionStyle;
-  isVisible: boolean;
+  label: string;
+  href: string;
+  badge?: string;
+  badgeColor?: 'emerald' | 'rose' | 'amber' | 'blue' | 'purple';
+  target?: '_self' | '_blank';
+  visibility?: 'all' | 'guest_only' | 'user_only';
+  dropdown?: HeaderDropdownItem[];
 }
 
-export interface PageRevision {
-  id: string;
-  version: number;
-  savedAt: string;
-  savedBy: string;
-  status: 'draft' | 'published';
-  sections: PageSection[];
-  notes?: string;
+export interface GuestHeaderButtons {
+  showLogin: boolean;
+  loginText: string;
+  showRegister: boolean;
+  registerText: string;
+  showTrackApplication: boolean;
+  trackApplicationText: string;
+  showWhatsApp: boolean;
+  whatsAppText: string;
 }
 
-export interface PageRecord {
-  id: string;
-  slug: string;
-  title: string;
-  metaTitle: string;
-  metaDescription: string;
-  status: 'published' | 'draft' | 'archived';
-  version: number;
-  isSystemPage?: boolean;
-  sections: PageSection[];
-  revisions: PageRevision[];
-  updatedAt: string;
-  publishedAt?: string;
+export interface UserHeaderWidgets {
+  showWalletBalance: boolean;
+  showNotificationBell: boolean;
+  showDashboardButton: boolean;
+  dashboardButtonText: string;
+  showAvatarDropdown: boolean;
 }
 
-// ==========================================
-// JOB SOURCES & INGESTION DRAFTS TYPES
-// ==========================================
-export interface JobSource {
-  id: string;
-  name: string;
-  sourceUrl: string;
-  type: 'official_portal' | 'ministry' | 'newspaper' | 'direct_employer';
-  fetchStatus: 'active' | 'syncing' | 'error';
-  lastFetchedAt: string;
-  autoSync: boolean;
-}
+export interface PlatformSettings {
+  general: {
+    siteName: string;
+    siteDescription: string;
+    siteUrl: string;
+    supportEmail: string;
+    supportPhone: string;
+    officeAddress: string;
+    whatsappNumber?: string;
+    logoUrl?: string;
+    faviconUrl?: string;
+    defaultTimezone: string;
+    defaultLanguage: 'bn' | 'en';
+    headerMenuItems?: HeaderMenuItem[];
+    guestButtons?: GuestHeaderButtons;
+    userWidgets?: UserHeaderWidgets;
+    announcementText?: string;
+    announcementEnabled?: boolean;
+    announcementUrl?: string;
+    whatsappButtonText?: string;
+    loginButtonText?: string;
+    stickyHeader?: boolean;
+    footerColumns?: Array<{ id: string; title: string; links: Array<{ label: string; url: string }> }>;
+    footerAboutText?: string;
+    facebookUrl?: string;
+    telegramUrl?: string;
+    youtubeUrl?: string;
+    footerDisclaimer?: string;
+    copyrightText?: string;
+  };`;
 
-export interface CircularDraft {
-  id: string;
-  sourceName: string;
-  sourceUrl: string;
-  extractedTitle: string;
-  extractedOrg: string;
-  category: 'govt' | 'bank' | 'railway' | 'defense' | 'teacher' | 'ngo' | 'private' | 'health';
-  grade?: string;
-  deadline: string;
-  vacancies: number;
-  minEducation: string;
-  salary: string;
-  govtFee: number;
-  confidenceScore: number;
-  duplicateDetected: boolean;
-  status: 'pending_review' | 'approved' | 'rejected';
-  notes?: string;
-  createdAt: string;
-}
-
-// ==========================================
-// PRIVATE COMPANY / EMPLOYER ATS TYPES
-// ==========================================
-export interface CompanyProfile {
-  id: string;
-  name: string;
-  nameBn?: string;
-  logo?: string;
-  industry: string;
-  district: string;
-  verified: boolean;
-  contactEmail: string;
-  contactPhone: string;
-  activeJobsCount: number;
-  createdAt: string;
-}
-
-export interface CompanyApplication {
-  id: string;
-  companyId: string;
-  jobId: string;
-  jobTitle: string;
-  candidateId: string;
-  candidateName: string;
-  candidatePhone: string;
-  candidateEmail: string;
-  cvUrl?: string;
-  status: 'applied' | 'shortlisted' | 'interview_scheduled' | 'rejected' | 'hired';
-  interviewDate?: string;
-  notes?: string;
-  appliedAt: string;
-}
-`;
-  fs.writeFileSync(typesFile, content + extra, "utf8");
-  console.log("Appended new types to types.ts successfully");
+const normalizedContent = content.replace(/\r\n/g, '\n');
+if (normalizedContent.includes(target)) {
+  const updated = normalizedContent.replace(target, replacement);
+  fs.writeFileSync('src/lib/types.ts', updated.replace(/\n/g, '\r\n'), 'utf8');
+  console.log('Successfully updated src/lib/types.ts');
 } else {
-  console.log("Types already present");
+  console.error('Target string not found in src/lib/types.ts');
+  process.exit(1);
 }

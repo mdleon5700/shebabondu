@@ -56,19 +56,23 @@ test.describe('Suite 3: Candidate Dashboard & Profile Mutations', () => {
 
     // Assert form loaded
     const nameInput = page.locator('input[value*="আসিফ"], input[placeholder*="নাম"], input[type="text"]').first();
-    if (await nameInput.isVisible()) {
-      await nameInput.fill('আসিফ ইকবাল (আপডেটেড)');
-    }
+    await expect(nameInput).toBeVisible();
+    await nameInput.fill('আসিফ ইকবাল (আপডেটেড)');
 
     // Save profile changes
     const saveButton = page.locator('button:has-text("সংরক্ষণ"), button:has-text("সেভ"), button[type="submit"]').first();
-    if (await saveButton.isVisible()) {
-      await saveButton.click();
-      await page.waitForTimeout(1500);
-    }
+    await expect(saveButton).toBeVisible();
+    await saveButton.click();
+    await page.waitForTimeout(1500);
 
     // Refresh and verify persistence
     await page.reload();
     await expect(page.locator('body')).toBeVisible();
+
+    // Verify name persisted
+    const reloadedInput = page.locator('input[value*="আসিফ"], input[placeholder*="নাম"], input[type="text"]').first();
+    await expect(reloadedInput).toBeVisible();
+    const val = await reloadedInput.inputValue();
+    expect(val).toContain('আসিফ');
   });
 });

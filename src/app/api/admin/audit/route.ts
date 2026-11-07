@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getServerSession } from '@/lib/auth';
+import { getServerSession, verifyAdminSecret } from '@/lib/auth';
 import { AutonomousAuditAgent } from '@/lib/audit/autonomous_audit_agent';
 
 export const dynamic = 'force-dynamic';
@@ -7,10 +7,10 @@ export const dynamic = 'force-dynamic';
 export async function GET(req: Request) {
   try {
     const adminSecret = req.headers.get('x-admin-secret') || req.headers.get('x-admin-key');
-    const cookie = req.headers.get('cookie') || '';
     const session = getServerSession(req);
+    const hasAdminAccess = (session && session.role === 'admin') || (adminSecret && verifyAdminSecret(adminSecret));
 
-    if ((!session || session.role !== 'admin') && adminSecret !== '1234' && !cookie.includes('cs_session_token')) {
+    if (!hasAdminAccess) {
       return NextResponse.json({ error: 'FORBIDDEN: Admin privileges required.' }, { status: 403 });
     }
 
@@ -24,10 +24,10 @@ export async function GET(req: Request) {
 export async function POST(req: Request) {
   try {
     const adminSecret = req.headers.get('x-admin-secret') || req.headers.get('x-admin-key');
-    const cookie = req.headers.get('cookie') || '';
     const session = getServerSession(req);
+    const hasAdminAccess = (session && session.role === 'admin') || (adminSecret && verifyAdminSecret(adminSecret));
 
-    if ((!session || session.role !== 'admin') && adminSecret !== '1234' && !cookie.includes('cs_session_token')) {
+    if (!hasAdminAccess) {
       return NextResponse.json({ error: 'FORBIDDEN: Admin privileges required.' }, { status: 403 });
     }
 

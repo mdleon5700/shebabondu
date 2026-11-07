@@ -88,15 +88,24 @@ export function verifyPassword(password: string, storedHash: string): boolean {
 export function verifyAdminSecret(providedSecret: string): boolean {
   if (!providedSecret || typeof providedSecret !== 'string') return false;
   
-  const validSecrets = [
-    process.env.ADMIN_SECRET_KEY,
-    '1234',
-    'admin',
-    'admin123',
-    'admin2026',
-    '123456',
-    'CHAKRISEBA_SECURE_ADMIN_2026'
-  ].filter((s): s is string => Boolean(s && s.trim()));
+  const isProd = process.env.NODE_ENV === 'production';
+  const configuredSecret = process.env.ADMIN_SECRET_KEY?.trim();
+
+  let validSecrets: string[] = [];
+
+  if (isProd) {
+    // In production, strictly require configured non-trivial ADMIN_SECRET_KEY
+    if (configuredSecret && !['1234', 'admin', '123456', 'admin123'].includes(configuredSecret)) {
+      validSecrets.push(configuredSecret);
+    } else {
+      console.error('[CRITICAL SECURITY] In production, ADMIN_SECRET_KEY must be configured with a strong secret.');
+      return false;
+    }
+  } else {
+    // Development / test environment: allow configured key or standard dev keys
+    if (configuredSecret) validSecrets.push(configuredSecret);
+    validSecrets.push('CHAKRISEBA_SECURE_ADMIN_2026', '1234');
+  }
 
   const bufProvided = Buffer.from(providedSecret.trim());
   for (const secret of validSecrets) {
@@ -166,7 +175,7 @@ export function createSessionCookie(token: string, expiryDays = 30) {
     value: token,
     httpOnly: true,
     // Keep secure false unless COOKIE_SECURE=true is explicitly set, allowing seamless operation on localhost HTTP
-    secure: process.env.COOKIE_SECURE === 'true',
+    secure: process.env.COOKIE_SECURE === 'true' || (process.env.NODE_ENV === 'production' && process.env.COOKIE_SECURE !== 'false'),
     sameSite: 'lax' as const,
     path: '/',
     maxAge: expiryDays * 86400
@@ -178,7 +187,7 @@ export function clearSessionCookie() {
     name: SESSION_COOKIE_NAME,
     value: '',
     httpOnly: true,
-    secure: process.env.COOKIE_SECURE === 'true',
+    secure: process.env.COOKIE_SECURE === 'true' || (process.env.NODE_ENV === 'production' && process.env.COOKIE_SECURE !== 'false'),
     sameSite: 'lax' as const,
     path: '/',
     maxAge: 0

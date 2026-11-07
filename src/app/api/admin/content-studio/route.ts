@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getServerSession } from '@/lib/auth';
+import { getServerSession, verifyAdminSecret } from '@/lib/auth';
 import { serverDB } from '@/lib/db';
 import { 
   intakeVerifiedJobData, 
@@ -16,8 +16,10 @@ import {
 import { CircularDraft } from '@/lib/types';
 
 export async function GET(req: Request) {
+  const adminSecret = req.headers.get('x-admin-secret') || req.headers.get('x-admin-key');
   const session = getServerSession(req);
-  if (!session || session.role !== 'admin') {
+  const hasAdminAccess = (session && session.role === 'admin') || (adminSecret && verifyAdminSecret(adminSecret));
+  if (!hasAdminAccess) {
     return NextResponse.json({ error: 'FORBIDDEN: Admin access required.' }, { status: 403 });
   }
 
@@ -106,9 +108,8 @@ export async function GET(req: Request) {
 
 export async function POST(req: Request) {
   const adminSecret = req.headers.get('x-admin-secret') || req.headers.get('x-admin-key');
-  const cookie = req.headers.get('cookie') || '';
   const session = getServerSession(req);
-  const hasAdminAccess = (adminSecret === '1234') || (session && session.role === 'admin') || cookie.includes('cs_session_token');
+  const hasAdminAccess = (session && session.role === 'admin') || (adminSecret && verifyAdminSecret(adminSecret));
 
   if (!hasAdminAccess) {
     return NextResponse.json({ error: 'FORBIDDEN: Admin access required.' }, { status: 403 });

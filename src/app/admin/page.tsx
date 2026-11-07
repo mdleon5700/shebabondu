@@ -119,7 +119,24 @@ const normalizePaymentMethod = (m?: string | null): 'bKash' | 'Nagad' | 'Wallet'
   return 'bKash';
 };
 
-const ADMIN_REQ_HEADERS = { 'Content-Type': 'application/json', 'x-admin-secret': '1234' };
+const getAdminHeaders = (): Record<string, string> => {
+  const pin = typeof window !== 'undefined' ? (localStorage.getItem('cs_admin_pin') || '') : '';
+  const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+  if (pin) headers['x-admin-secret'] = pin;
+  return headers;
+};
+
+const ADMIN_REQ_HEADERS: Record<string, string> = typeof Proxy !== 'undefined'
+  ? new Proxy({} as Record<string, string>, {
+      get: (_, prop: string) => getAdminHeaders()[prop],
+      ownKeys: () => Object.keys(getAdminHeaders()),
+      getOwnPropertyDescriptor: (_, prop: string) => ({
+        enumerable: true,
+        configurable: true,
+        value: getAdminHeaders()[prop]
+      })
+    })
+  : { 'Content-Type': 'application/json' };
 function AdminContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -256,7 +273,7 @@ function AdminContent() {
     for (const ep of endpoints) {
       const t0 = performance.now();
       try {
-        const res = await fetch(ep.url, { headers: { 'x-admin-secret': '1234' } });
+        const res = await fetch(ep.url, { headers: getAdminHeaders() });
         const t1 = performance.now();
         const latency = Math.round(t1 - t0);
         totalLatency += latency;
@@ -433,17 +450,14 @@ function AdminContent() {
     try {
       const res = await fetch('/api/admin/collector/sync', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-admin-secret': adminPin || '1234'
-        },
+        headers: getAdminHeaders(),
         body: JSON.stringify({ limit: 35 })
       });
       const data = await res.json();
       if (data.success) {
         alert('টেলিটক অলজবস লাইভ সিঙ্ক সফল!\n' + (data.stats?.newJobsAdded || 0) + 'টি নতুন সার্কুলার যুক্ত হয়েছে, ' + (data.stats?.updatedJobs || 0) + 'টি আপডেট হয়েছে।');
         const jobsRes = await fetch('/api/admin/jobs', {
-          headers: { 'x-admin-secret': adminPin || '1234' }
+          headers: getAdminHeaders()
         });
         if (jobsRes.ok) {
           const jData = await jobsRes.json();
@@ -675,11 +689,7 @@ function AdminContent() {
       // Background session refresh (does NOT force logout on transient network error)
       ensureAdminSession().catch(() => {});
 
-      const adminPin = typeof window !== 'undefined' ? (localStorage.getItem('cs_admin_pin') || '1234') : '1234';
-      const adminHeaders: HeadersInit = {
-        'Content-Type': 'application/json',
-        'x-admin-secret': adminPin
-      };
+      const adminHeaders: HeadersInit = getAdminHeaders();
 
       // 2. Fetch stats FIRST to immediately populate all count badges in <100ms
       try {

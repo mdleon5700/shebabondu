@@ -250,7 +250,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                       {profile.nameBn || profile.name}
                     </h3>
                     <p className="text-[11px] text-slate-500 truncate flex items-center gap-1">
-                      <span>আইডি: {profile.nid ? profile.nid.slice(0, 6) + '...' : 'CS-7712'}</span>
+                      <span>আইডি: {profile.id || (profile.nid ? profile.nid.slice(0, 6) + '...' : profile.username || 'প্রার্থী')}</span>
                     </p>
                     <div className="flex items-center gap-1.5 mt-1">
                       <span className="text-[10px] font-semibold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">

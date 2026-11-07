@@ -3,7 +3,7 @@ import { randomUUID } from 'crypto';
 import { revalidatePath } from 'next/cache';
 import path from 'path';
 import fs from 'fs';
-import { getServerSession } from '@/lib/auth';
+import { getServerSession, verifyAdminSecret } from '@/lib/auth';
 import { serverDB } from '@/lib/db';
 import { JobCircular } from '@/lib/types';
 import { parseCircularWithGeminiBrowser } from '@/lib/spider/gemini_browser_controller';
@@ -28,11 +28,8 @@ function getSpiderSettings(): { autoPublish: boolean } {
 export async function POST(req: Request) {
   try {
     const adminSecret = req.headers.get('x-admin-secret') || req.headers.get('x-admin-key');
-    const cookie = req.headers.get('cookie') || '';
-    
-    // Auth Check
     const session = getServerSession(req);
-    const hasAdminAccess = (adminSecret === '1234') || (session && session.role === 'admin') || cookie.includes('cs_session_token');
+    const hasAdminAccess = (session && session.role === 'admin') || (adminSecret && verifyAdminSecret(adminSecret));
 
     if (!hasAdminAccess) {
       return NextResponse.json({ error: 'FORBIDDEN: Admin privileges required.' }, { status: 403 });

@@ -134,6 +134,60 @@
       "role": "candidate",
       "createdAt": "2026-11-07T15:31:04.260Z",
       "updatedAt": "2026-11-07T15:31:04.260Z"
+    },
+    "CS-USR-26-990011": {
+      "id": "CS-USR-26-990011",
+      "name": "তাহমিদ ইকবাল",
+      "nameBn": "তাহমিদ ইকবাল",
+      "fatherName": "",
+      "motherName": "",
+      "email": "",
+      "phone": "01788990011",
+      "username": "candidate.0011",
+      "dob": "",
+      "gender": "male",
+      "nid": "",
+      "division": "",
+      "district": "রাজশাহী",
+      "address": "",
+      "permanentAddress": "",
+      "photoUrl": "data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"120\" height=\"120\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"%2394a3b8\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect width=\"100%\" height=\"100%\" fill=\"%23f1f5f9\"/><path d=\"M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2\"></path><circle cx=\"12\" cy=\"7\" r=\"4\"></circle></svg>",
+      "signatureUrl": "data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"200\" height=\"60\" viewBox=\"0 0 200 60\"><rect width=\"200\" height=\"60\" fill=\"%23f8fafc\" rx=\"6\"/><text x=\"100\" y=\"35\" font-family=\"sans-serif\" font-size=\"12\" fill=\"%2394a3b8\" text-anchor=\"middle\">স্বাক্ষর যুক্ত করুন</text></svg>",
+      "walletBalance": 50,
+      "maritalStatus": "single",
+      "quota": "none",
+      "education": [],
+      "passwordHash": "scrypt$fa1f439768571b0fdf30e342d5e42767$28ae82f8bdc58f0af7b3e2c782a6f151e81516939d7621771a07a9a35baee17a750f81057ca6b01a5a1b840bc63ef294707cc14d44df3ff731ef37881ee00e4b",
+      "role": "candidate",
+      "createdAt": "2026-11-07T16:11:35.800Z",
+      "updatedAt": "2026-11-07T16:11:35.800Z"
+    },
+    "CS-USR-26-775654": {
+      "id": "CS-USR-26-775654",
+      "name": "আব্দুল করিম",
+      "nameBn": "আব্দুল করিম",
+      "fatherName": "",
+      "motherName": "",
+      "email": "",
+      "phone": "01783775654",
+      "username": "candidate.5654",
+      "dob": "",
+      "gender": "male",
+      "nid": "",
+      "division": "",
+      "district": "ঢাকা",
+      "address": "",
+      "permanentAddress": "",
+      "photoUrl": "data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"120\" height=\"120\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"%2394a3b8\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect width=\"100%\" height=\"100%\" fill=\"%23f1f5f9\"/><path d=\"M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2\"></path><circle cx=\"12\" cy=\"7\" r=\"4\"></circle></svg>",
+      "signatureUrl": "data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"200\" height=\"60\" viewBox=\"0 0 200 60\"><rect width=\"200\" height=\"60\" fill=\"%23f8fafc\" rx=\"6\"/><text x=\"100\" y=\"35\" font-family=\"sans-serif\" font-size=\"12\" fill=\"%2394a3b8\" text-anchor=\"middle\">স্বাক্ষর যুক্ত করুন</text></svg>",
+      "walletBalance": 50,
+      "maritalStatus": "single",
+      "quota": "none",
+      "education": [],
+      "passwordHash": "scrypt$df597d17c3582ac0c015e81e2daf64b2$3eb23d8e57f0971f872ec08ec19e25f6c25c96676d6ed570893e8508d322a233e602336398f8d433999dbce1ffbe62c92107a26372fd6317758c1d7139459ae7",
+      "role": "candidate",
+      "createdAt": "2026-11-07T16:29:42.803Z",
+      "updatedAt": "2026-11-07T16:29:42.803Z"
     }
   },
   "documents": {
@@ -141,7 +195,9 @@
     "CS-USR-26-340348": [],
     "CS-USR-26-997007": [],
     "CS-USR-26-413355": [],
-    "CS-USR-26-972223": []
+    "CS-USR-26-972223": [],
+    "CS-USR-26-990011": [],
+    "CS-USR-26-775654": []
   },
   "applications": {
     "CS-USR-26-999888": [],
@@ -272,21 +328,27 @@
         "notes": "পেমেন্ট অনুমোদিত হয়েছে এবং টেলিটক অটো-ফিল কিউতে পাঠানো হয়েছে।"
       }
     ],
-    "CS-USR-26-972223": []
+    "CS-USR-26-972223": [],
+    "CS-USR-26-990011": [],
+    "CS-USR-26-775654": []
   },
   "savedJobs": {
     "CS-USR-26-999888": [],
     "CS-USR-26-340348": [],
     "CS-USR-26-997007": [],
     "CS-USR-26-413355": [],
-    "CS-USR-26-972223": []
+    "CS-USR-26-972223": [],
+    "CS-USR-26-990011": [],
+    "CS-USR-26-775654": []
   },
   "transactions": {
     "CS-USR-26-999888": [],
     "CS-USR-26-340348": [],
     "CS-USR-26-997007": [],
     "CS-USR-26-413355": [],
-    "CS-USR-26-972223": []
+    "CS-USR-26-972223": [],
+    "CS-USR-26-990011": [],
+    "CS-USR-26-775654": []
   },
   "notifications": {
     "admin": [
@@ -1983,7 +2045,9 @@
         "date": "2026-11-07T15:47:21.480Z",
         "link": "/jobs/job-alljobs-dcjamalpur-15137"
       }
-    ]
+    ],
+    "CS-USR-26-990011": [],
+    "CS-USR-26-775654": []
   },
   "sessions": {
     "92922126ec7c3b78154ae2be6303d47afe6f5d951e5235b7ad0b15c4056a0df2": {
@@ -2110,6 +2174,121 @@
       "candidateId": "ADMIN-SUPER",
       "role": "admin",
       "expiresAt": "2026-11-14T15:33:50.857Z"
+    },
+    "6157bb301786dd111aadfa9663b54e2c90b07ea79bccd9c408f9ab214e4cb88f": {
+      "candidateId": "CS-USR-26-990011",
+      "role": "candidate",
+      "expiresAt": "2026-11-14T16:12:31.277Z"
+    },
+    "795d26ccdfdb35c7fce8d3df8e7d00fb2feb850df210d76105d0645df7669a16": {
+      "candidateId": "ADMIN-SUPER",
+      "role": "admin",
+      "expiresAt": "2026-11-14T16:13:19.553Z"
+    },
+    "249072b038f5c524f9bfba263cfdb94a96e9c9a36419baa1810bf6ceb7947050": {
+      "candidateId": "ADMIN-SUPER",
+      "role": "admin",
+      "expiresAt": "2026-11-14T16:15:38.184Z"
+    },
+    "c2a3c2395545d5cedae4aa4d843b4bd32c12b1e00cf68b03f39f93655aaea4e3": {
+      "candidateId": "SYNTH-USR-1794068292082",
+      "role": "candidate",
+      "expiresAt": "2026-11-14T16:18:12.149Z"
+    },
+    "160cbf3a4a6a98733a62750d29b195d343933479f9ab93965f075731e5ec8833": {
+      "candidateId": "ADMIN-SUPER",
+      "role": "admin",
+      "expiresAt": "2026-11-14T16:18:22.908Z"
+    },
+    "6c87d39249342076cc940d650a0e50298e5a9dd9817abca68c4cd3b4ff310054": {
+      "candidateId": "SYNTH-USR-1794068967696",
+      "role": "candidate",
+      "expiresAt": "2026-11-14T16:29:27.756Z"
+    },
+    "7075f14753ae8f440bed1d63f4fbc512717edfbe7244b0a0f2eb19ff7fa5cb88": {
+      "candidateId": "SYNTH-USR-1794068967696",
+      "role": "candidate",
+      "expiresAt": "2026-11-14T16:29:28.001Z"
+    },
+    "0a4323e9ceae1acb315bd4e4dad400205eb103e4e55d64243d04d273d175451a": {
+      "candidateId": "CS-USR-26-775654",
+      "role": "candidate",
+      "expiresAt": "2026-11-14T16:29:42.816Z"
+    },
+    "b9e12796f05593f40a95ce5e9e3aa9f182d3599920e2e03de268bbf32ea149e1": {
+      "candidateId": "SYNTH-USR-1794069457380",
+      "role": "candidate",
+      "expiresAt": "2026-11-14T16:37:37.498Z"
+    },
+    "74de67fcedc802eea7fc5d6083488e67f90cd89cc9b88abab3149d38679b536c": {
+      "candidateId": "ADMIN-SUPER",
+      "role": "admin",
+      "expiresAt": "2026-11-14T16:38:09.843Z"
+    },
+    "9124de4868465734a0920cd0318bc10af0d543548fca75a234d5c7148efd289c": {
+      "candidateId": "SYNTH-USR-1794069558786",
+      "role": "candidate",
+      "expiresAt": "2026-11-14T16:39:18.826Z"
+    },
+    "71990194c476d93d40e97a04cafa1a6400ba9548651ada88f2b1d0d35355f5d6": {
+      "candidateId": "SYNTH-USR-1794069558786",
+      "role": "candidate",
+      "expiresAt": "2026-11-14T16:39:18.961Z"
+    },
+    "00c096a1e690f2ab95c0b38e4ba7aa8e938864075cbb4d9c26a7a6e148e41264": {
+      "candidateId": "SYNTH-USR-1794069591986",
+      "role": "candidate",
+      "expiresAt": "2026-11-14T16:39:52.050Z"
+    },
+    "4018a9d9c7a4126058ac403bf638b06bffc93b3bc5cce93a958a6fac8c52c454": {
+      "candidateId": "SYNTH-USR-1794069592920",
+      "role": "candidate",
+      "expiresAt": "2026-11-14T16:39:52.967Z"
+    },
+    "0597c71a69d054babb39f6291d5d53bc4ef00dffdd69ca58035c51010af2e4e4": {
+      "candidateId": "ADMIN-SUPER",
+      "role": "admin",
+      "expiresAt": "2026-11-14T16:40:14.289Z"
+    },
+    "527266a4057a028098e3d72cb80e32c8d78b288061789ee780d0b76e1566d684": {
+      "candidateId": "SYNTH-USR-1794069654355",
+      "role": "candidate",
+      "expiresAt": "2026-11-14T16:40:54.413Z"
+    },
+    "a35e0602d8bbf12922030e5b9bb4a3b2d1404557fae999905fa134cab8b1352f": {
+      "candidateId": "SYNTH-USR-1794069654849",
+      "role": "candidate",
+      "expiresAt": "2026-11-14T16:40:54.917Z"
+    },
+    "dc22076f4537dad430404539d4bcd5a260a268b40b4150434e6b9169ded7cd56": {
+      "candidateId": "SYNTH-USR-1794069654849",
+      "role": "candidate",
+      "expiresAt": "2026-11-14T16:40:56.475Z"
+    },
+    "16771df71215fc300c5b5e42bbc1a4fad10ab7a5f09460caf5a40b99665199b4": {
+      "candidateId": "ADMIN-SUPER",
+      "role": "admin",
+      "expiresAt": "2026-11-14T16:41:02.077Z"
+    },
+    "2d85d0c71530a03c0bfa3ae37bebc8cb64b2dd57aa1da2d8dd379ac321fae42e": {
+      "candidateId": "SYNTH-USR-1794069728860",
+      "role": "candidate",
+      "expiresAt": "2026-11-14T16:42:08.926Z"
+    },
+    "d68eb2716ee67aef0103fab1fceaa20f15d244e65e370b22823b8a730a8dfb81": {
+      "candidateId": "SYNTH-USR-1794069731441",
+      "role": "candidate",
+      "expiresAt": "2026-11-14T16:42:11.501Z"
+    },
+    "59aa94c78ca02b2c2b771189aea4045e44e61b8984f4a8e85501579989c50357": {
+      "candidateId": "SYNTH-USR-1794069731441",
+      "role": "candidate",
+      "expiresAt": "2026-11-14T16:42:14.806Z"
+    },
+    "24d130fbd0e8a6ced28a0d330af0d819829d8465682e55b2dd27e67a07766098": {
+      "candidateId": "ADMIN-SUPER",
+      "role": "admin",
+      "expiresAt": "2026-11-14T16:42:18.761Z"
     }
   },
   "coupons": {},

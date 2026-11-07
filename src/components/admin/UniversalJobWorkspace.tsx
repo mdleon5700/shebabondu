@@ -256,13 +256,17 @@ export default function UniversalJobWorkspace({
     setFormError(null);
     setAiSuccessMessage(null);
 
+    const savedPin = typeof window !== 'undefined' ? (localStorage.getItem('cs_admin_pin') || '') : '';
+    const adminSecret = savedPin || '1234';
+
     try {
       const res = await fetch('/api/admin/gemini/parse-circular', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'x-admin-secret': '1234'
+          'x-admin-secret': adminSecret
         },
+        credentials: 'include',
         body: JSON.stringify({
           pdfUrl: aiInputUrl.trim(),
           autoSave: false

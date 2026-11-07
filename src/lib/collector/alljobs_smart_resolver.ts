@@ -249,6 +249,19 @@ export const KNOWN_TELETALK_ORGS: Record<string, {
     defaultGrade: '৯ম - ১০ম গ্রেড',
     defaultEducation: 'বিএসসি ইঞ্জিনিয়ারিং / ডিপ্লোমা ইন ইঞ্জিনিয়ারিং'
   },
+  cpgcbl: {
+    name: 'কোল পাওয়ার জেনারেশন কোম্পানি বাংলাদেশ লিমিটেড (CPGCBL)',
+    nameEn: 'Coal Power Generation Company Bangladesh Limited',
+    category: 'engineer',
+    categoryLabel: 'বিদ্যুৎ ও জ্বালানি খাত',
+    website: 'http://cpgcbl.gov.bd',
+    smsPrefix: 'CPGCBL',
+    defaultPosition: 'সহকারী প্রকৌশলী (মেকানিক্যাল / ইলেকট্রিক্যাল)',
+    defaultPosts: 4,
+    defaultSalary: 'জাতীয় বেতন স্কেল ২০১৫ অনুযায়ী',
+    defaultGrade: '৯ম - ১০ম গ্রেড',
+    defaultEducation: 'বিএসসি ইঞ্জিনিয়ারিং (মেকানিক্যাল / ইলেকট্রিক্যাল)'
+  },
   pgcb: {
     name: 'পাওয়ার গ্রিড কোম্পানি অব বাংলাদেশ (PGCB)',
     nameEn: 'Power Grid Company of Bangladesh',
@@ -923,64 +936,24 @@ export async function resolveCircularInput(input: string): Promise<ResolvedCircu
     console.warn('DB cache match notice:', dbErr);
   }
 
-  // 0.1 Direct Teletalk Portal Deep Crawl
-  if (trimmed.includes('teletalk.com.bd') && !trimmed.endsWith('.pdf')) {
-    try {
-      const portalData = await scrapeTeletalkPortal(trimmed);
-      if (portalData && portalData.positions.length > 0) {
-        const org = portalData.organizationEn || 'বাংলাদেশ সরকারি প্রতিষ্ঠান';
-        const { category, categoryLabel } = mapCategory(org);
-        const mappedPositions = portalData.positions.map(pos => {
-          const inferred = inferPositionGradeAndSalary(pos.bengaliTitle + ' ' + pos.englishTitle);
-          return {
-            title: pos.bengaliTitle,
-            posts: 1,
-            salary: inferred.salary,
-            grade: inferred.grade,
-            minEducation: inferred.minEducation,
-            govtFee: inferred.govtFee
-          };
-        });
-
-        return {
-          title: `${org} বিভিন্ন পদে নতুন নিয়োগ বিজ্ঞপ্তি ২০২৬`,
-          organization: org,
-          category,
-          categoryLabel,
-          totalPosts: mappedPositions.length,
-          deadline: '২৫ নভেম্বর ২০২৬',
-          publishedDate: formatBnDate(new Date().toISOString()),
-          officialLink: portalData.portalUrl,
-          circularPdfUrl: portalData.pdfUrl || trimmed,
-          rawText: `${org}\nনিয়োগ বিজ্ঞপ্তি\nমোট পদ: ${mappedPositions.length}\n${portalData.circularRef}`,
-          minAge: 18,
-          maxAge: 32,
-          salary: mappedPositions[0]?.salary || 'জাতীয় বেতন স্কেল ২০১৫ অনুযায়ী',
-          grade: mappedPositions[0]?.grade || '১০ম - ১৬তম গ্রেড',
-          positions: mappedPositions
-        };
-      }
-    } catch (e: any) {
-      console.warn('Portal scrape fallback notice:', e.message);
-    }
-  }
-
+  // 1. Alljobs URL or JobId Check (Instant Official JSON API)
   let alljobsId: string | null = null;
-
-  // Extract jobId if Alljobs URL
   const jobIdMatch = trimmed.match(/jobId=(\d+)/i) || trimmed.match(/alljobs\.teletalk\.com\.bd\/(?:jobs\/(?:government|all)\/)?(\d+)/i);
   if (jobIdMatch) {
     alljobsId = jobIdMatch[1];
   }
 
-  // 1. If Alljobs ID found, fetch rich official details from Alljobs API
+  // If Alljobs ID found, fetch rich official details from Alljobs API directly and instantly
   if (alljobsId) {
     try {
       const apiRes = await fetchJson(`https://alljobs.teletalk.com.bd/api/v1/govt-jobs/public-details?id=${alljobsId}`);
       const d = apiRes.details;
       if (d) {
         const orgInfo = d.job_utilities_govtorganization || {};
-        const orgName = orgInfo.name_bn || orgInfo.name || 'সরকারি প্রতিষ্ঠান';
+        let orgName = orgInfo.name_bn || orgInfo.name || 'সরকারি প্রতিষ্ঠান';
+        if (orgName.includes('Coal Power Generation Company') || orgName.includes('CPGCBL')) {
+          orgName = 'কোল পাওয়ার জেনারেশন কোম্পানি বাংলাদেশ লিমিটেড (CPGCBL)';
+        }
         const jobTitle = d.job_title_bn || d.job_title || 'নতুন নিয়োগ বিজ্ঞপ্তি';
         const fullTitle = `${orgName} - ${jobTitle} নিয়োগ বিজ্ঞপ্তি ২০২৬`;
         const { category, categoryLabel } = mapCategory(orgName + ' ' + (orgInfo.details || ''));
@@ -993,7 +966,9 @@ export async function resolveCircularInput(input: string): Promise<ResolvedCircu
         if (d.advertisement_file) {
           pdfUrl = d.advertisement_file.startsWith('http')
             ? d.advertisement_file
-            : `https://alljobs.teletalk.com.bd/media/${d.advertisement_file}`;
+            : (d.advertisement_file.startsWith('public/')
+                ? `https://alljobs.teletalk.com.bd/${d.advertisement_file}`
+                : `https://alljobs.teletalk.com.bd/media/${d.advertisement_file}`);
         } else if (d.application_site) {
           pdfUrl = `${d.application_site.replace(/\/$/, '')}/docs/advertisement.pdf`;
         }
@@ -1050,8 +1025,50 @@ export async function resolveCircularInput(input: string): Promise<ResolvedCircu
           positions
         };
       }
+    } catch (apiErr: any) {
+      console.warn('Alljobs API error:', apiErr.message);
+    }
+  }
+
+  // 2. Direct Teletalk Portal Deep Crawl (Exclusively for Teletalk application engine subdomains)
+  if (trimmed.includes('.teletalk.com.bd') && !trimmed.includes('alljobs.teletalk.com.bd') && !trimmed.endsWith('.pdf')) {
+    try {
+      const portalData = await scrapeTeletalkPortal(trimmed);
+      if (portalData && portalData.positions.length > 0) {
+        const org = portalData.organizationEn || 'বাংলাদেশ সরকারি প্রতিষ্ঠান';
+        const { category, categoryLabel } = mapCategory(org);
+        const mappedPositions = portalData.positions.map(pos => {
+          const inferred = inferPositionGradeAndSalary(pos.bengaliTitle + ' ' + pos.englishTitle);
+          return {
+            title: pos.bengaliTitle,
+            posts: 1,
+            salary: inferred.salary,
+            grade: inferred.grade,
+            minEducation: inferred.minEducation,
+            govtFee: inferred.govtFee
+          };
+        });
+
+        return {
+          title: `${org} বিভিন্ন পদে নতুন নিয়োগ বিজ্ঞপ্তি ২০২৬`,
+          organization: org,
+          category,
+          categoryLabel,
+          totalPosts: mappedPositions.length,
+          deadline: '২৫ নভেম্বর ২০২৬',
+          publishedDate: formatBnDate(new Date().toISOString()),
+          officialLink: portalData.portalUrl,
+          circularPdfUrl: portalData.pdfUrl || trimmed,
+          rawText: `${org}\nনিয়োগ বিজ্ঞপ্তি\nমোট পদ: ${mappedPositions.length}\n${portalData.circularRef}`,
+          minAge: 18,
+          maxAge: 32,
+          salary: mappedPositions[0]?.salary || 'জাতীয় বেতন স্কেল ২০১৫ অনুযায়ী',
+          grade: mappedPositions[0]?.grade || '১০ম - ১৬তম গ্রেড',
+          positions: mappedPositions
+        };
+      }
     } catch (e: any) {
-      console.warn('Alljobs API lookup error, falling back to direct parse:', e.message);
+      console.warn('Portal scrape fallback notice:', e.message);
     }
   }
 

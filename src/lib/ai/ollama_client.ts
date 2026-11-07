@@ -269,3 +269,4 @@ export function extractViaHeuristics(text: string): ExtractedCircularFields {
     extractedAt: new Date().toISOString()
   };
 }
+

@@ -2309,6 +2309,87 @@
       "candidateId": "ADMIN-SUPER",
       "role": "admin",
       "expiresAt": "2026-11-14T17:13:16.845Z"
+    },
+    "test_session_1794072465103": {
+      "token": "test_session_1794072465103",
+      "candidateId": "CS-USR-26-999888",
+      "role": "candidate",
+      "createdAt": "2026-11-07T17:27:45.103Z",
+      "expiresAt": "2026-11-08T17:27:45.103Z"
+    },
+    "test_session_1794072518564": {
+      "token": "test_session_1794072518564",
+      "candidateId": "CS-USR-26-999888",
+      "role": "candidate",
+      "createdAt": "2026-11-07T17:28:38.564Z",
+      "expiresAt": "2026-11-08T17:28:38.564Z"
+    },
+    "test_session_1794072589476": {
+      "token": "test_session_1794072589476",
+      "candidateId": "CS-USR-26-999888",
+      "role": "candidate",
+      "createdAt": "2026-11-07T17:29:49.476Z",
+      "expiresAt": "2026-11-08T17:29:49.477Z"
+    },
+    "aeee17c0b541ce76cf7b482d3cbfb5ed7eea3490632e93a61ef905f545bf806b": {
+      "candidateId": "SYNTH-USR-1794072669743",
+      "role": "candidate",
+      "expiresAt": "2026-11-14T17:31:09.801Z"
+    },
+    "a9710279fa26934b4c0c98dbe3da98ab462931a59a319ff65f1561e9d98c67bf": {
+      "candidateId": "SYNTH-USR-1794072670258",
+      "role": "candidate",
+      "expiresAt": "2026-11-14T17:31:10.312Z"
+    },
+    "ea256fb9347ac8d7172d83deb9df9ba507a16bdf94c97984054e0e02ce70775c": {
+      "candidateId": "SYNTH-USR-1794072670258",
+      "role": "candidate",
+      "expiresAt": "2026-11-14T17:31:13.852Z"
+    },
+    "e864048f4c509d99eb553eb5cbae973d6e84b4c3e2f55e76b08a4bf35a067af1": {
+      "candidateId": "ADMIN-SUPER",
+      "role": "admin",
+      "expiresAt": "2026-11-14T17:31:19.358Z"
+    },
+    "e67982daf86182b42a0a91527bd89455472877609f378faf662df30afe2ed9e1": {
+      "candidateId": "SYNTH-USR-1794072895521",
+      "role": "candidate",
+      "expiresAt": "2026-11-14T17:34:55.612Z"
+    },
+    "1ea4d98ad44a3e04e7163761a656bac59bde27c33b73146d84aa8c4785ad4007": {
+      "candidateId": "SYNTH-USR-1794072900267",
+      "role": "candidate",
+      "expiresAt": "2026-11-14T17:35:00.326Z"
+    },
+    "4656132d7f8689e61ae31794bf3eb111227c9be94a21f4f6265376e03f8a78c6": {
+      "candidateId": "SYNTH-USR-1794072900267",
+      "role": "candidate",
+      "expiresAt": "2026-11-14T17:35:24.274Z"
+    },
+    "612ddadbcaec4963e8a5f05b3eaadd040635f84500e7fad0ca54cf4477685376": {
+      "candidateId": "ADMIN-SUPER",
+      "role": "admin",
+      "expiresAt": "2026-11-14T17:35:32.856Z"
+    },
+    "7c93dc5c471db23fd09f222d5f54ba872205c0750d35708c03d2304a9e0cd934": {
+      "candidateId": "SYNTH-USR-1794073185012",
+      "role": "candidate",
+      "expiresAt": "2026-11-14T17:39:45.070Z"
+    },
+    "6a966f2bde37facabf465c1e0fbf3e9565e1d9627246b157be5a2fe95ed2e466": {
+      "candidateId": "SYNTH-USR-1794073189306",
+      "role": "candidate",
+      "expiresAt": "2026-11-14T17:39:49.363Z"
+    },
+    "05b01bbf37abef2a404488e318065a21542c53a761675a3ebdfed0333e28bf4c": {
+      "candidateId": "SYNTH-USR-1794073189306",
+      "role": "candidate",
+      "expiresAt": "2026-11-14T17:39:55.999Z"
+    },
+    "95a5297ba5ab5a094f88af9ffc1c24e758d232c2e34ace14c8b1d3071178f592": {
+      "candidateId": "ADMIN-SUPER",
+      "role": "admin",
+      "expiresAt": "2026-11-14T17:40:01.011Z"
     }
   },
   "coupons": {},
@@ -20380,7 +20461,7 @@
       },
       "adminNotes": "Official Teletalk government circular aggregator",
       "createdAt": "2026-10-25T10:00:00.000Z",
-      "updatedAt": "2026-11-07T17:11:00.058Z"
+      "updatedAt": "2026-11-07T17:18:30.132Z"
     },
     "bpsc-portal": {
       "id": "bpsc-portal",
@@ -23040,7 +23121,7 @@
         },
         {
           "id": "home",
-          "label": "মূল পাতা (লাইভ টেস্ট)",
+          "label": "হোম",
           "href": "/"
         },
         {
@@ -23195,14 +23276,11 @@
           ]
         },
         {
-          "id": "menu-1794054189872",
-          "label": "জরুরি সার্কুলার",
-          "href": "/jobs"
-        },
-        {
-          "id": "menu-1794054465482",
-          "label": "জরুরি সার্কুলার",
-          "href": "/jobs"
+          "id": "urgent-jobs",
+          "label": "জরুরি বিজ্ঞপ্তি",
+          "href": "/latest-jobs",
+          "badge": "জরুরি",
+          "badgeColor": "rose"
         }
       ],
       "footerColumns": [

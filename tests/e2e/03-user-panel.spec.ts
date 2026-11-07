@@ -66,7 +66,7 @@ test.describe('Suite 3: Candidate Dashboard & Profile Mutations', () => {
     await page.waitForTimeout(1500);
 
     // Refresh and verify persistence
-    await page.reload();
+    await page.reload({ waitUntil: 'domcontentloaded' });
     await expect(page.locator('body')).toBeVisible();
 
     // Verify name persisted

@@ -14,7 +14,7 @@ test.describe('Suite 5: Responsive Layout Integrity (375px Mobile & 1440px Deskt
     expect(overflowDiff).toBeLessThanOrEqual(1);
 
     // Verify mobile hamburger / menu button or top search
-    const mobileMenuTrigger = page.locator('button[aria-label*="menu" i], button:has(svg), header button').first();
+    const mobileMenuTrigger = page.locator('button[aria-label="Toggle Menu"], button[aria-label*="menu" i]:visible, header button:visible').first();
     await expect(mobileMenuTrigger).toBeVisible();
   });
 

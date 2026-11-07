@@ -3015,7 +3015,7 @@ export interface AdminAuditLog {
 
 
 
-export type SectionType = 'hero' | 'features' | 'jobs' | 'cta' | 'faq' | 'text' | 'stats';
+export type SectionType = 'hero' | 'features' | 'jobs' | 'cta' | 'faq' | 'text' | 'stats' | 'how-it-works' | 'testimonials';
 
 
 
@@ -3056,6 +3056,9 @@ export interface SectionStyle {
 
 
   accentColor?: string;
+  titleFontSize?: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl' | '6xl' | string;
+  subtitleFontSize?: 'xs' | 'sm' | 'base' | 'lg' | 'xl' | string;
+  fontWeight?: 'normal' | 'medium' | 'semibold' | 'bold' | 'black';
 
 
 

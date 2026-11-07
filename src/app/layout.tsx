@@ -61,6 +61,11 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const settings = serverDB.getPlatformSettings();
+  const homePage = serverDB.getPageById('home') || serverDB.getPages().find(p => p.id === 'home' || p.slug === '/');
+  const initialHomeHero = homePage?.sections?.find(s => s.type === 'hero' && s.isVisible !== false) || null;
+  const initialHomeSections = homePage?.sections || [];
+
   return (
     <html lang="bn">
       <head>
@@ -68,7 +73,11 @@ export default function RootLayout({
         <link rel="preload" href="/fonts/solaimanlipi-bold.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
       </head>
       <body className="font-solaiman min-h-screen flex flex-col bg-slate-50 text-slate-900 selection:bg-emerald-600 selection:text-white overflow-x-hidden max-w-full">
-        <ConditionalLayout>
+        <ConditionalLayout 
+          initialSettings={settings} 
+          initialHomeHero={initialHomeHero}
+          initialHomeSections={initialHomeSections}
+        >
           {children}
         </ConditionalLayout>
       </body>

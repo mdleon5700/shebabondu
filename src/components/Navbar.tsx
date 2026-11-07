@@ -31,7 +31,7 @@ interface NavMenuItem {
   dropdown?: DropdownItem[];
 }
 
-export default function Navbar() {
+export default function Navbar({ initialSettings }: { initialSettings?: any } = {}) {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
@@ -40,8 +40,14 @@ export default function Navbar() {
   const [auth, setAuth] = useState<AuthState>({ isLoggedIn: false, role: null, name: '' });
   const [walletBalance, setWalletBalance] = useState<number>(0);
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
-  const [platformSettings, setPlatformSettings] = useState<any>(null);
+  const [platformSettings, setPlatformSettings] = useState<any>(initialSettings || null);
   const navRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (initialSettings) {
+      setPlatformSettings(initialSettings);
+    }
+  }, [initialSettings]);
 
   // Sync auth and user state
   useEffect(() => {

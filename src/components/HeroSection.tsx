@@ -1,6 +1,7 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import { Sparkles, FileText, ArrowRight, BookOpen, ShieldCheck, Bell, Users, Briefcase } from 'lucide-react';
+import { usePlatformContext } from '@/components/layout/ConditionalLayout';
 
 interface HeroCmsData {
   title?: string;
@@ -13,10 +14,26 @@ interface HeroCmsData {
     secondaryCtaUrl?: string;
     items?: Array<{ title: string; desc: string }>;
   };
+  style?: {
+    titleFontSize?: string;
+    subtitleFontSize?: string;
+    fontWeight?: string;
+    backgroundColor?: string;
+    textColor?: string;
+    textAlign?: string;
+    paddingY?: string;
+  };
 }
 
-export default function HeroSection() {
-  const [cmsData, setCmsData] = useState<HeroCmsData | null>(null);
+export default function HeroSection({ initialData }: { initialData?: HeroCmsData | null } = {}) {
+  const { homeHero } = usePlatformContext();
+  const [cmsData, setCmsData] = useState<HeroCmsData | null>(initialData || homeHero || null);
+
+  useEffect(() => {
+    if (homeHero) {
+      setCmsData(homeHero);
+    }
+  }, [homeHero]);
 
   useEffect(() => {
     const fetchHeroData = () => {
@@ -47,8 +64,49 @@ export default function HeroSection() {
   const cta2Text = cmsData?.content?.secondaryCtaText || 'আবেদন প্রক্রিয়া জানুন';
   const cta2Url = cmsData?.content?.secondaryCtaUrl || '#how-it-works';
 
+  // Dynamic Title Font Size class
+  const getTitleSizeClass = (size?: string) => {
+    switch (size) {
+      case '2xl': return 'text-xl sm:text-2xl lg:text-3xl';
+      case '3xl': return 'text-2xl sm:text-3xl lg:text-4xl';
+      case '4xl': return 'text-3xl sm:text-4xl lg:text-5xl';
+      case '5xl': return 'text-4xl sm:text-5xl lg:text-6xl';
+      case '6xl': return 'text-5xl sm:text-6xl lg:text-7xl';
+      default: return 'text-3xl sm:text-4xl lg:text-5xl';
+    }
+  };
+
+  // Dynamic Subtitle Font Size class
+  const getSubtitleSizeClass = (size?: string) => {
+    switch (size) {
+      case 'xs': return 'text-[13px] sm:text-[14px]';
+      case 'sm': return 'text-[14px] sm:text-[15px]';
+      case 'lg': return 'text-[17px] sm:text-[18px]';
+      case 'xl': return 'text-[19px] sm:text-[20px]';
+      default: return 'text-[16px]';
+    }
+  };
+
+  // Dynamic Font Weight class
+  const getWeightClass = (weight?: string) => {
+    switch (weight) {
+      case 'normal': return 'font-normal';
+      case 'medium': return 'font-medium';
+      case 'semibold': return 'font-semibold';
+      case 'bold': return 'font-bold';
+      case 'black': return 'font-black';
+      default: return 'font-extrabold';
+    }
+  };
+
   return (
-    <section className="relative overflow-hidden bg-gradient-to-b from-[#011612] via-[#022b22] to-[#011a14] text-white pt-4 pb-5 sm:pt-8 sm:pb-12 lg:pt-10 lg:pb-16 px-4 sm:px-6 lg:px-8 border-b border-emerald-900/40">
+    <section 
+      style={{
+        backgroundColor: cmsData?.style?.backgroundColor || undefined,
+        color: cmsData?.style?.textColor || undefined
+      }}
+      className="relative overflow-hidden bg-gradient-to-b from-[#011612] via-[#022b22] to-[#011a14] text-white pt-4 pb-5 sm:pt-8 sm:pb-12 lg:pt-10 lg:pb-16 px-4 sm:px-6 lg:px-8 border-b border-emerald-900/40"
+    >
       <div className="absolute top-0 right-1/4 w-[600px] h-[350px] bg-emerald-500/15 blur-[140px] rounded-full pointer-events-none"></div>
       <div className="absolute bottom-10 left-1/4 w-[450px] h-[250px] bg-teal-500/10 blur-[130px] rounded-full pointer-events-none"></div>
       <div className="max-w-7xl mx-auto relative z-10">
@@ -58,11 +116,11 @@ export default function HeroSection() {
               <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
               <span>{badgeText}</span>
             </div>
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white leading-[1.32] sm:leading-[1.35] whitespace-pre-line">
+            <h1 className={`${getTitleSizeClass(cmsData?.style?.titleFontSize)} ${getWeightClass(cmsData?.style?.fontWeight)} text-white leading-[1.32] sm:leading-[1.35] whitespace-pre-line`}>
               {heroTitle}
             </h1>
 
-            <p className="text-[16px] text-slate-300 font-solaiman leading-relaxed max-w-xl mx-auto lg:mx-0 pt-1 whitespace-pre-line">
+            <p className={`${getSubtitleSizeClass(cmsData?.style?.subtitleFontSize)} text-slate-300 font-solaiman leading-relaxed max-w-xl mx-auto lg:mx-0 pt-1 whitespace-pre-line`}>
               {heroSubtitle}
             </p>
 

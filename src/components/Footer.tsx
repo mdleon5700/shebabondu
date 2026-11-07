@@ -61,8 +61,14 @@ export const DEFAULT_FOOTER_COLUMNS: FooterColumnItem[] = [
   }
 ];
 
-export default function Footer() {
-  const [settings, setSettings] = useState<any>(null);
+export default function Footer({ initialSettings }: { initialSettings?: any } = {}) {
+  const [settings, setSettings] = useState<any>(initialSettings || null);
+
+  useEffect(() => {
+    if (initialSettings) {
+      setSettings(initialSettings);
+    }
+  }, [initialSettings]);
 
   useEffect(() => {
     const load = () => {

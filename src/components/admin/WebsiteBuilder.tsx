@@ -79,6 +79,9 @@ export default function WebsiteBuilder({ initialPageId, onNavigateToPages }: Web
         setPages(data.pages);
         if (data.pages.length > 0 && !selectedPageId) {
           setSelectedPageId(data.pages[0].id);
+          if (data.pages[0].sections?.length > 0) {
+            setActiveSectionId(data.pages[0].sections[0].id);
+          }
         }
       }
     } catch (err) {
@@ -445,6 +448,7 @@ export default function WebsiteBuilder({ initialPageId, onNavigateToPages }: Web
                   return (
                     <div 
                       key={sec.id}
+                      data-section-id={sec.id}
                       onClick={() => !previewMode && setActiveSectionId(sec.id)}
                       style={{
                         backgroundColor: sec.style.backgroundColor || '#ffffff',
@@ -484,8 +488,35 @@ export default function WebsiteBuilder({ initialPageId, onNavigateToPages }: Web
                                 {sec.content.badge}
                               </span>
                             )}
-                            <h2 className="text-2xl sm:text-4xl font-black tracking-tight leading-snug">{sec.title}</h2>
-                            {sec.subtitle && <p className="text-sm sm:text-base opacity-90 max-w-2xl mx-auto">{sec.subtitle}</p>}
+                            <h2 
+                              style={{
+                                fontSize: sec.style?.titleFontSize === '6xl' ? '2.75rem' :
+                                          sec.style?.titleFontSize === '5xl' ? '2.25rem' :
+                                          sec.style?.titleFontSize === '4xl' ? '1.875rem' :
+                                          sec.style?.titleFontSize === '3xl' ? '1.5rem' :
+                                          sec.style?.titleFontSize === '2xl' ? '1.25rem' : undefined,
+                                fontWeight: sec.style?.fontWeight === 'black' ? 900 :
+                                            sec.style?.fontWeight === 'bold' ? 700 :
+                                            sec.style?.fontWeight === 'semibold' ? 600 :
+                                            sec.style?.fontWeight === 'normal' ? 400 : undefined
+                              }}
+                              className="text-2xl sm:text-4xl font-black tracking-tight leading-snug"
+                            >
+                              {sec.title}
+                            </h2>
+                            {sec.subtitle && (
+                              <p 
+                                style={{
+                                  fontSize: sec.style?.subtitleFontSize === 'xl' ? '1.25rem' :
+                                            sec.style?.subtitleFontSize === 'lg' ? '1.125rem' :
+                                            sec.style?.subtitleFontSize === 'sm' ? '0.875rem' :
+                                            sec.style?.subtitleFontSize === 'xs' ? '0.75rem' : undefined
+                                }}
+                                className="text-sm sm:text-base opacity-90 max-w-2xl mx-auto"
+                              >
+                                {sec.subtitle}
+                              </p>
+                            )}
                             {(sec.content.ctaText || sec.content.buttonLabel) && (
                               <div className="pt-2">
                                 <span className="inline-block px-6 py-2.5 rounded-xl bg-white text-slate-900 font-bold text-xs sm:text-sm shadow-md">
@@ -493,6 +524,74 @@ export default function WebsiteBuilder({ initialPageId, onNavigateToPages }: Web
                                 </span>
                               </div>
                             )}
+                          </div>
+                        )}
+
+                        {sec.type === 'how-it-works' && (
+                          <div className="space-y-6">
+                            <div>
+                              {sec.content?.badge && (
+                                <span className="inline-block px-3 py-1 bg-emerald-100 text-emerald-800 rounded-full text-xs font-bold mb-2">
+                                  {sec.content.badge}
+                                </span>
+                              )}
+                              <h3 
+                                style={{
+                                  fontSize: sec.style?.titleFontSize === '5xl' ? '2.25rem' :
+                                            sec.style?.titleFontSize === '4xl' ? '1.875rem' :
+                                            sec.style?.titleFontSize === '3xl' ? '1.5rem' :
+                                            sec.style?.titleFontSize === '2xl' ? '1.25rem' : undefined
+                                }}
+                                className="text-xl sm:text-2xl font-black"
+                              >
+                                {sec.title}
+                              </h3>
+                              {sec.subtitle && <p className="text-xs sm:text-sm opacity-80 mt-1 max-w-xl mx-auto">{sec.subtitle}</p>}
+                            </div>
+                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                              {(sec.content?.items || []).map((step: any, i: number) => (
+                                <div key={i} className="p-4 rounded-2xl border border-slate-200 bg-white text-slate-900 text-left space-y-2 shadow-xs">
+                                  <div className="w-8 h-8 rounded-xl bg-emerald-600 text-white font-bold flex items-center justify-center text-xs">
+                                    {step.step || i + 1}
+                                  </div>
+                                  <span className="font-bold text-xs sm:text-sm block">{step.title}</span>
+                                  <span className="text-[11px] text-slate-600 block">{step.desc}</span>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+
+                        {sec.type === 'testimonials' && (
+                          <div className="space-y-6">
+                            <div>
+                              {sec.content?.badge && (
+                                <span className="inline-block px-3 py-1 bg-emerald-900/60 text-emerald-300 border border-emerald-500/30 rounded-full text-xs font-bold mb-2">
+                                  {sec.content.badge}
+                                </span>
+                              )}
+                              <h3 
+                                style={{
+                                  fontSize: sec.style?.titleFontSize === '5xl' ? '2.25rem' :
+                                            sec.style?.titleFontSize === '4xl' ? '1.875rem' :
+                                            sec.style?.titleFontSize === '3xl' ? '1.5rem' :
+                                            sec.style?.titleFontSize === '2xl' ? '1.25rem' : undefined
+                                }}
+                                className="text-xl sm:text-2xl font-black"
+                              >
+                                {sec.title}
+                              </h3>
+                              {sec.subtitle && <p className="text-xs sm:text-sm opacity-80 mt-1 max-w-xl mx-auto">{sec.subtitle}</p>}
+                            </div>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                              {(sec.content?.items || []).slice(0, 4).map((rev: any, i: number) => (
+                                <div key={i} className="p-4 rounded-2xl bg-white/10 text-white text-left space-y-2 border border-white/10">
+                                  <span className="font-bold text-xs block">{rev.title || rev.name}</span>
+                                  <span className="text-[10px] text-emerald-300 block">{rev.role || rev.institution}</span>
+                                  <p className="text-xs opacity-90 italic">"{rev.desc || rev.quote}"</p>
+                                </div>
+                              ))}
+                            </div>
                           </div>
                         )}
 
@@ -552,6 +651,23 @@ export default function WebsiteBuilder({ initialPageId, onNavigateToPages }: Web
                           <div className="space-y-2" style={{ textAlign: sec.style.textAlign || 'left' }}>
                             <h3 className="text-xl font-black">{sec.title}</h3>
                             <p className="text-xs sm:text-sm opacity-85 leading-relaxed">{sec.subtitle}</p>
+                          </div>
+                        )}
+
+                        {sec.type === 'faq' && (
+                          <div className="space-y-2.5 mt-3">
+                            {((sec.content?.faqs || sec.content?.items) || [
+                              { q: 'চাকরি সেবা প্ল্যাটফর্মের মাধ্যমে কীভাবে আবেদন করবেন?', a: 'পছন্দের চাকরি সার্কুলারে গিয়ে "আবেদন করুন" বাটনে ক্লিক করুন...' },
+                              { q: 'আমার আবেদনের অ্যাপ্লিকেন্ট কপি কখন পাব?', a: 'আবেদন সম্পন্ন হওয়া মাত্রই আপনার ড্যাশবোর্ডে কপি ডাউনলোড করতে পারবেন...' }
+                            ]).slice(0, 4).map((f: any, fi: number) => (
+                              <div key={fi} className="p-3 bg-white/80 border border-slate-200/90 rounded-xl text-left space-y-1 shadow-xs">
+                                <div className="text-xs font-bold text-slate-800 flex items-center justify-between">
+                                  <span>{f.q || f.title}</span>
+                                  <span className="text-slate-400 text-[10px]">▼</span>
+                                </div>
+                                <p className="text-[11px] text-slate-600 line-clamp-2">{f.a || f.desc}</p>
+                              </div>
+                            ))}
                           </div>
                         )}
                       </div>
@@ -1018,15 +1134,22 @@ export default function WebsiteBuilder({ initialPageId, onNavigateToPages }: Web
                 </div>
               )}
 
-              {/* Features Specific */}
-              {activeSection.type === 'features' && (
+              {/* Features, How It Works & Testimonials Specific */}
+              {(activeSection.type === 'features' || activeSection.type === 'how-it-works' || activeSection.type === 'testimonials') && (
                 <div className="space-y-3 pt-2 border-t border-slate-100">
                   <div className="flex items-center justify-between">
-                    <label className="text-[11px] font-bold text-slate-700">ফিচার কার্ডসমূহ ({(activeSection.content?.items || []).length}টি)</label>
+                    <label className="text-[11px] font-bold text-slate-700">
+                      {activeSection.type === 'how-it-works' ? 'আবেদনের ধাপসমূহ' : activeSection.type === 'testimonials' ? 'চাকরিপ্রার্থীদের রিভিউ' : 'ফিচার কার্ডসমূহ'} ({(activeSection.content?.items || []).length}টি)
+                    </label>
                     <button
                       type="button"
                       onClick={() => {
-                        const items = [...(activeSection.content?.items || []), { title: 'নতুন সুবিধা', desc: 'বিবরণ লিখুন।' }];
+                        const newItem = activeSection.type === 'testimonials' 
+                          ? { title: 'নতুন প্রার্থীর নাম', role: 'পদবী ও প্রতিষ্ঠান', desc: 'বাস্তব অভিজ্ঞতা লিখুন।' }
+                          : activeSection.type === 'how-it-works'
+                          ? { step: (activeSection.content?.items || []).length + 1, title: 'নতুন ধাপের নাম', desc: 'ধাপের বিবরণ লিখুন।' }
+                          : { title: 'নতুন সুবিধা', desc: 'বিবরণ লিখুন।' };
+                        const items = [...(activeSection.content?.items || []), newItem];
                         updateCurrentPage(p => ({
                           ...p,
                           sections: p.sections.map(s => s.id === activeSection.id ? {
@@ -1037,7 +1160,7 @@ export default function WebsiteBuilder({ initialPageId, onNavigateToPages }: Web
                       }}
                       className="text-[10px] font-bold text-emerald-700 hover:text-emerald-900"
                     >
-                      + কার্ড যোগ করুন
+                      + আইটেম যোগ করুন
                     </button>
                   </div>
 
@@ -1236,6 +1359,121 @@ export default function WebsiteBuilder({ initialPageId, onNavigateToPages }: Web
                       {pItem.label}
                     </button>
                   ))}
+                </div>
+              </div>
+
+              {/* Typography & Font Sizes */}
+              <div className="pt-3 border-t border-slate-100 space-y-3">
+                <span className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
+                  <Type className="w-3.5 h-3.5 text-slate-500" />
+                  <span>টাইপোগ্রাফি ও ফন্ট সাইজ (Font Size)</span>
+                </span>
+
+                {/* Title Font Size */}
+                <div>
+                  <label className="text-[11px] font-bold text-slate-600 block mb-1.5">শিরোনামের ফন্ট সাইজ (Title Size)</label>
+                  <div className="grid grid-cols-5 gap-1 text-center">
+                    {[
+                      { size: '2xl', label: '28px', name: 'ছোট' },
+                      { size: '3xl', label: '36px', name: 'মাঝারি' },
+                      { size: '4xl', label: '44px', name: 'বড়' },
+                      { size: '5xl', label: '52px', name: 'হিরো' },
+                      { size: '6xl', label: '60px', name: 'জাম্বো' }
+                    ].map(item => (
+                      <button
+                        key={item.size}
+                        type="button"
+                        data-font-size={item.size}
+                        onClick={() => {
+                          updateCurrentPage(p => ({
+                            ...p,
+                            sections: p.sections.map(s => s.id === activeSection.id ? {
+                              ...s,
+                              style: { ...s.style, titleFontSize: item.size }
+                            } : s)
+                          }));
+                        }}
+                        className={'py-1.5 px-1 rounded-xl text-[10px] font-bold border transition-all ' + (
+                          (activeSection.style.titleFontSize || (activeSection.type === 'hero' ? '5xl' : '3xl')) === item.size
+                            ? 'bg-emerald-700 text-white border-emerald-700 shadow-xs'
+                            : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
+                        )}
+                        title={item.name}
+                      >
+                        <div className="font-mono">{item.label}</div>
+                        <div className="text-[9px] opacity-80">{item.name}</div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Subtitle / Body Font Size */}
+                <div>
+                  <label className="text-[11px] font-bold text-slate-600 block mb-1.5">উপশিরোনাম / বডি সাইজ (Subtitle Size)</label>
+                  <div className="grid grid-cols-4 gap-1.5 text-center">
+                    {[
+                      { size: 'xs', label: '13px', name: 'ছোট' },
+                      { size: 'sm', label: '14px', name: 'সাধারণ' },
+                      { size: 'base', label: '16px', name: 'মাঝারি' },
+                      { size: 'lg', label: '18px', name: 'বড়' }
+                    ].map(item => (
+                      <button
+                        key={item.size}
+                        type="button"
+                        data-font-size={item.size}
+                        onClick={() => {
+                          updateCurrentPage(p => ({
+                            ...p,
+                            sections: p.sections.map(s => s.id === activeSection.id ? {
+                              ...s,
+                              style: { ...s.style, subtitleFontSize: item.size }
+                            } : s)
+                          }));
+                        }}
+                        className={'py-1 rounded-xl text-xs font-bold border transition-all ' + (
+                          (activeSection.style.subtitleFontSize || 'base') === item.size
+                            ? 'bg-emerald-700 text-white border-emerald-700 shadow-xs'
+                            : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
+                        )}
+                      >
+                        {item.name} ({item.label})
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Font Weight */}
+                <div>
+                  <label className="text-[11px] font-bold text-slate-600 block mb-1.5">ফন্ট ওয়েট (Font Weight)</label>
+                  <div className="grid grid-cols-4 gap-1.5 text-center">
+                    {[
+                      { weight: 'normal', label: 'নরমাল' },
+                      { weight: 'semibold', label: 'সেমি-বোল্ড' },
+                      { weight: 'bold', label: 'বোল্ড' },
+                      { weight: 'black', label: 'এক্সট্রা বোল্ড' }
+                    ].map(item => (
+                      <button
+                        key={item.weight}
+                        type="button"
+                        onClick={() => {
+                          updateCurrentPage(p => ({
+                            ...p,
+                            sections: p.sections.map(s => s.id === activeSection.id ? {
+                              ...s,
+                              style: { ...s.style, fontWeight: item.weight as any }
+                            } : s)
+                          }));
+                        }}
+                        className={'py-1 rounded-xl text-[11px] font-bold border transition-all ' + (
+                          (activeSection.style.fontWeight || (activeSection.type === 'hero' ? 'black' : 'bold')) === item.weight
+                            ? 'bg-slate-900 text-white border-slate-900 shadow-xs'
+                            : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
+                        )}
+                      >
+                        {item.label}
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </div>
 

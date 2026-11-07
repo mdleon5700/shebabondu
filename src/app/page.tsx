@@ -3,6 +3,7 @@ import { matchJobQuery } from '@/lib/search-helper';
 import { fetchPublicJobs } from '@/lib/public-jobs-client';
 import { CentralDeadlineEngine } from '@/lib/deadlines/engine';
 
+import { usePlatformContext } from '@/components/layout/ConditionalLayout';
 import HeroSection from '@/components/HeroSection';
 import JobSearchSection from '@/components/JobSearchSection';
 import JobLogo from '@/components/JobLogo';
@@ -201,6 +202,12 @@ const candidateReviews = [
 ];
 
 export default function HomePage() {
+  const { homeSections } = usePlatformContext();
+  const howItWorksCms = homeSections?.find(s => s.type === 'how-it-works' || s.id === 'sec-home-how-it-works');
+  const ctaBannerCms = homeSections?.find(s => s.type === 'cta' || s.id === 'sec-home-cta-banner');
+  const reviewsCms = homeSections?.find(s => s.type === 'testimonials' || s.id === 'sec-home-reviews');
+  const faqCms = homeSections?.find(s => s.type === 'faq' || s.id === 'sec-home-faq');
+
   const [searchQuery, setSearchQuery] = useState('');
   const [jobsList, setJobsList] = useState<any[]>([]);
 
@@ -1266,107 +1273,126 @@ export default function HomePage() {
       </section>
 
       {/* 5. HOW OUR JOB APPLICATION SERVICE WORKS */}
-      <section id="how-it-works" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 scroll-mt-24">
-        <div className="text-center max-w-2xl mx-auto mb-10 space-y-2">
-          <span className="text-[14px] font-bold uppercase tracking-wider text-emerald-800 bg-emerald-100 px-3 py-1 rounded-full">
-            সহজ ৩ ধাপের প্রক্রিয়া
-          </span>
-          <h2 className="text-2xl sm:text-3xl font-black text-slate-900">
-            কীভাবে ঘরে বসেই নির্ভুল চাকরি আবেদন করবেন?
-          </h2>
-          <p className="text-[16px] text-slate-600">
-            সাইবার ক্যাফেতে ঘণ্টার পর ঘণ্টা বসে থাকার ঝামেলা শেষ! আপনার সুবিধার্থে আধুনিক স্মার্ট সিস্টেম:
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          
-          <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/90 shadow-sm relative overflow-hidden group hover:border-emerald-500 transition-all space-y-3">
-            <div className="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-800 font-black text-lg flex items-center justify-center group-hover:scale-110 transition-transform">
-              ১
-            </div>
-            <h3 className="text-lg font-bold text-slate-900">
-              ১ বার ডকুমেন্ট ভল্টে সেভ রাখুন
-            </h3>
-            <p className="text-[16px] text-slate-600 leading-relaxed">
-              আপনার পাসপোর্ট ছবি, স্বাক্ষর, এনআইডি এবং শিক্ষাগত সনদের তথ্য মাত্র একবার আপলোড করুন। আমাদের সিস্টেম নিজে থেকেই ৩০০x৩০০ ও ৩০০x৮০ পিক্সেল সাইজে কনভার্ট করে রাখবে।
+      {(howItWorksCms?.isVisible !== false) && (
+        <section 
+          id="how-it-works" 
+          style={{
+            backgroundColor: howItWorksCms?.style?.backgroundColor || undefined,
+            color: howItWorksCms?.style?.textColor || undefined
+          }}
+          className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 scroll-mt-24"
+        >
+          <div className="text-center max-w-2xl mx-auto mb-10 space-y-2">
+            <span className="text-[14px] font-bold uppercase tracking-wider text-emerald-800 bg-emerald-100 px-3 py-1 rounded-full">
+              {howItWorksCms?.content?.badge || 'সহজ ৩ ধাপের প্রক্রিয়া'}
+            </span>
+            <h2 className={`${
+              howItWorksCms?.style?.titleFontSize === '5xl' ? 'text-3xl sm:text-5xl' :
+              howItWorksCms?.style?.titleFontSize === '4xl' ? 'text-2xl sm:text-4xl' :
+              howItWorksCms?.style?.titleFontSize === '2xl' ? 'text-lg sm:text-2xl' :
+              'text-2xl sm:text-3xl'
+            } font-black text-slate-900`}>
+              {howItWorksCms?.title || 'কীভাবে ঘরে বসেই নির্ভুল চাকরি আবেদন করবেন?'}
+            </h2>
+            <p className="text-[16px] text-slate-600">
+              {howItWorksCms?.subtitle || 'সাইবার ক্যাফেতে ঘণ্টার পর ঘণ্টা বসে থাকার ঝামেলা শেষ! আপনার সুবিধার্থে আধুনিক স্মার্ট সিস্টেম:'}
             </p>
           </div>
 
-          <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/90 shadow-sm relative overflow-hidden group hover:border-emerald-500 transition-all space-y-3">
-            <div className="w-12 h-12 rounded-2xl bg-teal-100 text-teal-800 font-black text-lg flex items-center justify-center group-hover:scale-110 transition-transform">
-              ২
-            </div>
-            <h3 className="text-lg font-bold text-slate-900">
-              পছন্দের জবে আবেদন বুকিং দিন
-            </h3>
-            <p className="text-[16px] text-slate-600 leading-relaxed">
-              যেকোনো সরকারি বা ব্যাংক বিজ্ঞপ্তির নিচে আবেদন করুন চাপুন। বিকাশ/নগদে সরকারি ফি ও সামান্য টিম সার্ভিস চার্জ পেমেন্ট করলেই সরাসরি রিকোয়েস্ট চলে যাবে।
-            </p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {(howItWorksCms?.content?.items && howItWorksCms.content.items.length > 0 ? howItWorksCms.content.items : [
+              {
+                step: 1,
+                title: '১ বার ডকুমেন্ট ভল্টে সেভ রাখুন',
+                desc: 'আপনার পাসপোর্ট ছবি, স্বাক্ষর, এনআইডি এবং শিক্ষাগত সনদের তথ্য মাত্র একবার আপলোড করুন। আমাদের সিস্টেম নিজে থেকেই ৩০০x৩০০ ও ৩০০x৮০ পিক্সেল সাইজে কনভার্ট করে রাখবে।'
+              },
+              {
+                step: 2,
+                title: 'পছন্দের জবে আবেদন বুকিং দিন',
+                desc: 'যেকোনো সরকারি বা ব্যাংক বিজ্ঞপ্তির নিচে আবেদন করুন চাপুন। বিকাশ/নগদে সরকারি ফি ও সামান্য টিম সার্ভিস চার্জ পেমেন্ট করলেই সরাসরি রিকোয়েস্ট চলে যাবে।'
+              },
+              {
+                step: 3,
+                title: 'টিম আবেদন শেষ করে স্লিপ দেবে',
+                desc: 'আমাদের অভিজ্ঞ এক্সপার্ট টিম অফিশিয়াল পোর্টালে নিখুঁতভাবে ফর্ম পূরণ করে সরকারি ফি দিয়ে আপনার ড্যাশবোর্ডে অ্যাপ্লিকেন্ট কপি পিডিএফ আপলোড করে দেবে এবং এসএমএস যাবে!'
+              }
+            ]).map((stepItem: any, sIdx: number) => (
+              <div key={sIdx} className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/90 shadow-sm relative overflow-hidden group hover:border-emerald-500 transition-all space-y-3">
+                <div className="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-800 font-black text-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                  {stepItem.step || sIdx + 1}
+                </div>
+                <h3 className="text-lg font-bold text-slate-900">
+                  {stepItem.title}
+                </h3>
+                <p className="text-[16px] text-slate-600 leading-relaxed">
+                  {stepItem.desc}
+                </p>
+              </div>
+            ))}
           </div>
-
-          <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/90 shadow-sm relative overflow-hidden group hover:border-emerald-500 transition-all space-y-3">
-            <div className="w-12 h-12 rounded-2xl bg-amber-100 text-amber-800 font-black text-lg flex items-center justify-center group-hover:scale-110 transition-transform">
-              ৩
-            </div>
-            <h3 className="text-lg font-bold text-slate-900">
-              টিম আবেদন শেষ করে স্লিপ দেবে
-            </h3>
-            <p className="text-[16px] text-slate-600 leading-relaxed">
-              আমাদের অভিজ্ঞ এক্সপার্ট টিম অফিশিয়াল পোর্টালে নিখুঁতভাবে ফর্ম পূরণ করে সরকারি ফি দিয়ে আপনার ড্যাশবোর্ডে অ্যাপ্লিকেন্ট কপি পিডিএফ আপলোড করে দেবে এবং এসএমএস যাবে!
-            </p>
-          </div>
-
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* 6. FREE PREVIOUS EXAM QUESTIONS TEASER BANNER */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-white rounded-3xl p-6 sm:p-10 shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div className="space-y-2 max-w-xl">
-            <span className="bg-white/20 text-white text-[13px] font-black px-2.5 py-1 rounded uppercase tracking-wider">
-              ফ্রি ডাউনলোড হাব
-            </span>
-            <h3 className="text-xl sm:text-2xl font-black">
-              বিসিএস ও ব্যাংক পরীক্ষার বিগত ১০ বছরের প্রশ্ন ও সমাধান (PDF)
-            </h3>
-            <p className="text-[16px] text-amber-100 leading-relaxed">
-              প্রিলিমিনারি ও লিখিত পরীক্ষার পূর্ণাঙ্গ প্রশ্নব্যাংক ব্যাখ্যাসহ ডাউনলোড করুন সম্পূর্ণ বিনামূল্যে।
-            </p>
-          </div>
+      {(ctaBannerCms?.isVisible !== false) && (
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div 
+            style={{
+              backgroundColor: ctaBannerCms?.style?.backgroundColor || undefined
+            }}
+            className="bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-white rounded-3xl p-6 sm:p-10 shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-6"
+          >
+            <div className="space-y-2 max-w-xl">
+              <span className="bg-white/20 text-white text-[13px] font-black px-2.5 py-1 rounded uppercase tracking-wider">
+                {ctaBannerCms?.content?.badge || 'ফ্রি ডাউনলোড হাব'}
+              </span>
+              <h3 className={`${ctaBannerCms?.style?.titleFontSize === '3xl' ? 'text-2xl sm:text-3xl' : 'text-xl sm:text-2xl'} font-black`}>
+                {ctaBannerCms?.title || 'বিসিএস ও ব্যাংক পরীক্ষার বিগত ১০ বছরের প্রশ্ন ও সমাধান (PDF)'}
+              </h3>
+              <p className="text-[16px] text-amber-100 leading-relaxed">
+                {ctaBannerCms?.subtitle || 'প্রিলিমিনারি ও লিখিত পরীক্ষার পূর্ণাঙ্গ প্রশ্নব্যাংক ব্যাখ্যাসহ ডাউনলোড করুন সম্পূর্ণ বিনামূল্যে।'}
+              </p>
+            </div>
 
-          <div className="flex items-center gap-3">
-            <Link
-              href="/questions"
-              className="px-6 py-3 bg-white hover:bg-slate-100 text-amber-950 font-black text-[17px] rounded-xl shadow-lg transition-all flex items-center gap-2"
-            >
-              <Download className="w-4 h-4 text-amber-700" />
-              <span>ফ্রি প্রশ্নব্যাংক ডাউনলোড</span>
-            </Link>
+            <div className="flex items-center gap-3">
+              <Link
+                href={ctaBannerCms?.content?.buttonUrl || '/questions'}
+                className="px-6 py-3 bg-white hover:bg-slate-100 text-amber-950 font-black text-[17px] rounded-xl shadow-lg transition-all flex items-center gap-2"
+              >
+                <Download className="w-4 h-4 text-amber-700" />
+                <span>{ctaBannerCms?.content?.buttonLabel || 'ফ্রি প্রশ্নব্যাংক ডাউনলোড'}</span>
+              </Link>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* 7. CANDIDATE TESTIMONIALS & REVIEWS SECTION (Auto-Scrolling Marquee) */}
-      <section id="reviews-section" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 scroll-mt-24">
-        <div className="bg-gradient-to-b from-slate-900 to-[#02231b] rounded-3xl sm:rounded-[36px] p-6 sm:p-10 text-white border border-emerald-900/40 shadow-2xl relative overflow-hidden">
-          {/* Subtle Ambient Glows */}
-          <div className="absolute top-0 right-1/4 w-[400px] h-[250px] bg-emerald-500/10 blur-[120px] rounded-full pointer-events-none" />
-          <div className="absolute bottom-0 left-1/4 w-[350px] h-[200px] bg-teal-500/10 blur-[100px] rounded-full pointer-events-none" />
+      {(reviewsCms?.isVisible !== false) && (
+        <section id="reviews-section" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 scroll-mt-24">
+          <div 
+            style={{
+              backgroundColor: reviewsCms?.style?.backgroundColor || undefined
+            }}
+            className="bg-gradient-to-b from-slate-900 to-[#02231b] rounded-3xl sm:rounded-[36px] p-6 sm:p-10 text-white border border-emerald-900/40 shadow-2xl relative overflow-hidden"
+          >
+            {/* Subtle Ambient Glows */}
+            <div className="absolute top-0 right-1/4 w-[400px] h-[250px] bg-emerald-500/10 blur-[120px] rounded-full pointer-events-none" />
+            <div className="absolute bottom-0 left-1/4 w-[350px] h-[200px] bg-teal-500/10 blur-[100px] rounded-full pointer-events-none" />
 
-          {/* Section Header */}
-          <div className="text-center max-w-3xl mx-auto space-y-3 mb-8 relative z-10">
-            <div className="inline-flex items-center gap-2 bg-emerald-900/60 border border-emerald-500/30 text-emerald-300 px-4 py-1.5 rounded-full text-[13px] sm:text-[14px] font-bold tracking-wide shadow-sm">
-              <span className="flex text-amber-400">★★★★★</span>
-              <span>৪.৯/৫ গড় রেটিং • ৩,৫০০+ ভেরিফাইড আবেদনকারী</span>
+            {/* Section Header */}
+            <div className="text-center max-w-3xl mx-auto space-y-3 mb-8 relative z-10">
+              <div className="inline-flex items-center gap-2 bg-emerald-900/60 border border-emerald-500/30 text-emerald-300 px-4 py-1.5 rounded-full text-[13px] sm:text-[14px] font-bold tracking-wide shadow-sm">
+                <span className="flex text-amber-400">★★★★★</span>
+                <span>{reviewsCms?.content?.badge || '৪.৯/৫ গড় রেটিং • ৩,৫০০+ ভেরিফাইড আবেদনকারী'}</span>
+              </div>
+              <h2 className={`${reviewsCms?.style?.titleFontSize === '5xl' ? 'text-3xl sm:text-5xl' : reviewsCms?.style?.titleFontSize === '3xl' ? 'text-xl sm:text-3xl' : 'text-2xl sm:text-4xl'} font-black text-white tracking-tight`}>
+                {reviewsCms?.title || 'সফল চাকরিপ্রার্থীদের বাস্তব অভিজ্ঞতা ও মতামত'}
+              </h2>
+              <p className="text-[15px] sm:text-[17px] text-slate-300 leading-relaxed max-w-2xl mx-auto">
+                {reviewsCms?.subtitle || 'সাইবার ক্যাফেতে ঘণ্টার পর ঘণ্টা লাইনে দাঁড়ানোর ভোগান্তি ছাড়াই কীভাবে শত শত চাকরিপ্রার্থী ঘরে বসেই শতভাগ নির্ভুল আবেদন সেবা পেয়েছেন:'}
+              </p>
             </div>
-            <h2 className="text-2xl sm:text-4xl font-black text-white tracking-tight">
-              সফল চাকরিপ্রার্থীদের বাস্তব অভিজ্ঞতা ও মতামত
-            </h2>
-            <p className="text-[15px] sm:text-[17px] text-slate-300 leading-relaxed max-w-2xl mx-auto">
-              সাইবার ক্যাফেতে ঘণ্টার পর ঘণ্টা লাইনে দাঁড়ানোর ভোগান্তি ছাড়াই কীভাবে শত শত চাকরিপ্রার্থী ঘরে বসেই শতভাগ নির্ভুল আবেদন সেবা পেয়েছেন:
-            </p>
-          </div>
 
           {/* Infinite Auto-Scrolling Reviews Marquee (Pauses on Hover) */}
           <div className="relative z-10 overflow-hidden w-full py-2">
@@ -1409,115 +1435,140 @@ export default function HomePage() {
 
         </div>
       </section>
+      )}
 
       {/* 8. FREQUENTLY ASKED QUESTIONS (FAQ ACCORDION) */}
-      <section id="faq-section" className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 scroll-mt-24">
-        <div className="text-center space-y-3 mb-10">
-          <div className="inline-flex items-center gap-1.5 bg-emerald-100 text-emerald-800 px-3.5 py-1 rounded-full text-[13px] sm:text-[14px] font-bold">
-            <HelpCircle className="w-4 h-4 text-emerald-700" />
-            <span>সাধারণ জিজ্ঞাসা • স্পষ্ট উত্তর</span>
+      {(faqCms?.isVisible !== false) && (
+        <section 
+          id="faq-section" 
+          style={{
+            backgroundColor: faqCms?.style?.backgroundColor || undefined,
+            color: faqCms?.style?.textColor || undefined
+          }}
+          className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 scroll-mt-24"
+        >
+          <div className="text-center space-y-3 mb-10">
+            <div className="inline-flex items-center gap-1.5 bg-emerald-100 text-emerald-800 px-3.5 py-1 rounded-full text-[13px] sm:text-[14px] font-bold">
+              <HelpCircle className="w-4 h-4 text-emerald-700" />
+              <span>{faqCms?.content?.badge || 'সাধারণ জিজ্ঞাসা • স্পষ্ট উত্তর'}</span>
+            </div>
+            <h2 className={`${
+              faqCms?.style?.titleFontSize === '5xl' ? 'text-3xl sm:text-5xl' :
+              faqCms?.style?.titleFontSize === '6xl' ? 'text-4xl sm:text-6xl' :
+              faqCms?.style?.titleFontSize === '4xl' ? 'text-3xl sm:text-4xl lg:text-5xl' :
+              faqCms?.style?.titleFontSize === '2xl' ? 'text-xl sm:text-2xl' :
+              'text-2xl sm:text-3xl lg:text-4xl'
+            } ${
+              faqCms?.style?.fontWeight === 'black' ? 'font-black' :
+              faqCms?.style?.fontWeight === 'bold' ? 'font-bold' :
+              faqCms?.style?.fontWeight === 'semibold' ? 'font-semibold' : 'font-black'
+            } text-slate-900 tracking-tight`}>
+              {faqCms?.title || 'সচরাচর জিজ্ঞাসিত প্রশ্নাবলী (FAQ)'}
+            </h2>
+            <p className={`${
+              faqCms?.style?.subtitleFontSize === 'xs' ? 'text-[12px] sm:text-[13px]' :
+              faqCms?.style?.subtitleFontSize === 'sm' ? 'text-[13px] sm:text-[14px]' :
+              faqCms?.style?.subtitleFontSize === 'lg' ? 'text-[16px] sm:text-[18px]' :
+              'text-[15px] sm:text-[16px]'
+            } text-slate-600 max-w-xl mx-auto leading-relaxed`}>
+              {faqCms?.subtitle || 'অনলাইন আবেদন ও চাকরি সেবা প্ল্যাটফর্ম সংক্রান্ত আপনার সকল প্রয়োজনীয় প্রশ্নের সহজ ও দ্রুত সমাধান:'}
+            </p>
           </div>
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-900 tracking-tight">
-            সচরাচর জিজ্ঞাসিত প্রশ্নাবলী (FAQ)
-          </h2>
-          <p className="text-[15px] sm:text-[16px] text-slate-600 max-w-xl mx-auto leading-relaxed">
-            অনলাইন আবেদন ও চাকরি সেবা প্ল্যাটফর্ম সংক্রান্ত আপনার সকল প্রয়োজনীয় প্রশ্নের সহজ ও দ্রুত সমাধান:
-          </p>
-        </div>
 
-        {/* Accordion Items List */}
-        <div className="space-y-3.5">
-          {[
-            {
-              q: "আমি ঘরে বসে আবেদন করলে সেটা কি ১০০% নির্ভুল হবে এবং অফিশিয়াল স্লিপ পাব?",
-              a: "হ্যাঁ, শতভাগ নিশ্চয়তা। আমাদের প্ল্যাটফর্মে কাজ করেন অভিজ্ঞ সরকারি ও ব্যাংক নিয়োগ এক্সপার্ট টিম। আপনার দেওয়া তথ্য পুঙ্খানুপুঙ্খ যাচাই করে অফিশিয়াল পোর্টালে (যেমন: Teletalk, Bangladesh Bank, BPSC) ফর্ম পূরণ করা হয় এবং ফি পরিশোধের পর প্রাপ্ত অফিশিয়াল Applicant Copy (User ID & Password সহ) আপনার ড্যাশবোর্ডে আপলোড করে এসএমএস দেওয়া হয়।"
-            },
-            {
-              q: "আবেদনের সরকারি ফি ও সার্ভিস চার্জ কীভাবে এবং কখন পরিশোধ করতে হবে?",
-              a: "আপনি বিকাশ (bKash), নগদ (Nagad), রকেট বা আপনার চাকরি সেবা ওয়ালেট ব্যালেন্সের মাধ্যমে অতি সহজে পেমেন্ট করতে পারবেন। সরকারি নির্ধারিত ফি-এর সাথে সামান্য সার্ভিস চার্জ যুক্ত থাকে। আবেদন সফলভাবে সাবমিট ও কনফার্ম না হওয়া পর্যন্ত আপনার টাকা সম্পূর্ণ নিরাপদ থাকে।"
-            },
-            {
-              q: "আমার ছবি ও স্বাক্ষর কি নিজে রিসাইজ (300x300, 300x80) করতে হবে?",
-              a: "একদমই না! সাইবার ক্যাফের মতো আপনাকে কোনো ফটোশপ বা রিসাইজিং সফটওয়্যার নিয়ে ভাবতে হবে না। আপনি শুধু মোবাইল ক্যামেরা দিয়ে তোলা সাধারণ ছবি ও সাদা কাগজে সই করা ছবি আপলোড করবেন, আমাদের স্মার্ট সিস্টেম নিজে থেকেই সরকারি নীতিমালার ৩০০x৩০০ ও ৩০০x৮০ পিক্সেল এবং নির্দিষ্ট কেবি (KB) সাইজে স্বয়ংক্রিয়ভাবে কনভার্ট করে নেবে।"
-            },
-            {
-              q: "আবেদনের পর প্রবেশপত্র (Admit Card) ও পরীক্ষার সিট প্ল্যান কীভাবে পাব?",
-              a: "আপনার আবেদন সম্পন্ন হওয়ার পর অফিশিয়াল রিক্রুটমেন্ট কর্তৃপক্ষ যখনই পরীক্ষার তারিখ ও প্রবেশপত্র ছাড়বে, সাথে সাথেই আপনার মোবাইলে এসএমএস ও হোয়াটসঅ্যাপে নোটিফিকেশন যাবে এবং আমাদের পোর্টাল থেকেই সরাসরি প্রবেশপত্র ডাউনলোড করতে পারবেন।"
-            },
-            {
-              q: "আমার ব্যক্তিগত তথ্য ও শিক্ষাগত সনদের নিরাপত্তা কেমন?",
-              a: "আমরা এনক্রিপ্টেড ডাটাবেজ ও ক্লাউড সিকিউরিটি প্রোটোকল ব্যবহার করি। আপনার ব্যক্তিগত কাগজপত্র, এনআইডি বা ছবি শুধুমাত্র আপনার নির্দিষ্ট আবেদন ফর্ম পূরণের উদ্দেশ্যেই ব্যবহৃত হয় এবং কোনো তৃতীয় পক্ষের কাছে প্রকাশ করা হয় না।"
-            },
-            {
-              q: "কোনো সার্কুলারে একাধিক পদে আবেদনের সুযোগ থাকলে আমি কীভাবে আবেদন করব?",
-              a: "যেসব সার্কুলারে একাধিক পদ বা গ্রেড রয়েছে (যেমন: বাংলাদেশ ব্যাংক, রেলওয়ে বা কাস্টমস), সেখানে সার্কুলার কার্ডের ওপর থাকা 'পদ ও ফি দেখুন' ড্রয়ারে ক্লিক করে আপনার যোগ্যতানুযায়ী যেকোনো এক বা একাধিক পদ পছন্দ করে সহজেই আলাদা বা সমন্বিত আবেদন বুকিং দিতে পারবেন।"
-            }
-          ].map((item, index) => {
-            const isOpen = openFaqIndex === index;
-            return (
-              <div
-                key={index}
-                className={`bg-white rounded-2xl border transition-all overflow-hidden ${
-                  isOpen
-                    ? 'border-emerald-500 shadow-md shadow-emerald-950/5 ring-1 ring-emerald-500/20'
-                    : 'border-slate-200/90 hover:border-slate-300 shadow-xs'
-                }`}
-              >
-                <button
-                  type="button"
-                  onClick={() => setOpenFaqIndex(isOpen ? null : index)}
-                  className="w-full p-4 sm:p-5 text-left flex items-center justify-between gap-4 cursor-pointer"
+          {/* Accordion Items List */}
+          <div className="space-y-3.5">
+            {((faqCms?.content?.faqs && faqCms.content.faqs.length > 0) ? faqCms.content.faqs : [
+              {
+                q: "আমি ঘরে বসে আবেদন করলে সেটা কি ১০০% নির্ভুল হবে এবং অফিশিয়াল স্লিপ পাব?",
+                a: "হ্যাঁ, শতভাগ নিশ্চয়তা। আমাদের প্ল্যাটফর্মে কাজ করেন অভিজ্ঞ সরকারি ও ব্যাংক নিয়োগ এক্সপার্ট টিম। আপনার দেওয়া তথ্য পুঙ্খানুপুঙ্খ যাচাই করে অফিশিয়াল পোর্টালে (যেমন: Teletalk, Bangladesh Bank, BPSC) ফর্ম পূরণ করা হয় এবং ফি পরিশোধের পর প্রাপ্ত অফিশিয়াল Applicant Copy (User ID & Password সহ) আপনার ড্যাশবোর্ডে আপলোড করে এসএমএস দেওয়া হয়।"
+              },
+              {
+                q: "আবেদনের সরকারি ফি ও সার্ভিস চার্জ কীভাবে এবং কখন পরিশোধ করতে হবে?",
+                a: "আপনি বিকাশ (bKash), নগদ (Nagad), রকেট বা আপনার চাকরি সেবা ওয়ালেট ব্যালেন্সের মাধ্যমে অতি সহজে পেমেন্ট করতে পারবেন। সরকারি নির্ধারিত ফি-এর সাথে সামান্য সার্ভিস চার্জ যুক্ত থাকে। আবেদন সফলভাবে সাবমিট ও কনফার্ম না হওয়া পর্যন্ত আপনার টাকা সম্পূর্ণ নিরাপদ থাকে।"
+              },
+              {
+                q: "আমার ছবি ও স্বাক্ষর কি নিজে রিসাইজ (300x300, 300x80) করতে হবে?",
+                a: "একদমই না! সাইবার ক্যাফের মতো আপনাকে কোনো ফটোশপ বা রিসাইজিং সফটওয়্যার নিয়ে ভাবতে হবে না। আপনি শুধু মোবাইল ক্যামেরা দিয়ে তোলা সাধারণ ছবি ও সাদা কাগজে সই করা ছবি আপলোড করবেন, আমাদের স্মার্ট সিস্টেম নিজে থেকেই সরকারি নীতিমালার ৩০০x৩০০ ও ৩০০x৮০ পিক্সেল এবং নির্দিষ্ট কেবি (KB) সাইজে স্বয়ংক্রিয়ভাবে কনভার্ট করে নেবে।"
+              },
+              {
+                q: "আবেদনের পর প্রবেশপত্র (Admit Card) ও পরীক্ষার সিট প্ল্যান কীভাবে পাব?",
+                a: "আপনার আবেদন সম্পন্ন হওয়ার পর অফিশিয়াল রিক্রুটমেন্ট কর্তৃপক্ষ যখনই পরীক্ষার তারিখ ও প্রবেশপত্র ছাড়বে, সাথে সাথেই আপনার মোবাইলে এসএমএস ও হোয়াটসঅ্যাপে নোটিফিকেশন যাবে এবং আমাদের পোর্টাল থেকেই সরাসরি প্রবেশপত্র ডাউনলোড করতে পারবেন।"
+              },
+              {
+                q: "আমার ব্যক্তিগত তথ্য ও শিক্ষাগত সনদের নিরাপত্তা কেমন?",
+                a: "আমরা এনক্রিপ্টেড ডাটাবেজ ও ক্লাউড সিকিউরিটি প্রোটোকল ব্যবহার করি। আপনার ব্যক্তিগত কাগজপত্র, এনআইডি বা ছবি শুধুমাত্র আপনার নির্দিষ্ট আবেদন ফর্ম পূরণের উদ্দেশ্যেই ব্যবহৃত হয় এবং কোনো তৃতীয় পক্ষের কাছে প্রকাশ করা হয় না।"
+              },
+              {
+                q: "কোনো সার্কুলারে একাধিক পদে আবেদনের সুযোগ থাকলে আমি কীভাবে আবেদন করব?",
+                a: "যেসব সার্কুলারে একাধিক পদ বা গ্রেড রয়েছে (যেমন: বাংলাদেশ ব্যাংক, রেলওয়ে বা কাস্টমস), সেখানে সার্কুলার কার্ডের ওপর থাকা 'পদ ও ফি দেখুন' ড্রয়ারে ক্লিক করে আপনার যোগ্যতানুযায়ী যেকোনো এক বা একাধিক পদ পছন্দ করে সহজেই আলাদা বা সমন্বিত আবেদন বুকিং দিতে পারবেন।"
+              }
+            ]).map((item: any, index: number) => {
+              const isOpen = openFaqIndex === index;
+              return (
+                <div
+                  key={index}
+                  className={`bg-white rounded-2xl border transition-all overflow-hidden ${
+                    isOpen
+                      ? 'border-emerald-500 shadow-md shadow-emerald-950/5 ring-1 ring-emerald-500/20'
+                      : 'border-slate-200/90 hover:border-slate-300 shadow-xs'
+                  }`}
                 >
-                  <span className={`text-[16px] sm:text-[17px] font-bold leading-snug ${
-                    isOpen ? 'text-emerald-800' : 'text-slate-800'
-                  }`}>
-                    {item.q}
-                  </span>
-                  <span className={`w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0 transition-transform duration-200 ${
-                    isOpen ? 'bg-emerald-100 text-emerald-800 rotate-180' : 'bg-slate-100 text-slate-500'
-                  }`}>
-                    <ChevronDown className="w-4 h-4" />
-                  </span>
-                </button>
+                  <button
+                    type="button"
+                    onClick={() => setOpenFaqIndex(isOpen ? null : index)}
+                    className="w-full p-4 sm:p-5 text-left flex items-center justify-between gap-4 cursor-pointer"
+                  >
+                    <span className={`text-[16px] sm:text-[17px] font-bold leading-snug ${
+                      isOpen ? 'text-emerald-800' : 'text-slate-800'
+                    }`}>
+                      {item.q || item.question || item.title}
+                    </span>
+                    <span className={`w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0 transition-transform duration-200 ${
+                      isOpen ? 'bg-emerald-100 text-emerald-800 rotate-180' : 'bg-slate-100 text-slate-500'
+                    }`}>
+                      <ChevronDown className="w-4 h-4" />
+                    </span>
+                  </button>
 
-                {isOpen && (
-                  <div className="px-4 pb-4 sm:px-5 sm:pb-5 pt-0 text-[15px] sm:text-[16px] text-slate-600 leading-relaxed border-t border-slate-100 animate-in fade-in-50 duration-200">
-                    <p className="pt-3">{item.a}</p>
-                  </div>
-                )}
-              </div>
-            );
-          })}
-        </div>
-
-        {/* FAQ Support Footer Card */}
-        <div className="mt-8 bg-emerald-50/80 border border-emerald-200/80 rounded-2xl p-5 sm:p-6 text-center space-y-3">
-          <h4 className="text-base sm:text-lg font-bold text-slate-900">
-            আপনার কি আরও কোনো প্রশ্ন বা সহায়তা প্রয়োজন?
-          </h4>
-          <p className="text-[14px] sm:text-[15px] text-slate-600 max-w-lg mx-auto">
-            আমাদের অভিজ্ঞ কাস্টমার কেয়ার টিম প্রতিদিন সকাল ৯টা থেকে রাত ১১টা পর্যন্ত সরাসরি সহায়তার জন্য প্রস্তুত।
-          </p>
-          <div className="flex flex-wrap items-center justify-center gap-3 pt-1">
-            <a
-              href="https://wa.me/8801700000000"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[15px] shadow-sm flex items-center gap-2 transition-all hover:scale-105"
-            >
-              <MessageSquare className="w-4 h-4" />
-              <span>হোয়াটসঅ্যাপে সরাসরি কথা বলুন</span>
-            </a>
-            <a
-              href="tel:+8801700000000"
-              className="px-4 py-2.5 rounded-xl bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 font-bold text-[15px] shadow-xs flex items-center gap-2 transition-all"
-            >
-              <PhoneCall className="w-4 h-4 text-emerald-700" />
-              <span>কল করুন (হটলাইন)</span>
-            </a>
+                  {isOpen && (
+                    <div className="px-4 pb-4 sm:px-5 sm:pb-5 pt-0 text-[15px] sm:text-[16px] text-slate-600 leading-relaxed border-t border-slate-100 animate-in fade-in-50 duration-200">
+                      <p className="pt-3">{item.a || item.answer || item.desc}</p>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
-        </div>
-      </section>
+
+          {/* FAQ Support Footer Card */}
+          <div className="mt-8 bg-emerald-50/80 border border-emerald-200/80 rounded-2xl p-5 sm:p-6 text-center space-y-3">
+            <h4 className="text-base sm:text-lg font-bold text-slate-900">
+              আপনার কি আরও কোনো প্রশ্ন বা সহায়তা প্রয়োজন?
+            </h4>
+            <p className="text-[14px] sm:text-[15px] text-slate-600 max-w-lg mx-auto">
+              আমাদের অভিজ্ঞ কাস্টমার কেয়ার টিম প্রতিদিন সকাল ৯টা থেকে রাত ১১টা পর্যন্ত সরাসরি সহায়তার জন্য প্রস্তুত।
+            </p>
+            <div className="flex flex-wrap items-center justify-center gap-3 pt-1">
+              <a
+                href="https://wa.me/8801700000000"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[15px] shadow-sm flex items-center gap-2 transition-all hover:scale-105"
+              >
+                <MessageSquare className="w-4 h-4" />
+                <span>হোয়াটসঅ্যাপে সরাসরি কথা বলুন</span>
+              </a>
+              <a
+                href="tel:+8801700000000"
+                className="px-4 py-2.5 rounded-xl bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 font-bold text-[15px] shadow-xs flex items-center gap-2 transition-all"
+              >
+                <PhoneCall className="w-4 h-4 text-emerald-700" />
+                <span>কল করুন (হটলাইন)</span>
+              </a>
+            </div>
+          </div>
+        </section>
+      )}
 
       </div>
     </div>

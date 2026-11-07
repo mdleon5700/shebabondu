@@ -1,6 +1,8 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
 import { 
   Monitor, 
   Tablet, 
@@ -38,7 +40,12 @@ import {
   Flame,
   LayoutGrid,
   Check,
-  ChevronDown
+  ChevronDown,
+  RefreshCw,
+  Globe,
+  CheckSquare,
+  Square,
+  PanelTop
 } from 'lucide-react';
 import { PageRecord, PageSection, SectionType, PageRevision } from '@/lib/types';
 
@@ -66,7 +73,11 @@ export default function WebsiteBuilder({ initialPageId, onNavigateToPages }: Web
   }, [initialPageId]);
   const [activeSectionId, setActiveSectionId] = useState<string | null>(null);
   const [viewport, setViewport] = useState<'desktop' | 'tablet' | 'mobile'>('desktop');
+  const [viewMode, setViewMode] = useState<'editor' | 'preview' | 'live'>('editor');
   const [previewMode, setPreviewMode] = useState<boolean>(false);
+  const [showChrome, setShowChrome] = useState<boolean>(true);
+  const [platformSettings, setPlatformSettings] = useState<any>(null);
+  const [iframeKey, setIframeKey] = useState<number>(Date.now());
   const [loading, setLoading] = useState<boolean>(true);
   const [saveStatus, setSaveStatus] = useState<string | null>(null);
   const [showHistoryModal, setShowHistoryModal] = useState<boolean>(false);
@@ -74,10 +85,99 @@ export default function WebsiteBuilder({ initialPageId, onNavigateToPages }: Web
   const [newPageTitle, setNewPageTitle] = useState<string>('');
   const [newPageSlug, setNewPageSlug] = useState<string>('');
   const [showPageSettingsModal, setShowPageSettingsModal] = useState<boolean>(false);
+  const [showChromeSettingsModal, setShowChromeSettingsModal] = useState<boolean>(false);
+  const [isSavingChrome, setIsSavingChrome] = useState<boolean>(false);
+  const [chromeSaveSuccess, setChromeSaveSuccess] = useState<boolean>(false);
+
+  // Chrome Edit Form Fields
+  const [chromeSiteName, setChromeSiteName] = useState('চাকরি সেবা (Chakri Sheba)');
+  const [chromeSiteTagline, setChromeSiteTagline] = useState('নিউজ ও ১০০% নির্ভুল আবেদন পোর্টাল');
+  const [chromeLogoUrl, setChromeLogoUrl] = useState('');
+  const [chromeAnnouncementText, setChromeAnnouncementText] = useState('⚡ সরকারি ও ব্যাংক চাকরির শতভাগ নির্ভুল অনলাইন আবেদন ও এসএমএস ট্র্যাকিং সেবা সক্রিয় রয়েছে।');
+  const [chromeAnnouncementUrl, setChromeAnnouncementUrl] = useState('/jobs');
+  const [chromeAnnouncementEnabled, setChromeAnnouncementEnabled] = useState(true);
+  const [chromeWhatsapp, setChromeWhatsapp] = useState('8801774366643');
+  const [chromeWhatsappButtonText, setChromeWhatsappButtonText] = useState('WhatsApp');
+  const [chromeFooterAbout, setChromeFooterAbout] = useState('বাংলাদেশের চাকরিপ্রার্থীদের বিশ্বস্ত ডিজিটাল প্ল্যাটফর্ম। ঘরে বসেই সকল সরকারি, ব্যাংক ও শীর্ষ বেসরকারি চাকরির শতভাগ যাচাইকৃত বিজ্ঞপ্তি ও সঠিক নিয়মে অনলাইন আবেদন সহায়তা।');
 
   useEffect(() => {
     fetchPages();
+    fetchPlatformSettings();
+    const handleSettingsChanged = () => {
+      fetchPlatformSettings();
+      setIframeKey(Date.now());
+    };
+    window.addEventListener('cs_settings_changed', handleSettingsChanged);
+    return () => {
+      window.removeEventListener('cs_settings_changed', handleSettingsChanged);
+    };
   }, []);
+
+  const fetchPlatformSettings = async () => {
+    try {
+      const res = await fetch('/api/platform/settings', { cache: 'no-store' });
+      const data = await res.json();
+      if (data.success && data.settings) {
+        setPlatformSettings(data.settings);
+        const g = data.settings.general || {};
+        if (g.siteName) setChromeSiteName(g.siteName);
+        if (g.siteDescription) setChromeSiteTagline(g.siteDescription);
+        if (g.logoUrl) setChromeLogoUrl(g.logoUrl);
+        if (g.announcementText) setChromeAnnouncementText(g.announcementText);
+        if (g.announcementUrl) setChromeAnnouncementUrl(g.announcementUrl);
+        if (g.announcementEnabled !== undefined) setChromeAnnouncementEnabled(g.announcementEnabled);
+        if (g.whatsappNumber) setChromeWhatsapp(g.whatsappNumber);
+        if (g.whatsappButtonText) setChromeWhatsappButtonText(g.whatsappButtonText);
+        if (g.footerAboutText) setChromeFooterAbout(g.footerAboutText);
+      }
+    } catch (err) {
+      console.warn('Failed to load platform settings', err);
+    }
+  };
+
+  const handleSaveChromeSettings = async () => {
+    setIsSavingChrome(true);
+    setChromeSaveSuccess(false);
+    try {
+      const payload = {
+        general: {
+          siteName: chromeSiteName.trim(),
+          siteDescription: chromeSiteTagline.trim(),
+          logoUrl: chromeLogoUrl.trim(),
+          announcementText: chromeAnnouncementText.trim(),
+          announcementUrl: chromeAnnouncementUrl.trim(),
+          announcementEnabled: chromeAnnouncementEnabled,
+          whatsappNumber: chromeWhatsapp.trim(),
+          whatsappButtonText: chromeWhatsappButtonText.trim(),
+          footerAboutText: chromeFooterAbout.trim()
+        }
+      };
+      const res = await fetch('/api/admin/settings', {
+        method: 'PATCH',
+        headers: getAdminHeaders(),
+        body: JSON.stringify(payload)
+      });
+      if (res.ok) {
+        setChromeSaveSuccess(true);
+        await fetchPlatformSettings();
+        if (typeof window !== 'undefined') {
+          window.dispatchEvent(new CustomEvent('cs_settings_changed'));
+        }
+        setIframeKey(Date.now());
+        setTimeout(() => {
+          setShowChromeSettingsModal(false);
+          setChromeSaveSuccess(false);
+        }, 1200);
+      } else {
+        const errData = await res.json();
+        alert(errData.error || 'হেডার ও ফুটার সেটিংস সংরক্ষণ ব্যর্থ হয়েছে');
+      }
+    } catch (e: any) {
+      alert('ত্রুটি: ' + e.message);
+    } finally {
+      setIsSavingChrome(false);
+    }
+  };
 
   const fetchPages = async () => {
     try {
@@ -233,6 +333,13 @@ export default function WebsiteBuilder({ initialPageId, onNavigateToPages }: Web
       const data = await res.json();
       if (data.success && data.page) {
         setPages(prev => prev.map(p => p.id === data.page.id ? data.page : p));
+        setIframeKey(Date.now());
+        if (typeof window !== 'undefined') {
+          window.dispatchEvent(new CustomEvent('cs_page_changed'));
+          if (isPublish) {
+            window.dispatchEvent(new CustomEvent('cs_settings_changed'));
+          }
+        }
         setSaveStatus(isPublish ? 'সফল! পৃষ্ঠাটি লাইভ ওয়েবসাইটে প্রকাশিত হয়েছে!' : 'ড্রাফট সফলভাবে সংরক্ষিত হয়েছে!');
         setTimeout(() => setSaveStatus(null), 3500);
       } else {
@@ -366,6 +473,15 @@ export default function WebsiteBuilder({ initialPageId, onNavigateToPages }: Web
             </button>
 
             <button
+              onClick={() => setShowChromeSettingsModal(true)}
+              className="px-3 py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-900 border border-indigo-200 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shadow-2xs cursor-pointer"
+              title="হেডার, ফুটার, লোগো ও নোটিশ বার কাস্টমাইজ করুন"
+            >
+              <Sliders className="w-3.5 h-3.5 text-indigo-700" />
+              <span>হেডার ও ফুটার সেটিংস</span>
+            </button>
+
+            <button
               onClick={() => setShowNewPageModal(true)}
               className="px-3 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shadow-xs"
             >
@@ -419,6 +535,54 @@ export default function WebsiteBuilder({ initialPageId, onNavigateToPages }: Web
 
         {/* Right: Actions */}
         <div className="flex flex-wrap items-center gap-2">
+          {/* View Mode Switcher */}
+          <div className="flex items-center bg-slate-100 p-1 rounded-2xl border border-slate-200">
+            <button
+              type="button"
+              onClick={() => { setViewMode('editor'); setPreviewMode(false); }}
+              className={'px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ' + (
+                viewMode === 'editor' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-600 hover:text-slate-900'
+              )}
+            >
+              <Sliders className="w-3.5 h-3.5 text-slate-700" />
+              <span>এডিটর</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => { setViewMode('preview'); setPreviewMode(true); }}
+              className={'px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ' + (
+                viewMode === 'preview' ? 'bg-white text-blue-700 shadow-sm' : 'text-slate-600 hover:text-slate-900'
+              )}
+            >
+              <Eye className="w-3.5 h-3.5 text-blue-600" />
+              <span>প্রিভিউ</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => { setViewMode('live'); setPreviewMode(true); }}
+              className={'px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ' + (
+                viewMode === 'live' ? 'bg-emerald-700 text-white shadow-sm' : 'text-slate-600 hover:text-slate-900'
+              )}
+            >
+              <Globe className="w-3.5 h-3.5" />
+              <span>রিয়েল লাইভ ভিউ</span>
+            </button>
+          </div>
+
+          {viewMode !== 'live' && (
+            <button
+              type="button"
+              onClick={() => setShowChrome(!showChrome)}
+              className={'px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 border ' + (
+                showChrome ? 'bg-emerald-50 text-emerald-800 border-emerald-300' : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
+              )}
+              title="ক্যানভাসে ওয়েবসাইট হেডার ও ফুটার প্রদর্শন করুন বা লুকান"
+            >
+              {showChrome ? <CheckSquare className="w-3.5 h-3.5 text-emerald-600" /> : <Square className="w-3.5 h-3.5 text-slate-400" />}
+              <span>হেডার ও ফুটার</span>
+            </button>
+          )}
+
           <a
             href={currentPage?.slug === '/home-cms-draft' ? '/' : (currentPage?.slug || '/')}
             target="_blank"
@@ -429,16 +593,6 @@ export default function WebsiteBuilder({ initialPageId, onNavigateToPages }: Web
             <ExternalLink className="w-3.5 h-3.5 text-emerald-700" />
             <span>লাইভ পেজ দেখুন</span>
           </a>
-
-          <button
-            onClick={() => setPreviewMode(!previewMode)}
-            className={'px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 border ' + (
-              previewMode ? 'bg-blue-600 text-white border-blue-600 shadow' : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
-            )}
-          >
-            <Eye className="w-3.5 h-3.5" />
-            <span>{previewMode ? 'এডিটর' : 'প্রিভিউ'}</span>
-          </button>
 
           <button
             onClick={() => setShowHistoryModal(true)}
@@ -478,25 +632,118 @@ export default function WebsiteBuilder({ initialPageId, onNavigateToPages }: Web
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         
         {/* CANVAS */}
-        <div className={previewMode || !activeSection ? 'lg:col-span-12' : 'lg:col-span-8'}>
-          <div className="bg-slate-100 rounded-3xl p-4 sm:p-8 border border-slate-200/90 shadow-inner flex flex-col items-center min-h-[500px]">
-            <div 
-              style={{ width: viewport === 'mobile' ? '375px' : viewport === 'tablet' ? '768px' : '100%', transition: 'width 0.3s ease' }}
-              className="bg-white rounded-2xl border border-slate-300 shadow-xl overflow-hidden space-y-4"
-            >
-              <div className="bg-slate-100 px-4 py-2 border-b border-slate-200 flex items-center justify-between text-[11px] text-slate-500">
-                <div className="flex items-center gap-1.5">
-                  <div className="w-2.5 h-2.5 rounded-full bg-red-400"></div>
-                  <div className="w-2.5 h-2.5 rounded-full bg-amber-400"></div>
-                  <div className="w-2.5 h-2.5 rounded-full bg-emerald-400"></div>
-                </div>
-                <div className="font-mono bg-white px-3 py-0.5 rounded-md border border-slate-200 text-[10px] text-slate-600 truncate max-w-[200px]">
-                  https://chakrisheba.com{currentPage?.slug}
-                </div>
-                <span className="font-bold text-[10px] text-emerald-700 uppercase">{viewport} ({currentPage?.status})</span>
-              </div>
+        <div className={viewMode !== 'editor' || !activeSection ? 'lg:col-span-12' : 'lg:col-span-8'}>
+          {viewMode === 'live' ? (
+            <div className="bg-slate-100 rounded-3xl p-3 sm:p-6 border border-slate-200/90 shadow-inner flex flex-col items-center min-h-[600px]">
+              <div 
+                style={{ width: viewport === 'mobile' ? '375px' : viewport === 'tablet' ? '768px' : '100%', transition: 'width 0.3s ease' }}
+                className="bg-white rounded-2xl border border-slate-300 shadow-xl overflow-hidden flex flex-col"
+              >
+                {/* Browser address bar */}
+                <div className="bg-slate-100 px-4 py-2.5 border-b border-slate-200 flex flex-wrap items-center justify-between gap-2 text-[11px] text-slate-500">
+                  <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-1.5">
+                      <div className="w-2.5 h-2.5 rounded-full bg-red-400"></div>
+                      <div className="w-2.5 h-2.5 rounded-full bg-amber-400"></div>
+                      <div className="w-2.5 h-2.5 rounded-full bg-emerald-400"></div>
+                    </div>
+                    <div className="font-mono bg-white px-3 py-0.5 rounded-md border border-slate-200 text-[10px] text-slate-700 font-bold truncate max-w-xs">
+                      https://chakrisheba.com{currentPage?.slug === '/home-cms-draft' ? '/' : (currentPage?.slug || '/')}
+                    </div>
+                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                      রিয়েল লাইভ ওয়েবসাইট ভিউ (১০০% আসল প্রিভিউ)
+                    </span>
+                  </div>
 
-              <div className="divide-y divide-slate-100">
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setIframeKey(Date.now())}
+                      className="px-2.5 py-1 bg-white hover:bg-slate-50 border border-slate-200 rounded-lg text-slate-700 flex items-center gap-1 text-[11px] font-bold shadow-2xs cursor-pointer"
+                      title="লাইভ প্রিভিউ রিফ্রেশ করুন"
+                    >
+                      <RefreshCw className="w-3 h-3 text-slate-600" />
+                      <span>রিলোড</span>
+                    </button>
+                    <a
+                      href={currentPage?.slug === '/home-cms-draft' ? '/' : (currentPage?.slug || '/')}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-2.5 py-1 bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 rounded-lg text-emerald-800 flex items-center gap-1 text-[11px] font-bold"
+                    >
+                      <ExternalLink className="w-3 h-3" />
+                      <span>ট্যাবে খুলুন</span>
+                    </a>
+                    <span className="font-bold text-[10px] text-slate-600 uppercase bg-slate-200 px-2 py-0.5 rounded">
+                      {viewport}
+                    </span>
+                  </div>
+                </div>
+
+                {/* iFrame Viewport */}
+                <div className="w-full flex justify-center bg-slate-100/60 p-2 sm:p-4 overflow-x-auto min-h-[780px]">
+                  <iframe
+                    key={iframeKey}
+                    src={currentPage?.slug === '/home-cms-draft' ? '/' : (currentPage?.slug || '/')}
+                    title="Live Website Preview"
+                    style={{
+                      width: viewport === 'mobile' ? '375px' : viewport === 'tablet' ? '768px' : '100%',
+                      maxWidth: viewport === 'desktop' ? '1440px' : undefined,
+                      height: '840px',
+                      transition: 'width 0.3s ease',
+                      border: 'none',
+                      borderRadius: '12px',
+                      boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)'
+                    }}
+                    className="bg-white"
+                  />
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="bg-slate-100 rounded-3xl p-4 sm:p-8 border border-slate-200/90 shadow-inner flex flex-col items-center min-h-[500px]">
+              <div 
+                style={{ width: viewport === 'mobile' ? '375px' : viewport === 'tablet' ? '768px' : '100%', transition: 'width 0.3s ease' }}
+                className="bg-white rounded-2xl border border-slate-300 shadow-xl overflow-hidden space-y-0"
+              >
+                {/* Frame Browser bar */}
+                <div className="bg-slate-100 px-4 py-2 border-b border-slate-200 flex items-center justify-between text-[11px] text-slate-500">
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-2.5 h-2.5 rounded-full bg-red-400"></div>
+                    <div className="w-2.5 h-2.5 rounded-full bg-amber-400"></div>
+                    <div className="w-2.5 h-2.5 rounded-full bg-emerald-400"></div>
+                  </div>
+                  <div className="font-mono bg-white px-3 py-0.5 rounded-md border border-slate-200 text-[10px] text-slate-600 truncate max-w-[200px]">
+                    https://chakrisheba.com{currentPage?.slug}
+                  </div>
+                  <span className="font-bold text-[10px] text-emerald-700 uppercase">{viewport} ({currentPage?.status})</span>
+                </div>
+
+                {/* REAL TOP NAVBAR IN CANVAS */}
+                {showChrome && (
+                  <div className="border-b border-slate-200 bg-white relative z-20">
+                    <div className="bg-slate-800 text-[10px] text-slate-300 px-3 py-1 flex items-center justify-between font-mono">
+                      <span className="flex items-center gap-1.5">
+                        <PanelTop className="w-3 h-3 text-emerald-400" />
+                        <span>ওয়েবসাইট লাইভ হেডার (Header Preview)</span>
+                      </span>
+                      <button 
+                        type="button"
+                        onClick={() => setShowChromeSettingsModal(true)}
+                        className="text-emerald-400 hover:text-emerald-300 underline font-bold cursor-pointer"
+                      >
+                        কাস্টমাইজ করুন
+                      </button>
+                    </div>
+                    <div className="pointer-events-none select-none">
+                      <Navbar initialSettings={platformSettings} />
+                    </div>
+                  </div>
+                )}
+
+                {/* CANVAS SECTIONS DIVIDER */}
+                <div className="divide-y divide-slate-100">
                 {currentPage?.sections.map((sec, idx) => {
                   if (previewMode && sec.isVisible === false) return null;
 
@@ -950,9 +1197,31 @@ export default function WebsiteBuilder({ initialPageId, onNavigateToPages }: Web
                   </div>
                 </div>
               )}
+
+              {/* REAL BOTTOM FOOTER IN CANVAS */}
+              {showChrome && (
+                <div className="border-t border-slate-200 bg-slate-900 relative z-10">
+                  <div className="bg-slate-800 text-[10px] text-slate-300 px-3 py-1 flex items-center justify-between font-mono">
+                    <span className="flex items-center gap-1.5">
+                      <span>🌐 ওয়েবসাইট লাইভ ফুটার (Footer Preview)</span>
+                    </span>
+                    <button 
+                      type="button"
+                      onClick={() => setShowChromeSettingsModal(true)}
+                      className="text-emerald-400 hover:text-emerald-300 underline font-bold cursor-pointer"
+                    >
+                      কাস্টমাইজ করুন
+                    </button>
+                  </div>
+                  <div className="pointer-events-none select-none">
+                    <Footer initialSettings={platformSettings} />
+                  </div>
+                </div>
+              )}
             </div>
           </div>
-        </div>
+        )}
+      </div>
 
         {/* INSPECTOR */}
         {!previewMode && activeSection && (
@@ -2253,6 +2522,156 @@ export default function WebsiteBuilder({ initialPageId, onNavigateToPages }: Web
               <button type="submit" className="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-bold shadow">তৈরি করুন</button>
             </div>
           </form>
+        </div>
+      )}
+
+      {/* HEADER & FOOTER SETTINGS MODAL */}
+      {showChromeSettingsModal && (
+        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl p-6 max-w-2xl w-full space-y-4 shadow-2xl max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+              <div className="flex items-center gap-2">
+                <Sliders className="w-5 h-5 text-emerald-700" />
+                <h3 className="text-base font-black text-slate-900">হেডার ও ফুটার থিম ও কন্টেন্ট কাস্টমাইজার</h3>
+              </div>
+              <button onClick={() => setShowChromeSettingsModal(false)} className="text-slate-400 hover:text-slate-600 text-sm font-bold">✕</button>
+            </div>
+
+            {chromeSaveSuccess && (
+              <div className="p-3 bg-emerald-50 border border-emerald-300 rounded-2xl text-xs text-emerald-900 font-bold flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                <span>হেডার ও ফুটার সেটিংস সফলভাবে সংরক্ষিত ও লাইভ ওয়েবসাইটে আপডেট হয়েছে!</span>
+              </div>
+            )}
+
+            <div className="space-y-4 text-xs">
+              {/* Site Name & Tagline */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="font-bold text-slate-700 block mb-1">ওয়েবসাইট ব্র্যান্ড নাম</label>
+                  <input
+                    type="text"
+                    value={chromeSiteName}
+                    onChange={(e) => setChromeSiteName(e.target.value)}
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl font-bold text-slate-900"
+                    placeholder="চাকরি সেবা (Chakri Sheba)"
+                  />
+                </div>
+                <div>
+                  <label className="font-bold text-slate-700 block mb-1">ওয়েবসাইট ট্যাগলাইন / স্লোগান</label>
+                  <input
+                    type="text"
+                    value={chromeSiteTagline}
+                    onChange={(e) => setChromeSiteTagline(e.target.value)}
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900"
+                    placeholder="নিউজ ও ১০০% নির্ভুল আবেদন পোর্টাল"
+                  />
+                </div>
+              </div>
+
+              {/* Logo URL */}
+              <div>
+                <label className="font-bold text-slate-700 block mb-1">হেডার লোগো ইমেজ URL (ঐচ্ছিক)</label>
+                <input
+                  type="text"
+                  value={chromeLogoUrl}
+                  onChange={(e) => setChromeLogoUrl(e.target.value)}
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 font-mono text-[11px]"
+                  placeholder="https://... বা /icons/icon-192x192.png"
+                />
+              </div>
+
+              {/* Announcement Top Banner */}
+              <div className="p-3.5 bg-slate-50 rounded-2xl border border-slate-200 space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="font-black text-slate-800">⚡ টপ নোটিশ বার (Announcement Banner)</span>
+                  <label className="flex items-center gap-1.5 font-bold text-slate-700 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={chromeAnnouncementEnabled}
+                      onChange={(e) => setChromeAnnouncementEnabled(e.target.checked)}
+                      className="w-4 h-4 text-emerald-600 rounded"
+                    />
+                    <span>সক্রিয় রাখুন</span>
+                  </label>
+                </div>
+                <div>
+                  <label className="font-bold text-slate-600 block mb-1">নোটিশ বার্তা টেক্সট</label>
+                  <input
+                    type="text"
+                    value={chromeAnnouncementText}
+                    onChange={(e) => setChromeAnnouncementText(e.target.value)}
+                    className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-slate-900"
+                  />
+                </div>
+                <div>
+                  <label className="font-bold text-slate-600 block mb-1">নোটিশ ক্লিক লিঙ্ক</label>
+                  <input
+                    type="text"
+                    value={chromeAnnouncementUrl}
+                    onChange={(e) => setChromeAnnouncementUrl(e.target.value)}
+                    className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-slate-900 font-mono text-[11px]"
+                    placeholder="/jobs"
+                  />
+                </div>
+              </div>
+
+              {/* WhatsApp Hotline */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="font-bold text-slate-700 block mb-1">হোয়াটসঅ্যাপ হেল্পলাইন নম্বর</label>
+                  <input
+                    type="text"
+                    value={chromeWhatsapp}
+                    onChange={(e) => setChromeWhatsapp(e.target.value)}
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl font-mono text-slate-900"
+                    placeholder="8801774366643"
+                  />
+                </div>
+                <div>
+                  <label className="font-bold text-slate-700 block mb-1">হোয়াটসঅ্যাপ বাটন টেক্সট</label>
+                  <input
+                    type="text"
+                    value={chromeWhatsappButtonText}
+                    onChange={(e) => setChromeWhatsappButtonText(e.target.value)}
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900"
+                    placeholder="WhatsApp"
+                  />
+                </div>
+              </div>
+
+              {/* Footer About Text */}
+              <div>
+                <label className="font-bold text-slate-700 block mb-1">ফুটার পরিচিতি টেক্সট (About Paragraph)</label>
+                <textarea
+                  rows={3}
+                  value={chromeFooterAbout}
+                  onChange={(e) => setChromeFooterAbout(e.target.value)}
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900"
+                  placeholder="বাংলাদেশের চাকরিপ্রার্থীদের বিশ্বস্ত ডিজিটাল প্ল্যাটফর্ম..."
+                />
+              </div>
+            </div>
+
+            <div className="flex items-center justify-end gap-2 pt-3 border-t border-slate-100">
+              <button
+                type="button"
+                onClick={() => setShowChromeSettingsModal(false)}
+                className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-bold text-xs"
+              >
+                বাতিল
+              </button>
+              <button
+                type="button"
+                disabled={isSavingChrome}
+                onClick={handleSaveChromeSettings}
+                className="px-5 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl font-bold text-xs shadow-md flex items-center gap-1.5 disabled:opacity-50 cursor-pointer"
+              >
+                {isSavingChrome ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <Save className="w-3.5 h-3.5" />}
+                <span>হেডার ও ফুটার পরিবর্তন সংরক্ষণ করুন</span>
+              </button>
+            </div>
+          </div>
         </div>
       )}
 

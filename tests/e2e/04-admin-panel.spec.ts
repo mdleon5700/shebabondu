@@ -33,16 +33,36 @@ test.describe('Suite 4: Admin Panel Workflows, CMS Builder & Privileges', () => 
     // Verify Page Selector and Toolbar buttons
     await expect(page.locator('select').first()).toBeVisible();
     await expect(page.locator('button:has-text("পৃষ্ঠা এসইও ও সেটিংস")').first()).toBeVisible();
+    await expect(page.locator('button:has-text("হেডার ও ফুটার সেটিংস")').first()).toBeVisible();
 
     // Click on SEO settings modal
     await page.locator('button:has-text("পৃষ্ঠা এসইও ও সেটিংস")').first().click();
     await expect(page.locator('text=এসইও মেটাডাটা').first()).toBeVisible();
-
-    // Close modal
-    const closeBtn = page.locator('button:has-text("বাতিল"), button:has-text("✕"), button:has-text("বন্ধ")').first();
-    if (await closeBtn.isVisible()) {
-      await closeBtn.click();
+    const closeSeoBtn = page.locator('button:has-text("বাতিল"), button:has-text("✕"), button:has-text("বন্ধ")').first();
+    if (await closeSeoBtn.isVisible()) {
+      await closeSeoBtn.click();
     }
+    await page.waitForTimeout(500);
+
+    // Verify Header and Footer preview in Canvas
+    await expect(page.locator('text=ওয়েবসাইট লাইভ হেডার').first()).toBeVisible();
+    await expect(page.locator('text=ওয়েবসাইট লাইভ ফুটার').first()).toBeVisible();
+
+    // Open Header & Footer Settings modal
+    await page.locator('button:has-text("হেডার ও ফুটার সেটিংস")').first().click();
+    await expect(page.locator('text=হেডার ও ফুটার থিম').first()).toBeVisible();
+    const closeChromeBtn = page.locator('button:has-text("বাতিল"), button:has-text("✕")').first();
+    if (await closeChromeBtn.isVisible()) {
+      await closeChromeBtn.click();
+    }
+    await page.waitForTimeout(500);
+
+    // Toggle Real Live iFrame Preview
+    const liveViewBtn = page.locator('button:has-text("রিয়েল লাইভ ভিউ")').first();
+    await expect(liveViewBtn).toBeVisible();
+    await liveViewBtn.click();
+    await page.waitForTimeout(1000);
+    await expect(page.locator('iframe[title="Live Website Preview"]').first()).toBeVisible();
   });
 
   test('Candidate and Application list tables load with pagination and filters', async ({ page }) => {

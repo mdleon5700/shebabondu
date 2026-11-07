@@ -48,6 +48,11 @@ import {
   PanelTop
 } from 'lucide-react';
 import { PageRecord, PageSection, SectionType, PageRevision } from '@/lib/types';
+import BuilderLeftSidebar from './builder/BuilderLeftSidebar';
+import BuilderRightInspector from './builder/BuilderRightInspector';
+import BuilderPublishModal from './builder/BuilderPublishModal';
+import { PRESET_PAGE_TEMPLATES } from './builder/templates/presetTemplates';
+import { RotateCcw, RotateCw } from 'lucide-react';
 
 const getAdminHeaders = (): HeadersInit => {
   const pin = typeof window !== 'undefined' ? (localStorage.getItem('cs_admin_pin') || '1234') : '1234';
@@ -88,6 +93,45 @@ export default function WebsiteBuilder({ initialPageId, onNavigateToPages }: Web
   const [showChromeSettingsModal, setShowChromeSettingsModal] = useState<boolean>(false);
   const [isSavingChrome, setIsSavingChrome] = useState<boolean>(false);
   const [chromeSaveSuccess, setChromeSaveSuccess] = useState<boolean>(false);
+  const [showPublishModal, setShowPublishModal] = useState<boolean>(false);
+  const [history, setHistory] = useState<PageSection[][]>([]);
+  const [redoStack, setRedoStack] = useState<PageSection[][]>([]);
+  const [showLeftSidebar, setShowLeftSidebar] = useState<boolean>(true);
+
+  const pushHistory = (sections: PageSection[]) => {
+    setHistory(prev => [...prev.slice(-20), JSON.parse(JSON.stringify(sections))]);
+    setRedoStack([]);
+  };
+
+  const handleUndo = () => {
+    if (history.length === 0 || !currentPage) return;
+    const previous = history[history.length - 1];
+    setRedoStack(prev => [...prev, JSON.parse(JSON.stringify(currentPage.sections))]);
+    setHistory(prev => prev.slice(0, -1));
+    updateCurrentPage(p => ({ ...p, sections: previous }));
+  };
+
+  const handleRedo = () => {
+    if (redoStack.length === 0 || !currentPage) return;
+    const next = redoStack[redoStack.length - 1];
+    setHistory(prev => [...prev, JSON.parse(JSON.stringify(currentPage.sections))]);
+    setRedoStack(prev => prev.slice(0, -1));
+    updateCurrentPage(p => ({ ...p, sections: next }));
+  };
+
+  const handleApplyTemplate = (templateId: string) => {
+    if (!currentPage) return;
+    const tpl = PRESET_PAGE_TEMPLATES.find(t => t.id === templateId);
+    if (!tpl) return;
+    pushHistory(currentPage.sections);
+    updateCurrentPage(p => ({
+      ...p,
+      sections: JSON.parse(JSON.stringify(tpl.sections))
+    }));
+    setActiveSectionId(tpl.sections[0]?.id || null);
+    setSaveStatus('"' + tpl.name + '" টেমপ্লেট সফলভাবে প্রয়োগ করা হয়েছে!');
+    setTimeout(() => setSaveStatus(null), 3000);
+  };
 
   // Chrome Edit Form Fields
   const [chromeSiteName, setChromeSiteName] = useState('চাকরি সেবা (Chakri Sheba)');
@@ -511,6 +555,19 @@ export default function WebsiteBuilder({ initialPageId, onNavigateToPages }: Web
         
         {/* Left: Page Selector */}
         <div className="flex flex-wrap items-center gap-3">
+          {viewMode === 'editor' && (
+            <button
+              type="button"
+              onClick={() => setShowLeftSidebar(!showLeftSidebar)}
+              className={`px-3 py-2 rounded-xl text-xs font-bold border transition-all flex items-center gap-1.5 shadow-2xs cursor-pointer mt-4 ${
+                showLeftSidebar ? 'bg-indigo-50 border-indigo-200 text-indigo-700' : 'bg-white border-slate-300 text-slate-700 hover:bg-slate-50'
+              }`}
+              title="উপাদান ও টেমপ্লেট সাইডবার টগল করুন"
+            >
+              <LayoutGrid className="w-3.5 h-3.5" />
+              <span>{showLeftSidebar ? 'উপাদান লুকান' : 'উপাদান প্যানেল'}</span>
+            </button>
+          )}
           {onNavigateToPages && (
             <button
               type="button"
@@ -671,6 +728,28 @@ export default function WebsiteBuilder({ initialPageId, onNavigateToPages }: Web
             <span>লাইভ পেজ দেখুন</span>
           </a>
 
+          {/* Undo / Redo Toolbar Controls */}
+          <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-2xl border border-slate-200">
+            <button
+              type="button"
+              onClick={handleUndo}
+              disabled={history.length === 0}
+              className="p-1.5 rounded-xl text-slate-700 hover:bg-white disabled:opacity-30 disabled:hover:bg-transparent transition-all cursor-pointer"
+              title="পূর্বাবস্থায় ফেরান (Ctrl + Z)"
+            >
+              <RotateCcw className="w-3.5 h-3.5" />
+            </button>
+            <button
+              type="button"
+              onClick={handleRedo}
+              disabled={redoStack.length === 0}
+              className="p-1.5 rounded-xl text-slate-700 hover:bg-white disabled:opacity-30 disabled:hover:bg-transparent transition-all cursor-pointer"
+              title="পুনরায় করুন (Ctrl + Y)"
+            >
+              <RotateCw className="w-3.5 h-3.5" />
+            </button>
+          </div>
+
           <button
             onClick={() => setShowHistoryModal(true)}
             className="px-3 py-2 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5"
@@ -688,7 +767,7 @@ export default function WebsiteBuilder({ initialPageId, onNavigateToPages }: Web
           </button>
 
           <button
-            onClick={() => handleSavePage(true)}
+            onClick={() => setShowPublishModal(true)}
             className="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-bold transition-all shadow-md flex items-center gap-1.5"
           >
             <Send className="w-3.5 h-3.5" />
@@ -705,8 +784,78 @@ export default function WebsiteBuilder({ initialPageId, onNavigateToPages }: Web
         </div>
       )}
 
-      {/* CANVAS & INSPECTOR */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+      {/* THREE-PANEL BUILDER WORKSPACE */}
+      <div className="flex bg-slate-100 rounded-3xl border border-slate-200/90 shadow-inner overflow-hidden min-h-[750px] relative">
+        
+        {/* PANEL 1: LEFT SIDEBAR (Elements, Sections, Templates, Layers, Globals, Media) */}
+        {viewMode === 'editor' && showLeftSidebar && currentPage && (
+          <BuilderLeftSidebar
+            currentPage={currentPage}
+            activeSectionId={activeSectionId}
+            onSelectSection={setActiveSectionId}
+            onAddSection={(type, customData) => {
+              pushHistory(currentPage.sections);
+              if (customData) {
+                const newSec: PageSection = {
+                  id: 'sec-' + Date.now(),
+                  type,
+                  title: customData.title || 'নতুন সেকশন',
+                  subtitle: customData.subtitle || '',
+                  content: customData.content || {},
+                  style: {
+                    backgroundColor: '#ffffff',
+                    textColor: '#0f172a',
+                    paddingY: 'lg',
+                    textAlign: 'center',
+                    columns: 3,
+                    ...customData.style
+                  },
+                  isVisible: true
+                };
+                updateCurrentPage(p => ({ ...p, sections: [...p.sections, newSec] }));
+                setActiveSectionId(newSec.id);
+              } else {
+                handleAddSection(type);
+              }
+            }}
+            onMoveSection={(idx, dir) => {
+              pushHistory(currentPage.sections);
+              handleMoveSection(idx, dir);
+            }}
+            onDuplicateSection={(idx) => {
+              pushHistory(currentPage.sections);
+              handleDuplicateSection(idx);
+            }}
+            onDeleteSection={(idx) => {
+              pushHistory(currentPage.sections);
+              handleDeleteSection(idx);
+            }}
+            onToggleSectionVisibility={(id) => {
+              pushHistory(currentPage.sections);
+              updateCurrentPage(p => ({
+                ...p,
+                sections: p.sections.map(s => s.id === id ? { ...s, isVisible: s.isVisible === false } : s)
+              }));
+            }}
+            onApplyTemplate={handleApplyTemplate}
+            onOpenChromeSettings={() => setShowChromeSettingsModal(true)}
+            onSelectMediaImage={(url) => {
+              if (activeSection) {
+                updateCurrentPage(p => ({
+                  ...p,
+                  sections: p.sections.map(s => s.id === activeSection.id ? {
+                    ...s,
+                    content: { ...s.content, imageUrl: url }
+                  } : s)
+                }));
+              }
+            }}
+          />
+        )}
+
+        {/* PANEL 2: CENTER CANVAS & PANEL 3: RIGHT INSPECTOR */}
+        <div className="flex-1 overflow-x-hidden overflow-y-auto p-3 sm:p-5">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         
         {/* CANVAS */}
         <div className={viewMode !== 'editor' || !activeSection ? 'lg:col-span-12' : 'lg:col-span-8'}>
@@ -2466,6 +2615,8 @@ export default function WebsiteBuilder({ initialPageId, onNavigateToPages }: Web
           </div>
         )}
 
+          </div>
+        </div>
       </div>
 
       {/* PAGE SETTINGS & SEO MODAL */}
@@ -2602,7 +2753,21 @@ export default function WebsiteBuilder({ initialPageId, onNavigateToPages }: Web
         </div>
       )}
 
-      {/* HEADER & FOOTER SETTINGS MODAL */}
+
+      {/* Pre-Publish Quality Audit Modal */}
+      {showPublishModal && currentPage && (
+        <BuilderPublishModal
+          isOpen={showPublishModal}
+          page={currentPage}
+          onClose={() => setShowPublishModal(false)}
+          onConfirmPublish={async () => {
+            await handleSavePage(true);
+            setShowPublishModal(false);
+          }}
+          isPublishing={saveStatus?.includes('প্রকাশ') || false}
+        />
+      )}
+
       {showChromeSettingsModal && (
         <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-3xl p-6 max-w-2xl w-full space-y-4 shadow-2xl max-h-[90vh] overflow-y-auto">

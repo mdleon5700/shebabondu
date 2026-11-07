@@ -18,3 +18,4 @@
 ## 2. Maintenance Rules
 - Never close an issue without real browser or automated test verification.
 - Every fix must be accompanied by regression test coverage.
+

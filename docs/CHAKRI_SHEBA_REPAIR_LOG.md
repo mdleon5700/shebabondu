@@ -29,3 +29,14 @@
 - **Commit:** `f5b2cc0`
 - **Issue:** Validation of end-to-end admin job creation and instant public detail page loading.
 - **Fix:** Created BCC 2026 circular via `POST /api/admin/jobs`; verified `/jobs/bcc-job-circular-2026` returns HTTP 200 with complete JSON-LD schema.
+
+---
+
+### Repair Entry 4: Candidate Registration Session Persistence Fix
+- **Date:** 2026-11-07
+- **File:** `src/app/register/page.tsx`
+- **Issue:** Newly registered candidate losing session on page refresh and requiring manual re-login.
+- **Root Cause:** In `src/app/login/page.tsx`, successful authentication set both `document.cookie = cs_session_token=...` and `localStorage.setItem('cs_session_token', token)`. However, `src/app/register/page.tsx` only called `storage.setAuth()`, failing to set `document.cookie` or `localStorage.getItem('cs_session_token')`. Consequently, on hard page reload, Next.js server components and `CandidateDataProvider.tsx` had no authorization cookie and reverted to unauthenticated state.
+- **Fix:** Added `document.cookie = \`cs_session_token=\${data.token}; path=/; max-age=2592000; SameSite=Lax\` and `localStorage.setItem('cs_session_token', data.token)` immediately after successful registration.
+- **Verification:** Verified in real Chrome via subagent `browser`: candidate registered, page hard reloaded (`type="reload"`), and user session remained 100% active with wallet balance and candidate identity intact. Zero TypeScript errors.
+

@@ -44,3 +44,4 @@
 | **Admin Financial Ledger (`FinancialTransactionsLedger.tsx`)** | **1. Fully Functional & 9. Security-Sensitive** | Free service tracking, zero-fee enforcement, audit trails |
 | **Candidate Job Application Tracking (`/dashboard/applications`)** | **1. Fully Functional** | Application status (PENDING, PROCESSING, SUBMITTED), applicant copies |
 | **Notification Engine (`/api/notifications`)** | **2. Partially Functional** | In-app alerts functional; external SMS gateway requires live provider credentials |
+

@@ -55,3 +55,4 @@
 - **Database Operation:** Persists to `pages['home']` and `platformSettings` in `local_store.json`.
 - **Output:** Immediate live reflection on public pages without restart.
 - **Permissions:** Admin.
+

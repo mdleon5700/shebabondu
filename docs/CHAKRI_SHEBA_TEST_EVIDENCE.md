@@ -28,9 +28,20 @@
 | **SS-25** | `25_public_jobs_with_synced_alljobs.png` | Public `/jobs` showing 29 live synced circulars | 2026-11-07 |
 | **SS-26** | `26_live_posted_job_bcc_2026.png` | Published BCC circular detail page with JSON-LD | 2026-11-07 |
 | **SS-27** | `27_live_real_dcjamalpur_job.png` | Real DC Jamalpur job page with active Teletalk portal | 2026-11-07 |
+| **SS-28** | `28_browser_candidate_registration.png` | Live Chrome candidate registration with ৳50 promotional wallet | 2026-11-07 |
+| **SS-29** | `29_browser_candidate_dashboard_refresh.png` | Post-reload session persistence validation (100% state retained) | 2026-11-07 |
+| **SS-30** | `30_browser_candidate_logout_login.png` | Logout purge & re-login authentication cycle | 2026-11-07 |
+| **SS-31** | `31_browser_candidate_profile_editor.png` | Smart Candidate Profile editor with Teletalk applicant form | 2026-11-07 |
+| **SS-32** | `32_browser_document_vault.png` | Smart Document Vault with Teletalk 300x300 & 300x80 auto-resizers | 2026-11-07 |
+| **SS-33** | `33_browser_smart_cv_builder.png` | Smart CV Builder auto-generating BD professional standard resume | 2026-11-07 |
+| **SS-34** | `34_browser_admin_pin_gate.png` | Admin Console PIN protection gate screen | 2026-11-07 |
+| **SS-35** | `35_browser_admin_dashboard_kpis.png` | Super Admin Dashboard with live activity stream & KPIs | 2026-11-07 |
+| **SS-36** | `36_browser_visual_builder_mobile.png` | Visual Page Builder with responsive mobile canvas preview | 2026-11-07 |
+| **SS-37** | `37_browser_live_spider_hub.png` | Autonomous Spider Hub with standalone Playwright Chromium agent | 2026-11-07 |
 
 ---
 
 ## 3. TypeScript Quality Gate
 - Command: `npm run typecheck` (`tsc --noEmit`)
 - Result: **0 errors** (Zero compile or type discrepancies allowed).
+

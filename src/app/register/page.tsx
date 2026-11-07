@@ -45,11 +45,19 @@ export default function RegisterPage() {
         throw new Error(data.error || 'রেজিস্ট্রেশন সম্পন্ন করা সম্ভব হয়নি।');
       }
 
+      // Set session cookie & localStorage token for bulletproof session persistence
+      if (data.token) {
+        document.cookie = `cs_session_token=${encodeURIComponent(data.token)}; path=/; max-age=2592000; SameSite=Lax`;
+        localStorage.setItem('cs_session_token', data.token);
+      }
+
       // Sync local storage for client-side state
       storage.setAuth({
         isLoggedIn: true,
         role: 'candidate',
-        name: data.user?.name || name
+        userId: data.user?.id,
+        name: data.user?.name || name,
+        phone: data.user?.phone || phone
       });
 
       const user = storage.getUser();

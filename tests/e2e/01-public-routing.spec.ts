@@ -66,3 +66,4 @@ test.describe('Suite 1: Public Pages Routing, HTTP 200 & Console Health', () => 
     expect(page.url()).toContain('/jobs?search=');
   });
 });
+

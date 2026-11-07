@@ -42,7 +42,7 @@ This document serves as the master autonomous engineering tracking roadmap for r
 | **Suite 1** | `tests/e2e/01-public-routing.spec.ts` | Public routes HTTP 200, header/footer presence, 0 console errors | Public Landing, Jobs, CMS, Exam Hub (26 routes) | ✅ PASSED | 26 / 26 | 58s |
 | **Suite 2** | `tests/e2e/02-auth-rbac.spec.ts` | Login flows, cookie persistence, protected route guards | Candidate Reg, Login persistence, Admin Pin Lock Screen | ✅ PASSED | 3 / 3 | 16s |
 | **Suite 3** | `tests/e2e/03-user-panel.spec.ts` | Candidate dashboard, profile view & mutations | State persistence, form submit, no desync | ✅ PASSED | 2 / 2 | 13s |
-| **Suite 4** | `tests/e2e/04-admin-panel.spec.ts` | Admin entry, tab switching, CMS save, user management | Admin auth, table load, CMS builder modal | ✅ PASSED | 3 / 3 | 23s |
+| **Suite 4** | `tests/e2e/04-admin-panel.spec.ts` | Admin entry, tab switching, CMS save, user management | Admin auth, table load, CMS builder, Header/Footer in canvas, Live iFrame | ✅ PASSED | 3 / 3 | 23s |
 | **Suite 5** | `tests/e2e/05-responsive-ui.spec.ts` | Responsive layout at 375px (Mobile) and 1440px (Desktop) | Drawer toggle, zero horizontal overflow, multi-column | ✅ PASSED | 3 / 3 | 7s |
 | **TOTAL** | **5 Test Suites** | **Complete Full-Stack Platform End-to-End Coverage** | **Public + Candidate + Admin + Responsive** | **✅ 100% PASS** | **37 / 37** | **2.0m** |
 

@@ -249,42 +249,66 @@ export default function Navbar({ initialSettings }: { initialSettings?: any } = 
     ? platformSettings.general.headerMenuItems
     : DEFAULT_NAV_ITEMS;
 
-  // Dynamic visible count calculation based on real DOM measurements
+  // Dynamic visible count calculation based on calibrated typographical metrics and real DOM
   useEffect(() => {
     const calculateVisibleItems = () => {
       if (!navRef.current) return;
       const headerWidth = navRef.current.clientWidth;
-      const logoWidth = logoRef.current ? logoRef.current.offsetWidth : 260;
-      const rightWidth = rightAreaRef.current ? rightAreaRef.current.offsetWidth : 360;
       
-      // Spacing: horizontal container padding (32px to 64px) + gap between logo & nav (16px) + gap between nav & rightArea (16px)
-      const availableSpace = headerWidth - logoWidth - rightWidth - 64;
+      // Determine real or reliable fallback right area width based on auth state
+      const expectedRightWidth = auth.isLoggedIn 
+        ? (auth.role === 'admin' ? 255 : 435) 
+        : 515;
+      const measuredRightWidth = rightAreaRef.current?.offsetWidth || 0;
+      // Guard against measuring unmounted skeleton or partial width
+      const rightWidth = isMounted && measuredRightWidth > 200 
+        ? Math.max(measuredRightWidth, expectedRightWidth) 
+        : expectedRightWidth;
+
+      const logoWidth = headerWidth >= 1800 ? 360 : 220;
+      const containerDeduction = 96; // 64px container padding (px-8) + 32px flex gaps
+      
+      const availableSpace = headerWidth - logoWidth - rightWidth - containerDeduction;
 
       if (availableSpace <= 0) {
         setVisibleCount(1);
         return;
       }
 
-      let accumulatedWidth = 0;
-      let count = 0;
+      // Exact pixel width mapping (including 6px flex gap) based on rendered Bengali typography
+      const itemWidthsMap: Record<string, number> = {
+        'home': 51,
+        'all-jobs': 141,
+        'govt': 130,
+        'private': 145,
+        'categories': 147,
+        'exam': 155,
+        'career': 135,
+        'urgent-jobs': 149
+      };
 
-      for (let i = 0; i < navItems.length; i++) {
-        const item = navItems[i];
+      const getItemEstimatedWidth = (item: NavMenuItem) => {
+        if (itemWidthsMap[item.id]) return itemWidthsMap[item.id];
         const textLen = (item.label || '').length;
         const hasDropdown = Boolean(item.dropdown && item.dropdown.length > 0);
         const hasBadge = Boolean(item.badge);
-        // Rendered width: horizontal padding (24px) + text (textLen * 9.5px) + chevron (20px) + badge (42px)
-        const itemWidth = Math.max(85, Math.round(24 + (textLen * 9.5) + (hasDropdown ? 20 : 0) + (hasBadge ? 42 : 0)));
-        
+        return Math.max(50, Math.round(20 + (textLen * 7.5) + (hasDropdown ? 16 : 0) + (hasBadge ? 28 : 0) + 6));
+      };
+
+      let accumulatedWidth = 0;
+      let count = 0;
+      const moreButtonWidth = 70;
+
+      for (let i = 0; i < navItems.length; i++) {
+        const item = navItems[i];
+        const itemWidth = getItemEstimatedWidth(item);
         const isLast = (i === navItems.length - 1);
-        // Reserve ~80px for the "আরও" dropdown button if not all items fit
-        const neededWidth = accumulatedWidth + itemWidth + (isLast ? 0 : 80);
+        const neededWidth = accumulatedWidth + itemWidth + (isLast ? 0 : moreButtonWidth);
 
         if (neededWidth <= availableSpace) {
           accumulatedWidth += itemWidth;
           count++;
         } else if (isLast && (accumulatedWidth + itemWidth <= availableSpace)) {
-          // All items fit without "আরও" button
           count++;
         } else {
           break;
@@ -295,9 +319,13 @@ export default function Navbar({ initialSettings }: { initialSettings?: any } = 
     };
 
     calculateVisibleItems();
+    const timer = setTimeout(calculateVisibleItems, 60);
     window.addEventListener('resize', calculateVisibleItems);
-    return () => window.removeEventListener('resize', calculateVisibleItems);
-  }, [navItems, auth.isLoggedIn, auth.role, walletBalance, platformSettings]);
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('resize', calculateVisibleItems);
+    };
+  }, [navItems, auth.isLoggedIn, auth.role, isMounted, walletBalance, platformSettings]);
 
 
   return (

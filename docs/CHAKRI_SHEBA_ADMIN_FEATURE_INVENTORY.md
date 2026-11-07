@@ -224,3 +224,4 @@ graph TD
 - Run `npm run typecheck` (`tsc --noEmit`) to verify 0 errors.
 - Test via Playwright across multiple viewport resolutions (1920, 1536, 1440, 1366, 1024, 768, 390 mobile).
 - Capture screenshots to verify exact visual correspondence with the approved Bangla reference.
+

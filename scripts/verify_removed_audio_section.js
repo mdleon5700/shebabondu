@@ -53,3 +53,4 @@ const { chromium } = require('playwright');
 
   console.log('✅ SUCCESS: The section is 100% completely removed from all job cards!');
 })();
+

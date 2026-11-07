@@ -19,3 +19,4 @@
 ## 2. REMAINING MINOR ITEMS / RECOMMENDATIONS
 - **Drag-and-Drop Reordering:** Move Up / Down button controls and Layers tree reordering are currently 100% stable without introducing external DND libraries that might conflict with Next.js 14 App Router. An optional HTML5 native drag-drop sensor can be layered on top in future sprints if desired.
 - **Media Upload Limits:** Media files are validated for persistent storage with a 10MB limit per image.
+

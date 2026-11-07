@@ -30,3 +30,4 @@ The Builder provides full-page templates that assemble pre-configured sections:
    > *"এই টেমপ্লেটটি প্রয়োগ করলে বর্তমান পৃষ্ঠার সেকশনগুলো প্রতিস্থাপিত হবে। আপনি কি নিশ্চিত?"*
 3. The existing page state is pushed to the **Undo Stack** before applying the template.
 4. If the page is a dynamic template (e.g. Job Details), canonical data variables are preserved.
+

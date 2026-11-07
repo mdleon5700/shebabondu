@@ -38,3 +38,4 @@ Switched to Tablet viewport
 Switched to Mobile viewport
 ALL PAGE BUILDER E2E TESTS COMPLETED WITH 100% SUCCESS!
 ```
+

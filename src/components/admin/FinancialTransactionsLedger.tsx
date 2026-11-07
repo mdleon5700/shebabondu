@@ -454,27 +454,35 @@ export default function FinancialTransactionsLedger({
                 রাজস্ব অনুপাত ও সরকারি ফি মার্জিন
               </h3>
 
-              <div className="space-y-3">
-                <div>
-                  <div className="flex justify-between text-xs font-bold text-slate-700 mb-1">
-                    <span>টেলিটক ও সরকারি চালান ফি</span>
-                    <span>৳{totalGovtFees} (৬৪%)</span>
-                  </div>
-                  <div className="w-full h-3 bg-slate-100 rounded-full overflow-hidden">
-                    <div className="h-full bg-blue-600 rounded-full" style={{ width: '64%' }} />
-                  </div>
-                </div>
+              {(() => {
+                const toBnNumber = (n: number | string) => String(n).replace(/[0-9]/g, d => '০১২৩৪৫৬৭৮৯'[+d]);
+                const totalSumFees = (totalGovtFees + totalServiceFees) || 1;
+                const govtPct = Math.round((totalGovtFees / totalSumFees) * 100);
+                const servicePct = 100 - govtPct;
+                return (
+                  <div className="space-y-3">
+                    <div>
+                      <div className="flex justify-between text-xs font-bold text-slate-700 mb-1">
+                        <span>টেলিটক ও সরকারি চালান ফি</span>
+                        <span>৳{totalGovtFees} ({toBnNumber(govtPct)}%)</span>
+                      </div>
+                      <div className="w-full h-3 bg-slate-100 rounded-full overflow-hidden">
+                        <div className="h-full bg-blue-600 rounded-full transition-all duration-300" style={{ width: `${govtPct}%` }} />
+                      </div>
+                    </div>
 
-                <div>
-                  <div className="flex justify-between text-xs font-bold text-slate-700 mb-1">
-                    <span>চাকরি সেবা নিট সার্ভিস চার্জ</span>
-                    <span>৳{totalServiceFees} (৩৬%)</span>
+                    <div>
+                      <div className="flex justify-between text-xs font-bold text-slate-700 mb-1">
+                        <span>চাকরি সেবা নিট সার্ভিস চার্জ</span>
+                        <span>৳{totalServiceFees} ({toBnNumber(servicePct)}%)</span>
+                      </div>
+                      <div className="w-full h-3 bg-slate-100 rounded-full overflow-hidden">
+                        <div className="h-full bg-emerald-600 rounded-full transition-all duration-300" style={{ width: `${servicePct}%` }} />
+                      </div>
+                    </div>
                   </div>
-                  <div className="w-full h-3 bg-slate-100 rounded-full overflow-hidden">
-                    <div className="h-full bg-emerald-600 rounded-full" style={{ width: '36%' }} />
-                  </div>
-                </div>
-              </div>
+                );
+              })()}
 
               <div className="p-3 bg-emerald-50 rounded-xl border border-emerald-200 text-xs text-emerald-800 font-medium">
                 💡 চাকরি সেবা প্রতি সফল সরকারি আবেদনে মাত্র ৳৮০ সার্ভিস ফি চার্জ করে, যা প্রার্থীর ছবি-স্বাক্ষর রিসাইজিং, নির্ভুল ডেটা পূরণ ও এসএমএস নোটিফিকেশন কভার করে।

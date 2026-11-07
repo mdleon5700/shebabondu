@@ -316,3 +316,4 @@ export const PRESET_PAGE_TEMPLATES: PageTemplate[] = [
     ]
   }
 ];
+

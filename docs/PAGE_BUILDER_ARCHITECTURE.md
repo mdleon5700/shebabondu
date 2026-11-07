@@ -81,3 +81,4 @@ Before committing changes to the live published state:
 - Admin credentials verified through secure headers (`x-admin-secret`).
 - Rich text and custom HTML blocks sanitized to prevent stored XSS attacks.
 - Strict server-side verification in `/api/admin/pages` and `/api/admin/pages/[id]`.
+

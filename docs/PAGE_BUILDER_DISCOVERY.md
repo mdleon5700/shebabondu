@@ -191,3 +191,4 @@ When dynamic template blocks (e.g. `Job Listing`, `Featured Jobs`, `Job Category
 
 ## 8. NEXT STEP (PHASE 1)
 Proceed to **Phase 1: Architecture & Block Registry Definition**, formalizing the element catalog, template schemas, and state architecture.
+

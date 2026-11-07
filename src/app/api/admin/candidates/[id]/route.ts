@@ -30,6 +30,10 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
   // Fetch Notifications History
   const notifications = serverDB.getCandidateNotifications(params.id) || [];
 
+  // Fetch Transactions and Audit Logs
+  const transactions = serverDB.getTransactions(params.id) || [];
+  const auditLogs = serverDB.getAdminAuditLogs(params.id) || [];
+
   const { passwordHash, ...safeCandidate } = candidate;
 
   return NextResponse.json({
@@ -38,7 +42,9 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
     documents,
     applications,
     savedJobs,
-    notifications
+    notifications,
+    transactions,
+    auditLogs
   });
 }
 
@@ -153,6 +159,38 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
       updates.adminNotes = [newNote, ...existingNotes];
     } else if (Array.isArray(body.adminNotes)) {
       updates.adminNotes = body.adminNotes;
+    }
+
+    // 7. Wallet Balance Adjustment (Admin Manual)
+    if (body.balanceAdjustment && typeof body.balanceAdjustment === 'object') {
+      const { amount, type, reason: adjReason } = body.balanceAdjustment;
+      const numAmount = Number(amount);
+      if (isNaN(numAmount) || numAmount <= 0) {
+        return NextResponse.json({ error: 'সঠিক টাকার পরিমাণ দিন।' }, { status: 400 });
+      }
+      if (!adjReason || !adjReason.trim()) {
+        return NextResponse.json({ error: 'ব্যালেন্স সমন্বয়ের কারণ উল্লেখ করা বাধ্যতামূলক।' }, { status: 400 });
+      }
+      const txType = type === 'debit' ? 'fee_deduction' : 'recharge';
+      serverDB.addTransaction(params.id, {
+        id: 'TXN-' + Date.now(),
+        date: new Date().toISOString(),
+        amount: numAmount,
+        type: txType,
+        description: `প্রশাসনিক সমন্বয়: ${adjReason.trim()}`,
+        method: 'Wallet',
+        trxId: 'ADM-' + Date.now().toString().slice(-6),
+        status: 'approved'
+      } as any);
+
+      serverDB.recordAdminAudit({
+        adminId: session?.candidateId || 'ADMIN-SUPER',
+        action: 'system_config_change' as any,
+        targetId: params.id,
+        targetType: 'system' as any,
+        changes: { walletAdjustment: { type, amount: numAmount, reason: adjReason.trim() } } as any,
+        notes: `প্রার্থীর ওয়ালেট সমন্বয়: ${type === 'debit' ? 'কর্তন' : 'জমা'} ৳${numAmount}। কারণ: ${adjReason.trim()}`
+      });
     }
 
     const adminId = session?.candidateId || 'ADMIN-SUPER';

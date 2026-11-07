@@ -2118,6 +2118,20 @@
   "raffleEntries": {},
   "adminAuditLogs": [
     {
+      "adminId": "ADMIN-SUPER",
+      "action": "job_publish",
+      "targetId": "job-bcc-ict-2026",
+      "targetType": "order",
+      "changes": {
+        "job": {
+          "new": "বাংলাদেশ কম্পিউটার কাউন্সিল (BCC) নিয়োগ বিজ্ঞপ্তি ২০২৬"
+        }
+      },
+      "notes": "Job circular published: বাংলাদেশ কম্পিউটার কাউন্সিল (BCC) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "id": "AUDIT-1794066872302-3F0BP",
+      "timestamp": "2026-11-07T15:54:32.302Z"
+    },
+    {
       "adminId": "LIVE_COLLECTOR",
       "action": "job_edit",
       "targetId": "job-alljobs-bogmc-14989",
@@ -15936,6 +15950,123 @@
       "revisionHistory": [
         {
           "timestamp": "2026-11-07T12:53:09.470Z",
+          "adminId": "ADMIN-SUPER",
+          "action": "create",
+          "changedFields": [
+            "initial_creation"
+          ],
+          "summary": "সার্কুলার সফলভাবে তৈরি হয়েছে"
+        }
+      ]
+    },
+    "job-bcc-ict-2026": {
+      "id": "job-bcc-ict-2026",
+      "title": "বাংলাদেশ কম্পিউটার কাউন্সিল (BCC) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "organization": "বাংলাদেশ কম্পিউটার কাউন্সিল (BCC)",
+      "logo": "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=160&q=80",
+      "category": "govt",
+      "categoryLabel": "সরকারি চাকরি",
+      "grade": "৯ম ও ১১তম গ্রেড",
+      "totalPosts": 36,
+      "salary": "২২,০০০ - ৫৩,০৬০/- টাকা",
+      "minEducation": "স্নাতক (সম্মান) বা সমমানের ডিগ্রি",
+      "minAge": 18,
+      "maxAge": 32,
+      "districts": "সকল জেলা",
+      "deadline": "১৫ ডিসেম্বর ২০২৬",
+      "daysRemaining": 38,
+      "govtFee": 600,
+      "serviceFee": 100,
+      "officialLink": "https://bcc.teletalk.com.bd",
+      "circularImage": "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=1200&q=80",
+      "circularPdfUrl": "https://bcc.teletalk.com.bd/docs/bcc_circular_2026.pdf",
+      "circularPages": [],
+      "audioSummary": "বাংলাদেশ কম্পিউটার কাউন্সিল (BCC) নিয়োগ বিজ্ঞপ্তি ২০২৬ প্রকাশিত হয়েছে। আবেদনের শেষ সময় ১৫ ডিসেম্বর ২০২৬।",
+      "publishedDate": "০৭ নভেম্বর ২০২৬",
+      "requirements": [
+        "প্রার্থীকে বাংলাদেশের জন্মসূত্রে স্থায়ী নাগরিক হতে হবে।",
+        "কম্পিউটার সায়েন্স, আইসিটি বা যেকোনো স্বীকৃত বিশ্ববিদ্যালয় হতে স্নাতক বা সমমান ডিগ্রি।",
+        "১৫ ডিসেম্বর ২০২৬ তারিখে প্রার্থীর বয়স ১৮ থেকে ৩২ বছরের মধ্যে হতে হবে।",
+        "কম্পিউটার টাইপিং ও অফিস অ্যাপ্লিকেশনে বাস্তব কাজের দক্ষতা থাকতে হবে।"
+      ],
+      "positions": [
+        {
+          "id": "pos-1",
+          "title": "সহকারী প্রোগ্রামার (Assistant Programmer)",
+          "grade": "৯ম গ্রেড",
+          "posts": 9,
+          "vacancies": 9,
+          "salary": "২২,০০০ - ৫৩,০৬০/- টাকা",
+          "minEducation": "সিএসই / আইসিটি বা সংশ্লিষ্ট বিষয়ে ৪ বছর মেয়াদি স্নাতক ডিগ্রি",
+          "govtFee": 600
+        },
+        {
+          "id": "pos-2",
+          "title": "কম্পিউটার অপারেটর (Computer Operator)",
+          "grade": "১১তম গ্রেড",
+          "posts": 12,
+          "vacancies": 12,
+          "salary": "১২,৫০০ - ৩০,২৩০/- টাকা",
+          "minEducation": "বিজ্ঞান বিভাগে স্নাতক ডিগ্রি এবং টাইপিং স্পিড ২৫/৩০ শব্দ",
+          "govtFee": 300
+        },
+        {
+          "id": "pos-3",
+          "title": "ডাটা এন্ট্রি অপারেটর (Data Entry Operator)",
+          "grade": "১৬তম গ্রেড",
+          "posts": 15,
+          "vacancies": 15,
+          "salary": "৯,৩০০ - ২২,৪৯০/- টাকা",
+          "minEducation": "উচ্চ মাধ্যমিক (এইচএসসি) বা সমমান পরীক্ষায় উত্তীর্ণ",
+          "govtFee": 200
+        }
+      ],
+      "feeRange": "",
+      "ageCutOffDate": "2026-11-01",
+      "smsPrefix": "BCC",
+      "allowThirdDivision": true,
+      "minFirstDivisionsCount": 0,
+      "documentsRequired": [],
+      "bengaliDescription": "ডাক, টেলিযোগাযোগ ও তথ্যপ্রযুক্তি মন্ত্রণালয়ের আওতাধীন বাংলাদেশ কম্পিউটার কাউন্সিল (BCC) এর শূন্য পদসমূহে সরাসরি জনবল নিয়োগের নিমিত্তে প্রকৃত বাংলাদেশি নাগরিকদের নিকট হতে অনলাইনে দরখাস্ত আহ্বান করা যাচ্ছে।",
+      "faqItems": [],
+      "seoTitle": "বাংলাদেশ কম্পিউটার কাউন্সিল (BCC) নিয়োগ বিজ্ঞপ্তি ২০২৬ - মোট পদ ৩৬ জন | চাকরি সেবা",
+      "seoDescription": "বাংলাদেশ কম্পিউটার কাউন্সিল (BCC) নিয়োগ বিজ্ঞপ্তি ২০২৬। সহকারী প্রোগ্রামার ও কম্পিউটার অপারেটর সহ ৩৬টি পদে আবেদন করুন।",
+      "seoKeywords": [],
+      "slug": "bcc-job-circular-2026",
+      "refNo": "",
+      "designation": "বাংলাদেশ কম্পিউটার কাউন্সিল (BCC) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "eligibility": "",
+      "status": "PUBLISHED",
+      "featured": true,
+      "isHot": true,
+      "orgType": "",
+      "subCategory": "",
+      "employmentType": "full_time",
+      "workArrangement": "on_site",
+      "division": "",
+      "district": "",
+      "upazila": "",
+      "salaryType": "range",
+      "applicationStartDate": "",
+      "applicationMethod": "online_teletalk",
+      "applicationInstructions": "১. আগ্রহী প্রার্থীদের https://bcc.teletalk.com.bd ওয়েবসাইটে গিয়ে আবেদন ফরম পূরণ করতে হবে।\n২. ফরম পূরণের পর Applicant Copy তে প্রাপ্ত User ID ব্যবহার করে টেলিটক সিম থেকে SMS করে পরীক্ষার ফি জমা দিতে হবে।",
+      "selectionProcess": "",
+      "experienceYears": "",
+      "skills": [],
+      "canonicalUrl": "",
+      "robotsDirective": "index, follow",
+      "ogImage": "",
+      "twitterImage": "",
+      "verificationStatus": "MANUAL_ENTERED",
+      "verificationConfidence": 100,
+      "verificationNotes": "ম্যানুয়ালি অ্যাডমিন কর্তৃক তৈরিকৃত",
+      "lastVerifiedAt": "2026-11-07T15:54:32.268Z",
+      "verifiedBy": "ADMIN-SUPER",
+      "createdAt": "2026-11-07T15:54:32.268Z",
+      "updatedAt": "2026-11-07T15:54:32.272Z",
+      "revisionHistory": [
+        {
+          "timestamp": "2026-11-07T15:54:32.272Z",
           "adminId": "ADMIN-SUPER",
           "action": "create",
           "changedFields": [

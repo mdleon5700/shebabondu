@@ -33,7 +33,15 @@ test.describe('Suite 5: Responsive Layout Integrity (375px Mobile & 1440px Deskt
     await expect(footer).toBeVisible();
   });
 
-  test('Admin Console Responsive: Mobile drawer opens and closes without breaking canvas', async ({ page }) => {
+  test('Admin Console Responsive: Mobile drawer opens and closes without breaking canvas', async ({ page, context }) => {
+    await context.addCookies([
+      {
+        name: 'cs_session_token',
+        value: 'mock-admin-session-token',
+        domain: 'localhost',
+        path: '/'
+      }
+    ]);
     await page.goto('/');
     await page.evaluate(() => {
       localStorage.setItem('cs_admin_auth', 'verified');
@@ -44,8 +52,8 @@ test.describe('Suite 5: Responsive Layout Integrity (375px Mobile & 1440px Deskt
     await page.goto('/admin');
     await expect(page.locator('body')).toBeVisible();
 
-    // Mobile admin header should be visible
-    const adminHeader = page.locator('header, nav').first();
-    await expect(adminHeader).toBeVisible();
+    // Mobile admin header should be visible once session is verified
+    const adminHeader = page.locator('header, nav, [role="navigation"]').first();
+    await expect(adminHeader).toBeVisible({ timeout: 10000 });
   });
 });

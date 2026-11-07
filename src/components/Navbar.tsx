@@ -250,7 +250,7 @@ export default function Navbar({ initialSettings }: { initialSettings?: any } = 
       {/* 1. TOP ANNOUNCEMENT TICKER (Dynamic from Admin CMS) */}
       {(platformSettings?.general?.announcementEnabled !== false) && (
         <div className="bg-gradient-to-r from-slate-950 via-emerald-950 to-slate-900 text-white text-[11px] sm:text-xs py-1.5 px-4 border-b border-emerald-900/40">
-          <div className="max-w-7xl mx-auto flex items-center justify-between">
+          <div className="w-full max-w-[1800px] mx-auto flex items-center justify-between">
             <div className="flex items-center gap-2 overflow-hidden">
               <span className="bg-red-600 text-white px-2 py-0.5 rounded-full text-[12px] sm:text-[13px] font-black uppercase tracking-wider animate-pulse flex-shrink-0">
                 জরুরি নোটিশ
@@ -281,8 +281,8 @@ export default function Navbar({ initialSettings }: { initialSettings?: any } = 
       )}
 
       {/* 2. MAIN HEADER NAVIGATION BAR */}
-      <div className="max-w-[1400px] mx-auto px-3 sm:px-6 lg:px-6">
-        <div className="flex items-center justify-between h-16 sm:h-20 gap-2">
+      <div className="w-full max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16 sm:h-20 gap-2 sm:gap-4">
           
           {/* Logo (Preserved branding, logo icon and badges, with dynamic customizer support) */}
           <Link href="/" className="flex items-center gap-2.5 sm:gap-3 group flex-shrink-0">
@@ -311,7 +311,7 @@ export default function Navbar({ initialSettings }: { initialSettings?: any } = 
                   BD
                 </span>
               </div>
-              <p className="text-[11px] text-slate-500 font-medium -mt-1 hidden xl:block">
+              <p className="text-[11px] text-slate-500 font-medium -mt-1 hidden 2xl:block">
                 {platformSettings?.general?.siteDescription || 'নিউজ ও ১০০% নির্ভুল আবেদন পোর্টাল'}
               </p>
             </div>
@@ -327,7 +327,7 @@ export default function Navbar({ initialSettings }: { initialSettings?: any } = 
               // Responsive visibility: keeps navbar clean without overflow across screen sizes
               let visibilityClass = 'flex';
               if (index >= 6) {
-                visibilityClass = 'hidden 2xl:flex';
+                visibilityClass = 'hidden min-[1750px]:flex';
               } else if (index === 5) {
                 visibilityClass = 'hidden 2xl:flex';
               } else if (index === 4) {
@@ -397,7 +397,7 @@ export default function Navbar({ initialSettings }: { initialSettings?: any } = 
             {/* "আরও" (More) Dropdown for items that overflow the current viewport */}
             {navItems.length > 4 && (
               <div 
-                className="relative"
+                className="relative min-[1750px]:hidden"
                 onMouseEnter={() => setActiveDropdown('more-nav-items')}
                 onMouseLeave={() => setActiveDropdown(null)}
               >
@@ -428,6 +428,8 @@ export default function Navbar({ initialSettings }: { initialSettings?: any } = 
                           hideClass = 'xl:hidden';
                         } else if (index === 5) {
                           hideClass = '2xl:hidden';
+                        } else if (index >= 6) {
+                          hideClass = 'min-[1750px]:hidden';
                         }
 
                         return (
@@ -469,7 +471,7 @@ export default function Navbar({ initialSettings }: { initialSettings?: any } = 
           </nav>
 
           {/* Right Action Area: Customizable Guest Buttons & User Widgets */}
-          <div className="hidden sm:flex items-center gap-2 flex-shrink-0">
+          <div className="hidden sm:flex items-center gap-2 flex-shrink-0 ml-auto">
             
             {/* WhatsApp button */}
             {platformSettings?.general?.guestButtons?.showWhatsApp !== false && (

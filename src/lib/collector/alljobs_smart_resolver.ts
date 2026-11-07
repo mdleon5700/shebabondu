@@ -892,48 +892,42 @@ export function inferPositionGradeAndSalary(title: string): { grade: string; sal
 export async function resolveCircularInput(input: string): Promise<ResolvedCircularData> {
   const trimmed = input.trim();
 
-  // 0. Database Cache & Matching Check
-  try {
-    const allJobs = serverDB.getJobs();
-    const pdfFilename = trimmed.split('/').pop()?.split('?')[0] || '';
+  // 0. Database Check (Only for internal exact IDs, NEVER hijack external scan URLs)
+  if (!trimmed.startsWith('http://') && !trimmed.startsWith('https://')) {
+    try {
+      const allJobs = serverDB.getJobs();
+      const matchedJob = allJobs.find(j => j && (j.id === trimmed || j.title === trimmed));
 
-    const matchedJob = allJobs.find(j => {
-      if (!j) return false;
-      if (j.id === trimmed || j.title === trimmed) return true;
-      if (j.circularPdfUrl && (j.circularPdfUrl === trimmed || (pdfFilename && pdfFilename.length > 5 && j.circularPdfUrl.includes(pdfFilename)))) return true;
-      if (j.officialLink && (j.officialLink === trimmed || trimmed.includes(j.officialLink) || (j.officialLink.length > 10 && trimmed.includes(j.officialLink)))) return true;
-      return false;
-    });
-
-    if (matchedJob && Array.isArray(matchedJob.positions) && matchedJob.positions.length > 0) {
-      return {
-        jobId: matchedJob.id,
-        title: matchedJob.title,
-        organization: matchedJob.organization,
-        category: matchedJob.category as any,
-        categoryLabel: matchedJob.categoryLabel,
-        totalPosts: matchedJob.totalPosts || matchedJob.positions.length,
-        deadline: matchedJob.deadline,
-        publishedDate: matchedJob.publishedDate,
-        officialLink: matchedJob.officialLink,
-        circularPdfUrl: matchedJob.circularPdfUrl || trimmed,
-        rawText: matchedJob.bengaliDescription || '',
-        minAge: matchedJob.minAge || 18,
-        maxAge: matchedJob.maxAge || 32,
-        salary: matchedJob.salary,
-        grade: matchedJob.grade,
-        positions: matchedJob.positions.map(p => ({
-          title: p.title,
-          posts: Number((p as any).posts || (p as any).vacancies) || 1,
-          salary: p.salary,
-          grade: p.grade,
-          minEducation: p.minEducation || 'উচ্চ মাধ্যমিক (এইচএসসি) বা স্নাতক পাস',
-          govtFee: p.govtFee ?? matchedJob.govtFee ?? 200
-        }))
-      };
+      if (matchedJob && Array.isArray(matchedJob.positions) && matchedJob.positions.length > 0) {
+        return {
+          jobId: matchedJob.id,
+          title: matchedJob.title,
+          organization: matchedJob.organization,
+          category: matchedJob.category as any,
+          categoryLabel: matchedJob.categoryLabel,
+          totalPosts: matchedJob.totalPosts || matchedJob.positions.length,
+          deadline: matchedJob.deadline,
+          publishedDate: matchedJob.publishedDate,
+          officialLink: matchedJob.officialLink,
+          circularPdfUrl: matchedJob.circularPdfUrl || trimmed,
+          rawText: matchedJob.bengaliDescription || '',
+          minAge: matchedJob.minAge || 18,
+          maxAge: matchedJob.maxAge || 32,
+          salary: matchedJob.salary,
+          grade: matchedJob.grade,
+          positions: matchedJob.positions.map(p => ({
+            title: p.title,
+            posts: Number((p as any).posts || (p as any).vacancies) || 1,
+            salary: p.salary,
+            grade: p.grade,
+            minEducation: p.minEducation || 'উচ্চ মাধ্যমিক (এইচএসসি) বা স্নাতক পাস',
+            govtFee: p.govtFee ?? matchedJob.govtFee ?? 200
+          }))
+        };
+      }
+    } catch (dbErr) {
+      console.warn('DB cache match notice:', dbErr);
     }
-  } catch (dbErr) {
-    console.warn('DB cache match notice:', dbErr);
   }
 
   // 1. Alljobs URL or JobId Check (Instant Official JSON API)

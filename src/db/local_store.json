@@ -475,6 +475,96 @@
   "raffleEntries": {},
   "adminAuditLogs": [
     {
+      "action": "UPLOAD_MEDIA",
+      "adminId": "ADMIN-SUPER",
+      "targetType": "MEDIA",
+      "targetId": "med_bb_logo",
+      "notes": "নতুন মিডিয়া ফাইল আপলোড: বাংলাদেশ ব্যাংক লোগো.png",
+      "changes": {
+        "media": {
+          "new": {
+            "id": "med_bb_logo",
+            "filename": "bangladesh-bank-logo.png",
+            "originalName": "বাংলাদেশ ব্যাংক লোগো.png",
+            "mimeType": "image/png",
+            "size": 61800,
+            "url": "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=300&q=80",
+            "altText": "বাংলাদেশ ব্যাংক রিক্রুটমেন্ট মনোগ্রাম",
+            "caption": "ব্যাংকার্স সিলেকশন কমিটি সচিবালয় (BSCS) সার্কুলার ব্যানার",
+            "uploadedBy": "ADMIN-SUPER",
+            "createdAt": "2026-11-07T03:26:01.881Z"
+          }
+        }
+      },
+      "id": "AUDIT-1794021961968-K6T2P",
+      "timestamp": "2026-11-07T03:26:01.968Z"
+    },
+    {
+      "action": "UPLOAD_MEDIA",
+      "adminId": "ADMIN-SUPER",
+      "targetType": "MEDIA",
+      "targetId": "med_teletalk",
+      "notes": "নতুন মিডিয়া ফাইল আপলোড: Teletalk AllJobs Banner.png",
+      "changes": {
+        "media": {
+          "new": {
+            "id": "med_teletalk",
+            "filename": "teletalk-alljobs.png",
+            "originalName": "Teletalk AllJobs Banner.png",
+            "mimeType": "image/png",
+            "size": 92400,
+            "url": "https://images.unsplash.com/photo-1586281380349-632531db7ed4?auto=format&fit=crop&w=600&q=80",
+            "altText": "টেলিটক অলজবস নিয়োগ ব্যানার",
+            "caption": "টেলিটক জব সার্কুলার ও ফর্ম-ফিল সার্ভিস ব্যানার",
+            "uploadedBy": "ADMIN-SUPER",
+            "createdAt": "2026-11-07T03:26:01.881Z"
+          }
+        }
+      },
+      "id": "AUDIT-1794021961935-LJ4OA",
+      "timestamp": "2026-11-07T03:26:01.935Z"
+    },
+    {
+      "action": "UPLOAD_MEDIA",
+      "adminId": "ADMIN-SUPER",
+      "targetType": "MEDIA",
+      "targetId": "med_bd_gov",
+      "notes": "নতুন মিডিয়া ফাইল আপলোড: বাংলাদেশ সরকার মনোগ্রাম.png",
+      "changes": {
+        "media": {
+          "new": {
+            "id": "med_bd_gov",
+            "filename": "bd-gov-emblem.png",
+            "originalName": "বাংলাদেশ সরকার মনোগ্রাম.png",
+            "mimeType": "image/png",
+            "size": 45200,
+            "url": "https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=300&q=80",
+            "altText": "গণপ্রজাতন্ত্রী বাংলাদেশ সরকার মনোগ্রাম",
+            "caption": "সরকারি চাকরির সার্কুলার ও অফিসিয়াল বিজ্ঞপ্তির জন্য অনুমোদিত লোগো",
+            "uploadedBy": "ADMIN-SUPER",
+            "createdAt": "2026-11-07T03:26:01.881Z"
+          }
+        }
+      },
+      "id": "AUDIT-1794021961898-PQPXJ",
+      "timestamp": "2026-11-07T03:26:01.898Z"
+    },
+    {
+      "adminId": "ADMIN-SUPER",
+      "action": "page_publish",
+      "targetId": "home",
+      "targetType": "order",
+      "changes": {
+        "version": {
+          "old": 18,
+          "new": 19
+        }
+      },
+      "notes": "Page হোমপেজ — চাকরি সেবা published",
+      "id": "AUDIT-1794021796524-935DG",
+      "timestamp": "2026-11-07T03:23:16.524Z"
+    },
+    {
       "adminId": "ADMIN-SUPER",
       "action": "page_publish",
       "targetId": "home",
@@ -10602,15 +10692,15 @@
       "metaTitle": "চাকরি সেবা বাংলাদেশ | সরকারি ও ব্যাংক চাকরির সার্কুলার ও অনলাইন আবেদন ২০২৬",
       "metaDescription": "বাংলাদেশের সকল সরকারি ও বেসরকারি চাকরির নিয়মিত আপডেট এবং ঘরে বসেই নির্ভুল আবেদনের বিশ্বস্ত প্ল্যাটফর্ম।",
       "status": "published",
-      "version": 18,
+      "version": 19,
       "isSystemPage": true,
-      "updatedAt": "2026-11-07T03:18:16.487Z",
-      "publishedAt": "2026-11-07T03:18:16.487Z",
+      "updatedAt": "2026-11-07T03:23:16.505Z",
+      "publishedAt": "2026-11-07T03:23:16.505Z",
       "sections": [
         {
           "id": "sec-home-hero",
           "type": "hero",
-          "title": "চাকরির খবর জানুন সবার আগে — ১০০% নির্ভুল আবেদন ও ক্যারিয়ার সেবা ২০২৬",
+          "title": "চাকরির খবর জানুন সবার আগে — ১০০% নির্ভুল আবেদন ও স্মার্ট ক্যারিয়ার সেবা ২০২৬",
           "subtitle": "সরকারি ও বেসরকারি চাকরির সর্বশেষ বিজ্ঞপ্তি, আবেদন প্রক্রিয়া, যোগ্যতা, প্রয়োজনীয় কাগজপত্র এবং পরীক্ষার আপডেট—সবকিছু এক জায়গায়, আপনার জন্য।",
           "content": {
             "badge": "⚡ অফিসিয়াল প্ল্যাটফর্ম • নির্ভরযোগ্য চাকরির খবর • আপনার ক্যারিয়ারের বিশ্বস্ত সঙ্গী",
@@ -10625,6 +10715,26 @@
             "paddingY": "lg",
             "textAlign": "left",
             "titleFontSize": "6xl"
+          },
+          "isVisible": true
+        },
+        {
+          "id": "sec-home-jobs",
+          "type": "jobs",
+          "title": "চলমান সকল চাকরির সার্কুলার ও বিজ্ঞপ্তি",
+          "subtitle": "সরকারি, ব্যাংক ও স্বায়ত্তশাসিত প্রতিষ্ঠানের হালনাগাদ সার্কুলার থেকে সহজে আবেদন করুন",
+          "content": {
+            "showCategoryFilter": true,
+            "showStatusCards": true,
+            "showSearchBar": true,
+            "jobsPerPage": 9,
+            "columns": 3
+          },
+          "style": {
+            "backgroundColor": "#f8fafc",
+            "textColor": "#0f172a",
+            "paddingY": "lg",
+            "textAlign": "left"
           },
           "isVisible": true
         },
@@ -10752,7 +10862,7 @@
           {
             "id": "sec-home-hero",
             "type": "hero",
-            "title": "চাকরির খবর জানুন সবার আগে — ১০০% নির্ভুল আবেদন ও ক্যারিয়ার সেবা ২০২৬",
+            "title": "চাকরির খবর জানুন সবার আগে — ১০০% নির্ভুল আবেদন ও স্মার্ট ক্যারিয়ার সেবা ২০২৬",
             "subtitle": "সরকারি ও বেসরকারি চাকরির সর্বশেষ বিজ্ঞপ্তি, আবেদন প্রক্রিয়া, যোগ্যতা, প্রয়োজনীয় কাগজপত্র এবং পরীক্ষার আপডেট—সবকিছু এক জায়গায়, আপনার জন্য।",
             "content": {
               "badge": "⚡ অফিসিয়াল প্ল্যাটফর্ম • নির্ভরযোগ্য চাকরির খবর • আপনার ক্যারিয়ারের বিশ্বস্ত সঙ্গী",
@@ -10884,9 +10994,152 @@
             "isVisible": true
           }
         ],
-        "publishedAt": "2026-11-07T03:18:16.487Z"
+        "publishedAt": "2026-11-07T03:23:16.505Z"
       },
       "revisions": [
+        {
+          "id": "REV-1794021796505",
+          "version": 19,
+          "savedAt": "2026-11-07T03:23:16.505Z",
+          "savedBy": "ADMIN-SUPER",
+          "status": "published",
+          "sections": [
+            {
+              "id": "sec-home-hero",
+              "type": "hero",
+              "title": "চাকরির খবর জানুন সবার আগে — ১০০% নির্ভুল আবেদন ও স্মার্ট ক্যারিয়ার সেবা ২০২৬",
+              "subtitle": "সরকারি ও বেসরকারি চাকরির সর্বশেষ বিজ্ঞপ্তি, আবেদন প্রক্রিয়া, যোগ্যতা, প্রয়োজনীয় কাগজপত্র এবং পরীক্ষার আপডেট—সবকিছু এক জায়গায়, আপনার জন্য।",
+              "content": {
+                "badge": "⚡ অফিসিয়াল প্ল্যাটফর্ম • নির্ভরযোগ্য চাকরির খবর • আপনার ক্যারিয়ারের বিশ্বস্ত সঙ্গী",
+                "ctaText": "চাকরির বিজ্ঞপ্তি দেখুন",
+                "ctaUrl": "#circulars-section",
+                "secondaryCtaText": "আবেদন প্রক্রিয়া জানুন",
+                "secondaryCtaUrl": "#how-it-works"
+              },
+              "style": {
+                "backgroundColor": "#011612",
+                "textColor": "#ffffff",
+                "paddingY": "lg",
+                "textAlign": "left",
+                "titleFontSize": "6xl"
+              },
+              "isVisible": true
+            },
+            {
+              "id": "sec-home-how-it-works",
+              "type": "how-it-works",
+              "title": "কীভাবে ঘরে বসেই নির্ভুল চাকরি আবেদন করবেন?",
+              "subtitle": "সাইবার ক্যাফেতে ঘণ্টার পর ঘণ্টা বসে থাকার ঝামেলা শেষ! আপনার সুবিধার্থে আধুনিক স্মার্ট সিস্টেম:",
+              "content": {
+                "badge": "সহজ ৩ ধাপের প্রক্রিয়া",
+                "items": [
+                  {
+                    "step": 1,
+                    "title": "১ বার ডকুমেন্ট ভল্টে সেভ রাখুন",
+                    "desc": "আপনার পাসপোর্ট ছবি, স্বাক্ষর, এনআইডি এবং শিক্ষাগত সনদের তথ্য মাত্র একবার আপলোড করুন। আমাদের সিস্টেম নিজে থেকেই ৩০০x৩০০ ও ৩০০x৮০ পিক্সেল সাইজে কনভার্ট করে রাখবে।"
+                  },
+                  {
+                    "step": 2,
+                    "title": "পছন্দের জবে আবেদন বুকিং দিন",
+                    "desc": "যেকোনো সরকারি বা ব্যাংক বিজ্ঞপ্তির নিচে আবেদন করুন চাপুন। বিকাশ/নগদে সরকারি ফি ও সামান্য টিম সার্ভিস চার্জ পেমেন্ট করলেই সরাসরি রিকোয়েস্ট চলে যাবে।"
+                  },
+                  {
+                    "step": 3,
+                    "title": "টিম আবেদন শেষ করে স্লিপ দেবে",
+                    "desc": "আমাদের অভিজ্ঞ এক্সপার্ট টিম অফিশিয়াল পোর্টালে নিখুঁতভাবে ফর্ম পূরণ করে সরকারি ফি দিয়ে আপনার ড্যাশবোর্ডে অ্যাপ্লিকেন্ট কপি পিডিএফ আপলোড করে দেবে এবং এসএমএস যাবে!"
+                  }
+                ]
+              },
+              "style": {
+                "backgroundColor": "#f8fafc",
+                "textColor": "#0f172a",
+                "titleFontSize": "3xl",
+                "subtitleFontSize": "base",
+                "fontWeight": "black",
+                "paddingY": "md",
+                "textAlign": "center"
+              },
+              "isVisible": true
+            },
+            {
+              "id": "sec-home-cta-banner",
+              "type": "cta",
+              "title": "বিসিএস ও ব্যাংক পরীক্ষার বিগত ১০ বছরের প্রশ্ন ও সমাধান (PDF)",
+              "subtitle": "প্রিলিমিনারি ও লিখিত পরীক্ষার পূর্ণাঙ্গ প্রশ্নব্যাংক ব্যাখ্যাসহ ডাউনলোড করুন সম্পূর্ণ বিনামূল্যে।",
+              "content": {
+                "badge": "ফ্রি ডাউনলোড হাব",
+                "buttonLabel": "ফ্রি প্রশ্নব্যাংক ডাউনলোড",
+                "buttonUrl": "/questions"
+              },
+              "style": {
+                "backgroundColor": "#f59e0b",
+                "textColor": "#ffffff",
+                "titleFontSize": "2xl",
+                "subtitleFontSize": "base",
+                "fontWeight": "black",
+                "paddingY": "md",
+                "textAlign": "left"
+              },
+              "isVisible": true
+            },
+            {
+              "id": "sec-home-reviews",
+              "type": "testimonials",
+              "title": "সফল চাকরিপ্রার্থীদের বাস্তব অভিজ্ঞতা ও মতামত",
+              "subtitle": "সাইবার ক্যাফেতে ঘণ্টার পর ঘণ্টা লাইনে দাঁড়ানোর ভোগান্তি ছাড়াই কীভাবে শত শত চাকরিপ্রার্থী ঘরে বসেই শতভাগ নির্ভুল আবেদন সেবা পেয়েছেন:",
+              "content": {
+                "badge": "৪.৯/৫ গড় রেটিং • ৩,৫০০+ ভেরিফাইড আবেদনকারী"
+              },
+              "style": {
+                "backgroundColor": "#02231b",
+                "textColor": "#ffffff",
+                "titleFontSize": "4xl",
+                "subtitleFontSize": "base",
+                "fontWeight": "black",
+                "paddingY": "lg",
+                "textAlign": "center"
+              },
+              "isVisible": true
+            },
+            {
+              "id": "sec-home-faq",
+              "type": "faq",
+              "title": "সচরাচর জিজ্ঞাসিত প্রশ্ন ও উত্তর (FAQ)",
+              "subtitle": "চাকরি সেবা প্ল্যাটফর্ম ও আবেদন প্রক্রিয়া নিয়ে সাধারণ প্রশ্নের সহজ সমাধান",
+              "content": {
+                "badge": "সহায়তা কেন্দ্র",
+                "faqs": [
+                  {
+                    "q": "চাকরি সেবা প্ল্যাটফর্মের মাধ্যমে কীভাবে আবেদন করবেন?",
+                    "a": "পছন্দের চাকরি সার্কুলারে গিয়ে \"আবেদন করুন\" বাটনে ক্লিক করুন। আপনার তথ্য প্রদান করে বিকাশ বা নগদে ফি পরিশোধ করলেই আমাদের এক্সপার্ট টিম নির্ভুলভাবে আপনার আবেদনটি সরকারি পোর্টালে সম্পন্ন করে দেবে।"
+                  },
+                  {
+                    "q": "আমার আবেদনের অ্যাপ্লিকেন্ট কপি ও ট্র্যাকিং স্লিপ কখন পাব?",
+                    "a": "আবেদন সম্পন্ন হওয়া মাত্রই আপনার ড্যাশবোর্ডে অফিসিয়াল অ্যাপ্লিকেন্ট কপি পিডিএফ দেখতে ও ডাউনলোড করতে পারবেন। একই সাথে আপনার মোবাইলে ট্র্যাকিং আইডি সহ এসএমএস নোটিফিকেশন পৌঁছে যাবে।"
+                  },
+                  {
+                    "q": "আমার আপলোডকৃত ছবি ও ডকুমেন্টের নিরাপত্তা কেমন?",
+                    "a": "আপনার সকল ব্যক্তিগত তথ্য, ছবি ও সার্টিফিকেট আমাদের সিস্টেমে ব্যাংক-গ্রেড এনক্রিপশনের মাধ্যমে সম্পূর্ণ সুরক্ষিত থাকে। আপনার অনুমতি ছাড়া এই তথ্য অন্য কোথাও ব্যবহৃত হয় না।"
+                  },
+                  {
+                    "q": "ভুল তথ্য বা আবেদন সংশোধন করা যায় কি?",
+                    "a": "আমাদের টিম আবেদন সাবমিট করার আগে আপনার সাথে প্রতিটি তথ্য পুঙ্খানুপুঙ্খ যাচাই করে নেয়। তবে টেলিটক পোর্টালে চূড়ান্ত সাবমিটের আগে যেকোনো সময় পরিবর্তনের অনুরোধ জানাতে পারবেন।"
+                  }
+                ]
+              },
+              "style": {
+                "backgroundColor": "#ffffff",
+                "textColor": "#0f172a",
+                "titleFontSize": "3xl",
+                "subtitleFontSize": "base",
+                "fontWeight": "black",
+                "paddingY": "md",
+                "textAlign": "center"
+              },
+              "isVisible": true
+            }
+          ]
+        },
         {
           "id": "REV-1794021496487",
           "version": 18,
@@ -16575,5 +16828,45 @@
     "updatedAt": "2026-11-07T02:49:54.546Z",
     "updatedBy": "ADMIN-SUPER"
   },
-  "mediaItems": {}
+  "mediaItems": {
+    "med_bd_gov": {
+      "id": "med_bd_gov",
+      "filename": "bd-gov-emblem.png",
+      "originalName": "বাংলাদেশ সরকার মনোগ্রাম.png",
+      "mimeType": "image/png",
+      "size": 45200,
+      "url": "https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=300&q=80",
+      "altText": "গণপ্রজাতন্ত্রী বাংলাদেশ সরকার মনোগ্রাম",
+      "caption": "সরকারি চাকরির সার্কুলার ও অফিসিয়াল বিজ্ঞপ্তির জন্য অনুমোদিত লোগো",
+      "uploadedBy": "ADMIN-SUPER",
+      "createdAt": "2026-11-07T03:26:01.881Z",
+      "updatedAt": "2026-11-07T03:26:01.881Z"
+    },
+    "med_teletalk": {
+      "id": "med_teletalk",
+      "filename": "teletalk-alljobs.png",
+      "originalName": "Teletalk AllJobs Banner.png",
+      "mimeType": "image/png",
+      "size": 92400,
+      "url": "https://images.unsplash.com/photo-1586281380349-632531db7ed4?auto=format&fit=crop&w=600&q=80",
+      "altText": "টেলিটক অলজবস নিয়োগ ব্যানার",
+      "caption": "টেলিটক জব সার্কুলার ও ফর্ম-ফিল সার্ভিস ব্যানার",
+      "uploadedBy": "ADMIN-SUPER",
+      "createdAt": "2026-11-07T03:26:01.881Z",
+      "updatedAt": "2026-11-07T03:26:01.918Z"
+    },
+    "med_bb_logo": {
+      "id": "med_bb_logo",
+      "filename": "bangladesh-bank-logo.png",
+      "originalName": "বাংলাদেশ ব্যাংক লোগো.png",
+      "mimeType": "image/png",
+      "size": 61800,
+      "url": "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=300&q=80",
+      "altText": "বাংলাদেশ ব্যাংক রিক্রুটমেন্ট মনোগ্রাম",
+      "caption": "ব্যাংকার্স সিলেকশন কমিটি সচিবালয় (BSCS) সার্কুলার ব্যানার",
+      "uploadedBy": "ADMIN-SUPER",
+      "createdAt": "2026-11-07T03:26:01.881Z",
+      "updatedAt": "2026-11-07T03:26:01.950Z"
+    }
+  }
 }

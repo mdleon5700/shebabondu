@@ -321,6 +321,46 @@ export const ALL_DEFAULT_PAGES: Record<string, PageRecord> = {
 
       {
 
+        id: 'sec-jobs',
+
+        type: 'jobs',
+
+        title: 'চলমান সকল চাকরির সার্কুলার ও বিজ্ঞপ্তি',
+
+        subtitle: 'সরকারি, ব্যাংক ও স্বায়ত্তশাসিত প্রতিষ্ঠানের হালনাগাদ সার্কুলার থেকে সহজে আবেদন করুন',
+
+        content: {
+
+          showCategoryFilter: true,
+
+          showStatusCards: true,
+
+          showSearchBar: true,
+
+          jobsPerPage: 9,
+
+          columns: 3
+
+        },
+
+        style: {
+
+          backgroundColor: '#f8fafc',
+
+          textColor: '#0f172a',
+
+          paddingY: 'lg',
+
+          textAlign: 'left'
+
+        },
+
+        isVisible: true
+
+      },
+
+      {
+
         id: 'sec-features',
 
         type: 'features',

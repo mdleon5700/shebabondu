@@ -27,7 +27,18 @@ import {
   Code,
   Settings,
   FileText,
-  Sparkles
+  Sparkles,
+  Briefcase,
+  ShieldCheck,
+  ArrowRight,
+  BookOpen,
+  Star,
+  Search,
+  Filter,
+  Flame,
+  LayoutGrid,
+  Check,
+  ChevronDown
 } from 'lucide-react';
 import { PageRecord, PageSection, SectionType, PageRevision } from '@/lib/types';
 
@@ -139,13 +150,39 @@ export default function WebsiteBuilder({ initialPageId, onNavigateToPages }: Web
       id: 'sec-' + Date.now(),
       type,
       title: type === 'hero' ? 'নতুন ব্যানার শিরোনাম' :
+             type === 'jobs' ? 'চলমান সকল চাকরির সার্কুলার ও বিজ্ঞপ্তি' :
+             type === 'how-it-works' ? 'কীভাবে ঘরে বসেই নির্ভুল চাকরি আবেদন করবেন?' :
+             type === 'testimonials' ? 'সফল চাকরিপ্রার্থীদের বাস্তব অভিজ্ঞতা ও মতামত' :
              type === 'features' ? 'আমাদের প্রধান সেবাসমূহ' :
              type === 'cta' ? 'আজই চাকরির আবেদন সম্পন্ন করুন' :
              type === 'stats' ? 'প্ল্যাটফর্মের মাইলফলক ও পরিসংখ্যান' :
              type === 'faq' ? 'সচরাচর জিজ্ঞাসিত প্রশ্নাবলী (FAQ)' :
              'নতুন অনুচ্ছেদ ও বিষয়বস্তু',
-      subtitle: type === 'faq' ? 'চাকরি আবেদন ও নিয়মাবলী সংক্রান্ত সাধারণ প্রশ্নোত্তর' : 'এখানে আপনার পছন্দের বিবরণ লিখুন।',
-      content: type === 'features' ? {
+      subtitle: type === 'jobs' ? 'সরকারি, ব্যাংক ও স্বায়ত্তশাসিত প্রতিষ্ঠানের হালনাগাদ সার্কুলার' :
+                type === 'how-it-works' ? 'সহজ ৪টি ধাপে সম্পন্ন করুন আপনার কাঙ্ক্ষিত চাকরির আবেদন' :
+                type === 'testimonials' ? 'দেশজুড়ে লক্ষাধিক চাকরিপ্রার্থীর আস্থার প্ল্যাটফর্ম' :
+                type === 'faq' ? 'চাকরি আবেদন ও নিয়মাবলী সংক্রান্ত সাধারণ প্রশ্নোত্তর' : 'এখানে আপনার পছন্দের বিবরণ লিখুন।',
+      content: type === 'jobs' ? {
+        showCategoryFilter: true,
+        showStatusCards: true,
+        showSearchBar: true,
+        jobsPerPage: 9,
+        columns: 3
+      } : type === 'how-it-works' ? {
+        badge: '⚡ ৪-ধাপে সহজ আবেদন',
+        items: [
+          { step: 1, title: 'সার্কুলার নির্বাচন', desc: 'পছন্দের চাকরি বাছাই করুন' },
+          { step: 2, title: 'তথ্য পূরণ', desc: 'সঠিক তথ্য দিন' },
+          { step: 3, title: 'পেমেন্ট ভেরিফাই', desc: 'বিকাশ/নগদে ফি প্রদান' },
+          { step: 4, title: 'স্লিপ গ্রহণ', desc: 'অ্যাপ্লিকেন্ট কপি ডাউনলোড' }
+        ]
+      } : type === 'testimonials' ? {
+        badge: '★ ৫২,০০০+ সফল আবেদন',
+        items: [
+          { name: 'মোঃ তানভীর হাসান', role: 'সহকারী পরিচালক • বাংলাদেশ ব্যাংক', quote: 'চাকরি সেবা ছাড়া এত দ্রুত ও নির্ভুল আবেদন অসম্ভব ছিল!' },
+          { name: 'নুসরাত জাহান', role: 'সহকারী শিক্ষক • প্রাথমিক শিক্ষা অধিদপ্তর', quote: 'ছবি ও স্বাক্ষর সাইজিং নিয়ে আর কোনো চিন্তাই করতে হয় না।' }
+        ]
+      } : type === 'features' ? {
         items: [
           { title: 'ফিচার ১', desc: 'সংক্ষিপ্ত তথ্য এখানে লিখুন।' },
           { title: 'ফিচার ২', desc: 'সংক্ষিপ্ত তথ্য এখানে লিখুন।' },
@@ -157,13 +194,15 @@ export default function WebsiteBuilder({ initialPageId, onNavigateToPages }: Web
       } : type === 'hero' ? {
         badge: '⚡ বিশেষ বিজ্ঞপ্তি',
         ctaText: 'সার্কুলার দেখুন',
-        ctaUrl: '/jobs'
+        ctaUrl: '/jobs',
+        secondaryCtaText: 'আবেদন প্রক্রিয়া জানুন',
+        secondaryCtaUrl: '#how-it-works'
       } : {},
       style: {
-        backgroundColor: type === 'hero' ? '#064e3b' : type === 'cta' ? '#0f172a' : '#ffffff',
+        backgroundColor: type === 'hero' ? '#064e3b' : type === 'cta' ? '#0f172a' : type === 'jobs' ? '#f8fafc' : '#ffffff',
         textColor: type === 'hero' || type === 'cta' ? '#ffffff' : '#0f172a',
         paddingY: 'lg',
-        textAlign: 'center',
+        textAlign: type === 'jobs' ? 'left' : 'center',
         columns: 3
       },
       isVisible: true
@@ -482,48 +521,207 @@ export default function WebsiteBuilder({ initialPageId, onNavigateToPages }: Web
 
                       <div className="max-w-4xl mx-auto px-6 space-y-4">
                         {sec.type === 'hero' && (
-                          <div className="space-y-3">
-                            {sec.content.badge && (
-                              <span className="inline-block px-3 py-1 bg-white/20 backdrop-blur-md rounded-full text-xs font-bold tracking-wide">
-                                {sec.content.badge}
+                          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-b from-[#011612] via-[#022b22] to-[#011a14] text-white p-6 sm:p-10 border border-emerald-900/60 shadow-xl space-y-5">
+                            {/* Ambient Glows */}
+                            <div className="absolute top-0 right-1/4 w-72 h-44 bg-emerald-500/15 blur-[80px] rounded-full pointer-events-none" />
+                            <div className="absolute bottom-4 left-1/4 w-60 h-36 bg-teal-500/10 blur-[70px] rounded-full pointer-events-none" />
+
+                            <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+                              <div className="lg:col-span-8 space-y-4 text-center lg:text-left">
+                                {/* Badge Pill */}
+                                <div className="inline-flex items-center gap-2 bg-[#022822]/90 border border-emerald-500/40 text-emerald-300 px-3.5 py-1 rounded-full text-xs font-bold tracking-wide shadow-xs">
+                                  <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
+                                  <span>{sec.content?.badge || '⚡ ২০২৬ এর সর্বশেষ নিয়োগ সার্কুলার'}</span>
+                                </div>
+
+                                {/* Dynamic H2 Title */}
+                                <h2 
+                                  style={{
+                                    fontSize: sec.style?.titleFontSize === '6xl' ? '2.5rem' :
+                                              sec.style?.titleFontSize === '5xl' ? '2.1rem' :
+                                              sec.style?.titleFontSize === '4xl' ? '1.75rem' :
+                                              sec.style?.titleFontSize === '3xl' ? '1.45rem' :
+                                              sec.style?.titleFontSize === '2xl' ? '1.25rem' : '2.1rem',
+                                    fontWeight: sec.style?.fontWeight === 'black' ? 900 :
+                                                sec.style?.fontWeight === 'bold' ? 700 :
+                                                sec.style?.fontWeight === 'semibold' ? 600 :
+                                                sec.style?.fontWeight === 'normal' ? 400 : 800
+                                  }}
+                                  className="text-white leading-[1.3] font-black tracking-tight"
+                                >
+                                  {sec.title}
+                                </h2>
+
+                                {/* Dynamic Subtitle */}
+                                {sec.subtitle && (
+                                  <p 
+                                    style={{
+                                      fontSize: sec.style?.subtitleFontSize === 'xl' ? '1.2rem' :
+                                                sec.style?.subtitleFontSize === 'lg' ? '1.05rem' :
+                                                sec.style?.subtitleFontSize === 'sm' ? '0.85rem' :
+                                                sec.style?.subtitleFontSize === 'xs' ? '0.75rem' : '0.95rem'
+                                    }}
+                                    className="text-slate-300 leading-relaxed max-w-xl mx-auto lg:mx-0 opacity-90"
+                                  >
+                                    {sec.subtitle}
+                                  </p>
+                                )}
+
+                                {/* Dual Action Buttons */}
+                                <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3 pt-2">
+                                  <span className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-bold text-xs sm:text-sm shadow-lg flex items-center gap-2">
+                                    <FileText className="w-4 h-4" />
+                                    <span>{sec.content?.ctaText || sec.content?.buttonLabel || 'চাকরির বিজ্ঞপ্তি দেখুন'}</span>
+                                    <ArrowRight className="w-3.5 h-3.5" />
+                                  </span>
+                                  <span className="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 text-white font-bold text-xs sm:text-sm border border-white/20 flex items-center gap-2">
+                                    <BookOpen className="w-4 h-4 text-emerald-300" />
+                                    <span>{sec.content?.secondaryCtaText || 'আবেদন প্রক্রিয়া জানুন'}</span>
+                                  </span>
+                                </div>
+
+                                {/* 4 Trust Metric Badges */}
+                                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-4 border-t border-emerald-900/50 text-left">
+                                  <div className="flex items-center gap-2">
+                                    <div className="w-7 h-7 rounded-full bg-emerald-500 text-slate-950 flex items-center justify-center flex-shrink-0 text-xs font-bold">
+                                      <ShieldCheck className="w-4 h-4" />
+                                    </div>
+                                    <div>
+                                      <div className="text-[12px] font-bold text-white leading-tight">নির্ভরযোগ্য তথ্য</div>
+                                      <div className="text-[10px] text-slate-400">অফিসিয়াল সূত্র</div>
+                                    </div>
+                                  </div>
+                                  <div className="flex items-center gap-2">
+                                    <div className="w-7 h-7 rounded-full bg-sky-500 text-white flex items-center justify-center flex-shrink-0 text-xs font-bold">
+                                      <FileText className="w-4 h-4" />
+                                    </div>
+                                    <div>
+                                      <div className="text-[12px] font-bold text-white leading-tight">ধাপে ধাপে গাইড</div>
+                                      <div className="text-[10px] text-slate-400">সহজ নির্দেশিকা</div>
+                                    </div>
+                                  </div>
+                                  <div className="flex items-center gap-2">
+                                    <div className="w-7 h-7 rounded-full bg-amber-500 text-slate-950 flex items-center justify-center flex-shrink-0 text-xs font-bold">
+                                      <Flame className="w-4 h-4" />
+                                    </div>
+                                    <div>
+                                      <div className="text-[12px] font-bold text-white leading-tight">নিয়মিত আপডেট</div>
+                                      <div className="text-[10px] text-slate-400">তাৎক্ষণিক অ্যালার্ট</div>
+                                    </div>
+                                  </div>
+                                  <div className="flex items-center gap-2">
+                                    <div className="w-7 h-7 rounded-full bg-teal-500 text-slate-950 flex items-center justify-center flex-shrink-0 text-xs font-bold">
+                                      <Check className="w-4 h-4" />
+                                    </div>
+                                    <div>
+                                      <div className="text-[12px] font-bold text-white leading-tight">সবার জন্য উন্মুক্ত</div>
+                                      <div className="text-[10px] text-slate-400">১০০% ফ্রি সেবা</div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+
+                              {/* Right Side 3D Floating Orb Emblems */}
+                              <div className="hidden lg:flex lg:col-span-4 flex-col items-center justify-center">
+                                <div className="relative p-6 rounded-3xl bg-emerald-900/30 border border-emerald-500/30 backdrop-blur-md text-center space-y-3 shadow-2xl">
+                                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-emerald-500 to-teal-400 mx-auto flex items-center justify-center shadow-lg shadow-emerald-500/30">
+                                    <Briefcase className="w-8 h-8 text-slate-950" />
+                                  </div>
+                                  <div className="space-y-1">
+                                    <div className="text-xl font-black text-white">৫২,০০০+</div>
+                                    <div className="text-xs text-emerald-300 font-bold">সফল সরকারি ও ব্যাংক আবেদন</div>
+                                  </div>
+                                  <div className="flex items-center justify-center gap-1 text-amber-400 text-xs pt-1">
+                                    {[1, 2, 3, 4, 5].map(st => (
+                                      <Star key={st} className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                                    ))}
+                                    <span className="text-white text-[11px] font-bold ml-1">৫.০ রেটিং</span>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+
+                        {sec.type === 'jobs' && (
+                          <div className="space-y-6 text-left py-4">
+                            {/* Section Header */}
+                            <div className="text-center space-y-1 max-w-2xl mx-auto">
+                              <span className="inline-block px-3 py-1 bg-emerald-100 text-emerald-800 rounded-full text-xs font-bold">
+                                লাইভ জব ফিড ও সার্কুলার এক্সপ্লোরার
                               </span>
-                            )}
-                            <h2 
-                              style={{
-                                fontSize: sec.style?.titleFontSize === '6xl' ? '2.75rem' :
-                                          sec.style?.titleFontSize === '5xl' ? '2.25rem' :
-                                          sec.style?.titleFontSize === '4xl' ? '1.875rem' :
-                                          sec.style?.titleFontSize === '3xl' ? '1.5rem' :
-                                          sec.style?.titleFontSize === '2xl' ? '1.25rem' : undefined,
-                                fontWeight: sec.style?.fontWeight === 'black' ? 900 :
-                                            sec.style?.fontWeight === 'bold' ? 700 :
-                                            sec.style?.fontWeight === 'semibold' ? 600 :
-                                            sec.style?.fontWeight === 'normal' ? 400 : undefined
-                              }}
-                              className="text-2xl sm:text-4xl font-black tracking-tight leading-snug"
-                            >
-                              {sec.title}
-                            </h2>
-                            {sec.subtitle && (
-                              <p 
-                                style={{
-                                  fontSize: sec.style?.subtitleFontSize === 'xl' ? '1.25rem' :
-                                            sec.style?.subtitleFontSize === 'lg' ? '1.125rem' :
-                                            sec.style?.subtitleFontSize === 'sm' ? '0.875rem' :
-                                            sec.style?.subtitleFontSize === 'xs' ? '0.75rem' : undefined
-                                }}
-                                className="text-sm sm:text-base opacity-90 max-w-2xl mx-auto"
-                              >
-                                {sec.subtitle}
-                              </p>
-                            )}
-                            {(sec.content.ctaText || sec.content.buttonLabel) && (
-                              <div className="pt-2">
-                                <span className="inline-block px-6 py-2.5 rounded-xl bg-white text-slate-900 font-bold text-xs sm:text-sm shadow-md">
-                                  {sec.content.ctaText || sec.content.buttonLabel}
-                                </span>
+                              <h3 className="text-xl sm:text-3xl font-black text-slate-900">{sec.title}</h3>
+                              {sec.subtitle && <p className="text-xs sm:text-sm text-slate-600">{sec.subtitle}</p>}
+                            </div>
+
+                            {/* Search & Category Filter Preview */}
+                            {sec.content?.showCategoryFilter !== false && (
+                              <div className="space-y-3">
+                                {/* Category Pills */}
+                                <div className="flex flex-wrap items-center gap-1.5 justify-center">
+                                  {['সকল চাকরি (২৯)', 'সরকারি / বিসিএস (১২)', 'ব্যাংক জব (৭)', 'শিক্ষক নিয়োগ (৫)', 'বাংলাদেশ রেলওয়ে (৩)', 'এনজিও ও উন্নয়ন (২)'].map((cat, i) => (
+                                    <span 
+                                      key={i} 
+                                      className={'px-3 py-1.5 rounded-xl text-xs font-bold cursor-pointer transition-all ' + (
+                                        i === 0 ? 'bg-emerald-600 text-white shadow-sm' : 'bg-white border border-slate-200 text-slate-700'
+                                      )}
+                                    >
+                                      {cat}
+                                    </span>
+                                  ))}
+                                </div>
+
+                                {/* 4 Status Cards */}
+                                {sec.content?.showStatusCards !== false && (
+                                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                                    <div className="p-3 bg-gradient-to-br from-emerald-600 to-teal-700 text-white rounded-2xl shadow-xs">
+                                      <span className="text-[11px] font-bold opacity-90 block">আজ নতুন</span>
+                                      <span className="text-2xl font-black block">২৯ টি</span>
+                                      <span className="text-[10px] opacity-80">তাজা বিজ্ঞপ্তি</span>
+                                    </div>
+                                    <div className="p-3 bg-white border border-slate-200 text-slate-800 rounded-2xl shadow-2xs">
+                                      <span className="text-[11px] font-bold text-sky-800 block">আবেদন চলছে</span>
+                                      <span className="text-2xl font-black block text-sky-900">২৯ টি</span>
+                                      <span className="text-[10px] text-slate-500">চলমান সকল</span>
+                                    </div>
+                                    <div className="p-3 bg-white border border-slate-200 text-slate-800 rounded-2xl shadow-2xs">
+                                      <span className="text-[11px] font-bold text-amber-800 block">শেষ হতে চলেছে</span>
+                                      <span className="text-2xl font-black block text-amber-900">৫ টি</span>
+                                      <span className="text-[10px] text-slate-500">৭ দিন বাকি</span>
+                                    </div>
+                                    <div className="p-3 bg-white border border-slate-200 text-slate-800 rounded-2xl shadow-2xs">
+                                      <span className="text-[11px] font-bold text-red-800 block">আজ শেষ</span>
+                                      <span className="text-2xl font-black block text-red-900">১ টি</span>
+                                      <span className="text-[10px] text-slate-500">জরুরি আবেদন</span>
+                                    </div>
+                                  </div>
+                                )}
                               </div>
                             )}
+
+                            {/* Realistic Sample Circular Cards */}
+                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+                              {[
+                                { org: 'বাংলাদেশ ব্যাংক', title: 'সহকারী পরিচালক (জেনারেল)', posts: '১০০ জন', deadline: '১০ দিন বাকি', badge: 'সরকারি', fee: '২০০৳' },
+                                { org: 'প্রাথমিক শিক্ষা অধিদপ্তর', title: 'সহকারী শিক্ষক নিয়োগ ২০২৬', posts: '৫,০০০ জন', deadline: '১৫ দিন বাকি', badge: 'সরকারি', fee: '১০০৳' },
+                                { org: 'বাংলাদেশ রেলওয়ে', title: 'সহকারী স্টেশন মাস্টার', posts: '২৫০ জন', deadline: '৭ দিন বাকি', badge: 'রেলওয়ে', fee: '১৫০৳' }
+                              ].map((card, i) => (
+                                <div key={i} className="p-4 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-3 relative overflow-hidden">
+                                  <div className="flex items-center justify-between">
+                                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800">{card.badge}</span>
+                                    <span className="text-[10px] font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded-md">{card.deadline}</span>
+                                  </div>
+                                  <div>
+                                    <span className="text-[11px] text-slate-500 font-bold block">{card.org}</span>
+                                    <span className="text-sm font-extrabold text-slate-900 block line-clamp-1">{card.title}</span>
+                                  </div>
+                                  <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-xs">
+                                    <span className="text-[11px] text-slate-600 font-medium">পদ: <b>{card.posts}</b></span>
+                                    <span className="px-3 py-1 bg-emerald-600 text-white rounded-lg font-bold text-[11px]">আবেদন করুন</span>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
                           </div>
                         )}
 
@@ -681,11 +879,14 @@ export default function WebsiteBuilder({ initialPageId, onNavigateToPages }: Web
                   <span className="text-xs font-bold text-slate-700 block">+ নতুন সেকশন যোগ করুন</span>
                   <div className="flex flex-wrap items-center justify-center gap-2">
                     <button onClick={() => handleAddSection('hero')} className="px-3 py-1.5 bg-white border border-slate-300 hover:border-emerald-500 rounded-xl text-xs font-bold text-slate-800 transition-all">+ ব্যানার (Hero)</button>
+                    <button onClick={() => handleAddSection('jobs')} className="px-3 py-1.5 bg-emerald-50 border border-emerald-300 hover:border-emerald-500 rounded-xl text-xs font-bold text-emerald-800 transition-all">+ সার্কুলার ফিড (Jobs)</button>
+                    <button onClick={() => handleAddSection('how-it-works')} className="px-3 py-1.5 bg-white border border-slate-300 hover:border-emerald-500 rounded-xl text-xs font-bold text-slate-800 transition-all">+ আবেদনের ধাপ (Workflow)</button>
+                    <button onClick={() => handleAddSection('testimonials')} className="px-3 py-1.5 bg-white border border-slate-300 hover:border-emerald-500 rounded-xl text-xs font-bold text-slate-800 transition-all">+ চাকরিপ্রার্থীদের রিভিউ</button>
                     <button onClick={() => handleAddSection('features')} className="px-3 py-1.5 bg-white border border-slate-300 hover:border-emerald-500 rounded-xl text-xs font-bold text-slate-800 transition-all">+ ফিচার গ্রিড (Cards)</button>
-                    <button onClick={() => handleAddSection('cta')} className="px-3 py-1.5 bg-white border border-slate-300 hover:border-emerald-500 rounded-xl text-xs font-bold text-slate-800 transition-all">+ কল টু অ্যাকশন</button>
+                    <button onClick={() => handleAddSection('cta')} className="px-3 py-1.5 bg-white border border-slate-300 hover:border-emerald-500 rounded-xl text-xs font-bold text-slate-800 transition-all">+ কল টু অ্যাকশন (CTA)</button>
                     <button onClick={() => handleAddSection('stats')} className="px-3 py-1.5 bg-white border border-slate-300 hover:border-emerald-500 rounded-xl text-xs font-bold text-slate-800 transition-all">+ পরিসংখ্যান</button>
-                    <button onClick={() => handleAddSection('text')} className="px-3 py-1.5 bg-white border border-slate-300 hover:border-emerald-500 rounded-xl text-xs font-bold text-slate-800 transition-all">+ অনুচ্ছেদ / বডি টেক্সট</button>
                     <button onClick={() => handleAddSection('faq')} className="px-3 py-1.5 bg-white border border-slate-300 hover:border-emerald-500 rounded-xl text-xs font-bold text-slate-800 transition-all">+ সাধারণ জিজ্ঞাসা (FAQ)</button>
+                    <button onClick={() => handleAddSection('text')} className="px-3 py-1.5 bg-white border border-slate-300 hover:border-emerald-500 rounded-xl text-xs font-bold text-slate-800 transition-all">+ অনুচ্ছেদ / বডি টেক্সট</button>
                   </div>
                 </div>
               )}
@@ -1031,63 +1232,196 @@ export default function WebsiteBuilder({ initialPageId, onNavigateToPages }: Web
 
               {/* Hero Specific */}
               {activeSection.type === 'hero' && (
-                <div className="space-y-2 pt-2 border-t border-slate-100">
-                  <label className="text-[11px] font-bold text-slate-600 block">টপ ব্যাজ (Badge)</label>
-                  <input
-                    type="text"
-                    value={activeSection.content?.badge || ''}
-                    onChange={(e) => {
-                      const badge = e.target.value;
-                      updateCurrentPage(p => ({
-                        ...p,
-                        sections: p.sections.map(s => s.id === activeSection.id ? {
-                          ...s,
-                          content: { ...s.content, badge }
-                        } : s)
-                      }));
-                    }}
-                    placeholder="উদা: ⚡ বিশেষ বিজ্ঞপ্তি"
-                    className="w-full px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-900"
-                  />
-                  <div className="grid grid-cols-2 gap-2 pt-1">
-                    <div>
-                      <label className="text-[10px] font-bold text-slate-500 block mb-1">বাটন টেক্সট</label>
+                <div className="space-y-3 pt-2 border-t border-slate-100">
+                  <div>
+                    <label className="text-[11px] font-bold text-slate-600 block mb-1">টপ ব্যাজ (Badge)</label>
+                    <input
+                      type="text"
+                      value={activeSection.content?.badge || ''}
+                      onChange={(e) => {
+                        const badge = e.target.value;
+                        updateCurrentPage(p => ({
+                          ...p,
+                          sections: p.sections.map(s => s.id === activeSection.id ? {
+                            ...s,
+                            content: { ...s.content, badge }
+                          } : s)
+                        }));
+                      }}
+                      placeholder="উদা: ⚡ বিশেষ বিজ্ঞপ্তি"
+                      className="w-full px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-900"
+                    />
+                  </div>
+
+                  {/* Primary CTA Button */}
+                  <div className="p-3 bg-slate-50 rounded-2xl border border-slate-200 space-y-2">
+                    <span className="text-[11px] font-extrabold text-emerald-800 flex items-center gap-1.5">
+                      <FileText className="w-3.5 h-3.5 text-emerald-600" />
+                      <span>প্রাইমারি অ্যাকশন বাটন</span>
+                    </span>
+                    <div className="grid grid-cols-2 gap-2">
+                      <div>
+                        <label className="text-[10px] font-bold text-slate-500 block mb-1">বাটন টেক্সট</label>
+                        <input
+                          type="text"
+                          value={activeSection.content?.ctaText || activeSection.content?.buttonLabel || ''}
+                          onChange={(e) => {
+                            const ctaText = e.target.value;
+                            updateCurrentPage(p => ({
+                              ...p,
+                              sections: p.sections.map(s => s.id === activeSection.id ? {
+                                ...s,
+                                content: { ...s.content, ctaText, buttonLabel: ctaText }
+                              } : s)
+                            }));
+                          }}
+                          placeholder="চাকরির বিজ্ঞপ্তি দেখুন"
+                          className="w-full px-2.5 py-1.5 bg-white border border-slate-300 rounded-xl text-xs font-bold"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-[10px] font-bold text-slate-500 block mb-1">বাটন লিংক</label>
+                        <input
+                          type="text"
+                          value={activeSection.content?.ctaUrl || activeSection.content?.buttonUrl || ''}
+                          onChange={(e) => {
+                            const ctaUrl = e.target.value;
+                            updateCurrentPage(p => ({
+                              ...p,
+                              sections: p.sections.map(s => s.id === activeSection.id ? {
+                                ...s,
+                                content: { ...s.content, ctaUrl, buttonUrl: ctaUrl }
+                              } : s)
+                            }));
+                          }}
+                          placeholder="/jobs"
+                          className="w-full px-2.5 py-1.5 bg-white border border-slate-300 rounded-xl text-xs font-mono"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Secondary CTA Button */}
+                  <div className="p-3 bg-slate-50 rounded-2xl border border-slate-200 space-y-2">
+                    <span className="text-[11px] font-extrabold text-slate-700 flex items-center gap-1.5">
+                      <BookOpen className="w-3.5 h-3.5 text-slate-600" />
+                      <span>সেকেন্ডারি বাটন (আউটলাইন)</span>
+                    </span>
+                    <div className="grid grid-cols-2 gap-2">
+                      <div>
+                        <label className="text-[10px] font-bold text-slate-500 block mb-1">বাটন টেক্সট</label>
+                        <input
+                          type="text"
+                          value={activeSection.content?.secondaryCtaText || ''}
+                          onChange={(e) => {
+                            const secondaryCtaText = e.target.value;
+                            updateCurrentPage(p => ({
+                              ...p,
+                              sections: p.sections.map(s => s.id === activeSection.id ? {
+                                ...s,
+                                content: { ...s.content, secondaryCtaText }
+                              } : s)
+                            }));
+                          }}
+                          placeholder="আবেদন প্রক্রিয়া জানুন"
+                          className="w-full px-2.5 py-1.5 bg-white border border-slate-300 rounded-xl text-xs font-bold"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-[10px] font-bold text-slate-500 block mb-1">বাটন লিংক</label>
+                        <input
+                          type="text"
+                          value={activeSection.content?.secondaryCtaUrl || ''}
+                          onChange={(e) => {
+                            const secondaryCtaUrl = e.target.value;
+                            updateCurrentPage(p => ({
+                              ...p,
+                              sections: p.sections.map(s => s.id === activeSection.id ? {
+                                ...s,
+                                content: { ...s.content, secondaryCtaUrl }
+                              } : s)
+                            }));
+                          }}
+                          placeholder="#how-it-works"
+                          className="w-full px-2.5 py-1.5 bg-white border border-slate-300 rounded-xl text-xs font-mono"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Jobs Specific */}
+              {activeSection.type === 'jobs' && (
+                <div className="space-y-3 pt-2 border-t border-slate-100">
+                  <div className="p-3 bg-emerald-50/70 border border-emerald-200 rounded-2xl space-y-2">
+                    <span className="text-xs font-bold text-emerald-950 flex items-center gap-1.5">
+                      <Filter className="w-3.5 h-3.5 text-emerald-700" />
+                      <span>সার্কুলার গ্রিড কনফিগারেশন</span>
+                    </span>
+                    <p className="text-[11px] text-slate-600">
+                      লাইভ ডাটাবেজ থেকে স্বয়ংক্রিয়ভাবে সরকারি ও ব্যাংক চাকরির সার্কুলার লোড হয়।
+                    </p>
+                  </div>
+
+                  {/* Toggles */}
+                  <div className="space-y-2">
+                    <label className="flex items-center justify-between p-2.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl text-xs font-bold cursor-pointer">
+                      <span className="text-slate-700">ক্যাটাগরি ফিল্টার বার প্রদর্শন</span>
                       <input
-                        type="text"
-                        value={activeSection.content?.ctaText || activeSection.content?.buttonLabel || ''}
+                        type="checkbox"
+                        checked={activeSection.content?.showCategoryFilter !== false}
                         onChange={(e) => {
-                          const ctaText = e.target.value;
+                          const showCategoryFilter = e.target.checked;
                           updateCurrentPage(p => ({
                             ...p,
                             sections: p.sections.map(s => s.id === activeSection.id ? {
                               ...s,
-                              content: { ...s.content, ctaText, buttonLabel: ctaText }
+                              content: { ...s.content, showCategoryFilter }
                             } : s)
                           }));
                         }}
-                        placeholder="আবেদন করুন"
-                        className="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold"
+                        className="w-4 h-4 text-emerald-600 rounded"
                       />
-                    </div>
-                    <div>
-                      <label className="text-[10px] font-bold text-slate-500 block mb-1">বাটন লিংক</label>
+                    </label>
+
+                    <label className="flex items-center justify-between p-2.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl text-xs font-bold cursor-pointer">
+                      <span className="text-slate-700">স্ট্যাটাস মেট্রিক কার্ড (৪টি কার্ড) প্রদর্শন</span>
                       <input
-                        type="text"
-                        value={activeSection.content?.ctaUrl || activeSection.content?.buttonUrl || ''}
+                        type="checkbox"
+                        checked={activeSection.content?.showStatusCards !== false}
                         onChange={(e) => {
-                          const ctaUrl = e.target.value;
+                          const showStatusCards = e.target.checked;
                           updateCurrentPage(p => ({
                             ...p,
                             sections: p.sections.map(s => s.id === activeSection.id ? {
                               ...s,
-                              content: { ...s.content, ctaUrl, buttonUrl: ctaUrl }
+                              content: { ...s.content, showStatusCards }
                             } : s)
                           }));
                         }}
-                        placeholder="/jobs"
-                        className="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-mono"
+                        className="w-4 h-4 text-emerald-600 rounded"
                       />
-                    </div>
+                    </label>
+
+                    <label className="flex items-center justify-between p-2.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl text-xs font-bold cursor-pointer">
+                      <span className="text-slate-700">সার্চ বার প্রদর্শন</span>
+                      <input
+                        type="checkbox"
+                        checked={activeSection.content?.showSearchBar !== false}
+                        onChange={(e) => {
+                          const showSearchBar = e.target.checked;
+                          updateCurrentPage(p => ({
+                            ...p,
+                            sections: p.sections.map(s => s.id === activeSection.id ? {
+                              ...s,
+                              content: { ...s.content, showSearchBar }
+                            } : s)
+                          }));
+                        }}
+                        className="w-4 h-4 text-emerald-600 rounded"
+                      />
+                    </label>
                   </div>
                 </div>
               )}

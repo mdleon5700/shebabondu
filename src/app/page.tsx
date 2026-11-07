@@ -203,6 +203,7 @@ const candidateReviews = [
 
 export default function HomePage() {
   const { homeSections } = usePlatformContext();
+  const jobsCms = homeSections?.find(s => s.type === 'jobs' || s.id === 'sec-home-jobs');
   const howItWorksCms = homeSections?.find(s => s.type === 'how-it-works' || s.id === 'sec-home-how-it-works');
   const ctaBannerCms = homeSections?.find(s => s.type === 'cta' || s.id === 'sec-home-cta-banner');
   const reviewsCms = homeSections?.find(s => s.type === 'testimonials' || s.id === 'sec-home-reviews');
@@ -845,7 +846,7 @@ export default function HomePage() {
           <div>
             <div className="flex flex-wrap items-center gap-2 sm:gap-2.5">
               <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
-                সকল চলমান চাকরির সার্কুলার
+                {jobsCms?.title || 'সকল চলমান চাকরির সার্কুলার'}
               </h2>
               <span className="inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-800 border border-emerald-200/80 text-[13px] sm:text-[14px] font-bold px-2.5 py-0.5 rounded-full whitespace-nowrap shadow-xs">
                 <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
@@ -853,7 +854,7 @@ export default function HomePage() {
               </span>
             </div>
             <p className="text-[14px] sm:text-[16px] text-slate-600 mt-1">
-              যেকোনো বিজ্ঞপ্তিতে ১-ক্লিকেই আমাদের প্রফেশনাল টিম দিয়ে আবেদন সম্পন্ন করতে পারবেন।
+              {jobsCms?.subtitle || 'যেকোনো বিজ্ঞপ্তিতে ১-ক্লিকেই আমাদের প্রফেশনাল টিম দিয়ে আবেদন সম্পন্ন করতে পারবেন।'}
             </p>
           </div>
 

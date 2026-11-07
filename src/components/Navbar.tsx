@@ -36,6 +36,91 @@ interface NavMenuItem {
   dropdown?: DropdownItem[];
 }
 
+// Navigation Menu Configuration in exact required order
+const DEFAULT_NAV_ITEMS: NavMenuItem[] = [
+  {
+    id: 'home',
+    label: 'হোম',
+    href: '/'
+  },
+  {
+    id: 'all-jobs',
+    label: 'সকল চাকরি',
+    href: '/jobs',
+    dropdown: [
+      { label: 'চলমান সকল বিজ্ঞপ্তি', href: '/jobs' },
+      { label: 'সর্বশেষ প্রকাশিত চাকরি', href: '/latest-jobs' },
+      { label: 'আবেদনের শেষ সময় কাছাকাছি', href: '/deadline-approaching' },
+      { label: 'সকল চাকরির প্রতিষ্ঠান', href: '/organizations' },
+      { label: 'যোগ্যতা অনুযায়ী চাকরি', href: '/job-categories' }
+    ]
+  },
+  {
+    id: 'govt',
+    label: 'সরকারি চাকরি',
+    href: '/government-jobs',
+    dropdown: [
+      { label: 'সকল সরকারি চাকরি', href: '/government-jobs' },
+      { label: 'বিপিএসসি (BPSC) চাকরি', href: '/organizations/bpsc' },
+      { label: 'বাংলাদেশ ব্যাংক নিয়োগ', href: '/organizations/bangladesh-bank' },
+      { label: 'সরকারি মন্ত্রণালয়সমূহ', href: '/organizations/government-ministries' },
+      { label: 'সরকারি অধিদপ্তরসমূহ', href: '/organizations/government-directorates' }
+    ]
+  },
+  {
+    id: 'private',
+    label: 'বেসরকারি চাকরি',
+    href: '/private-jobs',
+    dropdown: [
+      { label: 'সকল বেসরকারি চাকরি', href: '/private-jobs' },
+      { label: 'ব্যাংক ও আর্থিক প্রতিষ্ঠান', href: '/bank-jobs' },
+      { label: 'এনজিও (NGO) চাকরি', href: '/ngo-jobs' },
+      { label: 'আইটি ও সফটওয়্যার জবস', href: '/it-jobs' },
+      { label: 'মেডিকেল ও ফার্মাসিউটিক্যাল', href: '/medical-jobs' }
+    ]
+  },
+  {
+    id: 'categories',
+    label: 'চাকরির ক্যাটাগরি',
+    href: '/job-categories',
+    dropdown: [
+      { label: 'সকল ক্যাটাগরি ব্রাউজ করুন', href: '/job-categories' },
+      { label: 'শিক্ষক নিয়োগ', href: '/teacher-jobs' },
+      { label: 'ইঞ্জিনিয়ারিং চাকরি', href: '/engineering-jobs' },
+      { label: 'মার্কেটিং ও সেলস', href: '/marketing-jobs' },
+      { label: 'ফ্রেশারদের চাকরি', href: '/fresher-jobs' },
+      { label: 'পার্ট-টাইম ও ইন্টার্নশিপ', href: '/part-time-jobs' }
+    ]
+  },
+  {
+    id: 'exam',
+    label: 'পরীক্ষা ও ফলাফল',
+    href: '/exam-notices',
+    dropdown: [
+      { label: 'পরীক্ষার নোটিশ ও তারিখ', href: '/exam-notices' },
+      { label: 'প্রবেশপত্র / Admit Card', href: '/admit-cards' },
+      { label: 'লিখিত পরীক্ষার ফলাফল', href: '/written-exam-results' },
+      { label: 'মৌখিক পরীক্ষার নোটিশ (Viva)', href: '/viva-notices' },
+      { label: 'সকল পরীক্ষার ফলাফল', href: '/exam-results' },
+      { label: 'বিগত বছরের প্রশ্ন ও সমাধান', href: '/previous-year-questions' },
+      { label: 'অনলাইন মডেল টেস্ট', href: '/model-tests' }
+    ]
+  },
+  {
+    id: 'career',
+    label: 'ক্যারিয়ার গাইড',
+    href: '/career-guides',
+    dropdown: [
+      { label: 'ক্যারিয়ার গাইড হাব', href: '/career-guides' },
+      { label: 'সিভি লেখার সঠিক নিয়ম', href: '/career-guides/cv-writing' },
+      { label: 'অনলাইনে চাকরির আবেদন গাইড', href: '/career-guides/online-job-application' },
+      { label: 'ইন্টারভিউ ও ভাইভা প্রস্তুতি', href: '/career-guides/interview-preparation' },
+      { label: 'চাকরির পরীক্ষার প্রস্তুতি', href: '/career-guides/job-exam-preparation' },
+      { label: 'ক্যারিয়ার পরামর্শ ও ব্লগ', href: '/blog' }
+    ]
+  }
+];
+
 export default function Navbar({ initialSettings }: { initialSettings?: any } = {}) {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -47,6 +132,12 @@ export default function Navbar({ initialSettings }: { initialSettings?: any } = 
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const [platformSettings, setPlatformSettings] = useState<any>(initialSettings || null);
   const navRef = useRef<HTMLDivElement>(null);
+  const logoRef = useRef<HTMLAnchorElement>(null);
+  const rightAreaRef = useRef<HTMLDivElement>(null);
+
+  // Dynamic visible count for nav menu items based on exact available space
+  // Initial state matches SSR to guarantee 0 hydration mismatches; useEffect fine-tunes post-mount
+  const [visibleCount, setVisibleCount] = useState<number>(DEFAULT_NAV_ITEMS.length);
 
   useEffect(() => {
     if (initialSettings) {
@@ -154,94 +245,59 @@ export default function Navbar({ initialSettings }: { initialSettings?: any } = 
     }));
   };
 
-  // Navigation Menu Configuration in exact required order
-  const DEFAULT_NAV_ITEMS: NavMenuItem[] = [
-    {
-      id: 'home',
-      label: 'হোম',
-      href: '/'
-    },
-    {
-      id: 'all-jobs',
-      label: 'সকল চাকরি',
-      href: '/jobs',
-      dropdown: [
-        { label: 'চলমান সকল বিজ্ঞপ্তি', href: '/jobs' },
-        { label: 'সর্বশেষ প্রকাশিত চাকরি', href: '/latest-jobs' },
-        { label: 'আবেদনের শেষ সময় কাছাকাছি', href: '/deadline-approaching' },
-        { label: 'সকল চাকরির প্রতিষ্ঠান', href: '/organizations' },
-        { label: 'যোগ্যতা অনুযায়ী চাকরি', href: '/job-categories' }
-      ]
-    },
-    {
-      id: 'govt',
-      label: 'সরকারি চাকরি',
-      href: '/government-jobs',
-      dropdown: [
-        { label: 'সকল সরকারি চাকরি', href: '/government-jobs' },
-        { label: 'বিপিএসসি (BPSC) চাকরি', href: '/organizations/bpsc' },
-        { label: 'বাংলাদেশ ব্যাংক নিয়োগ', href: '/organizations/bangladesh-bank' },
-        { label: 'সরকারি মন্ত্রণালয়সমূহ', href: '/organizations/government-ministries' },
-        { label: 'সরকারি অধিদপ্তরসমূহ', href: '/organizations/government-directorates' }
-      ]
-    },
-    {
-      id: 'private',
-      label: 'বেসরকারি চাকরি',
-      href: '/private-jobs',
-      dropdown: [
-        { label: 'সকল বেসরকারি চাকরি', href: '/private-jobs' },
-        { label: 'ব্যাংক ও আর্থিক প্রতিষ্ঠান', href: '/bank-jobs' },
-        { label: 'এনজিও (NGO) চাকরি', href: '/ngo-jobs' },
-        { label: 'আইটি ও সফটওয়্যার জবস', href: '/it-jobs' },
-        { label: 'মেডিকেল ও ফার্মাসিউটিক্যাল', href: '/medical-jobs' }
-      ]
-    },
-    {
-      id: 'categories',
-      label: 'চাকরির ক্যাটাগরি',
-      href: '/job-categories',
-      dropdown: [
-        { label: 'সকল ক্যাটাগরি ব্রাউজ করুন', href: '/job-categories' },
-        { label: 'শিক্ষক নিয়োগ', href: '/teacher-jobs' },
-        { label: 'ইঞ্জিনিয়ারিং চাকরি', href: '/engineering-jobs' },
-        { label: 'মার্কেটিং ও সেলস', href: '/marketing-jobs' },
-        { label: 'ফ্রেশারদের চাকরি', href: '/fresher-jobs' },
-        { label: 'পার্ট-টাইম ও ইন্টার্নশিপ', href: '/part-time-jobs' }
-      ]
-    },
-    {
-      id: 'exam',
-      label: 'পরীক্ষা ও ফলাফল',
-      href: '/exam-notices',
-      dropdown: [
-        { label: 'পরীক্ষার নোটিশ ও তারিখ', href: '/exam-notices' },
-        { label: 'প্রবেশপত্র / Admit Card', href: '/admit-cards' },
-        { label: 'লিখিত পরীক্ষার ফলাফল', href: '/written-exam-results' },
-        { label: 'মৌখিক পরীক্ষার নোটিশ (Viva)', href: '/viva-notices' },
-        { label: 'সকল পরীক্ষার ফলাফল', href: '/exam-results' },
-        { label: 'বিগত বছরের প্রশ্ন ও সমাধান', href: '/previous-year-questions' },
-        { label: 'অনলাইন মডেল টেস্ট', href: '/model-tests' }
-      ]
-    },
-    {
-      id: 'career',
-      label: 'ক্যারিয়ার গাইড',
-      href: '/career-guides',
-      dropdown: [
-        { label: 'ক্যারিয়ার গাইড হাব', href: '/career-guides' },
-        { label: 'সিভি লেখার সঠিক নিয়ম', href: '/career-guides/cv-writing' },
-        { label: 'অনলাইনে চাকরির আবেদন গাইড', href: '/career-guides/online-job-application' },
-        { label: 'ইন্টারভিউ ও ভাইভা প্রস্তুতি', href: '/career-guides/interview-preparation' },
-        { label: 'চাকরির পরীক্ষার প্রস্তুতি', href: '/career-guides/job-exam-preparation' },
-        { label: 'ক্যারিয়ার পরামর্শ ও ব্লগ', href: '/blog' }
-      ]
-    }
-  ];
-
   const navItems: NavMenuItem[] = (platformSettings?.general?.headerMenuItems && Array.isArray(platformSettings.general.headerMenuItems))
     ? platformSettings.general.headerMenuItems
     : DEFAULT_NAV_ITEMS;
+
+  // Dynamic visible count calculation based on real DOM measurements
+  useEffect(() => {
+    const calculateVisibleItems = () => {
+      if (!navRef.current) return;
+      const headerWidth = navRef.current.clientWidth;
+      const logoWidth = logoRef.current ? logoRef.current.offsetWidth : 260;
+      const rightWidth = rightAreaRef.current ? rightAreaRef.current.offsetWidth : 360;
+      
+      // Spacing: horizontal container padding (32px to 64px) + gap between logo & nav (16px) + gap between nav & rightArea (16px)
+      const availableSpace = headerWidth - logoWidth - rightWidth - 64;
+
+      if (availableSpace <= 0) {
+        setVisibleCount(1);
+        return;
+      }
+
+      let accumulatedWidth = 0;
+      let count = 0;
+
+      for (let i = 0; i < navItems.length; i++) {
+        const item = navItems[i];
+        const textLen = (item.label || '').length;
+        const hasDropdown = Boolean(item.dropdown && item.dropdown.length > 0);
+        const hasBadge = Boolean(item.badge);
+        // Rendered width: horizontal padding (24px) + text (textLen * 9.5px) + chevron (20px) + badge (42px)
+        const itemWidth = Math.max(85, Math.round(24 + (textLen * 9.5) + (hasDropdown ? 20 : 0) + (hasBadge ? 42 : 0)));
+        
+        const isLast = (i === navItems.length - 1);
+        // Reserve ~80px for the "আরও" dropdown button if not all items fit
+        const neededWidth = accumulatedWidth + itemWidth + (isLast ? 0 : 80);
+
+        if (neededWidth <= availableSpace) {
+          accumulatedWidth += itemWidth;
+          count++;
+        } else if (isLast && (accumulatedWidth + itemWidth <= availableSpace)) {
+          // All items fit without "আরও" button
+          count++;
+        } else {
+          break;
+        }
+      }
+
+      setVisibleCount(Math.max(1, count));
+    };
+
+    calculateVisibleItems();
+    window.addEventListener('resize', calculateVisibleItems);
+    return () => window.removeEventListener('resize', calculateVisibleItems);
+  }, [navItems, auth.isLoggedIn, auth.role, walletBalance, platformSettings]);
 
 
   return (
@@ -249,8 +305,8 @@ export default function Navbar({ initialSettings }: { initialSettings?: any } = 
       
       {/* 1. TOP ANNOUNCEMENT TICKER (Dynamic from Admin CMS) */}
       {(platformSettings?.general?.announcementEnabled !== false) && (
-        <div className="bg-gradient-to-r from-slate-950 via-emerald-950 to-slate-900 text-white text-[11px] sm:text-xs py-1.5 px-4 border-b border-emerald-900/40">
-          <div className="w-full max-w-[1920px] mx-auto flex items-center justify-between">
+        <div className="bg-gradient-to-r from-slate-950 via-emerald-950 to-slate-900 text-white text-[11px] sm:text-xs py-1.5 px-4 sm:px-6 lg:px-8 border-b border-emerald-900/40">
+          <div className="w-full flex items-center justify-between">
             <div className="flex items-center gap-2 overflow-hidden">
               <span className="bg-red-600 text-white px-2 py-0.5 rounded-full text-[12px] sm:text-[13px] font-black uppercase tracking-wider animate-pulse flex-shrink-0">
                 জরুরি নোটিশ
@@ -281,11 +337,11 @@ export default function Navbar({ initialSettings }: { initialSettings?: any } = 
       )}
 
       {/* 2. MAIN HEADER NAVIGATION BAR */}
-      <div className="w-full max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 sm:h-20 gap-2 sm:gap-4">
+      <div className="w-full px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16 sm:h-20 gap-2 sm:gap-4 w-full">
           
           {/* Logo (Preserved branding, logo icon and badges, with dynamic customizer support) */}
-          <Link href="/" className="flex items-center gap-2.5 sm:gap-3 group flex-shrink-0">
+          <Link ref={logoRef} href="/" className="flex items-center gap-2.5 sm:gap-3 group flex-shrink-0">
             {platformSettings?.general?.logoUrl && platformSettings.general.logoUrl !== '/icons/icon-192x192.png' ? (
               <img 
                 src={platformSettings.general.logoUrl} 
@@ -318,28 +374,16 @@ export default function Navbar({ initialSettings }: { initialSettings?: any } = 
           </Link>
 
           {/* Desktop Navigation Links */}
-          <nav className="hidden lg:flex items-center gap-0.5 xl:gap-1 2xl:gap-1.5 font-bold text-slate-800 whitespace-nowrap flex-shrink-0">
-            {navItems.map((item, index) => {
+          <nav className="hidden lg:flex items-center gap-0.5 xl:gap-1 2xl:gap-1.5 font-bold text-slate-800 whitespace-nowrap min-w-0 flex-shrink">
+            {navItems.slice(0, visibleCount).map((item) => {
               const hasDropdown = Boolean(item.dropdown && item.dropdown.length > 0);
               const isCurrentOpen = activeDropdown === item.id;
               const isActive = (item.href === '/' && pathname === '/') || (item.href !== '/' && pathname.startsWith(item.href));
 
-              // Responsive visibility: keeps navbar clean without overflow across screen sizes
-              let visibilityClass = 'flex';
-              if (index >= 6) {
-                visibilityClass = 'hidden min-[1950px]:flex';
-              } else if (index === 5) {
-                visibilityClass = 'hidden min-[1800px]:flex';
-              } else if (index === 4) {
-                visibilityClass = 'hidden 2xl:flex';
-              } else if (index === 3) {
-                visibilityClass = 'hidden min-[1360px]:flex';
-              }
-
               return (
                 <div 
                   key={item.id} 
-                  className={`relative ${visibilityClass}`}
+                  className="relative flex-shrink-0"
                   onMouseEnter={() => hasDropdown && setActiveDropdown(item.id)}
                   onMouseLeave={() => hasDropdown && setActiveDropdown(null)}
                 >
@@ -397,15 +441,9 @@ export default function Navbar({ initialSettings }: { initialSettings?: any } = 
             })}
 
             {/* "আরও" (More) Dropdown for items that overflow the current viewport */}
-            {navItems.length > 3 && (
+            {visibleCount < navItems.length && (
               <div 
-                className={`relative ${
-                  navItems.length <= 3 ? 'hidden' :
-                  navItems.length <= 4 ? 'min-[1360px]:hidden' :
-                  navItems.length <= 5 ? '2xl:hidden' :
-                  navItems.length <= 6 ? 'min-[1800px]:hidden' :
-                  'min-[1950px]:hidden'
-                }`}
+                className="relative flex-shrink-0"
                 onMouseEnter={() => setActiveDropdown('more-nav-items')}
                 onMouseLeave={() => setActiveDropdown(null)}
               >
@@ -428,51 +466,36 @@ export default function Navbar({ initialSettings }: { initialSettings?: any } = 
                 {activeDropdown === 'more-nav-items' && (
                   <div className="absolute top-full pt-2 z-50 right-0 min-w-[280px] w-max max-h-[75vh] overflow-y-auto">
                     <div className="bg-white rounded-2xl shadow-xl border border-slate-200 py-2 divide-y divide-slate-100 animate-in fade-in slide-in-from-top-1 duration-150">
-                      {navItems.map((item, index) => {
-                        let hideClass = '';
-                        if (index < 3) {
-                          return null;
-                        } else if (index === 3) {
-                          hideClass = 'min-[1360px]:hidden';
-                        } else if (index === 4) {
-                          hideClass = '2xl:hidden';
-                        } else if (index === 5) {
-                          hideClass = 'min-[1800px]:hidden';
-                        } else if (index >= 6) {
-                          hideClass = 'min-[1950px]:hidden';
-                        }
-
-                        return (
-                          <div key={`more-${item.id}`} className={`py-1.5 px-2 ${hideClass}`}>
-                            <Link
-                              href={item.href}
-                              onClick={() => setActiveDropdown(null)}
-                              className="flex items-center justify-between px-3 py-1.5 rounded-lg text-[14px] font-bold text-slate-800 hover:bg-emerald-50 hover:text-emerald-700 transition-colors"
-                            >
-                              <span>{item.label}</span>
-                              {item.badge && (
-                                <span className="text-[10px] font-black px-1.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800">
-                                  {item.badge}
-                                </span>
-                              )}
-                            </Link>
-                            {item.dropdown && item.dropdown.length > 0 && (
-                              <div className="mt-1 pl-4 space-y-0.5 border-l-2 border-emerald-100 ml-3">
-                                {item.dropdown.map((sub, sIdx) => (
-                                  <Link
-                                    key={sIdx}
-                                    href={sub.href}
-                                    onClick={() => setActiveDropdown(null)}
-                                    className="block py-1 text-xs text-slate-600 hover:text-emerald-700 transition-colors"
-                                  >
-                                    {sub.label}
-                                  </Link>
-                                ))}
-                              </div>
+                      {navItems.slice(visibleCount).map((item) => (
+                        <div key={`more-${item.id}`} className="py-1.5 px-2">
+                          <Link
+                            href={item.href}
+                            onClick={() => setActiveDropdown(null)}
+                            className="flex items-center justify-between px-3 py-1.5 rounded-lg text-[14px] font-bold text-slate-800 hover:bg-emerald-50 hover:text-emerald-700 transition-colors"
+                          >
+                            <span>{item.label}</span>
+                            {item.badge && (
+                              <span className="text-[10px] font-black px-1.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800">
+                                {item.badge}
+                              </span>
                             )}
-                          </div>
-                        );
-                      })}
+                          </Link>
+                          {item.dropdown && item.dropdown.length > 0 && (
+                            <div className="mt-1 pl-4 space-y-0.5 border-l-2 border-emerald-100 ml-3">
+                              {item.dropdown.map((sub, sIdx) => (
+                                <Link
+                                  key={sIdx}
+                                  href={sub.href}
+                                  onClick={() => setActiveDropdown(null)}
+                                  className="block py-1 text-xs text-slate-600 hover:text-emerald-700 transition-colors"
+                                >
+                                  {sub.label}
+                                </Link>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      ))}
                     </div>
                   </div>
                 )}
@@ -481,7 +504,7 @@ export default function Navbar({ initialSettings }: { initialSettings?: any } = 
           </nav>
 
           {/* Right Action Area: Customizable Guest Buttons & User Widgets */}
-          <div className="hidden sm:flex items-center gap-2 flex-shrink-0 ml-auto">
+          <div ref={rightAreaRef} className="hidden sm:flex items-center gap-2 flex-shrink-0 ml-auto z-10">
             
             {/* WhatsApp button */}
             {platformSettings?.general?.guestButtons?.showWhatsApp !== false && (

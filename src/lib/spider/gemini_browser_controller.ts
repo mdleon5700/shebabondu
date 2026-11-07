@@ -585,7 +585,9 @@ ${finalOrg} সম্প্রতি ২০২৬ সালের জন্য �
     deadline: finalDeadline,
     publishedDate: resolved?.publishedDate || '০৩ নভেম্বর ২০২৬',
     officialLink: effectiveOfficialLink,
+    applicationUrl: effectiveOfficialLink,
     circularPdfUrl: effectivePdfUrl,
+    pdfUrl: effectivePdfUrl,
     salary: parsed?.salary || 'জাতীয় বেতন স্কেল ২০১৫ অনুযায়ী',
     grade: parsed?.grade || '১০ম - ১৬তম গ্রেড',
     minEducation: parsed?.education || 'উচ্চ মাধ্যমিক (এইচএসসি) বা সমমান পাস',
@@ -605,7 +607,8 @@ ${finalOrg} সম্প্রতি ২০২৬ সালের জন্য �
       'অনলাইনে পূরণকৃত Applicant\'s Copy ও প্রবেশপত্র'
     ],
     applicationInstructions: parsed?.applicationInstructions || `আগ্রহী প্রার্থীদের টেলিটক অনলাইন পোর্টাল (${effectiveOfficialLink}) ব্যবহার করে নির্ভুলভাবে আবেদন ফরম পূরণ করতে হবে।`,
-    smsPrefix: parsed?.smsFormat || 'PREFIX <Space> User_ID পাঠিয়ে দিন 16222 নম্বরে।',
+    smsPrefix: parsed?.smsPrefix || (finalOrg.slice(0, 4).toUpperCase()),
+    smsFormat: parsed?.smsFormat || `১ম এসএমএস: ${parsed?.smsPrefix || 'PREFIX'} <Space> User_ID পাঠিয়ে দিন 16222 নম্বরে।`,
     selectionProcess: Array.isArray(parsed?.selectionProcess)
       ? parsed.selectionProcess.join('\n')
       : '১. লিখিত ও কম্পিউটার টাইপিং পরীক্ষা\n২. মৌখিক পরীক্ষা (ভাইভা) ও সনদপত্র যাচাই',

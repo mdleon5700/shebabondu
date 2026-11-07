@@ -215,6 +215,7 @@ export interface JobCircular {
 
 
   officialLink: string;
+  applicationUrl?: string;
 
 
 
@@ -303,6 +304,7 @@ export interface JobCircular {
 
 
   smsPrefix?: string;
+  smsFormat?: string;
 
 
 

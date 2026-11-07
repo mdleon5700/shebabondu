@@ -180,6 +180,7 @@ export function createSessionCookie(token: string, expiryDays = 30) {
     path: '/',
     maxAge: expiryDays * 86400
   };
+
 }
 
 export function clearSessionCookie() {
@@ -192,6 +193,22 @@ export function clearSessionCookie() {
     path: '/',
     maxAge: 0
   };
+
+}
+
+export function verifyWorkerAuth(req: Request): boolean {
+  try {
+    const workerToken = req.headers.get('x-worker-token') || req.headers.get('authorization')?.replace(/^Bearer\s+/i, '');
+    const expected = process.env.WORKER_AUTH_TOKEN || 'cs_worker_local_secret_2026';
+    if (workerToken && workerToken.trim() === expected.trim()) {
+      return true;
+    }
+    const session = getServerSession(req);
+    return session?.role === 'admin';
+  } catch {
+    return false;
+  }
+
 }
 
 

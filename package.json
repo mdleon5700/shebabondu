@@ -14,6 +14,8 @@
     "validate": "tsc --noEmit && next lint",
     "sync:alljobs": "node scripts/fetch_and_populate_alljobs.js",
     "spider:browser": "node scripts/spider/browser_agent.js",
+    "worker:local": "node scripts/local_spider_worker.js",
+    "worker:local:once": "node scripts/local_spider_worker.js --once",
     "audit": "node scripts/test_audit_api.js",
     "test": "npm run typecheck",
     "test:browser": "node scripts/browser_verify.js"

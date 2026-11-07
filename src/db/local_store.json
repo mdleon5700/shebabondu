@@ -2289,6 +2289,26 @@
       "candidateId": "ADMIN-SUPER",
       "role": "admin",
       "expiresAt": "2026-11-14T16:42:18.761Z"
+    },
+    "eb9ac19ea4762361a86517310098b979bbef7fdbea3606ea5233f381829660b8": {
+      "candidateId": "SYNTH-USR-1794071579703",
+      "role": "candidate",
+      "expiresAt": "2026-11-14T17:12:59.749Z"
+    },
+    "a121ee9b846b5343940bceef566f44d1c337752c3fa4a913231b8baea6d68d17": {
+      "candidateId": "SYNTH-USR-1794071584386",
+      "role": "candidate",
+      "expiresAt": "2026-11-14T17:13:04.438Z"
+    },
+    "57d830f22cbe9f98d78bc49f430225599e48a3e1bf8f42b2368da002b2d788c6": {
+      "candidateId": "SYNTH-USR-1794071584386",
+      "role": "candidate",
+      "expiresAt": "2026-11-14T17:13:07.727Z"
+    },
+    "98323d85d5cf3e77865de9341e1999d5743c7736606ae66ac1b7ac1ecdd81c81": {
+      "candidateId": "ADMIN-SUPER",
+      "role": "admin",
+      "expiresAt": "2026-11-14T17:13:16.845Z"
     }
   },
   "coupons": {},
@@ -2296,6 +2316,23 @@
   "couponRedemptions": {},
   "raffleEntries": {},
   "adminAuditLogs": [
+    {
+      "adminId": "ADMIN-SUPER",
+      "action": "source_approval",
+      "targetId": "worker_teletalk-alljobs_a44ffefa4983",
+      "targetType": "order",
+      "changes": {
+        "draftId": {
+          "new": "worker_teletalk-alljobs_a44ffefa4983"
+        },
+        "createdJobId": {
+          "new": "job-494643"
+        }
+      },
+      "notes": "Approved draft into live job: উপসহকারী প্রকৌশলী (পুর)",
+      "id": "AUDIT-1794071494659-6XDA5",
+      "timestamp": "2026-11-07T17:11:34.660Z"
+    },
     {
       "adminId": "ADMIN-SUPER",
       "action": "job_publish",
@@ -16254,6 +16291,45 @@
           "summary": "সার্কুলার সফলভাবে তৈরি হয়েছে"
         }
       ]
+    },
+    "job-494643": {
+      "id": "job-494643",
+      "title": "উপসহকারী প্রকৌশলী (পুর)",
+      "organization": "Dhaka South City Corporation (DSCC)",
+      "logo": "https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=120&q=80",
+      "category": "govt",
+      "categoryLabel": "সরকারি চাকরি",
+      "grade": "১০ম-১৬তম গ্রেড",
+      "totalPosts": 1,
+      "salary": "৯,৩০০ - ৩৮,৬৪০ টাকা",
+      "minEducation": "স্নাতক / এইচএসসি / সমমান পাস",
+      "minAge": 18,
+      "maxAge": 32,
+      "districts": "সকল জেলা",
+      "deadline": "2026-11-22",
+      "daysRemaining": 20,
+      "govtFee": 200,
+      "serviceFee": 80,
+      "officialLink": "https://dscc.teletalk.com.bd/dscc_2025_2026/",
+      "circularImage": "https://images.unsplash.com/photo-1586281380349-632531db7ed4?auto=format&fit=crop&w=600&q=80",
+      "circularPdfUrl": "https://alljobs.teletalk.com.bd/media/public/uploads/governments/jobs/advertisement-1793596326420.pdf",
+      "audioSummary": "উপসহকারী প্রকৌশলী (পুর) প্রকাশিত হয়েছে।",
+      "publishedDate": "৭/১১/২০২৬",
+      "requirements": [
+        "স্নাতক / এইচএসসি / সমমান পাস",
+        "বয়স: ১৮-৩২ বছর"
+      ],
+      "ageCutOffDate": "2026-11-01",
+      "allowThirdDivision": true,
+      "seoTitle": "উপসহকারী প্রকৌশলী (পুর) - Dhaka South City Corporation (DSCC) নিয়োগ বিজ্ঞপ্তি ২০২৬ | চাকরি সেবা",
+      "seoDescription": "Dhaka South City Corporation (DSCC)-এ উপসহকারী প্রকৌশলী (পুর) পদে নতুন নিয়োগ বিজ্ঞপ্তি প্রকাশ হয়েছে। পদসংখ্যা: 1টি, আবেদনের শেষ সময়: 2026-11-22। বিস্তারিত দেখে আবেদন করুন।",
+      "seoKeywords": [
+        "উপসহকারী প্রকৌশলী (পুর)",
+        "Dhaka South City Corporation (DSCC)",
+        "নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "সরকারি চাকরি"
+      ],
+      "slug": "-4643"
     }
   },
   "pages": {
@@ -20304,7 +20380,7 @@
       },
       "adminNotes": "Official Teletalk government circular aggregator",
       "createdAt": "2026-10-25T10:00:00.000Z",
-      "updatedAt": "2026-11-01T13:09:11.676Z"
+      "updatedAt": "2026-11-07T17:11:00.058Z"
     },
     "bpsc-portal": {
       "id": "bpsc-portal",
@@ -21201,6 +21277,137 @@
         "generatedAt": "2026-11-07T01:57:57.178Z"
       },
       "approvedJobId": "job-680999"
+    },
+    "worker_teletalk-alljobs_683c75010ec7": {
+      "id": "worker_teletalk-alljobs_683c75010ec7",
+      "sourceName": "Teletalk Alljobs Portal",
+      "sourceUrl": "https://dcjamalpur.teletalk.com.bd/dcjamalpur202610/",
+      "evidenceUrl": "https://alljobs.teletalk.com.bd/media/public/uploads/governments/jobs/advertisement-1793683909289.pdf",
+      "extractedTitle": "কম্পিউটার  অপারেটর",
+      "extractedOrg": "DC OFFICE JAMALPUR (DCJAMALPUR)",
+      "category": "govt",
+      "grade": "১০ম-১৬তম গ্রেড",
+      "deadline": "2026-11-22",
+      "vacancies": 1,
+      "minEducation": "স্নাতক / এইচএসসি / সমমান পাস",
+      "salary": "৯,৩০০ - ৩৮,৬৪০ টাকা",
+      "govtFee": 200,
+      "confidenceScore": 0.95,
+      "duplicateDetected": false,
+      "status": "pending_review",
+      "notes": "[পর্যালোচনা আবশ্যক] স্বয়ংক্রিয় লোকাল এআই এক্সট্র্যাকশন — অ্যাডমিন পর্যালোচনা প্রয়োজন",
+      "createdAt": "2026-11-07T17:10:59.963Z",
+      "rawEvidenceText": "{fjro Tt-f -oC.8C.sboo.o5o.o8.o9g.qg_qoo\n'FiAqI\\,fr<I<EIrrIf q3rc.tT\nffiEI $tl{rf-d F.ffiE$, qtflE?3\nc{(qlrr{:tPo\nwww jamalpur.gov.bd\n\"Frll'tReft\"\nffi{: f\\9 T'16S'Sa\\e\\rqqm'\n05 {(gIK Qot\\b Rtfq\nq-{s{lT{ sotlq-R-d {.er-5c {lvlEt rrs ffi vlru R. EIRck oa.oo.oooo.ooo.5gg.5b.ooe1.sc-bb {( {lrrs..sr( .,rfiH{rElqF'cffi qs<l-)a 1T{rr stqttf$ tot\\b R' gR.*l{ oc'oo.oooo.ooo.}gs.}J.ooe1.5c-be {o {k-${rE g1g qts,f*T ERefrIE ,g R-qfrtr+fu-*n-rg s.l.:itqR mr{fi(s R-strt, T{T-{fr(s qR si qt l$ v\\ru ,c-tftcct$ oc.8c.eboo.o5o.o8.oe8.l8.s8e {i {FrrfiT c{Rr,e_ g_qrd{lry.T-{ Tt{-q\"' qlu]qtd '{R cl{I?of srflT.{-d ql\\e'rv@ 5e \\e }s q<( \\oET (drs-{ 5uo1ft w ,irtrrq ffi* nr*, qrqT 6\"{ GEIloq\\b sr$fr dEGE frmt''f Rft orq'6<-s wslfr Gfrrc q-fiE firnrrrr. qcsr aar*,-ft'{ c{t65-r{9a qt{t{td m-qr* qIfi <rfr.rrzr* ffi\nffi,(http:zdcj24alpur.teletalk.com.bdgG-<IEroqIRE-{q.m{**=,q4-qIt{(online)\nF. {( \"kc-< Tt{ 'kqT c(1rl Cql6BEl \\9\nGls-5c\n\\8ooo-Avoool-\nos (ql')\nRftqEt-t\"st e3srfr{{ e EfrRs\nwls-+ 1qTf1 rt\n(?D $PtEFrdft{Frqfu\"ti\n\"tfirt-sUq.fr\nqrflz+d&ft;\n(9 c$tGl',\nt c$u-5\\b\ni5boo-6q5e67-\no) (qS)\n,rAFFb-qd\n(?D sPlBFt3 EFT1IT qset; q{(\n('t) (gast $-IlT+' ,{<( B'i(q-ql fr.mft sftclrdtr sr.{qcr< Fffifrmr\"t frfifiql, iolo qR6<rttfis-qoqsl I 8ETfr-{-a, q-sl.ft\n'fftst-T E-gtcf I\n(+.1 c$trll <I {IT'lI{d\nI\nC$s-ss\nQ5boo-6q5oo7-\na<!F o5 (qs)\n(?DFPlEb|* DIE-{-* Tsvl.; .{1i\n(uD mq1 g-ffT$ S<( u\"Pce-qt fi-fra qftTkr{ Ft{tqn-{ Effifrrmq frfilrfl, Q.OQO fi<r{tfis-qoq6; qt \\9 8s+frq-1, q-C1rft\n'fftst-{ uqqr\n(9 mlr{t <I,tftrtaB'Q.f;\n8\nCfs_5\\b\n15boo-6q5667-\noa\n(?D T&EFrtr D|fl{lT rrFef ;,qqi\n('D o-a S.tl-m,{<< Btq-{t fr-{e qfrcll<T TlTtq13.{ T:ffififfi{frRfiil, eo\\o (qrcrttfis_lolrl *u*#i,'l *, **u,t\n'JAs{frHTE-q6fl\n(o .Sl.r{I <t lTqlc{-{\n{AsFE-q.f.\nCfs_5\\b\nQ55oo-6q5eo7-\noa\n,t?si-Ts\"q.f;\nGtl+&tBbtr ure-+ta q,.$ef ; qli\n('D erql s\"tF$ s{( brie-{t qftcrc<-{fr-{a TlTtqLTi $:futfr\nfrcrt\"l RfhtET, QoQo q<girttfiv-qoqsy IEq'frq'-a, 8 s-fltft\n{ftqlx E6t6f I\n(9 cslcl <I IITIH.T\n($s-5s\nl5boo-6q5p67-\noa\n1$+fEbt< flar*lx rsvf ;",
+      "evidenceHash": "907bcadb1f9c01de74d7f1fd69e7e1e7a7cc4af3e9bf314c5da4d4fc19c12ea4",
+      "needsReview": true,
+      "reviewReason": "স্বয়ংক্রিয় লোকাল এআই এক্সট্র্যাকশন — অ্যাডমিন পর্যালোচনা প্রয়োজন",
+      "extractionWarnings": [],
+      "isCancellationNotice": false
+    },
+    "worker_teletalk-alljobs_af21dcd1f72b": {
+      "id": "worker_teletalk-alljobs_af21dcd1f72b",
+      "sourceName": "Teletalk Alljobs Portal",
+      "sourceUrl": "http://dgms.teletalk.com.bd/",
+      "evidenceUrl": "https://alljobs.teletalk.com.bd/media/public/uploads/governments/jobs/advertisement-1793679421283.pdf",
+      "extractedTitle": "কম্পিউটার মুদ্রাক্ষরিক",
+      "extractedOrg": "Directorate General of Medical Service (DGMS)",
+      "category": "govt",
+      "grade": "১০ম-১৬তম গ্রেড",
+      "deadline": "2026-11-22",
+      "vacancies": 1,
+      "minEducation": "স্নাতক / এইচএসসি / সমমান পাস",
+      "salary": "৯,৩০০ - ৩৮,৬৪০ টাকা",
+      "govtFee": 200,
+      "confidenceScore": 0.95,
+      "duplicateDetected": false,
+      "status": "pending_review",
+      "notes": "[পর্যালোচনা আবশ্যক] স্বয়ংক্রিয় লোকাল এআই এক্সট্র্যাকশন — অ্যাডমিন পর্যালোচনা প্রয়োজন",
+      "createdAt": "2026-11-07T17:10:59.981Z",
+      "rawEvidenceText": "সামিরক িচিকৎসা সািভȟস মহাপিরদ˖র\n(ɛিতরɻা মˈণালয়)\nঢাকা ǯসনািনবাস\nিনেয়াগ িবʗি˖\n১। সামিরক িচিকৎসা সািভȟস মহাপিরদ˖র (ɛিতরɻা মˈণালয়), ঢাকা ǯসনািনবাস এবং এর আওতাধীন আˉঃবািহনী ǯমিডেকল ইউিনট সӒেহ িনে˨বিণ ȟত ӚΓ\nপেদ অসামিরক ǯলাক িনেয়ােগর জΓ ɛҍত বাংলােদশী ӅͰষ ও মিহলা নাগিরকেদর িনকট ǯথেক দরখা̜ আহবান করা যােʑঃ\nɈিমক পেদর নাম ও ǯɊড পেদর সং΋া ǯবতন ǯ̖ ল (জাঃ ǯবঃ\nǯ̖ ল ২০২৬ ǯমাতােবক)\nǯযাΌতা ও অিভʗতা\n১। ɓাফটসΖান\nǯɊড-১৫\n০১ ২২,৮০০-৫৫২০০/- ǯকান ·ীҍত ǯবাড ȟ হেত অӃɇন ি͏ তীয় িবভাগ বা সমমােনর িসিজিপএ-ǯত\nউʎ মাΒিমক সাɪ ȟিফেকট বা সমমােনর পরীɻায় উʯীণ ȟ এবং ·ীҍত ǯকান\nইনি̙ɪ উট বা ɛিত̎ ান হইেত ɓাফট̤ɇ ানশীপ িবষেয় িডে˚ামা\n২। কি˫উটার ӑɘাɻিরক\nǯɊড-১৬\n০১ ২১,৯০০-৫২,৯০০/- ǯকান ·ীҍত ǯবাড ȟ হইেত অӃɇন ি͏ তীয় িবভাগ বা সমমােনর িসিজিপএ-ǯত\nউʎ মাΒিমক সাɪ ȟিফেকট বা সমমােনর পরীɻায় উʯীণ ȟ, তৎসহ ɛিত\nিমিনেট ӑɘাɻের/ কি˫উটাের টাইিপং এর গিত বাংলা- ɛিত িমিনেট\nসব ȟিন˨ ২০ শˠ এবং ইংেরিজ - ɛিত িমিনেট সব ȟিন˨ ২০ শˠ\n৩। এফ ডিˣউ এ\n(ফɇািমিল ওেয়লেফয়ার\nএɇািসসেট˂)\nǯɊড-১৬\n০৯ ২১,৯০০-৫২,৯০০/- ǯকান ·ীҍত ǯবাড ȟ হইেত অӃɇন ি͏ তীয় িবভাগ বা সমমােনর িসিজিপএ-ǯত\nউʎ মাΒিমক সাɪ ȟিফেকট বা সমমােনর পরীɻায় উʯীণ ȟ অথবা এফ ডিˣউ\nএ পেদ অӃɇন ২ (Ҽই) বৎসেরর বা̜ ব কমȟ অিভʗতাসহ ǯকান ·ীҍত ǯবাড ȟ\nহইেত অӃɇন মাΒিমক বা সমমােনর িসিজিপএ-ǯত সাɪ ȟিফেকট ǯকাস ȟ বা\nসমমােনর পরীɻায় উʯীণ ȟ\n৪। অিʁিনব ȟাপক\n(ǯɊড-১৯)\n০২ ২০,৫০০-৪৯,৬০০/- ǯকান ·ীҍত ǯবাড ȟ হইেত মাΒিমক Ѻল সাɪ ȟিফেকট বা সমমােনর পরীɻায়\nউʯীণ ȟ এবং ӟঠাম ǯদেহর অিধকারী হইেত হইেব\n৫। অিফস সহায়ক\nǯɊড-২০\n০৯ ২০,০০০-৪৮,৪০০/- ǯকান ·ীҍত ǯবাড ȟ হইেত মাΒিমক Ѻল সাɪ ȟিফেকট বা সমমােনর পরীɻায়\nউʯীণ ȟ\n৬। আয়া\nǯɊড-২০\n০২ ২০,০০০-৪৮,৪০০/- ǯকান ·ীҍত ɛিত̎ ান হইেত অ̌ ম ǯɢিণ উʯীণ ȟ অথবা ǯকান ·ীҍত ǯবাড ȟ\nহইেত ҟিনয়র Ѻল সাɪ ȟিফেকট বা সমমােনর পরীɻায় উʯীণ ȟ, মিহলা ɛাথ̭\nহইেত হইেব এবং ӟঠাম ǯদেহর অিধকারী হইেত হইেব।\n৭। বাӋিচ ȟ\nǯɊড-২০\n০১ ২০,০০০-৪৮,৪০০/- ǯকান ·ীҍত ɛিত̎ ান হইেত অ̌ ম ǯɢিণ উʯীণ ȟ অথবা ǯকান ·ীҍত ǯবাড ȟ\nহইেত ҟিনয়র Ѻল সাɪ ȟিফেকট বা সমমােনর পরীɻায় উʯীণ ȟ এবং সংি̈̌\nǯɻেɖ অӃΓ ৫ (পϲচ) বছেরর বা̜ ব কমȟ অিভʗতা\n৮। মালী\nǯɊড-২০\n০২ ২০,০০০-৪৮,৪০০/- ǯকান ·ীҍত ɛিত̎ ান হইেত অ̌ ম ǯɢণী উʯীণ ȟ অথবা ǯকান ·ীҍত ǯবাডȟ\nহইেত ҟিনয়র Ѻল সাɪ ȟিফেকট বা সমমােনর পরীɻায় উʯীণ ȟ এবং ӟঠ",
+      "evidenceHash": "9c806b7f1da26ad2329181866600655c3b93a049f6ad199ba84014f40dbc9288",
+      "needsReview": true,
+      "reviewReason": "স্বয়ংক্রিয় লোকাল এআই এক্সট্র্যাকশন — অ্যাডমিন পর্যালোচনা প্রয়োজন",
+      "extractionWarnings": [],
+      "isCancellationNotice": false
+    },
+    "worker_teletalk-alljobs_2d245fa780ab": {
+      "id": "worker_teletalk-alljobs_2d245fa780ab",
+      "sourceName": "Teletalk Alljobs Portal",
+      "sourceUrl": "https://cag.teletalk.com.bd/",
+      "evidenceUrl": "https://alljobs.teletalk.com.bd/media/public/uploads/governments/jobs/advertisement-1793675931548.pdf",
+      "extractedTitle": "জুনিয়র অডিটর",
+      "extractedOrg": "বাংলাদেশের কম্পট্রোলার অ্যান্ড অডিটর জেনারেল",
+      "category": "govt",
+      "grade": "১০ম-১৬তম গ্রেড",
+      "deadline": "2026-11-22",
+      "vacancies": 1,
+      "minEducation": "স্নাতক / এইচএসসি / সমমান পাস",
+      "salary": "৯,৩০০ - ৩৮,৬৪০ টাকা",
+      "govtFee": 200,
+      "confidenceScore": 0.95,
+      "duplicateDetected": false,
+      "status": "pending_review",
+      "notes": "[পর্যালোচনা আবশ্যক] স্বয়ংক্রিয় লোকাল এআই এক্সট্র্যাকশন — অ্যাডমিন পর্যালোচনা প্রয়োজন",
+      "createdAt": "2026-11-07T17:10:59.996Z",
+      "rawEvidenceText": "CamScanner\nCamScanner\nCamScanner",
+      "evidenceHash": "7b24737846e873cffdb219f6bb18855055fc536a0c578bc290b3913a88cb2290",
+      "needsReview": true,
+      "reviewReason": "স্বয়ংক্রিয় লোকাল এআই এক্সট্র্যাকশন — অ্যাডমিন পর্যালোচনা প্রয়োজন",
+      "extractionWarnings": [],
+      "isCancellationNotice": false
+    },
+    "worker_teletalk-alljobs_d2c58f927475": {
+      "id": "worker_teletalk-alljobs_d2c58f927475",
+      "sourceName": "Teletalk Alljobs Portal",
+      "sourceUrl": "https://dcrajbari.teletalk.com.bd/",
+      "evidenceUrl": "https://alljobs.teletalk.com.bd/media/public/uploads/governments/jobs/advertisement-1793671299393.pdf",
+      "extractedTitle": "ইউনিয়ন পরিষদ প্রশাসনিক কর্মকর্তা",
+      "extractedOrg": "DC OFFICE RAJBARI (DCRAJBARI)",
+      "category": "govt",
+      "grade": "১০ম-১৬তম গ্রেড",
+      "deadline": "2026-11-22",
+      "vacancies": 1,
+      "minEducation": "স্নাতক / এইচএসসি / সমমান পাস",
+      "salary": "৯,৩০০ - ৩৮,৬৪০ টাকা",
+      "govtFee": 200,
+      "confidenceScore": 0.95,
+      "duplicateDetected": false,
+      "status": "pending_review",
+      "notes": "[পর্যালোচনা আবশ্যক] স্বয়ংক্রিয় লোকাল এআই এক্সট্র্যাকশন — অ্যাডমিন পর্যালোচনা প্রয়োজন",
+      "createdAt": "2026-11-07T17:11:00.013Z",
+      "rawEvidenceText": "{{eqTsfr 11 (Ef6k-'t {n-st{\nCq{I fi]qc+3 TT{I{T\n<ffi\nqIfiT q-flsl-< \"lt{I\nwww.rajbari.gov.bd\nalrtr o('.9o.bloo.ooo.o5b.55.ooo5.qr\\*- L2t {9 ffi{: ) (p .rfr= rroo\nRD qcdF-< t\"l.L\n\"ft=-Hffi\"\nqIfu T<-st<, \"|ft E-{Ti s {:t-<fn rgqrfiT{ qrftx rro-< Rgtcffi qlr.r {(-8\\9 .oo.oooo.o5y.b5.oob.\\s-sc.ce,\ngRci: o1loqllot\\b R. TCE qtR1s ql-v'[,!-{ {fr1df+1u e-ff gq1>rc-{ Tt{1-q,r, iffi ,sK qfr{ q=Bfr.1-q \"tRIIsT.q<\nf;n*dflfre T{r ?rir1Q \"Fr6l{ {ffi1 to\\\\b rfl{ qrQx c<sq ffi-({ eq-s c'sq slst-t q\"{|ft frfrrc s-{-{-E frGku1-{ q-{i\n<ffi &T{rr ql.ft <frqlrq-{ Gr+B <s q;rflnr{ (htrps,ldcrajbari.teletalk.com.bd \\ernl-{Ro Mfio\n-16fl(qm r{tls qf{14 T-31{f(e'\nt\n05 ;IrerK \\o\\\\e ETRGI glfr< <xq {l{sr 5b.<E<, qli rr{lE e\\ <{{ ,{K:tcqT cIT-65 TC<t <',-{C e{|ffi{ C$18\neffi ORcfCTi611 ITl\nT{f,IR, W{t-Tfl+IR e qlrsn]fig dfeft{ rc:f<s etftre w{f; mlTrrrt+$a163 qTqfra;rq qrr<nl $-f,F emt\nDl-rk-i\\5 dtft-ctiT ry+q \"t6 T{qTrcEffi qlr<qqata T<r6tr crr Deparlmental Candidate en sK trr fr/l Fe\nfi-re qe<l q{rfi< ffirm s 16 erlfsrrrt sr<ry+qut+R-<o eTftq-rrc dfim EAsI{qT!'fuTI'fsRr regm q$o\neqs qiT4fr ql9?l-€3 T{rA e1rT frCs <<t\ne fi-crluf Mero <fafre 5\"rr Tfl(cR c$TE qIfu T<-{tr QEfixa \"fRxq-l $:ffi EI-$.R Rfi{'lqT, qo55 s €sT\n{(@ts !T<oT ,rflstR frIl1.ET q{T{atT3I {C{t\nfi+fr-{ q-i.i qlC<rd ql'fi'fi oo/ss/\\o\\\\e ffiq ry+]_q 5o:oo Ft Tcs rro75571ot\\b sIR{ fr-ofE 8'oo EI \"Fie\nq-{{ter{ fil+e r-<T qk< I q-f,ERrsrsr{.k'f cs'F q-{klrs ${\"t T-dt qr{ {tt wffi <t vlrFr{tcrt cgfrv x+-q r{{ls\n<tG-a:15 ttcg'{61t\nfrrstr\"t< qii dIft fi-ftl{-{ c+ta frrxtE RR cilElr<-r frfis e ffif?r+ \"r-a.FI q-{frg {c{t mrE frfAs 4-Asrtr\nutr.( grftqq cmf?rs 4-a.5;rT q(.t$qrct{ q{i ffis {r{.{t\nfrrxm'r< ctla woral Rllqt.d Rfi-frm e mitt {-arfrio r{r\"N {fl+TR AI&r]_qT gmrql qr< s<( \"k-<fr.s\n,! xsls ffi-Rtra 6+T{ r(rftfi {ro sT q*ry{ct s-fi qr< t\nfrfQlg e drfarr qAsL{ qi{.r<crr q-iT crtq e-o< Bs/fuq dq.ti q<T {cr {il\nfrfelo {ftwlr Bfr\"f atft-cqr d.far+ qfrwrr r-{'{ Tq{ a4q7q{tEft'q-qrrTffi\"ffi( TETf}t gn{l +-rco qr<\ns<( T{ffs Application f",
+      "evidenceHash": "b3672ff710b4ccc3f60e2e434b6115141668f3e1e4f1b07220a552b57414a33e",
+      "needsReview": true,
+      "reviewReason": "স্বয়ংক্রিয় লোকাল এআই এক্সট্র্যাকশন — অ্যাডমিন পর্যালোচনা প্রয়োজন",
+      "extractionWarnings": [],
+      "isCancellationNotice": false
+    },
+    "worker_teletalk-alljobs_a44ffefa4983": {
+      "id": "worker_teletalk-alljobs_a44ffefa4983",
+      "sourceName": "Teletalk Alljobs Portal",
+      "sourceUrl": "https://dscc.teletalk.com.bd/dscc_2025_2026/",
+      "evidenceUrl": "https://alljobs.teletalk.com.bd/media/public/uploads/governments/jobs/advertisement-1793596326420.pdf",
+      "extractedTitle": "উপসহকারী প্রকৌশলী (পুর)",
+      "extractedOrg": "Dhaka South City Corporation (DSCC)",
+      "category": "govt",
+      "grade": "১০ম-১৬তম গ্রেড",
+      "deadline": "2026-11-22",
+      "vacancies": 1,
+      "minEducation": "স্নাতক / এইচএসসি / সমমান পাস",
+      "salary": "৯,৩০০ - ৩৮,৬৪০ টাকা",
+      "govtFee": 200,
+      "confidenceScore": 0.95,
+      "duplicateDetected": false,
+      "status": "approved",
+      "notes": "[পর্যালোচনা আবশ্যক] স্বয়ংক্রিয় লোকাল এআই এক্সট্র্যাকশন — অ্যাডমিন পর্যালোচনা প্রয়োজন",
+      "createdAt": "2026-11-07T17:11:00.028Z",
+      "rawEvidenceText": "CamScanner\nCamScanner\nCamScanner",
+      "evidenceHash": "c24e8019c0b90f9cecad1d49d19e7b791b2492a4b1d9832adfb103470d4be28c",
+      "needsReview": true,
+      "reviewReason": "স্বয়ংক্রিয় লোকাল এআই এক্সট্র্যাকশন — অ্যাডমিন পর্যালোচনা প্রয়োজন",
+      "extractionWarnings": [],
+      "isCancellationNotice": false,
+      "approvedJobId": "job-494643"
     }
   },
   "companies": {},

@@ -270,6 +270,10 @@ export const storage = {
   logout() {
     if (typeof window !== 'undefined') {
       localStorage.removeItem(AUTH_KEY);
+      localStorage.removeItem('cs_session_token');
+      localStorage.removeItem('cs_admin_auth');
+      localStorage.removeItem('cs_admin_pin');
+      document.cookie = 'cs_session_token=; path=/; max-age=0; SameSite=Lax';
       window.dispatchEvent(new Event('cs_auth_changed'));
     }
   },

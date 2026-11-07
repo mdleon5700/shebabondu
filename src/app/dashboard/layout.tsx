@@ -108,7 +108,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     }
 
     // 2. Background sync with backend (does NOT wipe localStorage on transient fetch error)
-    fetch('/api/auth/me', { cache: 'no-store' })
+    const token = typeof window !== 'undefined' ? localStorage.getItem('cs_session_token') : null;
+    const authHeaders: Record<string, string> = token ? { 'Authorization': `Bearer ${token}` } : {};
+    fetch('/api/auth/me', { cache: 'no-store', headers: authHeaders })
       .then(async res => {
         if (!res.ok) {
           // If server explicitly returns 401 and there is no active local login, redirect
@@ -146,7 +148,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   const handleLogout = async () => {
     try {
-      await fetch('/api/auth/logout', { method: 'POST' });
+      const token = typeof window !== 'undefined' ? localStorage.getItem('cs_session_token') : null;
+      await fetch('/api/auth/logout', { 
+        method: 'POST',
+        headers: token ? { 'Authorization': `Bearer ${token}` } : {}
+      });
     } catch {}
     storage.logout();
     router.push('/login');

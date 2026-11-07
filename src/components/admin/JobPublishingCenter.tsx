@@ -19,6 +19,7 @@ import {
 export default function JobPublishingCenter() {
   const [activeTab, setActiveTab] = useState<'published' | 'queue' | 'calendar' | 'redirects' | 'audit' | 'analytics'>('published');
   const [isLoading, setIsLoading] = useState(false);
+  const [isSyncingAlljobs, setIsSyncingAlljobs] = useState(false);
   const [message, setMessage] = useState<{ text: string; type: 'success' | 'error' } | null>(null);
 
   // Data states
@@ -97,6 +98,35 @@ export default function JobPublishingCenter() {
       console.error('Failed to load publishing data:', err);
     } finally {
       setIsLoading(false);
+    }
+  }
+
+  // Action: Live Sync with Teletalk Alljobs
+  async function handleLiveAlljobsSync() {
+    setIsSyncingAlljobs(true);
+    try {
+      const res = await fetch('/api/admin/collector/sync', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-admin-secret': '1234' },
+        body: JSON.stringify({ limit: 15 })
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setMessage({
+          text: data.message || 'টেলিটক অলজবস লাইভ সিঙ্ক সফল হয়েছে!',
+          type: 'success'
+        });
+        loadData();
+      } else {
+        setMessage({
+          text: data.error || 'টেলিটক সিঙ্ক প্রক্রিয়ায় সমস্যা হয়েছে।',
+          type: 'error'
+        });
+      }
+    } catch (err: any) {
+      setMessage({ text: `সিঙ্ক ত্রুটি: ${err.message}`, type: 'error' });
+    } finally {
+      setIsSyncingAlljobs(false);
     }
   }
 
@@ -307,14 +337,25 @@ export default function JobPublishingCenter() {
               যাচাইকৃত কন্টেন্ট লাইভ ওয়েবসাইটে প্রকাশনা, স্বয়ংক্রিয় শিডিউলিং, ইউআরএল ও ৩০১ রিডাইরেক্ট নিয়ন্ত্রণ, এসইও ইনডেক্সিং এবং রিভিশন ট্র্যাকিং।
             </p>
           </div>
-          <button
-            onClick={loadData}
-            disabled={isLoading}
-            className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition-all shadow-md active:scale-95 disabled:opacity-50"
-          >
-            <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? 'animate-spin' : ''}`} />
-            রিফ্রেশ ডাটা
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={handleLiveAlljobsSync}
+              disabled={isSyncingAlljobs || isLoading}
+              className="flex items-center gap-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition-all shadow-md active:scale-95 disabled:opacity-50"
+              title="টেলিটক অলজবস থেকে সরাসরি নতুন সার্কুলার সংগ্রহ করুন"
+            >
+              <RefreshCw className={`w-3.5 h-3.5 ${isSyncingAlljobs ? 'animate-spin' : ''}`} />
+              <span>{isSyncingAlljobs ? 'সিঙ্ক চলছে...' : '⚡ টেলিটক লাইভ সিঙ্ক'}</span>
+            </button>
+            <button
+              onClick={loadData}
+              disabled={isLoading}
+              className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition-all shadow-md active:scale-95 disabled:opacity-50"
+            >
+              <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? 'animate-spin' : ''}`} />
+              রিফ্রেশ ডাটা
+            </button>
+          </div>
         </div>
 
         {/* Real-time KPI Counters */}

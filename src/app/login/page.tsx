@@ -191,6 +191,14 @@ function LoginForm() {
           phone: '01712-345678',
           userId: data.user?.id || 'USR-01712345678'
         });
+        if (data.token && typeof document !== 'undefined') {
+          document.cookie = `cs_session_token=${encodeURIComponent(data.token)}; path=/; max-age=2592000; SameSite=Lax`;
+          localStorage.setItem('cs_session_token', data.token);
+        }
+        if (data.user) {
+          const u = storage.getUser();
+          storage.updateUser({ ...u, ...data.user });
+        }
         setSuccessMsg('ডেমো অ্যাকাউন্টে সফলভাবে প্রবেশ করা হয়েছে!');
         setTimeout(() => router.push('/dashboard'), 600);
       } else {
@@ -248,6 +256,11 @@ function LoginForm() {
         userId: data.user?.id
       });
 
+      if (data.token && typeof document !== 'undefined') {
+        document.cookie = `cs_session_token=${encodeURIComponent(data.token)}; path=/; max-age=2592000; SameSite=Lax`;
+        localStorage.setItem('cs_session_token', data.token);
+      }
+
       if (data.user) {
         storage.updateUser({ ...storage.getUser(), ...data.user });
       }
@@ -285,6 +298,11 @@ function LoginForm() {
         phone: data.user?.phone || '',
         userId: data.user?.id
       });
+
+      if (data.token && typeof document !== 'undefined') {
+        document.cookie = `cs_session_token=${encodeURIComponent(data.token)}; path=/; max-age=2592000; SameSite=Lax`;
+        localStorage.setItem('cs_session_token', data.token);
+      }
 
       if (data.user) {
         storage.updateUser({ ...storage.getUser(), ...data.user });

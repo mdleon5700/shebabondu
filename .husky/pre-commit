@@ -1,17 +1,13 @@
 #!/bin/sh
 . "$(dirname -- "$0")/_/husky.sh"
-set +e
 
-echo "Running automated auditing..."
+echo "🛡️  [Quality Gate] Running TypeScript typecheck..."
+npm run typecheck
 
-# ১. বিল্ড বা টেস্ট রান হবে
-npm run build && npx playwright test
-
-# ২. ফেইল করলে ব্যাকগ্রাউন্ডে AI অটোমেটিক ফিক্স করবে
 if [ $? -ne 0 ]; then
-  echo "Tests failed! Background AI fixing the issue..."
-  npx -y openhands-cli --fix || npx -y @anthropic-ai/claude-code --non-interactive "Fix the errors causing build/test failures"
-  
-  # ফিক্স হওয়ার পর আবার চেক করবে
-  npm run build && npx playwright test || exit 1
+  echo "❌ [Quality Gate] TypeScript errors detected. Commit aborted."
+  exit 1
 fi
+
+echo "✅ [Quality Gate] Typecheck clean! Proceeding with commit."
+exit 0

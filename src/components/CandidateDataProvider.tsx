@@ -24,7 +24,9 @@ export function CandidateDataProvider({ children }: { children: React.ReactNode 
   const refresh = useCallback(async () => {
     const current = ++generation.current;
     try {
-      const response = await fetch('/api/profile', { cache: 'no-store' });
+      const token = typeof window !== 'undefined' ? localStorage.getItem('cs_session_token') : null;
+      const headers: Record<string, string> = token ? { 'Authorization': `Bearer ${token}` } : {};
+      const response = await fetch('/api/profile', { cache: 'no-store', headers });
       if (!response.ok) throw new Error('Failed to load profile');
       const data = await response.json();
       if (current !== generation.current) return;
@@ -33,7 +35,7 @@ export function CandidateDataProvider({ children }: { children: React.ReactNode 
         setDocuments([]);
         return;
       }
-      const docsResponse = await fetch('/api/documents', { cache: 'no-store' });
+      const docsResponse = await fetch('/api/documents', { cache: 'no-store', headers });
       if (!docsResponse.ok) throw new Error('Failed to load documents');
       const docs = await docsResponse.json();
       if (current !== generation.current) return;

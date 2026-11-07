@@ -2120,6 +2120,17 @@ function AdminContent() {
             <div className="flex items-center gap-2">
               <button
                 type="button"
+                onClick={handleSyncAlljobs}
+                disabled={isSyncingAlljobs}
+                className="px-3.5 py-2 rounded-xl bg-teal-50 border border-teal-200 hover:bg-teal-100 text-xs font-bold text-teal-800 transition-colors shadow-2xs flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+                title="টেলিটক অলজবস থেকে সরাসরি নতুন সার্কুলার সংগ্রহ করুন"
+              >
+                <RefreshCw className={`w-3.5 h-3.5 text-teal-700 ${isSyncingAlljobs ? 'animate-spin' : ''}`} />
+                <span>{isSyncingAlljobs ? 'সিঙ্ক চলছে...' : '⚡ অলজবস লাইভ সিঙ্ক'}</span>
+              </button>
+
+              <button
+                type="button"
                 onClick={handleDownloadBackup}
                 className="px-3.5 py-2 rounded-xl bg-white border border-slate-300 hover:bg-slate-50 text-xs font-bold text-slate-700 transition-colors shadow-2xs flex items-center gap-1.5"
               >

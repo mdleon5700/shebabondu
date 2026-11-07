@@ -54,7 +54,7 @@ export async function POST(req: Request) {
     const token = generateSessionToken();
     serverDB.createSession(token, newCandidate.id, 'candidate');
     const { passwordHash, ...safeCandidate } = newCandidate;
-    const res = NextResponse.json({ success: true, user: safeCandidate });
+    const res = NextResponse.json({ success: true, token, user: safeCandidate });
     const cookie = createSessionCookie(token);
     res.cookies.set(cookie.name, cookie.value, cookie);
     return res;

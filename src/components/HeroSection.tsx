@@ -27,7 +27,8 @@ interface HeroCmsData {
 
 export default function HeroSection({ initialData }: { initialData?: HeroCmsData | null } = {}) {
   const { homeHero } = usePlatformContext();
-  const [cmsData, setCmsData] = useState<HeroCmsData | null>(initialData || homeHero || null);
+  const effectiveInitial = initialData || homeHero || null;
+  const [cmsData, setCmsData] = useState<HeroCmsData | null>(effectiveInitial);
 
   useEffect(() => {
     if (homeHero) {
@@ -47,17 +48,20 @@ export default function HeroSection({ initialData }: { initialData?: HeroCmsData
         .catch(() => {});
     };
 
-    fetchHeroData();
+    // Only fetch if initial data is missing
+    if (!effectiveInitial) {
+      fetchHeroData();
+    }
     window.addEventListener('cs_settings_changed', fetchHeroData);
     window.addEventListener('cs_page_changed', fetchHeroData);
     return () => {
       window.removeEventListener('cs_settings_changed', fetchHeroData);
       window.removeEventListener('cs_page_changed', fetchHeroData);
     };
-  }, []);
+  }, [effectiveInitial]);
 
   const badgeText = cmsData?.content?.badge || 'সঠিক তথ্য • নির্ভরযোগ্য চাকরির খবর • আপনার ক্যারিয়ারের সঙ্গী';
-  const heroTitle = cmsData?.title || 'চাকরির খবর জানুন সবার আগে, ঘরে বসেই নিন ১০০% নির্ভুল আবেদন সেবা!';
+  const heroTitle = cmsData?.title || 'চাকরির খবর জানুন সবার আগে — ১০০% নির্ভুল আবেদন ও স্মার্ট ক্যারিয়ার সেবা ২০২৬';
   const heroSubtitle = cmsData?.subtitle || 'সরকারি ও বেসরকারি চাকরির সর্বশেষ বিজ্ঞপ্তি, আবেদন প্রক্রিয়া, যোগ্যতা, প্রয়োজনীয় কাগজপত্র এবং পরীক্ষার আপডেট—সবকিছু এক জায়গায়, আপনার জন্য।';
   const cta1Text = cmsData?.content?.ctaText || 'চাকরির বিজ্ঞপ্তি দেখুন';
   const cta1Url = cmsData?.content?.ctaUrl || '#circulars-section';
@@ -72,7 +76,7 @@ export default function HeroSection({ initialData }: { initialData?: HeroCmsData
       case '4xl': return 'text-3xl sm:text-4xl lg:text-5xl';
       case '5xl': return 'text-4xl sm:text-5xl lg:text-6xl';
       case '6xl': return 'text-5xl sm:text-6xl lg:text-7xl';
-      default: return 'text-3xl sm:text-4xl lg:text-5xl';
+      default: return 'text-5xl sm:text-6xl lg:text-7xl';
     }
   };
 

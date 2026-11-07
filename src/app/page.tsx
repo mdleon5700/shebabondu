@@ -202,7 +202,7 @@ const candidateReviews = [
 ];
 
 export default function HomePage() {
-  const { homeSections } = usePlatformContext();
+  const { homeSections, initialJobs, homeHero } = usePlatformContext();
   const jobsCms = homeSections?.find(s => s.type === 'jobs' || s.id === 'sec-home-jobs');
   const howItWorksCms = homeSections?.find(s => s.type === 'how-it-works' || s.id === 'sec-home-how-it-works');
   const ctaBannerCms = homeSections?.find(s => s.type === 'cta' || s.id === 'sec-home-cta-banner');
@@ -210,10 +210,14 @@ export default function HomePage() {
   const faqCms = homeSections?.find(s => s.type === 'faq' || s.id === 'sec-home-faq');
 
   const [searchQuery, setSearchQuery] = useState('');
-  const [jobsList, setJobsList] = useState<any[]>([]);
+  const [jobsList, setJobsList] = useState<any[]>(initialJobs && initialJobs.length > 0 ? initialJobs : []);
 
   useEffect(() => {
-    fetchPublicJobs().then(setJobsList).catch(() => {});
+    fetchPublicJobs().then(data => {
+      if (Array.isArray(data) && data.length > 0) {
+        setJobsList(data);
+      }
+    }).catch(() => {});
   }, []);
   const [selectedJobType, setSelectedJobType] = useState('all');
   const [selectedEducation, setSelectedEducation] = useState('all');
@@ -532,7 +536,7 @@ export default function HomePage() {
       </div>
 
    {/* 2. CHAKRI SHEBA HERO SECTION */}
-      <HeroSection />
+      <HeroSection initialData={homeHero} />
 
       {/* MODERN JOB SEARCH SECTION */}
       <JobSearchSection 

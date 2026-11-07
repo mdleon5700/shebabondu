@@ -67,14 +67,15 @@ export default function Navbar({ initialSettings }: { initialSettings?: any } = 
       fetch('/api/platform/settings', { cache: 'no-store' })
         .then(res => res.json())
         .then(d => {
-          console.log('[Navbar] Settings fetched:', d?.settings?.general?.siteName);
           if (d.success && d.settings) setPlatformSettings(d.settings);
         })
         .catch(err => {
           console.error('[Navbar] Settings fetch failed:', err);
         });
     };
-    fetchSettings();
+    if (!initialSettings) {
+      fetchSettings();
+    }
     window.addEventListener('cs_settings_changed', fetchSettings);
 
     fetch('/api/auth/me', { cache: 'no-store' })

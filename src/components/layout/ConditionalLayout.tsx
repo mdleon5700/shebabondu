@@ -9,12 +9,14 @@ export interface PlatformContextType {
   settings: any;
   homeHero: any;
   homeSections: any[];
+  initialJobs: any[];
 }
 
 export const PlatformContext = createContext<PlatformContextType>({
   settings: null,
   homeHero: null,
-  homeSections: []
+  homeSections: [],
+  initialJobs: []
 });
 
 export const usePlatformContext = () => useContext(PlatformContext);
@@ -23,12 +25,14 @@ export default function ConditionalLayout({
   children,
   initialSettings,
   initialHomeHero,
-  initialHomeSections
+  initialHomeSections,
+  initialJobs
 }: { 
   children: React.ReactNode;
   initialSettings?: any;
   initialHomeHero?: any;
   initialHomeSections?: any[];
+  initialJobs?: any[];
 }) {
   const pathname = usePathname();
   const isAdmin = pathname?.startsWith('/admin');
@@ -64,7 +68,7 @@ export default function ConditionalLayout({
   }
 
   return (
-    <PlatformContext.Provider value={{ settings, homeHero, homeSections }}>
+    <PlatformContext.Provider value={{ settings, homeHero, homeSections, initialJobs: initialJobs || [] }}>
       <CandidateDataProvider>
         <Navbar initialSettings={settings} />
         <main className="flex-grow">{children}</main>

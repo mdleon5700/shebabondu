@@ -3,6 +3,9 @@ import './globals.css';
 import ConditionalLayout from '@/components/layout/ConditionalLayout';
 import { serverDB } from '@/lib/db';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://chakrisheba.com';
 
 const defaultMetadata: Metadata = {
@@ -65,6 +68,7 @@ export default function RootLayout({
   const homePage = serverDB.getPageById('home') || serverDB.getPages().find(p => p.id === 'home' || p.slug === '/');
   const initialHomeHero = homePage?.sections?.find(s => s.type === 'hero' && s.isVisible !== false) || null;
   const initialHomeSections = homePage?.sections || [];
+  const initialJobs = serverDB.getPublicJobs();
 
   return (
     <html lang="bn">
@@ -77,6 +81,7 @@ export default function RootLayout({
           initialSettings={settings} 
           initialHomeHero={initialHomeHero}
           initialHomeSections={initialHomeSections}
+          initialJobs={initialJobs}
         >
           {children}
         </ConditionalLayout>

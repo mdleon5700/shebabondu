@@ -99,6 +99,9 @@ export default function WebsiteBuilder({ initialPageId, onNavigateToPages }: Web
   const [chromeWhatsapp, setChromeWhatsapp] = useState('8801774366643');
   const [chromeWhatsappButtonText, setChromeWhatsappButtonText] = useState('WhatsApp');
   const [chromeFooterAbout, setChromeFooterAbout] = useState('বাংলাদেশের চাকরিপ্রার্থীদের বিশ্বস্ত ডিজিটাল প্ল্যাটফর্ম। ঘরে বসেই সকল সরকারি, ব্যাংক ও শীর্ষ বেসরকারি চাকরির শতভাগ যাচাইকৃত বিজ্ঞপ্তি ও সঠিক নিয়মে অনলাইন আবেদন সহায়তা।');
+  const [chromeMenuItems, setChromeMenuItems] = useState<{ id: string; label: string; href: string; badge?: string; dropdown?: { label: string; href: string }[] }[]>([]);
+  const [chromeModalTab, setChromeModalTab] = useState<'general' | 'menu' | 'footer'>('general');
+  const [chromeExpandedDropdownId, setChromeExpandedDropdownId] = useState<string | null>(null);
 
   useEffect(() => {
     fetchPages();
@@ -129,6 +132,19 @@ export default function WebsiteBuilder({ initialPageId, onNavigateToPages }: Web
         if (g.whatsappNumber) setChromeWhatsapp(g.whatsappNumber);
         if (g.whatsappButtonText) setChromeWhatsappButtonText(g.whatsappButtonText);
         if (g.footerAboutText) setChromeFooterAbout(g.footerAboutText);
+        if (g.headerMenuItems && Array.isArray(g.headerMenuItems) && g.headerMenuItems.length > 0) {
+          setChromeMenuItems(g.headerMenuItems);
+        } else {
+          setChromeMenuItems([
+            { id: 'home', label: 'হোম', href: '/' },
+            { id: 'all-jobs', label: 'সকল চাকরি', href: '/jobs' },
+            { id: 'govt', label: 'সরকারি চাকরি', href: '/government-jobs' },
+            { id: 'private', label: 'বেসরকারি চাকরি', href: '/private-jobs' },
+            { id: 'categories', label: 'চাকরির ক্যাটাগরি', href: '/job-categories' },
+            { id: 'exam', label: 'পরীক্ষা ও ফলাফল', href: '/exam-notices' },
+            { id: 'career', label: 'ক্যারিয়ার গাইড', href: '/career-guides' }
+          ]);
+        }
       }
     } catch (err) {
       console.warn('Failed to load platform settings', err);
@@ -149,7 +165,8 @@ export default function WebsiteBuilder({ initialPageId, onNavigateToPages }: Web
           announcementEnabled: chromeAnnouncementEnabled,
           whatsappNumber: chromeWhatsapp.trim(),
           whatsappButtonText: chromeWhatsappButtonText.trim(),
-          footerAboutText: chromeFooterAbout.trim()
+          footerAboutText: chromeFooterAbout.trim(),
+          headerMenuItems: chromeMenuItems
         }
       };
       const res = await fetch('/api/admin/settings', {
@@ -2544,114 +2561,361 @@ export default function WebsiteBuilder({ initialPageId, onNavigateToPages }: Web
               </div>
             )}
 
-            <div className="space-y-4 text-xs">
-              {/* Site Name & Tagline */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div>
-                  <label className="font-bold text-slate-700 block mb-1">ওয়েবসাইট ব্র্যান্ড নাম</label>
-                  <input
-                    type="text"
-                    value={chromeSiteName}
-                    onChange={(e) => setChromeSiteName(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl font-bold text-slate-900"
-                    placeholder="চাকরি সেবা (Chakri Sheba)"
-                  />
-                </div>
-                <div>
-                  <label className="font-bold text-slate-700 block mb-1">ওয়েবসাইট ট্যাগলাইন / স্লোগান</label>
-                  <input
-                    type="text"
-                    value={chromeSiteTagline}
-                    onChange={(e) => setChromeSiteTagline(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900"
-                    placeholder="নিউজ ও ১০০% নির্ভুল আবেদন পোর্টাল"
-                  />
-                </div>
-              </div>
-
-              {/* Logo URL */}
-              <div>
-                <label className="font-bold text-slate-700 block mb-1">হেডার লোগো ইমেজ URL (ঐচ্ছিক)</label>
-                <input
-                  type="text"
-                  value={chromeLogoUrl}
-                  onChange={(e) => setChromeLogoUrl(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 font-mono text-[11px]"
-                  placeholder="https://... বা /icons/icon-192x192.png"
-                />
-              </div>
-
-              {/* Announcement Top Banner */}
-              <div className="p-3.5 bg-slate-50 rounded-2xl border border-slate-200 space-y-2">
-                <div className="flex items-center justify-between">
-                  <span className="font-black text-slate-800">⚡ টপ নোটিশ বার (Announcement Banner)</span>
-                  <label className="flex items-center gap-1.5 font-bold text-slate-700 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={chromeAnnouncementEnabled}
-                      onChange={(e) => setChromeAnnouncementEnabled(e.target.checked)}
-                      className="w-4 h-4 text-emerald-600 rounded"
-                    />
-                    <span>সক্রিয় রাখুন</span>
-                  </label>
-                </div>
-                <div>
-                  <label className="font-bold text-slate-600 block mb-1">নোটিশ বার্তা টেক্সট</label>
-                  <input
-                    type="text"
-                    value={chromeAnnouncementText}
-                    onChange={(e) => setChromeAnnouncementText(e.target.value)}
-                    className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-slate-900"
-                  />
-                </div>
-                <div>
-                  <label className="font-bold text-slate-600 block mb-1">নোটিশ ক্লিক লিঙ্ক</label>
-                  <input
-                    type="text"
-                    value={chromeAnnouncementUrl}
-                    onChange={(e) => setChromeAnnouncementUrl(e.target.value)}
-                    className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-slate-900 font-mono text-[11px]"
-                    placeholder="/jobs"
-                  />
-                </div>
-              </div>
-
-              {/* WhatsApp Hotline */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div>
-                  <label className="font-bold text-slate-700 block mb-1">হোয়াটসঅ্যাপ হেল্পলাইন নম্বর</label>
-                  <input
-                    type="text"
-                    value={chromeWhatsapp}
-                    onChange={(e) => setChromeWhatsapp(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl font-mono text-slate-900"
-                    placeholder="8801774366643"
-                  />
-                </div>
-                <div>
-                  <label className="font-bold text-slate-700 block mb-1">হোয়াটসঅ্যাপ বাটন টেক্সট</label>
-                  <input
-                    type="text"
-                    value={chromeWhatsappButtonText}
-                    onChange={(e) => setChromeWhatsappButtonText(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900"
-                    placeholder="WhatsApp"
-                  />
-                </div>
-              </div>
-
-              {/* Footer About Text */}
-              <div>
-                <label className="font-bold text-slate-700 block mb-1">ফুটার পরিচিতি টেক্সট (About Paragraph)</label>
-                <textarea
-                  rows={3}
-                  value={chromeFooterAbout}
-                  onChange={(e) => setChromeFooterAbout(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900"
-                  placeholder="বাংলাদেশের চাকরিপ্রার্থীদের বিশ্বস্ত ডিজিটাল প্ল্যাটফর্ম..."
-                />
-              </div>
+            {/* Modal Tabs */}
+            <div className="flex items-center gap-1.5 p-1 bg-slate-100 rounded-2xl">
+              <button
+                type="button"
+                onClick={() => setChromeModalTab('general')}
+                className={`flex-1 py-1.5 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                  chromeModalTab === 'general' ? 'bg-white text-emerald-800 shadow-xs' : 'text-slate-600 hover:text-slate-900'
+                }`}
+              >
+                সাধারণ ও নোটিশ বার
+              </button>
+              <button
+                type="button"
+                onClick={() => setChromeModalTab('menu')}
+                className={`flex-1 py-1.5 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                  chromeModalTab === 'menu' ? 'bg-white text-emerald-800 shadow-xs' : 'text-slate-600 hover:text-slate-900'
+                }`}
+              >
+                মেনু বার লিংকসমূহ ({chromeMenuItems.length}টি)
+              </button>
+              <button
+                type="button"
+                onClick={() => setChromeModalTab('footer')}
+                className={`flex-1 py-1.5 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                  chromeModalTab === 'footer' ? 'bg-white text-emerald-800 shadow-xs' : 'text-slate-600 hover:text-slate-900'
+                }`}
+              >
+                ফুটার পরিচিতি
+              </button>
             </div>
+
+            {/* TAB 1: GENERAL & BANNER */}
+            {chromeModalTab === 'general' && (
+              <div className="space-y-4 text-xs">
+                {/* Site Name & Tagline */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label className="font-bold text-slate-700 block mb-1">ওয়েবসাইট ব্র্যান্ড নাম</label>
+                    <input
+                      type="text"
+                      value={chromeSiteName}
+                      onChange={(e) => setChromeSiteName(e.target.value)}
+                      className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl font-bold text-slate-900"
+                      placeholder="চাকরি সেবা (Chakri Sheba)"
+                    />
+                  </div>
+                  <div>
+                    <label className="font-bold text-slate-700 block mb-1">ওয়েবসাইট ট্যাগলাইন / স্লোগান</label>
+                    <input
+                      type="text"
+                      value={chromeSiteTagline}
+                      onChange={(e) => setChromeSiteTagline(e.target.value)}
+                      className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900"
+                      placeholder="নিউজ ও ১০০% নির্ভুল আবেদন পোর্টাল"
+                    />
+                  </div>
+                </div>
+
+                {/* Logo URL */}
+                <div>
+                  <label className="font-bold text-slate-700 block mb-1">হেডার লোগো ইমেজ URL (ঐচ্ছিক)</label>
+                  <input
+                    type="text"
+                    value={chromeLogoUrl}
+                    onChange={(e) => setChromeLogoUrl(e.target.value)}
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 font-mono text-[11px]"
+                    placeholder="https://... বা /icons/icon-192x192.png"
+                  />
+                </div>
+
+                {/* Announcement Top Banner */}
+                <div className="p-3.5 bg-slate-50 rounded-2xl border border-slate-200 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="font-black text-slate-800">⚡ টপ নোটিশ বার (Announcement Banner)</span>
+                    <label className="flex items-center gap-1.5 font-bold text-slate-700 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={chromeAnnouncementEnabled}
+                        onChange={(e) => setChromeAnnouncementEnabled(e.target.checked)}
+                        className="w-4 h-4 text-emerald-600 rounded"
+                      />
+                      <span>সক্রিয় রাখুন</span>
+                    </label>
+                  </div>
+                  <div>
+                    <label className="font-bold text-slate-600 block mb-1">নোটিশ বার্তা টেক্সট</label>
+                    <input
+                      type="text"
+                      value={chromeAnnouncementText}
+                      onChange={(e) => setChromeAnnouncementText(e.target.value)}
+                      className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-slate-900"
+                    />
+                  </div>
+                  <div>
+                    <label className="font-bold text-slate-600 block mb-1">নোটিশ ক্লিক লিঙ্ক</label>
+                    <input
+                      type="text"
+                      value={chromeAnnouncementUrl}
+                      onChange={(e) => setChromeAnnouncementUrl(e.target.value)}
+                      className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-slate-900 font-mono text-[11px]"
+                      placeholder="/jobs"
+                    />
+                  </div>
+                </div>
+
+                {/* WhatsApp Hotline */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label className="font-bold text-slate-700 block mb-1">হোয়াটসঅ্যাপ হেল্পলাইন নম্বর</label>
+                    <input
+                      type="text"
+                      value={chromeWhatsapp}
+                      onChange={(e) => setChromeWhatsapp(e.target.value)}
+                      className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl font-mono text-slate-900"
+                      placeholder="8801774366643"
+                    />
+                  </div>
+                  <div>
+                    <label className="font-bold text-slate-700 block mb-1">হোয়াটসঅ্যাপ বাটন টেক্সট</label>
+                    <input
+                      type="text"
+                      value={chromeWhatsappButtonText}
+                      onChange={(e) => setChromeWhatsappButtonText(e.target.value)}
+                      className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900"
+                      placeholder="WhatsApp"
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* TAB 2: MENU BAR LINKS */}
+            {chromeModalTab === 'menu' && (
+              <div className="space-y-3 text-xs">
+                <div className="flex items-center justify-between pb-1">
+                  <div>
+                    <h4 className="text-xs font-black text-slate-800">হেডার নেভিগেশন মেনু আইটেমসমূহ</h4>
+                    <p className="text-[11px] text-slate-500">মেনুর ক্রম পরিবর্তন, নাম ও ইউআরএল এডিট এবং নতুন মেনু লিংক যুক্ত করুন</p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const newItem = {
+                        id: `menu-${Date.now()}`,
+                        label: 'নতুন মেনু',
+                        href: '/jobs'
+                      };
+                      setChromeMenuItems(prev => [...prev, newItem]);
+                    }}
+                    className="px-3 py-1.5 bg-emerald-50 text-emerald-800 hover:bg-emerald-100 border border-emerald-300 rounded-xl text-xs font-bold flex items-center gap-1 cursor-pointer"
+                  >
+                    <Plus className="w-3.5 h-3.5" />
+                    <span>+ মেনু আইটেম যোগ</span>
+                  </button>
+                </div>
+
+                <div className="space-y-2.5 max-h-[380px] overflow-y-auto pr-1">
+                  {chromeMenuItems.map((item, idx) => {
+                    const isExpanded = chromeExpandedDropdownId === item.id;
+                    const dropdownCount = Array.isArray(item.dropdown) ? item.dropdown.length : 0;
+
+                    return (
+                      <div key={item.id || idx} className="p-3 bg-slate-50 border border-slate-200 rounded-2xl space-y-2.5">
+                        <div className="flex items-center justify-between">
+                          <span className="text-[10px] font-bold text-slate-500 font-mono">#{idx + 1} মেনু লিংক</span>
+                          <div className="flex items-center gap-1">
+                            <button
+                              type="button"
+                              disabled={idx === 0}
+                              onClick={() => {
+                                const arr = [...chromeMenuItems];
+                                const temp = arr[idx];
+                                arr[idx] = arr[idx - 1];
+                                arr[idx - 1] = temp;
+                                setChromeMenuItems(arr);
+                              }}
+                              className="p-1 text-slate-500 hover:text-slate-800 disabled:opacity-20 cursor-pointer"
+                              title="উপরে নিন"
+                            >
+                              <ArrowUp className="w-3.5 h-3.5" />
+                            </button>
+                            <button
+                              type="button"
+                              disabled={idx === chromeMenuItems.length - 1}
+                              onClick={() => {
+                                const arr = [...chromeMenuItems];
+                                const temp = arr[idx];
+                                arr[idx] = arr[idx + 1];
+                                arr[idx + 1] = temp;
+                                setChromeMenuItems(arr);
+                              }}
+                              className="p-1 text-slate-500 hover:text-slate-800 disabled:opacity-20 cursor-pointer"
+                              title="নিচে নিন"
+                            >
+                              <ArrowDown className="w-3.5 h-3.5" />
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setChromeMenuItems(prev => prev.filter((_, i) => i !== idx));
+                              }}
+                              className="p-1 text-red-500 hover:text-red-700 cursor-pointer"
+                              title="মুছে ফেলুন"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-12 gap-2">
+                          <div className="sm:col-span-5">
+                            <label className="text-[10px] font-bold text-slate-500 block mb-0.5">মেনু নাম / লেবেল</label>
+                            <input
+                              type="text"
+                              value={item.label}
+                              onChange={(e) => {
+                                const arr = [...chromeMenuItems];
+                                arr[idx] = { ...arr[idx], label: e.target.value };
+                                setChromeMenuItems(arr);
+                              }}
+                              className="w-full px-2.5 py-1.5 bg-white border border-slate-300 rounded-lg text-xs font-bold text-slate-900"
+                            />
+                          </div>
+                          <div className="sm:col-span-4">
+                            <label className="text-[10px] font-bold text-slate-500 block mb-0.5">লিংক ইউআরএল (URL)</label>
+                            <input
+                              type="text"
+                              value={item.href}
+                              onChange={(e) => {
+                                const arr = [...chromeMenuItems];
+                                arr[idx] = { ...arr[idx], href: e.target.value };
+                                setChromeMenuItems(arr);
+                              }}
+                              className="w-full px-2.5 py-1.5 bg-white border border-slate-300 rounded-lg text-xs font-mono text-slate-800"
+                            />
+                          </div>
+                          <div className="sm:col-span-3">
+                            <label className="text-[10px] font-bold text-slate-500 block mb-0.5">ব্যাজ (ঐচ্ছিক)</label>
+                            <input
+                              type="text"
+                              value={item.badge || ''}
+                              onChange={(e) => {
+                                const arr = [...chromeMenuItems];
+                                arr[idx] = { ...arr[idx], badge: e.target.value };
+                                setChromeMenuItems(arr);
+                              }}
+                              placeholder="হট / নতুন"
+                              className="w-full px-2.5 py-1.5 bg-white border border-slate-300 rounded-lg text-xs font-bold text-emerald-800"
+                            />
+                          </div>
+                        </div>
+
+                        {/* Dropdown items manager */}
+                        <div className="pt-2 border-t border-slate-200">
+                          <div className="flex items-center justify-between">
+                            <button
+                              type="button"
+                              onClick={() => setChromeExpandedDropdownId(isExpanded ? null : item.id)}
+                              className="text-xs font-bold text-emerald-800 hover:text-emerald-900 flex items-center gap-1 cursor-pointer"
+                            >
+                              <ChevronDown className={`w-3.5 h-3.5 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
+                              <span>ড্রপডাউন সাব-মেনু ({dropdownCount}টি)</span>
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const arr = [...chromeMenuItems];
+                                const currentDropdown = arr[idx].dropdown || [];
+                                arr[idx] = {
+                                  ...arr[idx],
+                                  dropdown: [...currentDropdown, { label: 'নতুন সাব-লিংক', href: '/jobs' }]
+                                };
+                                setChromeMenuItems(arr);
+                                setChromeExpandedDropdownId(item.id);
+                              }}
+                              className="text-[10px] font-bold text-emerald-800 bg-white hover:bg-emerald-50 px-2 py-0.5 rounded border border-emerald-300 flex items-center gap-1 cursor-pointer"
+                            >
+                              <Plus className="w-3 h-3" />
+                              <span>সাব-লিংক যোগ</span>
+                            </button>
+                          </div>
+
+                          {isExpanded && (
+                            <div className="mt-2 pl-3 border-l-2 border-emerald-500 space-y-2">
+                              {dropdownCount === 0 ? (
+                                <p className="text-[11px] text-slate-400 py-1 italic">কোনো সাব-মেনু ড্রপডাউন লিংক নেই।</p>
+                              ) : (
+                                (item.dropdown || []).map((sub, sIdx) => (
+                                  <div key={sIdx} className="grid grid-cols-12 gap-1.5 items-center">
+                                    <input
+                                      type="text"
+                                      value={sub.label}
+                                      onChange={(e) => {
+                                        const arr = [...chromeMenuItems];
+                                        const drops = [...(arr[idx].dropdown || [])];
+                                        drops[sIdx] = { ...drops[sIdx], label: e.target.value };
+                                        arr[idx] = { ...arr[idx], dropdown: drops };
+                                        setChromeMenuItems(arr);
+                                      }}
+                                      placeholder="সাব-মেনু নাম"
+                                      className="col-span-6 px-2 py-1 bg-white border border-slate-300 rounded text-xs"
+                                    />
+                                    <input
+                                      type="text"
+                                      value={sub.href}
+                                      onChange={(e) => {
+                                        const arr = [...chromeMenuItems];
+                                        const drops = [...(arr[idx].dropdown || [])];
+                                        drops[sIdx] = { ...drops[sIdx], href: e.target.value };
+                                        arr[idx] = { ...arr[idx], dropdown: drops };
+                                        setChromeMenuItems(arr);
+                                      }}
+                                      placeholder="/jobs"
+                                      className="col-span-5 px-2 py-1 bg-white border border-slate-300 rounded text-xs font-mono"
+                                    />
+                                    <button
+                                      type="button"
+                                      onClick={() => {
+                                        const arr = [...chromeMenuItems];
+                                        const drops = (arr[idx].dropdown || []).filter((_, i) => i !== sIdx);
+                                        arr[idx] = { ...arr[idx], dropdown: drops };
+                                        setChromeMenuItems(arr);
+                                      }}
+                                      className="col-span-1 text-red-500 hover:text-red-700 text-xs font-bold text-center cursor-pointer"
+                                    >
+                                      ✕
+                                    </button>
+                                  </div>
+                                ))
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            {/* TAB 3: FOOTER ABOUT TEXT */}
+            {chromeModalTab === 'footer' && (
+              <div className="space-y-4 text-xs">
+                <div>
+                  <label className="font-bold text-slate-700 block mb-1">ফুটার পরিচিতি টেক্সট (About Paragraph)</label>
+                  <textarea
+                    rows={4}
+                    value={chromeFooterAbout}
+                    onChange={(e) => setChromeFooterAbout(e.target.value)}
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900"
+                    placeholder="বাংলাদেশের চাকরিপ্রার্থীদের বিশ্বস্ত ডিজিটাল প্ল্যাটফর্ম..."
+                  />
+                </div>
+              </div>
+            )}
 
             <div className="flex items-center justify-end gap-2 pt-3 border-t border-slate-100">
               <button

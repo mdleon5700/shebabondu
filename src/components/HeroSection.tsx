@@ -110,6 +110,7 @@ export default function HeroSection({ initialData }: { initialData?: HeroCmsData
     <section 
       style={{
         backgroundColor: cmsData?.style?.backgroundColor || undefined,
+        backgroundImage: cmsData?.style?.backgroundColor ? 'none' : undefined,
         color: cmsData?.style?.textColor || undefined
       }}
       className="relative overflow-hidden bg-gradient-to-b from-[#011612] via-[#022b22] to-[#011a14] text-white pt-4 pb-5 sm:pt-8 sm:pb-12 lg:pt-10 lg:pb-16 px-4 sm:px-6 lg:px-8 border-b border-emerald-900/40"

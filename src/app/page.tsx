@@ -1316,6 +1316,7 @@ export default function HomePage() {
           id="how-it-works" 
           style={{
             backgroundColor: howItWorksCms?.style?.backgroundColor || undefined,
+            backgroundImage: howItWorksCms?.style?.backgroundColor ? 'none' : undefined,
             color: howItWorksCms?.style?.textColor || undefined
           }}
           className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 scroll-mt-24"
@@ -1376,7 +1377,9 @@ export default function HomePage() {
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div 
             style={{
-              backgroundColor: ctaBannerCms?.style?.backgroundColor || undefined
+              backgroundColor: ctaBannerCms?.style?.backgroundColor || undefined,
+              backgroundImage: ctaBannerCms?.style?.backgroundColor ? 'none' : undefined,
+              color: ctaBannerCms?.style?.textColor || undefined
             }}
             className="bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-white rounded-3xl p-6 sm:p-10 shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-6"
           >
@@ -1410,7 +1413,9 @@ export default function HomePage() {
         <section id="reviews-section" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 scroll-mt-24">
           <div 
             style={{
-              backgroundColor: reviewsCms?.style?.backgroundColor || undefined
+              backgroundColor: reviewsCms?.style?.backgroundColor || undefined,
+              backgroundImage: reviewsCms?.style?.backgroundColor ? 'none' : undefined,
+              color: reviewsCms?.style?.textColor || undefined
             }}
             className="bg-gradient-to-b from-slate-900 to-[#02231b] rounded-3xl sm:rounded-[36px] p-6 sm:p-10 text-white border border-emerald-900/40 shadow-2xl relative overflow-hidden"
           >
@@ -1481,6 +1486,7 @@ export default function HomePage() {
           id="faq-section" 
           style={{
             backgroundColor: faqCms?.style?.backgroundColor || undefined,
+            backgroundImage: faqCms?.style?.backgroundColor ? 'none' : undefined,
             color: faqCms?.style?.textColor || undefined
           }}
           className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 scroll-mt-24"

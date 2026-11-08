@@ -58,3 +58,4 @@ An authorized live browser debugging session was executed against `http://localh
 - `90_admin_dashboard_live_audit.png`: Verified real data dashboard with live counters, dynamic donut chart, and SolaimanLipi typography.
 - `85_admin_dashboard_real_data_verified.png`: Verified zero dummy data across 5 KPI metrics.
 - `86_candidate_workspace_overview.png`, `87_candidate_workspace_applications.png`, `88_candidate_workspace_wallet.png`: Verified candidate 13-tab deep editing drawer.
+

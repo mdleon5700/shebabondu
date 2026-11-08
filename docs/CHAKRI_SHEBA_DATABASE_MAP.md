@@ -87,3 +87,4 @@ erDiagram
    - Candidate deletion cleans up associated sessions, bookmarks, and documents.
    - Applications strictly reference valid `candidateId` and `jobId`.
 3. **Data Freshness:** No stale caches on admin endpoints; `force-dynamic` and `Cache-Control: no-store` headers enforced on state-modifying routes.
+

@@ -40,3 +40,4 @@
    - Admin access to candidate sensitive files is logged in `auditLogs`.
 3. **Immutable Audit Trails:**
    - Any financial adjustment, candidate status change, or job deletion records the administrator ID, timestamp, and client IP in `serverDB.getAuditLogs()`.
+

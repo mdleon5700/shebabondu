@@ -78,3 +78,4 @@ Publicly accessible, optimized with caching and rate limiting.
 | `/api/cron/sync-jobs` | POST | Bearer CRON_SECRET | Scheduled job collector triggering Teletalk Alljobs sync |
 | `/api/spider/webhook` | POST | HMAC Signature | Ingests completed scraping tasks from local worker daemon |
 | `/api/notifications/send` | POST | Admin / Internal | Dispatches SMS/Email notifications to queues |
+

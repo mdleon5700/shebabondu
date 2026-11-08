@@ -45,3 +45,4 @@ The following Playwright screenshots confirm visual regression stability:
 - [x] CMS Universal Page Builder (`/[...slug]`) operational.
 - [x] 100% Free Core Model preserved.
 - [x] SolaimanLipi / Noto Sans Bengali typography preserved.
+

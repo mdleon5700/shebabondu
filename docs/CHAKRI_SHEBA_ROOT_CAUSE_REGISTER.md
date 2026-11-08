@@ -43,3 +43,4 @@
 * **Root Cause:** Calling `await req.json()` threw an unhandled SyntaxError inside the outer try/catch, resulting in a generic 500 response instead of standard REST 400 Bad Request.
 * **Resolution:** Wrapped `await req.json()` in an inner try/catch block with explicit fallback returning HTTP 400 Bad Request (`{ error: 'Candidate ID is required' }`).
 * **Verification Evidence:** `scripts/master_issue_discovery_engine.js` verified HTTP 400 returned on empty body.
+

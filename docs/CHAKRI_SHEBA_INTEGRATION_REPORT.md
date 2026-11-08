@@ -38,3 +38,4 @@
 * **Heartbeat Renewal:** Local Worker sends heartbeat every 3 minutes to extend active leases.
 * **Retry Boundedness:** 3 maximum attempts before transitioning to `FAILED` or `NEEDS_HUMAN_REVIEW`.
 * **Playwright QA Dispatcher:** Successfully rendered live pages and stored screenshots into artifacts directory.
+

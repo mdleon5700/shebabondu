@@ -63,3 +63,4 @@ flowchart TD
 - **Rule 1:** Frontend components must never be deployed before the corresponding backend API endpoint is live and verified with HTTP 200/201.
 - **Rule 2:** Database migrations or collection structural changes must be executed and validated before APIs begin reading/writing to the new structure.
 - **Rule 3:** User/Admin sync repairs require simultaneous verification of both `/api/profile` (candidate side) and `/api/admin/candidates/[id]` (admin side).
+

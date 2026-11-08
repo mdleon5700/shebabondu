@@ -68,3 +68,4 @@ graph TD
 #### 10. Agent J — Integration & Regression Gate
 * **Scope:** Pre-commit and pre-push validation (`npm run typecheck`, `tsc --noEmit`).
 * **Key Tasks:** Detect conflicting edits across parallel workstreams. Verify that repairs in one module do not break dependencies in another. Block unverified pushes to `origin/main`.
+

@@ -56,3 +56,4 @@ If any unforeseen defect arises in production:
    A clean backup copy of `local_store.json` is maintained at `src/db/local_store.json.bak`. Restoring requires simply copying `.bak` to `.json` and reloading the service.
 3. **Render Safe Mode:**
    Render deployment builds directly from `main`. Reverting the commit triggers an automated, zero-downtime rebuild within 2-3 minutes.
+

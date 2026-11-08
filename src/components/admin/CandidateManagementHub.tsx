@@ -38,7 +38,8 @@ import {
   ShieldAlert,
   Sparkles,
   ArrowUpRight,
-  Printer
+  Printer,
+  LogIn
 } from 'lucide-react';
 import { CandidateProfile, ApplicationRequest, CandidateDocument } from '@/lib/types';
 import { BD_DIVISIONS_EN } from '@/lib/constants';
@@ -411,6 +412,28 @@ export default function CandidateManagementHub({
     return currentCandidate.documents || [];
   }, [currentCandidate]);
 
+  // Handle 1-Click Candidate Impersonation
+  const handleImpersonateCandidate = async (candidateId: string) => {
+    try {
+      const pin = typeof window !== 'undefined' ? (localStorage.getItem('cs_admin_pin') || '1234') : '1234';
+      const res = await fetch('/api/admin/impersonate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-admin-secret': pin
+        },
+        body: JSON.stringify({ candidateId })
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || 'ইমপারসোনেশন ব্যর্থ হয়েছে');
+      }
+      window.location.href = data.redirectUrl || '/dashboard';
+    } catch (err: any) {
+      alert(err.message || 'ইমপারসোনেশন ব্যর্থ হয়েছে');
+    }
+  };
+
   return (
     <div className="space-y-6">
       {/* Top Module Header */}
@@ -760,6 +783,16 @@ export default function CandidateManagementHub({
 
                         <td className="py-2.5 px-3 text-right">
                           <div className="flex items-center justify-end gap-1.5">
+                            <button
+                              type="button"
+                              onClick={() => handleImpersonateCandidate(c.id)}
+                              className="px-2 py-1 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-900 text-[11px] font-bold transition-colors flex items-center gap-1 shadow-2xs"
+                              title="প্রার্থী পোর্টালে সরাসরি লগইন করুন"
+                            >
+                              <LogIn className="w-3 h-3 text-amber-700" />
+                              <span>পোর্টাল</span>
+                            </button>
+
                             <button
                               type="button"
                               onClick={() => setEditingCandidateId(c.id)}

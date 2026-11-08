@@ -873,6 +873,44 @@ export default function ProfilePage() {
               </select>
             </div>
 
+            <div className="space-y-1.5">
+              <label className="font-bold text-slate-700">বৈবাহিক অবস্থা (Marital Status)</label>
+              <select
+                value={profile.maritalStatus || 'single'}
+                onChange={(e) => setProfile({ ...profile, maritalStatus: e.target.value as any })}
+                className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl font-medium focus:ring-2 focus:ring-emerald-600/30 outline-none"
+              >
+                <option value="single">অবিবাহিত (Single)</option>
+                <option value="married">বিবাহিত (Married)</option>
+                <option value="other">অন্যান্য (Other)</option>
+              </select>
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="font-bold text-slate-700">ধর্ম (Religion)</label>
+              <select
+                value={(profile as any).religion || 'ইসলাম'}
+                onChange={(e) => setProfile({ ...profile, religion: e.target.value } as any)}
+                className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl font-medium focus:ring-2 focus:ring-emerald-600/30 outline-none"
+              >
+                <option value="ইসলাম">ইসলাম (Islam)</option>
+                <option value="হিন্দু">হিন্দু (Hinduism)</option>
+                <option value="বৌদ্ধ">বৌদ্ধ (Buddhism)</option>
+                <option value="খ্রিস্টান">খ্রিস্টান (Christianity)</option>
+                <option value="অন্যান্য">অন্যান্য (Other)</option>
+              </select>
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="font-bold text-slate-700">জাতীয়তা (Nationality)</label>
+              <input
+                type="text"
+                value={profile.nationality || 'বাংলাদেশি (Bangladeshi)'}
+                onChange={(e) => setProfile({ ...profile, nationality: e.target.value })}
+                className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl font-medium focus:ring-2 focus:ring-emerald-600/30 outline-none"
+              />
+            </div>
+
             {/* STRUCTURED PRESENT & PERMANENT ADDRESS SECTION (TELETALK & GOVT/BANK ENGLISH STANDARD) */}
             <div className="col-span-1 md:col-span-2 space-y-5 pt-3">
               
@@ -2009,6 +2047,53 @@ export default function ProfilePage() {
             </div>
 
             {/* Preferred Divisions & Minimum Salary */}
+            {/* Professional Summary & Career Objectives (Matches Admin 360 Workspace) */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-slate-50 rounded-2xl border border-slate-200">
+              <div className="space-y-1.5 md:col-span-2">
+                <label className="font-bold text-slate-800 block">ক্যারিয়ার উদ্দেশ্য (Career Objective)</label>
+                <textarea
+                  rows={2}
+                  placeholder="যেমন: সরকারি বা স্বায়ত্তশাসিত প্রতিষ্ঠানে আইসিটি বা সাধারণ প্রশাসনিক পদে দায়িত্বশীল ভূমিকা পালন করা..."
+                  value={profile.careerObjective || ''}
+                  onChange={(e) => setProfile({ ...profile, careerObjective: e.target.value })}
+                  className="w-full px-3.5 py-2.5 bg-white border border-slate-200 rounded-xl font-medium focus:ring-2 focus:ring-emerald-600/30 outline-none text-xs"
+                />
+              </div>
+
+              <div className="space-y-1.5 md:col-span-2">
+                <label className="font-bold text-slate-800 block">পেশাগত সারসংক্ষেপ (Professional Summary)</label>
+                <textarea
+                  rows={2}
+                  placeholder="আপনার পূর্ববর্তী কাজের অভিজ্ঞতা বা সামগ্রিক দক্ষতার সংক্ষিপ্ত বিবরণ..."
+                  value={profile.professionalSummary || ''}
+                  onChange={(e) => setProfile({ ...profile, professionalSummary: e.target.value })}
+                  className="w-full px-3.5 py-2.5 bg-white border border-slate-200 rounded-xl font-medium focus:ring-2 focus:ring-emerald-600/30 outline-none text-xs"
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="font-bold text-slate-800 block">বর্তমান পদবি (Current Position — যদি থাকে)</label>
+                <input
+                  type="text"
+                  placeholder="যেমন: কম্পিউটার অপারেটর / ডাটা এন্ট্রি অ্যাসিস্ট্যান্ট"
+                  value={profile.currentPosition || ''}
+                  onChange={(e) => setProfile({ ...profile, currentPosition: e.target.value })}
+                  className="w-full px-3.5 py-2.5 bg-white border border-slate-200 rounded-xl font-medium focus:ring-2 focus:ring-emerald-600/30 outline-none text-xs"
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="font-bold text-slate-800 block">বর্তমান প্রতিষ্ঠান (Current Organization — যদি থাকে)</label>
+                <input
+                  type="text"
+                  placeholder="যেমন: বাংলাদেশ কম্পিউটার কাউন্সিল / ফ্রিল্যান্সার"
+                  value={profile.currentOrganization || ''}
+                  onChange={(e) => setProfile({ ...profile, currentOrganization: e.target.value })}
+                  className="w-full px-3.5 py-2.5 bg-white border border-slate-200 rounded-xl font-medium focus:ring-2 focus:ring-emerald-600/30 outline-none text-xs"
+                />
+              </div>
+            </div>
+
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <label className="font-bold text-slate-800 block">পছন্দের কর্মসংস্থান বিভাগ</label>

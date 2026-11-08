@@ -27,6 +27,7 @@ import {
   X, 
   ChevronRight,
   ShieldCheck,
+  ShieldAlert,
   PhoneCall
 } from 'lucide-react';
 import { storage } from '@/lib/store';
@@ -94,9 +95,17 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const [completion, setCompletion] = useState(85);
   const [isMounted, setIsMounted] = useState(false);
   const [sessionChecked, setSessionChecked] = useState(false);
+  const [impersonatingName, setImpersonatingName] = useState<string | null>(null);
 
   useEffect(() => {
     setIsMounted(true);
+
+    if (typeof document !== 'undefined') {
+      const match = document.cookie.match(/(?:^|;\s*)cs_impersonating=([^;]+)/);
+      if (match) {
+        setImpersonatingName(decodeURIComponent(match[1]));
+      }
+    }
 
     // 1. Synchronously restore from client storage (zero flickering & no unwanted logouts)
     const currentAuth = storage.getAuth();
@@ -158,9 +167,18 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     router.push('/login');
   };
 
+  const handleExitImpersonation = async () => {
+    try {
+      await fetch('/api/admin/impersonate', { method: 'DELETE' });
+    } catch {}
+    if (typeof window !== 'undefined') {
+      window.location.href = '/admin?tab=candidate-directory';
+    }
+  };
+
   if (!sessionChecked) return <div role="status" className="p-8 text-base text-slate-600">ড্যাশবোর্ড লোড হচ্ছে...</div>;
 
-  if (isMounted && !storage.getAuth().isLoggedIn) {
+  if (isMounted && !storage.getAuth().isLoggedIn && !impersonatingName) {
     return (
       <div className="min-h-screen bg-slate-900 flex items-center justify-center p-4">
         <div className="max-w-md w-full bg-white rounded-3xl p-8 text-center space-y-4 shadow-2xl">
@@ -187,6 +205,26 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col" suppressHydrationWarning>
+      {/* Sticky Admin Impersonation Banner */}
+      {impersonatingName && (
+        <div className="bg-gradient-to-r from-amber-500 via-amber-400 to-orange-500 text-slate-950 px-4 py-2.5 text-xs font-black flex items-center justify-between shadow-md sticky top-0 z-50 border-b border-amber-600">
+          <div className="flex items-center gap-2">
+            <span className="p-1 bg-black text-amber-400 rounded-md">
+              <ShieldAlert className="w-3.5 h-3.5" />
+            </span>
+            <span>
+              অ্যাডমিন ইমপারসোনেশন মোড সক্রিয়: আপনি বর্তমানে &ldquo;{impersonatingName}&rdquo; এর প্রার্থী পোর্টালে আছেন। যেকোনো পরিবর্তন লাইভ সেভ হবে।
+            </span>
+          </div>
+          <button
+            onClick={handleExitImpersonation}
+            className="px-3 py-1 bg-slate-950 hover:bg-black text-white rounded-lg text-xs font-bold transition-all shadow-sm flex items-center gap-1 cursor-pointer shrink-0"
+          >
+            <span>✕ অ্যাডমিন প্যানেলে ফিরুন</span>
+          </button>
+        </div>
+      )}
+
       {/* Mobile Sticky Header Bar */}
       <div className="lg:hidden bg-slate-900 text-white px-4 py-3 flex items-center justify-between border-b border-slate-800 sticky top-0 z-40">
         <div className="flex items-center gap-2.5">

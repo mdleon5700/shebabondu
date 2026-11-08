@@ -42,7 +42,8 @@ import {
   ChevronRight,
   ShieldAlert,
   AlertCircle,
-  CreditCard
+  CreditCard,
+  LogIn
 } from 'lucide-react';
 import { CandidateProfile, EducationRecord, ExperienceRecord, CandidateDocument } from '@/lib/types';
 import { BD_DIVISIONS_EN } from '@/lib/constants';
@@ -273,6 +274,28 @@ export default function UniversalUserWorkspace({
     }
   };
 
+  // Handle 1-Click Candidate Impersonation (Login as Candidate)
+  const [isImpersonating, setIsImpersonating] = useState(false);
+  const handleImpersonate = async () => {
+    if (!candidateId) return;
+    setIsImpersonating(true);
+    try {
+      const res = await fetch('/api/admin/impersonate', {
+        method: 'POST',
+        headers: getAdminHeaders(),
+        body: JSON.stringify({ candidateId })
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || 'ইমপারসোনেশন ব্যর্থ হয়েছে');
+      }
+      window.location.href = data.redirectUrl || '/dashboard';
+    } catch (err: any) {
+      alert(err.message || 'ইমপারসোনেশন ব্যর্থ হয়েছে');
+      setIsImpersonating(false);
+    }
+  };
+
   // Profile completion calculation
   const profileScore = useMemo(() => {
     let score = 20; // base registered
@@ -340,6 +363,18 @@ export default function UniversalUserWorkspace({
 
           {/* Header Action Controls */}
           <div className="flex items-center gap-2 flex-wrap shrink-0">
+            {/* 1-Click Candidate Impersonation */}
+            <button
+              type="button"
+              onClick={handleImpersonate}
+              disabled={isImpersonating}
+              className="px-3 py-2 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-950 rounded-xl text-xs font-black shadow-md transition-all flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+              title="প্রার্থীর ড্যাশবোর্ডে সরাসরি লগইন করুন ও দেখুন"
+            >
+              <LogIn className="w-3.5 h-3.5" />
+              <span>{isImpersonating ? 'প্রবেশ হচ্ছে...' : 'প্রার্থী মোড'}</span>
+            </button>
+
             {/* Direct SMS Modal Trigger */}
             {onOpenSmsModal && (
               <button

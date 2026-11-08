@@ -405,13 +405,31 @@
       "signatureUrl": "data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"200\" height=\"60\" viewBox=\"0 0 200 60\"><rect width=\"200\" height=\"60\" fill=\"%23f8fafc\" rx=\"6\"/><text x=\"100\" y=\"35\" font-family=\"sans-serif\" font-size=\"12\" fill=\"%2394a3b8\" text-anchor=\"middle\">স্বাক্ষর যুক্ত করুন</text></svg>",
       "walletBalance": 50,
       "maritalStatus": "single",
-      "quota": "none",
+      "quota": "ansar",
       "education": [],
       "passwordHash": "scrypt$999b484166d44bfce035f6071343a8fb$b5c6ff5b7187c039640ed84bba529edcc197b2f52d879f23b8a00536602e7c36484a6810047259b0042a63a5f728d2b4ff226b09e2ad28c3d4b70843b7689ccd",
       "role": "candidate",
       "createdAt": "2026-11-07T21:59:18.135Z",
-      "updatedAt": "2026-11-08T03:19:21.103Z",
+      "updatedAt": "2026-11-08T03:25:41.986Z",
       "adminAuditHistory": [
+        {
+          "timestamp": "2026-11-08T03:25:41.985Z",
+          "adminId": "ADMIN-SUPER",
+          "action": "candidate_profile_update",
+          "changedFields": [],
+          "notes": "Admin workspace edit",
+          "reason": "Admin workspace edit"
+        },
+        {
+          "timestamp": "2026-11-08T03:25:40.521Z",
+          "adminId": "ADMIN-SUPER",
+          "action": "candidate_profile_update",
+          "changedFields": [
+            "quota"
+          ],
+          "notes": "Admin workspace edit",
+          "reason": "Admin workspace edit"
+        },
         {
           "timestamp": "2026-11-08T03:19:21.103Z",
           "adminId": "ADMIN-SUPER",
@@ -550,7 +568,60 @@
     "CS-USR-26-990011": [],
     "CS-USR-26-775654": [],
     "CS-USR-26-366643": [],
-    "CS-USR-26-366564": []
+    "CS-USR-26-366564": [],
+    "ADMIN-SUPER": [
+      {
+        "id": "CS-DOC-2611-504",
+        "type": "photo",
+        "title": "প্রার্থীর ছবি",
+        "category": "custom",
+        "fileName": "ADMIN-SUPER_photo_1794108293483.jpg",
+        "fileSize": "33 KB",
+        "uploadDate": "৮/১১/২০২৬",
+        "dataUrl": "/api/uploads/candidate-documents/ADMIN-SUPER_photo_1794108293483.jpg",
+        "fileUrl": "/api/uploads/candidate-documents/ADMIN-SUPER_photo_1794108293483.jpg",
+        "secureUrl": "/api/candidate/documents/secure/CS-DOC-2611-504",
+        "checksumSha256": "014f91a923237d86c5fe5cd9f241aa820d716788aba135d2bd570313393c113f",
+        "mimeType": "image/jpeg",
+        "version": 1,
+        "isVerified": false,
+        "verificationStatus": "PENDING_REVIEW"
+      },
+      {
+        "id": "CS-DOC-2611-628",
+        "type": "photo",
+        "title": "প্রার্থীর ছবি",
+        "category": "custom",
+        "fileName": "ADMIN-SUPER_photo_1794108221803.jpg",
+        "fileSize": "23 KB",
+        "uploadDate": "৮/১১/২০২৬",
+        "dataUrl": "/api/uploads/candidate-documents/ADMIN-SUPER_photo_1794108221803.jpg",
+        "fileUrl": "/api/uploads/candidate-documents/ADMIN-SUPER_photo_1794108221803.jpg",
+        "secureUrl": "/api/candidate/documents/secure/CS-DOC-2611-628",
+        "checksumSha256": "519f87ba38b8df705dfb868f6f87c316ec40c3b4b171b4ee3d27eea6082de9dc",
+        "mimeType": "image/jpeg",
+        "version": 1,
+        "isVerified": false,
+        "verificationStatus": "PENDING_REVIEW"
+      },
+      {
+        "id": "CS-DOC-2611-593",
+        "type": "photo",
+        "title": "প্রার্থীর ছবি",
+        "category": "custom",
+        "fileName": "ADMIN-SUPER_photo_1794108201915.jpg",
+        "fileSize": "23 KB",
+        "uploadDate": "৮/১১/২০২৬",
+        "dataUrl": "/api/uploads/candidate-documents/ADMIN-SUPER_photo_1794108201915.jpg",
+        "fileUrl": "/api/uploads/candidate-documents/ADMIN-SUPER_photo_1794108201915.jpg",
+        "secureUrl": "/api/candidate/documents/secure/CS-DOC-2611-593",
+        "checksumSha256": "519f87ba38b8df705dfb868f6f87c316ec40c3b4b171b4ee3d27eea6082de9dc",
+        "mimeType": "image/jpeg",
+        "version": 1,
+        "isVerified": false,
+        "verificationStatus": "PENDING_REVIEW"
+      }
+    ]
   },
   "applications": {
     "CS-USR-26-999888": [],
@@ -7135,7 +7206,33 @@
       }
     ],
     "CS-USR-26-366643": [],
-    "CS-USR-26-366564": []
+    "CS-USR-26-366564": [],
+    "ADMIN-SUPER": [
+      {
+        "title": "ডকুমেন্ট আপলোড সম্পন্ন",
+        "message": "প্রার্থীর ছবি সফলভাবে আপলোড হয়েছে।",
+        "type": "system",
+        "id": "CS-NOTIF-2611-513",
+        "date": "2026-11-08T03:24:53.566Z",
+        "read": false
+      },
+      {
+        "title": "ডকুমেন্ট আপলোড সম্পন্ন",
+        "message": "প্রার্থীর ছবি সফলভাবে আপলোড হয়েছে।",
+        "type": "system",
+        "id": "CS-NOTIF-2611-365",
+        "date": "2026-11-08T03:23:41.870Z",
+        "read": false
+      },
+      {
+        "title": "ডকুমেন্ট আপলোড সম্পন্ন",
+        "message": "প্রার্থীর ছবি সফলভাবে আপলোড হয়েছে।",
+        "type": "system",
+        "id": "CS-NOTIF-2611-803",
+        "date": "2026-11-08T03:23:22.004Z",
+        "read": false
+      }
+    ]
   },
   "sessions": {
     "92922126ec7c3b78154ae2be6303d47afe6f5d951e5235b7ad0b15c4056a0df2": {
@@ -7633,6 +7730,11 @@
       "candidateId": "CS-USR-26-990011",
       "role": "candidate",
       "expiresAt": "2026-11-09T03:19:10.539Z"
+    },
+    "imp-a870c16274df8b384c1fc620c9a28347fddc579055d048e6": {
+      "candidateId": "CS-USR-26-366564",
+      "role": "candidate",
+      "expiresAt": "2026-11-09T03:28:59.351Z"
     }
   },
   "coupons": {},

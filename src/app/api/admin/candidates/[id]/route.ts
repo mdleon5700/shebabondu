@@ -5,9 +5,7 @@ import { serverDB } from '@/lib/db';
 export const dynamic = 'force-dynamic';
 
 interface RouteContext {
-  params: {
-    id: string;
-  };
+  params: Promise<{ id: string }> | { id: string };
 }
 
 export async function GET(req: Request, context: RouteContext) {
@@ -19,7 +17,8 @@ export async function GET(req: Request, context: RouteContext) {
     return NextResponse.json({ error: 'FORBIDDEN: Admin privileges required.' }, { status: 403 });
   }
 
-  const { id } = context.params;
+  const resolvedParams = await context.params;
+  const id = resolvedParams?.id;
   if (!id) {
     return NextResponse.json({ error: 'প্রার্থীর আইডি আবশ্যক।' }, { status: 400 });
   }
@@ -61,7 +60,8 @@ export async function PATCH(req: Request, context: RouteContext) {
     return NextResponse.json({ error: 'FORBIDDEN: Admin privileges required.' }, { status: 403 });
   }
 
-  const { id } = context.params;
+  const resolvedParams = await context.params;
+  const id = resolvedParams?.id;
   if (!id) {
     return NextResponse.json({ error: 'প্রার্থীর আইডি আবশ্যক।' }, { status: 400 });
   }
@@ -71,8 +71,18 @@ export async function PATCH(req: Request, context: RouteContext) {
     return NextResponse.json({ error: 'প্রার্থী পাওয়া যায়নি।' }, { status: 404 });
   }
 
+  let body: any;
   try {
-    const body = await req.json();
+    body = await req.json();
+  } catch {
+    return NextResponse.json({ error: 'অনুরোধের বডি (Request body) সঠিক নয় বা খালি।' }, { status: 400 });
+  }
+
+  if (!body || typeof body !== 'object' || Object.keys(body).length === 0) {
+    return NextResponse.json({ error: 'হালনাগাদ করার মতো কোনো তথ্য পাওয়া যায়নি।' }, { status: 400 });
+  }
+
+  try {
     const adminId = session?.candidateId || 'ADMIN-SUPER';
 
     // Handle password reset if requested
@@ -124,7 +134,11 @@ export async function DELETE(req: Request, context: RouteContext) {
     return NextResponse.json({ error: 'FORBIDDEN: Admin privileges required.' }, { status: 403 });
   }
 
-  const { id } = context.params;
+  const resolvedParams = await context.params;
+  const id = resolvedParams?.id;
+  if (!id) {
+    return NextResponse.json({ error: 'প্রার্থীর আইডি আবশ্যক।' }, { status: 400 });
+  }
   const candidate = serverDB.getCandidateById(id) || serverDB.getCandidateByIdentifier(id);
   if (!candidate) {
     return NextResponse.json({ error: 'প্রার্থী পাওয়া যায়নি।' }, { status: 404 });

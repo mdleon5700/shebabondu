@@ -6,7 +6,7 @@ import { PageRecord } from '@/lib/types';
 
 export const dynamic = 'force-dynamic';
 
-export async function GET(req: Request, { params }: { params: { id: string } }) {
+export async function GET(req: Request, context: { params: Promise<{ id: string }> | { id: string } }) {
   const adminSecret = req.headers.get('x-admin-secret') || req.headers.get('x-admin-key');
   const session = getServerSession(req);
   const hasAdminAccess = (session && session.role === 'admin') || (adminSecret && verifyAdminSecret(adminSecret));
@@ -14,12 +14,13 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
   if (!hasAdminAccess) {
     return NextResponse.json({ error: 'FORBIDDEN: Admin privileges required.' }, { status: 403 });
   }
-  const page = serverDB.getPageById(params.id);
+  const { id } = await Promise.resolve(context.params);
+  const page = serverDB.getPageById(id);
   if (!page) return NextResponse.json({ error: 'পৃষ্ঠা পাওয়া যায়নি' }, { status: 404 });
   return NextResponse.json({ success: true, page });
 }
 
-export async function PUT(req: Request, { params }: { params: { id: string } }) {
+export async function PUT(req: Request, context: { params: Promise<{ id: string }> | { id: string } }) {
   const adminSecret = req.headers.get('x-admin-secret') || req.headers.get('x-admin-key');
   const session = getServerSession(req);
   const hasAdminAccess = (session && session.role === 'admin') || (adminSecret && verifyAdminSecret(adminSecret));
@@ -29,17 +30,27 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
   }
 
   try {
-    if (!serverDB.getPageById(params.id)) return NextResponse.json({ error: 'Page not found' }, { status: 404 });
-    const { action, ...pageData } = await req.json();
-    const slug = pageData.slug || pageData.path || '';
-    if (!pageData.title || !slug || !Array.isArray(pageData.sections)) {
-      return NextResponse.json({ error: 'Page title, path and sections are required.' }, { status: 400 });
+    const { id } = await Promise.resolve(context.params);
+    const existing = serverDB.getPageById(id);
+    if (!existing) return NextResponse.json({ error: 'Page not found' }, { status: 404 });
+
+    const body = await req.json();
+    const { action, ...pageData } = body;
+    const title = pageData.title || existing.title;
+    const slug = pageData.slug || pageData.path || existing.slug || (existing as any).path || '';
+    const sections = Array.isArray(pageData.sections) ? pageData.sections : (existing.sections || []);
+
+    if (!title || !slug) {
+      return NextResponse.json({ error: 'Page title and path are required.' }, { status: 400 });
     }
-    const isPublish = action === 'publish';
+    const isPublish = action === 'publish' || pageData.isPublished;
     const pageToSave: PageRecord = {
+      ...existing,
       ...pageData,
+      title,
       slug,
-      id: params.id
+      sections,
+      id
     };
     const adminId = session?.candidateId || 'ADMIN';
     const saved = serverDB.savePage(pageToSave, adminId, isPublish);
@@ -56,7 +67,9 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
   }
 }
 
-export async function DELETE(req: Request, { params }: { params: { id: string } }) {
+export const PATCH = PUT;
+
+export async function DELETE(req: Request, context: { params: Promise<{ id: string }> | { id: string } }) {
   const adminSecret = req.headers.get('x-admin-secret') || req.headers.get('x-admin-key');
   const session = getServerSession(req);
   const hasAdminAccess = (session && session.role === 'admin') || (adminSecret && verifyAdminSecret(adminSecret));
@@ -64,8 +77,9 @@ export async function DELETE(req: Request, { params }: { params: { id: string } 
   if (!hasAdminAccess) {
     return NextResponse.json({ error: 'FORBIDDEN: Admin privileges required.' }, { status: 403 });
   }
+  const { id } = await Promise.resolve(context.params);
   const adminId = session?.candidateId || 'ADMIN';
-  const res = serverDB.deletePage(params.id, adminId);
+  const res = serverDB.deletePage(id, adminId);
   if (!res.success) return NextResponse.json({ error: res.error }, { status: 400 });
   return NextResponse.json({ success: true });
 }

@@ -104,3 +104,4 @@
 * **Files Inspected:** `src/app/jobs/page.tsx`, `src/components/jobs/JobFilterSidebar.tsx`.
 * **Test Output:** HTTP 200, Title: "চাকরি সেবা বাংলাদেশ", 0 console errors, 0 network timeouts.
 * **Evidence:** `worker_task-20261108-4478_evidence.png` (272.9 KB, 1440x900 px).
+

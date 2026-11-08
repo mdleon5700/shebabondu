@@ -11,6 +11,11 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'FORBIDDEN: Admin privileges required.' }, { status: 403 });
   }
 
+  const contentType = req.headers.get('content-type') || '';
+  if (!contentType.includes('multipart/form-data')) {
+    return NextResponse.json({ error: 'অনুরোধটি multipart/form-data ফরম্যাটে হওয়া আবশ্যক।' }, { status: 400 });
+  }
+
   try {
     const formData = await req.formData();
     const file = formData.get('file') as File | null;

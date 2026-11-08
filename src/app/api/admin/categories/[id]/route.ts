@@ -7,7 +7,7 @@ import { JobTaxonomyClassifier } from '@/lib/taxonomy/classifier';
 
 export async function PATCH(
   req: Request,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> | { id: string } }
 ) {
   try {
     const session = getServerSession(req);
@@ -15,7 +15,7 @@ export async function PATCH(
       return NextResponse.json({ error: 'FORBIDDEN: Admin privileges required.' }, { status: 403 });
     }
 
-    const categoryId = params.id;
+    const { id: categoryId } = await Promise.resolve(context.params);
     const existingCat = serverDB.getCategoryById(categoryId);
     if (!existingCat) {
       return NextResponse.json({ success: false, error: 'ক্যাটাগরি পাওয়া যায়নি' }, { status: 404 });
@@ -24,19 +24,22 @@ export async function PATCH(
     const body = await req.json();
     const existingList = serverDB.getCategories();
 
+    const name_bn = body.name_bn !== undefined ? body.name_bn : (body.nameBn !== undefined ? body.nameBn : existingCat.name_bn);
+    const name_en = body.name_en !== undefined ? body.name_en : (body.nameEn !== undefined ? body.nameEn : existingCat.name_en);
+
     const updated: CategoryRecord = {
       ...existingCat,
-      name_bn: body.name_bn !== undefined ? body.name_bn : existingCat.name_bn,
-      name_en: body.name_en !== undefined ? body.name_en : existingCat.name_en,
+      name_bn,
+      name_en,
       slug: body.slug !== undefined ? body.slug.toLowerCase().trim() : existingCat.slug,
-      description_bn: body.description_bn !== undefined ? body.description_bn : existingCat.description_bn,
-      description_en: body.description_en !== undefined ? body.description_en : existingCat.description_en,
-      parent_id: body.parent_id !== undefined ? body.parent_id : existingCat.parent_id,
+      description_bn: body.description_bn !== undefined ? body.description_bn : (body.descriptionBn !== undefined ? body.descriptionBn : existingCat.description_bn),
+      description_en: body.description_en !== undefined ? body.description_en : (body.descriptionEn !== undefined ? body.descriptionEn : existingCat.description_en),
+      parent_id: body.parent_id !== undefined ? body.parent_id : (body.parentId !== undefined ? body.parentId : existingCat.parent_id),
       icon: body.icon !== undefined ? body.icon : existingCat.icon,
       image: body.image !== undefined ? body.image : existingCat.image,
-      display_order: body.display_order !== undefined ? parseInt(body.display_order, 10) : existingCat.display_order,
-      is_featured: body.is_featured !== undefined ? !!body.is_featured : existingCat.is_featured,
-      is_active: body.is_active !== undefined ? !!body.is_active : existingCat.is_active,
+      display_order: body.display_order !== undefined ? parseInt(body.display_order, 10) : (body.displayOrder !== undefined ? parseInt(body.displayOrder, 10) : existingCat.display_order),
+      is_featured: body.is_featured !== undefined ? !!body.is_featured : (body.isFeatured !== undefined ? !!body.isFeatured : existingCat.is_featured),
+      is_active: body.is_active !== undefined ? !!body.is_active : (body.isActive !== undefined ? !!body.isActive : existingCat.is_active),
       seo_title: body.seo_title !== undefined ? body.seo_title : existingCat.seo_title,
       seo_description: body.seo_description !== undefined ? body.seo_description : existingCat.seo_description,
       canonical_url: body.canonical_url !== undefined ? body.canonical_url : existingCat.canonical_url,
@@ -72,9 +75,11 @@ export async function PATCH(
   }
 }
 
+export const PUT = PATCH;
+
 export async function DELETE(
   req: Request,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> | { id: string } }
 ) {
   try {
     const session = getServerSession(req);
@@ -82,7 +87,7 @@ export async function DELETE(
       return NextResponse.json({ error: 'FORBIDDEN: Admin privileges required.' }, { status: 403 });
     }
 
-    const categoryId = params.id;
+    const { id: categoryId } = await Promise.resolve(context.params);
     const { searchParams } = new URL(req.url);
     const reassignmentCategoryId = searchParams.get('reassignTo') || undefined;
 

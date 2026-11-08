@@ -32,3 +32,4 @@ To take Chakri Sheba from local development to persistent Render production:
    - `ADMIN_SECRET=CHAKRISEBA_SECURE_ADMIN_2026`
    - `NODE_ENV=production`
    - `COOKIE_SECURE=true`
+

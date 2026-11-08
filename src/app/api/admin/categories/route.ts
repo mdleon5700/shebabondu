@@ -50,22 +50,22 @@ export async function POST(req: Request) {
     const existing = serverDB.getCategories();
 
     // Generate unique ID if not provided
-    const id = body.id || `cat-${body.slug || Date.now().toString(36)}`;
+    const id = body.id || `cat-${(body.slug || Date.now().toString(36)).toLowerCase()}`;
     const newCategory: CategoryRecord = {
       id,
-      name_bn: body.name_bn || '',
-      name_en: body.name_en || '',
-      slug: body.slug ? body.slug.toLowerCase().trim() : '',
-      description_bn: body.description_bn || '',
-      description_en: body.description_en || '',
-      parent_id: body.parent_id || null,
+      name_bn: body.name_bn || body.nameBn || body.name || '',
+      name_en: body.name_en || body.nameEn || body.name || '',
+      slug: (body.slug || id).toLowerCase().trim(),
+      description_bn: body.description_bn || body.descriptionBn || '',
+      description_en: body.description_en || body.descriptionEn || '',
+      parent_id: body.parent_id || body.parentId || null,
       icon: body.icon || 'Briefcase',
       image: body.image || null,
-      display_order: parseInt(body.display_order ?? '0', 10),
-      is_featured: !!body.is_featured,
-      is_active: body.is_active !== undefined ? !!body.is_active : true,
-      seo_title: body.seo_title || `${body.name_bn} নিয়োগ বিজ্ঞপ্তি ২০২৬ | চাকরি সেবা`,
-      seo_description: body.seo_description || `${body.name_bn} এর সর্বশেষ চাকরির সার্কুলার ও আবেদন।`,
+      display_order: parseInt(body.display_order ?? body.displayOrder ?? '0', 10),
+      is_featured: !!(body.is_featured ?? body.isFeatured),
+      is_active: body.is_active !== undefined ? !!body.is_active : (body.isActive !== undefined ? !!body.isActive : true),
+      seo_title: body.seo_title || `${body.name_bn || body.nameBn || ''} নিয়োগ বিজ্ঞপ্তি ২০২৬ | চাকরি সেবা`,
+      seo_description: body.seo_description || `${body.name_bn || body.nameBn || ''} এর সর্বশেষ চাকরির সার্কুলার ও আবেদন।`,
       canonical_url: body.canonical_url || `https://chakrisheba.com/categories/${body.slug || ''}`,
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString()

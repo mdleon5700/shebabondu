@@ -76,3 +76,4 @@
    - Unauthorized (no admin secret): HTTP 403 Forbidden.
    - Invalid decision: HTTP 400 Bad Request.
    - Valid decision: HTTP 200 OK. Sets `approvalStatus` and transitions to `READY_FOR_RELEASE`.
+

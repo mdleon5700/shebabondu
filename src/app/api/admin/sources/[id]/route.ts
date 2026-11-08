@@ -3,7 +3,7 @@ import { getServerSession } from '@/lib/auth';
 import { serverDB } from '@/lib/db';
 import { JobSource, SourceClassification, CollectionMethod } from '@/lib/types';
 
-export async function GET(req: Request, { params }: { params: { id: string } }) {
+export async function GET(req: Request, context: { params: Promise<{ id: string }> | { id: string } }) {
   const session = getServerSession(req);
   if (!session) {
     return NextResponse.json({ error: 'UNAUTHORIZED: Authentication required.' }, { status: 401 });
@@ -12,15 +12,16 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
     return NextResponse.json({ error: 'FORBIDDEN: Admin privileges required.' }, { status: 403 });
   }
 
-  const source = serverDB.getJobSourceById(params.id);
+  const { id } = await Promise.resolve(context.params);
+  const source = serverDB.getJobSourceById(id);
   if (!source) {
-    return NextResponse.json({ error: `NOT_FOUND: সোর্স "${params.id}" পাওয়া যায়নি।` }, { status: 404 });
+    return NextResponse.json({ error: `NOT_FOUND: সোর্স "${id}" পাওয়া যায়নি।` }, { status: 404 });
   }
 
   return NextResponse.json({ success: true, source });
 }
 
-export async function PUT(req: Request, { params }: { params: { id: string } }) {
+export async function PUT(req: Request, context: { params: Promise<{ id: string }> | { id: string } }) {
   const session = getServerSession(req);
   if (!session) {
     return NextResponse.json({ error: 'UNAUTHORIZED: Authentication required.' }, { status: 401 });
@@ -30,9 +31,10 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
   }
 
   try {
-    const existing = serverDB.getJobSourceById(params.id);
+    const { id } = await Promise.resolve(context.params);
+    const existing = serverDB.getJobSourceById(id);
     if (!existing) {
-      return NextResponse.json({ error: `NOT_FOUND: সোর্স "${params.id}" পাওয়া যায়নি।` }, { status: 404 });
+      return NextResponse.json({ error: `NOT_FOUND: সোর্স "${id}" পাওয়া যায়নি।` }, { status: 404 });
     }
 
     const body = await req.json();
@@ -85,8 +87,9 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
       updates.collectionMethod = m;
     }
 
-    if (body.scanIntervalMinutes !== undefined) {
-      const intervalNum = Number(body.scanIntervalMinutes);
+    const intervalVal = body.scanIntervalMinutes !== undefined ? body.scanIntervalMinutes : body.scrapeIntervalMinutes;
+    if (intervalVal !== undefined) {
+      const intervalNum = Number(intervalVal);
       if (isNaN(intervalNum) || !Number.isInteger(intervalNum) || intervalNum < 15 || intervalNum > 10080) {
         return NextResponse.json({ 
           error: 'VALIDATION_ERROR: স্ক্যান ব্যবধান ১৫ মিনিট থেকে ১০,০৮০ মিনিটের (৭ দিন) মধ্যে পূর্ণসংখ্যা হতে হবে।' 
@@ -103,7 +106,7 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
       updates.adminNotes = String(body.adminNotes).trim().slice(0, 1000);
     }
 
-    const updatedSource = serverDB.updateJobSource(params.id, updates, session.candidateId);
+    const updatedSource = serverDB.updateJobSource(id, updates, session.candidateId);
     return NextResponse.json({ success: true, source: updatedSource });
   } catch (err: any) {
     if (err.message && err.message.includes('already exists')) {
@@ -113,11 +116,11 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
   }
 }
 
-export async function PATCH(req: Request, { params }: { params: { id: string } }) {
-  return PUT(req, { params });
+export async function PATCH(req: Request, context: { params: Promise<{ id: string }> | { id: string } }) {
+  return PUT(req, context);
 }
 
-export async function DELETE(req: Request, { params }: { params: { id: string } }) {
+export async function DELETE(req: Request, context: { params: Promise<{ id: string }> | { id: string } }) {
   const session = getServerSession(req);
   if (!session) {
     return NextResponse.json({ error: 'UNAUTHORIZED: Authentication required.' }, { status: 401 });
@@ -127,12 +130,13 @@ export async function DELETE(req: Request, { params }: { params: { id: string } 
   }
 
   try {
-    const existing = serverDB.getJobSourceById(params.id);
+    const { id } = await Promise.resolve(context.params);
+    const existing = serverDB.getJobSourceById(id);
     if (!existing) {
-      return NextResponse.json({ error: `NOT_FOUND: সোর্স "${params.id}" পাওয়া যায়নি।` }, { status: 404 });
+      return NextResponse.json({ error: `NOT_FOUND: সোর্স "${id}" পাওয়া যায়নি।` }, { status: 404 });
     }
 
-    const result = serverDB.archiveOrDeleteJobSource(params.id, false, session.candidateId);
+    const result = serverDB.archiveOrDeleteJobSource(id, false, session.candidateId);
     return NextResponse.json({ ...result });
   } catch (err: any) {
     return NextResponse.json({ error: err.message || 'সোর্স ডিলিট বা আর্কাইভ করতে ব্যর্থ হয়েছে।' }, { status: 500 });

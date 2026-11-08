@@ -1,4 +1,4 @@
-﻿import { NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { AdminGovernanceRbac } from '@/lib/governance';
 import { CentralReportEngine } from '@/lib/reports/engine';
 import { ReportGenerationFilterPayload } from '@/lib/reports/types';
@@ -30,12 +30,24 @@ export async function POST(req: Request) {
   }
 
   try {
-    const body = (await req.json()) as ReportGenerationFilterPayload;
+    let body: any = {};
+    try {
+      body = await req.json();
+    } catch {
+      return NextResponse.json({ error: 'অনুরোধের বডি সঠিক নয় বা খালি' }, { status: 400 });
+    }
+
+    if (!body || typeof body !== 'object') {
+      return NextResponse.json({ error: 'অনুরোধের বডি সঠিক নয়' }, { status: 400 });
+    }
+
+    const reportType = body.reportType || 'daily_platform_report';
+    const format = body.format || 'json';
     const adminId = req.headers.get('x-admin-id') || 'ADMIN-SUPER';
 
-    const report = CentralReportEngine.generateReport(body, adminId);
+    const report = CentralReportEngine.generateReport({ ...body, reportType, format }, adminId);
 
-    if (body.format === 'csv' && report.csvPayload) {
+    if (format === 'csv' && report.csvPayload) {
       return new Response(report.csvPayload, {
         status: 200,
         headers: {

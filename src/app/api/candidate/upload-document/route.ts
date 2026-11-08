@@ -12,6 +12,11 @@ export async function POST(req: Request) {
   try {
     const session = getServerSession(req);
     if (!session) return NextResponse.json({ error: 'Login required' }, { status: 401 });
+    const contentType = req.headers.get('content-type') || '';
+    if (!contentType.includes('multipart/form-data')) {
+      return NextResponse.json({ error: 'অনুরোধটি multipart/form-data ফরম্যাটে হওয়া আবশ্যক।' }, { status: 400 });
+    }
+
     const formData = await req.formData();
     const file = formData.get('file') as File | null;
     const docType = (formData.get('docType') as string) || 'custom';

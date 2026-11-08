@@ -1,4 +1,4 @@
-﻿import { NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { getServerSession } from '@/lib/auth';
 import fs from 'fs';
 import path from 'path';
@@ -9,6 +9,11 @@ export async function POST(req: Request) {
   const session = getServerSession(req);
   if (!session || session.role !== 'admin') {
     return NextResponse.json({ error: 'FORBIDDEN: Admin privileges required.' }, { status: 403 });
+  }
+
+  const contentType = req.headers.get('content-type') || '';
+  if (!contentType.includes('multipart/form-data')) {
+    return NextResponse.json({ error: 'অনুরোধটি multipart/form-data ফরম্যাটে হওয়া আবশ্যক।' }, { status: 400 });
   }
 
   try {

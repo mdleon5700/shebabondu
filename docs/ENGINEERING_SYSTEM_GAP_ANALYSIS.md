@@ -54,3 +54,4 @@
   - **Browser QA:** Automated (Playwright headless Chromium in `local_worker_daemon.js`).
   - **Code Repair:** Supervised (Requires branch creation, scoped patch, typecheck gate, and human approval).
   - **Autonomous Mass Rewrites:** Intentionally restricted under the **Supervised Autonomy** rule. The system does not allow arbitrary autonomous write operations to production code without human verification.
+

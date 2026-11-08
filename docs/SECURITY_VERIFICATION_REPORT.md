@@ -34,3 +34,4 @@
 * **Outbound HTTPS Only:** The worker establishes outbound connections to the Next.js API. It does not open a public server port on the user's PC.
 * **Headless Chromium Isolation:** Playwright launches Chromium with standard OS sandboxing in headless mode without `--remote-debugging-port` or `--no-sandbox`.
 * **Zero Secret Exposure:** The local worker does not need the master `x-admin-secret` to poll tasks. It authenticates to `/api/worker/tasks/*` using its assigned `workerId` and leases.
+

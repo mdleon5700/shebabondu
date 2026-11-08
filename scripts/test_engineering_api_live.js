@@ -79,7 +79,7 @@ async function run() {
   const res4 = await fetch(`${BASE_URL}/api/worker/tasks/${taskId}/heartbeat`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ workerId, extensionMinutes: 15 })
+    body: JSON.stringify({ workerId, extensionMinutes: 10 })
   });
   if (!res4.ok) throw new Error(`Heartbeat failed: HTTP ${res4.status}`);
   const json4 = await res4.json();

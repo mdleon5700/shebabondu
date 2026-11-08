@@ -27,3 +27,4 @@
 * **RAM Usage:** ~180MB for Node.js worker + ~220MB for headless Chromium process (Total: ~400MB, well within the 8GB PC ceiling).
 * **Disk I/O:** Lightweight PNG screenshots (~120KB to ~370KB per test run).
 * **Single-Run Mode:** Supports `--single-run` flag to process pending batch tasks and exit cleanly without lingering in memory.
+

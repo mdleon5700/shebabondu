@@ -1,4 +1,4 @@
-﻿/**
+/**
  * CHAKRI SHEBA (চাকরি সেবা) — STEP 15: REPORT BUILDER & EXPORT ENGINE
  * Compiles official administrative reports across all 14 platform systems
  * and exports them in CSV (with UTF-8 BOM for Excel), JSON, and formatted table layouts.
@@ -315,7 +315,8 @@ export class CentralReportEngine {
       }
     }
 
-    const csvPayload = payload.format === 'csv' ? this.formatAsCsv(headers, rows) : undefined;
+    const reportFormat = payload.format || 'json';
+    const csvPayload = reportFormat === 'csv' ? this.formatAsCsv(headers, rows) : undefined;
 
     serverDB.recordAdminAudit({
       adminId,
@@ -323,16 +324,16 @@ export class CentralReportEngine {
       targetId: reportId,
       targetType: 'system',
       changes: {
-        reportType: { new: payload.reportType },
-        format: { new: payload.format },
+        reportType: { new: payload.reportType || 'daily_platform_report' },
+        format: { new: reportFormat },
         rowCount: { new: rows.length }
       },
-      notes: `Generated ${title} in ${payload.format.toUpperCase()} format with ${rows.length} rows`
+      notes: `Generated ${title} in ${reportFormat.toUpperCase()} format with ${rows.length} rows`
     });
 
     return {
       reportId,
-      reportType: payload.reportType,
+      reportType: payload.reportType || 'daily_platform_report',
       title,
       titleBn,
       timeframe,

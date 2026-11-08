@@ -98,7 +98,10 @@
     "archetype": "underprivileged_entry",
     "testPasswordPlain": "SynthPass2026!",
     "slotIndex": 1,
-    "profileCategory": "jsc_jdc"
+    "profileCategory": "jsc_jdc",
+    "savedJobs": [
+      "SYNTH-JOB-TEST-ALERT-SYNC-01"
+    ]
   },
   "SYNTH-USR-DHAKA-002": {
     "id": "SYNTH-USR-DHAKA-002",
@@ -58603,7 +58606,7 @@
     "passwordHash": "scrypt$f1d121c9ddf5517bab8679bcb17edb36$2776c054da68972fb6e7e1c3bbfa1cbda93562258c3d15098e0c9c531458c6418b5e1c84cc1c8f8c895ecc03373af892e67a1ac293601e3c0312f0137fc130d0",
     "role": "candidate",
     "createdAt": "2026-11-07T03:57:53.749Z",
-    "updatedAt": "2026-11-07T03:57:53.749Z",
+    "updatedAt": "2026-11-08T04:34:06.571Z",
     "isSynthetic": true,
     "testDataVersion": "2.0",
     "districtCode": "RAJSHAHI",
@@ -78107,7 +78110,7 @@
     "passwordHash": "scrypt$f1d121c9ddf5517bab8679bcb17edb36$2776c054da68972fb6e7e1c3bbfa1cbda93562258c3d15098e0c9c531458c6418b5e1c84cc1c8f8c895ecc03373af892e67a1ac293601e3c0312f0137fc130d0",
     "role": "candidate",
     "createdAt": "2026-11-07T03:57:53.750Z",
-    "updatedAt": "2026-11-07T03:57:53.750Z",
+    "updatedAt": "2026-11-08T04:34:29.839Z",
     "isSynthetic": true,
     "testDataVersion": "2.0",
     "districtCode": "KHULNA",
@@ -117080,8 +117083,8 @@
     "accountStatus": "active",
     "isVerified": true,
     "profileCompletionPercentage": 85,
-    "careerObjective": "Seeking challenging employment opportunities in সিলেট or national level in aligned professional fields.",
-    "professionalSummary": "JSC_JDC with solid academic background from সিলেট and practical execution abilities.",
+    "careerObjective": "অ্যাডমিন প্যানেল থেকে যাচাইকৃত ও অনুমোদিত ক্যারিয়ার অবজেক্টিভ ২০২৬",
+    "professionalSummary": "SYNCHRONIZATION TEST: Updated from User Panel",
     "careerPreferences": {
       "preferredCategories": [
         "government-jobs",
@@ -117115,7 +117118,7 @@
     "passwordHash": "scrypt$f1d121c9ddf5517bab8679bcb17edb36$2776c054da68972fb6e7e1c3bbfa1cbda93562258c3d15098e0c9c531458c6418b5e1c84cc1c8f8c895ecc03373af892e67a1ac293601e3c0312f0137fc130d0",
     "role": "candidate",
     "createdAt": "2026-11-07T03:57:53.753Z",
-    "updatedAt": "2026-11-07T03:57:53.753Z",
+    "updatedAt": "2026-11-08T04:33:49.730Z",
     "isSynthetic": true,
     "testDataVersion": "2.0",
     "districtCode": "SYLHET",
@@ -156914,6 +156917,35 @@
     "role": "candidate",
     "createdAt": "2026-11-07T19:32:00.324Z",
     "updatedAt": "2026-11-07T19:32:00.324Z",
+    "isSynthetic": true,
+    "testDataVersion": "2.0"
+  },
+  "SYNTH-USR-1794112419956": {
+    "id": "SYNTH-USR-1794112419956",
+    "name": "মোঃ শফিউল আলম (রংপুর টেস্ট)",
+    "nameBn": "মোঃ শফিউল আলম (রংপুর টেস্ট)",
+    "fatherName": "",
+    "motherName": "",
+    "email": "",
+    "phone": "01889986188",
+    "username": "candidate.6188",
+    "dob": "",
+    "gender": "male",
+    "nid": "",
+    "division": "",
+    "district": "রংপুর",
+    "address": "",
+    "permanentAddress": "",
+    "photoUrl": "data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"120\" height=\"120\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"%2394a3b8\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect width=\"100%\" height=\"100%\" fill=\"%23f1f5f9\"/><path d=\"M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2\"></path><circle cx=\"12\" cy=\"7\" r=\"4\"></circle></svg>",
+    "signatureUrl": "data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"200\" height=\"60\" viewBox=\"0 0 200 60\"><rect width=\"200\" height=\"60\" fill=\"%23f8fafc\" rx=\"6\"/><text x=\"100\" y=\"35\" font-family=\"sans-serif\" font-size=\"12\" fill=\"%2394a3b8\" text-anchor=\"middle\">স্বাক্ষর যুক্ত করুন</text></svg>",
+    "walletBalance": 50,
+    "maritalStatus": "single",
+    "quota": "none",
+    "education": [],
+    "passwordHash": "scrypt$372ff71bb6da7a95e895c12e580d37fd$24a645536ce538dedfdbba99575ca143ba1224a2e2adc8b993324762bc3741bf4d7fe98d1b39c64142f507cae637bcb72528fa0ed39d481a4a2972e8e862a497",
+    "role": "candidate",
+    "createdAt": "2026-11-08T04:33:39.955Z",
+    "updatedAt": "2026-11-08T04:33:39.955Z",
     "isSynthetic": true,
     "testDataVersion": "2.0"
   }

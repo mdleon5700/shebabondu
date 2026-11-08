@@ -23,7 +23,12 @@ export async function PUT(req: Request) {
   const session = getServerSession(req);
   if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401, headers: NO_CACHE_HEADERS });
   try {
-    const updates = await req.json();
+    let updates: any;
+    try {
+      updates = await req.json();
+    } catch {
+      return NextResponse.json({ error: 'Invalid JSON body' }, { status: 400, headers: NO_CACHE_HEADERS });
+    }
     // Prevent malicious overwrite of id, role or passwordHash
     delete updates.id;
     delete updates.role;
@@ -37,3 +42,5 @@ export async function PUT(req: Request) {
     return NextResponse.json({ error: err.message }, { status: 500, headers: NO_CACHE_HEADERS });
   }
 }
+
+export const PATCH = PUT;

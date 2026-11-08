@@ -22,12 +22,12 @@ const config: Config = {
         bdred: "#f42a41",
       },
             fontFamily: {
-        sans: ['SolaimanLipi', 'Arial', 'sans-serif'],
-        heading: ['SolaimanLipi', 'Arial', 'sans-serif'],
-        hind: ['SolaimanLipi', 'Arial', 'sans-serif'],
-        body: ['SolaimanLipi', 'Arial', 'sans-serif'],
-        solaiman: ['SolaimanLipi', 'Arial', 'sans-serif'],
-        bangla: ['SolaimanLipi', 'Arial', 'sans-serif'],
+        sans: ['SolaimanLipi', 'Kalpurush', 'Noto Sans Bengali', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+        heading: ['SolaimanLipi', 'Kalpurush', 'Noto Sans Bengali', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+        hind: ['SolaimanLipi', 'Kalpurush', 'Noto Sans Bengali', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+        body: ['SolaimanLipi', 'Kalpurush', 'Noto Sans Bengali', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+        solaiman: ['SolaimanLipi', 'Kalpurush', 'Noto Sans Bengali', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+        bangla: ['SolaimanLipi', 'Kalpurush', 'Noto Sans Bengali', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
       },
       fontSize: {
         '2xs': ['13px', { lineHeight: '18px' }],

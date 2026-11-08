@@ -347,7 +347,7 @@
       "district": "ঢাকা",
       "address": "",
       "permanentAddress": "",
-      "photoUrl": "data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"120\" height=\"120\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"%2394a3b8\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect width=\"100%\" height=\"100%\" fill=\"%23f1f5f9\"/><path d=\"M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2\"></path><circle cx=\"12\" cy=\"7\" r=\"4\"></circle></svg>",
+      "photoUrl": "/api/uploads/candidate-documents/CS-USR-26-775654_photo_1794108813860.jpg",
       "signatureUrl": "data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"200\" height=\"60\" viewBox=\"0 0 200 60\"><rect width=\"200\" height=\"60\" fill=\"%23f8fafc\" rx=\"6\"/><text x=\"100\" y=\"35\" font-family=\"sans-serif\" font-size=\"12\" fill=\"%2394a3b8\" text-anchor=\"middle\">স্বাক্ষর যুক্ত করুন</text></svg>",
       "walletBalance": 50,
       "maritalStatus": "single",
@@ -356,7 +356,19 @@
       "passwordHash": "scrypt$df597d17c3582ac0c015e81e2daf64b2$3eb23d8e57f0971f872ec08ec19e25f6c25c96676d6ed570893e8508d322a233e602336398f8d433999dbce1ffbe62c92107a26372fd6317758c1d7139459ae7",
       "role": "candidate",
       "createdAt": "2026-11-07T16:29:42.803Z",
-      "updatedAt": "2026-11-07T16:29:42.803Z"
+      "updatedAt": "2026-11-08T03:33:33.862Z",
+      "adminAuditHistory": [
+        {
+          "timestamp": "2026-11-08T03:33:33.862Z",
+          "adminId": "ADMIN",
+          "action": "candidate_profile_update",
+          "changedFields": [
+            "photoUrl"
+          ],
+          "notes": "1টি ফিল্ড পরিবর্তিত হয়েছে (photoUrl)",
+          "reason": "1টি ফিল্ড পরিবর্তিত হয়েছে (photoUrl)"
+        }
+      ]
     },
     "CS-USR-26-366643": {
       "id": "CS-USR-26-366643",
@@ -566,7 +578,25 @@
     "CS-USR-26-413355": [],
     "CS-USR-26-972223": [],
     "CS-USR-26-990011": [],
-    "CS-USR-26-775654": [],
+    "CS-USR-26-775654": [
+      {
+        "id": "CS-DOC-2611-212",
+        "type": "photo",
+        "title": "প্রার্থীর ছবি",
+        "category": "custom",
+        "fileName": "CS-USR-26-775654_photo_1794108813860.jpg",
+        "fileSize": "23 KB",
+        "uploadDate": "৮/১১/২০২৬",
+        "dataUrl": "/api/uploads/candidate-documents/CS-USR-26-775654_photo_1794108813860.jpg",
+        "fileUrl": "/api/uploads/candidate-documents/CS-USR-26-775654_photo_1794108813860.jpg",
+        "secureUrl": "/api/candidate/documents/secure/CS-DOC-2611-212",
+        "checksumSha256": "519f87ba38b8df705dfb868f6f87c316ec40c3b4b171b4ee3d27eea6082de9dc",
+        "mimeType": "image/jpeg",
+        "version": 1,
+        "isVerified": false,
+        "verificationStatus": "PENDING_REVIEW"
+      }
+    ],
     "CS-USR-26-366643": [],
     "CS-USR-26-366564": [],
     "ADMIN-SUPER": [
@@ -6476,6 +6506,14 @@
     ],
     "CS-USR-26-775654": [
       {
+        "title": "ডকুমেন্ট আপলোড সম্পন্ন",
+        "message": "প্রার্থীর ছবি সফলভাবে আপলোড হয়েছে।",
+        "type": "system",
+        "id": "CS-NOTIF-2611-570",
+        "date": "2026-11-08T03:33:33.902Z",
+        "read": false
+      },
+      {
         "id": "notif_job_job-alljobs-csrajshah-12949_1794088252751_55xr",
         "title": "আপডেট: সিভিল সার্জন কার্যালয় রাজবাড়ী নিয়োগ বিজ্ঞপ্তি ২০২৬",
         "message": "সিভিল সার্জন কার্যালয় রাজবাড়ী কর্তৃক স্বাস্থ্য ও চিকিৎসা বিজ্ঞপ্তি প্রকাশিত হয়েছে। পদ সংখ্যা: 1। আবেদনের শেষ সময়: ১৪ ডিসেম্বর ২০২৬।",
@@ -7735,6 +7773,26 @@
       "candidateId": "CS-USR-26-366564",
       "role": "candidate",
       "expiresAt": "2026-11-09T03:28:59.351Z"
+    },
+    "imp-689e9bd9b82e849bd09ee291ff65d85e7071f63bd4adeaa9": {
+      "candidateId": "CS-USR-26-366564",
+      "role": "candidate",
+      "expiresAt": "2026-11-09T03:32:55.789Z"
+    },
+    "imp-a728850d270caac0979bd20c2ac70485672705ebf383fda3": {
+      "candidateId": "CS-USR-26-775654",
+      "role": "candidate",
+      "expiresAt": "2026-11-09T03:33:15.913Z"
+    },
+    "1a18fbfe9ea0322b20567bafb2a6510fc0cf75a47b7c6940df63c53ac318890f": {
+      "candidateId": "CS-USR-26-366564",
+      "role": "candidate",
+      "expiresAt": "2026-11-15T03:34:56.140Z"
+    },
+    "test-instant-font-token-1794109139238": {
+      "candidateId": "CS-USR-26-990011",
+      "role": "candidate",
+      "expiresAt": "2026-11-09T03:38:59.253Z"
     }
   },
   "coupons": {},
@@ -7742,6 +7800,20 @@
   "couponRedemptions": {},
   "raffleEntries": {},
   "adminAuditLogs": [
+    {
+      "adminId": "ADMIN-SUPER",
+      "action": "job_edit",
+      "targetId": "job-be140b5e-e36e-4be8-8797-9cc7c9ca24fd",
+      "targetType": "order",
+      "changes": {
+        "job": {
+          "new": "Narail Distric (DCNARAIL) - হিসাব সহকারী নিয়োগ বিজ্ঞপ্তি ২০২৬"
+        }
+      },
+      "notes": "Job circular updated: Narail Distric (DCNARAIL) - হিসাব সহকারী নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "id": "AUDIT-1794108924476-R5GJ8",
+      "timestamp": "2026-11-08T03:35:24.476Z"
+    },
     {
       "adminId": "ADMIN-SUPER",
       "action": "job_publish",
@@ -19945,7 +20017,7 @@
       "maxAge": 32,
       "districts": "সকল জেলার প্রার্থীরা আবেদন করতে পারবেন",
       "deadline": "২২ নভেম্বর ২০২৬",
-      "daysRemaining": 25,
+      "daysRemaining": 0,
       "govtFee": 200,
       "serviceFee": 50,
       "officialLink": "https://dcnarail.teletalk.com.bd/",
@@ -20002,11 +20074,11 @@
         "সরকারি চাকরির খবর",
         "alljobs teletalk bd circular"
       ],
-      "slug": "",
+      "slug": "job-be140b5e-e36e-4be8-8797-9cc7c9ca24fd",
       "refNo": "",
       "designation": "Narail Distric (DCNARAIL) - হিসাব সহকারী নিয়োগ বিজ্ঞপ্তি ২০২৬",
       "eligibility": "",
-      "status": "OPEN",
+      "status": "EXPIRED",
       "featured": true,
       "isHot": false,
       "orgType": "",
@@ -20033,8 +20105,19 @@
       "lastVerifiedAt": "2026-11-08T03:14:06.602Z",
       "verifiedBy": "ADMIN-SUPER",
       "createdAt": "2026-11-08T03:14:06.602Z",
-      "updatedAt": "2026-11-08T03:14:06.604Z",
+      "updatedAt": "2026-11-08T03:35:24.458Z",
       "revisionHistory": [
+        {
+          "timestamp": "2026-11-08T03:35:24.458Z",
+          "adminId": "ADMIN-SUPER",
+          "action": "update",
+          "changedFields": [
+            "daysRemaining",
+            "slug",
+            "status"
+          ],
+          "summary": "3টি ফিল্ড পরিবর্তিত হয়েছে (daysRemaining, slug, status)"
+        },
         {
           "timestamp": "2026-11-08T03:14:06.604Z",
           "adminId": "ADMIN-SUPER",

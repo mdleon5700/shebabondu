@@ -237,7 +237,7 @@ export default function ProfilePage() {
     }
     populateAddressFromProfile(local);
     setIsLoaded(true);
-    fetch('/api/profile')
+    fetch('/api/profile', { cache: 'no-store' })
       .then(res => res.ok ? res.json() : null)
       .then(data => {
         const p = data?.profile || data?.user;
@@ -245,6 +245,9 @@ export default function ProfilePage() {
           setProfile(p);
           populateAddressFromProfile(p);
           storage.updateUser(p);
+          if (typeof window !== 'undefined') {
+            window.dispatchEvent(new Event('cs_user_changed'));
+          }
         }
       })
       .catch(() => {})
@@ -314,18 +317,31 @@ export default function ProfilePage() {
 
   const syncProfileToServer = async (profileToSave: CandidateProfile): Promise<boolean> => {
     try {
+      // Optimistically update local state & dispatch change event immediately
+      setProfile(profileToSave);
+      storage.updateUser(profileToSave);
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(new Event('cs_user_changed'));
+      }
+
       const token = typeof window !== 'undefined' ? localStorage.getItem('cs_session_token') : null;
       const headers: Record<string, string> = {
         'Content-Type': 'application/json',
         ...(token ? { 'Authorization': `Bearer ${token}` } : {})
       };
       const response = await fetch('/api/profile', {
-        method: 'PUT', headers, body: JSON.stringify(profileToSave)
+        method: 'PUT',
+        headers,
+        cache: 'no-store',
+        body: JSON.stringify(profileToSave)
       });
       const data = await response.json();
       if (!response.ok || !data.profile) throw new Error(data.error || 'প্রোফাইল সংরক্ষণ ব্যর্থ হয়েছে');
       setProfile(data.profile);
       storage.updateUser(data.profile);
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(new Event('cs_user_changed'));
+      }
       return true;
     } catch (error) {
       alert(error instanceof Error ? error.message : 'প্রোফাইল সংরক্ষণ ব্যর্থ হয়েছে');

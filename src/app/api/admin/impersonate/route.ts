@@ -15,7 +15,14 @@ export async function POST(req: Request) {
   }
 
   try {
-    const { candidateId } = await req.json();
+    let body: any = {};
+    try {
+      body = await req.json();
+    } catch {
+      return NextResponse.json({ error: 'Candidate ID is required' }, { status: 400 });
+    }
+
+    const { candidateId } = body || {};
     if (!candidateId) {
       return NextResponse.json({ error: 'Candidate ID is required' }, { status: 400 });
     }

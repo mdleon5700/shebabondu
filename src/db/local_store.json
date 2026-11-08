@@ -137,30 +137,199 @@
     },
     "CS-USR-26-990011": {
       "id": "CS-USR-26-990011",
-      "name": "তাহমিদ ইকবাল",
-      "nameBn": "তাহমিদ ইকবাল",
+      "name": "তাহমিদ ইকবাল (লাইভ সিঙ্ক ভেরিফাইড)",
+      "nameBn": "তাহমিদ ইকবাল (বাংলা)",
       "fatherName": "",
       "motherName": "",
-      "email": "",
+      "email": "tahmid.sync.audit@chakrisheba.com",
       "phone": "01788990011",
       "username": "candidate.0011",
-      "dob": "",
+      "dob": "1997-08-25",
       "gender": "male",
       "nid": "",
-      "division": "",
-      "district": "রাজশাহী",
-      "address": "",
+      "division": "Sylhet",
+      "district": "সিলেট",
+      "address": "বাড়ি ১২, রোড ৩, আম্বরখানা, সিলেট সদর",
       "permanentAddress": "",
       "photoUrl": "data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"120\" height=\"120\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"%2394a3b8\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect width=\"100%\" height=\"100%\" fill=\"%23f1f5f9\"/><path d=\"M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2\"></path><circle cx=\"12\" cy=\"7\" r=\"4\"></circle></svg>",
       "signatureUrl": "data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"200\" height=\"60\" viewBox=\"0 0 200 60\"><rect width=\"200\" height=\"60\" fill=\"%23f8fafc\" rx=\"6\"/><text x=\"100\" y=\"35\" font-family=\"sans-serif\" font-size=\"12\" fill=\"%2394a3b8\" text-anchor=\"middle\">স্বাক্ষর যুক্ত করুন</text></svg>",
-      "walletBalance": 50,
+      "walletBalance": 450,
       "maritalStatus": "single",
-      "quota": "none",
-      "education": [],
+      "quota": "freedom_fighter",
+      "education": [
+        {
+          "level": "এসএসসি",
+          "degree": "বিজ্ঞান",
+          "board": "ঢাকা",
+          "roll": "109841",
+          "year": "2014",
+          "result": "5.00"
+        },
+        {
+          "level": "এইচএসসি",
+          "degree": "বিজ্ঞান",
+          "board": "ঢাকা",
+          "roll": "214589",
+          "year": "2016",
+          "result": "4.90"
+        },
+        {
+          "level": "স্নাতক (অনার্স)",
+          "degree": "বিএসসি ইন সিএসই",
+          "board": "ঢাকা বিশ্ববিদ্যালয়",
+          "roll": "160105",
+          "year": "2021",
+          "result": "3.82"
+        }
+      ],
       "passwordHash": "scrypt$fa1f439768571b0fdf30e342d5e42767$28ae82f8bdc58f0af7b3e2c782a6f151e81516939d7621771a07a9a35baee17a750f81057ca6b01a5a1b840bc63ef294707cc14d44df3ff731ef37881ee00e4b",
       "role": "candidate",
       "createdAt": "2026-11-07T16:11:35.800Z",
-      "updatedAt": "2026-11-07T16:11:35.800Z"
+      "updatedAt": "2026-11-08T03:18:52.017Z",
+      "adminAuditHistory": [
+        {
+          "timestamp": "2026-11-08T03:18:52.017Z",
+          "adminId": "ADMIN-SUPER",
+          "action": "candidate_profile_update",
+          "changedFields": [
+            "walletBalance",
+            "reason"
+          ],
+          "notes": "অ্যাডমিন ক্রেডিট সমন্বয়",
+          "reason": "অ্যাডমিন ক্রেডিট সমন্বয়"
+        },
+        {
+          "timestamp": "2026-11-08T03:18:51.839Z",
+          "adminId": "ADMIN-SUPER",
+          "action": "candidate_profile_update",
+          "changedFields": [
+            "isVerified",
+            "accountStatus",
+            "adminNotes",
+            "status"
+          ],
+          "notes": "Admin workspace edit",
+          "reason": "Admin workspace edit"
+        },
+        {
+          "timestamp": "2026-11-08T03:18:51.675Z",
+          "adminId": "ADMIN",
+          "action": "candidate_profile_update",
+          "changedFields": [
+            "quota"
+          ],
+          "notes": "1টি ফিল্ড পরিবর্তিত হয়েছে (quota)",
+          "reason": "1টি ফিল্ড পরিবর্তিত হয়েছে (quota)"
+        },
+        {
+          "timestamp": "2026-11-08T03:18:51.456Z",
+          "adminId": "ADMIN",
+          "action": "candidate_profile_update",
+          "changedFields": [
+            "district",
+            "division",
+            "address"
+          ],
+          "notes": "3টি ফিল্ড পরিবর্তিত হয়েছে (district, division, address)",
+          "reason": "3টি ফিল্ড পরিবর্তিত হয়েছে (district, division, address)"
+        },
+        {
+          "timestamp": "2026-11-08T03:18:51.294Z",
+          "adminId": "ADMIN",
+          "action": "candidate_profile_update",
+          "changedFields": [
+            "skills"
+          ],
+          "notes": "1টি ফিল্ড পরিবর্তিত হয়েছে (skills)",
+          "reason": "1টি ফিল্ড পরিবর্তিত হয়েছে (skills)"
+        },
+        {
+          "timestamp": "2026-11-08T03:18:51.104Z",
+          "adminId": "ADMIN-SUPER",
+          "action": "candidate_profile_update",
+          "changedFields": [
+            "experiences"
+          ],
+          "notes": "Admin workspace edit",
+          "reason": "Admin workspace edit"
+        },
+        {
+          "timestamp": "2026-11-08T03:18:50.882Z",
+          "adminId": "ADMIN",
+          "action": "candidate_profile_update",
+          "changedFields": [
+            "education"
+          ],
+          "notes": "1টি ফিল্ড পরিবর্তিত হয়েছে (education)",
+          "reason": "1টি ফিল্ড পরিবর্তিত হয়েছে (education)"
+        },
+        {
+          "timestamp": "2026-11-08T03:18:50.762Z",
+          "adminId": "ADMIN",
+          "action": "candidate_profile_update",
+          "changedFields": [
+            "dob"
+          ],
+          "notes": "1টি ফিল্ড পরিবর্তিত হয়েছে (dob)",
+          "reason": "1টি ফিল্ড পরিবর্তিত হয়েছে (dob)"
+        },
+        {
+          "timestamp": "2026-11-08T03:18:50.635Z",
+          "adminId": "ADMIN-SUPER",
+          "action": "candidate_profile_update",
+          "changedFields": [
+            "email"
+          ],
+          "notes": "Admin workspace edit",
+          "reason": "Admin workspace edit"
+        },
+        {
+          "timestamp": "2026-11-08T03:18:50.469Z",
+          "adminId": "ADMIN",
+          "action": "candidate_profile_update",
+          "changedFields": [
+            "name",
+            "nameBn"
+          ],
+          "notes": "2টি ফিল্ড পরিবর্তিত হয়েছে (name, nameBn)",
+          "reason": "2টি ফিল্ড পরিবর্তিত হয়েছে (name, nameBn)"
+        }
+      ],
+      "experiences": [
+        {
+          "id": "exp-1",
+          "designation": "কম্পিউটার অপারেটর",
+          "organization": "বাংলাদেশ পরিসংখ্যান ব্যুরো (BBS)",
+          "duration": "২ বছর",
+          "isCurrent": true,
+          "responsibilities": "ডাটা এন্ট্রি ও অ্যানালিসিস"
+        }
+      ],
+      "skills": [
+        {
+          "id": "sk-1",
+          "name": "কম্পিউটার টাইপিং (বাংলা ও ইংরেজি)",
+          "proficiency": "EXPERT"
+        },
+        {
+          "id": "sk-2",
+          "name": "এমএস অফিস ও এক্সেল",
+          "proficiency": "ADVANCED"
+        }
+      ],
+      "isVerified": true,
+      "accountStatus": "active",
+      "adminNotes": [
+        {
+          "id": "NOTE-1794107931838",
+          "text": "জাতীয় পরিচয়পত্র ও শিক্ষাগত সনদ যাচাই সম্পন্ন হয়েছে।",
+          "author": "ADMIN-SUPER",
+          "authorName": "অ্যাডমিন",
+          "timestamp": "2026-11-08T03:18:51.838Z"
+        }
+      ],
+      "status": "active",
+      "reason": "অ্যাডমিন ক্রেডিট সমন্বয়"
     },
     "CS-USR-26-775654": {
       "id": "CS-USR-26-775654",
@@ -241,8 +410,18 @@
       "passwordHash": "scrypt$999b484166d44bfce035f6071343a8fb$b5c6ff5b7187c039640ed84bba529edcc197b2f52d879f23b8a00536602e7c36484a6810047259b0042a63a5f728d2b4ff226b09e2ad28c3d4b70843b7689ccd",
       "role": "candidate",
       "createdAt": "2026-11-07T21:59:18.135Z",
-      "updatedAt": "2026-11-08T03:13:25.967Z",
+      "updatedAt": "2026-11-08T03:19:21.103Z",
       "adminAuditHistory": [
+        {
+          "timestamp": "2026-11-08T03:19:21.103Z",
+          "adminId": "ADMIN-SUPER",
+          "action": "candidate_profile_update",
+          "changedFields": [
+            "languages"
+          ],
+          "notes": "Admin workspace edit",
+          "reason": "Admin workspace edit"
+        },
         {
           "timestamp": "2026-11-08T03:13:25.966Z",
           "adminId": "ADMIN-SUPER",
@@ -355,6 +534,10 @@
           "authorName": "অ্যাডমিন",
           "timestamp": "2026-11-08T03:13:25.966Z"
         }
+      ],
+      "languages": [
+        "Bangla",
+        "English"
       ]
     }
   },
@@ -7435,6 +7618,21 @@
       "candidateId": "CS-USR-26-366564",
       "role": "candidate",
       "expiresAt": "2026-11-15T02:58:38.224Z"
+    },
+    "dc11a22a81af23336758f7eff388c891f06ce7950eaa437865b20d8afa68ef10": {
+      "candidateId": "ADMIN-SUPER",
+      "role": "admin",
+      "expiresAt": "2026-11-15T03:18:27.015Z"
+    },
+    "test-session-sync-token-1794107930321": {
+      "candidateId": "CS-USR-26-990011",
+      "role": "candidate",
+      "expiresAt": "2026-11-09T03:18:50.343Z"
+    },
+    "test-browser-sync-token-1794107950524": {
+      "candidateId": "CS-USR-26-990011",
+      "role": "candidate",
+      "expiresAt": "2026-11-09T03:19:10.539Z"
     }
   },
   "coupons": {},
@@ -7442,6 +7640,20 @@
   "couponRedemptions": {},
   "raffleEntries": {},
   "adminAuditLogs": [
+    {
+      "adminId": "ADMIN-SUPER",
+      "action": "job_publish",
+      "targetId": "job-be140b5e-e36e-4be8-8797-9cc7c9ca24fd",
+      "targetType": "order",
+      "changes": {
+        "job": {
+          "new": "Narail Distric (DCNARAIL) - হিসাব সহকারী নিয়োগ বিজ্ঞপ্তি ২০২৬"
+        }
+      },
+      "notes": "Job circular published: Narail Distric (DCNARAIL) - হিসাব সহকারী নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "id": "AUDIT-1794107646631-TX6RD",
+      "timestamp": "2026-11-08T03:14:06.631Z"
+    },
     {
       "adminId": "ADMIN-SUPER",
       "action": "job_delete",
@@ -19615,7 +19827,124 @@
       "timestamp": "2026-11-07T00:05:14.404Z"
     }
   ],
-  "jobs": {},
+  "jobs": {
+    "job-be140b5e-e36e-4be8-8797-9cc7c9ca24fd": {
+      "id": "job-be140b5e-e36e-4be8-8797-9cc7c9ca24fd",
+      "title": "Narail Distric (DCNARAIL) - হিসাব সহকারী নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "organization": "Narail Distric (DCNARAIL)",
+      "logo": "https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=120&q=80",
+      "category": "teacher",
+      "categoryLabel": "শিক্ষক নিয়োগ ও প্রাথমিক",
+      "grade": "১০ম - ১৬তম গ্রেড",
+      "totalPosts": 2,
+      "salary": "জাতীয় বেতন স্কেল ২০১৫ অনুযায়ী",
+      "minEducation": "উচ্চ মাধ্যমিক (এইচএসসি) বা সমমান পাস",
+      "minAge": 18,
+      "maxAge": 32,
+      "districts": "সকল জেলার প্রার্থীরা আবেদন করতে পারবেন",
+      "deadline": "২২ নভেম্বর ২০২৬",
+      "daysRemaining": 25,
+      "govtFee": 200,
+      "serviceFee": 50,
+      "officialLink": "https://dcnarail.teletalk.com.bd/",
+      "circularImage": "https://images.unsplash.com/photo-1586281380349-632531db7ed4?auto=format&fit=crop&w=600&q=80",
+      "circularPdfUrl": "https://alljobs.teletalk.com.bd/media/public/uploads/governments/jobs/advertisement-1793262869609.pdf",
+      "circularPages": [],
+      "audioSummary": "Narail Distric (DCNARAIL) - হিসাব সহকারী নিয়োগ বিজ্ঞপ্তি ২০২৬ - Narail Distric (DCNARAIL)-এ নতুন নিয়োগ বিজ্ঞপ্তি।",
+      "publishedDate": "৮/১১/২০২৬",
+      "requirements": [
+        "প্রার্থীকে অবশ্যই বাংলাদেশের স্থায়ী নাগরিক হতে হবে।",
+        "আবেদনের শেষ তারিখে প্রার্থীর বয়স ১৮ থেকে ৩২ বছরের মধ্যে হতে হবে।",
+        "অনলাইনে আবেদনের সময় সকল শিক্ষাগত যোগ্যতার তথ্য নির্ভুলভাবে প্রদান করতে হবে।"
+      ],
+      "positions": [
+        {
+          "title": "হিসাব সহকারী",
+          "grade": "১০ম গ্রেড",
+          "posts": 2,
+          "salary": "জাতীয় বেতন স্কেল ২০১৫ অনুযায়ী",
+          "minEducation": "এইচএসসি / স্নাতক বা সমমানের ডিগ্রি",
+          "govtFee": 200
+        }
+      ],
+      "feeRange": "৳200",
+      "ageCutOffDate": "২২ নভেম্বর ২০২৬",
+      "smsPrefix": "NARA",
+      "allowThirdDivision": true,
+      "minFirstDivisionsCount": 0,
+      "documentsRequired": [
+        "সকল শিক্ষাগত যোগ্যতার মূল সনদপত্রের সত্যায়িত কপি",
+        "জাতীয় পরিচয়পত্র (NID) বা জন্ম নিবন্ধন সনদ",
+        "নাগরিকত্ব সনদ ও প্রথম শ্রেণীর গেজেটেড কর্মকর্তা কর্তৃক প্রদত্ত চারিত্রিক সনদপত্র",
+        "অনলাইনে পূরণকৃত Applicant's Copy ও প্রবেশপত্র"
+      ],
+      "bengaliDescription": "Narail Distric (DCNARAIL) সম্প্রতি ২০২৬ সালের জন্য রাজস্ব খাতভুক্ত শূন্যপদে দক্ষ ও যোগ্য জনবল নিয়োগের লক্ষ্যে অফিসিয়াল নিয়োগ বিজ্ঞপ্তি প্রকাশ করেছে। উক্ত প্রতিষ্ঠানে বিভিন্ন ক্যাটাগরিতে মোট 2 টি পদে দরখাস্ত আহ্বান করা হয়েছে। জাতীয় বেতন স্কেল ২০১৫ এর আওতায় আকর্ষণীয় বেতন কাঠামো ও সরকারি সুযোগ-সুবিধা সহ উক্ত পদে বাংলাদেশের স্থায়ী নাগরিকদের নিকট থেকে আবেদন আহ্বান করা যাচ্ছে।\n\nবিজ্ঞপ্তি অনুযায়ী আগ্রহী ও যোগ্য প্রার্থীদের অনলাইনের মাধ্যমে নির্ধারিত সময়ের মধ্যে আবেদন সম্পন্ন করতে হবে। পদভেদে ন্যূনতম শিক্ষাগত যোগ্যতা এইচএসসি বা স্নাতক সমমান চাওয়া হয়েছে এবং বয়সসীমা ১৮ হতে ৩২ বছরের মধ্যে হতে হবে (বীর মুক্তিযোদ্ধা কোটা ও অন্যান্য সংরক্ষিত কোটায় সরকারি বিধি অনুযায়ী শিথিলযোগ্য)।\n\nনির্বাচিত প্রার্থীরা সরকারি বিধি মোতাবেক মূল বেতনের পাশাপাশি বাড়িভাড়া ভাতা, চিকিৎসা ভাতা, যাতায়াত ভাতা ও উৎসব ভাতা প্রাপ্য হবেন। সকল জেলার যোগ্য প্রার্থীদের সময় থাকতে সতর্কতার সাথে অনলাইনে ফরম পূরণ করে নির্ধারিত টেলিটক ফি জমা দেওয়ার পরামর্শ প্রদান করা যাচ্ছে।",
+      "faqItems": [
+        {
+          "question": "Narail Distric (DCNARAIL)-এ আবেদনের শেষ তারিখ কবে?",
+          "answer": "বিজ্ঞপ্তি অনুযায়ী আবেদন জমা দেওয়ার সর্বশেষ তারিখ ২২ নভেম্বর ২০২৬।"
+        },
+        {
+          "question": "আবেদন ফি কত এবং কীভাবে জমা দিতে হবে?",
+          "answer": "টেলিটক প্রিপেইড সিমের মাধ্যমে এসএমএস করে নির্ধারিত আবেদন ফি পরবর্তী ৭২ ঘণ্টার মধ্যে প্রদান করতে হবে।"
+        },
+        {
+          "question": "আবেদনের বয়সসীমা কত?",
+          "answer": "সাধারণ প্রার্থীদের ক্ষেত্রে বয়সসীমা ১৮ থেকে ৩২ বছর।"
+        }
+      ],
+      "seoTitle": "Narail Distric (DCNARAIL) - হিসাব সহকারী নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "seoDescription": "Narail Distric (DCNARAIL) সম্প্রতি ২০২৬ সালের জন্য রাজস্ব খাতভুক্ত শূন্যপদে দক্ষ ও যোগ্য জনবল নিয়োগের লক্ষ্যে অফিসিয়াল নিয়োগ বিজ্ঞপ্তি প্রকাশ করেছে। উক্ত প্রতিষ",
+      "seoKeywords": [
+        "Narail Distric (DCNARAIL) নিয়োগ বিজ্ঞপ্তি ২০২৬",
+        "সরকারি চাকরির খবর",
+        "alljobs teletalk bd circular"
+      ],
+      "slug": "",
+      "refNo": "",
+      "designation": "Narail Distric (DCNARAIL) - হিসাব সহকারী নিয়োগ বিজ্ঞপ্তি ২০২৬",
+      "eligibility": "",
+      "status": "OPEN",
+      "featured": true,
+      "isHot": false,
+      "orgType": "",
+      "subCategory": "",
+      "employmentType": "full_time",
+      "workArrangement": "on_site",
+      "division": "",
+      "district": "",
+      "upazila": "",
+      "salaryType": "range",
+      "applicationStartDate": "",
+      "applicationMethod": "online_teletalk",
+      "applicationInstructions": "আগ্রহী প্রার্থীদের টেলিটক অনলাইন পোর্টাল (https://dcnarail.teletalk.com.bd/) ব্যবহার করে নির্ভুলভাবে আবেদন ফরম পূরণ করতে হবে।",
+      "selectionProcess": "১. লিখিত ও কম্পিউটার টাইপিং পরীক্ষা\n২. মৌখিক পরীক্ষা (ভাইভা) ও সনদপত্র যাচাই",
+      "experienceYears": "",
+      "skills": [],
+      "canonicalUrl": "",
+      "robotsDirective": "index, follow",
+      "ogImage": "",
+      "twitterImage": "",
+      "verificationStatus": "MANUAL_ENTERED",
+      "verificationConfidence": 100,
+      "verificationNotes": "ম্যানুয়ালি অ্যাডমিন কর্তৃক তৈরিকৃত",
+      "lastVerifiedAt": "2026-11-08T03:14:06.602Z",
+      "verifiedBy": "ADMIN-SUPER",
+      "createdAt": "2026-11-08T03:14:06.602Z",
+      "updatedAt": "2026-11-08T03:14:06.604Z",
+      "revisionHistory": [
+        {
+          "timestamp": "2026-11-08T03:14:06.604Z",
+          "adminId": "ADMIN-SUPER",
+          "action": "create",
+          "changedFields": [
+            "initial_creation"
+          ],
+          "summary": "সার্কুলার সফলভাবে তৈরি হয়েছে"
+        }
+      ]
+    }
+  },
   "pages": {
     "home": {
       "id": "home",

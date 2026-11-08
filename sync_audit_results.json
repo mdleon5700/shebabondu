@@ -1,0 +1,77 @@
+{
+  "timestamp": "2026-11-08T03:18:52.150Z",
+  "passCount": 10,
+  "totalTests": 10,
+  "results": [
+    {
+      "testNum": 1,
+      "name": "Personal Name & Bangla Name Sync",
+      "direction": "User -> Admin",
+      "pass": true,
+      "details": "User PUT: 200 | Admin GET name: \"তাহমিদ ইকবাল (লাইভ সিঙ্ক ভেরিফাইড)\""
+    },
+    {
+      "testNum": 2,
+      "name": "Contact Email Reflection",
+      "direction": "Admin -> User",
+      "pass": true,
+      "details": "Admin PATCH: 200 | User GET email: \"tahmid.sync.audit@chakrisheba.com\""
+    },
+    {
+      "testNum": 3,
+      "name": "Date of Birth (DOB) Sync",
+      "direction": "User -> Admin",
+      "pass": true,
+      "details": "User PUT: 200 | Admin GET dob: \"1997-08-25\""
+    },
+    {
+      "testNum": 4,
+      "name": "Educational Qualifications Array Sync",
+      "direction": "User -> Admin",
+      "pass": true,
+      "details": "User PUT: 200 | Admin GET degrees count: 3, Highest: \"বিএসসি ইন সিএসই\""
+    },
+    {
+      "testNum": 5,
+      "name": "Professional Work Experience Sync",
+      "direction": "Admin -> User",
+      "pass": true,
+      "details": "Admin PATCH: 200 | User GET exp count: 1, Designation: \"কম্পিউটার অপারেটর\""
+    },
+    {
+      "testNum": 6,
+      "name": "Technical Skills Array Sync",
+      "direction": "User -> Admin",
+      "pass": true,
+      "details": "User PUT: 200 | Admin GET skills count: 2"
+    },
+    {
+      "testNum": 7,
+      "name": "Address & District Sync",
+      "direction": "User -> Admin",
+      "pass": true,
+      "details": "User PUT: 200 | Admin GET district: \"সিলেট\", division: \"Sylhet\""
+    },
+    {
+      "testNum": 8,
+      "name": "Quota Claim & Admin Detection",
+      "direction": "User -> Admin",
+      "pass": true,
+      "details": "User PUT: 200 | Admin GET quota: \"freedom_fighter\""
+    },
+    {
+      "testNum": 9,
+      "name": "Verification Status & Admin Note",
+      "direction": "Admin -> User",
+      "pass": true,
+      "details": "Admin PATCH: 200 | User GET isVerified: true, Status: \"active\""
+    },
+    {
+      "testNum": 10,
+      "name": "Wallet Balance Adjustment Sync",
+      "direction": "Admin -> User",
+      "pass": true,
+      "details": "Admin PATCH: 200 | User GET walletBalance: ৳450"
+    }
+  ]
+}

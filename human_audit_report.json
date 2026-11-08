@@ -1,0 +1,19 @@
+{
+  "timestamp": "2026-11-08T05:05:09.896Z",
+  "stepsExecuted": 10,
+  "stepsPassed": 10,
+  "issuesFound": [],
+  "screenshotsCaptured": [
+    "human_audit_01_homepage.png",
+    "human_audit_02_job_search.png",
+    "human_audit_03_job_detail.png",
+    "human_audit_04_login.png",
+    "human_audit_05_candidate_dashboard.png",
+    "human_audit_06_candidate_profile.png",
+    "human_audit_07_cv_builder.png",
+    "human_audit_08_document_vault.png",
+    "human_audit_09_admin_dashboard.png",
+    "human_audit_13_mobile_homepage.png",
+    "human_audit_14_mobile_job_detail.png"
+  ]
+}

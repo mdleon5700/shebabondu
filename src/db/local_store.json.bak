@@ -2,9 +2,9 @@
   "candidates": {
     "CS-USR-26-413355": {
       "id": "CS-USR-26-413355",
-      "name": "তানভীর আহমেদ (লাইভ কিউএ)",
-      "nameBn": "তানভীর আহমেদ (লাইভ কিউএ)",
-      "fatherName": "মোঃ আব্দুল মান্নান (এডিটেড 1794113528319)",
+      "name": "তানভীর আহমেদ",
+      "nameBn": "তানভীর আহমেদ",
+      "fatherName": "মোঃ আব্দুল মান্নান",
       "motherName": "",
       "email": "",
       "phone": "01799413355",
@@ -26,7 +26,7 @@
       "role": "candidate",
       "createdAt": "2026-11-07T12:52:43.254Z",
       "updatedAt": "2026-11-08T04:52:08.509Z",
-      "bio": "প্রকৌশলী ও প্রযুক্তি গবেষক — লাইভ ডাটা এডিটিং ভেরিফাইড 1794113528089",
+      "bio": "প্রকৌশলী ও তথ্যপ্রযুক্তি গবেষক — চাকরি সেবা প্ল্যাটফর্মের নিবন্ধিত প্রার্থী।",
       "thana": "মিরপুর",
       "adminAuditHistory": [
         {
@@ -124,8 +124,8 @@
     },
     "CS-USR-26-990011": {
       "id": "CS-USR-26-990011",
-      "name": "তাহমিদ ইকবাল (লাইভ সিঙ্ক ভেরিফাইড)",
-      "nameBn": "তাহমিদ ইকবাল (বাংলা)",
+      "name": "তাহমিদ ইকবাল",
+      "nameBn": "তাহমিদ ইকবাল",
       "fatherName": "",
       "motherName": "",
       "email": "tahmid.sync.audit@chakrisheba.com",
@@ -359,8 +359,8 @@
     },
     "CS-USR-26-366643": {
       "id": "CS-USR-26-366643",
-      "name": "01774366643",
-      "nameBn": "01774366643",
+      "name": "মোছাঃ নাসরিন আক্তার",
+      "nameBn": "মোছাঃ নাসরিন আক্তার",
       "fatherName": "",
       "motherName": "",
       "email": "01774366643@efwer.ca",
@@ -386,11 +386,11 @@
     },
     "CS-USR-26-366564": {
       "id": "CS-USR-26-366564",
-      "name": "01774366643@efwer.ca",
-      "nameBn": "01774366643@efwer.ca",
+      "name": "মোহাম্মদ রাশেদুল ইসলাম",
+      "nameBn": "মোহাম্মদ রাশেদুল ইসলাম",
       "fatherName": "মরহুম আব্দুর রহমান",
       "motherName": "মোসা: রহিমা খাতুন",
-      "email": "0177366643@efwer.ca",
+      "email": "rashedul.islam.bd@gmail.com",
       "phone": "01774366564",
       "username": "01774366643.efwer.ca.6564",
       "dob": "",
@@ -5305,6 +5305,21 @@
   "couponRedemptions": {},
   "raffleEntries": {},
   "adminAuditLogs": [
+    {
+      "adminId": "ADMIN-SUPER",
+      "action": "source_update",
+      "targetId": "teletalk-alljobs",
+      "targetType": "source",
+      "changes": {
+        "scanIntervalMinutes": {
+          "old": 360,
+          "new": 56
+        }
+      },
+      "notes": "Updated settings for job source: Teletalk Alljobs Portal",
+      "id": "AUDIT-1794113535220-NFCGY",
+      "timestamp": "2026-11-08T04:52:15.220Z"
+    },
     {
       "adminId": "ADMIN",
       "action": "CATEGORY_UPDATE",
@@ -23117,278 +23132,6 @@
           "summary": "সার্কুলার সফলভাবে তৈরি হয়েছে"
         }
       ]
-    },
-    "job-83f4b664-cf31-4c66-b85e-30ecf4c30d06": {
-      "id": "job-83f4b664-cf31-4c66-b85e-30ecf4c30d06",
-      "title": "টেস্ট নিয়োগ",
-      "organization": "বাংলাদেশ ব্যাংক",
-      "logo": "https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=120&q=80",
-      "category": "govt",
-      "categoryLabel": "সরকারি চাকরি",
-      "grade": "৯ম গ্রেড",
-      "totalPosts": 1,
-      "salary": "২২,০০০ - ৫৩,০৬০ টাকা",
-      "minEducation": "স্নাতক বা সমমান",
-      "minAge": 18,
-      "maxAge": 32,
-      "districts": "সকল জেলা",
-      "deadline": "২৫ নভেম্বর ২০২৬",
-      "daysRemaining": 15,
-      "govtFee": 0,
-      "serviceFee": 0,
-      "officialLink": "https://alljobs.teletalk.com.bd",
-      "circularImage": "https://images.unsplash.com/photo-1586281380349-632531db7ed4?auto=format&fit=crop&w=600&q=80",
-      "circularPdfUrl": "",
-      "circularPages": [],
-      "audioSummary": "টেস্ট নিয়োগ প্রকাশিত হয়েছে। আবেদনের শেষ সময় শীঘ্রই।",
-      "publishedDate": "৮/১১/২০২৬",
-      "requirements": [
-        "স্নাতক বা সমমান",
-        "বয়স: ১৮-৩২ বছর"
-      ],
-      "positions": [],
-      "feeRange": "",
-      "ageCutOffDate": "2026-11-01",
-      "smsPrefix": "",
-      "allowThirdDivision": true,
-      "minFirstDivisionsCount": 0,
-      "documentsRequired": [],
-      "bengaliDescription": "",
-      "faqItems": [],
-      "seoTitle": "টেস্ট নিয়োগ - বাংলাদেশ ব্যাংক নিয়োগ বিজ্ঞপ্তি ২০২৬",
-      "seoDescription": "বাংলাদেশ ব্যাংক-এ টেস্ট নিয়োগ পদে নিয়োগ বিজ্ঞপ্তি প্রকাশ হয়েছে।",
-      "seoKeywords": [],
-      "slug": "",
-      "refNo": "",
-      "designation": "টেস্ট নিয়োগ",
-      "eligibility": "",
-      "status": "published",
-      "featured": false,
-      "isHot": false,
-      "orgType": "",
-      "subCategory": "",
-      "employmentType": "full_time",
-      "workArrangement": "on_site",
-      "division": "",
-      "district": "",
-      "upazila": "",
-      "salaryType": "range",
-      "applicationStartDate": "",
-      "applicationMethod": "online_teletalk",
-      "applicationInstructions": "",
-      "selectionProcess": "",
-      "experienceYears": "",
-      "skills": [],
-      "canonicalUrl": "",
-      "robotsDirective": "index, follow",
-      "ogImage": "",
-      "twitterImage": "",
-      "verificationStatus": "MANUAL_ENTERED",
-      "verificationConfidence": 100,
-      "verificationNotes": "ম্যানুয়ালি অ্যাডমিন কর্তৃক তৈরিকৃত",
-      "lastVerifiedAt": "2026-11-08T04:47:58.658Z",
-      "verifiedBy": "ADMIN-SUPER",
-      "createdAt": "2026-11-08T04:47:58.658Z",
-      "updatedAt": "2026-11-08T04:47:58.687Z",
-      "revisionHistory": [
-        {
-          "timestamp": "2026-11-08T04:47:58.687Z",
-          "adminId": "ADMIN-SUPER",
-          "action": "create",
-          "changedFields": [
-            "initial_creation"
-          ],
-          "summary": "সার্কুলার সফলভাবে তৈরি হয়েছে"
-        }
-      ]
-    },
-    "job-test-1794113358652": {
-      "id": "job-test-1794113358652",
-      "title": "টেস্ট সিনিয়র অফিসার নিয়োগ ২০২৬",
-      "organization": "বাংলাদেশ চিনি ও খাদ্য শিল্প কর্পোরেশন",
-      "logo": "https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=120&q=80",
-      "category": "govt",
-      "categoryLabel": "সরকারি চাকরি",
-      "grade": "৯ম গ্রেড",
-      "totalPosts": 20,
-      "salary": "৩০,০০০ - ৬৫,০০০ টাকা (সংশোধিত বেতন স্কেল)",
-      "minEducation": "স্নাতক বা সমমান",
-      "minAge": 18,
-      "maxAge": 32,
-      "districts": "সকল জেলা",
-      "deadline": "2026-12-31",
-      "daysRemaining": 15,
-      "govtFee": 0,
-      "serviceFee": 0,
-      "officialLink": "https://alljobs.teletalk.com.bd",
-      "circularImage": "https://images.unsplash.com/photo-1586281380349-632531db7ed4?auto=format&fit=crop&w=600&q=80",
-      "circularPdfUrl": "",
-      "circularPages": [],
-      "audioSummary": "টেস্ট সিনিয়র অফিসার নিয়োগ ২০২৬ প্রকাশিত হয়েছে। আবেদনের শেষ সময় 2026-12-31।",
-      "publishedDate": "৮/১১/২০২৬",
-      "requirements": [
-        "স্নাতক বা সমমান",
-        "বয়স: ১৮-৩২ বছর"
-      ],
-      "positions": [],
-      "feeRange": "",
-      "ageCutOffDate": "2026-11-01",
-      "smsPrefix": "",
-      "allowThirdDivision": true,
-      "minFirstDivisionsCount": 0,
-      "documentsRequired": [],
-      "bengaliDescription": "",
-      "faqItems": [],
-      "seoTitle": "টেস্ট সিনিয়র অফিসার নিয়োগ ২০২৬ - বাংলাদেশ চিনি ও খাদ্য শিল্প কর্পোরেশন নিয়োগ বিজ্ঞপ্তি ২০২৬",
-      "seoDescription": "বাংলাদেশ চিনি ও খাদ্য শিল্প কর্পোরেশন-এ টেস্ট সিনিয়র অফিসার নিয়োগ ২০২৬ পদে নিয়োগ বিজ্ঞপ্তি প্রকাশ হয়েছে।",
-      "seoKeywords": [],
-      "slug": "job-test-1794113358652",
-      "refNo": "",
-      "designation": "টেস্ট সিনিয়র অফিসার নিয়োগ ২০২৬",
-      "eligibility": "",
-      "status": "published",
-      "featured": false,
-      "isHot": false,
-      "orgType": "autonomous",
-      "subCategory": "",
-      "employmentType": "full_time",
-      "workArrangement": "on_site",
-      "division": "",
-      "district": "",
-      "upazila": "",
-      "salaryType": "range",
-      "applicationStartDate": "",
-      "applicationMethod": "online_teletalk",
-      "applicationInstructions": "",
-      "selectionProcess": "",
-      "experienceYears": "",
-      "skills": [],
-      "canonicalUrl": "",
-      "robotsDirective": "index, follow",
-      "ogImage": "",
-      "twitterImage": "",
-      "verificationStatus": "MANUAL_ENTERED",
-      "verificationConfidence": 100,
-      "verificationNotes": "ম্যানুয়ালি অ্যাডমিন কর্তৃক তৈরিকৃত",
-      "lastVerifiedAt": "2026-11-08T04:49:19.655Z",
-      "verifiedBy": "ADMIN-SUPER",
-      "createdAt": "2026-11-08T04:49:19.655Z",
-      "updatedAt": "2026-11-08T04:49:20.021Z",
-      "revisionHistory": [
-        {
-          "timestamp": "2026-11-08T04:49:20.021Z",
-          "adminId": "ADMIN-SUPER",
-          "action": "update",
-          "changedFields": [
-            "totalPosts",
-            "salary"
-          ],
-          "summary": "2টি ফিল্ড পরিবর্তিত হয়েছে (totalPosts, salary)"
-        },
-        {
-          "timestamp": "2026-11-08T04:49:19.697Z",
-          "adminId": "ADMIN-SUPER",
-          "action": "create",
-          "changedFields": [
-            "initial_creation"
-          ],
-          "summary": "সার্কুলার সফলভাবে তৈরি হয়েছে"
-        }
-      ]
-    },
-    "job-test-1794113530928": {
-      "id": "job-test-1794113530928",
-      "title": "টেস্ট সিনিয়র অফিসার নিয়োগ ২০২৬",
-      "organization": "বাংলাদেশ চিনি ও খাদ্য শিল্প কর্পোরেশন",
-      "logo": "https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=120&q=80",
-      "category": "govt",
-      "categoryLabel": "সরকারি চাকরি",
-      "grade": "৯ম গ্রেড",
-      "totalPosts": 20,
-      "salary": "৩০,০০০ - ৬৫,০০০ টাকা (সংশোধিত বেতন স্কেল)",
-      "minEducation": "স্নাতক বা সমমান",
-      "minAge": 18,
-      "maxAge": 32,
-      "districts": "সকল জেলা",
-      "deadline": "2026-12-31",
-      "daysRemaining": 15,
-      "govtFee": 0,
-      "serviceFee": 0,
-      "officialLink": "https://alljobs.teletalk.com.bd",
-      "circularImage": "https://images.unsplash.com/photo-1586281380349-632531db7ed4?auto=format&fit=crop&w=600&q=80",
-      "circularPdfUrl": "",
-      "circularPages": [],
-      "audioSummary": "টেস্ট সিনিয়র অফিসার নিয়োগ ২০২৬ প্রকাশিত হয়েছে। আবেদনের শেষ সময় 2026-12-31।",
-      "publishedDate": "৮/১১/২০২৬",
-      "requirements": [
-        "স্নাতক বা সমমান",
-        "বয়স: ১৮-৩২ বছর"
-      ],
-      "positions": [],
-      "feeRange": "",
-      "ageCutOffDate": "2026-11-01",
-      "smsPrefix": "",
-      "allowThirdDivision": true,
-      "minFirstDivisionsCount": 0,
-      "documentsRequired": [],
-      "bengaliDescription": "",
-      "faqItems": [],
-      "seoTitle": "টেস্ট সিনিয়র অফিসার নিয়োগ ২০২৬ - বাংলাদেশ চিনি ও খাদ্য শিল্প কর্পোরেশন নিয়োগ বিজ্ঞপ্তি ২০২৬",
-      "seoDescription": "বাংলাদেশ চিনি ও খাদ্য শিল্প কর্পোরেশন-এ টেস্ট সিনিয়র অফিসার নিয়োগ ২০২৬ পদে নিয়োগ বিজ্ঞপ্তি প্রকাশ হয়েছে।",
-      "seoKeywords": [],
-      "slug": "job-test-1794113530928",
-      "refNo": "",
-      "designation": "টেস্ট সিনিয়র অফিসার নিয়োগ ২০২৬",
-      "eligibility": "",
-      "status": "published",
-      "featured": false,
-      "isHot": false,
-      "orgType": "autonomous",
-      "subCategory": "",
-      "employmentType": "full_time",
-      "workArrangement": "on_site",
-      "division": "",
-      "district": "",
-      "upazila": "",
-      "salaryType": "range",
-      "applicationStartDate": "",
-      "applicationMethod": "online_teletalk",
-      "applicationInstructions": "",
-      "selectionProcess": "",
-      "experienceYears": "",
-      "skills": [],
-      "canonicalUrl": "",
-      "robotsDirective": "index, follow",
-      "ogImage": "",
-      "twitterImage": "",
-      "verificationStatus": "MANUAL_ENTERED",
-      "verificationConfidence": 100,
-      "verificationNotes": "ম্যানুয়ালি অ্যাডমিন কর্তৃক তৈরিকৃত",
-      "lastVerifiedAt": "2026-11-08T04:52:11.433Z",
-      "verifiedBy": "ADMIN-SUPER",
-      "createdAt": "2026-11-08T04:52:11.433Z",
-      "updatedAt": "2026-11-08T04:52:11.743Z",
-      "revisionHistory": [
-        {
-          "timestamp": "2026-11-08T04:52:11.743Z",
-          "adminId": "ADMIN-SUPER",
-          "action": "update",
-          "changedFields": [
-            "totalPosts",
-            "salary"
-          ],
-          "summary": "2টি ফিল্ড পরিবর্তিত হয়েছে (totalPosts, salary)"
-        },
-        {
-          "timestamp": "2026-11-08T04:52:11.469Z",
-          "adminId": "ADMIN-SUPER",
-          "action": "create",
-          "changedFields": [
-            "initial_creation"
-          ],
-          "summary": "সার্কুলার সফলভাবে তৈরি হয়েছে"
-        }
-      ]
     }
   },
   "pages": {
@@ -27829,364 +27572,6 @@
           ]
         }
       ]
-    },
-    "_xvfdgd": {
-      "id": "_xvfdgd",
-      "slug": "/xvfdgd",
-      "title": "dfgdf",
-      "metaTitle": "dfgdf — চাকরি সেবা",
-      "metaDescription": "dsfgdfgh",
-      "status": "published",
-      "version": 1,
-      "isSystemPage": false,
-      "sections": [
-        {
-          "id": "sec-1794089002553",
-          "type": "hero",
-          "title": "dfgdf",
-          "subtitle": "নতুন পৃষ্ঠার বিবরণ এখানে লিখুন",
-          "content": {},
-          "style": {
-            "backgroundColor": "#ffffff",
-            "textColor": "#0f172a",
-            "paddingY": "lg",
-            "textAlign": "center"
-          },
-          "isVisible": true
-        }
-      ],
-      "revisions": [
-        {
-          "id": "REV-1794089002554",
-          "version": 1,
-          "savedAt": "2026-11-07T22:03:22.554Z",
-          "savedBy": "ADMIN-SUPER",
-          "status": "published",
-          "sections": [
-            {
-              "id": "sec-1794089002553",
-              "type": "hero",
-              "title": "dfgdf",
-              "subtitle": "নতুন পৃষ্ঠার বিবরণ এখানে লিখুন",
-              "content": {},
-              "style": {
-                "backgroundColor": "#ffffff",
-                "textColor": "#0f172a",
-                "paddingY": "lg",
-                "textAlign": "center"
-              },
-              "isVisible": true
-            }
-          ]
-        }
-      ],
-      "updatedAt": "2026-11-07T22:03:22.554Z",
-      "publishedContent": {
-        "useOnCanonicalPath": true,
-        "slug": "/xvfdgd",
-        "title": "dfgdf",
-        "metaTitle": "dfgdf — চাকরি সেবা",
-        "metaDescription": "dsfgdfgh",
-        "sections": [
-          {
-            "id": "sec-1794089002553",
-            "type": "hero",
-            "title": "dfgdf",
-            "subtitle": "নতুন পৃষ্ঠার বিবরণ এখানে লিখুন",
-            "content": {},
-            "style": {
-              "backgroundColor": "#ffffff",
-              "textColor": "#0f172a",
-              "paddingY": "lg",
-              "textAlign": "center"
-            },
-            "isVisible": true
-          }
-        ],
-        "publishedAt": "2026-11-07T22:03:22.554Z"
-      },
-      "publishedAt": "2026-11-07T22:03:22.554Z"
-    },
-    "test-page-1794113244588": {
-      "id": "test-page-1794113244588",
-      "slug": "/test-page-1794113244588",
-      "title": "টেস্ট পাতা (অডিট)",
-      "metaTitle": "টেস্ট পাতা (অডিট) — চাকরি সেবা",
-      "metaDescription": "",
-      "status": "published",
-      "version": 1,
-      "isSystemPage": false,
-      "sections": [
-        {
-          "id": "sec-1794113245063",
-          "type": "hero",
-          "title": "টেস্ট পাতা (অডিট)",
-          "subtitle": "নতুন পৃষ্ঠার বিবরণ এখানে লিখুন",
-          "content": {},
-          "style": {
-            "backgroundColor": "#ffffff",
-            "textColor": "#0f172a",
-            "paddingY": "lg",
-            "textAlign": "center"
-          },
-          "isVisible": true
-        }
-      ],
-      "revisions": [
-        {
-          "id": "REV-1794113245064",
-          "version": 1,
-          "savedAt": "2026-11-08T04:47:25.064Z",
-          "savedBy": "ADMIN-SUPER",
-          "status": "published",
-          "sections": [
-            {
-              "id": "sec-1794113245063",
-              "type": "hero",
-              "title": "টেস্ট পাতা (অডিট)",
-              "subtitle": "নতুন পৃষ্ঠার বিবরণ এখানে লিখুন",
-              "content": {},
-              "style": {
-                "backgroundColor": "#ffffff",
-                "textColor": "#0f172a",
-                "paddingY": "lg",
-                "textAlign": "center"
-              },
-              "isVisible": true
-            }
-          ]
-        }
-      ],
-      "updatedAt": "2026-11-08T04:47:25.064Z",
-      "publishedContent": {
-        "useOnCanonicalPath": true,
-        "slug": "/test-page-1794113244588",
-        "title": "টেস্ট পাতা (অডিট)",
-        "metaTitle": "টেস্ট পাতা (অডিট) — চাকরি সেবা",
-        "metaDescription": "",
-        "sections": [
-          {
-            "id": "sec-1794113245063",
-            "type": "hero",
-            "title": "টেস্ট পাতা (অডিট)",
-            "subtitle": "নতুন পৃষ্ঠার বিবরণ এখানে লিখুন",
-            "content": {},
-            "style": {
-              "backgroundColor": "#ffffff",
-              "textColor": "#0f172a",
-              "paddingY": "lg",
-              "textAlign": "center"
-            },
-            "isVisible": true
-          }
-        ],
-        "publishedAt": "2026-11-08T04:47:25.064Z"
-      },
-      "publishedAt": "2026-11-08T04:47:25.064Z"
-    },
-    "test-page-1794113356660": {
-      "id": "test-page-1794113356660",
-      "slug": "/test-page-1794113356660",
-      "title": "টেস্ট পাতা (সম্পাদিত)",
-      "metaTitle": "টেস্ট পাতা (অডিট) — চাকরি সেবা",
-      "metaDescription": "",
-      "status": "published",
-      "version": 2,
-      "isSystemPage": false,
-      "sections": [
-        {
-          "id": "sec-1794113357273",
-          "type": "hero",
-          "title": "টেস্ট পাতা (অডিট)",
-          "subtitle": "নতুন পৃষ্ঠার বিবরণ এখানে লিখুন",
-          "content": {},
-          "style": {
-            "backgroundColor": "#ffffff",
-            "textColor": "#0f172a",
-            "paddingY": "lg",
-            "textAlign": "center"
-          },
-          "isVisible": true
-        }
-      ],
-      "revisions": [
-        {
-          "id": "REV-1794113358573",
-          "version": 2,
-          "savedAt": "2026-11-08T04:49:18.573Z",
-          "savedBy": "ADMIN-SUPER",
-          "status": "published",
-          "sections": [
-            {
-              "id": "sec-1794113357273",
-              "type": "hero",
-              "title": "টেস্ট পাতা (অডিট)",
-              "subtitle": "নতুন পৃষ্ঠার বিবরণ এখানে লিখুন",
-              "content": {},
-              "style": {
-                "backgroundColor": "#ffffff",
-                "textColor": "#0f172a",
-                "paddingY": "lg",
-                "textAlign": "center"
-              },
-              "isVisible": true
-            }
-          ]
-        },
-        {
-          "id": "REV-1794113357273",
-          "version": 1,
-          "savedAt": "2026-11-08T04:49:17.273Z",
-          "savedBy": "ADMIN-SUPER",
-          "status": "published",
-          "sections": [
-            {
-              "id": "sec-1794113357273",
-              "type": "hero",
-              "title": "টেস্ট পাতা (অডিট)",
-              "subtitle": "নতুন পৃষ্ঠার বিবরণ এখানে লিখুন",
-              "content": {},
-              "style": {
-                "backgroundColor": "#ffffff",
-                "textColor": "#0f172a",
-                "paddingY": "lg",
-                "textAlign": "center"
-              },
-              "isVisible": true
-            }
-          ]
-        }
-      ],
-      "updatedAt": "2026-11-08T04:49:18.573Z",
-      "publishedContent": {
-        "useOnCanonicalPath": true,
-        "slug": "/test-page-1794113356660",
-        "title": "টেস্ট পাতা (সম্পাদিত)",
-        "metaTitle": "টেস্ট পাতা (অডিট) — চাকরি সেবা",
-        "metaDescription": "",
-        "sections": [
-          {
-            "id": "sec-1794113357273",
-            "type": "hero",
-            "title": "টেস্ট পাতা (অডিট)",
-            "subtitle": "নতুন পৃষ্ঠার বিবরণ এখানে লিখুন",
-            "content": {},
-            "style": {
-              "backgroundColor": "#ffffff",
-              "textColor": "#0f172a",
-              "paddingY": "lg",
-              "textAlign": "center"
-            },
-            "isVisible": true
-          }
-        ],
-        "publishedAt": "2026-11-08T04:49:18.573Z"
-      },
-      "publishedAt": "2026-11-08T04:49:18.573Z",
-      "content": "সম্পাদিত উন্নত কনটেন্ট — 2026-11-08T04:49:17.312Z",
-      "isPublished": true
-    },
-    "test-page-1794113528546": {
-      "id": "test-page-1794113528546",
-      "slug": "/test-page-1794113528546",
-      "title": "টেস্ট পাতা (সম্পাদিত)",
-      "metaTitle": "টেস্ট পাতা (অডিট) — চাকরি সেবা",
-      "metaDescription": "",
-      "status": "published",
-      "version": 2,
-      "isSystemPage": false,
-      "sections": [
-        {
-          "id": "sec-1794113529780",
-          "type": "hero",
-          "title": "টেস্ট পাতা (অডিট)",
-          "subtitle": "নতুন পৃষ্ঠার বিবরণ এখানে লিখুন",
-          "content": {},
-          "style": {
-            "backgroundColor": "#ffffff",
-            "textColor": "#0f172a",
-            "paddingY": "lg",
-            "textAlign": "center"
-          },
-          "isVisible": true
-        }
-      ],
-      "revisions": [
-        {
-          "id": "REV-1794113530869",
-          "version": 2,
-          "savedAt": "2026-11-08T04:52:10.869Z",
-          "savedBy": "ADMIN-SUPER",
-          "status": "published",
-          "sections": [
-            {
-              "id": "sec-1794113529780",
-              "type": "hero",
-              "title": "টেস্ট পাতা (অডিট)",
-              "subtitle": "নতুন পৃষ্ঠার বিবরণ এখানে লিখুন",
-              "content": {},
-              "style": {
-                "backgroundColor": "#ffffff",
-                "textColor": "#0f172a",
-                "paddingY": "lg",
-                "textAlign": "center"
-              },
-              "isVisible": true
-            }
-          ]
-        },
-        {
-          "id": "REV-1794113529781",
-          "version": 1,
-          "savedAt": "2026-11-08T04:52:09.781Z",
-          "savedBy": "ADMIN-SUPER",
-          "status": "published",
-          "sections": [
-            {
-              "id": "sec-1794113529780",
-              "type": "hero",
-              "title": "টেস্ট পাতা (অডিট)",
-              "subtitle": "নতুন পৃষ্ঠার বিবরণ এখানে লিখুন",
-              "content": {},
-              "style": {
-                "backgroundColor": "#ffffff",
-                "textColor": "#0f172a",
-                "paddingY": "lg",
-                "textAlign": "center"
-              },
-              "isVisible": true
-            }
-          ]
-        }
-      ],
-      "updatedAt": "2026-11-08T04:52:10.869Z",
-      "publishedContent": {
-        "useOnCanonicalPath": true,
-        "slug": "/test-page-1794113528546",
-        "title": "টেস্ট পাতা (সম্পাদিত)",
-        "metaTitle": "টেস্ট পাতা (অডিট) — চাকরি সেবা",
-        "metaDescription": "",
-        "sections": [
-          {
-            "id": "sec-1794113529780",
-            "type": "hero",
-            "title": "টেস্ট পাতা (অডিট)",
-            "subtitle": "নতুন পৃষ্ঠার বিবরণ এখানে লিখুন",
-            "content": {},
-            "style": {
-              "backgroundColor": "#ffffff",
-              "textColor": "#0f172a",
-              "paddingY": "lg",
-              "textAlign": "center"
-            },
-            "isVisible": true
-          }
-        ],
-        "publishedAt": "2026-11-08T04:52:10.869Z"
-      },
-      "publishedAt": "2026-11-08T04:52:10.869Z",
-      "content": "সম্পাদিত উন্নত কনটেন্ট — 2026-11-08T04:52:09.823Z",
-      "isPublished": true
     }
   },
   "jobSources": {
@@ -34592,25 +33977,6 @@
       "canonical_url": "https://chakrisheba.com/categories/other-jobs",
       "created_at": "2026-01-01T00:00:00.000Z",
       "updated_at": "2026-10-30T00:00:00.000Z"
-    },
-    "cat-test-1794113533084": {
-      "id": "cat-test-1794113533084",
-      "name_bn": "টেস্ট ক্যাটাগরি (সম্পাদিত)",
-      "name_en": "Test Category",
-      "slug": "cat-test-1794113533084",
-      "description_bn": "",
-      "description_en": "",
-      "parent_id": null,
-      "icon": "Briefcase",
-      "image": null,
-      "display_order": 0,
-      "is_featured": false,
-      "is_active": true,
-      "seo_title": "টেস্ট ক্যাটাগরি নিয়োগ বিজ্ঞপ্তি ২০২৬ | চাকরি সেবা",
-      "seo_description": "টেস্ট ক্যাটাগরি এর সর্বশেষ চাকরির সার্কুলার ও আবেদন।",
-      "canonical_url": "https://chakrisheba.com/categories/cat-test-1794113533084",
-      "created_at": "2026-11-08T04:52:13.609Z",
-      "updated_at": "2026-11-08T04:52:13.898Z"
     }
   },
   "searchAnalytics": [
@@ -37110,8 +36476,9 @@
     "updatedBy": "ADMIN-SUPER",
     "probe": true,
     "timestamp": "2026-11-08T04:44:44.142Z",
-    "announcementBanner": "সতর্কতা: চাকরি সেবা শতভাগ বিনামূল্যে পরিচালিত হয় — 1794113531837",
-    "siteNameBn": "চাকরি সেবা"
+    "announcementBanner": "চাকরি সেবা একটি সম্পূর্ণ বিনামূল্যের প্ল্যাটফর্ম। সরকারি ও বেসরকারি সকল চাকরির সার্কুলার ও তথ্যের নির্ভরযোগ্য উৎস।",
+    "siteNameBn": "চাকরি সেবা",
+    "siteNameEn": "Chakri Sheba"
   },
   "mediaItems": {
     "med_bd_gov": {

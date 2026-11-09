@@ -103,7 +103,7 @@ export interface EducationVerificationDecision {
   id?: string;
   candidateId: string;
   recordId: string; // Education or Training ID
-  recordType: 'education' | 'training';
+  recordType: 'education' | 'training' | 'document' | 'biometric_photo' | 'biometric_signature';
   status: CertificateVerificationStatus;
   reviewerId: string;
   reviewerName?: string;

@@ -18,7 +18,7 @@ export class CertificateVerificationManager {
   public static applyDecision(decision: {
     candidateId: string;
     recordId: string;
-    recordType: 'education' | 'training' | 'document';
+    recordType: 'education' | 'training' | 'document' | 'biometric_photo' | 'biometric_signature';
     status: CertificateVerificationStatus;
     reviewerId: string;
     reviewerName?: string;
@@ -129,6 +129,45 @@ export class CertificateVerificationManager {
         success: true,
         updatedRecord: {
           id: decision.recordId,
+          status: decision.status,
+          remarks: decision.remarks
+        }
+      };
+    }
+
+        if (decision.recordType === 'biometric_photo' || decision.recordType === 'biometric_signature') {
+      const isPhoto = decision.recordType === 'biometric_photo';
+      const fieldName = isPhoto ? 'photoVerificationStatus' : 'signatureVerificationStatus';
+      const labelBn = isPhoto ? 'ছবি (৩০০x৩০০)' : 'স্বাক্ষর (৩০০x৮০)';
+
+      serverDB.updateCandidate(decision.candidateId, {
+        [fieldName]: decision.status,
+        updatedAt: nowIso
+      } as any);
+
+      serverDB.recordAdminAudit({
+        adminId: decision.reviewerId,
+        action: isPhoto ? 'photo_verify' : 'signature_verify',
+        targetId: decision.candidateId,
+        targetType: 'candidate_biometric',
+        changes: { [fieldName]: { new: decision.status } },
+        notes: `Biometric verification: ${decision.status} for ${labelBn}. Remarks: ${decision.remarks}`
+      });
+
+      if (decision.status === 'VERIFIED') {
+        serverDB.addCandidateNotification(decision.candidateId, {
+          title: `বায়োমেট্রিক ${labelBn} ভেরিফিকেশন অনুমোদিত`,
+          message: `আপনার আপলোডকৃত ${labelBn} টেলিটক স্ট্যান্ডার্ড অনুযায়ী সফলভাবে অনুমোদিত হয়েছে।`,
+          type: 'system',
+          link: '/dashboard/profile'
+        });
+      }
+
+      return {
+        success: true,
+        updatedRecord: {
+          id: decision.recordId,
+          type: decision.recordType,
           status: decision.status,
           remarks: decision.remarks
         }

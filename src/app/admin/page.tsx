@@ -104,6 +104,7 @@ import TestingSpiderHub from '@/components/admin/TestingSpiderHub';
 import GeminiBrowserSpiderHub from '@/components/admin/GeminiBrowserSpiderHub';
 import AdminLayout from '@/components/admin/layout/AdminLayout';
 import AdminDashboardOverview from '@/components/admin/dashboard/AdminDashboardOverview';
+import CertificateVerificationQueue from '@/components/admin/CertificateVerificationQueue';
 
 
 import { ApplicationRequest, JobCircular, JobSource, CircularDraft, CompanyProfile } from '@/lib/types';
@@ -242,6 +243,7 @@ function AdminContent() {
   const [previewPdfUrl, setPreviewPdfUrl] = useState<string | null>(null);
   const [previewPdfTitle, setPreviewPdfTitle] = useState<string | null>(null);
   const [selectedDocAppIds, setSelectedDocAppIds] = useState<string[]>([]);
+  const [docSubView, setDocSubView] = useState<'applicant_copies' | 'certificate_verification'>('applicant_copies');
   const [quickUploadAppId, setQuickUploadAppId] = useState<string>('');
   const [quickUploadTrackingId, setQuickUploadTrackingId] = useState<string>('');
   const [isQuickUploadingDoc, setIsQuickUploadingDoc] = useState<boolean>(false);
@@ -4237,8 +4239,32 @@ function AdminContent() {
               </div>
             </div>
           )}
-          {/* TAB 4: APPLICATIONS -> DOCUMENTS REPOSITORY (STEP 2.5 - ALL 7 ENTERPRISE FEATURES) */}
-          {(activeTab === 'documents' || activeTab === 'candidate-cv') && (() => {
+          {/* TAB 4: APPLICATIONS -> DOCUMENTS REPOSITORY & CERTIFICATE VERIFICATION QUEUE */}
+          {(activeTab === 'documents' || activeTab === 'candidate-cv') && (
+            <div className="space-y-4">
+              {/* Document Hub Sub-View Switcher */}
+              <div className="flex flex-wrap items-center gap-2 p-1.5 bg-slate-100 rounded-2xl w-fit">
+                <button
+                  type="button"
+                  onClick={() => setDocSubView('applicant_copies')}
+                  className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-2 ${docSubView === 'applicant_copies' ? 'bg-white text-slate-900 shadow-sm font-black' : 'text-slate-600 hover:text-slate-900'}`}
+                >
+                  <FileText className="w-4 h-4 text-emerald-600" />
+                  <span>অফিশিয়াল অ্যাপ্লিক্যান্ট কপি ও স্লিপ রিপোজিটরি</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setDocSubView('certificate_verification')}
+                  className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-2 ${docSubView === 'certificate_verification' ? 'bg-white text-slate-900 shadow-sm font-black' : 'text-slate-600 hover:text-slate-900'}`}
+                >
+                  <Award className="w-4 h-4 text-amber-600" />
+                  <span>সনদপত্র, ছবি ও স্বাক্ষর ভেরিফিকেশন কিউ</span>
+                </button>
+              </div>
+
+              {docSubView === 'certificate_verification' ? (
+                <CertificateVerificationQueue />
+              ) : (() => {
             const allAppsWithPdf = applications.filter(a => a.applicantCopyPdfUrl || a.pdfUrl);
             const completedMissingPdf = applications.filter(a => a.status === 'completed' && !a.applicantCopyPdfUrl && !a.pdfUrl);
 
@@ -4751,6 +4777,8 @@ function AdminContent() {
               </div>
             );
           })()}
+            </div>
+          )}
 
           {/* FEATURE 2 MODAL: INLINE PDF PREVIEWER LIGHTBOX */}
           {previewPdfUrl && (

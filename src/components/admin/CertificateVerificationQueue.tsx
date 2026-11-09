@@ -24,7 +24,7 @@ interface QueueItem {
   candidateName: string;
   candidatePhone: string;
   recordId: string;
-  recordType: 'education' | 'training';
+  recordType: 'education' | 'training' | 'document' | 'biometric_photo' | 'biometric_signature';
   degreeOrTitle: string;
   institution: string;
   year?: string;
@@ -36,6 +36,15 @@ interface QueueItem {
   verificationRemarks?: string;
   submittedAt?: string;
 }
+
+const getAdminHeaders = (): HeadersInit => {
+  const pin = typeof window !== 'undefined' ? (localStorage.getItem('cs_admin_pin') || '') : '';
+  const token = typeof window !== 'undefined' ? (localStorage.getItem('cs_session_token') || '') : '';
+  const headers: Record<string, string> = {};
+  if (pin) headers['x-admin-secret'] = pin;
+  if (token) headers['authorization'] = `Bearer ${token}`;
+  return headers;
+};
 
 export default function CertificateVerificationQueue() {
   const [queue, setQueue] = useState<QueueItem[]>([]);
@@ -51,7 +60,7 @@ export default function CertificateVerificationQueue() {
   const fetchQueue = async () => {
     try {
       setLoading(true);
-      const res = await fetch(`/api/admin/certificates/queue?status=${statusFilter}`);
+      const res = await fetch(`/api/admin/certificates/queue?status=${statusFilter}`, { headers: getAdminHeaders() });
       if (res.ok) {
         const data = await res.json();
         if (data.queue) setQueue(data.queue);
@@ -90,7 +99,7 @@ export default function CertificateVerificationQueue() {
       setSubmitting(true);
       const res = await fetch('/api/admin/certificates/verify', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { ...getAdminHeaders(), 'Content-Type': 'application/json' },
         body: JSON.stringify({
           candidateId: activeModalItem.candidateId,
           recordId: activeModalItem.recordId,

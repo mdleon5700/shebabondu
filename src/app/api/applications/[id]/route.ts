@@ -100,3 +100,31 @@ export async function PATCH(req: Request, context: { params: Promise<Promise<{ i
     return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }
+
+export async function GET(req: Request, context: { params: Promise<Promise<{ id: string }> | { id: string }> }) {
+  const session = getServerSession(req);
+  if (!session) {
+    return NextResponse.json({ error: 'UNAUTHORIZED: Authentication required' }, { status: 401 });
+  }
+
+  const resolvedParams = await Promise.resolve((await context.params));
+  const appId = resolvedParams?.id;
+  if (!appId) {
+    return NextResponse.json({ error: 'আবেদন আইডি আবশ্যক' }, { status: 400 });
+  }
+
+  const app = serverDB.getAllApplications().find(a => a.id === appId);
+  if (!app) {
+    return NextResponse.json({ error: 'আবেদনটি খুঁজে পাওয়া যায়নি' }, { status: 404 });
+  }
+
+  if (session.role !== 'admin' && app.candidateId !== session.candidateId) {
+    return NextResponse.json({ error: 'FORBIDDEN: You can only view your own applications.' }, { status: 403 });
+  }
+
+  return NextResponse.json({ success: true, application: app }, {
+    headers: {
+      'Cache-Control': 'private, no-cache, no-store, must-revalidate'
+    }
+  });
+}

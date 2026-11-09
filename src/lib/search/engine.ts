@@ -61,10 +61,29 @@ export class SearchEngine {
       // Filter: Category
       if (params.category && params.category !== 'all') {
         const catTarget = params.category.toLowerCase();
-        const matchesCategory =
-          classification.primaryCategory.toLowerCase() === catTarget ||
-          classification.categorySlug.toLowerCase() === catTarget ||
-          (job.category || '').toLowerCase() === catTarget;
+        const targetCatRecord = categories.find(
+          (c) => c.slug.toLowerCase() === catTarget || c.id.toLowerCase() === catTarget
+        );
+
+        let matchesCategory = false;
+        if (targetCatRecord && targetCatRecord.parent_id) {
+          // Subcategory target matching
+          matchesCategory = classification.subcategories.some(
+            (s: string) =>
+              s.toLowerCase() === targetCatRecord.id.toLowerCase() ||
+              s.toLowerCase() === targetCatRecord.slug.toLowerCase() ||
+              s.toLowerCase() === catTarget
+          );
+        } else {
+          // Root category or generic category target matching
+          matchesCategory = Boolean(
+            classification.primaryCategory.toLowerCase() === catTarget ||
+            classification.categorySlug.toLowerCase() === catTarget ||
+            (job.category || '').toLowerCase() === catTarget ||
+            (targetCatRecord && classification.primaryCategory.toLowerCase() === targetCatRecord.id.toLowerCase())
+          );
+        }
+
         if (!matchesCategory) return false;
       }
 

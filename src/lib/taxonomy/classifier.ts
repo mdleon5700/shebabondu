@@ -100,6 +100,35 @@ export class JobTaxonomyClassifier {
         break;
     }
 
+    // Additional Multi-Sector Association
+    if (org.includes('টেলিটক') || org.includes('বিটিসিএল') || org.includes('টেলিকম') || title.includes('টেলিকম')) {
+      subcategories.push('cat-telecom');
+    }
+    if (org.includes('পাট') || org.includes('কৃষি') || org.includes('মৎস্য') || org.includes('প্রাণিসম্পদ') || title.includes('কৃষি')) {
+      subcategories.push('cat-agriculture');
+    }
+    if (org.includes('গবেষণা') || org.includes('ইনস্টিটিউট') || org.includes('পরমাণু') || title.includes('গবেষক') || title.includes('গবেষণা')) {
+      subcategories.push('cat-research');
+    }
+    if (title.includes('কম্পিউটার') || title.includes('আইটি') || title.includes('প্রোগ্রামার') || title.includes('সফটওয়্যার') || org.includes('তথ্য প্রযুক্তি') || org.includes('bita')) {
+      subcategories.push('cat-it');
+    }
+    if (title.includes('শিক্ষক') || title.includes('প্রভাষক') || org.includes('শিক্ষক')) {
+      subcategories.push('cat-teacher');
+    }
+    if (org.includes('বিশ্ববিদ্যালয়') || org.includes('university') || title.includes('বিশ্ববিদ্যালয়')) {
+      subcategories.push('cat-university');
+    }
+    if (org.includes('স্কুল') || org.includes('কলেজ') || org.includes('মাদ্রাসা')) {
+      subcategories.push('cat-school-college');
+    }
+    if (org.includes('টেক্সটাইল') || org.includes('বস্ত্র') || org.includes('গার্মেন্টস') || title.includes('বস্ত্র') || title.includes('স্পিনিং')) {
+      subcategories.push('cat-textile');
+    }
+    if (org.includes('বীমা') || org.includes('ইনস্যুরেন্স') || org.includes('সিকিউরিটিজ') || title.includes('অডিট') || title.includes('হিসাব')) {
+      subcategories.push('cat-finance');
+    }
+
     // 2. Organization Type Resolution
     let organizationType: OrganizationType = 'government';
     if (org.includes('বাংলাদেশ ব্যাংক')) {

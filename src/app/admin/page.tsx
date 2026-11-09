@@ -5810,7 +5810,10 @@ function AdminContent() {
                     {/* TAB: BUSINESS INTELLIGENCE & ANALYTICS (PHASE 05) */}
           {(activeTab === 'analytics-center' || activeTab === 'report-builder' || activeTab === 'data-quality-inspector' || activeTab === 'automation-center' || activeTab === 'duplicate-detection') && (
             <div className="space-y-4">
-              <AnalyticsIntelligenceHub activeTab={(activeTab === 'data-quality-inspector' || activeTab === 'duplicate-detection') ? 'data-quality-inspector' : activeTab === 'report-builder' ? 'report-builder' : 'analytics-center'} />
+              <AnalyticsIntelligenceHub 
+                activeTab={(activeTab === 'data-quality-inspector' || activeTab === 'duplicate-detection') ? 'data-quality-inspector' : activeTab === 'report-builder' ? 'report-builder' : 'analytics-center'} 
+                onTabChange={handleTabChange}
+              />
             </div>
           )}
 

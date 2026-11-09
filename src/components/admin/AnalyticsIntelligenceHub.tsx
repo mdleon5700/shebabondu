@@ -31,9 +31,19 @@ import { GeneratedPlatformReport, ReportDefinitionMetadata } from '@/lib/reports
 
 interface AnalyticsIntelligenceHubProps {
   activeTab: string;
+  onTabChange?: (tab: string) => void;
 }
 
-export default function AnalyticsIntelligenceHub({ activeTab }: AnalyticsIntelligenceHubProps) {
+const getAdminHeaders = (): HeadersInit => {
+  const pin = typeof window !== 'undefined' ? (localStorage.getItem('cs_admin_pin') || '') : '';
+  const token = typeof window !== 'undefined' ? (localStorage.getItem('cs_session_token') || '') : '';
+  const headers: Record<string, string> = {};
+  if (pin) headers['x-admin-secret'] = pin;
+  if (token) headers['authorization'] = `Bearer ${token}`;
+  return headers;
+};
+
+export default function AnalyticsIntelligenceHub({ activeTab, onTabChange }: AnalyticsIntelligenceHubProps) {
   const [currentSubTab, setCurrentSubTab] = useState<string>(activeTab || 'analytics-center');
   const [timeframe, setTimeframe] = useState<string>('30d');
   const [loading, setLoading] = useState<boolean>(true);
@@ -53,7 +63,9 @@ export default function AnalyticsIntelligenceHub({ activeTab }: AnalyticsIntelli
   const loadAnalytics = async () => {
     try {
       setLoading(true);
-      const res = await fetch(`/api/admin/analytics/overview?timeframe=${timeframe}`);
+      const res = await fetch(`/api/admin/analytics/overview?timeframe=${timeframe}`, {
+        headers: getAdminHeaders()
+      });
       if (res.ok) {
         const data = await res.json();
         if (data.report) setAnalyticsData(data.report);
@@ -67,7 +79,9 @@ export default function AnalyticsIntelligenceHub({ activeTab }: AnalyticsIntelli
 
   const loadAutomation = async () => {
     try {
-      const res = await fetch('/api/admin/automation/overview');
+      const res = await fetch('/api/admin/automation/overview', {
+        headers: getAdminHeaders()
+      });
       if (res.ok) {
         const data = await res.json();
         if (data.overview) setAutomationData(data.overview);
@@ -79,7 +93,9 @@ export default function AnalyticsIntelligenceHub({ activeTab }: AnalyticsIntelli
 
   const loadQualityAudit = async () => {
     try {
-      const res = await fetch('/api/admin/analytics/data-quality');
+      const res = await fetch('/api/admin/analytics/data-quality', {
+        headers: getAdminHeaders()
+      });
       if (res.ok) {
         const data = await res.json();
         if (data.auditReport) setQualityData(data.auditReport);
@@ -91,7 +107,9 @@ export default function AnalyticsIntelligenceHub({ activeTab }: AnalyticsIntelli
 
   const loadReportsCatalog = async () => {
     try {
-      const res = await fetch('/api/admin/reports/generate');
+      const res = await fetch('/api/admin/reports/generate', {
+        headers: getAdminHeaders()
+      });
       if (res.ok) {
         const data = await res.json();
         if (data.catalog) setReportCatalog(data.catalog);
@@ -118,7 +136,10 @@ export default function AnalyticsIntelligenceHub({ activeTab }: AnalyticsIntelli
     try {
       const res = await fetch('/api/admin/automation/rules', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          ...getAdminHeaders(),
+          'Content-Type': 'application/json'
+        },
         body: JSON.stringify({ action: 'toggle_task', taskId, status: newStatus })
       });
       if (res.ok) {
@@ -134,7 +155,10 @@ export default function AnalyticsIntelligenceHub({ activeTab }: AnalyticsIntelli
     try {
       const res = await fetch('/api/admin/automation/rules', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          ...getAdminHeaders(),
+          'Content-Type': 'application/json'
+        },
         body: JSON.stringify({ action: 'toggle_rule', ruleCode, isEnabled: !currentEnabled })
       });
       if (res.ok) {
@@ -150,7 +174,10 @@ export default function AnalyticsIntelligenceHub({ activeTab }: AnalyticsIntelli
     try {
       const res = await fetch('/api/admin/automation/rules', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          ...getAdminHeaders(),
+          'Content-Type': 'application/json'
+        },
         body: JSON.stringify({ action: 'execute_task', taskId })
       });
       if (res.ok) {
@@ -168,7 +195,10 @@ export default function AnalyticsIntelligenceHub({ activeTab }: AnalyticsIntelli
       setGeneratingReport(true);
       const res = await fetch('/api/admin/reports/generate', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          ...getAdminHeaders(),
+          'Content-Type': 'application/json'
+        },
         body: JSON.stringify({
           reportType: selectedReportType,
           timeframe,
@@ -271,7 +301,10 @@ export default function AnalyticsIntelligenceHub({ activeTab }: AnalyticsIntelli
             return (
               <button
                 key={tab.id}
-                onClick={() => setCurrentSubTab(tab.id)}
+                onClick={() => {
+                  setCurrentSubTab(tab.id);
+                  if (onTabChange) onTabChange(tab.id);
+                }}
                 className={`p-3.5 rounded-xl border text-left transition-all ${
                   isActive
                     ? 'border-indigo-600 bg-indigo-50/50 text-indigo-950 shadow-sm'
@@ -295,6 +328,14 @@ export default function AnalyticsIntelligenceHub({ activeTab }: AnalyticsIntelli
           </div>
         )}
       </div>
+
+      {/* Loading Skeleton Indicator */}
+      {loading && !analyticsData && !qualityData && (
+        <div className="bg-white rounded-2xl border border-slate-200 p-8 text-center space-y-4">
+          <div className="w-10 h-10 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin mx-auto" />
+          <p className="text-xs font-semibold text-slate-600">অ্যানালিটিক্স ও বিআই ডাটা লোড হচ্ছে...</p>
+        </div>
+      )}
 
       {/* TAB 1: ANALYTICS CENTER */}
       {currentSubTab === 'analytics-center' && analyticsData && (
@@ -585,7 +626,7 @@ export default function AnalyticsIntelligenceHub({ activeTab }: AnalyticsIntelli
           <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
             <h2 className="text-sm font-bold text-slate-900 mb-1 flex items-center gap-2">
               <FileSpreadsheet className="w-4 h-4 text-emerald-600" />
-              প্ল্যাটফর্ম রিপোর্ট বিল্ডার ও এক্সপোর্ট হাব
+              রিপোর্ট জেনারেটর ও এক্সপোর্ট কনসোল (রিপোর্ট বিল্ডার)
             </h2>
             <p className="text-xs text-slate-500 mb-5">
               অফিসিয়াল এক্সিকিউটিভ রিপোর্ট তৈরি করুন এবং এক্সেল/সিএসভি ফরম্যাটে ডাউনলোড করুন
@@ -701,85 +742,92 @@ export default function AnalyticsIntelligenceHub({ activeTab }: AnalyticsIntelli
       )}
 
       {/* TAB 4: DATA QUALITY INSPECTOR */}
-      {currentSubTab === 'data-quality-inspector' && qualityData && (
-        <div className="space-y-6 animate-fadeIn">
-          {/* Quality Overview Score Card */}
-          <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6">
-            <div>
-              <div className="flex items-center gap-2 mb-1">
-                <ShieldCheck className="w-5 h-5 text-emerald-600" />
-                <h2 className="text-base font-bold text-slate-900">প্ল্যাটফর্ম ডাটা কোয়ালিটি ও অখণ্ডতা হেলথ রিপোর্ট</h2>
-              </div>
-              <p className="text-xs text-slate-500">
-                স্ক্যানকৃত মোট রেকর্ড: {qualityData.totalRecordsScanned}টি • সময়: {new Date(qualityData.checkedAt).toLocaleTimeString('bn-BD')}
-              </p>
-            </div>
-
-            <div className="flex items-center gap-6">
-              <div className="text-center">
-                <span className="text-[11px] text-slate-500 block mb-0.5">কোয়ালিটি স্কোর</span>
-                <span className="text-3xl font-black text-emerald-600">
-                  {qualityData.qualityHealthScorePercent}%
-                </span>
-              </div>
-              <div className="h-10 w-px bg-slate-200" />
-              <div className="flex gap-3 text-xs">
-                <div className="text-center">
-                  <span className="text-[11px] text-slate-500 block">ক্রিটিক্যাল</span>
-                  <span className="font-bold text-rose-600">{qualityData.criticalCount}</span>
+      {currentSubTab === 'data-quality-inspector' && (
+        qualityData ? (
+          <div className="space-y-6 animate-fadeIn">
+            {/* Quality Overview Score Card */}
+            <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6" data-testid="data-quality-score-card">
+              <div>
+                <div className="flex items-center gap-2 mb-1">
+                  <ShieldCheck className="w-5 h-5 text-emerald-600" />
+                  <h2 className="text-base font-bold text-slate-900">প্ল্যাটফর্ম ডাটা কোয়ালিটি ও প্ল্যাটফর্ম ইন্টিগ্রিটি স্কোর</h2>
                 </div>
-                <div className="text-center">
-                  <span className="text-[11px] text-slate-500 block">ওয়ার্নিং</span>
-                  <span className="font-bold text-amber-600">{qualityData.warningCount}</span>
-                </div>
-                <div className="text-center">
-                  <span className="text-[11px] text-slate-500 block">ইনফো</span>
-                  <span className="font-bold text-blue-600">{qualityData.infoCount}</span>
-                </div>
+                <p className="text-xs text-slate-500">
+                  ডাটা কোয়ালিটি ও প্ল্যাটফর্ম ইন্টিগ্রিটি স্কোর: {qualityData.qualityHealthScorePercent}% • স্ক্যানকৃত মোট রেকর্ড: {qualityData.totalRecordsScanned}টি • সময়: {new Date(qualityData.checkedAt).toLocaleTimeString('bn-BD')}
+                </p>
               </div>
-            </div>
-          </div>
 
-          {/* Issues List */}
-          <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
-            <h3 className="text-sm font-bold text-slate-900 mb-4">চিহ্নিত সমস্যা ও সুপারিশকৃত প্রতিকার</h3>
-
-            {qualityData.issues.length === 0 ? (
-              <div className="text-center py-10 text-slate-500 text-xs">
-                <CheckCircle2 className="w-10 h-10 text-emerald-500 mx-auto mb-2" />
-                কোনো ত্রুটি বা অসঙ্গতি পাওয়া যায়নি। ডাটাবেজের সকল রেকর্ড নিখুঁত ও মানসম্মত।
-              </div>
-            ) : (
-              <div className="space-y-3">
-                {qualityData.issues.map(issue => (
-                  <div key={issue.id} className="p-4 rounded-xl border border-slate-200 bg-slate-50/50 space-y-1.5 text-xs">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <span className={`px-2 py-0.5 rounded-md font-bold text-[10px] ${
-                          issue.severity === 'CRITICAL'
-                            ? 'bg-rose-100 text-rose-800'
-                            : issue.severity === 'WARNING'
-                            ? 'bg-amber-100 text-amber-800'
-                            : 'bg-blue-100 text-blue-800'
-                        }`}>
-                          {issue.severity}
-                        </span>
-                        <span className="font-bold text-slate-900">{issue.titleBn}</span>
-                        <span className="text-slate-400 font-mono text-[10px]">({issue.affectedRecordId})</span>
-                      </div>
-                      <span className="text-[10px] text-slate-400 font-mono">{issue.id}</span>
-                    </div>
-                    <p className="text-slate-600">{issue.descriptionBn}</p>
-                    <div className="text-[11px] text-indigo-700 bg-indigo-50/60 p-2 rounded-lg border border-indigo-100 flex items-center gap-1.5 font-medium">
-                      <ArrowRight className="w-3.5 h-3.5 text-indigo-600 shrink-0" />
-                      <span>{issue.suggestedFixBn}</span>
-                    </div>
+              <div className="flex items-center gap-6">
+                <div className="text-center">
+                  <span className="text-[11px] text-slate-500 block mb-0.5">কোয়ালিটি স্কোর</span>
+                  <span className="text-3xl font-black text-emerald-600">
+                    {qualityData.qualityHealthScorePercent}%
+                  </span>
+                </div>
+                <div className="h-10 w-px bg-slate-200" />
+                <div className="flex gap-3 text-xs">
+                  <div className="text-center">
+                    <span className="text-[11px] text-slate-500 block">ক্রিটিক্যাল</span>
+                    <span className="font-bold text-rose-600">{qualityData.criticalCount}</span>
                   </div>
-                ))}
+                  <div className="text-center">
+                    <span className="text-[11px] text-slate-500 block">ওয়ার্নিং</span>
+                    <span className="font-bold text-amber-600">{qualityData.warningCount}</span>
+                  </div>
+                  <div className="text-center">
+                    <span className="text-[11px] text-slate-500 block">ইনফো</span>
+                    <span className="font-bold text-blue-600">{qualityData.infoCount}</span>
+                  </div>
+                </div>
               </div>
-            )}
+            </div>
+
+            {/* Issues List */}
+            <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+              <h3 className="text-sm font-bold text-slate-900 mb-4">চিহ্নিত সমস্যা ও সুপারিশকৃত প্রতিকার</h3>
+
+              {qualityData.issues.length === 0 ? (
+                <div className="text-center py-10 text-slate-500 text-xs">
+                  <CheckCircle2 className="w-10 h-10 text-emerald-500 mx-auto mb-2" />
+                  কোনো ত্রুটি বা অসঙ্গতি পাওয়া যায়নি। ডাটাবেজের সকল রেকর্ড নিখুঁত ও মানসম্মত।
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  {qualityData.issues.map(issue => (
+                    <div key={issue.id} className="p-4 rounded-xl border border-slate-200 bg-slate-50/50 space-y-1.5 text-xs">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <span className={`px-2 py-0.5 rounded-md font-bold text-[10px] ${
+                            issue.severity === 'CRITICAL'
+                              ? 'bg-rose-100 text-rose-800'
+                              : issue.severity === 'WARNING'
+                              ? 'bg-amber-100 text-amber-800'
+                              : 'bg-blue-100 text-blue-800'
+                          }`}>
+                            {issue.severity}
+                          </span>
+                          <span className="font-bold text-slate-900">{issue.titleBn}</span>
+                          <span className="text-slate-400 font-mono text-[10px]">({issue.affectedRecordId})</span>
+                        </div>
+                        <span className="text-[10px] text-slate-400 font-mono">{issue.id}</span>
+                      </div>
+                      <p className="text-slate-600">{issue.descriptionBn}</p>
+                      <div className="text-[11px] text-indigo-700 bg-indigo-50/60 p-2 rounded-lg border border-indigo-100 flex items-center gap-1.5 font-medium">
+                        <ArrowRight className="w-3.5 h-3.5 text-indigo-600 shrink-0" />
+                        <span>{issue.suggestedFixBn}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
-        </div>
+        ) : (
+          <div className="bg-white rounded-2xl border border-slate-200 p-12 text-center space-y-4">
+            <div className="w-10 h-10 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin mx-auto" />
+            <p className="text-xs font-semibold text-slate-600">ডাটা কোয়ালিটি ও প্ল্যাটফর্ম ইন্টিগ্রিটি স্কোর স্ক্যান করা হচ্ছে...</p>
+          </div>
+        )
       )}
     </div>
   );

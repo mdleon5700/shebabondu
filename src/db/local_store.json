@@ -1973,6 +1973,26 @@
       "candidateId": "USR-01712345678",
       "role": "candidate",
       "expiresAt": "2026-11-16T15:23:01.778Z"
+    },
+    "64974ed77fa9f233d6b3270398371d381af6871089ad8420cd2ecc56f0d91947": {
+      "candidateId": "ADMIN-SUPER",
+      "role": "admin",
+      "expiresAt": "2026-11-16T21:59:35.230Z"
+    },
+    "47c7278b596264ecc3b7ae27f4d459ee704aa3ad1e3755202246c97214930122": {
+      "candidateId": "ADMIN-SUPER",
+      "role": "admin",
+      "expiresAt": "2026-11-16T22:00:55.860Z"
+    },
+    "caae3386671b52e4e827c9912e76e9621fa1776b4af0fa079d91dad3e3c5b905": {
+      "candidateId": "ADMIN-SUPER",
+      "role": "admin",
+      "expiresAt": "2026-11-16T22:02:43.104Z"
+    },
+    "e627fb26d343ea23d484999a18b4c9a2ceb5ab5e985460d4323f77ef6a017c2f": {
+      "candidateId": "ADMIN-SUPER",
+      "role": "admin",
+      "expiresAt": "2026-11-16T22:06:21.289Z"
     }
   },
   "coupons": {},
@@ -1980,6 +2000,26 @@
   "couponRedemptions": {},
   "raffleEntries": {},
   "adminAuditLogs": [
+    {
+      "adminId": "ADMIN-SUPER",
+      "action": "report_generate",
+      "targetId": "RPT-1794262032716-267",
+      "targetType": "system",
+      "changes": {
+        "reportType": {
+          "new": "daily_platform_report"
+        },
+        "format": {
+          "new": "json"
+        },
+        "rowCount": {
+          "new": 6
+        }
+      },
+      "notes": "Generated Daily Executive Platform Report in JSON format with 6 rows",
+      "id": "AUDIT-1794262032723-V5D62",
+      "timestamp": "2026-11-09T22:07:12.723Z"
+    },
     {
       "adminId": "ADMIN-SUPER",
       "action": "status_change",

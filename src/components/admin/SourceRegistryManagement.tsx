@@ -27,6 +27,7 @@ import {
   History,
   Zap,
 } from 'lucide-react';
+import { getAdminHeaders } from '@/lib/adminAuthClient';
 import { JobSource, SourceClassification, CollectionMethod, SourceHealthStatus, SpiderRun, SpiderRunStatus } from '@/lib/types';
 
 const CLASSIFICATION_LABELS: Record<SourceClassification, { label: string; color: string }> = {
@@ -113,7 +114,7 @@ export default function SourceRegistryManagement() {
   const fetchSpiderRuns = async () => {
     setIsLoadingRuns(true);
     try {
-      const res = await fetch('/api/admin/sources/runs?limit=50');
+      const res = await fetch('/api/admin/sources/runs?limit=50', { headers: getAdminHeaders() });
       const data = await res.json();
       if (data.success) {
         setSpiderRuns(data.runs || []);
@@ -130,9 +131,7 @@ export default function SourceRegistryManagement() {
     setSuccessMessage(null);
     setFetchError(null);
     try {
-      const res = await fetch(`/api/admin/sources/${src.id}/test`, {
-        method: 'POST'
-      });
+      const res = await fetch(`/api/admin/sources/${src.id}/test`, { method: 'POST', headers: getAdminHeaders() });
       const data = await res.json();
       setTestResults(prev => ({
         ...prev,
@@ -162,9 +161,7 @@ export default function SourceRegistryManagement() {
     setSuccessMessage(null);
     setFetchError(null);
     try {
-      const res = await fetch(`/api/admin/sources/runs/${run.id}/retry`, {
-        method: 'POST'
-      });
+      const res = await fetch(`/api/admin/sources/runs/${run.id}/retry`, { method: 'POST', headers: getAdminHeaders() });
       const data = await res.json();
       if (!res.ok) {
         throw new Error(data.error || "স্পাইডার রান রিট্রাই করতে ব্যর্থ");
@@ -228,7 +225,7 @@ export default function SourceRegistryManagement() {
     setIsLoading(true);
     setFetchError(null);
     try {
-      const res = await fetch('/api/admin/sources');
+      const res = await fetch('/api/admin/sources', { headers: getAdminHeaders() });
       if (!res.ok) {
         const errData = await res.json().catch(() => ({}));
         throw new Error(errData.error || `HTTP ${res.status}: সোর্স তালিকা লোড করতে ব্যর্থ হয়েছে।`);
@@ -307,9 +304,7 @@ export default function SourceRegistryManagement() {
 
     setIsSubmitting(true);
     try {
-      const res = await fetch('/api/admin/sources', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const res = await fetch('/api/admin/sources', { method: 'POST', headers: getAdminHeaders(),
         body: JSON.stringify({
           name: formName.trim(),
           organizationName: formOrgName.trim() || undefined,
@@ -365,9 +360,7 @@ export default function SourceRegistryManagement() {
 
     setIsSubmitting(true);
     try {
-      const res = await fetch(`/api/admin/sources/${editingSource.id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+      const res = await fetch(`/api/admin/sources/${editingSource.id}`, { method: 'PUT', headers: getAdminHeaders(),
         body: JSON.stringify({
           name: formName.trim(),
           organizationName: formOrgName.trim() || undefined,
@@ -403,9 +396,7 @@ export default function SourceRegistryManagement() {
   const handleToggle = async (src: JobSource) => {
     const targetState = !(src.enabled ?? true);
     try {
-      const res = await fetch(`/api/admin/sources/${src.id}/toggle`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const res = await fetch(`/api/admin/sources/${src.id}/toggle`, { method: 'POST', headers: getAdminHeaders(),
         body: JSON.stringify({ enabled: targetState })
       });
       const data = await res.json();
@@ -429,9 +420,7 @@ export default function SourceRegistryManagement() {
     if (!archivingSource) return;
     setIsSubmitting(true);
     try {
-      const res = await fetch(`/api/admin/sources/${archivingSource.id}`, {
-        method: 'DELETE'
-      });
+      const res = await fetch(`/api/admin/sources/${archivingSource.id}`, { method: 'DELETE', headers: getAdminHeaders() });
       const data = await res.json();
       if (!res.ok) {
         throw new Error(data.error || 'সোর্স অপসারণ ব্যর্থ হয়েছে।');

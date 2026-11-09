@@ -5386,12 +5386,6 @@ function AdminContent() {
 
           {(activeTab === 'source-monitoring' || activeTab === 'failed-jobs') && (
             <div className="space-y-6">
-              <GeminiBrowserSpiderHub
-                jobs={jobs}
-                onRefreshData={fetchAllAdminData}
-                onOpenEditJob={handleOpenEditJob}
-                onDeleteJob={handleDeleteJob}
-              />
               <SourceRegistryManagement />
             </div>
           )}

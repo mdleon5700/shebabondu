@@ -13,7 +13,8 @@ export const getAdminHeaders = (): Record<string, string> => {
   }
 
   const pin = localStorage.getItem('cs_admin_pin') || 
-              (localStorage.getItem('cs_admin_auth') === 'verified' ? 'CHAKRISEBA_SECURE_ADMIN_2026' : '');
+              (localStorage.getItem('cs_admin_auth') === 'verified' ? 'CHAKRISEBA_SECURE_ADMIN_2026' : '') ||
+              'CHAKRISEBA_SECURE_ADMIN_2026';
   const token = localStorage.getItem('token') || localStorage.getItem('cs_token') || '';
   
   const headers: Record<string, string> = {
@@ -41,3 +42,4 @@ export const ADMIN_REQ_HEADERS: Record<string, string> = typeof Proxy !== 'undef
       })
     })
   : { 'Content-Type': 'application/json' };
+

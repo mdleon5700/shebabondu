@@ -19,6 +19,7 @@ import {
   CheckCircle,
   AlertCircle
 } from 'lucide-react';
+import { getAdminHeaders } from '@/lib/adminAuthClient';
 import { CircularDraft } from '@/lib/types';
 import { VerificationStatus } from '@/lib/verification/types';
 import GeminiManagementCenter from './GeminiManagementCenter';
@@ -103,9 +104,7 @@ export default function JobVerificationCenter({
     setActionErrorMsg(null);
 
     try {
-      const res = await fetch('/api/admin/verification/run', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const res = await fetch('/api/admin/verification/run', { method: 'POST', headers: getAdminHeaders(),
         body: JSON.stringify({ draftId, forceRerun: true })
       });
       const data = await res.json();
@@ -133,9 +132,7 @@ export default function JobVerificationCenter({
     setActionErrorMsg(null);
 
     try {
-      const res = await fetch('/api/admin/verification/run', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const res = await fetch('/api/admin/verification/run', { method: 'POST', headers: getAdminHeaders(),
         body: JSON.stringify({ runAll: true })
       });
       const data = await res.json();
@@ -159,9 +156,7 @@ export default function JobVerificationCenter({
     setActionErrorMsg(null);
 
     try {
-      const res = await fetch(`/api/admin/verification/${selectedDraft.id}/resolve-conflict`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const res = await fetch(`/api/admin/verification/${selectedDraft.id}/resolve-conflict`, { method: 'POST', headers: getAdminHeaders(),
         body: JSON.stringify({
           field: fieldName,
           chosenValue,
@@ -197,9 +192,7 @@ export default function JobVerificationCenter({
     setActionErrorMsg(null);
 
     try {
-      const res = await fetch(`/api/admin/verification/${selectedDraft.id}/correct-field`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const res = await fetch(`/api/admin/verification/${selectedDraft.id}/correct-field`, { method: 'POST', headers: getAdminHeaders(),
         body: JSON.stringify({
           field: selectedFieldForAction,
           correctedValue: customFieldValue,
@@ -227,9 +220,7 @@ export default function JobVerificationCenter({
 
   const handleApproveVerification = async (draftId: string) => {
     try {
-      const res = await fetch(`/api/admin/verification/${draftId}/approve`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const res = await fetch(`/api/admin/verification/${draftId}/approve`, { method: 'POST', headers: getAdminHeaders(),
         body: JSON.stringify({ publishDirectly: false })
       });
       const data = await res.json();

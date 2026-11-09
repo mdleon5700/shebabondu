@@ -38,6 +38,7 @@ import {
 } from 'lucide-react';
 import { JobCircular } from '@/lib/types';
 import JobLogo from '@/components/JobLogo';
+import { getAdminHeaders } from '@/lib/adminAuthClient';
 
 export interface GeminiBrowserSpiderHubProps {
   jobs?: JobCircular[];
@@ -117,7 +118,7 @@ export default function GeminiBrowserSpiderHub({
     try {
       const res = await fetch('/api/admin/spider/gemini-browser', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'x-admin-secret': '1234' },
+        headers: getAdminHeaders(),
         body: JSON.stringify({ action: 'get_live_screen', url })
       });
       const data = await res.json();
@@ -140,7 +141,7 @@ export default function GeminiBrowserSpiderHub({
     try {
       const res = await fetch('/api/admin/spider/gemini-browser', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'x-admin-secret': '1234' },
+        headers: getAdminHeaders(),
         body: JSON.stringify({ action: 'launch_visible_chrome' })
       });
       const data = await res.json();
@@ -164,7 +165,7 @@ export default function GeminiBrowserSpiderHub({
     try {
       const res = await fetch('/api/admin/spider/gemini-browser', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'x-admin-secret': '1234' },
+        headers: getAdminHeaders(),
         body: JSON.stringify({ action: 'run_live_automation', url: extractorPdfUrl })
       });
       const data = await res.json();
@@ -193,9 +194,8 @@ export default function GeminiBrowserSpiderHub({
   const fetchStatus = async () => {
     setIsLoading(true);
     try {
-      const pin = typeof window !== 'undefined' ? (localStorage.getItem('cs_admin_pin') || '1234') : '1234';
       const res = await fetch('/api/admin/spider/gemini-browser', {
-        headers: { 'x-admin-secret': pin }
+        headers: getAdminHeaders()
       });
       const data = await res.json();
       if (res.ok && data.success) {
@@ -220,10 +220,7 @@ export default function GeminiBrowserSpiderHub({
     try {
       const res = await fetch('/api/admin/audit', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-admin-secret': '1234'
-        },
+        headers: getAdminHeaders(),
         body: JSON.stringify({ autoRepair })
       });
       const data = await res.json();
@@ -248,7 +245,7 @@ export default function GeminiBrowserSpiderHub({
   useEffect(() => {
     fetchStatus();
     handleFetchLiveScreen('https://gemini.google.com/app');
-    fetch('/api/admin/audit', { headers: { 'x-admin-secret': '1234' } })
+    fetch('/api/admin/audit', { headers: getAdminHeaders() })
       .then(r => r.json())
       .then(d => { if (d.success && d.report) setAuditReport(d.report); })
       .catch(() => {});
@@ -291,10 +288,7 @@ export default function GeminiBrowserSpiderHub({
     try {
       const res = await fetch('/api/admin/spider/gemini-browser', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-admin-secret': '1234'
-        },
+        headers: getAdminHeaders(),
         body: JSON.stringify({ action: 'launch_login' })
       });
       const data = await res.json();
@@ -320,10 +314,7 @@ export default function GeminiBrowserSpiderHub({
     try {
       const res = await fetch('/api/admin/spider/gemini-browser', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-admin-secret': '1234'
-        },
+        headers: getAdminHeaders(),
         body: JSON.stringify({ action: 'toggle_auto_publish' })
       });
       const data = await res.json();
@@ -352,10 +343,7 @@ export default function GeminiBrowserSpiderHub({
     try {
       const res = await fetch('/api/admin/spider/gemini-browser', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-admin-secret': '1234'
-        },
+        headers: getAdminHeaders(),
         body: JSON.stringify({ action: 'parse_circular', pdfUrl: url })
       });
       const data = await res.json();
@@ -386,10 +374,7 @@ export default function GeminiBrowserSpiderHub({
 
       const res = await fetch('/api/admin/spider/gemini-browser', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-admin-secret': '1234'
-        },
+        headers: getAdminHeaders(),
         body: JSON.stringify({
           action: 'save_extracted_job',
           job: jobToSave
@@ -418,10 +403,7 @@ export default function GeminiBrowserSpiderHub({
     try {
       const res = await fetch('/api/admin/spider/gemini-browser', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-admin-secret': '1234'
-        },
+        headers: getAdminHeaders(),
         body: JSON.stringify({ action: 'sync', limit: 35 })
       });
       const data = await res.json();
@@ -449,10 +431,7 @@ export default function GeminiBrowserSpiderHub({
     try {
       const res = await fetch('/api/admin/spider/gemini-browser', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-admin-secret': '1234'
-        },
+        headers: getAdminHeaders(),
         body: JSON.stringify({ action: 'toggle_publish', jobId: job.id })
       });
       const data = await res.json();
@@ -484,10 +463,7 @@ export default function GeminiBrowserSpiderHub({
     try {
       const res = await fetch('/api/admin/spider/gemini-browser', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-admin-secret': '1234'
-        },
+        headers: getAdminHeaders(),
         body: JSON.stringify({ action: 'delete_job', jobId: job.id })
       });
       const data = await res.json();
@@ -531,10 +507,7 @@ export default function GeminiBrowserSpiderHub({
     try {
       const res = await fetch('/api/admin/spider/gemini-browser', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-admin-secret': '1234'
-        },
+        headers: getAdminHeaders(),
         body: JSON.stringify({ action: 'bulk_delete', jobIds: selectedJobIds })
       });
       const data = await res.json();
@@ -562,10 +535,7 @@ export default function GeminiBrowserSpiderHub({
     try {
       const res = await fetch('/api/admin/spider/gemini-browser', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-admin-secret': '1234'
-        },
+        headers: getAdminHeaders(),
         body: JSON.stringify({ action, jobIds: selectedJobIds })
       });
       const data = await res.json();

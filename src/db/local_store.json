@@ -106,11 +106,19 @@
           "majorSubject": "কম্পিউটার সায়েন্স অ্যান্ড ইঞ্জিনিয়ারিং"
         }
       ],
-      "passwordHash": "scrypt$dd08b5759700ea2626fc3f0e40b23e8c$7404cffdaba82924cac1b8442e2ffe646a682be6a45827d91ffe485c7d64e3f74dff39ba953af81d898bf57694d001ad308a95a57224fec9315c36f7d9ff1cc3",
+      "passwordHash": "scrypt$8589aea08a0ddcfd1857c8ba9deb7e49$9b430fbe8a1afbefb29b47cf61e4768529bc09dc6dfdfef24006dc027c0905b9fd920b4e5679123e514c3dc2ef14440dc40f80096265ac52b659290295fc9ef3",
       "role": "candidate",
       "createdAt": "2026-11-09T07:17:05.082Z",
-      "updatedAt": "2026-11-09T15:23:28.575Z",
+      "updatedAt": "2026-11-09T22:35:53.620Z",
       "adminAuditHistory": [
+        {
+          "timestamp": "2026-11-09T22:35:53.620Z",
+          "adminId": "ADMIN",
+          "action": "candidate_profile_update",
+          "changedFields": [],
+          "notes": "প্রোফাইল তথ্য হালনাগাদ",
+          "reason": "প্রোফাইল তথ্য হালনাগাদ"
+        },
         {
           "timestamp": "2026-11-09T15:23:28.575Z",
           "adminId": "ADMIN",
@@ -605,6 +613,192 @@
   },
   "applications": {
     "USR-01712345678": [
+      {
+        "candidateName": "মোঃ তানভীর হাসান",
+        "candidatePhone": "01712-345678",
+        "candidateDistrict": "ঢাকা",
+        "jobId": "job-alljobs-15184",
+        "jobTitle": "ক্যাশিয়ার পদে নিয়োগ বিজ্ঞপ্তি ২০২৬ - বাংলাদেশ মৎস্য গবেষণা ইনস্টিটিউট",
+        "organization": "বাংলাদেশ মৎস্য গবেষণা ইনস্টিটিউট",
+        "postName": "ক্যাশিয়ার",
+        "paymentMethod": "bKash",
+        "trxId": "TRX-AUDIT-132861",
+        "totalAmount": 162,
+        "governmentFee": 112,
+        "serviceCharge": 50,
+        "id": "CS2611-47630",
+        "candidateId": "USR-01712345678",
+        "financialSnapshot": {
+          "governmentApplicationFee": 112,
+          "serviceCharge": 50,
+          "raffleBonusDiscount": 0,
+          "couponDiscount": 0,
+          "finalServiceCharge": 50,
+          "totalPayable": 162,
+          "paymentStatus": "pending",
+          "currency": "BDT",
+          "hasPrizeDrawEntry": false,
+          "snapshotCreatedAt": "2026-11-09T22:46:02.728Z",
+          "isImmutable": false
+        },
+        "couponDiscount": 0,
+        "raffleDiscount": 0,
+        "walletDeduction": 0,
+        "cashPaid": 162,
+        "verificationType": "officially_verified",
+        "status": "completed",
+        "date": "১০/১১/২০২৬",
+        "createdAt": "2026-11-09T22:46:02.728Z",
+        "statusHistory": [
+          {
+            "status": "pending_payment",
+            "date": "2026-11-09T22:46:02.728Z",
+            "notes": "অনলাইন আবেদন দাখিল হয়েছে। যোগ্যতা যাচাই সম্পন্ন"
+          },
+          {
+            "status": "processing",
+            "date": "2026-11-09T22:46:03.032Z",
+            "notes": "অডিট টেস্ট: পেমেন্ট সফলভাবে অনুমোদিত।",
+            "updatedBy": "Admin (ADMIN-SUPER)"
+          },
+          {
+            "status": "completed",
+            "date": "2026-11-09T22:46:03.336Z",
+            "notes": "অডিট টেস্ট: টেলিটক আবেদন সম্পন্ন ও অফিসিয়াল কপি রিলিজ হয়েছে।",
+            "updatedBy": "Admin (ADMIN-SUPER)"
+          }
+        ],
+        "notes": "অডিট টেস্ট: টেলিটক আবেদন সম্পন্ন ও অফিসিয়াল কপি রিলিজ হয়েছে।",
+        "adminNotes": "অডিট টেস্ট: টেলিটক আবেদন সম্পন্ন ও অফিসিয়াল কপি রিলিজ হয়েছে।",
+        "statusLabel": "সফলভাবে সম্পন্ন",
+        "applicantCopyPdfUrl": "https://alljobs.teletalk.com.bd/applicant-copy/BPSC-AUDIT-9921.pdf",
+        "teleTalkTrackingId": "BPSC-AUDIT-9921",
+        "teleTalkPassword": "PASS-84920"
+      },
+      {
+        "candidateName": "মোঃ তানভীর হাসান",
+        "candidatePhone": "01712-345678",
+        "candidateDistrict": "ঢাকা",
+        "jobId": "job-alljobs-15184",
+        "jobTitle": "ক্যাশিয়ার পদে নিয়োগ বিজ্ঞপ্তি ২০২৬ - বাংলাদেশ মৎস্য গবেষণা ইনস্টিটিউট",
+        "organization": "বাংলাদেশ মৎস্য গবেষণা ইনস্টিটিউট",
+        "postName": "ক্যাশিয়ার",
+        "paymentMethod": "bKash",
+        "trxId": "TRX-AUDIT-509404",
+        "totalAmount": 162,
+        "governmentFee": 112,
+        "serviceCharge": 50,
+        "id": "CS2611-89081",
+        "candidateId": "USR-01712345678",
+        "financialSnapshot": {
+          "governmentApplicationFee": 112,
+          "serviceCharge": 50,
+          "raffleBonusDiscount": 0,
+          "couponDiscount": 0,
+          "finalServiceCharge": 50,
+          "totalPayable": 162,
+          "paymentStatus": "pending",
+          "currency": "BDT",
+          "hasPrizeDrawEntry": false,
+          "snapshotCreatedAt": "2026-11-09T22:43:17.113Z",
+          "isImmutable": false
+        },
+        "couponDiscount": 0,
+        "raffleDiscount": 0,
+        "walletDeduction": 0,
+        "cashPaid": 162,
+        "verificationType": "officially_verified",
+        "status": "completed",
+        "date": "১০/১১/২০২৬",
+        "createdAt": "2026-11-09T22:43:17.113Z",
+        "statusHistory": [
+          {
+            "status": "pending_payment",
+            "date": "2026-11-09T22:43:17.113Z",
+            "notes": "অনলাইন আবেদন দাখিল হয়েছে। যোগ্যতা যাচাই সম্পন্ন"
+          },
+          {
+            "status": "processing",
+            "date": "2026-11-09T22:43:18.703Z",
+            "notes": "অডিট টেস্ট: পেমেন্ট সফলভাবে অনুমোদিত।",
+            "updatedBy": "Admin (ADMIN-SUPER)"
+          },
+          {
+            "status": "completed",
+            "date": "2026-11-09T22:43:19.088Z",
+            "notes": "অডিট টেস্ট: টেলিটক আবেদন সম্পন্ন ও অফিসিয়াল কপি রিলিজ হয়েছে।",
+            "updatedBy": "Admin (ADMIN-SUPER)"
+          }
+        ],
+        "notes": "অডিট টেস্ট: টেলিটক আবেদন সম্পন্ন ও অফিসিয়াল কপি রিলিজ হয়েছে।",
+        "adminNotes": "অডিট টেস্ট: টেলিটক আবেদন সম্পন্ন ও অফিসিয়াল কপি রিলিজ হয়েছে।",
+        "statusLabel": "সফলভাবে সম্পন্ন",
+        "applicantCopyPdfUrl": "https://alljobs.teletalk.com.bd/applicant-copy/BPSC-AUDIT-9921.pdf",
+        "teleTalkTrackingId": "BPSC-AUDIT-9921",
+        "teleTalkPassword": "PASS-84920"
+      },
+      {
+        "candidateName": "মোঃ তানভীর হাসান",
+        "candidatePhone": "01712-345678",
+        "candidateDistrict": "ঢাকা",
+        "jobId": "job-alljobs-15184",
+        "jobTitle": "ক্যাশিয়ার পদে নিয়োগ বিজ্ঞপ্তি ২০২৬ - বাংলাদেশ মৎস্য গবেষণা ইনস্টিটিউট",
+        "organization": "বাংলাদেশ মৎস্য গবেষণা ইনস্টিটিউট",
+        "postName": "ক্যাশিয়ার",
+        "paymentMethod": "bKash",
+        "trxId": "TRX-AUDIT-811141",
+        "totalAmount": 162,
+        "governmentFee": 112,
+        "serviceCharge": 50,
+        "id": "CS2611-96350",
+        "candidateId": "USR-01712345678",
+        "financialSnapshot": {
+          "governmentApplicationFee": 112,
+          "serviceCharge": 50,
+          "raffleBonusDiscount": 0,
+          "couponDiscount": 0,
+          "finalServiceCharge": 50,
+          "totalPayable": 162,
+          "paymentStatus": "pending",
+          "currency": "BDT",
+          "hasPrizeDrawEntry": false,
+          "snapshotCreatedAt": "2026-11-09T22:37:32.635Z",
+          "isImmutable": false
+        },
+        "couponDiscount": 0,
+        "raffleDiscount": 0,
+        "walletDeduction": 0,
+        "cashPaid": 162,
+        "verificationType": "officially_verified",
+        "status": "completed",
+        "date": "১০/১১/২০২৬",
+        "createdAt": "2026-11-09T22:37:32.644Z",
+        "statusHistory": [
+          {
+            "status": "pending_payment",
+            "date": "2026-11-09T22:37:32.644Z",
+            "notes": "অনলাইন আবেদন দাখিল হয়েছে। যোগ্যতা যাচাই সম্পন্ন"
+          },
+          {
+            "status": "processing",
+            "date": "2026-11-09T22:41:18.199Z",
+            "notes": "অডিট টেস্ট: পেমেন্ট সফলভাবে অনুমোদিত।",
+            "updatedBy": "Admin (ADMIN-SUPER)"
+          },
+          {
+            "status": "completed",
+            "date": "2026-11-09T22:41:18.560Z",
+            "notes": "অডিট টেস্ট: টেলিটক আবেদন সম্পন্ন ও অফিসিয়াল কপি রিলিজ হয়েছে।",
+            "updatedBy": "Admin (ADMIN-SUPER)"
+          }
+        ],
+        "notes": "অডিট টেস্ট: টেলিটক আবেদন সম্পন্ন ও অফিসিয়াল কপি রিলিজ হয়েছে।",
+        "adminNotes": "অডিট টেস্ট: টেলিটক আবেদন সম্পন্ন ও অফিসিয়াল কপি রিলিজ হয়েছে।",
+        "statusLabel": "সফলভাবে সম্পন্ন",
+        "applicantCopyPdfUrl": "https://alljobs.teletalk.com.bd/applicant-copy/BPSC-AUDIT-9921.pdf",
+        "teleTalkTrackingId": "BPSC-AUDIT-9921",
+        "teleTalkPassword": "PASS-84920"
+      },
       {
         "jobId": "job-alljobs-15178",
         "jobTitle": "বৈজ্ঞানিক কর্মকর্তা পদে নিয়োগ বিজ্ঞপ্তি ২০২৬ - বাংলাদেশ মৎস্য গবেষণা ইনস্টিটিউট",
@@ -1343,6 +1537,60 @@
     ],
     "USR-01712345678": [
       {
+        "title": "আবেদন স্ট্যাটাস: সম্পন্ন",
+        "message": "ক্যাশিয়ার পদে নিয়োগ বিজ্ঞপ্তি ২০২৬ - বাংলাদেশ মৎস্য গবেষণা ইনস্টিটিউট: আপনার আবেদনটি সম্পন্ন হয়েছে এবং প্রাপ্তি স্বীকারপত্র তৈরি হয়েছে।",
+        "type": "application",
+        "link": "/dashboard/applications",
+        "id": "CS-NOTIF-2611-584",
+        "date": "2026-11-09T22:46:03.370Z",
+        "read": false
+      },
+      {
+        "title": "আবেদন স্ট্যাটাস: প্রক্রিয়াধীন",
+        "message": "ক্যাশিয়ার পদে নিয়োগ বিজ্ঞপ্তি ২০২৬ - বাংলাদেশ মৎস্য গবেষণা ইনস্টিটিউট: আপনার আবেদনটি যাচাইকরণ প্রক্রিয়ায় রয়েছে।",
+        "type": "application",
+        "link": "/dashboard/applications",
+        "id": "CS-NOTIF-2611-789",
+        "date": "2026-11-09T22:46:03.081Z",
+        "read": false
+      },
+      {
+        "title": "আবেদন স্ট্যাটাস: সম্পন্ন",
+        "message": "ক্যাশিয়ার পদে নিয়োগ বিজ্ঞপ্তি ২০২৬ - বাংলাদেশ মৎস্য গবেষণা ইনস্টিটিউট: আপনার আবেদনটি সম্পন্ন হয়েছে এবং প্রাপ্তি স্বীকারপত্র তৈরি হয়েছে।",
+        "type": "application",
+        "link": "/dashboard/applications",
+        "id": "CS-NOTIF-2611-699",
+        "date": "2026-11-09T22:43:19.125Z",
+        "read": false
+      },
+      {
+        "title": "আবেদন স্ট্যাটাস: প্রক্রিয়াধীন",
+        "message": "ক্যাশিয়ার পদে নিয়োগ বিজ্ঞপ্তি ২০২৬ - বাংলাদেশ মৎস্য গবেষণা ইনস্টিটিউট: আপনার আবেদনটি যাচাইকরণ প্রক্রিয়ায় রয়েছে।",
+        "type": "application",
+        "link": "/dashboard/applications",
+        "id": "CS-NOTIF-2611-779",
+        "date": "2026-11-09T22:43:18.796Z",
+        "read": false
+      },
+      {
+        "title": "আবেদন স্ট্যাটাস: সম্পন্ন",
+        "message": "ক্যাশিয়ার পদে নিয়োগ বিজ্ঞপ্তি ২০২৬ - বাংলাদেশ মৎস্য গবেষণা ইনস্টিটিউট: আপনার আবেদনটি সম্পন্ন হয়েছে এবং প্রাপ্তি স্বীকারপত্র তৈরি হয়েছে।",
+        "type": "application",
+        "link": "/dashboard/applications",
+        "id": "CS-NOTIF-2611-827",
+        "date": "2026-11-09T22:41:18.597Z",
+        "read": false
+      },
+      {
+        "title": "আবেদন স্ট্যাটাস: প্রক্রিয়াধীন",
+        "message": "ক্যাশিয়ার পদে নিয়োগ বিজ্ঞপ্তি ২০২৬ - বাংলাদেশ মৎস্য গবেষণা ইনস্টিটিউট: আপনার আবেদনটি যাচাইকরণ প্রক্রিয়ায় রয়েছে।",
+        "type": "application",
+        "link": "/dashboard/applications",
+        "id": "CS-NOTIF-2611-153",
+        "date": "2026-11-09T22:41:18.264Z",
+        "read": false
+      },
+      {
         "title": "🔔 টেস্ট জব অ্যালার্ট (সফল)",
         "message": "আপনার নোটিফিকেশন অ্যালার্ট সফলভাবে সক্রিয় আছে। চ্যানেল: হোয়াটসঅ্যাপ, এসএমএস, ইমেইল। নির্বাচিত ক্যাটাগরি: বিসিএস ও সরকারি চাকরি, ব্যাংক ও আর্থিক প্রতিষ্ঠান।",
         "type": "system",
@@ -1993,6 +2241,56 @@
       "candidateId": "ADMIN-SUPER",
       "role": "admin",
       "expiresAt": "2026-11-16T22:06:21.289Z"
+    },
+    "a3882257148eadba8ad823668108bbab6c3799f6e6cc70d68b441aaa222ba0b6": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T22:35:53.646Z"
+    },
+    "8edf4d40d3eb9029e746b859b8dcbc9f22ec187053ec8b6868ad8c0aad31d696": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T22:37:32.447Z"
+    },
+    "76ffc5db86eadf08b3bbb420b730115c94fc71eb23b17aff8cf551f77fe17441": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T22:38:31.430Z"
+    },
+    "4503033a9c000c25ce91f8be5786130fae85f1c17ac8db756b221d6b8cb28d84": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T22:39:21.331Z"
+    },
+    "9b1b6496fd231556c0bbfdb89be2e98d529392fe3d5a06a0e18191edc2131a37": {
+      "candidateId": "ADMIN-SUPER",
+      "role": "admin",
+      "expiresAt": "2026-11-16T22:40:38.497Z"
+    },
+    "5ef31126e57760c59727af21e495456fdebed89a0f4f20846f0d796385a9d1db": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T22:41:16.396Z"
+    },
+    "9f2fba9943aa5ab1648e3c010fe71183088ad7ddbce062c117d25684510aa0c3": {
+      "candidateId": "ADMIN-SUPER",
+      "role": "admin",
+      "expiresAt": "2026-11-16T22:42:40.299Z"
+    },
+    "9d73a184f520354dd4d9bcfbfe145528d044360789b9a0be4191a5278e63b776": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T22:43:16.849Z"
+    },
+    "b0d5f20f90d2394d4a66a4e39b11bcaafdb702661a73e4fbf9c0dc2aac2569dc": {
+      "candidateId": "ADMIN-SUPER",
+      "role": "admin",
+      "expiresAt": "2026-11-16T22:45:30.800Z"
+    },
+    "a71a06c3457e85a49c18357e9591b139d16d86792700ac6b39925b2f2617a70b": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T22:46:02.568Z"
     }
   },
   "coupons": {},
@@ -2000,6 +2298,132 @@
   "couponRedemptions": {},
   "raffleEntries": {},
   "adminAuditLogs": [
+    {
+      "adminId": "ADMIN-SUPER",
+      "action": "job_delete",
+      "targetId": "job-audit-test-1794265870939",
+      "targetType": "order",
+      "changes": {
+        "job": {
+          "old": "সহকারী প্রকৌশলী (সিভিল) নিয়োগ ২০২৬"
+        }
+      },
+      "notes": "Job deleted: সহকারী প্রকৌশলী (সিভিল) নিয়োগ ২০২৬",
+      "id": "AUDIT-1794265881238-G344Y",
+      "timestamp": "2026-11-09T23:11:21.238Z"
+    },
+    {
+      "adminId": "ADMIN-SUPER",
+      "action": "job_edit",
+      "targetId": "job-audit-test-1794265870939",
+      "targetType": "order",
+      "changes": {
+        "job": {
+          "new": "সহকারী প্রকৌশলী (সিভিল) নিয়োগ ২০২৬"
+        }
+      },
+      "notes": "Job circular updated: সহকারী প্রকৌশলী (সিভিল) নিয়োগ ২০২৬",
+      "id": "AUDIT-1794265880522-UM2P6",
+      "timestamp": "2026-11-09T23:11:20.522Z"
+    },
+    {
+      "adminId": "ADMIN-SUPER",
+      "action": "job_publish",
+      "targetId": "job-audit-test-1794265870939",
+      "targetType": "order",
+      "changes": {
+        "job": {
+          "new": "সহকারী প্রকৌশলী (সিভিল) নিয়োগ ২০২৬"
+        }
+      },
+      "notes": "Job circular published: সহকারী প্রকৌশলী (সিভিল) নিয়োগ ২০২৬",
+      "id": "AUDIT-1794265879152-L5EM4",
+      "timestamp": "2026-11-09T23:11:19.152Z"
+    },
+    {
+      "adminId": "ADMIN-SUPER",
+      "action": "status_change",
+      "targetId": "CS2611-47630",
+      "targetType": "order",
+      "changes": {
+        "status": {
+          "new": "completed"
+        }
+      },
+      "notes": "অডিট টেস্ট: টেলিটক আবেদন সম্পন্ন ও অফিসিয়াল কপি রিলিজ হয়েছে।",
+      "id": "AUDIT-1794264363400-H58SB",
+      "timestamp": "2026-11-09T22:46:03.400Z"
+    },
+    {
+      "adminId": "ADMIN-SUPER",
+      "action": "status_change",
+      "targetId": "CS2611-47630",
+      "targetType": "order",
+      "changes": {
+        "status": {
+          "new": "processing"
+        }
+      },
+      "notes": "অডিট টেস্ট: পেমেন্ট সফলভাবে অনুমোদিত।",
+      "id": "AUDIT-1794264363120-OPM8D",
+      "timestamp": "2026-11-09T22:46:03.120Z"
+    },
+    {
+      "adminId": "ADMIN-SUPER",
+      "action": "status_change",
+      "targetId": "CS2611-89081",
+      "targetType": "order",
+      "changes": {
+        "status": {
+          "new": "completed"
+        }
+      },
+      "notes": "অডিট টেস্ট: টেলিটক আবেদন সম্পন্ন ও অফিসিয়াল কপি রিলিজ হয়েছে।",
+      "id": "AUDIT-1794264199168-OPZY9",
+      "timestamp": "2026-11-09T22:43:19.168Z"
+    },
+    {
+      "adminId": "ADMIN-SUPER",
+      "action": "status_change",
+      "targetId": "CS2611-89081",
+      "targetType": "order",
+      "changes": {
+        "status": {
+          "new": "processing"
+        }
+      },
+      "notes": "অডিট টেস্ট: পেমেন্ট সফলভাবে অনুমোদিত।",
+      "id": "AUDIT-1794264198834-MG7OA",
+      "timestamp": "2026-11-09T22:43:18.834Z"
+    },
+    {
+      "adminId": "ADMIN-SUPER",
+      "action": "status_change",
+      "targetId": "CS2611-96350",
+      "targetType": "order",
+      "changes": {
+        "status": {
+          "new": "completed"
+        }
+      },
+      "notes": "অডিট টেস্ট: টেলিটক আবেদন সম্পন্ন ও অফিসিয়াল কপি রিলিজ হয়েছে।",
+      "id": "AUDIT-1794264078629-0B49Z",
+      "timestamp": "2026-11-09T22:41:18.629Z"
+    },
+    {
+      "adminId": "ADMIN-SUPER",
+      "action": "status_change",
+      "targetId": "CS2611-96350",
+      "targetType": "order",
+      "changes": {
+        "status": {
+          "new": "processing"
+        }
+      },
+      "notes": "অডিট টেস্ট: পেমেন্ট সফলভাবে অনুমোদিত।",
+      "id": "AUDIT-1794264078302-GQGRE",
+      "timestamp": "2026-11-09T22:41:18.302Z"
+    },
     {
       "adminId": "ADMIN-SUPER",
       "action": "report_generate",

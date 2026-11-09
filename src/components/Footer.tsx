@@ -41,6 +41,8 @@ export const DEFAULT_FOOTER_COLUMNS: FooterColumnItem[] = [
       { label: 'আবেদনের শেষ সময় কাছাকাছি', url: '/deadline-approaching' },
       { label: 'পরীক্ষার নোটিশ ও সময়সূচি', url: '/exam-notices' },
       { label: 'প্রবেশপত্র / অ্যাডমিট কার্ড', url: '/admit-cards' },
+      { label: 'ভাইভা পরীক্ষার সময়সূচি', url: '/viva-notices' },
+      { label: 'নিয়োগ পরীক্ষার ফলাফল', url: '/exam-results' },
       { label: 'বিগত বছরের প্রশ্ন ও সমাধান', url: '/previous-year-questions' }
     ]
   },

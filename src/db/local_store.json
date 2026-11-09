@@ -1104,7 +1104,28 @@
       }
     ],
     "CS-USR-26-609104": [],
-    "CS-USR-26-174774": []
+    "CS-USR-26-174774": [],
+    "APP-AUDIT-C8-001": {
+      "id": "APP-AUDIT-C8-001",
+      "jobId": "job-alljobs-15184",
+      "jobTitle": "বাংলাদেশ পরমাণু কৃষি গবেষণা ইনস্টিটিউট (বিনা)",
+      "postName": "বৈজ্ঞানিক কর্মকর্তা (৯ম গ্রেড)",
+      "candidateName": "মোঃ তানভীর হাসান",
+      "candidatePhone": "01712345678",
+      "candidateDistrict": "ঢাকা",
+      "status": "completed",
+      "submittedAt": "2026-11-04T14:17:45.657Z",
+      "date": "2026-11-04T14:17:45.657Z",
+      "fee": 273,
+      "totalFee": 273,
+      "paymentMethod": "wallet",
+      "paymentStatus": "PAID",
+      "teleTalkUserId": "BPSC102938",
+      "teleTalkPassword": "PASS7890",
+      "teleTalkTrackingId": "BPSC102938",
+      "applicantCopyPdfUrl": "/uploads/applicant_copy_demo.pdf",
+      "admitCardUrl": "/uploads/admit_card_demo.pdf"
+    }
   },
   "savedJobs": {
     "USR-01712345678": [
@@ -1822,6 +1843,31 @@
       "candidateId": "USR-01712345678",
       "role": "candidate",
       "expiresAt": "2026-11-16T14:08:41.800Z"
+    },
+    "cluster8_audit_session_1794233865658": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T14:17:45.658Z"
+    },
+    "cluster8_audit_session_1794233956111": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T14:19:16.111Z"
+    },
+    "cluster8_audit_session_1794234096974": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T14:21:36.974Z"
+    },
+    "cluster8_audit_session_1794234293692": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T14:24:53.692Z"
+    },
+    "cluster8_audit_session_1794234407438": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T14:26:47.438Z"
     }
   },
   "coupons": {},

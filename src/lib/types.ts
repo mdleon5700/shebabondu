@@ -1433,6 +1433,7 @@ export interface ApplicationRequest {
 
 
   teleTalkTrackingId?: string;
+  teleTalkUserId?: string;
 
 
 

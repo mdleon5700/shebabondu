@@ -85,6 +85,7 @@ import FinancialTransactionsLedger from '@/components/admin/FinancialTransaction
 import CandidateManagementHub from '@/components/admin/CandidateManagementHub';
 import JobVerificationCenter from '@/components/admin/JobVerificationCenter';
 import JobReportsManagement from '@/components/admin/JobReportsManagement';
+import SupportTicketsManagement from '@/components/admin/SupportTicketsManagement';
 import JobContentStudio from '@/components/admin/JobContentStudio';
 import JobPublishingCenter from '@/components/admin/JobPublishingCenter';
 import JobCategorySearchManager from '@/components/admin/JobCategorySearchManager';
@@ -1754,6 +1755,7 @@ function AdminContent() {
           keywords: ['এসএমএস', 'sms', 'notification', 'মেসেজ', 'ব্রডকাস্ট', 'টেমপ্লেট'],
           subTabs: [
             { id: 'notifications', label: 'নোটিফিকেশন ও ব্রডকাস্ট' },
+            { id: 'support-tickets', label: '🎧 সাপোর্ট টিকেট ও হেল্পডেস্ক' },
             { id: 'sms-status', label: 'এসএমএস গেটওয়ে ও ব্যালেন্স' },
             { id: 'templates-delivery', label: 'টেমপ্লেট ও হিস্ট্রি' }
           ]
@@ -5252,6 +5254,13 @@ function AdminContent() {
           {activeTab === 'job-reports' && (
             <div className="space-y-6">
               <JobReportsManagement />
+            </div>
+          )}
+
+          {/* TAB: SUPPORT TICKETS & HELPDESK */}
+          {activeTab === 'support-tickets' && (
+            <div className="space-y-6">
+              <SupportTicketsManagement />
             </div>
           )}
 

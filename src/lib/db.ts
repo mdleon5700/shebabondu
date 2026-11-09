@@ -243,6 +243,7 @@ interface DatabaseState {
   engineeringTasks?: Record<string, import('./engineering/types').EngineeringTask>;
   jobReports?: import('./types').JobReportItem[];
   jobAlertSubscriptions?: import('./types').JobAlertSubscription[];
+  contactMessages?: import('./types').ContactMessageItem[];
 
 }
 
@@ -1929,6 +1930,7 @@ function loadDB(): DatabaseState {
     if (!state.circularDrafts) state.circularDrafts = {};
     if (!state.jobReports) state.jobReports = [];
     if (!state.jobAlertSubscriptions) state.jobAlertSubscriptions = [];
+    if (!state.contactMessages) state.contactMessages = [];
 
 
 
@@ -2523,6 +2525,53 @@ export const serverDB = {
       saveDB(db);
       return newSub;
     }
+  },
+
+  // Contact Messages & Support Tickets Engine
+  getContactMessages(status?: string): import('./types').ContactMessageItem[] {
+    const db = loadDB();
+    const messages = db.contactMessages || [];
+    if (!status || status === 'all') return messages;
+    return messages.filter(m => m.status === status);
+  },
+
+  getContactMessageById(id: string): import('./types').ContactMessageItem | null {
+    const db = loadDB();
+    return (db.contactMessages || []).find(m => m.id === id) || null;
+  },
+
+  createContactMessage(payload: Partial<import('./types').ContactMessageItem>): import('./types').ContactMessageItem {
+    const db = loadDB();
+    if (!db.contactMessages) db.contactMessages = [];
+    const ticketId = 'TCK-2026-' + (Math.floor(1000 + Math.random() * 9000)).toString();
+    const newMessage: import('./types').ContactMessageItem = {
+      id: ticketId,
+      name: payload.name || 'সম্মানিত চাকরিপ্রার্থী',
+      phone: payload.phone || '',
+      email: payload.email,
+      subject: payload.subject || 'সাধারণ অনুসন্ধান',
+      category: payload.category || 'general',
+      message: payload.message || '',
+      status: 'new',
+      replyNotes: '',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+    db.contactMessages.unshift(newMessage);
+    saveDB(db);
+    return newMessage;
+  },
+
+  updateContactMessageStatus(id: string, status: 'new' | 'in_progress' | 'replied' | 'closed', replyNotes?: string): { success: boolean; message?: import('./types').ContactMessageItem } {
+    const db = loadDB();
+    if (!db.contactMessages) return { success: false };
+    const item = db.contactMessages.find(m => m.id === id);
+    if (!item) return { success: false };
+    item.status = status;
+    if (replyNotes !== undefined) item.replyNotes = replyNotes;
+    item.updatedAt = new Date().toISOString();
+    saveDB(db);
+    return { success: true, message: item };
   },
 
 

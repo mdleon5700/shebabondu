@@ -4953,3 +4953,18 @@ export interface JobAlertSubscription {
   updatedAt?: string;
 }
 
+export interface ContactMessageItem {
+  id: string;
+  name: string;
+  phone: string;
+  email?: string;
+  subject: string;
+  category: 'general' | 'application_help' | 'payment_issue' | 'technical_bug' | 'feedback';
+  message: string;
+  status: 'new' | 'in_progress' | 'replied' | 'closed';
+  replyNotes?: string;
+  createdAt: string;
+  updatedAt?: string;
+}
+
+

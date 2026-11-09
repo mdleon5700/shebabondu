@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import React, { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
@@ -25,7 +25,9 @@ import {
   RefreshCw,
   Layers,
   FileCheck,
-  CreditCard
+  CreditCard,
+  Calendar,
+  Activity
 } from 'lucide-react';
 import { storage } from '@/lib/store';
 import { ApplicationRequest } from '@/lib/types';
@@ -266,9 +268,21 @@ export default function ApplicationsPage() {
           ? `নোট: ${selectedApp.notes || 'TrxID বা তথ্যে অসামঞ্জস্য রয়েছে। সংশোধন করুন।'}`
           : 'আবেদন সম্পন্ন হওয়ামাত্রই ডাউনলোড স্লিপ ও ট্র্যাকিং ক্রেডেনশিয়াল পাবেন।',
         isDone: isCompleted,
-        isCurrent: isCompleted || isRejected,
+        isCurrent: isProcessing,
         isError: isRejected,
-        time: isCompleted ? 'রেডি' : isRejected ? 'অ্যাকশন চাই' : 'চূড়ান্ত ধাপ'
+        time: isCompleted ? 'রেডি' : isRejected ? 'অ্যাকশন চাই' : 'অপেক্ষমাণ'
+      },
+      {
+        id: 'step-5',
+        title: 'প্রবেশপত্র ও পরীক্ষার ফলাফল ট্র্যাকিং',
+        desc: selectedApp.admitCardUrl 
+          ? 'প্রবেশপত্র ইস্যু হয়েছে! প্রবেশপত্র হাব থেকে সরাসরি ডাউনলোড করুন।'
+          : isCompleted 
+          ? 'পরীক্ষার তারিখ নির্ধারণ ও প্রবেশপত্র রিলিজের পর রোল নম্বর ও আসনবিন্যাস লাইভ হবে।'
+          : 'আবেদন সম্পন্ন হওয়ার পর প্রবেশপত্র ও পরীক্ষার নোটিশ ট্র্যাক করা যাবে।',
+        isDone: Boolean(selectedApp.admitCardUrl),
+        isCurrent: isCompleted,
+        time: selectedApp.admitCardUrl ? 'ইস্যুকৃত' : isCompleted ? 'অপেক্ষমাণ' : 'ভবিষ্যৎ ধাপ'
       }
     ];
   }, [selectedApp]);
@@ -631,6 +645,63 @@ export default function ApplicationsPage() {
                 </div>
               </div>
 
+              {/* 5-Step Live Progress Stepper */}
+              <div data-testid="five-step-tracker" className="p-3.5 bg-slate-50 rounded-2xl border border-slate-200 space-y-2.5">
+                <div className="font-bold text-slate-800 text-[11px] flex items-center justify-between">
+                  <div className="flex items-center gap-1.5">
+                    <Activity className="w-3.5 h-3.5 text-emerald-700" />
+                    <span>৫-ধাপের লাইভ অগ্রগতি ট্র্যাকার</span>
+                  </div>
+                  <span className="text-[10px] font-mono text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full font-bold">
+                    {(selectedApp.status === 'completed' || selectedApp.status === 'submitted') ? (selectedApp.admitCardUrl ? 'ধাপ ৫/৫' : 'ধাপ ৪/৫') : selectedApp.status === 'processing' ? 'ধাপ ৩/৫' : selectedApp.status === 'pending_payment' ? 'ধাপ ২/৫' : 'ধাপ ১/৫'}
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-5 gap-1 text-center text-[10px]">
+                  {/* Step 1: সাবমিট */}
+                  <div className="space-y-1">
+                    <div className="w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center mx-auto font-bold text-[10px]">✓</div>
+                    <span className="font-bold text-slate-900 block truncate">১. দাখিল</span>
+                  </div>
+                  {/* Step 2: ফি যাচাই */}
+                  <div className="space-y-1">
+                    <div className={`w-6 h-6 rounded-full flex items-center justify-center mx-auto font-bold text-[10px] ${
+                      (selectedApp.status === 'completed' || selectedApp.status === 'submitted' || selectedApp.status === 'processing') ? 'bg-emerald-600 text-white' : 'bg-amber-500 text-white animate-pulse'
+                    }`}>
+                      {(selectedApp.status === 'completed' || selectedApp.status === 'submitted' || selectedApp.status === 'processing') ? '✓' : '২'}
+                    </div>
+                    <span className="font-bold text-slate-900 block truncate">২. ফি যাচাই</span>
+                  </div>
+                  {/* Step 3: ফরম পূরণ */}
+                  <div className="space-y-1">
+                    <div className={`w-6 h-6 rounded-full flex items-center justify-center mx-auto font-bold text-[10px] ${
+                      (selectedApp.status === 'completed' || selectedApp.status === 'submitted') ? 'bg-emerald-600 text-white' : selectedApp.status === 'processing' ? 'bg-blue-600 text-white animate-pulse' : 'bg-slate-200 text-slate-400'
+                    }`}>
+                      {(selectedApp.status === 'completed' || selectedApp.status === 'submitted') ? '✓' : '৩'}
+                    </div>
+                    <span className="font-bold text-slate-900 block truncate">৩. ফরম পূরণ</span>
+                  </div>
+                  {/* Step 4: স্লিপ রেডি */}
+                  <div className="space-y-1">
+                    <div className={`w-6 h-6 rounded-full flex items-center justify-center mx-auto font-bold text-[10px] ${
+                      (selectedApp.status === 'completed' || selectedApp.status === 'submitted') ? 'bg-emerald-600 text-white' : 'bg-slate-200 text-slate-400'
+                    }`}>
+                      {(selectedApp.status === 'completed' || selectedApp.status === 'submitted') ? '✓' : '৪'}
+                    </div>
+                    <span className="font-bold text-slate-900 block truncate">৪. স্লিপ রেডি</span>
+                  </div>
+                  {/* Step 5: প্রবেশপত্র */}
+                  <div className="space-y-1">
+                    <div className={`w-6 h-6 rounded-full flex items-center justify-center mx-auto font-bold text-[10px] ${
+                      selectedApp.admitCardUrl ? 'bg-emerald-600 text-white' : (selectedApp.status === 'completed' || selectedApp.status === 'submitted') ? 'bg-indigo-600 text-white animate-pulse' : 'bg-slate-200 text-slate-400'
+                    }`}>
+                      {selectedApp.admitCardUrl ? '✓' : '৫'}
+                    </div>
+                    <span className="font-bold text-slate-900 block truncate">৫. প্রবেশপত্র</span>
+                  </div>
+                </div>
+              </div>
+
               {/* Progress Stepper Timeline */}
               <div className="pt-2 border-t border-slate-100 space-y-2">
                 <div className="font-bold text-slate-800 text-[11px] flex items-center gap-1.5">
@@ -669,27 +740,39 @@ export default function ApplicationsPage() {
               {/* Action Buttons: Applicant's Copy PDF, Voucher, Dispute */}
               <div className="pt-3 space-y-2">
                 {(selectedApp.status === 'completed' || selectedApp.status === 'submitted') ? (
-                  <div className="grid grid-cols-2 gap-2">
-                    <a
-                      data-testid="download-applicant-copy-btn"
-                      href={selectedApp.applicantCopyPdfUrl || '/demo-applicant-copy.pdf'}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="py-2.5 px-3 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl font-bold flex items-center justify-center gap-1.5 shadow-xs transition-colors text-center text-xs"
+                  <>
+                    <div className="grid grid-cols-2 gap-2">
+                      <a
+                        data-testid="download-applicant-copy-btn"
+                        href={selectedApp.applicantCopyPdfUrl || '/demo-applicant-copy.pdf'}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="py-2.5 px-3 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl font-bold flex items-center justify-center gap-1.5 shadow-xs transition-colors text-center text-xs"
+                      >
+                        <Download className="w-4 h-4" />
+                        <span>স্লিপ ডাউনলোড</span>
+                      </a>
+                      <button
+                        type="button"
+                        data-testid="preview-slip-modal-btn"
+                        onClick={() => setPreviewSlipApp(selectedApp)}
+                        className="py-2.5 px-3 bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-300 rounded-xl font-bold flex items-center justify-center gap-1.5 transition-colors cursor-pointer text-xs"
+                      >
+                        <Eye className="w-4 h-4 text-emerald-700" />
+                        <span>ইন-অ্যাপ প্রিভিউ</span>
+                      </button>
+                    </div>
+
+                    {/* Step 5: Admit Card & Exam Tracker Link */}
+                    <Link
+                      href="/dashboard/admit-cards"
+                      data-testid="admit-card-link-btn"
+                      className="w-full py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-900 border border-indigo-200 rounded-xl font-bold flex items-center justify-center gap-1.5 transition-colors cursor-pointer text-xs"
                     >
-                      <Download className="w-4 h-4" />
-                      <span>স্লিপ ডাউনলোড</span>
-                    </a>
-                    <button
-                      type="button"
-                      data-testid="preview-slip-modal-btn"
-                      onClick={() => setPreviewSlipApp(selectedApp)}
-                      className="py-2.5 px-3 bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-300 rounded-xl font-bold flex items-center justify-center gap-1.5 transition-colors cursor-pointer text-xs"
-                    >
-                      <Eye className="w-4 h-4 text-emerald-700" />
-                      <span>ইন-অ্যাপ প্রিভিউ</span>
-                    </button>
-                  </div>
+                      <Calendar className="w-3.5 h-3.5 text-indigo-700" />
+                      <span>🎫 প্রবেশপত্র ও পরীক্ষার সিট প্ল্যান ট্র্যাক করুন</span>
+                    </Link>
+                  </>
                 ) : (
                   <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl text-center text-slate-500 font-bold text-[11px]">
                     ⏳ আবেদন সম্পন্ন হওয়ামাত্রই অফিশিয়াল অ্যাপ্লিকেশন স্লিপ উন্মুক্ত হবে

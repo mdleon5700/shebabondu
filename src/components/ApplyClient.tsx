@@ -447,13 +447,16 @@ function ApplyFormContent({ initialJob }: ApplyClientProps) {
 
       const me = await fetch('/api/auth/me', { cache: 'no-store', headers: authHeaders });
       const meData = await me.json().catch(() => ({}));
+      console.log('>>> [handleSubmitOrder] meData:', JSON.stringify(meData));
       if (!me.ok || !meData.isLoggedIn) {
+        console.log('>>> [handleSubmitOrder] NOT logged in, redirecting to login');
         router.push('/login?redirect=' + encodeURIComponent(window.location.pathname + window.location.search));
         return;
       }
       const appHeaders: Record<string, string> = { 'Content-Type': 'application/json' };
       if (token) appHeaders['Authorization'] = `Bearer ${token}`;
 
+      console.log('>>> [handleSubmitOrder] calling POST /api/applications...');
       const res = await fetch('/api/applications', {
         method: 'POST',
         headers: appHeaders,
@@ -494,6 +497,7 @@ function ApplyFormContent({ initialJob }: ApplyClientProps) {
       });
 
       const data = await res.json();
+      console.log('>>> [handleSubmitOrder] res.ok:', res.ok, 'data:', JSON.stringify(data));
       if (res.ok && data.success && data.createdApp) {
         setCreatedOrderNumber(data.createdApp.id);
         try {

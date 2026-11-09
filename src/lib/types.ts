@@ -1463,6 +1463,8 @@ export interface ApplicationRequest {
 
   applicantCopyPdfUrl?: string;
 
+  admitCardUrl?: string;
+
 
 
 

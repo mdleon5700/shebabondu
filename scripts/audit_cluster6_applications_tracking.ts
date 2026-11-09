@@ -253,6 +253,15 @@ async function auditCluster6ApplicationsTracking() {
     await page.waitForSelector('text=আবেদন সম্পন্ন ও স্লিপ রেডি', { state: 'visible', timeout: 5000 });
     console.log('✓ Application status transitioned to Completed & Slip Ready.');
 
+    // Verify 5-Step Live Progress Tracker
+    await page.waitForSelector('[data-testid="five-step-tracker"]', { state: 'visible', timeout: 5000 });
+    console.log('✓ 5-Step Live Progress Stepper verified on dashboard.');
+
+    // Verify Step 5: Admit Card link button
+    const admitCardBtn = page.locator('[data-testid="admit-card-link-btn"]');
+    await admitCardBtn.waitFor({ state: 'visible', timeout: 5000 });
+    console.log('✓ Step 5 Admit Card tracker link button verified.');
+
     // Check In-App Slip Preview Modal
     const previewBtn = page.locator('[data-testid="preview-slip-modal-btn"]');
     if (await previewBtn.isVisible()) {
@@ -275,9 +284,30 @@ async function auditCluster6ApplicationsTracking() {
     console.log('✓ Printable Voucher modal closed cleanly.');
 
     // ========================================================
-    // TEST 8: Capture Showcase Screenshot
+    // TEST 8: Public Portal 5-Step Tracking (/applications) Verification
     // ========================================================
-    console.log('\n--- TEST 8: Capturing Showcase Screenshot ---');
+    console.log('\n--- TEST 8: Public Portal (/applications) 5-Step Tracking & Saved Jobs Verification ---');
+    await page.goto('http://localhost:3000/applications', { waitUntil: 'domcontentloaded', timeout: 45000 });
+    await page.waitForSelector('text=আমার আবেদন ও ট্র্যাকিং ড্যাশবোর্ড', { state: 'visible', timeout: 20000 });
+    await page.waitForSelector('text=৫-ধাপের লাইভ অগ্রগতি ট্র্যাকার', { state: 'visible', timeout: 10000 });
+    console.log('✓ Public portal (/applications) loaded with 5-step live progress pipeline.');
+
+    // Verify Saved jobs tab
+    const savedJobsTab = page.locator('button:has-text("সংরক্ষিত সার্কুলার")');
+    await savedJobsTab.waitFor({ state: 'visible', timeout: 5000 });
+    await savedJobsTab.click();
+    await page.waitForTimeout(500);
+    console.log('✓ Saved Circulars tab switched and verified.');
+
+    // Return to applications tab
+    const appsTab = page.locator('button:has-text("দাখিলকৃত আবেদনসমূহ")');
+    await appsTab.click();
+    await page.waitForTimeout(500);
+
+    // ========================================================
+    // TEST 9: Capture Showcase Screenshot
+    // ========================================================
+    console.log('\n--- TEST 9: Capturing Showcase Screenshot ---');
     const screenshotPath = path.resolve('scripts/audit_119_applications_tracking_showcase.png');
     await page.screenshot({ path: screenshotPath, fullPage: false });
     console.log('✓ Screenshot saved to:', screenshotPath);
@@ -288,7 +318,7 @@ async function auditCluster6ApplicationsTracking() {
     fs.copyFileSync(screenshotPath, targetArtifactPath);
     console.log('✓ Screenshot copied to artifacts directory:', targetArtifactPath);
 
-    console.log('\n🎉 ALL 8 TESTS IN CLUSTER 6 AUDIT PASSED WITH 100% SUCCESS!');
+    console.log('\n🎉 ALL 9 TESTS IN CLUSTER 6 AUDIT PASSED WITH 100% SUCCESS!');
   } finally {
     await browser.close();
   }

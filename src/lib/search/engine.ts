@@ -80,7 +80,11 @@ export class SearchEngine {
             classification.primaryCategory.toLowerCase() === catTarget ||
             classification.categorySlug.toLowerCase() === catTarget ||
             (job.category || '').toLowerCase() === catTarget ||
-            (targetCatRecord && classification.primaryCategory.toLowerCase() === targetCatRecord.id.toLowerCase())
+            (targetCatRecord && classification.primaryCategory.toLowerCase() === targetCatRecord.id.toLowerCase()) ||
+            (targetCatRecord && classification.subcategories.some(
+              (s: string) => s.toLowerCase() === targetCatRecord.id.toLowerCase() || s.toLowerCase() === targetCatRecord.slug.toLowerCase()
+            )) ||
+            classification.subcategories.some((s: string) => s.toLowerCase() === catTarget)
           );
         }
 

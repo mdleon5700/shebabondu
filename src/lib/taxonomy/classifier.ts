@@ -128,6 +128,20 @@ export class JobTaxonomyClassifier {
     if (org.includes('বীমা') || org.includes('ইনস্যুরেন্স') || org.includes('সিকিউরিটিজ') || title.includes('অডিট') || title.includes('হিসাব')) {
       subcategories.push('cat-finance');
     }
+    if (
+      title.includes('প্রকৌশলী') ||
+      title.includes('ইঞ্জিনিয়ার') ||
+      title.includes('engineer') ||
+      org.includes('ইঞ্জিনিয়ারিং') ||
+      org.includes('বিদ্যুৎ') ||
+      org.includes('পাওয়ার') ||
+      org.includes('কোল') ||
+      org.includes('আশুগঞ্জ')
+    ) {
+      if (!subcategories.includes('cat-engineer')) {
+        subcategories.push('cat-engineer');
+      }
+    }
 
     // 2. Organization Type Resolution
     let organizationType: OrganizationType = 'government';

@@ -1,6 +1,7 @@
 ﻿'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
+import Link from 'next/link';
 import { 
   Search, 
   Filter, 
@@ -10,7 +11,8 @@ import {
   ArrowUpDown, 
   SlidersHorizontal,
   Sparkles,
-  AlertCircle
+  AlertCircle,
+  Briefcase
 } from 'lucide-react';
 import { SearchResult } from '@/lib/search/types';
 import JobCard from '@/components/JobCard';
@@ -31,6 +33,7 @@ export default function CategoryJobsClient({ categorySlug, initialResult }: Prop
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [showMobileFilters, setShowMobileFilters] = useState(false);
+  const isFirstRender = useRef(true);
 
   const fetchFilteredJobs = useCallback(async (pageNum: number) => {
     setIsLoading(true);
@@ -61,6 +64,10 @@ export default function CategoryJobsClient({ categorySlug, initialResult }: Prop
   }, [categorySlug, query, selectedDivision, selectedEducation, selectedJobType, selectedStatus, sortBy]);
 
   useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
     setPage(1);
     const debounceTimer = setTimeout(() => {
       fetchFilteredJobs(1);
@@ -237,20 +244,44 @@ export default function CategoryJobsClient({ categorySlug, initialResult }: Prop
 
           {/* Empty State */}
           {result.jobs.length === 0 ? (
-            <div className="bg-white rounded-3xl border border-slate-200/90 p-12 text-center space-y-4 shadow-sm">
+            <div className="bg-white rounded-3xl border border-slate-200/90 p-10 sm:p-12 text-center space-y-4 shadow-sm">
               <div className="w-14 h-14 bg-amber-50 text-amber-600 rounded-full flex items-center justify-center mx-auto">
                 <AlertCircle className="w-8 h-8" />
               </div>
-              <h3 className="text-lg font-black text-slate-900">কোনো সার্কুলার পাওয়া যায়নি</h3>
+              <h3 className="text-lg font-black text-slate-900">
+                {activeFilterCount > 0 ? 'ফিল্টারের সাথে মিলে এমন সার্কুলার পাওয়া যায়নি' : 'এই মুহূর্তে কোনো সক্রিয় বিজ্ঞপ্তি নেই'}
+              </h3>
               <p className="text-xs sm:text-sm text-slate-500 max-w-md mx-auto leading-relaxed">
-                আপনার নির্বাচিত ফিল্টারের সাথে মিলে এমন কোনো সক্রিয় বিজ্ঞপ্তি এই মুহূর্তে নেই। ফিল্টার রিসেট করে আবার চেষ্টা করুন।
+                {activeFilterCount > 0
+                  ? 'আপনার নির্বাচিত ফিল্টারের মান পরিবর্তন করুন অথবা ফিল্টার রিসেট করে এই ক্যাটাগরির সকল সার্কুলার দেখুন।'
+                  : 'এই ক্যাটাগরিতে নতুন কোনো সরকারি বা বেসরকারি নিয়োগ বিজ্ঞপ্তি প্রকাশ হওয়া মাত্রই স্বয়ংক্রিয়ভাবে এখানে যুক্ত করা হবে। অন্যান্য জনপ্রিয় ক্যাটাগরি বা কেন্দ্রীয় চাকরির তালিকা ঘুরে দেখতে পারেন।'}
               </p>
-              <button
-                onClick={handleResetFilters}
-                className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs px-5 py-2.5 rounded-xl shadow-md transition-colors"
-              >
-                ফিল্টার রিসেট করুন
-              </button>
+              <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
+                {activeFilterCount > 0 ? (
+                  <button
+                    onClick={handleResetFilters}
+                    className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs px-5 py-2.5 rounded-xl shadow-md transition-colors"
+                  >
+                    ফিল্টার রিসেট করুন
+                  </button>
+                ) : (
+                  <>
+                    <Link
+                      href="/categories"
+                      className="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs px-5 py-2.5 rounded-xl transition-colors"
+                    >
+                      সকল ক্যাটাগরি
+                    </Link>
+                    <Link
+                      href="/jobs"
+                      className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs px-5 py-2.5 rounded-xl shadow-md transition-colors flex items-center gap-1.5"
+                    >
+                      <Briefcase className="w-3.5 h-3.5" />
+                      <span>সকল চাকরির ডিরেক্টরি</span>
+                    </Link>
+                  </>
+                )}
+              </div>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

@@ -3,17 +3,17 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { 
-  Bookmark, 
-  Clock, 
-  Building2, 
-  ArrowRight, 
-  Sparkles, 
-  Lock, 
-  CheckCircle2, 
-  Bell, 
-  ShieldCheck, 
-  Trash2 
+import {
+  Bookmark,
+  Clock,
+  Building2,
+  ArrowRight,
+  Sparkles,
+  Lock,
+  CheckCircle2,
+  Bell,
+  ShieldCheck,
+  Trash2
 } from 'lucide-react';
 import { storage } from '@/lib/store';
 import { fetchPublicJobs } from '@/lib/public-jobs-client';

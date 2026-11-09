@@ -1,5 +1,5 @@
 'use client';
-import { matchJobQuery } from '@/lib/search-helper';
+import { matchJobQuery, matchGradeComprehensive, parseSalaryRange, toBn, toEnDigits } from '@/lib/search-helper';
 import { fetchPublicJobs } from '@/lib/public-jobs-client';
 import { CentralDeadlineEngine } from '@/lib/deadlines/engine';
 
@@ -53,28 +53,6 @@ import {
   MessageSquare
 } from 'lucide-react';
 import { JobCircular } from '@/lib/types';
-
-// Bengali numeral converter helper
-const toBn = (n: number | string) => String(n).replace(/\d/g, d => '০১২৩৪৫৬৭৮৯'[+d]);
-const toEnDigits = (s: string) => String(s || '').replace(/[০-৯]/g, d => '0123456789'['০১২৩৪৫৬৭৮৯'.indexOf(d)]);
-
-const parseSalaryRange = (salary: string): { min: number; max: number } => {
-  if (!salary) return { min: 0, max: 0 };
-  const en = toEnDigits(salary);
-  const nums = en.match(/\d[\d,]*/g);
-  if (!nums || nums.length === 0) return { min: 0, max: 0 };
-  const cleanNums = nums.map(n => parseInt(n.replace(/,/g, ''), 10)).filter(n => n >= 5000 && n <= 200000);
-  if (cleanNums.length === 0) return { min: 0, max: 0 };
-  return { min: cleanNums[0], max: cleanNums[cleanNums.length - 1] };
-};
-
-const matchGrade = (jobGrade: string, selectedGrade: string) => {
-  if (selectedGrade === 'all') return true;
-  if (!jobGrade) return false;
-  if (jobGrade === selectedGrade) return true;
-  const gradeKey = selectedGrade.replace(' গ্রেড', '').trim();
-  return jobGrade.includes(gradeKey);
-};
 
 const candidateReviews = [
   {
@@ -475,8 +453,8 @@ export default function HomePage() {
       // Organization filter
       if (selectedOrg !== 'all' && !job.organization.includes(selectedOrg)) return false;
 
-      // Grade filter (supports single or composite grade matching)
-      if (!matchGrade(job.grade, selectedGrade)) return false;
+      // Grade filter (supports single, range, or composite grade matching)
+      if (!matchGradeComprehensive(job.grade, selectedGrade)) return false;
 
       // Salary range filter (dynamically parsed for all 20 national pay grades)
       if (selectedSalary !== 'all') {

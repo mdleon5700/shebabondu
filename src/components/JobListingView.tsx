@@ -1,5 +1,5 @@
 'use client';
-import { matchJobQuery } from '@/lib/search-helper';
+import { matchJobQuery, matchGradeComprehensive, toBn } from '@/lib/search-helper';
 import { fetchPublicJobs } from '@/lib/public-jobs-client';
 
 import React, { useState, useMemo, useEffect } from 'react';
@@ -49,9 +49,6 @@ interface JobListingViewProps {
 }
 
 const JOBS_PER_PAGE = 9;
-
-// Bengali numeral helper
-const toBn = (n: number | string) => String(n).replace(/\d/g, d => '০১২৩৪৫৬৭৮৯'[+d]);
 
 export default function JobListingView({
   title,
@@ -131,19 +128,43 @@ export default function JobListingView({
           if (job.category !== 'bank') return false;
           break;
         case 'teacher':
-          if (job.category !== 'teacher' && !job.title.includes('শিক্ষক')) return false;
+          if (
+            job.category !== 'teacher' && 
+            !job.title.includes('শিক্ষক') && 
+            !job.title.includes('প্রভাষক') &&
+            !(job.positions && job.positions.some(p => p.title?.includes('শিক্ষক') || p.title?.includes('প্রভাষক')))
+          ) return false;
           break;
         case 'ngo':
           if (job.category !== 'ngo') return false;
           break;
         case 'it':
-          if (job.category !== 'engineer' && !job.title.includes('কম্পিউটার') && !job.title.includes('আইটি')) return false;
+          if (
+            job.category !== 'engineer' && 
+            !job.title.includes('কম্পিউটার') && 
+            !job.title.includes('আইটি') && 
+            !job.title.includes('ডাটা') && 
+            !job.title.includes('Data') && 
+            !job.title.includes('প্রোগ্রামার') &&
+            !(job.positions && job.positions.some(p => p.title?.includes('কম্পিউটার') || p.title?.includes('আইটি') || p.title?.includes('ডাটা') || p.title?.includes('প্রোগ্রামার')))
+          ) return false;
           break;
         case 'medical':
-          if (job.category !== 'health') return false;
+          if (
+            job.category !== 'health' && 
+            !job.title.includes('নার্স') && 
+            !job.title.includes('মেডিকেল') && 
+            !job.title.includes('স্বাস্থ্য') &&
+            !job.title.includes('ডাক্তার') &&
+            !(job.positions && job.positions.some(p => p.title?.includes('নার্স') || p.title?.includes('মেডিকেল') || p.title?.includes('স্বাস্থ্য')))
+          ) return false;
           break;
         case 'tutoring':
-          if (job.category !== 'teacher' && !job.title.includes('শিক্ষক')) return false;
+          if (
+            job.category !== 'teacher' && 
+            !job.title.includes('শিক্ষক') && 
+            !job.title.includes('প্রভাষক')
+          ) return false;
           break;
         case 'part-time':
           if (job.category !== 'private' && job.totalPosts <= 50) return false;
@@ -159,26 +180,48 @@ export default function JobListingView({
           if (job.category !== 'private' && job.category !== 'bank') return false;
           break;
         case 'engineering':
-          if (job.category !== 'engineer') return false;
+          if (
+            job.category !== 'engineer' && 
+            !job.title.includes('প্রকৌশলী') && 
+            !job.title.includes('ইঞ্জিনিয়ার') &&
+            !(job.positions && job.positions.some(p => p.title?.includes('প্রকৌশলী') || p.title?.includes('ইঞ্জিনিয়ার')))
+          ) return false;
           break;
         case 'accounting-finance':
-          if (job.category !== 'bank' && !job.title.includes('অফিসার') && !job.title.includes('ক্যাশ')) return false;
+          if (
+            job.category !== 'bank' && 
+            !job.title.includes('অফিসার') && 
+            !job.title.includes('ক্যাশ') && 
+            !job.title.includes('হিসাব') && 
+            !job.title.includes('অডিট') && 
+            !job.organization.includes('কর') && 
+            !job.organization.includes('ট্যাক্স') &&
+            !(job.positions && job.positions.some(p => p.title?.includes('হিসাব') || p.title?.includes('অডিট') || p.title?.includes('ক্যাশ')))
+          ) return false;
           break;
-        case 'ssc':
-          if (!job.minEducation.includes('এসএসসি') && !job.minEducation.includes('HSC') && !job.grade.includes('১৬') && !job.grade.includes('২০')) return false;
+        case 'ssc': {
+          const hasSscPos = job.positions?.some(p => (p.minEducation || (p as any).education || '').includes('এসএসসি'));
+          if (!job.minEducation.includes('এসএসসি') && !job.minEducation.includes('HSC') && !job.grade.includes('১৬') && !job.grade.includes('২০') && !hasSscPos) return false;
           break;
-        case 'hsc':
-          if (!job.minEducation.includes('HSC') && !job.minEducation.includes('উচ্চ মাধ্যমিক') && !job.minEducation.includes('এইচএসসি')) return false;
+        }
+        case 'hsc': {
+          const hasHscPos = job.positions?.some(p => (p.minEducation || (p as any).education || '').includes('এইচএসসি') || (p.minEducation || (p as any).education || '').includes('HSC'));
+          if (!job.minEducation.includes('HSC') && !job.minEducation.includes('উচ্চ মাধ্যমিক') && !job.minEducation.includes('এইচএসসি') && !hasHscPos) return false;
           break;
+        }
         case 'diploma':
-          if (job.category !== 'engineer' && !job.grade.includes('১০ম')) return false;
+          if (job.category !== 'engineer' && !job.grade.includes('১০ম') && !job.title.includes('উপ-সহকারী')) return false;
           break;
-        case 'bachelor':
-          if (!job.minEducation.includes('স্নাতক') && !job.minEducation.includes('ডিগ্রি')) return false;
+        case 'bachelor': {
+          const hasBachPos = job.positions?.some(p => (p.minEducation || (p as any).education || '').includes('স্নাতক') || (p.minEducation || (p as any).education || '').includes('ডিগ্রি'));
+          if (!job.minEducation.includes('স্নাতক') && !job.minEducation.includes('ডিগ্রি') && !hasBachPos) return false;
           break;
-        case 'masters':
-          if (!job.minEducation.includes('স্নাতকোত্তর') && !job.minEducation.includes('মাস্টার্স') && !job.grade.includes('৯ম')) return false;
+        }
+        case 'masters': {
+          const hasMastPos = job.positions?.some(p => (p.minEducation || (p as any).education || '').includes('স্নাতকোত্তর') || (p.minEducation || (p as any).education || '').includes('মাস্টার্স'));
+          if (!job.minEducation.includes('স্নাতকোত্তর') && !job.minEducation.includes('মাস্টার্স') && !job.grade.includes('৯ম') && !hasMastPos) return false;
           break;
+        }
         case 'org-bb':
           if (!job.organization.includes('বাংলাদেশ ব্যাংক')) return false;
           break;
@@ -196,8 +239,8 @@ export default function JobListingView({
           break;
       }
 
-      // Grade filter
-      if (selectedGrade !== 'all' && job.grade !== selectedGrade) return false;
+      // Grade filter (using robust comprehensive multi-grade range evaluator)
+      if (selectedGrade !== 'all' && !matchGradeComprehensive(job.grade, selectedGrade)) return false;
 
       // Search query (smart bilingual & position-level matching)
       if (searchQuery.trim()) {

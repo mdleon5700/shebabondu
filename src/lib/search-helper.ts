@@ -69,6 +69,66 @@ const BILINGUAL_MAP: Record<string, string[]> = {
   'teacher': ['শিক্ষক']
 };
 
+// Bengali numeral converters
+export const toBn = (n: number | string) => String(n).replace(/\d/g, d => '০১২৩৪৫৬৭৮৯'[+d]);
+export const toEnDigits = (s: string) => String(s || '').replace(/[০-৯]/g, d => '0123456789'['০১২৩৪৫৬৭৮৯'.indexOf(d)]);
+
+/**
+ * Robust salary range parser supporting all 20 National Pay Grades (BDT 8,250 to BDT 78,000+)
+ */
+export function parseSalaryRange(salary: string): { min: number; max: number } {
+  if (!salary) return { min: 0, max: 0 };
+  const en = toEnDigits(salary);
+  const nums = en.match(/\d[\d,]*/g);
+  if (!nums || nums.length === 0) return { min: 0, max: 0 };
+  const cleanNums = nums.map(n => parseInt(n.replace(/,/g, ''), 10)).filter(n => n >= 5000 && n <= 200000);
+  if (cleanNums.length === 0) return { min: 0, max: 0 };
+  return { min: cleanNums[0], max: cleanNums[cleanNums.length - 1] };
+}
+
+/**
+ * Extract numerical grade values from grade strings (e.g. '৯ম - ২০তম গ্রেড' -> [9, 20])
+ */
+export function extractGradeNums(gradeStr?: string): number[] {
+  if (!gradeStr) return [];
+  const en = toEnDigits(gradeStr);
+  const matches = en.match(/\d+/g);
+  return matches ? matches.map(Number) : [];
+}
+
+/**
+ * Robust grade matcher supporting single grades ('৯ম গ্রেড'), range queries ('১১তম - ১৬তম'),
+ * and composite circular ranges ('৯ম - ২০তম গ্রেড')
+ */
+export function matchGradeComprehensive(jobGrade?: string, selectedGrade?: string): boolean {
+  if (!selectedGrade || selectedGrade === 'all') return true;
+  if (!jobGrade) return false;
+  if (jobGrade.includes(selectedGrade)) return true;
+
+  const nums = extractGradeNums(jobGrade);
+  if (nums.length === 0) return false;
+
+  const minG = Math.min(...nums);
+  const maxG = Math.max(...nums);
+
+  if (selectedGrade === '৯ম গ্রেড') {
+    return nums.includes(9) || (minG <= 9 && maxG >= 9);
+  }
+  if (selectedGrade === '১০ম গ্রেড') {
+    return nums.includes(10) || (minG <= 10 && maxG >= 10);
+  }
+  if (selectedGrade === '১১তম - ১৬তম' || selectedGrade === '১১তম-১৬তম') {
+    return nums.some(n => n >= 11 && n <= 16) || (minG <= 16 && maxG >= 11);
+  }
+  if (selectedGrade === '১৭তম - ২০তম' || selectedGrade === '১৭তম-২০তম') {
+    return nums.some(n => n >= 17 && n <= 20) || (minG <= 20 && maxG >= 17);
+  }
+
+  // Fallback string matching
+  const gradeKey = selectedGrade.replace(' গ্রেড', '').trim();
+  return jobGrade.includes(gradeKey);
+}
+
 /**
  * Normalizes Bengali Unicode characters to resolve Avro / Bijoy / Gboard character variances
  * (e.g. Nukta + Ja vs Ya, Da + Nukta vs Dda, etc.)

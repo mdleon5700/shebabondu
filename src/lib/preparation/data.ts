@@ -1087,3 +1087,4 @@ export const blogPostsData: BlogPostItem[] = [
     relatedSlugs: ['bcs-preli-strategy-2026', 'bank-job-focus-writing']
   }
 ];
+

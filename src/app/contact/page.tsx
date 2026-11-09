@@ -23,6 +23,7 @@ import {
   Sparkles
 } from 'lucide-react';
 import { ContactMessageItem } from '@/lib/types';
+import { storage } from '@/lib/store';
 
 export default function ContactPage() {
   const [activeTab, setActiveTab] = useState<'form' | 'track'>('form');
@@ -55,6 +56,28 @@ export default function ContactPage() {
         if (d.success && d.settings) setSettings(d.settings);
       })
       .catch(() => {});
+
+    // Read URL query parameters for tab=track or ticketId
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const tabParam = params.get('tab');
+      if (tabParam === 'track') {
+        setActiveTab('track');
+      }
+      const ticketParam = params.get('ticketId') || params.get('id');
+      if (ticketParam) {
+        setTrackQuery(ticketParam);
+        setActiveTab('track');
+      }
+    }
+
+    // Pre-fill user details if logged in
+    const user = storage.getUser();
+    if (user) {
+      if (user.name) setName(user.nameBn || user.name);
+      if (user.phone) setPhone(user.phone);
+      if (user.email) setEmail(user.email);
+    }
   }, []);
 
   const handleFormSubmit = async (e: React.FormEvent) => {
@@ -292,16 +315,18 @@ export default function ContactPage() {
           <div className="flex border-b border-slate-100 bg-slate-50/60 p-2 gap-2">
             <button
               type="button"
+              data-testid="tab-contact-form"
               onClick={() => setActiveTab('form')}
-              className={`flex-1 py-3 px-4 rounded-2xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all ${activeTab === 'form' ? 'bg-white text-emerald-800 shadow-xs' : 'text-slate-600 hover:text-slate-900'}`}
+              className={`flex-1 py-3 px-4 rounded-2xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all cursor-pointer ${activeTab === 'form' ? 'bg-white text-emerald-800 shadow-xs' : 'text-slate-600 hover:text-slate-900'}`}
             >
               <Send className="w-4 h-4" />
               <span>সহায়তা অনুরোধ বা বার্তা পাঠান</span>
             </button>
             <button
               type="button"
+              data-testid="tab-track-ticket"
               onClick={() => setActiveTab('track')}
-              className={`flex-1 py-3 px-4 rounded-2xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all ${activeTab === 'track' ? 'bg-white text-emerald-800 shadow-xs' : 'text-slate-600 hover:text-slate-900'}`}
+              className={`flex-1 py-3 px-4 rounded-2xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all cursor-pointer ${activeTab === 'track' ? 'bg-white text-emerald-800 shadow-xs' : 'text-slate-600 hover:text-slate-900'}`}
             >
               <Search className="w-4 h-4" />
               <span>টিকেট ট্র্যাকিং ও উত্তর দেখুন</span>
@@ -313,7 +338,7 @@ export default function ContactPage() {
               <div className="max-w-2xl mx-auto space-y-6">
                 
                 {submitSuccess ? (
-                  <div className="bg-emerald-50 border border-emerald-300 rounded-2xl p-6 text-center space-y-4">
+                  <div data-testid="contact-submit-success" className="bg-emerald-50 border border-emerald-300 rounded-2xl p-6 text-center space-y-4">
                     <div className="w-12 h-12 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center mx-auto">
                       <CheckCircle2 className="w-7 h-7" />
                     </div>
@@ -325,13 +350,13 @@ export default function ContactPage() {
                     <div className="bg-white p-4 rounded-xl border border-emerald-200 inline-flex flex-col items-center gap-2">
                       <span className="text-xs text-slate-500 font-semibold">আপনার ট্র্যাকিং টিকেট নম্বর:</span>
                       <div className="flex items-center gap-2">
-                        <span className="font-mono text-base sm:text-lg font-black text-slate-900 bg-slate-100 px-3 py-1 rounded-lg">
+                        <span data-testid="contact-ticket-id" className="font-mono text-base sm:text-lg font-black text-slate-900 bg-slate-100 px-3 py-1 rounded-lg">
                           {submitSuccess.ticketId}
                         </span>
                         <button
                           type="button"
                           onClick={() => copyTicketCode(submitSuccess.ticketId)}
-                          className="p-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-colors flex items-center gap-1 text-xs font-bold"
+                          className="p-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-colors flex items-center gap-1 text-xs font-bold cursor-pointer"
                         >
                           {copiedCode ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
                           <span>{copiedCode ? 'কপি হয়েছে' : 'কপি করুন'}</span>
@@ -346,7 +371,7 @@ export default function ContactPage() {
                           setTrackQuery(submitSuccess.ticketId);
                           setActiveTab('track');
                         }}
-                        className="text-xs font-bold text-emerald-800 hover:underline"
+                        className="text-xs font-bold text-emerald-800 hover:underline cursor-pointer"
                       >
                         টিকেটের স্ট্যাটাস ও ফলোআপ দেখতে এখানে চাপুন →
                       </button>
@@ -370,6 +395,7 @@ export default function ContactPage() {
                         <input
                           type="text"
                           required
+                          data-testid="contact-name-input"
                           value={name}
                           onChange={(e) => setName(e.target.value)}
                           placeholder="যেমন: মোহাম্মদ তানভীর"
@@ -384,6 +410,7 @@ export default function ContactPage() {
                         <input
                           type="tel"
                           required
+                          data-testid="contact-phone-input"
                           value={phone}
                           onChange={(e) => setPhone(e.target.value)}
                           placeholder="০১৭XXXXXXXX"
@@ -399,6 +426,7 @@ export default function ContactPage() {
                         </label>
                         <input
                           type="email"
+                          data-testid="contact-email-input"
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
                           placeholder="example@mail.com"
@@ -430,6 +458,7 @@ export default function ContactPage() {
                       </label>
                       <input
                         type="text"
+                        data-testid="contact-subject-input"
                         value={subject}
                         onChange={(e) => setSubject(e.target.value)}
                         placeholder="যেমন: টেলিটকে আবেদন করার পর কনফার্মেশন পাইনি"
@@ -444,6 +473,7 @@ export default function ContactPage() {
                       <textarea
                         required
                         rows={4}
+                        data-testid="contact-message-input"
                         value={message}
                         onChange={(e) => setMessage(e.target.value)}
                         placeholder="আপনার সমস্যাটি বিস্তারিত লিখুন, যাতে আমাদের হেল্পডেস্ক দ্রুত সমাধান প্রদান করতে পারে..."
@@ -453,8 +483,9 @@ export default function ContactPage() {
 
                     <button
                       type="submit"
+                      data-testid="contact-submit-btn"
                       disabled={isSubmitting}
-                      className="w-full py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold text-sm shadow-md transition-all flex items-center justify-center gap-2"
+                      className="w-full py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
                     >
                       {isSubmitting ? (
                         <>
@@ -484,6 +515,7 @@ export default function ContactPage() {
                   <div className="flex gap-2">
                     <input
                       type="text"
+                      data-testid="track-query-input"
                       value={trackQuery}
                       onChange={(e) => setTrackQuery(e.target.value)}
                       placeholder="TCK-2026-XXXX অথবা ০১৭১২-৩৪৫৬৭৮"
@@ -491,8 +523,9 @@ export default function ContactPage() {
                     />
                     <button
                       type="submit"
+                      data-testid="track-submit-btn"
                       disabled={isSearching}
-                      className="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm rounded-xl transition-all flex items-center gap-1.5"
+                      className="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm rounded-xl transition-all flex items-center gap-1.5 cursor-pointer"
                     >
                       {isSearching ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Search className="w-4 h-4" />}
                       <span>অনুসন্ধান</span>
@@ -514,12 +547,14 @@ export default function ContactPage() {
                     </h4>
 
                     {trackedTickets.map((t) => (
-                      <div key={t.id} className="bg-slate-50 border border-slate-200 rounded-2xl p-5 space-y-3">
+                      <div key={t.id} data-testid="tracked-ticket-card" className="bg-slate-50 border border-slate-200 rounded-2xl p-5 space-y-3">
                         <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-200 pb-3">
                           <span className="font-mono text-xs font-black bg-white px-2.5 py-1 rounded-md border border-slate-200 text-slate-900">
                             {t.id}
                           </span>
-                          {getStatusBadge(t.status)}
+                          <div data-testid="ticket-status-badge">
+                            {getStatusBadge(t.status)}
+                          </div>
                         </div>
 
                         <div className="space-y-1">

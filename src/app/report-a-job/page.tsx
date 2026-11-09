@@ -169,8 +169,9 @@ function ReportJobClient() {
       <div className="grid grid-cols-2 p-1 bg-slate-100 rounded-2xl text-xs font-bold gap-1 shadow-inner">
         <button
           type="button"
+          data-testid="tab-report-submit"
           onClick={() => setActiveTab('submit')}
-          className={`py-3 rounded-xl transition-all flex items-center justify-center gap-2 ${
+          className={`py-3 rounded-xl transition-all flex items-center justify-center gap-2 cursor-pointer ${
             activeTab === 'submit' 
               ? 'bg-white text-rose-700 shadow-sm font-black' 
               : 'text-slate-600 hover:text-slate-900'
@@ -182,8 +183,9 @@ function ReportJobClient() {
 
         <button
           type="button"
+          data-testid="tab-report-track"
           onClick={() => setActiveTab('track')}
-          className={`py-3 rounded-xl transition-all flex items-center justify-center gap-2 ${
+          className={`py-3 rounded-xl transition-all flex items-center justify-center gap-2 cursor-pointer ${
             activeTab === 'track' 
               ? 'bg-white text-emerald-800 shadow-sm font-black' 
               : 'text-slate-600 hover:text-slate-900'
@@ -198,7 +200,7 @@ function ReportJobClient() {
       {activeTab === 'submit' && (
         <div className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 space-y-6 shadow-sm">
           {submittedData ? (
-            <div className="bg-emerald-50 border border-emerald-300 rounded-3xl p-6 sm:p-8 text-center space-y-4">
+            <div data-testid="report-submitted-card" className="bg-emerald-50 border border-emerald-300 rounded-3xl p-6 sm:p-8 text-center space-y-4">
               <div className="w-14 h-14 bg-emerald-100 text-emerald-700 rounded-2xl flex items-center justify-center mx-auto shadow-sm">
                 <CheckCircle2 className="w-8 h-8" />
               </div>
@@ -211,7 +213,7 @@ function ReportJobClient() {
 
               <div className="inline-block bg-white border border-emerald-300 px-6 py-3 rounded-2xl shadow-xs">
                 <span className="text-[11px] text-slate-500 font-bold block uppercase tracking-wider">ট্র্যাকিং রেফারেন্স কোড</span>
-                <span className="text-xl font-mono font-black text-emerald-800 tracking-wider">{submittedData.trackingCode}</span>
+                <span data-testid="report-tracking-code" className="text-xl font-mono font-black text-emerald-800 tracking-wider">{submittedData.trackingCode}</span>
               </div>
 
               <div className="pt-2 flex flex-wrap items-center justify-center gap-3">
@@ -222,7 +224,7 @@ function ReportJobClient() {
                     setActiveTab('track');
                     setSubmittedData(null);
                   }}
-                  className="px-4 py-2.5 bg-emerald-700 text-white rounded-xl text-xs font-bold hover:bg-emerald-800 transition-colors shadow-sm"
+                  className="px-4 py-2.5 bg-emerald-700 text-white rounded-xl text-xs font-bold hover:bg-emerald-800 transition-colors shadow-sm cursor-pointer"
                 >
                   স্ট্যাটাস দেখুন
                 </button>
@@ -233,13 +235,13 @@ function ReportJobClient() {
                     setJobTitle('');
                     setDetails('');
                   }}
-                  className="px-4 py-2.5 bg-white border border-slate-300 text-slate-700 rounded-xl text-xs font-bold hover:bg-slate-50 transition-colors"
+                  className="px-4 py-2.5 bg-white border border-slate-300 text-slate-700 rounded-xl text-xs font-bold hover:bg-slate-50 transition-colors cursor-pointer"
                 >
                   আরেকটি অভিযোগ করুন
                 </button>
                 <Link
                   href="/jobs"
-                  className="px-4 py-2.5 bg-slate-100 text-slate-700 rounded-xl text-xs font-bold hover:bg-slate-200 transition-colors"
+                  className="px-4 py-2.5 bg-slate-100 text-slate-700 rounded-xl text-xs font-bold hover:bg-slate-200 transition-colors cursor-pointer"
                 >
                   চাকরির তালিকায় ফিরুন
                 </Link>
@@ -263,6 +265,7 @@ function ReportJobClient() {
                   <input
                     type="text"
                     required
+                    data-testid="report-job-title-input"
                     value={jobTitle}
                     onChange={(e) => setJobTitle(e.target.value)}
                     placeholder="যেমন: ৪৭তম বিসিএস ক্যাডার নিয়োগ বা বাংলাদেশ ব্যাংক"
@@ -276,6 +279,7 @@ function ReportJobClient() {
                   </label>
                   <input
                     type="text"
+                    data-testid="report-job-url-input"
                     value={jobUrl}
                     onChange={(e) => setJobUrl(e.target.value)}
                     placeholder="https://chakrisheba.com/jobs/..."
@@ -294,8 +298,9 @@ function ReportJobClient() {
                     <button
                       key={opt.id}
                       type="button"
+                      data-testid={`issue-option-${opt.id}`}
                       onClick={() => setIssueType(opt.id)}
-                      className={`p-3 rounded-2xl border text-left transition-all flex flex-col justify-between ${
+                      className={`p-3 rounded-2xl border text-left transition-all flex flex-col justify-between cursor-pointer ${
                         issueType === opt.id
                           ? 'bg-rose-50/80 border-rose-500 text-rose-950 font-bold shadow-xs'
                           : 'bg-slate-50/70 border-slate-200 text-slate-700 hover:border-slate-300'
@@ -319,6 +324,7 @@ function ReportJobClient() {
                 <textarea
                   required
                   rows={4}
+                  data-testid="report-details-input"
                   value={details}
                   onChange={(e) => setDetails(e.target.value)}
                   placeholder="বিজ্ঞপ্তির কোন তথ্যটি ভুল বা কীভাবে প্রতারণার চেষ্টা করা হচ্ছে তা বিস্তারিত বুঝিয়ে লিখুন..."
@@ -366,6 +372,7 @@ function ReportJobClient() {
               {/* Submit Button */}
               <button
                 type="submit"
+                data-testid="report-submit-btn"
                 disabled={isSubmitting}
                 className="w-full py-3.5 bg-rose-600 hover:bg-rose-700 disabled:bg-rose-400 text-white rounded-xl font-black text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
               >
@@ -398,6 +405,7 @@ function ReportJobClient() {
             <input
               type="text"
               required
+              data-testid="report-track-input"
               value={trackingInput}
               onChange={(e) => setTrackingInput(e.target.value)}
               placeholder="ট্র্যাকিং রেফারেন্স কোড লিখুন (যেমন: REP-2026-1001)"
@@ -405,8 +413,9 @@ function ReportJobClient() {
             />
             <button
               type="submit"
+              data-testid="report-track-submit-btn"
               disabled={isTrackingLoading}
-              className="px-5 py-2.5 bg-emerald-700 hover:bg-emerald-800 disabled:bg-emerald-400 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-sm transition-colors"
+              className="px-5 py-2.5 bg-emerald-700 hover:bg-emerald-800 disabled:bg-emerald-400 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-sm transition-colors cursor-pointer"
             >
               {isTrackingLoading ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Search className="w-4 h-4" />}
               <span>অনুসন্ধান</span>
@@ -421,7 +430,7 @@ function ReportJobClient() {
           )}
 
           {trackResult && (
-            <div className="p-5 bg-slate-50 border border-slate-200 rounded-2xl space-y-4 animate-fade-in">
+            <div data-testid="report-track-result" className="p-5 bg-slate-50 border border-slate-200 rounded-2xl space-y-4 animate-fade-in">
               <div className="flex items-start justify-between gap-3 border-b border-slate-200 pb-3">
                 <div>
                   <span className="text-[10px] font-bold text-slate-400 block uppercase">রেফারেন্স কোড</span>

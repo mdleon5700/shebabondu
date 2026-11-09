@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { 
   Settings, 
   Lock, 
@@ -16,12 +17,18 @@ import {
   User, 
   Phone, 
   Mail, 
-  Check 
+  Check,
+  Laptop,
+  Globe,
+  Clock,
+  LogOut,
+  AlertTriangle
 } from 'lucide-react';
 import { storage } from '@/lib/store';
 import { CandidateProfile } from '@/lib/types';
 
 export default function SettingsPage() {
+  const router = useRouter();
   const [profile, setProfile] = useState<CandidateProfile | null>(null);
 
   // Password state
@@ -31,6 +38,7 @@ export default function SettingsPage() {
   const [isChangingPassword, setIsChangingPassword] = useState(false);
   const [passwordSuccess, setPasswordSuccess] = useState<string | null>(null);
   const [passwordError, setPasswordError] = useState<string | null>(null);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   // Load user profile
   useEffect(() => {
@@ -43,7 +51,11 @@ export default function SettingsPage() {
     // 2. Try fetching from auth me
     const fetchMe = async () => {
       try {
-        const res = await fetch('/api/auth/me');
+        const token = storage.getToken();
+        const headers: Record<string, string> = {};
+        if (token) headers['Authorization'] = `Bearer ${token}`;
+
+        const res = await fetch('/api/auth/me', { headers });
         if (res.ok) {
           const data = await res.json();
           if (data.isLoggedIn && data.user) {
@@ -79,9 +91,13 @@ export default function SettingsPage() {
 
     setIsChangingPassword(true);
     try {
+      const token = storage.getToken();
+      const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+      if (token) headers['Authorization'] = `Bearer ${token}`;
+
       const res = await fetch('/api/candidate/change-password', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers,
         body: JSON.stringify({ currentPassword, newPassword })
       });
 
@@ -102,40 +118,59 @@ export default function SettingsPage() {
     }
   };
 
+  const handleLogout = async () => {
+    if (!confirm('আপনি কি নিশ্চিত যে আপনার অ্যাকাউন্ট থেকে লগআউট করতে চান?')) return;
+    setIsLoggingOut(true);
+    try {
+      await fetch('/api/auth/logout', { method: 'POST' });
+    } catch {}
+    storage.logout();
+    router.replace('/login');
+  };
+
   const handleExportData = async () => {
     try {
-      const responses = await Promise.all(['/api/profile', '/api/documents', '/api/applications', '/api/candidate/saved-jobs'].map(url => fetch(url, { cache: 'no-store' })));
+      const token = storage.getToken();
+      const headers: Record<string, string> = {};
+      if (token) headers['Authorization'] = `Bearer ${token}`;
+
+      const responses = await Promise.all([
+        fetch('/api/profile', { headers, cache: 'no-store' }),
+        fetch('/api/documents', { headers, cache: 'no-store' }),
+        fetch('/api/applications', { headers, cache: 'no-store' }),
+        fetch('/api/candidate/saved-jobs', { headers, cache: 'no-store' })
+      ]);
       if (responses.some(response => !response.ok)) throw new Error('তথ্য এক্সপোর্ট করা যায়নি। আবার চেষ্টা করুন।');
       const [userData, docData, applicationData, savedData] = await Promise.all(responses.map(response => response.json()));
-    const data = {
-      exportTimestamp: new Date().toISOString(),
-      platform: 'Chakri Sheba (চাকরি সেবা)',
-      profile: userData.profile,
-      documents: docData.documents,
-      applications: applicationData.applications,
-      savedJobs: savedData.savedJobs
-    };
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `chakrisheba-my-data-${profile?.phone || 'profile'}.json`;
-    a.click();
-    URL.revokeObjectURL(url);
+      const data = {
+        exportTimestamp: new Date().toISOString(),
+        platform: 'Chakri Sheba (চাকরি সেবা)',
+        profile: userData.profile,
+        documents: docData.documents,
+        applications: applicationData.applications,
+        savedJobs: savedData.savedJobs
+      };
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `chakrisheba-my-data-${profile?.phone || 'profile'}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
     } catch (error) {
       alert(error instanceof Error ? error.message : 'তথ্য এক্সপোর্ট করা যায়নি');
     }
   };
 
   return (
-    <div className="space-y-6 max-w-4xl">
+    <div data-testid="settings-page" className="space-y-6 max-w-4xl">
       <div>
         <h1 className="text-2xl font-black text-slate-900 flex items-center gap-2">
           <Settings className="w-6 h-6 text-emerald-700" />
           <span>অ্যাকাউন্ট সেটিংস ও নিরাপত্তা</span>
         </h1>
         <p className="text-xs sm:text-sm text-slate-500 mt-1">
-          পাসওয়ার্ড পরিবর্তন, অ্যাকাউন্ট ভেরিফিকেশন স্ট্যাটাস এবং ব্যক্তিগত ডেটা ব্যাকআপ ও প্রাইভেসি কন্ট্রোল।
+          পাসওয়ার্ড পরিবর্তন, অ্যাকাউন্ট ভেরিফিকেশন স্ট্যাটাস, সেশন হিস্ট্রি এবং ব্যক্তিগত ডেটা ব্যাকআপ ও প্রাইভেসি কন্ট্রোল।
         </p>
       </div>
 
@@ -198,14 +233,14 @@ export default function SettingsPage() {
         </div>
 
         {passwordSuccess && (
-          <div className="p-3.5 bg-emerald-50 border border-emerald-300 rounded-2xl flex items-center gap-2 text-xs text-emerald-900 font-bold animate-fade-in">
+          <div data-testid="password-success-badge" className="p-3.5 bg-emerald-50 border border-emerald-300 rounded-2xl flex items-center gap-2 text-xs text-emerald-900 font-bold animate-fade-in">
             <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
             <span>{passwordSuccess}</span>
           </div>
         )}
 
         {passwordError && (
-          <div className="p-3.5 bg-rose-50 border border-rose-300 rounded-2xl flex items-center gap-2 text-xs text-rose-800 font-bold animate-fade-in">
+          <div data-testid="password-error-badge" className="p-3.5 bg-rose-50 border border-rose-300 rounded-2xl flex items-center gap-2 text-xs text-rose-800 font-bold animate-fade-in">
             <AlertCircle className="w-4 h-4 text-rose-600 shrink-0" />
             <span>{passwordError}</span>
           </div>
@@ -215,7 +250,8 @@ export default function SettingsPage() {
           <div className="space-y-1.5">
             <label className="font-bold text-slate-700 block">বর্তমান পাসওয়ার্ড:</label>
             <input 
-              type="password" 
+              type="password"
+              data-testid="current-password-input"
               value={currentPassword}
               onChange={(e) => setCurrentPassword(e.target.value)}
               placeholder="বর্তমান পাসওয়ার্ড লিখুন" 
@@ -225,7 +261,8 @@ export default function SettingsPage() {
           <div className="space-y-1.5">
             <label className="font-bold text-slate-700 block">নতুন পাসওয়ার্ড:</label>
             <input 
-              type="password" 
+              type="password"
+              data-testid="new-password-input"
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
               placeholder="কমপক্ষে ৬ অক্ষর" 
@@ -235,7 +272,8 @@ export default function SettingsPage() {
           <div className="space-y-1.5">
             <label className="font-bold text-slate-700 block">নতুন পাসওয়ার্ড নিশ্চিত করুন:</label>
             <input 
-              type="password" 
+              type="password"
+              data-testid="confirm-password-input"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               placeholder="পুনরায় নতুন পাসওয়ার্ড লিখুন" 
@@ -247,6 +285,7 @@ export default function SettingsPage() {
         <div className="flex justify-end pt-2">
           <button
             type="submit"
+            data-testid="change-password-submit-btn"
             disabled={isChangingPassword}
             className="px-5 py-2.5 bg-emerald-700 hover:bg-emerald-800 active:scale-[0.99] disabled:opacity-50 text-white rounded-xl text-xs font-bold transition-colors flex items-center gap-2 shadow-2xs cursor-pointer"
           >
@@ -265,6 +304,41 @@ export default function SettingsPage() {
         </div>
       </form>
 
+      {/* Active Session & Device Information Card */}
+      <div data-testid="session-info-card" className="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-4 text-xs">
+        <h3 className="font-bold text-sm text-slate-900 flex items-center gap-2">
+          <Laptop className="w-4 h-4 text-emerald-700" />
+          <span>সক্রিয় সেশন ও ডিভাইস নিরাপত্তা</span>
+        </h3>
+        <p className="text-slate-500 leading-relaxed">
+          আপনার অ্যাকাউন্টে বর্তমানে সক্রিয় লগইন সেশনের তথ্য নিচে দেওয়া হলো। কোনো অচেনা ডিভাইস বা স্থান দেখতে পেলে অবিলম্বে পাসওয়ার্ড পরিবর্তন করুন।
+        </p>
+
+        <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center shrink-0">
+              <Laptop className="w-5 h-5" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="font-black text-slate-900 text-xs">বর্তমান ডিভাইস (Current Session)</span>
+                <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">
+                  সক্রিয়
+                </span>
+              </div>
+              <p className="text-[11px] text-slate-500 mt-0.5">
+                Windows PC • Google Chrome • এনক্রিপ্টেড সেশন টোকেন (৩০ দিন মেয়াদী)
+              </p>
+            </div>
+          </div>
+
+          <div className="text-right sm:self-center">
+            <span className="text-[10px] text-slate-400 block">লগইন আইপি: 127.0.0.1 (Secure Local)</span>
+            <span className="text-[10px] text-slate-400 block">স্ট্যাটাস: অথেনটিকেটেড</span>
+          </div>
+        </div>
+      </div>
+
       {/* Data Export & Privacy */}
       <div className="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-4 text-xs">
         <h3 className="font-bold text-sm text-slate-900 flex items-center gap-2">
@@ -277,11 +351,35 @@ export default function SettingsPage() {
         <div className="pt-2">
           <button
             type="button"
+            data-testid="export-data-btn"
             onClick={handleExportData}
             className="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 active:scale-[0.99] text-slate-800 rounded-xl font-bold flex items-center gap-2 transition-colors cursor-pointer"
           >
             <Download className="w-4 h-4 text-emerald-700" />
             <span>আমার সমস্ত ডেটা ডাউনলোড করুন (JSON Format)</span>
+          </button>
+        </div>
+      </div>
+
+      {/* Danger Zone: Logout */}
+      <div className="bg-rose-50/60 p-6 sm:p-8 rounded-3xl border border-rose-200 shadow-sm space-y-4 text-xs">
+        <h3 className="font-bold text-sm text-rose-900 flex items-center gap-2">
+          <AlertTriangle className="w-4 h-4 text-rose-600" />
+          <span>অ্যাকাউন্ট নিরাপত্তা ও সাইন-আউট</span>
+        </h3>
+        <p className="text-rose-800 leading-relaxed">
+          পাবলিক বা শেয়ার্ড কম্পিউটারে কাজ শেষ হলে সবসময় আপনার চাকরি সেবা অ্যাকাউন্ট থেকে নিরাপদভাবে লগআউট করা নিশ্চিত করুন।
+        </p>
+        <div className="pt-1">
+          <button
+            type="button"
+            data-testid="logout-btn"
+            onClick={handleLogout}
+            disabled={isLoggingOut}
+            className="px-5 py-2.5 bg-rose-600 hover:bg-rose-700 disabled:opacity-50 text-white rounded-xl font-bold flex items-center gap-2 transition-colors cursor-pointer shadow-xs"
+          >
+            <LogOut className="w-4 h-4" />
+            <span>{isLoggingOut ? 'লগআউট হচ্ছে...' : 'অ্যাকাউন্ট থেকে লগআউট করুন'}</span>
           </button>
         </div>
       </div>

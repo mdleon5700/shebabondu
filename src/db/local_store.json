@@ -106,11 +106,31 @@
           "majorSubject": "কম্পিউটার সায়েন্স অ্যান্ড ইঞ্জিনিয়ারিং"
         }
       ],
-      "passwordHash": "scrypt$7f0dbe454364311f385721e371fe8e72$567fd7111794abf23d0c2c24418b5ff5674c867887be01da80bcfb6f7f32ee3f63ef31b447255b10db0735cf094a2338c845281864f8ce8c61fb2a26877a3ac9",
+      "passwordHash": "scrypt$dd08b5759700ea2626fc3f0e40b23e8c$7404cffdaba82924cac1b8442e2ffe646a682be6a45827d91ffe485c7d64e3f74dff39ba953af81d898bf57694d001ad308a95a57224fec9315c36f7d9ff1cc3",
       "role": "candidate",
       "createdAt": "2026-11-09T07:17:05.082Z",
-      "updatedAt": "2026-11-09T14:55:47.128Z",
+      "updatedAt": "2026-11-09T15:23:28.575Z",
       "adminAuditHistory": [
+        {
+          "timestamp": "2026-11-09T15:23:28.575Z",
+          "adminId": "ADMIN",
+          "action": "candidate_profile_update",
+          "changedFields": [
+            "passwordHash"
+          ],
+          "notes": "1টি ফিল্ড পরিবর্তিত হয়েছে (passwordHash)",
+          "reason": "1টি ফিল্ড পরিবর্তিত হয়েছে (passwordHash)"
+        },
+        {
+          "timestamp": "2026-11-09T15:23:28.069Z",
+          "adminId": "ADMIN",
+          "action": "candidate_profile_update",
+          "changedFields": [
+            "passwordHash"
+          ],
+          "notes": "1টি ফিল্ড পরিবর্তিত হয়েছে (passwordHash)",
+          "reason": "1টি ফিল্ড পরিবর্তিত হয়েছে (passwordHash)"
+        },
         {
           "timestamp": "2026-11-09T14:55:47.128Z",
           "adminId": "ADMIN",
@@ -1948,6 +1968,11 @@
       "candidateId": "USR-01712345678",
       "role": "candidate",
       "expiresAt": "2026-11-16T14:55:19.516Z"
+    },
+    "cluster10_audit_session_1794237781778": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T15:23:01.778Z"
     }
   },
   "coupons": {},
@@ -22519,6 +22544,20 @@
   },
   "jobReports": [
     {
+      "id": "REP-2026-7603",
+      "jobTitle": "ভুয়া বাংলাদেশ রেলওয়ে খালাসী নিয়োগ ২০২৬",
+      "jobUrl": "https://chakrisheba.com/jobs/fake-railway-scam-2026",
+      "issueType": "fake_job",
+      "issueLabel": "ভুয়া বা অননুমোদিত বিজ্ঞপ্তি (Fake / Unauthorized Job)",
+      "details": "ফেসবুকে সরকারি বাংলাদেশ রেলওয়ের ভুয়া মনোগ্রাম ব্যবহার করে অবৈধ বিকাশ নম্বরে টাকা দাবি করা হচ্ছে। অবিলম্বে এটি ভেরিফাই করে প্রার্থীদের সতর্কবার্তা দেওয়ার অনুরোধ।",
+      "reporterName": "মোঃ তানভীর হাসান",
+      "reporterPhone": "01712-345678",
+      "reporterEmail": "tanvir.jobseeker@gmail.com",
+      "status": "pending",
+      "createdAt": "2026-11-09T15:23:49.536Z",
+      "updatedAt": "2026-11-09T15:23:49.536Z"
+    },
+    {
       "id": "REP-2026-2323",
       "jobId": "job-petrobangla-am-2026",
       "jobTitle": "সহকারী ব্যবস্থাপক (প্রশাসন) - পেট্রোবাংলা",
@@ -22673,6 +22712,19 @@
     }
   ],
   "contactMessages": [
+    {
+      "id": "TCK-2026-6756",
+      "name": "মোঃ তানভীর হাসান",
+      "phone": "01712345678",
+      "email": "audit_support@chakrisheba.com",
+      "subject": "টেলিটক চালান ও পেমেন্ট ভেরিফিকেশন সহায়তা",
+      "category": "general",
+      "message": "আমার আবেদনের সরকারি চালান ফি পরিশোধ নিশ্চিতকরণ এবং অ্যাপ্লিক্যান্ট কপি ডাউনলোডের বিষয়ে সহায়তা প্রয়োজন।",
+      "status": "new",
+      "replyNotes": "",
+      "createdAt": "2026-11-09T15:23:37.720Z",
+      "updatedAt": "2026-11-09T15:23:37.720Z"
+    },
     {
       "id": "TCK-2026-8204",
       "name": "সাকিব মাহমুদ",

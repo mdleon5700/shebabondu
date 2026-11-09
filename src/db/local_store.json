@@ -18,7 +18,7 @@
       "permanentAddress": "বাড়ি ৪২, রোড ৭, ব্লক সি, মিরপুর-১০, ঢাকা-, MIRPUR, DHAKA-1216",
       "photoUrl": "/api/uploads/candidate-documents/USR-01712345678_photo_1794227364755.jpg",
       "signatureUrl": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=400&q=80",
-      "walletBalance": 450,
+      "walletBalance": 950,
       "maritalStatus": "single",
       "quota": "freedom_fighter",
       "education": [
@@ -614,6 +614,28 @@
   "transactions": {
     "USR-01712345678": [
       {
+        "id": "CS-TXN-2611-2985",
+        "date": "৯/১১/২০২৬, ৬:৪৩:০৪ PM",
+        "amount": 500,
+        "type": "recharge",
+        "description": "ওয়ালেট ব্যালেন্স রিচার্জ (নগদ)",
+        "method": "Nagad",
+        "trxId": "TRX8184307",
+        "status": "completed",
+        "reviewedAt": "2026-11-09T12:43:15.805Z",
+        "reviewedBy": "ADMIN-SUPER"
+      },
+      {
+        "id": "CS-TXN-2611-3841",
+        "date": "৯/১১/২০২৬, ৬:৪১:১২ PM",
+        "amount": 500,
+        "type": "recharge",
+        "description": "ওয়ালেট রিচার্জ আবেদন",
+        "method": "Nagad",
+        "trxId": "TESTTRX999",
+        "status": "pending"
+      },
+      {
         "id": "CS-TXN-2611-9176",
         "date": "৯/১১/২০২৬, ১:২১:৩৫ PM",
         "amount": 500,
@@ -695,6 +717,15 @@
       }
     ],
     "USR-01712345678": [
+      {
+        "id": "NOTIF-CS-TXN-2611-2985",
+        "title": "ওয়ালেট রিচার্জ সফল হয়েছে",
+        "message": "TrxID: TRX8184307 - ৳500 সফলভাবে আপনার ওয়ালেটে জমা হয়েছে।",
+        "type": "system",
+        "read": false,
+        "date": "2026-11-09T12:43:15.805Z",
+        "link": "/dashboard/wallet"
+      },
       {
         "title": "ডকুমেন্ট আপলোড সম্পন্ন",
         "message": "কম্পিউটার অফিস অ্যাপ্লিকেশন ডিপ্লোমা (৬ মাস) সফলভাবে আপলোড হয়েছে।",
@@ -1147,6 +1178,16 @@
       "candidateId": "USR-01712345678",
       "role": "candidate",
       "expiresAt": "2026-11-16T12:29:14.689Z"
+    },
+    "cluster5_wallet_audit_session_1794227930984": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T12:38:50.984Z"
+    },
+    "cluster5_wallet_audit_session_1794228175827": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T12:42:55.827Z"
     }
   },
   "coupons": {},
@@ -1154,6 +1195,21 @@
   "couponRedemptions": {},
   "raffleEntries": {},
   "adminAuditLogs": [
+    {
+      "id": "AUDIT-WALLET-CS-TXN-2611-2985",
+      "adminId": "ADMIN-SUPER",
+      "action": "wallet_recharge_review",
+      "targetId": "CS-TXN-2611-2985",
+      "targetType": "order",
+      "changes": {
+        "status": {
+          "old": "pending",
+          "new": "completed"
+        }
+      },
+      "notes": "Recharge verified and credited",
+      "timestamp": "2026-11-09T12:43:15.805Z"
+    },
     {
       "adminId": "ADMIN-SUPER",
       "action": "status_change",

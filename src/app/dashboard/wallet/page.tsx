@@ -2,7 +2,23 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Wallet, Plus, ShieldCheck, History, ArrowRight, RefreshCw, CheckCircle2, AlertCircle } from 'lucide-react';
+import { 
+  Wallet, 
+  Plus, 
+  ShieldCheck, 
+  History, 
+  ArrowRight, 
+  RefreshCw, 
+  CheckCircle2, 
+  AlertCircle,
+  Copy,
+  Check,
+  Smartphone,
+  Info,
+  CreditCard,
+  Zap,
+  RotateCcw
+} from 'lucide-react';
 import { storage } from '@/lib/store';
 import { CandidateProfile, WalletTransaction } from '@/lib/types';
 import { useCandidateData } from '@/components/CandidateDataProvider';
@@ -18,19 +34,37 @@ export default function WalletPage() {
   const [isRecharging, setIsRecharging] = useState(false);
   const [rechargeSuccess, setRechargeSuccess] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
+
+  const officialNumber = '01774366643';
+  const displayOfficialNumber = '01774-366643';
+
+  const getAuthHeaders = (): Record<string, string> => {
+    const token = typeof window !== 'undefined' ? localStorage.getItem('cs_session_token') : null;
+    return token ? { 'Authorization': `Bearer ${token}` } : {};
+  };
+
+  const handleCopyNumber = () => {
+    if (typeof navigator !== 'undefined' && navigator.clipboard) {
+      navigator.clipboard.writeText(officialNumber);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2500);
+    }
+  };
 
   useEffect(() => {
     setIsMounted(true);
-    // 1. Local user
     setProfile(storage.getUser());
 
-    // 2. Fetch server wallet balance & sync transactions
     const fetchBalance = async () => {
       try {
         setProfile(storage.getUser());
         const localTxs = storage.getTransactions();
         setTransactions(localTxs);
-        const res = await fetch('/api/wallet/transactions');
+        const res = await fetch('/api/wallet/transactions', {
+          headers: getAuthHeaders(),
+          cache: 'no-store'
+        });
         if (res.ok) {
           const data = await res.json();
           if (Array.isArray(data.transactions)) {
@@ -52,6 +86,7 @@ export default function WalletPage() {
         console.warn('Wallet fetch warning', err);
       }
     };
+
     fetchBalance();
     window.addEventListener('focus', fetchBalance);
     window.addEventListener('cs_wallet_changed', fetchBalance);
@@ -72,7 +107,14 @@ export default function WalletPage() {
   const handleRecharge = async (e: React.FormEvent) => {
     e.preventDefault();
     const add = parseInt(amount, 10) || 0;
-    if (add <= 0) return;
+    if (add <= 0) {
+      setErrorMessage('অনুগ্রহ করে সঠিক টাকার পরিমাণ দিন।');
+      return;
+    }
+    if (!trxId.trim() || trxId.trim().length < 4) {
+      setErrorMessage('অনুগ্রহ করে সঠিক ট্রানজ্যাকশন আইডি (TrxID) প্রদান করুন।');
+      return;
+    }
 
     setIsRecharging(true);
     setRechargeSuccess(false);
@@ -81,13 +123,16 @@ export default function WalletPage() {
     try {
       const res = await fetch('/api/wallet/transactions', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          ...getAuthHeaders()
+        },
         body: JSON.stringify({
           amount: add,
           type: 'recharge',
           description: `ওয়ালেট ব্যালেন্স রিচার্জ (${method === 'bKash' ? 'বিকাশ' : 'নগদ'})`,
           method: method,
-          trxId: trxId.trim()
+          trxId: trxId.trim().toUpperCase()
         })
       });
 
@@ -127,23 +172,29 @@ export default function WalletPage() {
 
   return (
     <div className="space-y-6 max-w-4xl">
+      {/* Header */}
       <div>
+        <div className="inline-flex items-center gap-2 px-3 py-1 bg-emerald-50 text-emerald-800 rounded-full text-xs font-bold border border-emerald-200 mb-2">
+          <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+          <span>১০০% সুরক্ষিত এন্টারপ্রাইজ লেজার</span>
+        </div>
         <h1 className="text-2xl font-black text-slate-900 flex items-center gap-2">
           <Wallet className="w-6 h-6 text-emerald-700" />
           <span>আমার ওয়ালেট ও ক্যাশ ম্যানেজমেন্ট</span>
         </h1>
         <p className="text-xs sm:text-sm text-slate-500 mt-1">
-          যেকোনো চাকরির সরকারি ফি ও সার্ভিস চার্জ তাৎক্ষণিক পরিশোধের জন্য নিরাপদ ডিজিটাল ওয়ালেট।
+          সরকারি বা ব্যাংক চাকরির আবেদন ফি, টেলিটক এসএমএস চার্জ ও প্রসেসিং ফি ১-ক্লিকে পরিশোধ করুন।
         </p>
       </div>
 
+      {/* Hero Balance Card */}
       <div className="bg-gradient-to-r from-slate-900 via-emerald-950 to-slate-900 text-white p-6 sm:p-8 rounded-3xl border border-emerald-800/40 shadow-xl flex flex-col sm:flex-row sm:items-center justify-between gap-6">
         <div className="space-y-1">
           <span className="text-xs font-semibold text-slate-300">বর্তমান ওয়ালেট ব্যালেন্স</span>
           <div className="text-4xl font-black text-emerald-400">৳{profile.walletBalance || 0}</div>
           <div className="text-xs text-slate-400 pt-1 flex items-center gap-1.5">
             <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-            <span>যাচাইকৃত ব্যালেন্স দিয়ে আবেদন ফি পরিশোধ করুন</span>
+            <span>যাচাইকৃত ব্যালেন্স দিয়ে আবেদন ফি তাৎক্ষণিক পরিশোধযোগ্য</span>
           </div>
         </div>
 
@@ -152,59 +203,100 @@ export default function WalletPage() {
           className="px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/20 rounded-xl text-xs font-bold transition-colors flex items-center gap-1.5 self-start sm:self-center"
         >
           <History className="w-4 h-4" />
-          <span>লেনদেন হিস্ট্রি দেখুন</span>
+          <span>লেনদেন হিস্ট্রি ও রিসিপ্ট দেখুন</span>
+          <ArrowRight className="w-3.5 h-3.5 text-emerald-400" />
         </Link>
       </div>
 
-      {transactions.length > 0 ? (
-        <div className="bg-white rounded-3xl border border-slate-200/90 shadow-sm p-6 space-y-4">
-          <div className="flex items-center justify-between">
-            <h2 className="text-base font-black text-slate-900 flex items-center gap-2">
-              <History className="w-4 h-4 text-emerald-700" />
-              <span>সাম্প্রতিক ওয়ালেট লেনদেন ও স্ট্যাটাস ({transactions.length} টি)</span>
-            </h2>
-            <Link href="/dashboard/transactions" className="text-xs font-bold text-emerald-700 hover:underline">
-              সম্পূর্ণ হিস্ট্রি দেখুন →
-            </Link>
+      {/* 4 Feature Highlights */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div className="p-4 bg-white border border-slate-200 rounded-2xl shadow-xs space-y-1">
+          <div className="flex items-center gap-2 text-emerald-700 font-bold text-xs">
+            <Zap className="w-4 h-4" />
+            <span>১-ক্লিকে ফি পরিশোধ</span>
           </div>
-          <div className="divide-y divide-slate-100">
-            {transactions.slice(0, 5).map(tx => (
-              <div key={tx.id} className="py-3 flex items-center justify-between gap-3 text-xs">
-                <div className="space-y-0.5">
-                  <div className="font-bold text-slate-800">{tx.description}</div>
-                  <div className="text-[11px] text-slate-400">TrxID: {tx.trxId} • {tx.method}</div>
-                </div>
-                <div className="text-right">
-                  <div className={`font-black text-sm ${tx.type === 'recharge' ? 'text-emerald-700' : 'text-slate-900'}`}>
-                    {tx.type === 'recharge' ? '+' : '-'}৳{tx.amount}
-                  </div>
-                  <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${
-                    tx.status === 'pending'
-                      ? 'text-amber-800 bg-amber-50 border-amber-200'
-                      : tx.status === 'failed'
-                      ? 'text-rose-800 bg-rose-50 border-rose-200'
-                      : 'text-emerald-800 bg-emerald-50 border-emerald-200'
-                  }`}>
-                    {tx.status === 'pending' ? 'যাচাইয়ের অপেক্ষায়' : tx.status === 'failed' ? 'বাতিল' : 'অনুমোদিত / সফল'}
-                  </span>
-                </div>
-              </div>
-            ))}
+          <p className="text-[11px] text-slate-500">আবেদনের শেষ মুহূর্তে ওটিপি বা পিন ছাড়াই এক-ক্লিকে আবেদন ফি সাবমিট।</p>
+        </div>
+        <div className="p-4 bg-white border border-slate-200 rounded-2xl shadow-xs space-y-1">
+          <div className="flex items-center gap-2 text-emerald-700 font-bold text-xs">
+            <CreditCard className="w-4 h-4" />
+            <span>০% গেটওয়ে চার্জ</span>
           </div>
+          <p className="text-[11px] text-slate-500">কোনো অতিরিক্ত ব্যাংক বা গেটওয়ে ট্রানজেকশন ফি ছাড়া সম্পূর্ণ ফ্রি।</p>
         </div>
-      ) : (
-        <div className="bg-white rounded-3xl border border-slate-200/90 p-5 text-center text-slate-500 text-xs">
-          কোনো ওয়ালেট লেনদেন পাওয়া যায়নি। বিকাশ বা নগদ দিয়ে ব্যালেন্স রিচার্জ করে সরাসরি আবেদন ফি পরিশোধ করুন।
+        <div className="p-4 bg-white border border-slate-200 rounded-2xl shadow-xs space-y-1">
+          <div className="flex items-center gap-2 text-emerald-700 font-bold text-xs">
+            <RotateCcw className="w-4 h-4" />
+            <span>তাৎক্ষণিক রিফান্ড গ্যারান্টি</span>
+          </div>
+          <p className="text-[11px] text-slate-500">আবেদন টেকনিক্যাল কারণে বাতিল হলে ওয়ালেটে সরাসরি রিফান্ড।</p>
         </div>
-      )}
+      </div>
 
-      {/* Instant Recharge Form */}
-      <div className="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-4">
-        <div className="flex items-center justify-between">
-          <h3 className="font-bold text-sm text-slate-900">ব্যালেন্স রিচার্জ করুন (বিকাশ / নগদ)</h3>
-          <span className="text-[11px] font-bold text-slate-500">পেমেন্ট যাচাই সাপেক্ষে</span>
+      {/* Instant Recharge Module */}
+      <div className="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-5">
+        <div className="flex items-center justify-between border-b pb-4">
+          <div>
+            <h2 className="text-base font-black text-slate-900 flex items-center gap-2">
+              <Plus className="w-5 h-5 text-emerald-700" />
+              <span>ব্যালেন্স রিচার্জ করুন (বিকাশ / নগদ)</span>
+            </h2>
+            <p className="text-xs text-slate-500 mt-0.5">নিচের নম্বরে টাকা পাঠিয়ে TrxID প্রদান করলেই অ্যাডমিন যাচাই করে ব্যালেন্স যুক্ত করবেন।</p>
+          </div>
+          <span className="text-xs font-bold px-3 py-1 bg-emerald-50 text-emerald-800 border border-emerald-200 rounded-xl w-fit">
+            ৫-১০ মিনিটে অ্যাক্টিভেশন
+          </span>
         </div>
         
+        {/* Step-by-Step Payment Instructions Card */}
+        <div className="p-4 sm:p-5 bg-emerald-50/60 border border-emerald-200 rounded-2xl space-y-3">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="flex items-center gap-2">
+              <Smartphone className="w-5 h-5 text-emerald-700 shrink-0" />
+              <div>
+                <span className="text-xs font-bold text-slate-700 block">
+                  অফিসিয়াল {method === 'bKash' ? 'বিকাশ' : 'নগদ'} পার্সোনাল নম্বর (Send Money):
+                </span>
+                <span className="text-base font-black text-emerald-900 font-mono tracking-wider">
+                  {displayOfficialNumber}
+                </span>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={handleCopyNumber}
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 self-start sm:self-center cursor-pointer shadow-xs ${
+                copied 
+                  ? 'bg-emerald-700 text-white' 
+                  : 'bg-white hover:bg-slate-50 text-slate-800 border border-emerald-300'
+              }`}
+            >
+              {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5 text-emerald-700" />}
+              <span>{copied ? '✓ নম্বর কপি হয়েছে' : 'নম্বর কপি করুন'}</span>
+            </button>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-4 gap-2 pt-2 border-t border-emerald-200/60 text-[11px] text-slate-600">
+            <div className="bg-white/80 p-2 rounded-xl">
+              <strong className="text-emerald-800 block">১. অ্যাপ ওপেন:</strong>
+              {method === 'bKash' ? 'বিকাশ' : 'নগদ'} অ্যাপে ঢুকে Send Money নির্বাচন করুন
+            </div>
+            <div className="bg-white/80 p-2 rounded-xl">
+              <strong className="text-emerald-800 block">২. নম্বর ইনপুট:</strong>
+              {displayOfficialNumber} নম্বরে সমপরিমাণ টাকা সেন্ড করুন
+            </div>
+            <div className="bg-white/80 p-2 rounded-xl">
+              <strong className="text-emerald-800 block">৩. TrxID কপি:</strong>
+              কনফার্মেশন মেসেজ থেকে TrxID টি কপি করুন
+            </div>
+            <div className="bg-white/80 p-2 rounded-xl">
+              <strong className="text-emerald-800 block">৪. আবেদন সাবমিট:</strong>
+              নিচের ফরমে TrxID লিখে সাবমিট করুন
+            </div>
+          </div>
+        </div>
+
         {rechargeSuccess && (
           <div className="p-3.5 bg-emerald-50 text-emerald-900 rounded-2xl text-xs font-bold border border-emerald-300 flex items-center gap-2 animate-fade-in">
             <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
@@ -245,6 +337,7 @@ export default function WalletPage() {
             </div>
           </div>
 
+          {/* Amount presets */}
           <div>
             <label className="font-bold text-slate-700 block mb-1">রিচার্জের পরিমাণ (টাকা):</label>
             <div className="grid grid-cols-4 gap-2 mb-2">
@@ -271,9 +364,21 @@ export default function WalletPage() {
             />
           </div>
 
+          {/* TrxID input */}
           <div>
-            <label htmlFor="wallet-trx-id" className="font-bold text-slate-700 block mb-1">পেমেন্ট ট্রানজ্যাকশন ID (TrxID):</label>
-            <input id="wallet-trx-id" value={trxId} onChange={event => setTrxId(event.target.value)} required minLength={4} maxLength={100} className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-base" />
+            <label htmlFor="wallet-trx-id" className="font-bold text-slate-700 block mb-1">
+              পেমেন্ট ট্রানজ্যাকশন ID (TrxID) <span className="text-rose-600">*</span>:
+            </label>
+            <input 
+              id="wallet-trx-id" 
+              value={trxId} 
+              onChange={event => setTrxId(event.target.value.toUpperCase())} 
+              placeholder="যেমন: BKL9839492 বা 7AH29D9" 
+              required 
+              minLength={4} 
+              maxLength={100} 
+              className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl font-mono text-xs font-bold uppercase outline-none focus:border-emerald-600 focus:bg-white transition-all" 
+            />
           </div>
 
           <button
@@ -292,6 +397,49 @@ export default function WalletPage() {
           </button>
         </form>
       </div>
+
+      {/* Recent Transactions Snapshot */}
+      {transactions.length > 0 ? (
+        <div className="bg-white rounded-3xl border border-slate-200/90 shadow-sm p-6 space-y-4">
+          <div className="flex items-center justify-between">
+            <h2 className="text-base font-black text-slate-900 flex items-center gap-2">
+              <History className="w-4 h-4 text-emerald-700" />
+              <span>সাম্প্রতিক ওয়ালেট লেনদেন ও স্ট্যাটাস ({transactions.length} টি)</span>
+            </h2>
+            <Link href="/dashboard/transactions" className="text-xs font-bold text-emerald-700 hover:underline">
+              সম্পূর্ণ হিস্ট্রি ও রিসিপ্ট দেখুন →
+            </Link>
+          </div>
+          <div className="divide-y divide-slate-100">
+            {transactions.slice(0, 5).map(tx => (
+              <div key={tx.id} className="py-3 flex items-center justify-between gap-3 text-xs">
+                <div className="space-y-0.5">
+                  <div className="font-bold text-slate-800">{tx.description}</div>
+                  <div className="text-[11px] text-slate-400">TrxID: {tx.trxId} • {tx.method} • {tx.date}</div>
+                </div>
+                <div className="text-right">
+                  <div className={`font-black text-sm ${tx.type === 'recharge' ? 'text-emerald-700' : 'text-slate-900'}`}>
+                    {tx.type === 'recharge' ? '+' : '-'}৳{tx.amount}
+                  </div>
+                  <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${
+                    tx.status === 'pending'
+                      ? 'text-amber-800 bg-amber-50 border-amber-200'
+                      : tx.status === 'failed'
+                      ? 'text-rose-800 bg-rose-50 border-rose-200'
+                      : 'text-emerald-800 bg-emerald-50 border-emerald-200'
+                  }`}>
+                    {tx.status === 'pending' ? 'যাচাইয়ের অপেক্ষায়' : tx.status === 'failed' ? 'বাতিল' : 'অনুমোদিত / সফল'}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      ) : (
+        <div className="bg-white rounded-3xl border border-slate-200/90 p-5 text-center text-slate-500 text-xs">
+          কোনো ওয়ালেট লেনদেন পাওয়া যায়নি। বিকাশ বা নগদ দিয়ে ব্যালেন্স রিচার্জ করে সরাসরি আবেদন ফি পরিশোধ করুন।
+        </div>
+      )}
     </div>
   );
 }

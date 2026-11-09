@@ -15,7 +15,10 @@ import {
   CreditCard,
   Zap,
   RotateCcw,
-  Percent
+  Percent,
+  Copy,
+  Check,
+  Smartphone
 } from 'lucide-react';
 import { storage } from '@/lib/store';
 import { CandidateProfile, WalletTransaction } from '@/lib/types';
@@ -33,6 +36,23 @@ export default function WalletPublicPage() {
   const [isRecharging, setIsRecharging] = useState(false);
   const [rechargeSuccess, setRechargeSuccess] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
+
+  const officialNumber = '01774366643';
+  const displayOfficialNumber = '01774-366643';
+
+  const getAuthHeaders = (): Record<string, string> => {
+    const token = typeof window !== 'undefined' ? localStorage.getItem('cs_session_token') : null;
+    return token ? { 'Authorization': `Bearer ${token}` } : {};
+  };
+
+  const handleCopyNumber = () => {
+    if (typeof navigator !== 'undefined' && navigator.clipboard) {
+      navigator.clipboard.writeText(officialNumber);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2500);
+    }
+  };
 
   useEffect(() => {
     setIsMounted(true);
@@ -43,7 +63,10 @@ export default function WalletPublicPage() {
       setProfile(user);
 
       // Fetch live transactions from server
-      fetch('/api/wallet/transactions')
+      fetch('/api/wallet/transactions', {
+        headers: getAuthHeaders(),
+        cache: 'no-store'
+      })
         .then(r => r.ok ? r.json() : null)
         .then(data => {
           if (data && Array.isArray(data.transactions)) {
@@ -71,13 +94,16 @@ export default function WalletPublicPage() {
     try {
       const res = await fetch('/api/wallet/transactions', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          ...getAuthHeaders()
+        },
         body: JSON.stringify({
           amount: add,
           type: 'recharge',
           description: `ওয়ালেট রিচার্জ (${method === 'bKash' ? 'বিকাশ' : 'নগদ'})`,
           method,
-          trxId: trxId.trim()
+          trxId: trxId.trim().toUpperCase()
         })
       });
 
@@ -206,6 +232,55 @@ export default function WalletPublicPage() {
                 <span>{errorMessage}</span>
               </div>
             )}
+
+            {/* Step-by-Step Payment Instructions Card */}
+            <div className="p-4 bg-emerald-50/60 border border-emerald-200 rounded-2xl space-y-3">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div className="flex items-center gap-2">
+                  <Smartphone className="w-5 h-5 text-emerald-700 shrink-0" />
+                  <div>
+                    <span className="text-xs font-bold text-slate-700 block">
+                      অফিসিয়াল {method === 'bKash' ? 'বিকাশ' : 'নগদ'} পার্সোনাল নম্বর (Send Money):
+                    </span>
+                    <span className="text-base font-black text-emerald-900 font-mono tracking-wider">
+                      {displayOfficialNumber}
+                    </span>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={handleCopyNumber}
+                  className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 self-start sm:self-center cursor-pointer shadow-xs ${
+                    copied 
+                      ? 'bg-emerald-700 text-white' 
+                      : 'bg-white hover:bg-slate-50 text-slate-800 border border-emerald-300'
+                  }`}
+                >
+                  {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5 text-emerald-700" />}
+                  <span>{copied ? '✓ নম্বর কপি হয়েছে' : 'নম্বর কপি করুন'}</span>
+                </button>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-4 gap-2 pt-2 border-t border-emerald-200/60 text-[11px] text-slate-600">
+                <div className="bg-white/80 p-2 rounded-xl">
+                  <strong className="text-emerald-800 block">১. অ্যাপ ওপেন:</strong>
+                  {method === 'bKash' ? 'বিকাশ' : 'নগদ'} অ্যাপে Send Money অপশন
+                </div>
+                <div className="bg-white/80 p-2 rounded-xl">
+                  <strong className="text-emerald-800 block">২. নম্বর ইনপুট:</strong>
+                  {displayOfficialNumber} নম্বরে টাকা পাঠান
+                </div>
+                <div className="bg-white/80 p-2 rounded-xl">
+                  <strong className="text-emerald-800 block">৩. TrxID কপি:</strong>
+                  মেসেজ থেকে TrxID টি সংগ্রহ করুন
+                </div>
+                <div className="bg-white/80 p-2 rounded-xl">
+                  <strong className="text-emerald-800 block">৪. আবেদন সাবমিট:</strong>
+                  নিচে TrxID দিয়ে আবেদন নিশ্চিত করুন
+                </div>
+              </div>
+            </div>
 
             <form onSubmit={handleRecharge} className="space-y-4 text-xs">
               {/* Method Selection */}

@@ -20,7 +20,10 @@ import {
   Award,
   Briefcase,
   GraduationCap,
-  X
+  X,
+  Eye,
+  RefreshCw,
+  Sliders
 } from 'lucide-react';
 import { storage } from '@/lib/store';
 import { CandidateDocument } from '@/lib/types';
@@ -35,12 +38,41 @@ export default function DocumentVaultPage() {
   const [uploadingDocType, setUploadingDocType] = useState<string | null>(null);
   const [docUploadToast, setDocUploadToast] = useState<string | null>(null);
 
+  // Preview Modal State
+  const [previewModalDoc, setPreviewModalDoc] = useState<{ title: string; url: string; mimeType?: string } | null>(null);
+
   // Custom Document Upload State
   const [showCustomDocModal, setShowCustomDocModal] = useState(false);
   const [customDocTitle, setCustomDocTitle] = useState('');
   const [customDocCategory, setCustomDocCategory] = useState('training');
   const [customDocFile, setCustomDocFile] = useState<File | null>(null);
   const [isUploadingCustomDoc, setIsUploadingCustomDoc] = useState(false);
+
+  // Resizer state
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [resizedDataUrl, setResizedDataUrl] = useState<string | null>(null);
+  const [resizedFileSizeKb, setResizedFileSizeKb] = useState<number | null>(null);
+  const [targetWidth, setTargetWidth] = useState(300);
+  const [targetHeight, setTargetHeight] = useState(300);
+  const [maxAllowedKb, setMaxAllowedKb] = useState(100);
+
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const resizerSectionRef = useRef<HTMLDivElement | null>(null);
+
+  const getAuthHeaders = (): Record<string, string> => {
+    const token = typeof window !== 'undefined' ? localStorage.getItem('cs_session_token') : null;
+    return token ? { 'Authorization': `Bearer ${token}` } : {};
+  };
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  useEffect(() => {
+    setDocuments(candidateData.documents);
+    if (candidateData.profile) setUserProfile(candidateData.profile);
+  }, [candidateData.documents, candidateData.profile]);
 
   // Filter custom documents from full list
   const customDocumentsList = documents.filter(d => 
@@ -69,6 +101,7 @@ export default function DocumentVaultPage() {
 
       const res = await fetch('/api/candidate/upload-document', {
         method: 'POST',
+        headers: getAuthHeaders(),
         body: formData
       });
       const data = await res.json();
@@ -98,10 +131,15 @@ export default function DocumentVaultPage() {
 
   const deleteDocument = async (id: string) => {
     try {
-      const response = await fetch('/api/documents?id=' + encodeURIComponent(id), { method: 'DELETE' });
+      const response = await fetch('/api/documents?id=' + encodeURIComponent(id), {
+        method: 'DELETE',
+        headers: getAuthHeaders()
+      });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || 'ডকুমেন্ট মুছে ফেলা যায়নি');
       await candidateData.refresh();
+      setDocUploadToast('ডকুমেন্ট সফলভাবে মুছে ফেলা হয়েছে।');
+      setTimeout(() => setDocUploadToast(null), 4000);
     } catch (error) {
       alert(error instanceof Error ? error.message : 'ডকুমেন্ট মুছে ফেলা যায়নি');
     }
@@ -122,6 +160,7 @@ export default function DocumentVaultPage() {
 
       const res = await fetch('/api/candidate/upload-document', {
         method: 'POST',
+        headers: getAuthHeaders(),
         body: formData
       });
       const data = await res.json();
@@ -129,7 +168,7 @@ export default function DocumentVaultPage() {
       if (data.success && data.fileUrl) {
         await candidateData.refresh();
 
-        setDocUploadToast(docTitle + ' আপলোড হয়েছে; অ্যাডমিন যাচাইয়ের অপেক্ষায় রয়েছে।');
+        setDocUploadToast(docTitle + ' সফলভাবে আপলোড হয়েছে; অ্যাডমিন যাচাইয়ের অপেক্ষায় রয়েছে।');
         setTimeout(() => setDocUploadToast(null), 4000);
       } else {
         alert(data.error || 'আপলোড ব্যর্থ হয়েছে');
@@ -142,26 +181,46 @@ export default function DocumentVaultPage() {
     }
   };
 
-  // Resizer state
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const [resizedDataUrl, setResizedDataUrl] = useState<string | null>(null);
-  const [resizedFileSizeKb, setResizedFileSizeKb] = useState<number | null>(null);
-  const [targetWidth, setTargetWidth] = useState(300);
-  const [targetHeight, setTargetHeight] = useState(300);
-  const [maxAllowedKb, setMaxAllowedKb] = useState(100);
-
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  useEffect(() => {
-    setDocuments(candidateData.documents);
-    if (candidateData.profile) setUserProfile(candidateData.profile);
-  }, [candidateData.documents, candidateData.profile]);
+  const handleDeleteOfficialDoc = async (docType: string, docTitle: string) => {
+    if (!confirm(`আপনি কি নিশ্চিত যে "${docTitle}" ভল্ট থেকে মুছে ফেলতে চান?`)) return;
+    const existing = documents.find(d => d.type === docType);
+    if (existing) {
+      await deleteDocument(existing.id);
+    } else {
+      const fieldMap: Record<string, string> = {
+        photo: 'photoUrl',
+        signature: 'signatureUrl',
+        nid_front: 'nidFrontUrl',
+        nid_back: 'nidBackUrl',
+        father_nid: 'fatherNidUrl',
+        mother_nid: 'motherNidUrl',
+        nagorik_certificate: 'nagorikCertificateUrl',
+        birth_certificate: 'birthCertificateUrl',
+        character_certificate: 'characterCertificateUrl',
+        quota_certificate: 'quotaCertificateUrl',
+      };
+      const key = fieldMap[docType];
+      if (key) {
+        try {
+          const res = await fetch('/api/profile', {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+              ...getAuthHeaders()
+            },
+            body: JSON.stringify({ [key]: '' })
+          });
+          if (res.ok) {
+            await candidateData.refresh();
+            setDocUploadToast(`✓ ${docTitle} সফলভাবে মুছে ফেলা হয়েছে।`);
+            setTimeout(() => setDocUploadToast(null), 4000);
+          }
+        } catch {
+          alert('মুছে ফেলা ব্যর্থ হয়েছে');
+        }
+      }
+    }
+  };
 
   // Set preset dimensions
   const handleSelectPreset = (preset: 'photo' | 'signature') => {
@@ -177,7 +236,14 @@ export default function DocumentVaultPage() {
     }
     // Re-process if image loaded
     if (imagePreview) {
-      processImage(imagePreview, preset === 'photo' ? 300 : 300, preset === 'photo' ? 300 : 80);
+      processImage(imagePreview, 300, preset === 'photo' ? 300 : 80);
+    }
+  };
+
+  const scrollToResizer = (preset: 'photo' | 'signature') => {
+    handleSelectPreset(preset);
+    if (resizerSectionRef.current) {
+      resizerSectionRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
@@ -258,11 +324,16 @@ export default function DocumentVaultPage() {
       formData.append('docTitle', activeResizerTab === 'photo' ? 'প্রার্থীর ছবি' : 'প্রার্থীর স্বাক্ষর');
       const existing = documents.find(document => document.type === activeResizerTab);
       if (existing) formData.append('replaceDocId', existing.id);
-      const response = await fetch('/api/candidate/upload-document', { method: 'POST', body: formData });
+      const response = await fetch('/api/candidate/upload-document', {
+        method: 'POST',
+        headers: getAuthHeaders(),
+        body: formData
+      });
       const data = await response.json();
       if (!response.ok || !data.success) throw new Error(data.error || 'ডকুমেন্ট সংরক্ষণ ব্যর্থ হয়েছে');
       await candidateData.refresh();
-      setDocUploadToast('ডকুমেন্ট সার্ভারে সংরক্ষিত হয়েছে; অ্যাডমিন যাচাইয়ের অপেক্ষায় রয়েছে।');
+      setDocUploadToast('✓ ' + (activeResizerTab === 'photo' ? 'ছবি' : 'স্বাক্ষর') + ' সার্ভার ভল্টে সংরক্ষিত হয়েছে; অ্যাডমিন যাচাইয়ের অপেক্ষায় রয়েছে।');
+      setTimeout(() => setDocUploadToast(null), 4000);
     } catch (error) {
       alert(error instanceof Error ? error.message : 'ডকুমেন্ট সংরক্ষণ ব্যর্থ হয়েছে');
     } finally {
@@ -287,13 +358,89 @@ export default function DocumentVaultPage() {
     );
   }
 
+  // Official 10-slot standard configuration
+  const officialDocumentSlots = [
+    {
+      type: 'photo',
+      title: 'প্রার্থীর ছবি (টেলিটক স্ট্যান্ডার্ড - ৩০০×৩০০)',
+      desc: 'পাসপোর্ট সাইজ রঙিন ছবি, ১০০ KB এর কম',
+      url: userProfile?.photoUrl,
+      icon: '📷',
+      isImagePreset: true
+    },
+    {
+      type: 'signature',
+      title: 'প্রার্থীর স্বাক্ষর (টেলিটক স্ট্যান্ডার্ড - ৩০০×৮০)',
+      desc: 'স্বাক্ষরের ছবি, ৬০ KB এর কম',
+      url: userProfile?.signatureUrl,
+      icon: '✍️',
+      isImagePreset: true
+    },
+    {
+      type: 'nid_front',
+      title: 'প্রার্থীর NID (সামনের অংশ)',
+      desc: 'জাতীয় পরিচয়পত্রের সামনের ছবি বা স্ক্যান কপি',
+      url: userProfile?.nidFrontUrl,
+      icon: '🪪'
+    },
+    {
+      type: 'nid_back',
+      title: 'প্রার্থীর NID (পেছনের অংশ)',
+      desc: 'জাতীয় পরিচয়পত্রের পেছনের ঠিকানা অংশের ছবি',
+      url: userProfile?.nidBackUrl,
+      icon: '🪪'
+    },
+    {
+      type: 'father_nid',
+      title: 'পিতার জাতীয় পরিচয়পত্র (Father NID)',
+      desc: 'বাবার NID কার্ড বা স্মার্ট কার্ডের ছবি',
+      url: userProfile?.fatherNidUrl || (userProfile?.fatherNid?.startsWith('http') || userProfile?.fatherNid?.startsWith('/api') ? userProfile?.fatherNid : null),
+      icon: '👨‍🦳'
+    },
+    {
+      type: 'mother_nid',
+      title: 'মাতার জাতীয় পরিচয়পত্র (Mother NID)',
+      desc: 'মায়ের NID কার্ড বা স্মার্ট কার্ডের ছবি',
+      url: userProfile?.motherNidUrl || (userProfile?.motherNid?.startsWith('http') || userProfile?.motherNid?.startsWith('/api') ? userProfile?.motherNid : null),
+      icon: '👵'
+    },
+    {
+      type: 'nagorik_certificate',
+      title: 'নাগরিক সনদপত্র (চেয়ারম্যান সার্টিফিকেট)',
+      desc: 'ইউনিয়ন পরিষদ চেয়ারম্যান বা ওয়ার্ড কাউন্সিলর সনদ',
+      url: userProfile?.nagorikCertificateUrl,
+      icon: '🏛️'
+    },
+    {
+      type: 'birth_certificate',
+      title: 'অনলাইন জন্ম নিবন্ধন সনদ (ঐচ্ছিক)',
+      desc: '১৭ ডিজিটের ডিজিটাল বার্থ সার্টিফিকেট',
+      url: userProfile?.birthCertificateUrl,
+      icon: '📜'
+    },
+    {
+      type: 'character_certificate',
+      title: 'চারিত্রিক সনদপত্র (Character Certificate)',
+      desc: 'সর্বশেষ শিক্ষা প্রতিষ্ঠান বা ১ম শ্রেণির গেজেটেড অফিসার',
+      url: userProfile?.characterCertificateUrl,
+      icon: '🎖️'
+    },
+    {
+      type: 'quota_certificate',
+      title: 'কোটা / বিশেষ সুবিধা সনদ (যদি থাকে)',
+      desc: 'মুক্তিযোদ্ধা, ক্ষুদ্র নৃ-গোষ্ঠী বা প্রতিবন্ধী সনদ',
+      url: userProfile?.quotaCertificateUrl,
+      icon: '🌟'
+    }
+  ];
+
   return (
     <div className="space-y-8 max-w-6xl">
       {/* Header */}
       <div>
         <div className="inline-flex items-center gap-2 px-3 py-1 bg-emerald-50 text-emerald-800 rounded-full text-xs font-bold border border-emerald-200 mb-2">
           <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-          <span>১০০% এনক্রিপ্টেড ব্যক্তিগত ভল্ট</span>
+          <span>১০০% এনক্রিপ্টেড ব্যক্তিগত ভল্ট (AES-256)</span>
         </div>
         <h1 className="text-2xl font-black text-slate-900 flex items-center gap-2">
           <FileBox className="w-6 h-6 text-emerald-700" />
@@ -312,16 +459,16 @@ export default function DocumentVaultPage() {
         </div>
       )}
 
-      {/* Official Identity & Verification Documents Vault */}
+      {/* 1. Official Identity & Verification Documents Vault (10 Standard Slots) */}
       <div className="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b pb-4">
           <div>
             <h2 className="text-base font-black text-slate-900 flex items-center gap-2">
               <ShieldCheck className="w-5 h-5 text-emerald-700" />
-              <span>মূল জাতীয় পরিচয়পত্র ও প্রমাণপত্র ভল্ট (Official ID & Certificates)</span>
+              <span>মূল জাতীয় পরিচয়পত্র ও প্রমাণপত্র ভল্ট (১০টি অফিসিয়াল স্লট)</span>
             </h2>
             <p className="text-xs text-slate-500 mt-0.5">
-              প্রার্থীর NID, পিতা-মাতার আইডি কার্ড, চেয়ারম্যান সার্টিফিকেট ও অন্যান্য ডকুমেন্টস আপলোড করুন। অ্যাডমিন প্যানেলে এগুলো সরাসরি ভেরিফাই করা হবে।
+              প্রার্থীর NID, ছবি, স্বাক্ষর, পিতা-মাতার আইডি কার্ড, চেয়ারম্যান সার্টিফিকেট ও অন্যান্য ডকুমেন্টস আপলোড করুন। অ্যাডমিন প্যানেলে এগুলো সরাসরি ভেরিফাই করা হবে।
             </p>
           </div>
           <span className="text-xs font-bold px-3 py-1 bg-blue-50 text-blue-700 border border-blue-200 rounded-xl w-fit">
@@ -330,132 +477,127 @@ export default function DocumentVaultPage() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {[
-            {
-              type: 'nid_front',
-              title: 'প্রার্থীর NID (সামনের অংশ)',
-              desc: 'জাতীয় পরিচয়পত্রের সামনের ছবি বা স্ক্যান কপি',
-              url: userProfile?.nidFrontUrl,
-              icon: '🪪'
-            },
-            {
-              type: 'nid_back',
-              title: 'প্রার্থীর NID (পেছনের অংশ)',
-              desc: 'জাতীয় পরিচয়পত্রের পেছনের ঠিকানা অংশের ছবি',
-              url: userProfile?.nidBackUrl,
-              icon: '🪪'
-            },
-            {
-              type: 'father_nid',
-              title: 'পিতার জাতীয় পরিচয়পত্র (Father NID)',
-              desc: 'বাবার NID কার্ড বা স্মার্ট কার্ডের ছবি',
-              url: userProfile?.fatherNidUrl || (userProfile?.fatherNid?.startsWith('http') || userProfile?.fatherNid?.startsWith('/api') ? userProfile?.fatherNid : null),
-              icon: '👨‍🦳'
-            },
-            {
-              type: 'mother_nid',
-              title: 'মাতার জাতীয় পরিচয়পত্র (Mother NID)',
-              desc: 'মায়ের NID কার্ড বা স্মার্ট কার্ডের ছবি',
-              url: userProfile?.motherNidUrl || (userProfile?.motherNid?.startsWith('http') || userProfile?.motherNid?.startsWith('/api') ? userProfile?.motherNid : null),
-              icon: '👵'
-            },
-            {
-              type: 'nagorik_certificate',
-              title: 'নাগরিক সনদপত্র (চেয়ারম্যান সার্টিফিকেট)',
-              desc: 'ইউনিয়ন পরিষদ চেয়ারম্যান বা ওয়ার্ড কাউন্সিলর সনদ',
-              url: userProfile?.nagorikCertificateUrl,
-              icon: '🏛️'
-            },
-            {
-              type: 'birth_certificate',
-              title: 'অনলাইন জন্ম নিবন্ধন সনদ (ঐচ্ছিক)',
-              desc: '১৭ ডিজিটের ডিজিটাল বার্থ সার্টিফিকেট',
-              url: userProfile?.birthCertificateUrl,
-              icon: '📜'
-            },
-            {
-              type: 'character_certificate',
-              title: 'চারিত্রিক সনদপত্র (Character Certificate)',
-              desc: 'সর্বশেষ শিক্ষা প্রতিষ্ঠান বা ১ম শ্রেণির গেজেটেড অফিসার',
-              url: userProfile?.characterCertificateUrl,
-              icon: '🎖️'
-            },
-            {
-              type: 'quota_certificate',
-              title: 'কোটা / বিশেষ সুবিধা সনদ (যদি থাকে)',
-              desc: 'মুক্তিযোদ্ধা, ক্ষুদ্র নৃ-গোষ্ঠী বা প্রতিবন্ধী সনদ',
-              url: userProfile?.quotaCertificateUrl,
-              icon: '🌟'
-            }
-          ].map((item) => (
-            <div
-              key={item.type}
-              className={`p-4 rounded-2xl border transition-all ${
-                item.url
-                  ? 'bg-emerald-50/40 border-emerald-300 shadow-sm'
-                  : 'bg-slate-50/70 border-slate-200 hover:border-slate-300'
-              }`}
-            >
-              <div className="flex items-start justify-between gap-2">
-                <div className="flex items-center gap-2">
-                  <span className="text-xl">{item.icon}</span>
-                  <div>
-                    <h3 className="text-xs font-bold text-slate-900 line-clamp-1">{item.title}</h3>
-                    <p className="text-[10px] text-slate-500 line-clamp-1">{item.desc}</p>
+          {officialDocumentSlots.map((item) => {
+            const matchedDoc = documents.find(d => d.type === item.type);
+            const resolvedUrl = item.url || matchedDoc?.fileUrl || matchedDoc?.dataUrl;
+            const isVerified = matchedDoc?.isVerified;
+            const isRejected = matchedDoc?.verificationStatus === 'REJECTED';
+            const isCorrection = matchedDoc?.verificationStatus === 'NEEDS_CORRECTION';
+
+            return (
+              <div
+                key={item.type}
+                className={`p-4 rounded-2xl border transition-all flex flex-col justify-between space-y-3 ${
+                  resolvedUrl
+                    ? 'bg-emerald-50/40 border-emerald-300 shadow-sm'
+                    : 'bg-slate-50/70 border-slate-200 hover:border-slate-300'
+                }`}
+              >
+                <div>
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="flex items-center gap-2">
+                      <span className="text-xl">{item.icon}</span>
+                      <div>
+                        <h3 className="text-xs font-bold text-slate-900 line-clamp-1">{item.title}</h3>
+                        <p className="text-[10px] text-slate-500 line-clamp-1">{item.desc}</p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-1">
+                      {resolvedUrl ? (
+                        <span className={`inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                          isVerified
+                            ? 'text-emerald-800 bg-emerald-200 border border-emerald-300'
+                            : isRejected
+                            ? 'text-rose-700 bg-rose-100 border border-rose-200'
+                            : isCorrection
+                            ? 'text-amber-700 bg-amber-100 border border-amber-200'
+                            : 'text-emerald-700 bg-emerald-100'
+                        }`}>
+                          <CheckCircle2 className="w-3 h-3" />
+                          <span>
+                            {isVerified ? 'যাচাইকৃত' : isRejected ? 'বাতিল' : isCorrection ? 'সংশোধন' : 'সংরক্ষিত'}
+                          </span>
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center text-[10px] font-medium text-slate-400 bg-white px-2 py-0.5 rounded-full border">
+                          বাকি
+                        </span>
+                      )}
+
+                      {resolvedUrl && (
+                        <button
+                          type="button"
+                          onClick={() => handleDeleteOfficialDoc(item.type, item.title)}
+                          className="p-1 text-slate-300 hover:text-rose-600 rounded-lg transition-colors cursor-pointer"
+                          title="মুছে ফেলুন"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      )}
+                    </div>
                   </div>
+
+                  {resolvedUrl && (
+                    <div className="mt-3 p-2 bg-white rounded-xl border border-emerald-200 flex items-center justify-between">
+                      <button
+                        type="button"
+                        onClick={() => setPreviewModalDoc({ title: item.title, url: resolvedUrl, mimeType: matchedDoc?.mimeType })}
+                        className="text-[11px] font-bold text-emerald-700 hover:underline flex items-center gap-1 cursor-pointer truncate"
+                      >
+                        <Eye className="w-3.5 h-3.5 shrink-0" />
+                        <span>প্রিভিউ দেখুন</span>
+                      </button>
+                      <a
+                        href={resolvedUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-[10px] text-slate-500 hover:text-emerald-800 flex items-center gap-0.5"
+                      >
+                        <span>ডাউনলোড</span>
+                        <ExternalLink className="w-2.5 h-2.5" />
+                      </a>
+                    </div>
+                  )}
                 </div>
 
-                {item.url ? (
-                  <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full">
-                    <CheckCircle2 className="w-3 h-3" />
-                    <span>সংরক্ষিত</span>
-                  </span>
-                ) : (
-                  <span className="inline-flex items-center text-[10px] font-medium text-slate-400 bg-white px-2 py-0.5 rounded-full border">
-                    বাকি
-                  </span>
-                )}
-              </div>
+                <div className="space-y-2 pt-1">
+                  {item.isImagePreset && (
+                    <button
+                      type="button"
+                      onClick={() => scrollToResizer(item.type as 'photo' | 'signature')}
+                      className="w-full py-1.5 px-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-[11px] font-semibold flex items-center justify-center gap-1 transition-colors cursor-pointer"
+                    >
+                      <Sliders className="w-3 h-3 text-emerald-700" />
+                      <span>টেলিটক রিসাইজারে মাপ ঠিক করুন</span>
+                    </button>
+                  )}
 
-              {item.url && (
-                <div className="mt-3 p-2 bg-white rounded-xl border border-emerald-200 flex items-center justify-between">
-                  <a
-                    href={item.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-[11px] font-bold text-emerald-700 hover:underline flex items-center gap-1 truncate"
-                  >
-                    <span>ফাইল দেখুন / ডাউনলোড</span>
-                  </a>
-                  <span className="text-[10px] text-slate-400">PDF / ছবি</span>
+                  <label className={`w-full py-2 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 cursor-pointer transition-colors shadow-sm ${
+                    resolvedUrl
+                      ? 'bg-white hover:bg-slate-50 text-slate-700 border border-slate-200'
+                      : 'bg-emerald-700 hover:bg-emerald-800 text-white'
+                  }`}>
+                    <Upload className="w-3.5 h-3.5" />
+                    <span>
+                      {uploadingDocType === item.type
+                        ? 'আপলোড হচ্ছে...'
+                        : resolvedUrl
+                        ? 'নতুন ফাইল পরিবর্তন করুন'
+                        : 'ফাইল আপলোড করুন'}
+                    </span>
+                    <input
+                      type="file"
+                      accept="application/pdf,image/png,image/jpeg,image/jpg,image/webp"
+                      disabled={uploadingDocType === item.type}
+                      onChange={(e) => handleUploadOfficialDoc(e, item.type, item.title)}
+                      className="hidden"
+                    />
+                  </label>
                 </div>
-              )}
-
-              <div className="mt-3">
-                <label className={`w-full py-2 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 cursor-pointer transition-colors shadow-sm ${
-                  item.url
-                    ? 'bg-white hover:bg-slate-50 text-slate-700 border border-slate-200'
-                    : 'bg-emerald-700 hover:bg-emerald-800 text-white'
-                }`}>
-                  <Upload className="w-3.5 h-3.5" />
-                  <span>
-                    {uploadingDocType === item.type
-                      ? 'আপলোড হচ্ছে...'
-                      : item.url
-                      ? 'নতুন ফাইল পরিবর্তন করুন'
-                      : 'ফাইল আপলোড করুন'}
-                  </span>
-                  <input
-                    type="file"
-                    accept="application/pdf,image/png,image/jpeg,image/jpg"
-                    disabled={uploadingDocType === item.type}
-                    onChange={(e) => handleUploadOfficialDoc(e, item.type, item.title)}
-                    className="hidden"
-                  />
-                </label>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 
@@ -508,6 +650,7 @@ export default function DocumentVaultPage() {
               return (
                 <div
                   key={doc.id}
+                  data-testid="custom-doc-card"
                   className="p-4 rounded-2xl border border-slate-200 bg-white hover:border-emerald-300 transition-all shadow-xs flex flex-col justify-between space-y-3"
                 >
                   <div className="flex items-start justify-between gap-2">
@@ -538,6 +681,7 @@ export default function DocumentVaultPage() {
 
                     <button
                       type="button"
+                      data-testid="delete-custom-doc-btn"
                       onClick={() => handleDeleteCustomDoc(doc.id, doc.title)}
                       className="p-1.5 text-slate-300 hover:text-rose-600 rounded-lg transition-colors cursor-pointer"
                       title="মুছে ফেলুন"
@@ -551,17 +695,30 @@ export default function DocumentVaultPage() {
                     <span className="text-emerald-700 font-bold text-[10px]">✓ সংরক্ষিত</span>
                   </div>
 
-                  {fileLink && (
-                    <a
-                      href={fileLink}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="py-2 px-3 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-bold text-center flex items-center justify-center gap-1.5 transition-colors shadow-xs"
-                    >
-                      <ExternalLink className="w-3.5 h-3.5" />
-                      <span>ফাইল দেখুন / ডাউনলোড</span>
-                    </a>
-                  )}
+                  <div className="flex items-center gap-2">
+                    {fileLink && (
+                      <button
+                        type="button"
+                        onClick={() => setPreviewModalDoc({ title: doc.title, url: fileLink, mimeType: doc.mimeType })}
+                        className="flex-1 py-2 px-3 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 rounded-xl text-xs font-bold text-center flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                      >
+                        <Eye className="w-3.5 h-3.5" />
+                        <span>প্রিভিউ</span>
+                      </button>
+                    )}
+
+                    {fileLink && (
+                      <a
+                        href={fileLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="py-2 px-3 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-bold text-center flex items-center justify-center gap-1.5 transition-colors shadow-xs"
+                      >
+                        <ExternalLink className="w-3.5 h-3.5" />
+                        <span>ডাউনলোড</span>
+                      </a>
+                    )}
+                  </div>
                 </div>
               );
             })}
@@ -569,8 +726,8 @@ export default function DocumentVaultPage() {
         )}
       </div>
 
-      {/* 3. Client-side Interactive Canvas Image Resizer */}
-      <div className="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6">
+      {/* 3. Client-side Interactive Canvas Image Resizer (Teletalk Engine) */}
+      <div ref={resizerSectionRef} className="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b pb-4">
           <div>
             <h2 className="text-base font-bold text-slate-900 flex items-center gap-2">
@@ -582,8 +739,9 @@ export default function DocumentVaultPage() {
 
           <div className="flex items-center gap-2">
             <button
+              type="button"
               onClick={() => handleSelectPreset('photo')}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
                 activeResizerTab === 'photo'
                   ? 'bg-emerald-700 text-white shadow-sm'
                   : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
@@ -593,8 +751,9 @@ export default function DocumentVaultPage() {
               <span>ছবি (300 × 300)</span>
             </button>
             <button
+              type="button"
               onClick={() => handleSelectPreset('signature')}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
                 activeResizerTab === 'signature'
                   ? 'bg-emerald-700 text-white shadow-sm'
                   : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
@@ -611,6 +770,7 @@ export default function DocumentVaultPage() {
           <div className="space-y-4">
             <input
               type="file"
+              data-testid="resizer-file-input"
               ref={fileInputRef}
               onChange={handleFileChange}
               accept="image/png, image/jpeg, image/jpg"
@@ -680,18 +840,22 @@ export default function DocumentVaultPage() {
 
                 <div className="flex flex-wrap items-center gap-2 pt-1">
                   <button
+                    type="button"
                     onClick={handleDownload}
-                    className="flex-1 py-2.5 bg-white border border-slate-300 hover:bg-slate-50 text-slate-800 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 shadow-sm transition-colors"
+                    className="flex-1 py-2.5 bg-white border border-slate-300 hover:bg-slate-50 text-slate-800 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 shadow-sm transition-colors cursor-pointer"
                   >
                     <Download className="w-4 h-4 text-emerald-700" />
                     <span>ডাউনলোড করুন</span>
                   </button>
                   <button
+                    type="button"
+                    data-testid="resizer-save-btn"
                     onClick={handleSaveToVault}
-                    className="flex-1 py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 shadow-sm transition-colors"
+                    disabled={uploadingDocType === activeResizerTab}
+                    className="flex-1 py-2.5 bg-emerald-700 hover:bg-emerald-800 disabled:opacity-50 text-white rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 shadow-sm transition-colors cursor-pointer"
                   >
                     <CheckCircle2 className="w-4 h-4" />
-                    <span>ভল্টে সেভ করুন</span>
+                    <span>{uploadingDocType === activeResizerTab ? 'সেভ হচ্ছে...' : 'ভল্টে সেভ করুন'}</span>
                   </button>
                 </div>
               </div>
@@ -705,7 +869,7 @@ export default function DocumentVaultPage() {
         </div>
       </div>
 
-      {/* 2. Stored Document Vault Cards */}
+      {/* 4. Stored Document Vault Cards (Repository) */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <h2 className="text-base font-bold text-slate-900 flex items-center gap-2">
@@ -716,46 +880,178 @@ export default function DocumentVaultPage() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {documents.map((doc) => (
-            <div
-              key={doc.id}
-              className="bg-white p-5 rounded-2xl border border-slate-200/90 shadow-sm hover:border-emerald-300 transition-all space-y-3"
-            >
-              <div className="flex items-start justify-between gap-2">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center flex-shrink-0">
-                    {doc.type === 'photo' ? <Camera className="w-5 h-5" /> : doc.type === 'signature' ? <PenTool className="w-5 h-5" /> : <FileText className="w-5 h-5" />}
+          {documents.map((doc) => {
+            const fileLink = doc.dataUrl || doc.fileUrl || (doc as any).url;
+            return (
+              <div
+                key={doc.id}
+                className="bg-white p-5 rounded-2xl border border-slate-200/90 shadow-sm hover:border-emerald-300 transition-all space-y-3 flex flex-col justify-between"
+              >
+                <div>
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center flex-shrink-0">
+                        {doc.type === 'photo' ? (
+                          <Camera className="w-5 h-5" />
+                        ) : doc.type === 'signature' ? (
+                          <PenTool className="w-5 h-5" />
+                        ) : doc.category === 'training' ? (
+                          <Award className="w-5 h-5" />
+                        ) : doc.category === 'experience' ? (
+                          <Briefcase className="w-5 h-5" />
+                        ) : (
+                          <FileText className="w-5 h-5" />
+                        )}
+                      </div>
+                      <div className="min-w-0">
+                        <h4 className="font-bold text-xs text-slate-900 truncate" title={doc.title}>
+                          {doc.title}
+                        </h4>
+                        <span className="text-[11px] text-slate-400">{doc.uploadDate}</span>
+                      </div>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => handleDeleteDoc(doc.id)}
+                      className="p-1.5 text-slate-400 hover:text-rose-600 rounded-lg transition-colors cursor-pointer"
+                      title="মুছে ফেলুন"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </button>
                   </div>
-                  <div>
-                    <h4 className="font-bold text-xs text-slate-900 line-clamp-1">{doc.title}</h4>
-                    <span className="text-[11px] text-slate-400">{doc.uploadDate}</span>
+
+                  <div className="mt-3 p-2.5 bg-slate-50 rounded-xl border border-slate-100 flex items-center justify-between text-[11px] text-slate-600">
+                    <span>সাইজ: <strong>{doc.fileSize}</strong></span>
+                    {doc.dimensions && <span>মাপ: {doc.dimensions}</span>}
+                    <span className={`font-semibold ${doc.isVerified ? 'text-emerald-700' : 'text-amber-700'}`}>
+                      {doc.isVerified ? '✓ যাচাইকৃত' : doc.verificationStatus === 'REJECTED' ? 'বাতিল' : doc.verificationStatus === 'NEEDS_CORRECTION' ? 'সংশোধন' : 'অপেক্ষমাণ'}
+                    </span>
                   </div>
+
+                  {fileLink && (doc.mimeType?.startsWith('image/') || /\.(png|jpe?g|webp)$/i.test(doc.fileName || fileLink)) && (
+                    <div className="mt-3 h-20 bg-slate-50 rounded-xl flex items-center justify-center overflow-hidden border">
+                      <img src={fileLink} alt="" className="max-h-full object-contain" />
+                    </div>
+                  )}
                 </div>
 
-                <button
-                  onClick={() => handleDeleteDoc(doc.id)}
-                  className="p-1.5 text-slate-400 hover:text-rose-600 rounded-lg transition-colors"
-                  title="মুছে ফেলুন"
+                {fileLink && (
+                  <div className="flex items-center gap-2 pt-2">
+                    <button
+                      type="button"
+                      onClick={() => setPreviewModalDoc({ title: doc.title, url: fileLink, mimeType: doc.mimeType })}
+                      className="flex-1 py-1.5 px-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-semibold flex items-center justify-center gap-1 transition-colors cursor-pointer"
+                    >
+                      <Eye className="w-3.5 h-3.5 text-emerald-700" />
+                      <span>প্রিভিউ</span>
+                    </button>
+                    <a
+                      href={fileLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex-1 py-1.5 px-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 rounded-xl text-xs font-semibold flex items-center justify-center gap-1 transition-colors"
+                    >
+                      <Download className="w-3.5 h-3.5" />
+                      <span>ডাউনলোড</span>
+                    </a>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* DOCUMENT PREVIEW MODAL */}
+      {previewModalDoc && (
+        <div className="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-xs flex items-center justify-center p-4 animate-fadeIn">
+          <div className="bg-white rounded-3xl max-w-2xl w-full p-6 shadow-2xl border border-slate-200 animate-scaleUp space-y-4">
+            <div className="flex items-center justify-between border-b pb-3">
+              <div className="flex items-center gap-2 min-w-0">
+                <div className="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center shrink-0">
+                  <Eye className="w-4 h-4" />
+                </div>
+                <div className="min-w-0">
+                  <h3 className="font-black text-sm text-slate-900 truncate">{previewModalDoc.title}</h3>
+                  <p className="text-[11px] text-slate-500">সুরক্ষিত ক্লাউড ভল্ট ফাইল প্রিভিউ</p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <a
+                  href={previewModalDoc.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-1.5 text-slate-500 hover:text-emerald-700 rounded-lg transition-colors"
+                  title="নতুন ট্যাবে খুলুন"
                 >
-                  <Trash2 className="w-3.5 h-3.5" />
+                  <ExternalLink className="w-4 h-4" />
+                </a>
+                <button
+                  type="button"
+                  onClick={() => setPreviewModalDoc(null)}
+                  className="p-1.5 text-slate-400 hover:text-slate-700 rounded-lg transition-colors cursor-pointer"
+                >
+                  <X className="w-5 h-5" />
                 </button>
               </div>
+            </div>
 
-              <div className="p-2.5 bg-slate-50 rounded-xl border border-slate-100 flex items-center justify-between text-[11px] text-slate-600">
-                <span>সাইজ: <strong>{doc.fileSize}</strong></span>
-                {doc.dimensions && <span>মাপ: {doc.dimensions}</span>}
-                <span>{doc.isVerified ? 'অ্যাডমিন যাচাইকৃত' : doc.verificationStatus === 'REJECTED' ? 'বাতিল' : doc.verificationStatus === 'NEEDS_CORRECTION' ? 'সংশোধন প্রয়োজন' : 'যাচাইয়ের অপেক্ষায়'}</span>
-              </div>
-
-              {doc.dataUrl && (doc.mimeType?.startsWith('image/') || /\.(png|jpe?g|webp)$/i.test(doc.fileName)) && (
-                <div className="h-16 bg-slate-100 rounded-xl flex items-center justify-center overflow-hidden border">
-                  <img src={doc.dataUrl} alt="" className="max-h-full object-contain" />
+            <div className="bg-slate-50 rounded-2xl p-4 flex items-center justify-center min-h-[300px] max-h-[60vh] overflow-auto border border-slate-200">
+              {previewModalDoc.url.match(/\.(png|jpe?g|webp)$/i) || previewModalDoc.url.startsWith('data:image/') || previewModalDoc.mimeType?.startsWith('image/') ? (
+                <img
+                  src={previewModalDoc.url}
+                  alt={previewModalDoc.title}
+                  className="max-h-[50vh] max-w-full object-contain rounded-xl shadow-xs"
+                />
+              ) : previewModalDoc.url.endsWith('.pdf') || previewModalDoc.mimeType === 'application/pdf' ? (
+                <iframe
+                  src={previewModalDoc.url}
+                  title={previewModalDoc.title}
+                  className="w-full h-[50vh] rounded-xl border border-slate-200"
+                />
+              ) : (
+                <div className="text-center py-10 space-y-3">
+                  <FileText className="w-12 h-12 text-slate-400 mx-auto" />
+                  <p className="text-xs text-slate-600">এই ফাইলটি সরাসরি প্রিভিউ করার জন্য উপযুক্ত নয়।</p>
+                  <a
+                    href={previewModalDoc.url}
+                    download
+                    className="inline-flex items-center gap-1 px-4 py-2 bg-emerald-700 text-white rounded-xl text-xs font-bold shadow-sm"
+                  >
+                    <Download className="w-4 h-4" />
+                    <span>ডাউনলোড করে দেখুন</span>
+                  </a>
                 </div>
               )}
             </div>
-          ))}
+
+            <div className="flex items-center justify-between pt-2">
+              <span className="text-[11px] text-slate-400">
+                নিরাপত্তা: AES-256 বিট এনক্রিপশনে সংরক্ষিত
+              </span>
+              <div className="flex items-center gap-2">
+                <a
+                  href={previewModalDoc.url}
+                  download
+                  className="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold rounded-xl transition-colors inline-flex items-center gap-1.5 shadow-sm"
+                >
+                  <Download className="w-3.5 h-3.5" />
+                  <span>ডাউনলোড</span>
+                </a>
+                <button
+                  type="button"
+                  onClick={() => setPreviewModalDoc(null)}
+                  className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl transition-colors cursor-pointer"
+                >
+                  বন্ধ করুন
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
+      )}
 
       {/* ADD CUSTOM DOCUMENT MODAL */}
       {showCustomDocModal && (
@@ -819,6 +1115,7 @@ export default function DocumentVaultPage() {
                 </label>
                 <input
                   type="file"
+                  data-testid="custom-doc-file-input"
                   required
                   accept="application/pdf,image/png,image/jpeg,image/jpg,image/webp"
                   onChange={(e) => setCustomDocFile(e.target.files?.[0] || null)}

@@ -312,38 +312,42 @@ export default function VaultPublicPage() {
         </div>
       </div>
 
-      {/* 2. THE 8 CORE OFFICIAL DOCUMENTS SUPPORTED BY VAULT */}
+      {/* 2. THE 10 CORE OFFICIAL DOCUMENTS SUPPORTED BY VAULT */}
       <div className="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
           <div>
             <h2 className="text-base font-black text-slate-900 flex items-center gap-2">
               <Layers className="w-5 h-5 text-emerald-700" />
-              <span>ভল্টে সংরক্ষিত মূল ৮টি অফিসিয়াল জাতীয় ও শিক্ষাগত প্রমাণপত্র</span>
+              <span>ভল্টে সংরক্ষিত মূল ১০টি অফিসিয়াল জাতীয় ও শিক্ষাগত প্রমাণপত্র</span>
             </h2>
             <p className="text-xs text-slate-500 mt-0.5">
               একবার আপলোড করুন, প্ল্যাটফর্মের মাধ্যমে যেকোনো সরকারি বা ব্যাংক জবে আবেদনের সময় স্বয়ংক্রিয়ভাবে সংযুক্ত হবে।
             </p>
           </div>
           <span className="px-3 py-1 bg-emerald-50 text-emerald-800 border border-emerald-200 rounded-xl text-xs font-bold w-fit">
-            জিরো ডাটা লিক গ্যারান্টি
+            জিরো ডাটা লিক গ্যারান্টি (AES-256)
           </span>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
           {[
+            { title: 'প্রার্থীর ছবি (৩০০×৩০০)', desc: 'টেলিটক পাসপোর্ট সাইজ ছবি (<১০০ KB)', icon: '📷' },
+            { title: 'প্রার্থীর স্বাক্ষর (৩০০×৮০)', desc: 'স্বাক্ষরের নিখুঁত স্ক্যান (<৬০ KB)', icon: '✍️' },
             { title: 'প্রার্থীর NID / স্মার্ট কার্ড', desc: 'সামনে ও পেছনের ডিজিটাল স্ক্যান', icon: '🪪' },
             { title: 'পিতার জাতীয় পরিচয়পত্র', desc: 'টেলিটক ও পুলিশ ভেরিফিকেশনে আবশ্যক', icon: '👨‍🦳' },
             { title: 'মাতার জাতীয় পরিচয়পত্র', desc: 'মন্ত্রণালয় ও সরকারি ব্যাংকে আবশ্যক', icon: '👵' },
             { title: 'চেয়ারম্যান / নাগরিক সনদ', desc: 'ইউনিয়ন পরিষদ বা ওয়ার্ড কাউন্সিলর সনদ', icon: '🏛️' },
             { title: 'অনলাইন জন্ম নিবন্ধন', desc: '১৬/১৭ ডিজিটের ডিজিটাল বার্থ সনদ', icon: '📜' },
             { title: 'চারিত্রিক সনদপত্র', desc: '১ম শ্রেণির গেজেটেড অফিসার প্রত্যয়ন', icon: '🎖️' },
-            { title: 'কোটা / বিশেষ সুবিধা সনদ', desc: 'মুক্তিযোদ্ধা, ক্ষুদ্র নৃগোষ্ঠী বা শারীরিক প্রতিবন্ধী', icon: '🌟' },
+            { title: 'কোটা / বিশেষ সুবিধা সনদ', desc: 'মুক্তিযোদ্ধা, ক্ষুদ্র নৃগোষ্ঠী বা প্রতিবন্ধী', icon: '🌟' },
             { title: 'পেশাগত ও প্রশিক্ষণ সনদ', desc: 'কম্পিউটার, ড্রাইভিং লাইসেন্স বা ভাষা সনদ', icon: '💻' }
           ].map((item, idx) => (
-            <div key={idx} className="p-4 bg-slate-50/70 border border-slate-200 rounded-2xl space-y-2 hover:border-emerald-300 transition-all">
-              <div className="text-2xl">{item.icon}</div>
-              <h3 className="text-xs font-bold text-slate-900">{item.title}</h3>
-              <p className="text-[11px] text-slate-500 leading-relaxed">{item.desc}</p>
+            <div key={idx} className="p-4 bg-slate-50/70 border border-slate-200 rounded-2xl space-y-2 hover:border-emerald-300 transition-all flex flex-col justify-between">
+              <div>
+                <div className="text-2xl">{item.icon}</div>
+                <h3 className="text-xs font-bold text-slate-900 mt-1">{item.title}</h3>
+                <p className="text-[11px] text-slate-500 leading-relaxed mt-0.5">{item.desc}</p>
+              </div>
             </div>
           ))}
         </div>

@@ -16,7 +16,7 @@
       "district": "DHAKA",
       "address": "বাড়ি ৪২, রোড ৭, ব্লক সি, মিরপুর-১০, ঢাকা-, MIRPUR, DHAKA-1216",
       "permanentAddress": "বাড়ি ৪২, রোড ৭, ব্লক সি, মিরপুর-১০, ঢাকা-, MIRPUR, DHAKA-1216",
-      "photoUrl": "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=400&q=80",
+      "photoUrl": "/api/uploads/candidate-documents/USR-01712345678_photo_1794227364755.jpg",
       "signatureUrl": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=400&q=80",
       "walletBalance": 450,
       "maritalStatus": "single",
@@ -109,8 +109,48 @@
       "passwordHash": "scrypt$7f0dbe454364311f385721e371fe8e72$567fd7111794abf23d0c2c24418b5ff5674c867887be01da80bcfb6f7f32ee3f63ef31b447255b10db0735cf094a2338c845281864f8ce8c61fb2a26877a3ac9",
       "role": "candidate",
       "createdAt": "2026-11-09T07:17:05.082Z",
-      "updatedAt": "2026-11-09T12:04:20.695Z",
+      "updatedAt": "2026-11-09T12:29:24.758Z",
       "adminAuditHistory": [
+        {
+          "timestamp": "2026-11-09T12:29:24.758Z",
+          "adminId": "ADMIN",
+          "action": "candidate_profile_update",
+          "changedFields": [
+            "photoUrl"
+          ],
+          "notes": "1টি ফিল্ড পরিবর্তিত হয়েছে (photoUrl)",
+          "reason": "1টি ফিল্ড পরিবর্তিত হয়েছে (photoUrl)"
+        },
+        {
+          "timestamp": "2026-11-09T12:28:34.196Z",
+          "adminId": "ADMIN",
+          "action": "candidate_profile_update",
+          "changedFields": [
+            "photoUrl"
+          ],
+          "notes": "1টি ফিল্ড পরিবর্তিত হয়েছে (photoUrl)",
+          "reason": "1টি ফিল্ড পরিবর্তিত হয়েছে (photoUrl)"
+        },
+        {
+          "timestamp": "2026-11-09T12:22:15.855Z",
+          "adminId": "ADMIN",
+          "action": "candidate_profile_update",
+          "changedFields": [
+            "photoUrl"
+          ],
+          "notes": "1টি ফিল্ড পরিবর্তিত হয়েছে (photoUrl)",
+          "reason": "1টি ফিল্ড পরিবর্তিত হয়েছে (photoUrl)"
+        },
+        {
+          "timestamp": "2026-11-09T12:20:53.009Z",
+          "adminId": "ADMIN",
+          "action": "candidate_profile_update",
+          "changedFields": [
+            "photoUrl"
+          ],
+          "notes": "1টি ফিল্ড পরিবর্তিত হয়েছে (photoUrl)",
+          "reason": "1টি ফিল্ড পরিবর্তিত হয়েছে (photoUrl)"
+        },
         {
           "timestamp": "2026-11-09T12:04:09.290Z",
           "adminId": "ADMIN",
@@ -417,15 +457,38 @@
   "documents": {
     "USR-01712345678": [
       {
-        "id": "DOC-01",
+        "id": "CS-DOC-2611-378",
         "type": "photo",
-        "title": "প্রার্থীর ছবি (টেলিটক স্ট্যান্ডার্ড)",
-        "fileName": "candidate-photo-300x300.jpg",
-        "fileSize": "৭২ KB",
-        "dimensions": "300 × 300 px",
-        "uploadDate": "২৪ অক্টোবর ২০২৬",
-        "dataUrl": "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=400&q=80",
-        "isVerified": true
+        "title": "প্রার্থীর ছবি",
+        "category": "custom",
+        "fileName": "USR-01712345678_photo_1794227364755.jpg",
+        "fileSize": "1 KB",
+        "uploadDate": "৯/১১/২০২৬",
+        "dataUrl": "/api/uploads/candidate-documents/USR-01712345678_photo_1794227364755.jpg",
+        "fileUrl": "/api/uploads/candidate-documents/USR-01712345678_photo_1794227364755.jpg",
+        "secureUrl": "/api/candidate/documents/secure/CS-DOC-2611-378",
+        "checksumSha256": "63bb2797b924e3903c5b62c7d253699e15fd28ed1905e9b3ad09f9cdcf247bc2",
+        "mimeType": "image/jpeg",
+        "version": 1,
+        "isVerified": false,
+        "verificationStatus": "PENDING_REVIEW"
+      },
+      {
+        "id": "CS-DOC-2611-789",
+        "type": "photo",
+        "title": "প্রার্থীর ছবি",
+        "category": "custom",
+        "fileName": "USR-01712345678_photo_1794227314194.jpg",
+        "fileSize": "1 KB",
+        "uploadDate": "৯/১১/২০২৬",
+        "dataUrl": "/api/uploads/candidate-documents/USR-01712345678_photo_1794227314194.jpg",
+        "fileUrl": "/api/uploads/candidate-documents/USR-01712345678_photo_1794227314194.jpg",
+        "secureUrl": "/api/candidate/documents/secure/CS-DOC-2611-789",
+        "checksumSha256": "63bb2797b924e3903c5b62c7d253699e15fd28ed1905e9b3ad09f9cdcf247bc2",
+        "mimeType": "image/jpeg",
+        "version": 1,
+        "isVerified": false,
+        "verificationStatus": "PENDING_REVIEW"
       },
       {
         "id": "DOC-02",
@@ -632,6 +695,62 @@
       }
     ],
     "USR-01712345678": [
+      {
+        "title": "ডকুমেন্ট আপলোড সম্পন্ন",
+        "message": "কম্পিউটার অফিস অ্যাপ্লিকেশন ডিপ্লোমা (৬ মাস) সফলভাবে আপলোড হয়েছে।",
+        "type": "system",
+        "id": "CS-NOTIF-2611-831",
+        "date": "2026-11-09T12:29:26.471Z",
+        "read": false
+      },
+      {
+        "title": "ডকুমেন্ট আপলোড সম্পন্ন",
+        "message": "প্রার্থীর ছবি সফলভাবে আপলোড হয়েছে।",
+        "type": "system",
+        "id": "CS-NOTIF-2611-365",
+        "date": "2026-11-09T12:29:24.811Z",
+        "read": false
+      },
+      {
+        "title": "ডকুমেন্ট আপলোড সম্পন্ন",
+        "message": "প্রার্থীর ছবি সফলভাবে আপলোড হয়েছে।",
+        "type": "system",
+        "id": "CS-NOTIF-2611-166",
+        "date": "2026-11-09T12:28:34.245Z",
+        "read": false
+      },
+      {
+        "title": "ডকুমেন্ট আপলোড সম্পন্ন",
+        "message": "কম্পিউটার অফিস অ্যাপ্লিকেশন ডিপ্লোমা (৬ মাস) সফলভাবে আপলোড হয়েছে।",
+        "type": "system",
+        "id": "CS-NOTIF-2611-295",
+        "date": "2026-11-09T12:22:17.221Z",
+        "read": false
+      },
+      {
+        "title": "ডকুমেন্ট প্রতিস্থাপন সম্পন্ন",
+        "message": "প্রার্থীর ছবি সফলভাবে প্রতিস্থাপিত হয়েছে।",
+        "type": "system",
+        "id": "CS-NOTIF-2611-295",
+        "date": "2026-11-09T12:22:15.900Z",
+        "read": false
+      },
+      {
+        "title": "ডকুমেন্ট আপলোড সম্পন্ন",
+        "message": "কম্পিউটার অফিস অ্যাপ্লিকেশন ডিপ্লোমা (৬ মাস) সফলভাবে আপলোড হয়েছে।",
+        "type": "system",
+        "id": "CS-NOTIF-2611-708",
+        "date": "2026-11-09T12:21:03.712Z",
+        "read": false
+      },
+      {
+        "title": "ডকুমেন্ট প্রতিস্থাপন সম্পন্ন",
+        "message": "প্রার্থীর ছবি সফলভাবে প্রতিস্থাপিত হয়েছে।",
+        "type": "system",
+        "id": "CS-NOTIF-2611-230",
+        "date": "2026-11-09T12:20:53.084Z",
+        "read": false
+      },
       {
         "title": "আবেদন স্ট্যাটাস: প্রক্রিয়াধীন",
         "message": "সহকারী পরিচালক (জেনারেল): আপনার আবেদনটি যাচাইকরণ প্রক্রিয়ায় রয়েছে।",
@@ -993,6 +1112,41 @@
       "candidateId": "USR-01712345678",
       "role": "candidate",
       "expiresAt": "2026-11-16T12:03:55.812Z"
+    },
+    "cluster4_vault_audit_session_1794226508246": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T12:15:08.246Z"
+    },
+    "cluster4_vault_audit_session_1794226727489": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T12:18:47.489Z"
+    },
+    "cluster4_vault_audit_session_1794226831023": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T12:20:31.023Z"
+    },
+    "cluster4_vault_audit_session_1794226921340": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T12:22:01.340Z"
+    },
+    "cluster4_vault_audit_session_1794227192399": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T12:26:32.399Z"
+    },
+    "cluster4_vault_audit_session_1794227300665": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T12:28:20.665Z"
+    },
+    "cluster4_vault_audit_session_1794227354689": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T12:29:14.689Z"
     }
   },
   "coupons": {},

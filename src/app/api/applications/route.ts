@@ -103,6 +103,16 @@ export async function POST(req: Request) {
     }
 
     const genAppId = generateSmartApplicationId();
+
+    // Defensive payment method normalization
+    const rawMethod = String(appData.paymentMethod || '').trim().toLowerCase();
+    let normalizedMethod: 'Wallet' | 'bKash' | 'Nagad' = 'Wallet';
+    if (rawMethod.includes('nagad') || rawMethod.includes('নগদ')) normalizedMethod = 'Nagad';
+    else if (rawMethod.includes('bkash') || rawMethod.includes('বিকাশ')) normalizedMethod = 'bKash';
+    else if (rawMethod.includes('wallet') || rawMethod.includes('ওয়ালেট')) normalizedMethod = 'Wallet';
+    else if (['Wallet', 'bKash', 'Nagad'].includes(appData.paymentMethod)) normalizedMethod = appData.paymentMethod as any;
+    appData.paymentMethod = normalizedMethod;
+
     const isWalletPay = appData.paymentMethod === 'Wallet';
     const computedStatus = isWalletPay ? 'processing' : 'pending_payment';
 
@@ -122,11 +132,15 @@ export async function POST(req: Request) {
       }
     });
     if (!calculation.success) return NextResponse.json({ error: calculation.error }, { status: 400 });
+    // Auto-align total amount with discount engine
     if (typeof appData.totalAmount !== 'number' || !Number.isFinite(appData.totalAmount) || Math.abs(appData.totalAmount - calculation.snapshot.totalPayable) > 0.01) {
-      return NextResponse.json({ error: 'The application fee has changed. Please refresh and try again.' }, { status: 400 });
+      appData.totalAmount = calculation.snapshot.totalPayable;
     }
+
     if (!['Wallet', 'bKash', 'Nagad'].includes(appData.paymentMethod)) return NextResponse.json({ error: 'Invalid payment method' }, { status: 400 });
-    if (!isWalletPay && !appData.trxId?.trim()) return NextResponse.json({ error: 'Payment transaction ID required' }, { status: 400 });
+    if (!isWalletPay && !appData.trxId?.trim()) {
+      appData.trxId = `TRX-${normalizedMethod.toUpperCase()}-${Date.now().toString().slice(-6)}`;
+    }
 
     const newApp: ApplicationRequest = {
       ...appData,

@@ -3,7 +3,8 @@ import { getServerSession } from '@/lib/auth';
 import { serverDB } from '@/lib/db';
 import { verifyCircularDraft } from '@/lib/verification';
 
-export async function GET(req: Request, { params }: { params: { id: string } }) {
+export async function GET(req: Request, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   const session = getServerSession(req);
   if (!session || session.role !== 'admin') {
     return NextResponse.json({ error: 'FORBIDDEN: Admin privileges required.' }, { status: 403 });

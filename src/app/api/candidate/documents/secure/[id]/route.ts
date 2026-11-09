@@ -7,7 +7,8 @@ import { SyntheticUserManager } from '@/lib/testing/synthetic/synthetic-user-man
 import fs from 'fs';
 import path from 'path';
 
-export async function GET(req: Request, { params }: { params: { id: string } }) {
+export async function GET(req: Request, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   try {
     const docId = params.id;
     const session = getServerSession(req);

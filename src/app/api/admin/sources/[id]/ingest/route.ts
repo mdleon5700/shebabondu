@@ -9,7 +9,8 @@ import {
   scrapeSingleSource 
 } from '@/lib/collector';
 
-export async function POST(req: Request, { params }: { params: { id: string } }) {
+export async function POST(req: Request, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   // 1. Enforce Server-Side Admin Authentication
   const session = getServerSession(req);
   if (!session) {

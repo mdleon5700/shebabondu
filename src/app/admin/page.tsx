@@ -1220,9 +1220,10 @@ function AdminContent() {
     formData.append('appId', quickUploadAppId);
 
     try {
+      const pin = typeof window !== 'undefined' ? (localStorage.getItem('cs_admin_pin') || 'CHAKRISEBA_SECURE_ADMIN_2026') : 'CHAKRISEBA_SECURE_ADMIN_2026';
       const res = await fetch('/api/admin/upload-applicant-copy', {
         method: 'POST',
-        headers: { },
+        headers: { 'x-admin-secret': pin },
         body: formData
       });
       const data = await res.json();
@@ -1316,10 +1317,10 @@ function AdminContent() {
     formData.append('appId', inspectingApp.id);
 
     try {
+      const pin = typeof window !== 'undefined' ? (localStorage.getItem('cs_admin_pin') || 'CHAKRISEBA_SECURE_ADMIN_2026') : 'CHAKRISEBA_SECURE_ADMIN_2026';
       const res = await fetch('/api/admin/upload-applicant-copy', {
         method: 'POST',
-        headers: {
-          },
+        headers: { 'x-admin-secret': pin },
         body: formData
       });
 

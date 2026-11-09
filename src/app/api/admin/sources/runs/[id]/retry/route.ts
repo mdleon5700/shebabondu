@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { getServerSession } from '@/lib/auth';
 import { retrySpiderRun } from '@/lib/collector';
 
-export async function POST(req: Request, context: { params: Promise<{ id: string }> | { id: string } }) {
+export async function POST(req: Request, context: { params: Promise<Promise<{ id: string }> | { id: string }> }) {
   const session = getServerSession(req);
   if (!session) {
     return NextResponse.json({ error: 'UNAUTHORIZED: Authentication required.' }, { status: 401 });
@@ -11,7 +11,7 @@ export async function POST(req: Request, context: { params: Promise<{ id: string
     return NextResponse.json({ error: 'FORBIDDEN: Admin privileges required.' }, { status: 403 });
   }
 
-  const { id } = await Promise.resolve(context.params);
+  const { id } = await Promise.resolve((await context.params));
   if (!id) {
     return NextResponse.json({ error: 'স্পাইডার রান আইডি প্রদান করা আবশ্যক' }, { status: 400 });
   }

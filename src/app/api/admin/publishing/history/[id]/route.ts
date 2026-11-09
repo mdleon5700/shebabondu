@@ -2,10 +2,8 @@ import { getServerSession } from '@/lib/auth';
 import { NextResponse } from 'next/server';
 import { serverDB } from '@/lib/db';
 
-export async function GET(
-  req: Request,
-  { params }: { params: { id: string } }
-) {
+export async function GET(req: Request, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   const session = getServerSession(req);
   if (!session || session.role !== 'admin') {
     return NextResponse.json({ error: 'FORBIDDEN: Admin privileges required.' }, { status: 403 });

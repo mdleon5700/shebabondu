@@ -5,10 +5,8 @@ import { SmartJobMatchingEngine } from '@/lib/matching/engine';
 
 export const dynamic = 'force-dynamic';
 
-export async function GET(
-  req: Request,
-  { params }: { params: { jobId: string } }
-) {
+export async function GET(req: Request, props: { params: Promise<{ jobId: string }> }) {
+  const params = await props.params;
   const session = getServerSession(req);
   if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 

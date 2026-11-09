@@ -55,7 +55,7 @@ export async function POST(req: Request) {
     // If appId is provided, immediately link it in database
     if (appId) {
       serverDB.updateAppStatus(
-        session.candidateId,
+        'ADMIN-SUPER',
         appId,
         'completed',
         'officially_verified',

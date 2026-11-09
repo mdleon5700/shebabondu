@@ -21,6 +21,7 @@ export interface ResolvedCircularData {
   categoryLabel: string;
   totalPosts: number;
   deadline: string;
+  applicationStartDate?: string;
   publishedDate: string;
   officialLink: string;
   circularPdfUrl: string;
@@ -29,6 +30,12 @@ export interface ResolvedCircularData {
   maxAge: number;
   salary: string;
   grade: string;
+  smsPrefix?: string;
+  smsFormat?: string;
+  govtFee?: number;
+  serviceFee?: number;
+  feeRange?: string;
+  districts?: string;
   positions: Array<{
     title: string;
     posts: number;
@@ -46,7 +53,7 @@ const MONTH_NAMES_BN = [
 
 const toBn = (n: number | string) => String(n).replace(/\d/g, d => '০১২৩৪৫৬৭৮৯'[+d]);
 
-function formatBnDate(dateStr: string): string {
+export function formatBnDate(dateStr: string): string {
   try {
     const d = new Date(dateStr);
     if (isNaN(d.getTime())) return dateStr;
@@ -547,6 +554,240 @@ export const KNOWN_TELETALK_ORGS: Record<string, {
     defaultSalary: '৯,৩০০ - ২২,৪৯০/- টাকা',
     defaultGrade: '১৬তম - ১৯তম গ্রেড',
     defaultEducation: 'এইচএসসি বা এসএসসি পাস'
+  },
+  hcd: {
+    name: 'বাংলাদেশ সুপ্রিম কোর্ট (হাইকোর্ট বিভাগ)',
+    nameEn: 'Supreme Court of Bangladesh (HCD)',
+    category: 'govt',
+    categoryLabel: 'সরকারি ও বিচার বিভাগ',
+    website: 'https://supremecourt.teletalk.com.bd/hcd_2026/',
+    smsPrefix: 'HCD',
+    defaultPosition: 'অফিস সহকারী কাম-কম্পিউটার মুদ্রাক্ষরিক',
+    defaultPosts: 3,
+    defaultSalary: '৯,৩০০ - ২২,৪৯০/- টাকা',
+    defaultGrade: '১৬তম গ্রেড',
+    defaultEducation: 'উচ্চ মাধ্যমিক (এইচএসসি) বা সমমান পরীক্ষায় উত্তীর্ণ'
+  },
+  supremecourt: {
+    name: 'বাংলাদেশ সুপ্রিম কোর্ট (হাইকোর্ট বিভাগ)',
+    nameEn: 'Supreme Court of Bangladesh (HCD)',
+    category: 'govt',
+    categoryLabel: 'সরকারি ও বিচার বিভাগ',
+    website: 'https://supremecourt.teletalk.com.bd/hcd_2026/',
+    smsPrefix: 'HCD',
+    defaultPosition: 'অফিস সহকারী কাম-কম্পিউটার মুদ্রাক্ষরিক',
+    defaultPosts: 3,
+    defaultSalary: '৯,৩০০ - ২২,৪৯০/- টাকা',
+    defaultGrade: '১৬তম গ্রেড',
+    defaultEducation: 'উচ্চ মাধ্যমিক (এইচএসসি) বা সমমান পরীক্ষায় উত্তীর্ণ'
+  },
+  bcsl: {
+    name: 'বাংলাদেশ কেবল শিল্প লিমিটেড (BCSL)',
+    nameEn: 'Bangladesh Cable Shilpa Limited (BCSL)',
+    category: 'engineer',
+    categoryLabel: 'শিল্প ও প্রকৌশল খাত',
+    website: 'http://www.bcsl.gov.bd/',
+    smsPrefix: 'BCSL',
+    defaultPosition: 'সহকারী ব্যবস্থাপক / উপসহকারী প্রকৌশলী / কর্মকর্তা',
+    defaultPosts: 16,
+    defaultSalary: '১৬,০০০ - ৫৩,০৬০/- টাকা',
+    defaultGrade: '৯ম - ১৬তম গ্রেড',
+    defaultEducation: 'স্নাতক / ডিপ্লোমা ইন ইঞ্জিনিয়ারিং / এইচএসসি'
+  },
+  dcbagerhat: {
+    name: 'জেলা প্রশাসকের কার্যালয়, বাগেরহাট',
+    nameEn: 'Office of the Deputy Commissioner, Bagerhat',
+    category: 'govt',
+    categoryLabel: 'সরকারি চাকরি ও প্রশাসন',
+    website: 'http://www.bagerhat.gov.bd/',
+    smsPrefix: 'DCBAGERHAT',
+    defaultPosition: 'অফিস সহকারী কাম-কম্পিউটার মুদ্রাক্ষরিক / নাজির',
+    defaultPosts: 8,
+    defaultSalary: '৯,৩০০ - ২২,৪৯০/- টাকা',
+    defaultGrade: '১৬তম গ্রেড',
+    defaultEducation: 'উচ্চ মাধ্যমিক (এইচএসসি) বা সমমান পাস'
+  },
+  bhtpa: {
+    name: 'বাংলাদেশ হাই-টেক পার্ক কর্তৃপক্ষ (BHTPA)',
+    nameEn: 'Bangladesh Hi-Tech Park Authority (BHTPA)',
+    category: 'govt',
+    categoryLabel: 'সরকারি চাকরি ও প্রশাসন',
+    website: 'http://www.bhtpa.gov.bd/',
+    smsPrefix: 'BHTPA',
+    defaultPosition: 'সহকারী পরিচালক / টেকনিক্যাল অফিসার',
+    defaultPosts: 3,
+    defaultSalary: '২২,০০০ - ৫৩,০৬০/- টাকা',
+    defaultGrade: '৯ম - ১০ম গ্রেড',
+    defaultEducation: 'স্নাতক (সম্মান) বা সমমানের ডিগ্রি'
+  },
+  dcjamalpur: {
+    name: 'জেলা প্রশাসকের কার্যালয়, জামালপুর',
+    nameEn: 'DC Office Jamalpur',
+    category: 'govt',
+    categoryLabel: 'সরকারি চাকরি ও প্রশাসন',
+    website: 'http://www.jamalpur.gov.bd/',
+    smsPrefix: 'DCJAMALPUR',
+    defaultPosition: 'অফিস সহকারী কাম-কম্পিউটার মুদ্রাক্ষরিক',
+    defaultPosts: 11,
+    defaultSalary: '৯,৩০০ - ২২,৪৯০/- টাকা',
+    defaultGrade: '১৬তম গ্রেড',
+    defaultEducation: 'উচ্চ মাধ্যমিক (এইচএসসি) বা সমমান পাস'
+  },
+  dcrajbari: {
+    name: 'জেলা প্রশাসকের কার্যালয়, রাজবাড়ী',
+    nameEn: 'DC Office Rajbari',
+    category: 'govt',
+    categoryLabel: 'সরকারি চাকরি ও প্রশাসন',
+    website: 'http://www.rajbari.gov.bd/',
+    smsPrefix: 'DCRAJBARI',
+    defaultPosition: 'অফিস সহায়ক / সমমান পদ',
+    defaultPosts: 1,
+    defaultSalary: '৮,২৫০ - ২০,০১০/- টাকা',
+    defaultGrade: '২০তম গ্রেড',
+    defaultEducation: 'মাধ্যমিক স্কুল সার্টিফিকেট (এসএসসি) বা সমমান'
+  },
+  dcjhenaidah: {
+    name: 'জেলা প্রশাসকের কার্যালয়, ঝিনাইদহ',
+    nameEn: 'DC Office Jhenaidah',
+    category: 'govt',
+    categoryLabel: 'সরকারি চাকরি ও প্রশাসন',
+    website: 'http://www.jhenaidah.gov.bd/',
+    smsPrefix: 'DCJHENAIDAH',
+    defaultPosition: 'অফিস সহকারী কাম-কম্পিউটার মুদ্রাক্ষরিক',
+    defaultPosts: 2,
+    defaultSalary: '৯,৩০০ - ২২,৪৯০/- টাকা',
+    defaultGrade: '১৬তম গ্রেড',
+    defaultEducation: 'উচ্চ মাধ্যমিক (এইচএসসি) বা সমমান পাস'
+  },
+  apscl: {
+    name: 'আশুগঞ্জ পাওয়ার স্টেশন কোম্পানি লিমিটেড (APSCL)',
+    nameEn: 'Ashuganj Power Station Company Ltd. (APSCL)',
+    category: 'engineer',
+    categoryLabel: 'শিল্প ও প্রকৌশল খাত',
+    website: 'http://www.apscl.gov.bd/',
+    smsPrefix: 'APSCL',
+    defaultPosition: 'সহকারী ব্যবস্থাপক / প্রকৌশলী / টেকনিশিয়ান',
+    defaultPosts: 15,
+    defaultSalary: '২৩,০০০ - ৫৫,০০০/- টাকা',
+    defaultGrade: '১০ম গ্রেড',
+    defaultEducation: 'বিএসসি ইঞ্জিনিয়ারিং / ডিপ্লোমা / স্নাতক'
+  },
+  basb: {
+    name: 'বাংলাদেশ সশস্ত্র বাহিনী বোর্ড (BASB)',
+    nameEn: 'Bangladesh Armed Services Board (BASB)',
+    category: 'defense',
+    categoryLabel: 'প্রতিরক্ষা ও শৃঙ্খলা বাহিনী',
+    website: 'https://basb.teletalk.com.bd/',
+    smsPrefix: 'BASB',
+    defaultPosition: 'অফিস সহকারী কাম-কম্পিউটার অপারেটর',
+    defaultPosts: 1,
+    defaultSalary: '৯,৩০০ - ২২,৪৯০/- টাকা',
+    defaultGrade: '১৬তম গ্রেড',
+    defaultEducation: 'উচ্চ মাধ্যমিক (এইচএসসি) বা সমমান'
+  },
+  itiiu: {
+    name: 'কর গোয়েন্দা ও তদন্ত ইউনিট (ITIIU)',
+    nameEn: 'Income Tax Intelligence and Investigation Unit (ITIIU)',
+    category: 'govt',
+    categoryLabel: 'সরকারি চাকরি ও প্রশাসন',
+    website: 'http://www.incometax.gov.bd/',
+    smsPrefix: 'ITIIU',
+    defaultPosition: 'উচ্চমান সহকারী / সাঁট-মুদ্রাক্ষরিক',
+    defaultPosts: 3,
+    defaultSalary: '১০,২০০ - ২৪,৬৮০/- টাকা',
+    defaultGrade: '১৪তম - ১৬তম গ্রেড',
+    defaultEducation: 'স্নাতক বা সমমানের ডিগ্রি'
+  },
+  tax19: {
+    name: 'কর অঞ্চল-১৯, ঢাকা',
+    nameEn: 'Taxes Zone-19, Dhaka',
+    category: 'govt',
+    categoryLabel: 'সরকারি চাকরি ও প্রশাসন',
+    website: 'http://www.tax19.gov.bd/',
+    smsPrefix: 'TAX19',
+    defaultPosition: 'কম্পিউটার অপারেটর / অফিস সহকারী',
+    defaultPosts: 7,
+    defaultSalary: '৯,৩০০ - ২২,৪৯০/- টাকা',
+    defaultGrade: '১৬তম গ্রেড',
+    defaultEducation: 'উচ্চ মাধ্যমিক (এইচএসসি) বা সমমান পাস'
+  },
+  dcnarail: {
+    name: 'জেলা প্রশাসকের কার্যালয়, নড়াইল',
+    nameEn: 'DC Office Narail',
+    category: 'govt',
+    categoryLabel: 'সরকারি চাকরি ও প্রশাসন',
+    website: 'http://www.narail.gov.bd/',
+    smsPrefix: 'DCNARAIL',
+    defaultPosition: 'অফিস সহকারী কাম-কম্পিউটার মুদ্রাক্ষরিক',
+    defaultPosts: 7,
+    defaultSalary: '৯,৩০০ - ২২,৪৯০/- টাকা',
+    defaultGrade: '১৬তম গ্রেড',
+    defaultEducation: 'উচ্চ মাধ্যমিক (এইচএসসি) বা সমমান পাস'
+  },
+  nsd: {
+    name: 'জাতীয় সঞ্চয় অধিদপ্তর (NSD)',
+    nameEn: 'Department of National Savings (NSD)',
+    category: 'govt',
+    categoryLabel: 'সরকারি চাকরি ও প্রশাসন',
+    website: 'http://www.nationalsavings.gov.bd/',
+    smsPrefix: 'NSD',
+    defaultPosition: 'সহকারী পরিচালক / অডিটর / অফিস সহকারী',
+    defaultPosts: 8,
+    defaultSalary: '২২,০০০ - ৫৩,০৬০/- টাকা',
+    defaultGrade: '৯ম গ্রেড',
+    defaultEducation: 'স্নাতক (সম্মান) বা স্নাতকোত্তর ডিগ্রি'
+  },
+  taxnar: {
+    name: 'কর অঞ্চল, নারায়ণগঞ্জ',
+    nameEn: 'Taxes Zone-Narayanganj',
+    category: 'govt',
+    categoryLabel: 'সরকারি চাকরি ও প্রশাসন',
+    website: 'http://www.taxnarayanganj.gov.bd/',
+    smsPrefix: 'TAXNAR',
+    defaultPosition: 'উচ্চমান সহকারী / অফিস সহকারী',
+    defaultPosts: 6,
+    defaultSalary: '৯,৩০০ - ২২,৪৯০/- টাকা',
+    defaultGrade: '১৬তম গ্রেড',
+    defaultEducation: 'উচ্চ মাধ্যমিক বা স্নাতক সমমান'
+  },
+  dcchuadanga: {
+    name: 'জেলা প্রশাসকের কার্যালয়, চুয়াডাঙ্গা',
+    nameEn: 'DC Office Chuadanga',
+    category: 'govt',
+    categoryLabel: 'সরকারি চাকরি ও প্রশাসন',
+    website: 'http://www.chuadanga.gov.bd/',
+    smsPrefix: 'DCCHUADANGA',
+    defaultPosition: 'অফিস সহকারী কাম-কম্পিউটার মুদ্রাক্ষরিক',
+    defaultPosts: 7,
+    defaultSalary: '৯,৩০০ - ২২,৪৯০/- টাকা',
+    defaultGrade: '১৬তম গ্রেড',
+    defaultEducation: 'উচ্চ মাধ্যমিক (এইচএসসি) বা সমমান পাস'
+  },
+  sposherpur: {
+    name: 'পুলিশ সুপারের কার্যালয়, শেরপুর',
+    nameEn: 'Office of the Superintendent of Police, Sherpur',
+    category: 'defense',
+    categoryLabel: 'প্রতিরক্ষা ও শৃঙ্খলা বাহিনী',
+    website: 'http://www.sherpur.police.gov.bd/',
+    smsPrefix: 'SPOSHERPUR',
+    defaultPosition: 'কম্পিউটার অপারেটর / সাঁট-মুদ্রাক্ষরিক',
+    defaultPosts: 3,
+    defaultSalary: '১০,২০০ - ২৪,৬৮০/- টাকা',
+    defaultGrade: '১৪তম গ্রেড',
+    defaultEducation: 'স্নাতক বা উচ্চ মাধ্যমিক (এইচএসসি) সমমান'
+  },
+  spsherpur: {
+    name: 'পুলিশ সুপারের কার্যালয়, শেরপুর',
+    nameEn: 'Office of the Superintendent of Police, Sherpur',
+    category: 'defense',
+    categoryLabel: 'প্রতিরক্ষা ও শৃঙ্খলা বাহিনী',
+    website: 'http://www.sherpur.police.gov.bd/',
+    smsPrefix: 'SPOSHERPUR',
+    defaultPosition: 'কম্পিউটার অপারেটর / সাঁট-মুদ্রাক্ষরিক',
+    defaultPosts: 3,
+    defaultSalary: '১০,২০০ - ২৪,৬৮০/- টাকা',
+    defaultGrade: '১৪তম গ্রেড',
+    defaultEducation: 'স্নাতক বা উচ্চ মাধ্যমিক (এইচএসসি) সমমান'
   }
 };
 
@@ -556,11 +797,65 @@ export function normalizeBanglaOrgName(rawName: string, subdomain = ''): string 
     return KNOWN_TELETALK_ORGS[sub].name;
   }
   const s = (rawName || '').trim();
+  if (s.includes('Supreme Court') || s.includes('HCD') || s.includes('সুপ্রিম কোর্ট') || s.includes('হাইকোর্ট')) {
+    return 'বাংলাদেশ সুপ্রিম কোর্ট (হাইকোর্ট বিভাগ)';
+  }
+  if (s.includes('Cable Shilpa') || s.includes('BCSL') || s.includes('কেবল শিল্প')) {
+    return 'বাংলাদেশ কেবল শিল্প লিমিটেড (BCSL)';
+  }
+  if (s.includes('Bagerhat') || s.includes('বাগেরহাট') || s.includes('DCBAGERHAT')) {
+    return 'জেলা প্রশাসকের কার্যালয়, বাগেরহাট';
+  }
+  if (s.includes('Hi-Tech Park') || s.includes('BHTPA') || s.includes('হাই-টেক পার্ক')) {
+    return 'বাংলাদেশ হাই-টেক পার্ক কর্তৃপক্ষ (BHTPA)';
+  }
+  if (s.includes('Jamalpur') || s.includes('জামালপুর') || s.includes('DCJAMALPUR')) {
+    return 'জেলা প্রশাসকের কার্যালয়, জামালপুর';
+  }
   if (s.includes('Medical Service') || s.includes('DGMS') || s.includes('সামরিক চিকিৎসা')) {
     return 'সামরিক চিকিৎসা সার্ভিস মহাপরিদপ্তর (DGMS)';
   }
+  if (s.includes('Auditor General') || s.includes('CAG') || s.includes('মহাহিসাব নিরীক্ষক')) {
+    return 'বাংলাদেশের মহাহিসাব নিরীক্ষক ও নিয়ন্ত্রকের কার্যালয় (CAG)';
+  }
+  if (s.includes('Rajbari') || s.includes('রাজবাড়ী') || s.includes('রাজবাড়ী') || s.includes('DCRAJBARI')) {
+    return 'জেলা প্রশাসকের কার্যালয়, রাজবাড়ী';
+  }
+  if (s.includes('Dhaka South') || s.includes('DSCC') || s.includes('ঢাকা দক্ষিণ')) {
+    return 'ঢাকা দক্ষিণ সিটি কর্পোরেশন (DSCC)';
+  }
   if (s.includes('Coal Power Generation Company') || s.includes('CPGCBL') || s.includes('কোল পাওয়ার')) {
     return 'কোল পাওয়ার জেনারেশন কোম্পানি বাংলাদেশ লিমিটেড (CPGCBL)';
+  }
+  if (s.includes('Jhenaidah') || s.includes('ঝিনাইদহ') || s.includes('DCJHENAIDAH')) {
+    return 'জেলা প্রশাসকের কার্যালয়, ঝিনাইদহ';
+  }
+  if (s.includes('Ashuganj') || s.includes('APSCL') || s.includes('আশুগঞ্জ পাওয়ার')) {
+    return 'আশুগঞ্জ পাওয়ার স্টেশন কোম্পানি লিমিটেড (APSCL)';
+  }
+  if (s.includes('Armed Services') || s.includes('BASB') || s.includes('সশস্ত্র বাহিনী')) {
+    return 'বাংলাদেশ সশস্ত্র বাহিনী বোর্ড (BASB)';
+  }
+  if (s.includes('Income Tax Intelligence') || s.includes('ITIIU') || s.includes('কর গোয়েন্দা')) {
+    return 'কর গোয়েন্দা ও তদন্ত ইউনিট (ITIIU)';
+  }
+  if (s.includes('Taxes Zone-19') || s.includes('TAX19') || s.includes('কর অঞ্চল-১৯')) {
+    return 'কর অঞ্চল-১৯, ঢাকা';
+  }
+  if (s.includes('Narail') || s.includes('নড়াইল') || s.includes('নড়াইল') || s.includes('DCNARAIL')) {
+    return 'জেলা প্রশাসকের কার্যালয়, নড়াইল';
+  }
+  if (s.includes('National Savings') || s.includes('NSD') || s.includes('জাতীয় সঞ্চয়') || s.includes('সঞ্চয়')) {
+    return 'জাতীয় সঞ্চয় অধিদপ্তর (NSD)';
+  }
+  if (s.includes('Taxes Zone-Narayanganj') || s.includes('TAXNAR') || s.includes('কর অঞ্চল, নারায়ণগঞ্জ')) {
+    return 'কর অঞ্চল, নারায়ণগঞ্জ';
+  }
+  if (s.includes('Chuadanga') || s.includes('চুয়াডাঙ্গা') || s.includes('DCCHUADANGA')) {
+    return 'জেলা প্রশাসকের কার্যালয়, চুয়াডাঙ্গা';
+  }
+  if (s.includes('Sherpur') || s.includes('শেরপুর') || s.includes('SPOSHERPUR') || s.includes('SPSHERPUR')) {
+    return 'পুলিশ সুপারের কার্যালয়, শেরপুর';
   }
   if (s.includes('Petrobangla') || s.includes('Bangladesh Oil, Gas & Mineral') || s.includes('BOGMC') || s.includes('পেট্রোবাংলা')) {
     return 'বাংলাদেশ তৈল, গ্যাস ও খনিজ সম্পদ করপোরেশন (পেট্রোবাংলা) / BOGMC';
@@ -683,15 +978,100 @@ export async function fetchPortalMetadata(inputUrl: string): Promise<PortalMetad
   }
 }
 
-function mapCategory(name: string): { category: 'govt' | 'bank' | 'railway' | 'defense' | 'teacher' | 'ngo' | 'private' | 'health' | 'engineer'; categoryLabel: string } {
-  const combined = (name || '').toLowerCase();
-  if (combined.includes('bank') || combined.includes('ব্যাংক')) return { category: 'bank', categoryLabel: 'ব্যাংক চাকরি' };
-  if (combined.includes('railway') || combined.includes('রেলওয়ে')) return { category: 'railway', categoryLabel: 'বাংলাদেশ রেলওয়ে' };
-  if (combined.includes('medical') || combined.includes('health') || combined.includes('চিকিৎসা') || combined.includes('স্বাস্থ্য')) return { category: 'health', categoryLabel: 'স্বাস্থ্য ও চিকিৎসা' };
-  if (combined.includes('defense') || combined.includes('সেনাবাহিনী') || combined.includes('প্রতিরক্ষা') || combined.includes('dgms') || combined.includes('police')) return { category: 'defense', categoryLabel: 'প্রতিরক্ষা ও পুলিশ' };
-  if (combined.includes('engineer') || combined.includes('বিদ্যুৎ') || combined.includes('power')) return { category: 'engineer', categoryLabel: 'ইঞ্জিনিয়ারিং ও টেকনিক্যাল' };
-  if (combined.includes('teacher') || combined.includes('শিক্ষা') || combined.includes('স্কুল') || combined.includes('কলেজ')) return { category: 'teacher', categoryLabel: 'শিক্ষক নিয়োগ' };
-  return { category: 'govt', categoryLabel: 'সরকারি চাকরি' };
+export function mapCategory(name: string, shortName = ''): { category: 'govt' | 'bank' | 'railway' | 'defense' | 'teacher' | 'ngo' | 'private' | 'health' | 'engineer'; categoryLabel: string } {
+  const combined = (name + ' ' + shortName).toLowerCase();
+
+  // 1. Defense & Law Enforcement
+  if (
+    combined.includes('dgms') ||
+    combined.includes('armed services') ||
+    combined.includes('basb') ||
+    combined.includes('police') ||
+    combined.includes('পুলিশ') ||
+    combined.includes('sposherpur') ||
+    combined.includes('spsherpur') ||
+    combined.includes('প্রতিরক্ষা') ||
+    combined.includes('সেনাবাহিনী') ||
+    combined.includes('ansar') ||
+    combined.includes('bgb') ||
+    combined.includes('fire service') ||
+    combined.includes('fscd')
+  ) {
+    return { category: 'defense', categoryLabel: 'প্রতিরক্ষা ও শৃঙ্খলা বাহিনী' };
+  }
+
+  // 2. Engineering, Power, Industrial
+  if (
+    combined.includes('cable') ||
+    combined.includes('bcsl') ||
+    combined.includes('shilpa') ||
+    combined.includes('cpgcbl') ||
+    combined.includes('apscl') ||
+    combined.includes('power') ||
+    combined.includes('বিদ্যুৎ') ||
+    combined.includes('ইঞ্জিনিয়ারিং') ||
+    combined.includes('engineer') ||
+    combined.includes('bpdb') ||
+    combined.includes('breb') ||
+    combined.includes('reb') ||
+    combined.includes('desco') ||
+    combined.includes('dpdc') ||
+    combined.includes('pgcb') ||
+    combined.includes('nwpgcl') ||
+    combined.includes('petrobangla') ||
+    combined.includes('bogmc')
+  ) {
+    return { category: 'engineer', categoryLabel: 'শিল্প ও প্রকৌশল খাত' };
+  }
+
+  // 3. Railway
+  if (combined.includes('railway') || combined.includes('রেলওয়ে')) {
+    return { category: 'railway', categoryLabel: 'বাংলাদেশ রেলওয়ে' };
+  }
+
+  // 4. Health
+  if (
+    (combined.includes('medical') && !combined.includes('dgms')) ||
+    combined.includes('health') ||
+    combined.includes('চিকিৎসা') ||
+    combined.includes('হাসপাতাল') ||
+    combined.includes('dghs') ||
+    combined.includes('dgfp')
+  ) {
+    return { category: 'health', categoryLabel: 'স্বাস্থ্য ও পরিবার কল্যাণ' };
+  }
+
+  // 5. Teacher / Education
+  if (
+    combined.includes('teacher') ||
+    combined.includes('শিক্ষক') ||
+    combined.includes('শিক্ষা') ||
+    combined.includes('school') ||
+    combined.includes('college') ||
+    combined.includes('university') ||
+    combined.includes('dshe') ||
+    combined.includes('dpe')
+  ) {
+    return { category: 'teacher', categoryLabel: 'শিক্ষা ও শিক্ষক নিয়োগ' };
+  }
+
+  // 6. Bank (Word boundary check to avoid "river bank")
+  if (/\b(bank|banking)\b/i.test(combined) || combined.includes('ব্যাংক')) {
+    return { category: 'bank', categoryLabel: 'ব্যাংক ও আর্থিক প্রতিষ্ঠান' };
+  }
+
+  // 7. General Government & Judiciary
+  if (
+    combined.includes('supreme court') ||
+    combined.includes('hcd') ||
+    combined.includes('হাইকোর্ট') ||
+    combined.includes('আদালত') ||
+    combined.includes('বিচার')
+  ) {
+    return { category: 'govt', categoryLabel: 'সরকারি ও বিচার বিভাগ' };
+  }
+
+  return { category: 'govt', categoryLabel: 'সরকারি চাকরি ও প্রশাসন' };
 }
 
 /**
@@ -951,11 +1331,11 @@ export function parseDetailsFromPdfText(rawText: string, sourceUrl = ''): {
       });
     } else {
       extractedPositions.push({
-        title: 'অফিস সহকারী / সমমান পদ',
+        title: 'অফিস সহকারী কাম-কম্পিউটার মুদ্রাক্ষরিক',
         posts: 1,
         salary: '৯,৩০০ - ২২,৪৯০/- টাকা',
         grade: '১৬তম গ্রেড',
-        minEducation: 'উচ্চ মাধ্যমিক (এইচএসসি) বা সমমান পাস',
+        minEducation: 'উচ্চ মাধ্যমিক (এইচএসসি) বা সমমান পরীক্ষায় উত্তীর্ণ',
         govtFee: 112
       });
     }
@@ -976,21 +1356,45 @@ export function parseDetailsFromPdfText(rawText: string, sourceUrl = ''): {
   };
 }
 
-export function inferPositionGradeAndSalary(title: string): { grade: string; salary: string; govtFee: number; minEducation: string } {
-  const t = (title || '').toLowerCase();
-  if (t.includes('পরিচালক') || t.includes('director') || t.includes('সহকারী সচিব') || t.includes('প্রকৌশলী') || t.includes('engineer') || t.includes('অফিসার') || t.includes('officer') || t.includes('ম্যানেজার') || t.includes('manager')) {
-    return { grade: '৯ম - ১০ম গ্রেড', salary: '১৬,০০০ - ৫৩,০৬০/- টাকা', govtFee: 600, minEducation: 'স্বীকৃত বিশ্ববিদ্যালয় হতে সংশ্লিষ্ট বিষয়ে স্নাতক (সম্মান) বা স্নাতকোত্তর ডিগ্রি' };
+import { inferPositionGradeAndSalary } from '@/lib/shared/pay_scale';
+export { inferPositionGradeAndSalary };
+
+let cachedOrgList: { data: any[]; timestamp: number } | null = null;
+
+export async function getTeletalkOrgList(): Promise<any[]> {
+  const now = Date.now();
+  if (cachedOrgList && (now - cachedOrgList.timestamp) < 15 * 60 * 1000) {
+    return cachedOrgList.data;
   }
-  if (t.includes('অডিটর') || t.includes('auditor') || t.includes('হিসাবরক্ষক') || t.includes('accountant') || t.includes('ইন্সপেক্টর') || t.includes('inspector') || t.includes('সাব-ইন্সপেক্টর')) {
-    return { grade: '১১তম - ১২তম গ্রেড', salary: '১২,৫০০ - ৩০,২৩০/- টাকা', govtFee: 300, minEducation: 'স্বীকৃত বিশ্ববিদ্যালয় হতে বাণিজ্য/বিজ্ঞান/মানবিকে ন্যূনতম ২য় শ্রেণি বা সমমানের সিজিপিএ সহ স্নাতক ডিগ্রি' };
+  try {
+    const allOrgs: any[] = [];
+    let page = 1;
+    while (page <= 5) {
+      const res = await fetchJson(`https://alljobs.teletalk.com.bd/api/v1/govt-jobs/org-list?page=${page}&limit=50`);
+      if (res && Array.isArray(res.govtOrgJobs) && res.govtOrgJobs.length > 0) {
+        allOrgs.push(...res.govtOrgJobs);
+        if (res.govtOrgJobs.length < 20) break; // Last page reached
+        page++;
+      } else {
+        break;
+      }
+    }
+    if (allOrgs.length > 0) {
+      cachedOrgList = { data: allOrgs, timestamp: now };
+      return allOrgs;
+    }
+  } catch (err: any) {
+    console.warn('Failed to fetch Teletalk org-list:', err.message);
   }
-  if (t.includes('অপারেটর') || t.includes('operator') || t.includes('মুদ্রাক্ষরিক') || t.includes('typist') || t.includes('সহকারী') || t.includes('assistant') || t.includes('ক্লার্ক') || t.includes('clerk') || t.includes('টেকনিশিয়ান') || t.includes('technician') || t.includes('ড্রাফটসম্যান')) {
-    return { grade: '১৩তম - ১৬তম গ্রেড', salary: '৯,৩০০ - ২৬,৫৯০/- টাকা', govtFee: 200, minEducation: 'উচ্চ মাধ্যমিক সার্টিফিকেট (এইচএসসি) বা সমমান পরীক্ষায় উত্তীর্ণ এবং কম্পিউটার ব্যবহারে পারদর্শী' };
-  }
-  if (t.includes('ড্রাইভার') || t.includes('driver') || t.includes('চালক')) {
-    return { grade: '১৬তম গ্রেড', salary: '৯,৩০০ - ২২,৪৯০/- টাকা', govtFee: 200, minEducation: 'জুনিয়র স্কুল সার্টিফিকেট (জেএসসি) বা সমমান পাস এবং বৈধ ড্রাইভিং লাইসেন্সধারী' };
-  }
-  return { grade: '১৭তম - ২০তম গ্রেড', salary: '৮,২৫০ - ২০,০১০/- টাকা', govtFee: 100, minEducation: 'মাধ্যমিক স্কুল সার্টিফিকেট (এসএসসি) বা সমমান পরীক্ষায় উত্তীর্ণ' };
+  return cachedOrgList?.data || [];
+}
+
+export function normalizeBnDigits(str: string): string {
+  const bnToEn: Record<string, string> = {
+    '০': '0', '১': '1', '২': '2', '৩': '3', '৪': '4',
+    '৫': '5', '৬': '6', '৭': '7', '৮': '8', '৯': '9'
+  };
+  return (str || '').replace(/[০-৯]/g, d => bnToEn[d] || d);
 }
 
 /**
@@ -998,7 +1402,31 @@ export function inferPositionGradeAndSalary(title: string): { grade: string; sal
  * Accepts any Alljobs job page URL, Alljobs public API URL, PDF URL, or raw text.
  */
 export async function resolveCircularInput(input: string): Promise<ResolvedCircularData> {
-  const trimmed = input.trim();
+  // Preprocessing: Convert Bengali numerals to English numerals
+  let trimmed = normalizeBnDigits((input || '').trim());
+
+  // Future-Proofing 1: Shortened URL Resolution (bit.ly, tinyurl, t.co, rb.gy)
+  if (trimmed.match(/https?:\/\/(?:bit\.ly|tinyurl\.com|t\.co|rb\.gy|goo\.gl)\/[a-zA-Z0-9_\-]+/i)) {
+    try {
+      const headRes = await fetch(trimmed, { method: 'HEAD', redirect: 'follow' });
+      if (headRes.url && headRes.url !== trimmed) {
+        trimmed = headRes.url;
+      }
+    } catch {}
+  }
+
+  // Future-Proofing 2: Extract embedded HTTP/HTTPS URL from any mixed social post or paragraph
+  const embeddedUrlMatch = trimmed.match(/https?:\/\/[^\s"'<>]+/i);
+  if (embeddedUrlMatch && (trimmed.includes('alljobs.teletalk.com.bd') || trimmed.includes('.teletalk.com.bd') || trimmed.includes('.gov.bd'))) {
+    trimmed = embeddedUrlMatch[0];
+  }
+
+  // Future-Proofing 3: Strip social tracking garbage (?fbclid=..., &utm_source=...)
+  if (trimmed.includes('?')) {
+    trimmed = trimmed.replace(/([?&])(?:fbclid|utm_[^&=]+|source|ref|igshid)=[^&]*/gi, '$1')
+                     .replace(/[?&]+$/, '')
+                     .replace(/\?&/, '?');
+  }
 
   // 0. Database Check (Only for internal exact IDs, NEVER hijack external scan URLs)
   if (!trimmed.startsWith('http://') && !trimmed.startsWith('https://')) {
@@ -1038,68 +1466,237 @@ export async function resolveCircularInput(input: string): Promise<ResolvedCircu
     }
   }
 
-  // 1. Alljobs URL or JobId Check (Instant Official JSON API)
+  // 1. Alljobs URL, Job ID, Org ID, or Subdomain Check (Instant Official JSON API)
   let alljobsId: string | null = null;
-  const jobIdMatch = trimmed.match(/jobId=(\d+)/i) || trimmed.match(/alljobs\.teletalk\.com\.bd\/(?:jobs\/(?:government|all)\/)?(\d+)/i);
-  if (jobIdMatch) {
-    alljobsId = jobIdMatch[1];
+  let alljobsOrgId: string | null = null;
+  let matchedSubdomain = '';
+
+  // 1.1 Organization URL/Param Check
+  const orgQueryMatch = trimmed.match(/[?&](?:orgId|org_id)=(\d{4,7})\b/i);
+  const orgPathMatch = trimmed.match(/alljobs\.teletalk\.com\.bd\/(?:[a-z]{2}\/)?jobs\/organization\/(\d{4,7})/i);
+  if (orgQueryMatch) {
+    alljobsOrgId = orgQueryMatch[1];
+  } else if (orgPathMatch) {
+    alljobsOrgId = orgPathMatch[1];
   }
 
-  // If Alljobs ID found, fetch rich official details from Alljobs API directly and instantly
-  if (alljobsId) {
+  // 1.2 Job ID Check (Query param, Path segment, or Direct Number/Text)
+  if (!alljobsOrgId) {
+    const queryParamMatch = trimmed.match(/[?&](?:jobId|id|job_id)=(\d{4,6})\b/i);
+    const pathMatch = trimmed.match(/alljobs\.teletalk\.com\.bd\/(?:[a-z]{2}\/)?jobs\/(?:government|all|details?|view|circular)\/(\d{4,6})/i);
+    
+    if (queryParamMatch) {
+      alljobsId = queryParamMatch[1];
+    } else if (pathMatch) {
+      alljobsId = pathMatch[1];
+    } else if (trimmed.includes('alljobs.teletalk.com.bd') && trimmed.match(/\/(\d{4,6})\/?(?:[?#]|$)/)) {
+      const slashMatch = trimmed.match(/\/(\d{4,6})\/?(?:[?#]|$)/);
+      if (slashMatch) alljobsId = slashMatch[1];
+    } else if (trimmed.match(/alljobs\.teletalk\.com\.bd\/media\/[^\s]*?(\d{4,6})[^\s]*\.pdf/i)) {
+      const pdfIdMatch = trimmed.match(/alljobs\.teletalk\.com\.bd\/media\/[^\s]*?(\d{4,6})[^\s]*\.pdf/i);
+      if (pdfIdMatch) alljobsId = pdfIdMatch[1];
+    } else if (/^\s*(?:job\s*id\s*[:\-\s]*)?\d{4,6}\s*$/i.test(trimmed)) {
+      const m = trimmed.match(/\d{4,6}/);
+      if (m) alljobsId = m[0];
+    }
+  }
+
+  // 1.3 Teletalk Subdomain Check (with or without http/https)
+  const subdomainMatch = trimmed.match(/(?:https?:\/\/)?([a-zA-Z0-9\-_]+)\.teletalk\.com\.bd/i);
+  if (subdomainMatch && subdomainMatch[1].toLowerCase() !== 'alljobs' && subdomainMatch[1].toLowerCase() !== 'www') {
+    matchedSubdomain = subdomainMatch[1].toLowerCase();
+  }
+
+  // 1.4 Future-Proofing: Fuzzy Organization Name Match if user just typed the Org name (e.g. "পেট্রোবাংলা", "BCIC", "DGMS")
+  if (!alljobsId && !alljobsOrgId && !matchedSubdomain && !trimmed.startsWith('http') && trimmed.length >= 3) {
     try {
-      const apiRes = await fetchJson(`https://alljobs.teletalk.com.bd/api/v1/govt-jobs/public-details?id=${alljobsId}`);
-      const d = apiRes.details;
-      if (d) {
-        const orgInfo = d.job_utilities_govtorganization || {};
-        const urlMatch = (d.application_site || '').match(/https?:\/\/([a-zA-Z0-9\-_]+)\.teletalk\.com\.bd/i);
-        const subdomain = urlMatch ? urlMatch[1].toLowerCase() : '';
-        let orgName = normalizeBanglaOrgName(orgInfo.name_bn || orgInfo.name || '', subdomain);
-        const jobTitle = d.job_title_bn || d.job_title || 'নতুন নিয়োগ বিজ্ঞপ্তি';
-        const fullTitle = `${orgName} - ${jobTitle} নিয়োগ বিজ্ঞপ্তি ২০২৬`;
-        const { category, categoryLabel } = mapCategory(orgName + ' ' + (orgInfo.details || ''));
-        const vacancies = parseInt(String(d.vacancy || '1').replace(/\D/g, ''), 10) || 1;
-        const deadlineDate = d.deadline_date || new Date(Date.now() + 18 * 86400000).toISOString();
+      const orgList = await getTeletalkOrgList();
+      const cleanQuery = trimmed.toLowerCase();
+      const matched = orgList.find(o => {
+        const sName = (o.short_name || '').toLowerCase();
+        const enName = (o.name || '').toLowerCase();
+        const bnName = (o.name_bn || o.name || '').toLowerCase();
+        return sName === cleanQuery ||
+               enName.includes(cleanQuery) ||
+               bnName.includes(cleanQuery) ||
+               (cleanQuery === 'পেট্রোবাংলা' && (sName === 'bogmc' || enName.includes('petrobangla'))) ||
+               (cleanQuery.length >= 4 && (enName.split(/\s+/).some((w: string) => w.length >= 4 && cleanQuery.includes(w)) ||
+                                           bnName.split(/\s+/).some((w: string) => w.length >= 4 && cleanQuery.includes(w))));
+      });
+      if (matched) {
+        alljobsOrgId = String(matched.id);
+        matchedSubdomain = (matched.short_name || '').toLowerCase();
+      }
+    } catch {}
+  }
+
+  if (alljobsId || alljobsOrgId || matchedSubdomain) {
+    try {
+      const orgList = await getTeletalkOrgList();
+      let d: any = null;
+      let matchedOrg: any = null;
+
+      if (alljobsId) {
+        try {
+          const apiRes = await fetchJson(`https://alljobs.teletalk.com.bd/api/v1/govt-jobs/public-details?id=${alljobsId}`);
+          d = apiRes?.details;
+        } catch (e: any) {
+          console.warn('Alljobs details fetch notice:', e.message);
+        }
+
+        const targetOrgId = d?.job_utilities_govtorganization?.id;
+        const orgNameFromDetail = d?.job_utilities_govtorganization?.name || '';
+        matchedOrg = orgList.find(o => 
+          (targetOrgId && o.id === targetOrgId) ||
+          (o.govt_jobs && o.govt_jobs.some((j: any) => String(j.id) === String(alljobsId))) ||
+          (matchedSubdomain && o.short_name && o.short_name.toLowerCase() === matchedSubdomain) ||
+          (o.name && orgNameFromDetail && o.name.toLowerCase().includes(orgNameFromDetail.toLowerCase()))
+        );
+      } else if (alljobsOrgId) {
+        matchedOrg = orgList.find(o => String(o.id) === String(alljobsOrgId));
+        if (matchedOrg && Array.isArray(matchedOrg.govt_jobs) && matchedOrg.govt_jobs.length > 0) {
+          try {
+            const apiRes = await fetchJson(`https://alljobs.teletalk.com.bd/api/v1/govt-jobs/public-details?id=${matchedOrg.govt_jobs[0].id}`);
+            d = apiRes?.details;
+          } catch {}
+        }
+      } else if (matchedSubdomain) {
+        matchedOrg = orgList.find(o => 
+          (o.short_name && o.short_name.toLowerCase() === matchedSubdomain) ||
+          matchedSubdomain.includes(o.short_name?.toLowerCase())
+        );
+        if (matchedOrg && Array.isArray(matchedOrg.govt_jobs) && matchedOrg.govt_jobs.length > 0) {
+          try {
+            const apiRes = await fetchJson(`https://alljobs.teletalk.com.bd/api/v1/govt-jobs/public-details?id=${matchedOrg.govt_jobs[0].id}`);
+            d = apiRes?.details;
+          } catch {}
+        }
+      }
+
+      if (matchedOrg || d) {
+        const orgInfo = d?.job_utilities_govtorganization || {};
+        const urlMatch = (d?.application_site || '').match(/https?:\/\/([a-zA-Z0-9\-_]+)\.teletalk\.com\.bd/i);
+        const sub = urlMatch ? urlMatch[1].toLowerCase() : (matchedSubdomain || matchedOrg?.short_name?.toLowerCase() || '');
+        const orgShortName = matchedOrg?.short_name || orgInfo?.short_name || sub.toUpperCase() || 'TELETALK';
+        const rawOrgName = matchedOrg?.name || orgInfo?.name_bn || orgInfo?.name || 'বাংলাদেশ সরকারি প্রতিষ্ঠান';
+        const orgName = normalizeBanglaOrgName(rawOrgName, sub);
+        const { category, categoryLabel } = mapCategory(orgName, orgShortName);
+
+        const deadlineDate = d?.deadline_date || new Date(Date.now() + 18 * 86400000).toISOString();
         const deadlineBn = formatBnDate(deadlineDate);
-        const publishedDateBn = formatBnDate(d.advertisement_published_date || d.published_date || new Date().toISOString());
+        const publishedDateBn = formatBnDate(d?.advertisement_published_date || d?.published_date || new Date().toISOString());
 
         let pdfUrl = '';
-        if (d.advertisement_file) {
+        if (d?.advertisement_file) {
           pdfUrl = d.advertisement_file.startsWith('http')
             ? d.advertisement_file
             : `https://alljobs.teletalk.com.bd/media/${d.advertisement_file.replace(/^media\//, '')}`;
-        } else if (d.application_site) {
+        } else if (d?.application_site) {
           pdfUrl = `${d.application_site.replace(/\/$/, '')}/docs/advertisement.pdf`;
         }
 
-        // Generate immediate high-quality text representation from official API metadata
-        // Do not block client with synchronous heavy 2-10MB external PDF downloads
-        let rawText = `${orgName}\n${orgInfo.details || ''}\nপদবি: ${jobTitle}\nশূন্যপদ: ${vacancies}টি\nআবেদনের শেষ তারিখ: ${deadlineBn}\nঅফিশিয়াল ওয়েবসাইট: ${d.application_site || d.job_source || ''}`;
+        const officialLink = d?.application_site || matchedOrg?.website || (sub ? `https://${sub}.teletalk.com.bd` : 'https://alljobs.teletalk.com.bd');
 
-        const officialLink = d.application_site || d.job_source || 'https://alljobs.teletalk.com.bd';
+        // Extract all positions from matched organization record
+        let positions: Array<{
+          title: string;
+          posts: number;
+          salary: string;
+          grade: string;
+          minEducation: string;
+          govtFee: number;
+        }> = [];
 
-        let positions = [
-          {
-            title: jobTitle,
-            posts: vacancies,
-            salary: 'জাতীয় বেতন স্কেল ২০১৫ অনুযায়ী',
-            grade: '১০ম গ্রেড',
-            minEducation: 'এইচএসসি / স্নাতক বা সমমানের ডিগ্রি',
-            govtFee: 200
-          }
-        ];
-
-        let effectiveTotalPosts = vacancies;
-        if (rawText && rawText.length > 200) {
-          const deepParsed = parseDetailsFromPdfText(rawText, officialLink);
-          if (deepParsed.positions && deepParsed.positions.length > 1) {
-            positions = deepParsed.positions;
-            effectiveTotalPosts = deepParsed.totalPosts;
-          }
+        if (matchedOrg?.govt_jobs && matchedOrg.govt_jobs.length > 0) {
+          positions = await Promise.all(
+            matchedOrg.govt_jobs.map(async (j: any) => {
+              const posTitle = j.job_title_bn || j.job_title;
+              const inferred = inferPositionGradeAndSalary(posTitle);
+              const isTargetJob = alljobsId && String(j.id) === String(alljobsId);
+              let postCount = 1;
+              if (isTargetJob && d?.vacancy) {
+                postCount = parseInt(String(d.vacancy).replace(/\D/g, ''), 10) || 1;
+              } else {
+                try {
+                  const subRes = await fetchJson(`https://alljobs.teletalk.com.bd/api/v1/govt-jobs/public-details?id=${j.id}`);
+                  if (subRes?.details?.vacancy) {
+                    postCount = parseInt(String(subRes.details.vacancy).replace(/\D/g, ''), 10) || 1;
+                  }
+                } catch {
+                  postCount = 1;
+                }
+              }
+              return {
+                title: posTitle,
+                posts: postCount,
+                salary: inferred.salary,
+                grade: inferred.grade,
+                minEducation: inferred.minEducation,
+                govtFee: inferred.govtFee
+              };
+            })
+          );
+        } else {
+          const singleTitle = d?.job_title_bn || d?.job_title || 'অফিস সহকারী কাম-কম্পিউটার মুদ্রাক্ষরিক';
+          const singleInferred = inferPositionGradeAndSalary(singleTitle);
+          const singleVacancies = parseInt(String(d?.vacancy || '1').replace(/\D/g, ''), 10) || 1;
+          positions = [
+            {
+              title: singleTitle,
+              posts: singleVacancies,
+              salary: singleInferred.salary,
+              grade: singleInferred.grade,
+              minEducation: singleInferred.minEducation,
+              govtFee: singleInferred.govtFee
+            }
+          ];
         }
 
+        const effectiveTotalPosts = positions.reduce((sum, p) => sum + (p.posts || 1), 0);
+        const allFees = positions.map(p => p.govtFee || 200);
+        const minFee = Math.min(...allFees);
+        const maxFee = Math.max(...allFees);
+        const feeRange = minFee === maxFee ? `৳${minFee}` : `৳${minFee} - ৳${maxFee}`;
+        const govtFee = minFee;
+        const smsPrefix = orgShortName.toUpperCase();
+        const smsFormat = `১ম এসএমএস: ${smsPrefix} <Space> User_ID পাঠিয়ে দিন 16222 নম্বরে।`;
+        const districts = 'সকল জেলার যোগ্য প্রার্থীগণ আবেদন করতে পারবেন';
+
+        const fullTitle = positions.length > 1
+          ? `${orgName} বিভিন্ন পদে নতুন নিয়োগ বিজ্ঞপ্তি ২০২৬`
+          : `${orgName} - ${positions[0].title} নিয়োগ বিজ্ঞপ্তি ২০২৬`;
+
+        const positionSummaries = positions.slice(0, 10).map((p, idx) => 
+          `${idx + 1}. ${p.title} (${p.posts}টি পদ) - গ্রেড: ${p.grade}, বেতন: ${p.salary}`
+        ).join('\n');
+
+        const rawText = `${orgName}
+নিয়োগ বিজ্ঞপ্তি ২০২৬
+মোট পদসংখ্যা: ${effectiveTotalPosts}টি (${positions.length}টি ভিন্ন পদবি)
+আবেদনের শেষ তারিখ: ${deadlineBn}
+আবেদন ফি: ${feeRange}
+আবেদনের মাধ্যম: ${officialLink}
+
+পদসমূহের বিবরণ:
+${positionSummaries}
+
+শর্তাবলী ও যোগ্যতা:
+- প্রার্থীকে অবশ্যই বাংলাদেশের নাগরিক হতে হবে।
+- সাধারণ প্রার্থীদের বয়সসীমা ১৮ থেকে ৩২ বছর।
+- ${districts}।
+- আবেদন এসএমএস কোড: ${smsPrefix}`;
+
+        const gradeList = Array.from(new Set(positions.map(p => p.grade).filter(Boolean)));
+        const overallGrade = positions.length === 1
+          ? positions[0].grade
+          : (gradeList.length > 1 ? `${gradeList[gradeList.length - 1]} হতে ${gradeList[0]}` : gradeList[0] || 'জাতীয় বেতন স্কেল ২০১৫ অনুযায়ী');
+
+        const overallSalary = positions.length === 1
+          ? positions[0].salary
+          : 'জাতীয় বেতন স্কেল ২০১৫ অনুযায়ী (পদভেদে নির্ধারিত স্কেল)';
+
         return {
-          jobId: `job-alljobs-${alljobsId}`,
+          jobId: `job-alljobs-${alljobsId || matchedOrg?.id || sub}`,
           title: fullTitle,
           organization: orgName,
           category,
@@ -1110,10 +1707,16 @@ export async function resolveCircularInput(input: string): Promise<ResolvedCircu
           officialLink,
           circularPdfUrl: pdfUrl,
           rawText,
-          minAge: d.min_age || 18,
-          maxAge: d.max_age || 32,
-          salary: positions[0]?.salary || 'জাতীয় বেতন স্কেল ২০১৫ অনুযায়ী',
-          grade: positions[0]?.grade || '১০ম - ১৬তম গ্রেড',
+          minAge: d?.min_age || 18,
+          maxAge: d?.max_age || 32,
+          salary: overallSalary,
+          grade: overallGrade,
+          smsPrefix,
+          smsFormat,
+          govtFee,
+          serviceFee: 50,
+          feeRange,
+          districts,
           positions
         };
       }

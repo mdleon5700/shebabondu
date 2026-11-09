@@ -2,7 +2,8 @@ import { NextResponse } from 'next/server';
 import { getServerSession } from '@/lib/auth';
 import { serverDB } from '@/lib/db';
 
-export async function POST(req: Request, { params }: { params: { id: string } }) {
+export async function POST(req: Request, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   const session = getServerSession(req);
   if (!session) {
     return NextResponse.json({ error: 'UNAUTHORIZED: Authentication required.' }, { status: 401 });

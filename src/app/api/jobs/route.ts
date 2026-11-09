@@ -32,9 +32,11 @@ export async function GET(req: Request) {
     // 2. Category Filter
     if (category && category !== 'all') {
       if (category === 'govt') {
-        jobs = jobs.filter(j => ['govt', 'railway', 'defense', 'teacher'].includes(j.category));
+        jobs = jobs.filter(j => ['govt', 'railway', 'defense', 'teacher', 'company'].includes(j.category));
+      } else if (category === 'company') {
+        jobs = jobs.filter(j => j.category === 'company' || (j as any).orgType?.includes('company') || (j as any).subCategory?.includes('power'));
       } else if (category === 'private') {
-        jobs = jobs.filter(j => ['private', 'ngo'].includes(j.category));
+        jobs = jobs.filter(j => ['private', 'ngo', 'company'].includes(j.category));
       } else {
         jobs = jobs.filter(j => j.category === category);
       }

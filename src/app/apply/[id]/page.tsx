@@ -6,10 +6,11 @@ import { serverDB } from '@/lib/db';
 import ApplyClient from '@/components/ApplyClient';
 
 interface Props {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata(props: Props): Promise<Metadata> {
+  const params = await props.params;
   const job = serverDB.getPublicJobById(params.id);
   if (!job || job.id.startsWith('draft-') || (job as any).status === 'UNPUBLISHED') {
     return {
@@ -33,7 +34,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default function ApplyPage({ params }: Props) {
+export default async function ApplyPage(props: Props) {
+  const params = await props.params;
   const job = serverDB.getPublicJobById(params.id);
 
   if (!job || job.id.startsWith('draft-') || (job as any).status === 'UNPUBLISHED') {

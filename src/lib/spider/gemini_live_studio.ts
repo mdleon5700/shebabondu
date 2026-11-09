@@ -4,6 +4,7 @@ import fs from 'fs';
 import { spawn } from 'child_process';
 import { PROFILE_DIR } from './gemini_browser_controller';
 import { resolveCircularInput } from '@/lib/collector/alljobs_smart_resolver';
+import { formatBnDate } from '@/lib/shared/pay_scale';
 import { serverDB } from '@/lib/db';
 import { JobCircular } from '@/lib/types';
 
@@ -192,7 +193,8 @@ export async function runLiveAutomationPipeline(
     const positionsCount = resolved?.positions?.length || 1;
     const org = resolved?.organization || 'বাংলাদেশ সরকারি কর্তৃপক্ষ';
     const totalPosts = resolved?.totalPosts || 1;
-    const deadline = resolved?.deadline || '২৫ নভেম্বর ২০২৬';
+    const defaultDeadline = formatBnDate(new Date(Date.now() + 21 * 86400000).toISOString());
+    const deadline = resolved?.deadline || defaultDeadline;
 
     steps[1].status = 'done';
     steps[1].details = `প্রতিষ্ঠান: ${org} • মোট শূন্যপদ: ${totalPosts}টি (${positionsCount}টি ভিন্ন পদবি) • ডেডলাইন: ${deadline}`;
@@ -236,6 +238,12 @@ export async function runLiveAutomationPipeline(
 
 নির্বাচিত প্রার্থীরা সরকারি বিধি মোতাবেক মূল বেতনের পাশাপাশি বাড়িভাড়া ভাতা, চিকিৎসা ভাতা, যাতায়াত ভাতা ও উৎসব ভাতা প্রাপ্য হবেন। সকল জেলার যোগ্য প্রার্থীদের সময় থাকতে সতর্কতার সাথে অফিশিয়াল টেলিটক অনলাইন পোর্টালে ফর্ম পূরণ করার পরামর্শ প্রদান করা যাচ্ছে।`;
 
+    const firstPos = (resolved?.positions && resolved.positions.length > 0) ? resolved.positions[0] : null;
+    const publishedDate = resolved?.publishedDate || formatBnDate(new Date().toISOString());
+    const salary = resolved?.salary || firstPos?.salary || 'জাতীয় বেতন স্কেল ২০১৫ অনুযায়ী';
+    const grade = resolved?.grade || firstPos?.grade || '১৬তম গ্রেড';
+    const minEducation = firstPos?.minEducation || 'উচ্চ মাধ্যমিক (এইচএসসি) বা স্নাতক সমমান পাস';
+
     const jobId = `job-alljobs-${Date.now().toString(36)}`;
     const jobToSave: JobCircular = {
       id: jobId,
@@ -245,14 +253,14 @@ export async function runLiveAutomationPipeline(
       categoryLabel: 'সরকারি চাকরি',
       totalPosts,
       deadline,
-      publishedDate: resolved?.publishedDate || '০৩ নভেম্বর ২০২৬',
-      salary: resolved?.positions?.[0]?.salary || '৯,৩০০ - ৫৩,০৬০/- টাকা',
-      grade: resolved?.positions?.[0]?.grade || '১০ম থেকে ১৬তম গ্রেড',
-      minEducation: resolved?.positions?.[0]?.minEducation || 'এইচএসসি / স্নাতক সমমান পাস',
-      minAge: 18,
-      maxAge: 32,
+      publishedDate,
+      salary,
+      grade,
+      minEducation,
+      minAge: resolved?.minAge || 18,
+      maxAge: resolved?.maxAge || 32,
       officialLink: resolved?.officialLink || circularUrl,
-      circularPdfUrl: resolved?.circularPdfUrl || 'https://alljobs.teletalk.com.bd/media/public/uploads/governments/jobs/advertisement-1793683909289.pdf',
+      circularPdfUrl: resolved?.circularPdfUrl || '',
       bengaliDescription: editorial,
       positions: resolved?.positions || [],
       status: 'PUBLISHED',

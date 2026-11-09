@@ -139,9 +139,9 @@ function LoginForm() {
       storage.setAuth({
         isLoggedIn: true,
         role: 'candidate',
-        name: data.user?.name || 'চাকরিপ্রার্থী',
+        name: data.user?.name || data.user?.nameBn || 'চাকরিপ্রার্থী',
         phone: data.user?.phone || loginIdentifier,
-        userId: data.user?.id || 'USR-DEFAULT'
+        userId: data.user?.id || ''
       });
 
       if (data.token && typeof document !== 'undefined') {
@@ -187,9 +187,9 @@ function LoginForm() {
         storage.setAuth({
           isLoggedIn: true,
           role: 'candidate',
-          name: data.user?.name || 'মোঃ তানভীর হাসান',
-          phone: '01712-345678',
-          userId: data.user?.id || 'USR-01712345678'
+          name: data.user?.name || data.user?.nameBn || 'চাকরিপ্রার্থী',
+          phone: data.user?.phone || '01712-345678',
+          userId: data.user?.id || ''
         });
         if (data.token && typeof document !== 'undefined') {
           document.cookie = `cs_session_token=${encodeURIComponent(data.token)}; path=/; max-age=2592000; SameSite=Lax`;

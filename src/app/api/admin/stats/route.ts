@@ -26,8 +26,8 @@ export async function GET(req: Request) {
   const completed = allApps.filter(a => a.status === 'completed').length;
   const rejected = allApps.filter(a => a.status === 'rejected').length;
 
-  const publishedJobs = jobs.filter(j => j.status === 'published' || (!j.status && j.title)).length;
-  const draftJobs = jobs.filter(j => j.status === 'draft').length;
+  const publishedJobs = jobs.filter(j => ['PUBLISHED', 'OPEN'].includes(String(j.status || '').toUpperCase()) || (!j.status && j.title)).length;
+  const draftJobs = jobs.filter(j => String(j.status || '').toUpperCase() === 'DRAFT').length;
   const reviewJobs = drafts.filter(d => d.status === 'pending_review').length;
   const expiredJobs = jobs.filter(j => {
     if (j.status === 'expired') return true;

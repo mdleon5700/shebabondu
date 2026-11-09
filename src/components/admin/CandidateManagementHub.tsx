@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import { 
   Plus,
@@ -277,7 +277,7 @@ export default function CandidateManagementHub({
         ));
 
       const matchesStatus = statusFilter === 'all' || 
-        (statusFilter === 'verified' && (c.isVerified || c.id === ('USR-01774366647' as string))) ||
+        (statusFilter === 'verified' && c.isVerified) ||
         (statusFilter === 'active' && c.accountStatus !== 'suspended' && c.accountStatus !== 'banned') ||
         (statusFilter === 'suspended' && c.accountStatus === 'suspended');
 
@@ -406,11 +406,30 @@ export default function CandidateManagementHub({
     return applications.filter(a => a.candidateId === currentCandidate.id || a.candidatePhone === currentCandidate.phone);
   }, [applications, currentCandidate]);
 
+  // Cache of fetched documents per candidate
+  const [loadedCandidateDocs, setLoadedCandidateDocs] = useState<Record<string, CandidateDocument[]>>({});
+
+  useEffect(() => {
+    if (currentCandidate?.id && !loadedCandidateDocs[currentCandidate.id]) {
+      const pin = typeof window !== 'undefined' ? (localStorage.getItem('cs_admin_pin') || 'CHAKRISEBA_SECURE_ADMIN_2026') : 'CHAKRISEBA_SECURE_ADMIN_2026';
+      fetch(`/api/admin/candidates/${currentCandidate.id}`, {
+        headers: { 'x-admin-secret': pin }
+      })
+      .then(r => r.ok ? r.json() : null)
+      .then(d => {
+        if (d?.documents) {
+          setLoadedCandidateDocs(prev => ({ ...prev, [currentCandidate.id]: d.documents }));
+        }
+      })
+      .catch(() => {});
+    }
+  }, [currentCandidate?.id]);
+
   // Candidate documents for the 360 inspector
   const candidateDocs: CandidateDocument[] = useMemo(() => {
     if (!currentCandidate) return [];
-    return currentCandidate.documents || [];
-  }, [currentCandidate]);
+    return loadedCandidateDocs[currentCandidate.id] || currentCandidate.documents || [];
+  }, [currentCandidate, loadedCandidateDocs]);
 
   // Handle 1-Click Candidate Impersonation
   const handleImpersonateCandidate = async (candidateId: string) => {
@@ -561,7 +580,7 @@ export default function CandidateManagementHub({
               <div>
                 <p className="text-[11px] font-bold text-slate-500 uppercase">ভেরিফাইড চাকরিপ্রার্থী</p>
                 <h3 className="text-xl font-black text-blue-700">
-                  {candidates.filter(c => c.isVerified || c.id === ('USR-01774366647' as string)).length} জন
+                  {candidates.filter(c => c.isVerified).length} জন
                 </h3>
                 <p className="text-[11px] text-slate-500">এনআইডি ও সনদ যাচাইকৃত</p>
               </div>
@@ -702,7 +721,7 @@ export default function CandidateManagementHub({
                 </thead>
                 <tbody className="divide-y divide-slate-100 font-medium">
                   {filteredCandidates.map((c) => {
-                    const isVerified = c.isVerified || c.id === ('USR-01774366647' as string);
+                    const isVerified = !!c.isVerified;
                     const isSuspended = c.accountStatus === 'suspended';
 
                     return (
@@ -850,6 +869,26 @@ export default function CandidateManagementHub({
       {/* =========================================================================
           SUBTAB 2: CANDIDATE 360° MASTER PROFILE & VAULT INSPECTOR
          ========================================================================= */}
+      {currentSubTab === 'candidate-details' && !currentCandidate && (
+        <div className="bg-white rounded-2xl border border-slate-200/90 p-12 text-center space-y-4 shadow-2xs">
+          <div className="w-16 h-16 bg-emerald-50 text-emerald-700 rounded-2xl mx-auto flex items-center justify-center">
+            <Users className="w-8 h-8" />
+          </div>
+          <h3 className="text-lg font-bold text-slate-800">কোনো প্রার্থী নিবন্ধিত নেই</h3>
+          <p className="text-xs text-slate-500 max-w-md mx-auto">
+            বর্তমানে ডাটাবেজে কোনো প্রার্থীর অ্যাকাউন্ট নেই। নতুন প্রার্থী নিবন্ধন করলে এখানে তাদের পূর্ণাঙ্গ ৩৬০° প্রোফাইল ও ডকুমেন্টস প্রদর্শিত হবে।
+          </p>
+          <button
+            type="button"
+            onClick={() => setIsCreateModalOpen(true)}
+            className="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-bold inline-flex items-center gap-1.5 shadow-2xs transition-all"
+          >
+            <Plus className="w-4 h-4" />
+            <span>নতুন প্রার্থী তৈরি করুন</span>
+          </button>
+        </div>
+      )}
+
       {currentSubTab === 'candidate-details' && currentCandidate && (
         <div className="space-y-6">
           {/* Candidate Selector Switcher Header */}
@@ -953,19 +992,19 @@ export default function CandidateManagementHub({
               <div className="grid grid-cols-2 gap-3 text-xs">
                 <div className="p-2.5 bg-slate-50 rounded-xl">
                   <span className="text-slate-400 text-[10px] block">পিতার নাম</span>
-                  <span className="font-bold text-slate-900">{currentCandidate.fatherName || 'MD. RAFIQUL ISLAM'}</span>
+                  <span className="font-bold text-slate-900">{currentCandidate.fatherName || currentCandidate.biodata?.fatherName || '—'}</span>
                 </div>
                 <div className="p-2.5 bg-slate-50 rounded-xl">
                   <span className="text-slate-400 text-[10px] block">মাতার নাম</span>
-                  <span className="font-bold text-slate-900">{currentCandidate.motherName || 'MOSA. ROKEYA BEGUM'}</span>
+                  <span className="font-bold text-slate-900">{currentCandidate.motherName || currentCandidate.biodata?.motherName || '—'}</span>
                 </div>
                 <div className="p-2.5 bg-slate-50 rounded-xl">
                   <span className="text-slate-400 text-[10px] block">জন্মতারিখ ও লিঙ্গ</span>
-                  <span className="font-bold text-slate-900">{currentCandidate.dob || '1998-05-12'} • {currentCandidate.gender === 'female' ? 'নারী' : 'পুরুষ'}</span>
+                  <span className="font-bold text-slate-900">{currentCandidate.dob || currentCandidate.biodata?.dob || '—'} • {currentCandidate.gender === 'female' ? 'নারী' : currentCandidate.gender === 'male' ? 'পুরুষ' : 'অন্যান্য'}</span>
                 </div>
                 <div className="p-2.5 bg-slate-50 rounded-xl">
                   <span className="text-slate-400 text-[10px] block">জাতীয় পরিচয়পত্র (NID)</span>
-                  <span className="font-mono font-bold text-slate-900">{currentCandidate.nid || '19982692015004512'}</span>
+                  <span className="font-mono font-bold text-slate-900">{currentCandidate.nid || currentCandidate.biodata?.nid || '—'}</span>
                 </div>
               </div>
 
@@ -974,14 +1013,14 @@ export default function CandidateManagementHub({
                 <div className="p-3 bg-slate-50 rounded-xl space-y-1">
                   <span className="font-bold text-emerald-800 text-[11px] block">বর্তমান ঠিকানা (Present Address):</span>
                   <p className="text-slate-700 leading-relaxed font-mono text-[11px]">
-                    {currentCandidate.address || 'HOUSE 12, ROAD 5, MIRPUR-10, DHAKA-1216'}
+                    {currentCandidate.address || currentCandidate.presentAddressDetails?.villageRoad || '—'}
                   </p>
                 </div>
 
                 <div className="p-3 bg-slate-50 rounded-xl space-y-1">
                   <span className="font-bold text-slate-800 text-[11px] block">স্থায়ী ঠিকানা (Permanent Address):</span>
                   <p className="text-slate-700 leading-relaxed font-mono text-[11px]">
-                    {currentCandidate.permanentAddress || currentCandidate.address || 'HOUSE 12, ROAD 5, MIRPUR-10, DHAKA-1216'}
+                    {currentCandidate.permanentAddress || currentCandidate.permanentAddressDetails?.villageRoad || currentCandidate.address || '—'}
                   </p>
                 </div>
               </div>
@@ -1025,46 +1064,90 @@ export default function CandidateManagementHub({
                 <FileBox className="w-4 h-4 text-emerald-700" />
                 <h3 className="font-black text-xs uppercase tracking-wider text-slate-700">ডিজিটাল ভল্ট ও সনদপত্র ইন্সপেক্টর</h3>
               </div>
-              <span className="text-xs font-bold text-slate-400">মোট ডকুমেন্ট: {candidateDocs.length || 4}টি</span>
+              <span className="text-xs font-bold text-slate-400">মোট ডকুমেন্ট: {candidateDocs.length}টি</span>
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               {/* Photo */}
               <div className="p-3 rounded-xl border border-slate-200 bg-slate-50 text-center space-y-2">
                 <div className="w-20 h-20 bg-slate-200 rounded-xl mx-auto flex items-center justify-center overflow-hidden border border-slate-300">
-                  <span className="font-mono text-[10px] text-slate-500 font-bold">300x300 Photo</span>
+                  {currentCandidate.photoUrl ? (
+                    <img src={currentCandidate.photoUrl} alt="Photo" className="w-full h-full object-cover" />
+                  ) : (
+                    <span className="font-mono text-[10px] text-slate-500 font-bold">ছবি নেই</span>
+                  )}
                 </div>
                 <div className="text-xs font-bold text-slate-900">পাসপোর্ট ছবি</div>
-                <span className="text-[10px] text-emerald-700 font-bold block">✓ স্ট্যান্ডার্ড সাইজ</span>
+                <span className="text-[10px] text-emerald-700 font-bold block">
+                  {currentCandidate.photoUrl ? '✓ আপলোডকৃত' : 'প্রয়োজন'}
+                </span>
               </div>
 
               {/* Signature */}
               <div className="p-3 rounded-xl border border-slate-200 bg-slate-50 text-center space-y-2">
                 <div className="w-20 h-10 bg-slate-200 rounded-xl mx-auto flex items-center justify-center overflow-hidden border border-slate-300 mt-5">
-                  <span className="font-mono text-[9px] text-slate-500 font-bold">300x80 Sig</span>
+                  {currentCandidate.signatureUrl ? (
+                    <img src={currentCandidate.signatureUrl} alt="Sig" className="w-full h-full object-contain bg-white" />
+                  ) : (
+                    <span className="font-mono text-[9px] text-slate-500 font-bold">স্বাক্ষর নেই</span>
+                  )}
                 </div>
                 <div className="text-xs font-bold text-slate-900">ডিজিটাল স্বাক্ষর</div>
-                <span className="text-[10px] text-emerald-700 font-bold block">✓ স্ট্যান্ডার্ড সাইজ</span>
+                <span className="text-[10px] text-emerald-700 font-bold block">
+                  {currentCandidate.signatureUrl ? '✓ আপলোডকৃত' : 'প্রয়োজন'}
+                </span>
               </div>
 
               {/* NID Card */}
               <div className="p-3 rounded-xl border border-slate-200 bg-slate-50 text-center space-y-2">
-                <div className="w-20 h-20 bg-blue-50 text-blue-700 rounded-xl mx-auto flex items-center justify-center border border-blue-200">
-                  <FileText className="w-8 h-8" />
+                <div className="w-20 h-20 bg-blue-50 text-blue-700 rounded-xl mx-auto flex items-center justify-center border border-blue-200 overflow-hidden">
+                  {currentCandidate.nidFrontUrl ? (
+                    <img src={currentCandidate.nidFrontUrl} alt="NID" className="w-full h-full object-cover" />
+                  ) : (
+                    <FileText className="w-8 h-8" />
+                  )}
                 </div>
                 <div className="text-xs font-bold text-slate-900">জাতীয় পরিচয়পত্র</div>
-                <span className="text-[10px] text-blue-700 font-bold block">Front & Back</span>
+                <span className="text-[10px] text-blue-700 font-bold block">
+                  {currentCandidate.nidFrontUrl ? '✓ সংরক্ষিত' : 'অপেক্ষমাণ'}
+                </span>
               </div>
 
-              {/* Certificate */}
+              {/* Vault Documents Count */}
               <div className="p-3 rounded-xl border border-slate-200 bg-slate-50 text-center space-y-2">
                 <div className="w-20 h-20 bg-purple-50 text-purple-700 rounded-xl mx-auto flex items-center justify-center border border-purple-200">
                   <Award className="w-8 h-8" />
                 </div>
-                <div className="text-xs font-bold text-slate-900">শিক্ষাগত সনদপত্র</div>
-                <span className="text-[10px] text-purple-700 font-bold block">মূল মার্কশিট</span>
+                <div className="text-xs font-bold text-slate-900">অন্যান্য সনদপত্র</div>
+                <span className="text-[10px] text-purple-700 font-bold block">{candidateDocs.length}টি ফাইল সংরক্ষিত</span>
               </div>
             </div>
+
+            {candidateDocs.length > 0 && (
+              <div className="pt-2 border-t border-slate-100">
+                <span className="text-[11px] font-bold text-slate-600 block mb-2">সংরক্ষিত ডকুমেন্টস তালিকা:</span>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  {candidateDocs.map((doc, idx) => (
+                    <div key={idx} className="p-2.5 rounded-xl border border-slate-200 bg-white flex items-center justify-between text-xs">
+                      <div className="flex items-center gap-2 truncate">
+                        <FileText className="w-4 h-4 text-emerald-600 shrink-0" />
+                        <span className="font-bold text-slate-800 truncate">{doc.title || doc.fileName}</span>
+                      </div>
+                      {doc.dataUrl || doc.fileUrl ? (
+                        <a
+                          href={doc.dataUrl || doc.fileUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="px-2 py-1 bg-slate-100 hover:bg-emerald-50 text-emerald-700 rounded-lg text-[10px] font-bold shrink-0"
+                        >
+                          দেখুন
+                        </a>
+                      ) : null}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Section 4: Lifetime Applications History */}
@@ -1144,6 +1227,18 @@ export default function CandidateManagementHub({
       {/* =========================================================================
           SUBTAB 3: ACCOUNT STATUS & MODERATION CONSOLE
          ========================================================================= */}
+      {currentSubTab === 'account-status' && !currentCandidate && (
+        <div className="bg-white rounded-2xl border border-slate-200/90 p-12 text-center space-y-4 shadow-2xs">
+          <div className="w-16 h-16 bg-blue-50 text-blue-700 rounded-2xl mx-auto flex items-center justify-center">
+            <Shield className="w-8 h-8" />
+          </div>
+          <h3 className="text-lg font-bold text-slate-800">মডারেশনের জন্য কোনো প্রার্থী নেই</h3>
+          <p className="text-xs text-slate-500 max-w-md mx-auto">
+            প্রার্থী নিবন্ধিত হলে এখান থেকে তাদের অ্যাকাউন্ট অ্যাক্টিভেশন, স্থগিতকরণ ও পাসওয়ার্ড রিসেট পরিচালনা করা যাবে।
+          </p>
+        </div>
+      )}
+
       {currentSubTab === 'account-status' && currentCandidate && (
         <div className="space-y-6">
           {/* Candidate Selector */}
@@ -1218,9 +1313,9 @@ export default function CandidateManagementHub({
                     </p>
                   </div>
                   <span className={`px-2.5 py-1 rounded-full text-xs font-bold ${
-                    currentCandidate.isVerified || currentCandidate.id === ('USR-01774366647' as string) ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-200 text-slate-700'
+                    currentCandidate.isVerified ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-200 text-slate-700'
                   }`}>
-                    {currentCandidate.isVerified || currentCandidate.id === ('USR-01774366647' as string) ? '✓ ভেরিফাইড' : 'আনভেরিফাইড'}
+                    {currentCandidate.isVerified ? '✓ ভেরিফাইড' : 'আনভেরিফাইড'}
                   </span>
                 </div>
               </div>
@@ -1614,14 +1709,14 @@ export default function CandidateManagementHub({
                 <span className="font-bold text-slate-700 block">ব্যক্তিগত তথ্য (English Standard):</span>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                   {[
-                    { label: 'APPLICANT NAME', val: quickCopierCandidate.name?.toUpperCase() },
-                    { label: 'FATHER NAME', val: (quickCopierCandidate.fatherName || 'MD. RAFIQUL ISLAM').toUpperCase() },
-                    { label: 'MOTHER NAME', val: (quickCopierCandidate.motherName || 'MOSA. ROKEYA BEGUM').toUpperCase() },
-                    { label: 'DATE OF BIRTH', val: quickCopierCandidate.dob || '1998-05-12' },
+                    { label: 'APPLICANT NAME', val: (quickCopierCandidate.name || quickCopierCandidate.nameBn || '').toUpperCase() },
+                    { label: 'FATHER NAME', val: (quickCopierCandidate.fatherName || quickCopierCandidate.biodata?.fatherName || '').toUpperCase() },
+                    { label: 'MOTHER NAME', val: (quickCopierCandidate.motherName || quickCopierCandidate.biodata?.motherName || '').toUpperCase() },
+                    { label: 'DATE OF BIRTH', val: quickCopierCandidate.dob || quickCopierCandidate.biodata?.dob || '' },
                     { label: 'GENDER', val: quickCopierCandidate.gender?.toUpperCase() || 'MALE' },
                     { label: 'NATIONALITY', val: 'BANGLADESHI' },
-                    { label: 'RELIGION', val: 'ISLAM' },
-                    { label: 'NID NUMBER', val: quickCopierCandidate.nid || '19982692015004512' },
+                    { label: 'RELIGION', val: (quickCopierCandidate.religion || 'ISLAM').toUpperCase() },
+                    { label: 'NID NUMBER', val: quickCopierCandidate.nid || quickCopierCandidate.biodata?.nid || '' },
                     { label: 'MOBILE NUMBER', val: quickCopierCandidate.phone }
                   ].map((f, i) => (
                     <button
@@ -1642,12 +1737,12 @@ export default function CandidateManagementHub({
                 <span className="font-bold text-slate-700 block">ঠিকানা সংক্রান্ত (Address Fields):</span>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                   {[
-                    { label: 'CARE OF', val: (quickCopierCandidate.fatherName || 'MD. RAFIQUL ISLAM').toUpperCase() },
-                    { label: 'VILLAGE / ROAD', val: 'HOUSE 12, ROAD 5, MIRPUR-10' },
-                    { label: 'DISTRICT', val: (quickCopierCandidate.district || 'DHAKA').toUpperCase() },
-                    { label: 'THANA / UPAZILA', val: 'MIRPUR' },
-                    { label: 'POST CODE', val: '1216' },
-                    { label: 'PERMANENT ADDR', val: (quickCopierCandidate.permanentAddress || quickCopierCandidate.address || 'MIRPUR-10, DHAKA').toUpperCase() }
+                    { label: 'CARE OF', val: (quickCopierCandidate.presentAddressDetails?.careOf || quickCopierCandidate.fatherName || quickCopierCandidate.name || '').toUpperCase() },
+                    { label: 'VILLAGE / ROAD', val: (quickCopierCandidate.presentAddressDetails?.villageRoad || quickCopierCandidate.address || '').toUpperCase() },
+                    { label: 'DISTRICT', val: (quickCopierCandidate.presentAddressDetails?.district || quickCopierCandidate.district || 'DHAKA').toUpperCase() },
+                    { label: 'THANA / UPAZILA', val: (quickCopierCandidate.presentAddressDetails?.upazilaThana || '').toUpperCase() },
+                    { label: 'POST CODE', val: quickCopierCandidate.presentAddressDetails?.postCode || '' },
+                    { label: 'PERMANENT ADDR', val: (quickCopierCandidate.permanentAddress || quickCopierCandidate.permanentAddressDetails?.villageRoad || quickCopierCandidate.address || '').toUpperCase() }
                   ].map((f, i) => (
                     <button
                       key={i}

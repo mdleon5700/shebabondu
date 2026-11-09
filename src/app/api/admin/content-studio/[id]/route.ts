@@ -18,7 +18,7 @@ import {
 } from '@/lib/content_studio';
 
 interface RouteContext {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 function resolveDraftOrJob(id: string) {
@@ -58,7 +58,7 @@ export async function GET(req: Request, context: RouteContext) {
     return NextResponse.json({ error: 'FORBIDDEN: Admin access required.' }, { status: 403 });
   }
 
-  const draftId = context.params.id;
+  const draftId = (await context.params).id;
   const draft = resolveDraftOrJob(draftId);
   if (!draft) {
     return NextResponse.json({ error: 'ড্রাফট বা সার্কুলার খুঁজে পাওয়া যায়নি' }, { status: 404 });
@@ -122,7 +122,7 @@ export async function POST(req: Request, context: RouteContext) {
     return NextResponse.json({ error: 'FORBIDDEN: Admin access required.' }, { status: 403 });
   }
 
-  const draftId = context.params.id;
+  const draftId = (await context.params).id;
   const draft = resolveDraftOrJob(draftId);
   if (!draft) {
     return NextResponse.json({ error: 'ড্রাফট বা সার্কুলার খুঁজে পাওয়া যায়নি' }, { status: 404 });

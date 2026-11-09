@@ -110,7 +110,7 @@ export interface JobCircular {
 
 
 
-  category: 'govt' | 'bank' | 'railway' | 'defense' | 'teacher' | 'ngo' | 'private' | 'health' | 'engineer';
+  category: 'govt' | 'bank' | 'railway' | 'defense' | 'teacher' | 'ngo' | 'private' | 'company' | 'health' | 'engineer';
 
 
 
@@ -4022,7 +4022,7 @@ export interface CircularDraft {
 
 
 
-  category: 'govt' | 'bank' | 'railway' | 'defense' | 'teacher' | 'ngo' | 'private' | 'health';
+  category: 'govt' | 'bank' | 'railway' | 'defense' | 'teacher' | 'ngo' | 'private' | 'company' | 'health';
 
 
 

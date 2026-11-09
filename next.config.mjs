@@ -9,10 +9,13 @@ const nextConfig = {
   experimental: {
     cpus: 1,
     workerThreads: false,
-    instrumentationHook: true,
   },
   images: {
-    domains: ["images.unsplash.com", "placehold.co"],
+    remotePatterns: [
+      { protocol: 'https', hostname: 'images.unsplash.com' },
+      { protocol: 'https', hostname: 'placehold.co' },
+      { protocol: 'https', hostname: 'alljobs.teletalk.com.bd' }
+    ],
   },
   eslint: {
     ignoreDuringBuilds: true,

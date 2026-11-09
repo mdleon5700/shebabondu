@@ -2524,6 +2524,7 @@ export const serverDB = {
 
 
     const found = Object.values(db.candidates).find(c => {
+      if (c.id === trimmed || (c.id && c.id.toLowerCase() === clean)) return true;
       if (c.email && c.email.trim().toLowerCase() === clean) return true;
       if (c.username && c.username.trim().toLowerCase() === clean) return true;
       if (c.phone === trimmed) return true;
@@ -2978,7 +2979,7 @@ export const serverDB = {
 
               ...current,
 
-              status,
+              status: status || current.status,
 
               verificationType: verificationType || current.verificationType || 'officially_verified',
 
@@ -3038,7 +3039,7 @@ export const serverDB = {
 
           ...a,
 
-          status,
+          status: status || a.status,
 
           verificationType: verificationType || a.verificationType || 'user_reported',
 

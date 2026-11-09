@@ -5,9 +5,10 @@ import PublishedPage from '@/components/PublishedPage';
 
 export const dynamic = 'force-dynamic';
 
-type Props = { params: { slug: string[] } };
+type Props = { params: Promise<{ slug: string[] }> };
 
-export function generateMetadata({ params }: Props): Metadata {
+export async function generateMetadata(props: Props): Promise<Metadata> {
+  const params = await props.params;
   if (!params?.slug || !Array.isArray(params.slug) || params.slug.length === 0) {
     return { robots: { index: false } };
   }
@@ -20,7 +21,8 @@ export function generateMetadata({ params }: Props): Metadata {
   return page ? { title: page.metaTitle || page.title, description: page.metaDescription } : { robots: { index: false } };
 }
 
-export default function CustomPage({ params }: Props) {
+export default async function CustomPage(props: Props) {
+  const params = await props.params;
   if (!params?.slug || !Array.isArray(params.slug) || params.slug.length === 0) {
     notFound();
   }

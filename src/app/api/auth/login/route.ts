@@ -38,7 +38,7 @@ export async function POST(req: Request) {
     }
 
     const effectiveAdminSecret = (adminPin || (loginId.toLowerCase() === 'admin' || role === 'admin' ? password : null) || '').trim();
-    if (role === 'admin' || loginId.toLowerCase() === 'admin' || loginId.toLowerCase() === 'admin-super' || (password && verifyAdminSecret(password))) {
+    if (role === 'admin' || loginId.toLowerCase() === 'admin' || loginId.toLowerCase() === 'admin-super' || (adminPin && verifyAdminSecret(adminPin))) {
       if (!effectiveAdminSecret || !verifyAdminSecret(effectiveAdminSecret)) {
         recordFailedLogin(rateLimitKey);
         return NextResponse.json({ error: 'ভুল অ্যাডমিন সিক্রেট পিন বা পাসওয়ার্ড!' }, { status: 401 });

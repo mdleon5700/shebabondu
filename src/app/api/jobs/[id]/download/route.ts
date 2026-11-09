@@ -5,10 +5,8 @@ import path from 'path';
 import https from 'https';
 import http from 'http';
 
-export async function GET(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function GET(req: NextRequest, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   const jobId = params.id;
   const job = serverDB.getPublicJobById(jobId);
 

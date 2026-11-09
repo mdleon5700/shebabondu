@@ -1,0 +1,257 @@
+{
+  "payment-verification": {
+    "detectedComponents": [],
+    "snippetSample": ") {\r\n      list = list.filter(a => a.status === 'pending_payment');\r\n      if (paymentGatewayFilter !== 'all') {\r\n        list = list.filter(a => normalizePaymentMethod(a.paymentMethod) === paymentGatewayFilter);\r\n      }\r"
+  },
+  "processing-queue": {
+    "detectedComponents": [],
+    "snippetSample": ") {\r\n      list = list.filter(a => a.status === 'processing');\r\n      if (processingChannelFilter !== 'all') {\r\n        list = list.filter(a => {\r\n          const job = jobs.find(j => j.id === a.jobId || (a.jobTitle && (j.title.includes(a.jobTitle) || a.jobTitle.includes(j.title))));\r"
+  },
+  "completed-rejected": {
+    "detectedComponents": [],
+    "snippetSample": ") {\r\n      list = list.filter(a => a.status === 'completed' || a.status === 'rejected');\r\n      if (completedSubFilter === 'completed') {\r\n        list = list.filter(a => a.status === 'completed');\r\n      } else if (completedSubFilter === 'pdf_missing') {\r"
+  },
+  "all-applications": {
+    "detectedComponents": [],
+    "snippetSample": ") {\r\n      if (appStatusFilter !== 'all') {\r\n        list = list.filter(a => a.status === appStatusFilter);\r\n      }\r\n    }\r"
+  },
+  "dashboard": {
+    "detectedComponents": [
+      "PlatformGovernanceOverview",
+      "CreditCard"
+    ],
+    "snippetSample": "&& (\r\n            <div className=\"space-y-6\">\r\n              <PlatformGovernanceOverview onNavigate={handleTabChange} />\r\n\r\n              {/* Operational Queues Summary */}\r"
+  },
+  "system-health": {
+    "detectedComponents": [
+      "Activity",
+      "RefreshCw"
+    ],
+    "snippetSample": "&& (\r\n            <div className=\"bg-white rounded-2xl border border-slate-200/90 shadow-2xs p-5 sm:p-6 space-y-6\">\r\n              \r\n              {/* Header with Live Action Button */}\r\n              <div className=\"flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100\">\r"
+  },
+  "documents": {
+    "detectedComponents": [],
+    "snippetSample": "&& (() => {\r\n            const allAppsWithPdf = applications.filter(a => a.applicantCopyPdfUrl || a.pdfUrl);\r\n            const completedMissingPdf = applications.filter(a => a.status === 'completed' && !a.applicantCopyPdfUrl && !a.pdfUrl);\r\n\r\n            // Filter logic\r"
+  },
+  "circulars": {
+    "detectedComponents": [],
+    "snippetSample": "&& (\r\n            <div className=\"space-y-5\">\r\n              {/* Top 5 KPI Summary Cards */}\r\n              <div className=\"grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3\">\r\n                <div className=\"bg-white p-4 rounded-2xl border border-slate-200/90 shadow-2xs space-y-1\">\r"
+  },
+  "create-circular": {
+    "detectedComponents": [
+      "PlusCircle",
+      "Sparkles"
+    ],
+    "snippetSample": "&& (\r\n            <div className=\"bg-white rounded-3xl border border-slate-200/90 shadow-sm p-8 sm:p-12 max-w-3xl text-center space-y-6 mx-auto my-8 animate-in fade-in\">\r\n              <div className=\"w-16 h-16 rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center mx-auto shadow-inner\">\r\n                <PlusCircle className=\"w-8 h-8\" />\r\n              </div>\r"
+  },
+  "gemini-browser-spider": {
+    "detectedComponents": [
+      "GeminiBrowserSpiderHub"
+    ],
+    "snippetSample": "&& (\r\n            <GeminiBrowserSpiderHub\r\n              jobs={jobs}\r\n              onRefreshData={fetchAllAdminData}\r\n              onOpenEditJob={handleOpenEditJob}\r"
+  },
+  "source-monitoring": {
+    "detectedComponents": [
+      "GeminiBrowserSpiderHub",
+      "SourceRegistryManagement"
+    ],
+    "snippetSample": "&& (\r\n            <div className=\"space-y-6\">\r\n              <GeminiBrowserSpiderHub\r\n                jobs={jobs}\r\n                onRefreshData={fetchAllAdminData}\r"
+  },
+  "content-studio": {
+    "detectedComponents": [
+      "JobContentStudio"
+    ],
+    "snippetSample": "&& (\r\n            <div className=\"space-y-6\">\r\n              <JobContentStudio initialDraftId={contentStudioDraftId} />\r\n            </div>\r\n          )}\r"
+  },
+  "publishing-center": {
+    "detectedComponents": [
+      "JobPublishingCenter"
+    ],
+    "snippetSample": "&& (\r\n            <div className=\"space-y-6\">\r\n              <JobPublishingCenter />\r\n            </div>\r\n          )}\r"
+  },
+  "category-search-manager": {
+    "detectedComponents": [
+      "JobCategorySearchManager"
+    ],
+    "snippetSample": "&& (\r\n            <div className=\"space-y-6\">\r\n              <JobCategorySearchManager />\r\n            </div>\r\n          )}\r"
+  },
+  "job-feed-manager": {
+    "detectedComponents": [
+      "JobFeedManager"
+    ],
+    "snippetSample": "&& (\r\n            <div className=\"space-y-6\">\r\n              <JobFeedManager />\r\n            </div>\r\n          )}\r"
+  },
+  "deadline-alert-manager": {
+    "detectedComponents": [
+      "DeadlineAlertManager"
+    ],
+    "snippetSample": "&& (\r\n            <div className=\"space-y-6\">\r\n              <DeadlineAlertManager />\r\n            </div>\r\n          )}\r"
+  },
+  "smart-job-matching": {
+    "detectedComponents": [
+      "SmartMatchingAdmin"
+    ],
+    "snippetSample": "&& (\r\n            <div className=\"space-y-6\">\r\n              <SmartMatchingAdmin />\r\n            </div>\r\n          )}\r"
+  },
+  "imported-drafts": {
+    "detectedComponents": [
+      "JobVerificationCenter",
+      "Radio"
+    ],
+    "snippetSample": "&& (\r\n            <div className=\"space-y-6\">\r\n              <JobVerificationCenter\r\n                drafts={drafts}\r\n                onRefreshDrafts={fetchAllAdminData}\r"
+  },
+  "candidate-directory": {
+    "detectedComponents": [],
+    "snippetSample": "||"
+  },
+  "candidate-details": {
+    "detectedComponents": [],
+    "snippetSample": "||"
+  },
+  "account-status": {
+    "detectedComponents": [],
+    "snippetSample": "||"
+  },
+  "eligibility-rules": {
+    "detectedComponents": [
+      "CandidateManagementHub"
+    ],
+    "snippetSample": ") && (\r\n            <div className=\"space-y-4\">\r\n              <CandidateManagementHub\r\n                activeTab={activeTab}\r\n                onTabChange={handleTabChange}\r"
+  },
+  "company-directory": {
+    "detectedComponents": [],
+    "snippetSample": "||"
+  },
+  "employer-verification": {
+    "detectedComponents": [],
+    "snippetSample": "||"
+  },
+  "company-jobs": {
+    "detectedComponents": [
+      "OrganizationManagementHub"
+    ],
+    "snippetSample": ") && (\r\n            <div className=\"space-y-4\">\r\n              <OrganizationManagementHub onRefreshData={fetchAllAdminData} />\r\n            </div>\r\n          )}\r"
+  },
+  "media-library": {
+    "detectedComponents": [
+      "MediaLibraryManager"
+    ],
+    "snippetSample": "&& (\r\n            <div className=\"space-y-4\">\r\n              <MediaLibraryManager />\r\n            </div>\r\n          )}\r"
+  },
+  "analytics-center": {
+    "detectedComponents": [],
+    "snippetSample": "||"
+  },
+  "report-builder": {
+    "detectedComponents": [],
+    "snippetSample": "||"
+  },
+  "data-quality-inspector": {
+    "detectedComponents": [],
+    "snippetSample": "||"
+  },
+  "automation-center": {
+    "detectedComponents": [
+      "AnalyticsIntelligenceHub"
+    ],
+    "snippetSample": ") && (\r\n            <div className=\"space-y-4\">\r\n              <AnalyticsIntelligenceHub activeTab={"
+  },
+  "testing-spider": {
+    "detectedComponents": [
+      "TestingSpiderHub"
+    ],
+    "snippetSample": "&& (\r\n            <div className=\"space-y-4\">\r\n              <TestingSpiderHub />\r\n            </div>\r\n          )}\r"
+  },
+  "automation-hub": {
+    "detectedComponents": [
+      "CentralAutomationManager"
+    ],
+    "snippetSample": "&& (\r\n            <div className=\"space-y-4\">\r\n              <CentralAutomationManager />\r\n            </div>\r\n          )}\r"
+  },
+  "coupons-discounts": {
+    "detectedComponents": [],
+    "snippetSample": "||"
+  },
+  "raffle-campaigns": {
+    "detectedComponents": [
+      "CouponsRaffleManagement"
+    ],
+    "snippetSample": ") && (\r\n            <div className=\"space-y-4\">\r\n              <CouponsRaffleManagement />\r\n            </div>\r\n          )}\r"
+  },
+  "transactions": {
+    "detectedComponents": [],
+    "snippetSample": "||"
+  },
+  "invoices": {
+    "detectedComponents": [],
+    "snippetSample": "||"
+  },
+  "service-fees": {
+    "detectedComponents": [
+      "FinancialTransactionsLedger"
+    ],
+    "snippetSample": ") && (\r\n            <div className=\"space-y-4\">\r\n              <FinancialTransactionsLedger \r\n                activeTab={activeTab} \r\n                onTabChange={handleTabChange} \r"
+  },
+  "platform-operations": {
+    "detectedComponents": [
+      "PlatformOperationsHub"
+    ],
+    "snippetSample": "&& (\r\n            <div className=\"space-y-4\">\r\n              <PlatformOperationsHub />\r\n            </div>\r\n          )}\r"
+  },
+  "builder": {
+    "detectedComponents": [
+      "WebsiteBuilder"
+    ],
+    "snippetSample": "&& (\r\n            <div className=\"space-y-4\">\r\n              <WebsiteBuilder \r\n                initialPageId={builderSelectedPageId} \r\n                onNavigateToPages={() => handleTabChange('pages-sections')} \r"
+  },
+  "pages-sections": {
+    "detectedComponents": [],
+    "snippetSample": "||"
+  },
+  "seo-meta": {
+    "detectedComponents": [],
+    "snippetSample": "||"
+  },
+  "header-footer": {
+    "detectedComponents": [],
+    "snippetSample": "||"
+  },
+  "revisions": {
+    "detectedComponents": [
+      "WebsiteCmsSeoManagement"
+    ],
+    "snippetSample": ") && (\r\n            <div className=\"space-y-4\">\r\n              <WebsiteCmsSeoManagement \r\n                activeTab={activeTab} \r\n                onTabChange={handleTabChange} \r"
+  },
+  "audit-logs": {
+    "detectedComponents": [],
+    "snippetSample": "&& (\r\n            <div className=\"bg-white rounded-2xl border border-slate-200/90 shadow-2xs p-5 space-y-4\">\r\n              <div className=\"flex items-center justify-between pb-3 border-b border-slate-100\">\r\n                <h2 className=\"font-black text-sm text-slate-900\">অ্যাডমিন অ্যাক্টিভিটি ও অডিট লগ</h2>\r\n                <span className=\"text-xs font-bold text-slate-500\">মোট রেকর্ড: {auditLogs.length}</span>\r"
+  },
+  "notifications": {
+    "detectedComponents": [],
+    "snippetSample": "||"
+  },
+  "sms-status": {
+    "detectedComponents": [],
+    "snippetSample": "||"
+  },
+  "templates-delivery": {
+    "detectedComponents": [
+      "SmsNotificationsManagement"
+    ],
+    "snippetSample": ") && (\r\n            <div className=\"space-y-4\">\r\n              <SmsNotificationsManagement \r\n                activeTab={activeTab} \r\n                onTabChange={handleTabChange} \r"
+  },
+  "settings": {
+    "detectedComponents": [],
+    "snippetSample": "||"
+  },
+  "backup-diagnostics": {
+    "detectedComponents": [],
+    "snippetSample": "||"
+  },
+  "staff-roles": {
+    "detectedComponents": [
+      "SystemSettingsDiagnostics"
+    ],
+    "snippetSample": ") && (\r\n            <div className=\"space-y-4\">\r\n              <SystemSettingsDiagnostics \r\n                activeTab={activeTab} \r\n                onTabChange={handleTabChange} \r"
+  }
+}

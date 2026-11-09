@@ -4,7 +4,7 @@ import { serverDB } from '@/lib/db';
 import { restoreRevision } from '@/lib/content_studio';
 
 interface RouteContext {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 export async function GET(req: Request, context: RouteContext) {
@@ -13,7 +13,7 @@ export async function GET(req: Request, context: RouteContext) {
     return NextResponse.json({ error: 'FORBIDDEN: Admin access required.' }, { status: 403 });
   }
 
-  const draftId = context.params.id;
+  const draftId = (await context.params).id;
   const state = serverDB.getContentStudioState(draftId);
   if (!state) {
     return NextResponse.json({ error: 'স্টুডিও স্টেট পাওয়া যায়নি' }, { status: 404 });
@@ -32,7 +32,7 @@ export async function POST(req: Request, context: RouteContext) {
     return NextResponse.json({ error: 'FORBIDDEN: Admin access required.' }, { status: 403 });
   }
 
-  const draftId = context.params.id;
+  const draftId = (await context.params).id;
   const state = serverDB.getContentStudioState(draftId);
   if (!state) {
     return NextResponse.json({ error: 'স্টুডিও স্টেট পাওয়া যায়নি' }, { status: 404 });

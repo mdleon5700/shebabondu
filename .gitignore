@@ -56,3 +56,5 @@ ai-brain/storage/memory/
 
 src/db/backup_*
 src/db/local_store_backup_*
+src/db/synthetic_users_backup_*
+*.json.bak

@@ -1,4 +1,4 @@
-﻿import { JobCircular } from '../types';
+import { JobCircular } from '../types';
 import { 
   JobTaxonomyClassification, 
   OrganizationType, 
@@ -73,8 +73,15 @@ export class JobTaxonomyClassifier {
         break;
 
       case 'private':
+      case 'company':
         primaryCategory = 'cat-private';
         categorySlug = 'private-jobs';
+        if (org.includes('কর্পোরেশন') || org.includes('কর্তৃপক্ষ') || org.includes('লিমিটেড') || org.includes('লিঃ') || org.includes('বোর্ড')) {
+          subcategories.push('cat-govt-autonomous');
+        }
+        if (org.includes('বিদ্যুৎ') || org.includes('পাওয়ার') || org.includes('কোল') || org.includes('আশুগঞ্জ') || org.includes('তেল') || org.includes('গ্যাস') || org.includes('পেট্রোবাংলা') || org.includes('ইঞ্জিনিয়ারিং')) {
+          subcategories.push('cat-engineer');
+        }
         break;
 
       case 'govt':
@@ -87,7 +94,7 @@ export class JobTaxonomyClassifier {
           subcategories.push('cat-govt-ministry');
         } else if (org.includes('অধিদপ্তর') || org.includes('পরিদপ্তর')) {
           subcategories.push('cat-govt-department');
-        } else if (org.includes('কর্পোরেশন') || org.includes('ওয়াসা') || org.includes('কর্তৃপক্ষ')) {
+        } else if (org.includes('কর্পোরেশন') || org.includes('ওয়াসা') || org.includes('কর্তৃপক্ষ') || org.includes('লিমিটেড') || org.includes('লিঃ') || org.includes('কোম্পানি')) {
           subcategories.push('cat-govt-autonomous');
         }
         break;
@@ -113,8 +120,8 @@ export class JobTaxonomyClassifier {
       organizationType = 'autonomous_government';
     } else if (org.includes('এনজিও') || org.includes('ব্র্যাক') || org.includes('আশা') || org.includes('টিএমএসএস') || legacyCat === 'ngo') {
       organizationType = 'ngo';
-    } else if (org.includes('লিমিটেড') || org.includes('লিঃ') || org.includes('গ্রুপ') || legacyCat === 'private') {
-      organizationType = 'private_company';
+    } else if (org.includes('লিমিটেড') || org.includes('লিঃ') || org.includes('গ্রুপ') || org.includes('কোম্পানি') || legacyCat === 'private' || legacyCat === 'company') {
+      organizationType = (org.includes('কোল') || org.includes('আশুগঞ্জ') || org.includes('কেবল') || org.includes('পেট্রোবাংলা')) ? 'state_owned' : 'private_company';
     }
 
     // 3. Job Type Resolution

@@ -3,29 +3,58 @@ import { getServerSession } from '@/lib/auth';
 import { serverDB } from '@/lib/db';
 import { ApplicationRequest } from '@/lib/types';
 
-export async function PATCH(req: Request, { params }: { params: { id: string } }) {
+export async function PATCH(req: Request, context: { params: Promise<Promise<{ id: string }> | { id: string }> }) {
   const session = getServerSession(req);
   if (!session) {
     return NextResponse.json({ error: 'UNAUTHORIZED: Authentication required' }, { status: 401 });
   }
 
   try {
-    const { status, verificationType, notes, applicantCopyPdfUrl, teleTalkTrackingId, teleTalkPassword, corporateTrackingId, submissionChannel, trxId, senderPhone, paymentScreenshotUrl } = await req.json();
-    const appId = params.id;
+    const body = await req.json();
+    const { 
+      status, 
+      verificationType, 
+      notes, 
+      adminNotes,
+      statusLabel,
+      applicantCopyPdfUrl, 
+      teleTalkTrackingId, 
+      teleTalkPassword, 
+      corporateTrackingId, 
+      submissionChannel, 
+      trxId, 
+      senderPhone, 
+      paymentScreenshotUrl 
+    } = body;
+    const resolvedParams = await Promise.resolve((await context.params));
+    const appId = resolvedParams?.id;
+    if (!appId) {
+      return NextResponse.json({ error: 'আবেদন আইডি আবশ্যক' }, { status: 400 });
+    }
 
     // Strict role check: Candidates cannot approve their own payments or mark applications completed
     if (session.role !== 'admin' && (status === 'completed' || status === 'processing' || verificationType === 'officially_verified')) {
       return NextResponse.json({ error: 'FORBIDDEN: Admin privileges required for this state transition.' }, { status: 403 });
     }
 
+    const effectiveNotes = adminNotes || notes;
+    const effectiveStatusLabel = statusLabel || (
+      status === 'completed' ? 'সফলভাবে সম্পন্ন' :
+      status === 'processing' ? 'প্রক্রিয়াধীন রয়েছে' :
+      status === 'rejected' ? 'বাতিল করা হয়েছে' :
+      status === 'pending_payment' ? 'পেমেন্ট অপেক্ষমাণ' : 'আবেদন জমা হয়েছে'
+    );
+
     const historyItem = {
       status: status,
       date: new Date().toISOString(),
-      notes: notes || (status === 'completed' ? 'আবেদন সফলভাবে সম্পন্ন হয়েছে এবং স্লিপ প্রস্তুত।' : 'স্ট্যাটাস আপডেট করা হয়েছে।'),
+      notes: effectiveNotes || (status === 'completed' ? 'আবেদন সফলভাবে সম্পন্ন হয়েছে এবং স্লিপ প্রস্তুত।' : 'স্ট্যাটাস আপডেট করা হয়েছে।'),
       updatedBy: session.role === 'admin' ? 'Admin (' + session.candidateId + ')' : 'Candidate'
     };
 
     const extra: Partial<ApplicationRequest> = {
+      ...(effectiveNotes ? { adminNotes: effectiveNotes, notes: effectiveNotes } : {}),
+      ...(effectiveStatusLabel ? { statusLabel: effectiveStatusLabel } : {}),
       ...(applicantCopyPdfUrl ? { applicantCopyPdfUrl } : {}),
       ...(teleTalkTrackingId ? { teleTalkTrackingId } : {}),
       ...(teleTalkPassword ? { teleTalkPassword } : {}),

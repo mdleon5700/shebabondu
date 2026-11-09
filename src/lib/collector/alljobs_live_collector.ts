@@ -2,6 +2,7 @@ import https from 'https';
 import http from 'http';
 import { serverDB } from '@/lib/db';
 import { JobCircular, JobPosition } from '@/lib/types';
+import { inferPositionGradeAndSalary } from './alljobs_smart_resolver';
 
 if (typeof process !== 'undefined' && process.env) {
   process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
@@ -73,22 +74,7 @@ function mapCategory(orgName: string, title: string): { category: 'govt' | 'bank
   return { category: 'govt', categoryLabel: 'সরকারি চাকরি' };
 }
 
-function inferPositionGradeAndSalary(title: string): { grade: string; salary: string; govtFee: number; minEducation: string } {
-  const t = (title || '').toLowerCase();
-  if (t.includes('পরিচালক') || t.includes('director') || t.includes('সহকারী সচিব') || t.includes('প্রকৌশলী') || t.includes('engineer') || t.includes('অফিসার') || t.includes('officer') || t.includes('ম্যানেজার') || t.includes('manager')) {
-    return { grade: '৯ম - ১০ম গ্রেড', salary: '১৬,০০০ - ৫৩,০৬০/- টাকা', govtFee: 600, minEducation: 'স্বীকৃত বিশ্ববিদ্যালয় হতে সংশ্লিষ্ট বিষয়ে স্নাতক (সম্মান) বা স্নাতকোত্তর ডিগ্রি' };
-  }
-  if (t.includes('অডিটর') || t.includes('auditor') || t.includes('হিসাবরক্ষক') || t.includes('accountant') || t.includes('ইন্সপেক্টর') || t.includes('inspector') || t.includes('সাব-ইন্সপেক্টর')) {
-    return { grade: '১১তম - ১২তম গ্রেড', salary: '১২,৫০০ - ৩০,২৩০/- টাকা', govtFee: 300, minEducation: 'স্বীকৃত বিশ্ববিদ্যালয় হতে বাণিজ্য/বিজ্ঞান/মানবিকে ন্যূনতম ২য় শ্রেণি বা সমমানের সিজিপিএ সহ স্নাতক ডিগ্রি' };
-  }
-  if (t.includes('অপারেটর') || t.includes('operator') || t.includes('মুদ্রাক্ষরিক') || t.includes('typist') || t.includes('সহকারী') || t.includes('assistant') || t.includes('ক্লার্ক') || t.includes('clerk') || t.includes('টেকনিশিয়ান') || t.includes('technician') || t.includes('ড্রাফটসম্যান')) {
-    return { grade: '১৩তম - ১৬তম গ্রেড', salary: '৯,৩০০ - ২৬,৫৯০/- টাকা', govtFee: 200, minEducation: 'উচ্চ মাধ্যমিক সার্টিফিকেট (এইচএসসি) বা সমমান পরীক্ষায় উত্তীর্ণ এবং কম্পিউটার ব্যবহারে পারদর্শী' };
-  }
-  if (t.includes('ড্রাইভার') || t.includes('driver') || t.includes('চালক')) {
-    return { grade: '১৬তম গ্রেড', salary: '৯,৩০০ - ২২,৪৯০/- টাকা', govtFee: 200, minEducation: 'জুনিয়র স্কুল সার্টিফিকেট (জেএসসি) বা সমমান পাস এবং বৈধ ড্রাইভিং লাইসেন্সধারী' };
-  }
-  return { grade: '১৭তম - ২০তম গ্রেড', salary: '৮,২৫০ - ২০,০১০/- টাকা', govtFee: 100, minEducation: 'মাধ্যমিক স্কুল সার্টিফিকেট (এসএসসি) বা সমমান পরীক্ষায় উত্তীর্ণ' };
-}
+
 
 function fetchJson(url: string, redirectHops = 0): Promise<any> {
   if (redirectHops > 5) return Promise.reject(new Error(`Too many redirects for: ${url}`));
@@ -269,23 +255,37 @@ export async function runAlljobsLiveSync(maxOrgs = 100): Promise<SyncStats> {
           ? (org.logo.startsWith('http') ? org.logo : `https://alljobs.teletalk.com.bd/media/${org.logo}`)
           : 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=120&q=80';
 
-        // Map every position accurately with inferred grades, salaries, and fees
-        const positions: JobPosition[] = org.govt_jobs.map((gj: any, idx: number) => {
-          const titleBn = gj.job_title_bn || gj.job_title || 'কর্মকর্তা / কর্মচারী';
-          const parsedMeta = inferPositionGradeAndSalary(titleBn + ' ' + (gj.job_title || ''));
-          const vacancyNum = parseInt(String(gj.vacancy || '1').replace(/\D/g, ''), 10) || 1;
+        // Map every position accurately with inferred grades, salaries, and real vacancies
+        const positions: JobPosition[] = await Promise.all(
+          org.govt_jobs.map(async (gj: any, idx: number) => {
+            const titleBn = gj.job_title_bn || gj.job_title || 'কর্মকর্তা / কর্মচারী';
+            const parsedMeta = inferPositionGradeAndSalary(titleBn + ' ' + (gj.job_title || ''));
+            let vacancyNum = 1;
+            if (String(gj.id) === String(primaryJob.id) && d.vacancy) {
+              vacancyNum = parseInt(String(d.vacancy).replace(/\D/g, ''), 10) || 1;
+            } else {
+              try {
+                const subRes = await fetchJson(`https://alljobs.teletalk.com.bd/api/v1/govt-jobs/public-details?id=${gj.id}`);
+                if (subRes?.details?.vacancy) {
+                  vacancyNum = parseInt(String(subRes.details.vacancy).replace(/\D/g, ''), 10) || 1;
+                }
+              } catch {
+                vacancyNum = 1;
+              }
+            }
 
-          return {
-            id: `pos-${gj.id || idx + 1}`,
-            title: titleBn,
-            grade: gj.grade || parsedMeta.grade,
-            posts: vacancyNum,
-            vacancies: vacancyNum,
-            salary: parsedMeta.salary,
-            minEducation: gj.education || parsedMeta.minEducation,
-            govtFee: parsedMeta.govtFee
-          };
-        });
+            return {
+              id: `pos-${gj.id || idx + 1}`,
+              title: titleBn,
+              grade: gj.grade || parsedMeta.grade,
+              posts: vacancyNum,
+              vacancies: vacancyNum,
+              salary: parsedMeta.salary,
+              minEducation: gj.education || parsedMeta.minEducation,
+              govtFee: parsedMeta.govtFee
+            };
+          })
+        );
 
         const totalPosts = positions.reduce((sum, p) => sum + (p.posts || 1), 0) || positions.length || 1;
         const primaryPosition = positions[0]?.title || 'বিভিন্ন পদ';

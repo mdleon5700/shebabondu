@@ -2,10 +2,8 @@ import { NextResponse } from 'next/server';
 import { serverDB } from '@/lib/db';
 import { JobTaxonomyClassifier } from '@/lib/taxonomy/classifier';
 
-export async function GET(
-  req: Request,
-  { params }: { params: { slug: string } }
-) {
+export async function GET(req: Request, props: { params: Promise<{ slug: string }> }) {
+  const params = await props.params;
   try {
     const slug = params.slug.toLowerCase().trim();
     const category = serverDB.getCategoryBySlug(slug);

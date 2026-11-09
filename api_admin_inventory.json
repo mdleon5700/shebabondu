@@ -1,0 +1,1092 @@
+[
+  {
+    "route": "/api/admin/ai/generate-job-content",
+    "methods": [
+      "POST"
+    ],
+    "dbCalls": [
+      "getCircularDrafts",
+      "addCircularDraft"
+    ],
+    "file": "src\\app\\api\\admin\\ai\\generate-job-content\\route.ts"
+  },
+  {
+    "route": "/api/admin/analytics/data-quality",
+    "methods": [
+      "GET"
+    ],
+    "dbCalls": [],
+    "file": "src\\app\\api\\admin\\analytics\\data-quality\\route.ts"
+  },
+  {
+    "route": "/api/admin/analytics/overview",
+    "methods": [
+      "GET"
+    ],
+    "dbCalls": [],
+    "file": "src\\app\\api\\admin\\analytics\\overview\\route.ts"
+  },
+  {
+    "route": "/api/admin/audit",
+    "methods": [
+      "GET",
+      "POST"
+    ],
+    "dbCalls": [],
+    "file": "src\\app\\api\\admin\\audit\\route.ts"
+  },
+  {
+    "route": "/api/admin/audit-logs",
+    "methods": [
+      "GET"
+    ],
+    "dbCalls": [
+      "getAdminAuditLogs"
+    ],
+    "file": "src\\app\\api\\admin\\audit-logs\\route.ts"
+  },
+  {
+    "route": "/api/admin/automation/overview",
+    "methods": [
+      "GET"
+    ],
+    "dbCalls": [],
+    "file": "src\\app\\api\\admin\\automation\\overview\\route.ts"
+  },
+  {
+    "route": "/api/admin/automation/rules",
+    "methods": [
+      "GET",
+      "POST"
+    ],
+    "dbCalls": [],
+    "file": "src\\app\\api\\admin\\automation\\rules\\route.ts"
+  },
+  {
+    "route": "/api/admin/automation/tasks",
+    "methods": [
+      "GET",
+      "POST",
+      "PATCH"
+    ],
+    "dbCalls": [],
+    "file": "src\\app\\api\\admin\\automation\\tasks\\route.ts"
+  },
+  {
+    "route": "/api/admin/candidates",
+    "methods": [
+      "GET",
+      "POST"
+    ],
+    "dbCalls": [
+      "getAllCandidates",
+      "getDocuments",
+      "getCandidateByPhone"
+    ],
+    "file": "src\\app\\api\\admin\\candidates\\route.ts"
+  },
+  {
+    "route": "/api/admin/candidates/[id]",
+    "methods": [
+      "GET",
+      "PATCH",
+      "DELETE"
+    ],
+    "dbCalls": [
+      "getCandidateById",
+      "getDocuments",
+      "getApplications",
+      "getSavedJobs",
+      "getJobs",
+      "getCandidateNotifications",
+      "updateCandidate",
+      "recordAdminAudit",
+      "addCandidateNotification",
+      "deleteCandidate"
+    ],
+    "file": "src\\app\\api\\admin\\candidates\\[id]\\route.ts"
+  },
+  {
+    "route": "/api/admin/categories/bulk-assign",
+    "methods": [
+      "POST"
+    ],
+    "dbCalls": [
+      "getCategoryById",
+      "getJobById",
+      "saveJob",
+      "recordAdminAudit"
+    ],
+    "file": "src\\app\\api\\admin\\categories\\bulk-assign\\route.ts"
+  },
+  {
+    "route": "/api/admin/categories",
+    "methods": [
+      "GET",
+      "POST"
+    ],
+    "dbCalls": [
+      "getCategories",
+      "getJobs",
+      "saveCategory",
+      "recordAdminAudit"
+    ],
+    "file": "src\\app\\api\\admin\\categories\\route.ts"
+  },
+  {
+    "route": "/api/admin/categories/[id]",
+    "methods": [
+      "PATCH",
+      "DELETE"
+    ],
+    "dbCalls": [
+      "getCategoryById",
+      "getCategories",
+      "saveCategory",
+      "recordAdminAudit",
+      "getJobs",
+      "deleteCategory"
+    ],
+    "file": "src\\app\\api\\admin\\categories\\[id]\\route.ts"
+  },
+  {
+    "route": "/api/admin/certificates/queue",
+    "methods": [
+      "GET"
+    ],
+    "dbCalls": [
+      "getCandidates"
+    ],
+    "file": "src\\app\\api\\admin\\certificates\\queue\\route.ts"
+  },
+  {
+    "route": "/api/admin/certificates/verify",
+    "methods": [
+      "POST"
+    ],
+    "dbCalls": [],
+    "file": "src\\app\\api\\admin\\certificates\\verify\\route.ts"
+  },
+  {
+    "route": "/api/admin/circular-changes",
+    "methods": [
+      "GET"
+    ],
+    "dbCalls": [
+      "getCircularChangeProposals"
+    ],
+    "file": "src\\app\\api\\admin\\circular-changes\\route.ts"
+  },
+  {
+    "route": "/api/admin/circular-changes/[id]",
+    "methods": [
+      "GET",
+      "POST"
+    ],
+    "dbCalls": [
+      "getCircularChangeProposal"
+    ],
+    "file": "src\\app\\api\\admin\\circular-changes\\[id]\\route.ts"
+  },
+  {
+    "route": "/api/admin/collector/sync",
+    "methods": [
+      "GET",
+      "POST"
+    ],
+    "dbCalls": [],
+    "file": "src\\app\\api\\admin\\collector\\sync\\route.ts"
+  },
+  {
+    "route": "/api/admin/companies",
+    "methods": [
+      "GET",
+      "POST",
+      "PATCH",
+      "DELETE"
+    ],
+    "dbCalls": [
+      "getCompanies",
+      "getJobs",
+      "createCompany",
+      "updateCompany",
+      "getCompanyById",
+      "deleteCompany"
+    ],
+    "file": "src\\app\\api\\admin\\companies\\route.ts"
+  },
+  {
+    "route": "/api/admin/content-studio",
+    "methods": [
+      "GET",
+      "POST"
+    ],
+    "dbCalls": [
+      "getCircularDrafts",
+      "getJobs",
+      "getContentStudioState",
+      "saveCircularDraft",
+      "saveContentStudioState"
+    ],
+    "file": "src\\app\\api\\admin\\content-studio\\route.ts"
+  },
+  {
+    "route": "/api/admin/content-studio/[id]/approve",
+    "methods": [
+      "POST"
+    ],
+    "dbCalls": [
+      "getCircularDraft",
+      "getContentStudioState",
+      "approveCircularDraft",
+      "saveContentStudioState"
+    ],
+    "file": "src\\app\\api\\admin\\content-studio\\[id]\\approve\\route.ts"
+  },
+  {
+    "route": "/api/admin/content-studio/[id]/brief",
+    "methods": [
+      "POST"
+    ],
+    "dbCalls": [
+      "getCircularDraft",
+      "getContentStudioState",
+      "saveContentStudioState"
+    ],
+    "file": "src\\app\\api\\admin\\content-studio\\[id]\\brief\\route.ts"
+  },
+  {
+    "route": "/api/admin/content-studio/[id]/generate",
+    "methods": [
+      "POST"
+    ],
+    "dbCalls": [
+      "getCircularDraft",
+      "getContentStudioState",
+      "saveContentStudioState"
+    ],
+    "file": "src\\app\\api\\admin\\content-studio\\[id]\\generate\\route.ts"
+  },
+  {
+    "route": "/api/admin/content-studio/[id]/outline",
+    "methods": [
+      "POST"
+    ],
+    "dbCalls": [
+      "getCircularDraft",
+      "getContentStudioState",
+      "saveContentStudioState"
+    ],
+    "file": "src\\app\\api\\admin\\content-studio\\[id]\\outline\\route.ts"
+  },
+  {
+    "route": "/api/admin/content-studio/[id]/revisions",
+    "methods": [
+      "GET",
+      "POST"
+    ],
+    "dbCalls": [
+      "getContentStudioState",
+      "saveContentStudioState"
+    ],
+    "file": "src\\app\\api\\admin\\content-studio\\[id]\\revisions\\route.ts"
+  },
+  {
+    "route": "/api/admin/content-studio/[id]",
+    "methods": [
+      "GET",
+      "POST"
+    ],
+    "dbCalls": [
+      "getCircularDraft",
+      "getJobByIdOrSlug",
+      "getContentStudioState",
+      "saveContentStudioState",
+      "saveJob"
+    ],
+    "file": "src\\app\\api\\admin\\content-studio\\[id]\\route.ts"
+  },
+  {
+    "route": "/api/admin/content-studio/[id]/validate",
+    "methods": [
+      "POST"
+    ],
+    "dbCalls": [
+      "getCircularDraft",
+      "getContentStudioState",
+      "saveContentStudioState"
+    ],
+    "file": "src\\app\\api\\admin\\content-studio\\[id]\\validate\\route.ts"
+  },
+  {
+    "route": "/api/admin/coupons",
+    "methods": [
+      "GET",
+      "POST"
+    ],
+    "dbCalls": [
+      "getCoupons",
+      "getCouponByCode",
+      "saveCoupon",
+      "recordAdminAudit"
+    ],
+    "file": "src\\app\\api\\admin\\coupons\\route.ts"
+  },
+  {
+    "route": "/api/admin/coupons/[id]",
+    "methods": [
+      "GET",
+      "PATCH"
+    ],
+    "dbCalls": [
+      "getCouponById",
+      "getCouponByCode",
+      "saveCoupon",
+      "recordAdminAudit"
+    ],
+    "file": "src\\app\\api\\admin\\coupons\\[id]\\route.ts"
+  },
+  {
+    "route": "/api/admin/deadlines",
+    "methods": [
+      "GET"
+    ],
+    "dbCalls": [
+      "getJobs",
+      "getDeadlineRevisions"
+    ],
+    "file": "src\\app\\api\\admin\\deadlines\\route.ts"
+  },
+  {
+    "route": "/api/admin/featured-jobs",
+    "methods": [
+      "GET",
+      "POST"
+    ],
+    "dbCalls": [
+      "getFeaturedPlacements",
+      "getJobs",
+      "getJobById",
+      "saveFeaturedPlacement",
+      "addAuditLog"
+    ],
+    "file": "src\\app\\api\\admin\\featured-jobs\\route.ts"
+  },
+  {
+    "route": "/api/admin/featured-jobs/[id]",
+    "methods": [
+      "PATCH",
+      "DELETE"
+    ],
+    "dbCalls": [
+      "getFeaturedPlacementById",
+      "getJobById",
+      "saveFeaturedPlacement",
+      "addAuditLog",
+      "saveJob",
+      "deleteFeaturedPlacement"
+    ],
+    "file": "src\\app\\api\\admin\\featured-jobs\\[id]\\route.ts"
+  },
+  {
+    "route": "/api/admin/gemini/config",
+    "methods": [
+      "GET",
+      "POST"
+    ],
+    "dbCalls": [],
+    "file": "src\\app\\api\\admin\\gemini\\config\\route.ts"
+  },
+  {
+    "route": "/api/admin/gemini/parse-circular",
+    "methods": [
+      "POST"
+    ],
+    "dbCalls": [
+      "saveJob"
+    ],
+    "file": "src\\app\\api\\admin\\gemini\\parse-circular\\route.ts"
+  },
+  {
+    "route": "/api/admin/governance/health",
+    "methods": [
+      "GET"
+    ],
+    "dbCalls": [],
+    "file": "src\\app\\api\\admin\\governance\\health\\route.ts"
+  },
+  {
+    "route": "/api/admin/governance/overview",
+    "methods": [
+      "GET"
+    ],
+    "dbCalls": [],
+    "file": "src\\app\\api\\admin\\governance\\overview\\route.ts"
+  },
+  {
+    "route": "/api/admin/governance/rbac",
+    "methods": [
+      "GET",
+      "POST"
+    ],
+    "dbCalls": [],
+    "file": "src\\app\\api\\admin\\governance\\rbac\\route.ts"
+  },
+  {
+    "route": "/api/admin/governance/search",
+    "methods": [
+      "GET"
+    ],
+    "dbCalls": [],
+    "file": "src\\app\\api\\admin\\governance\\search\\route.ts"
+  },
+  {
+    "route": "/api/admin/job-feeds/config",
+    "methods": [
+      "GET",
+      "PATCH"
+    ],
+    "dbCalls": [
+      "getFeedConfig",
+      "saveFeedConfig",
+      "addAuditLog"
+    ],
+    "file": "src\\app\\api\\admin\\job-feeds\\config\\route.ts"
+  },
+  {
+    "route": "/api/admin/job-feeds/revalidate",
+    "methods": [
+      "POST"
+    ],
+    "dbCalls": [
+      "getFeaturedPlacements",
+      "saveFeaturedPlacement",
+      "addAuditLog"
+    ],
+    "file": "src\\app\\api\\admin\\job-feeds\\revalidate\\route.ts"
+  },
+  {
+    "route": "/api/admin/job-feeds",
+    "methods": [
+      "GET"
+    ],
+    "dbCalls": [
+      "getJobs",
+      "getFeaturedPlacements",
+      "getFeedConfig"
+    ],
+    "file": "src\\app\\api\\admin\\job-feeds\\route.ts"
+  },
+  {
+    "route": "/api/admin/job-matching/config",
+    "methods": [
+      "GET",
+      "PATCH"
+    ],
+    "dbCalls": [
+      "getMatchingConfig",
+      "updateMatchingConfig"
+    ],
+    "file": "src\\app\\api\\admin\\job-matching\\config\\route.ts"
+  },
+  {
+    "route": "/api/admin/job-matching/health",
+    "methods": [
+      "GET"
+    ],
+    "dbCalls": [
+      "getJobs",
+      "getCandidates",
+      "getMatchingConfig",
+      "getRecommendationFeedback"
+    ],
+    "file": "src\\app\\api\\admin\\job-matching\\health\\route.ts"
+  },
+  {
+    "route": "/api/admin/job-matching/rebuild",
+    "methods": [
+      "POST"
+    ],
+    "dbCalls": [
+      "addAuditLog"
+    ],
+    "file": "src\\app\\api\\admin\\job-matching\\rebuild\\route.ts"
+  },
+  {
+    "route": "/api/admin/jobs",
+    "methods": [
+      "GET",
+      "POST",
+      "PATCH",
+      "DELETE"
+    ],
+    "dbCalls": [
+      "getJobs",
+      "getJobById",
+      "saveJob",
+      "deleteJob"
+    ],
+    "file": "src\\app\\api\\admin\\jobs\\route.ts"
+  },
+  {
+    "route": "/api/admin/jobs/[id]",
+    "methods": [
+      "GET",
+      "PUT",
+      "DELETE"
+    ],
+    "dbCalls": [
+      "getJobById",
+      "saveJob",
+      "deleteJob"
+    ],
+    "file": "src\\app\\api\\admin\\jobs\\[id]\\route.ts"
+  },
+  {
+    "route": "/api/admin/media",
+    "methods": [
+      "GET",
+      "POST",
+      "PATCH",
+      "DELETE"
+    ],
+    "dbCalls": [
+      "getMediaItems",
+      "saveMediaItem",
+      "updateMediaItem",
+      "getMediaItemById",
+      "getJobs",
+      "deleteMediaItem"
+    ],
+    "file": "src\\app\\api\\admin\\media\\route.ts"
+  },
+  {
+    "route": "/api/admin/monitoring/run",
+    "methods": [
+      "POST"
+    ],
+    "dbCalls": [],
+    "file": "src\\app\\api\\admin\\monitoring\\run\\route.ts"
+  },
+  {
+    "route": "/api/admin/notifications/deliveries",
+    "methods": [
+      "GET"
+    ],
+    "dbCalls": [
+      "getNotificationDeliveries"
+    ],
+    "file": "src\\app\\api\\admin\\notifications\\deliveries\\route.ts"
+  },
+  {
+    "route": "/api/admin/notifications/send",
+    "methods": [
+      "POST"
+    ],
+    "dbCalls": [
+      "getCandidates",
+      "enqueueNotificationDelivery",
+      "addCandidateNotification",
+      "getCandidateByPhone"
+    ],
+    "file": "src\\app\\api\\admin\\notifications\\send\\route.ts"
+  },
+  {
+    "route": "/api/admin/operations/budget",
+    "methods": [
+      "GET",
+      "POST"
+    ],
+    "dbCalls": [],
+    "file": "src\\app\\api\\admin\\operations\\budget\\route.ts"
+  },
+  {
+    "route": "/api/admin/operations/expenses",
+    "methods": [
+      "GET",
+      "POST",
+      "PUT",
+      "DELETE"
+    ],
+    "dbCalls": [],
+    "file": "src\\app\\api\\admin\\operations\\expenses\\route.ts"
+  },
+  {
+    "route": "/api/admin/operations/usage",
+    "methods": [
+      "GET"
+    ],
+    "dbCalls": [],
+    "file": "src\\app\\api\\admin\\operations\\usage\\route.ts"
+  },
+  {
+    "route": "/api/admin/organizations/suggestions",
+    "methods": [
+      "GET"
+    ],
+    "dbCalls": [
+      "getJobs",
+      "getCompanies"
+    ],
+    "file": "src\\app\\api\\admin\\organizations\\suggestions\\route.ts"
+  },
+  {
+    "route": "/api/admin/pages",
+    "methods": [
+      "GET",
+      "POST"
+    ],
+    "dbCalls": [
+      "getPages",
+      "savePage"
+    ],
+    "file": "src\\app\\api\\admin\\pages\\route.ts"
+  },
+  {
+    "route": "/api/admin/pages/[id]",
+    "methods": [
+      "GET",
+      "PUT",
+      "DELETE"
+    ],
+    "dbCalls": [
+      "getPageById",
+      "savePage",
+      "deletePage"
+    ],
+    "file": "src\\app\\api\\admin\\pages\\[id]\\route.ts"
+  },
+  {
+    "route": "/api/admin/publishing/analytics",
+    "methods": [
+      "GET"
+    ],
+    "dbCalls": [],
+    "file": "src\\app\\api\\admin\\publishing\\analytics\\route.ts"
+  },
+  {
+    "route": "/api/admin/publishing/archive",
+    "methods": [
+      "POST"
+    ],
+    "dbCalls": [],
+    "file": "src\\app\\api\\admin\\publishing\\archive\\route.ts"
+  },
+  {
+    "route": "/api/admin/publishing/cancel-schedule",
+    "methods": [
+      "POST"
+    ],
+    "dbCalls": [],
+    "file": "src\\app\\api\\admin\\publishing\\cancel-schedule\\route.ts"
+  },
+  {
+    "route": "/api/admin/publishing/expire",
+    "methods": [
+      "POST"
+    ],
+    "dbCalls": [],
+    "file": "src\\app\\api\\admin\\publishing\\expire\\route.ts"
+  },
+  {
+    "route": "/api/admin/publishing/history/[id]",
+    "methods": [
+      "GET"
+    ],
+    "dbCalls": [
+      "getJobByIdOrSlug",
+      "getJobById",
+      "getPublicationSnapshots",
+      "getPublicationAuditLogs",
+      "getReviewComments"
+    ],
+    "file": "src\\app\\api\\admin\\publishing\\history\\[id]\\route.ts"
+  },
+  {
+    "route": "/api/admin/publishing/publish-now",
+    "methods": [
+      "POST"
+    ],
+    "dbCalls": [],
+    "file": "src\\app\\api\\admin\\publishing\\publish-now\\route.ts"
+  },
+  {
+    "route": "/api/admin/publishing/queue",
+    "methods": [
+      "GET",
+      "POST"
+    ],
+    "dbCalls": [
+      "getPublishingQueue"
+    ],
+    "file": "src\\app\\api\\admin\\publishing\\queue\\route.ts"
+  },
+  {
+    "route": "/api/admin/publishing/redirects",
+    "methods": [
+      "GET",
+      "POST"
+    ],
+    "dbCalls": [
+      "getRedirects"
+    ],
+    "file": "src\\app\\api\\admin\\publishing\\redirects\\route.ts"
+  },
+  {
+    "route": "/api/admin/publishing/restore",
+    "methods": [
+      "POST"
+    ],
+    "dbCalls": [],
+    "file": "src\\app\\api\\admin\\publishing\\restore\\route.ts"
+  },
+  {
+    "route": "/api/admin/publishing/retry",
+    "methods": [
+      "POST"
+    ],
+    "dbCalls": [
+      "getPublishingQueue"
+    ],
+    "file": "src\\app\\api\\admin\\publishing\\retry\\route.ts"
+  },
+  {
+    "route": "/api/admin/publishing/schedule",
+    "methods": [
+      "POST"
+    ],
+    "dbCalls": [
+      "getJobById",
+      "saveJob"
+    ],
+    "file": "src\\app\\api\\admin\\publishing\\schedule\\route.ts"
+  },
+  {
+    "route": "/api/admin/publishing/unpublish",
+    "methods": [
+      "POST"
+    ],
+    "dbCalls": [],
+    "file": "src\\app\\api\\admin\\publishing\\unpublish\\route.ts"
+  },
+  {
+    "route": "/api/admin/raffles",
+    "methods": [
+      "GET",
+      "POST"
+    ],
+    "dbCalls": [
+      "getRaffleCampaigns",
+      "saveRaffleCampaign",
+      "recordAdminAudit"
+    ],
+    "file": "src\\app\\api\\admin\\raffles\\route.ts"
+  },
+  {
+    "route": "/api/admin/raffles/[id]",
+    "methods": [
+      "GET",
+      "PATCH"
+    ],
+    "dbCalls": [
+      "getRaffleCampaignById",
+      "saveRaffleCampaign",
+      "recordAdminAudit"
+    ],
+    "file": "src\\app\\api\\admin\\raffles\\[id]\\route.ts"
+  },
+  {
+    "route": "/api/admin/reports/generate",
+    "methods": [
+      "GET",
+      "POST"
+    ],
+    "dbCalls": [],
+    "file": "src\\app\\api\\admin\\reports\\generate\\route.ts"
+  },
+  {
+    "route": "/api/admin/search/analytics",
+    "methods": [
+      "GET"
+    ],
+    "dbCalls": [
+      "getSearchAnalytics"
+    ],
+    "file": "src\\app\\api\\admin\\search\\analytics\\route.ts"
+  },
+  {
+    "route": "/api/admin/settings",
+    "methods": [
+      "GET",
+      "PATCH"
+    ],
+    "dbCalls": [
+      "getPlatformSettings",
+      "updatePlatformSettings"
+    ],
+    "file": "src\\app\\api\\admin\\settings\\route.ts"
+  },
+  {
+    "route": "/api/admin/sources/drafts",
+    "methods": [
+      "GET",
+      "POST"
+    ],
+    "dbCalls": [
+      "getCircularDrafts",
+      "approveCircularDraft",
+      "rejectCircularDraft"
+    ],
+    "file": "src\\app\\api\\admin\\sources\\drafts\\route.ts"
+  },
+  {
+    "route": "/api/admin/sources/logs",
+    "methods": [
+      "GET"
+    ],
+    "dbCalls": [
+      "getAdminAuditLogs"
+    ],
+    "file": "src\\app\\api\\admin\\sources\\logs\\route.ts"
+  },
+  {
+    "route": "/api/admin/sources",
+    "methods": [
+      "GET",
+      "POST",
+      "PUT"
+    ],
+    "dbCalls": [
+      "getJobSources",
+      "createJobSource",
+      "getJobSourceById",
+      "updateJobSource"
+    ],
+    "file": "src\\app\\api\\admin\\sources\\route.ts"
+  },
+  {
+    "route": "/api/admin/sources/run-all",
+    "methods": [
+      "POST"
+    ],
+    "dbCalls": [],
+    "file": "src\\app\\api\\admin\\sources\\run-all\\route.ts"
+  },
+  {
+    "route": "/api/admin/sources/runs",
+    "methods": [
+      "GET"
+    ],
+    "dbCalls": [
+      "getSpiderRuns"
+    ],
+    "file": "src\\app\\api\\admin\\sources\\runs\\route.ts"
+  },
+  {
+    "route": "/api/admin/sources/runs/[id]/retry",
+    "methods": [
+      "POST"
+    ],
+    "dbCalls": [],
+    "file": "src\\app\\api\\admin\\sources\\runs\\[id]\\retry\\route.ts"
+  },
+  {
+    "route": "/api/admin/sources/[id]/ingest",
+    "methods": [
+      "POST"
+    ],
+    "dbCalls": [
+      "getJobSourceById"
+    ],
+    "file": "src\\app\\api\\admin\\sources\\[id]\\ingest\\route.ts"
+  },
+  {
+    "route": "/api/admin/sources/[id]",
+    "methods": [
+      "GET",
+      "PUT",
+      "PATCH",
+      "DELETE"
+    ],
+    "dbCalls": [
+      "getJobSourceById",
+      "updateJobSource",
+      "archiveOrDeleteJobSource"
+    ],
+    "file": "src\\app\\api\\admin\\sources\\[id]\\route.ts"
+  },
+  {
+    "route": "/api/admin/sources/[id]/test",
+    "methods": [
+      "POST"
+    ],
+    "dbCalls": [
+      "getJobSourceById",
+      "updateJobSource"
+    ],
+    "file": "src\\app\\api\\admin\\sources\\[id]\\test\\route.ts"
+  },
+  {
+    "route": "/api/admin/sources/[id]/toggle",
+    "methods": [
+      "POST"
+    ],
+    "dbCalls": [
+      "getJobSourceById",
+      "toggleJobSource"
+    ],
+    "file": "src\\app\\api\\admin\\sources\\[id]\\toggle\\route.ts"
+  },
+  {
+    "route": "/api/admin/spider/gemini-browser",
+    "methods": [
+      "GET",
+      "POST"
+    ],
+    "dbCalls": [
+      "getJobs",
+      "saveJob",
+      "getJobById",
+      "deleteJob"
+    ],
+    "file": "src\\app\\api\\admin\\spider\\gemini-browser\\route.ts"
+  },
+  {
+    "route": "/api/admin/stats",
+    "methods": [
+      "GET"
+    ],
+    "dbCalls": [
+      "getAllCandidates",
+      "getAllApplications",
+      "getCoupons",
+      "getRaffleCampaigns",
+      "getJobs",
+      "getCircularDrafts"
+    ],
+    "file": "src\\app\\api\\admin\\stats\\route.ts"
+  },
+  {
+    "route": "/api/admin/teletalk/inspect",
+    "methods": [
+      "GET",
+      "POST"
+    ],
+    "dbCalls": [],
+    "file": "src\\app\\api\\admin\\teletalk\\inspect\\route.ts"
+  },
+  {
+    "route": "/api/admin/testing/personas",
+    "methods": [
+      "GET"
+    ],
+    "dbCalls": [],
+    "file": "src\\app\\api\\admin\\testing\\personas\\route.ts"
+  },
+  {
+    "route": "/api/admin/testing/runs",
+    "methods": [
+      "GET",
+      "POST"
+    ],
+    "dbCalls": [],
+    "file": "src\\app\\api\\admin\\testing\\runs\\route.ts"
+  },
+  {
+    "route": "/api/admin/upload-applicant-copy",
+    "methods": [
+      "POST"
+    ],
+    "dbCalls": [
+      "updateAppStatus"
+    ],
+    "file": "src\\app\\api\\admin\\upload-applicant-copy\\route.ts"
+  },
+  {
+    "route": "/api/admin/upload-file",
+    "methods": [
+      "POST"
+    ],
+    "dbCalls": [],
+    "file": "src\\app\\api\\admin\\upload-file\\route.ts"
+  },
+  {
+    "route": "/api/admin/verification/queue",
+    "methods": [
+      "GET",
+      "POST"
+    ],
+    "dbCalls": [],
+    "file": "src\\app\\api\\admin\\verification\\queue\\route.ts"
+  },
+  {
+    "route": "/api/admin/verification/run",
+    "methods": [
+      "POST"
+    ],
+    "dbCalls": [],
+    "file": "src\\app\\api\\admin\\verification\\run\\route.ts"
+  },
+  {
+    "route": "/api/admin/verification/usage",
+    "methods": [
+      "GET"
+    ],
+    "dbCalls": [
+      "getAiUsageSummary",
+      "getAiUsageLogs"
+    ],
+    "file": "src\\app\\api\\admin\\verification\\usage\\route.ts"
+  },
+  {
+    "route": "/api/admin/verification/[id]/approve",
+    "methods": [
+      "POST"
+    ],
+    "dbCalls": [
+      "getCircularDrafts",
+      "saveVerificationResult",
+      "approveCircularDraft",
+      "saveCircularDraft"
+    ],
+    "file": "src\\app\\api\\admin\\verification\\[id]\\approve\\route.ts"
+  },
+  {
+    "route": "/api/admin/verification/[id]/correct-field",
+    "methods": [
+      "POST"
+    ],
+    "dbCalls": [],
+    "file": "src\\app\\api\\admin\\verification\\[id]\\correct-field\\route.ts"
+  },
+  {
+    "route": "/api/admin/verification/[id]/resolve-conflict",
+    "methods": [
+      "POST"
+    ],
+    "dbCalls": [],
+    "file": "src\\app\\api\\admin\\verification\\[id]\\resolve-conflict\\route.ts"
+  },
+  {
+    "route": "/api/admin/verification/[id]",
+    "methods": [
+      "GET"
+    ],
+    "dbCalls": [
+      "getVerificationResult"
+    ],
+    "file": "src\\app\\api\\admin\\verification\\[id]\\route.ts"
+  },
+  {
+    "route": "/api/admin/wallet-transactions",
+    "methods": [
+      "GET",
+      "PATCH"
+    ],
+    "dbCalls": [
+      "getWalletTransactions",
+      "reviewWalletRecharge"
+    ],
+    "file": "src\\app\\api\\admin\\wallet-transactions\\route.ts"
+  }
+]

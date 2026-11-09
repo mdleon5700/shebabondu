@@ -8,7 +8,8 @@ export const metadata: Metadata = {
   description: 'সরকারি ও ব্যাংক নিয়োগ পরীক্ষার প্রস্তুতি ও ক্যারিয়ার বিশ্লেষণ।',
 };
 
-export default function SingleBlogPage({ params }: { params: { slug: string } }) {
+export default async function SingleBlogPage(props: { params: Promise<{ slug: string }> }) {
+  const params = await props.params;
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 text-slate-800">
       <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-500">

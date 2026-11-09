@@ -5,7 +5,8 @@ import { NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
 
-export async function GET(req: Request, { params }: { params: { filename: string } }) {
+export async function GET(req: Request, props: { params: Promise<{ filename: string }> }) {
+  const params = await props.params;
   try {
     const session = getServerSession(req);
     if (!session) return NextResponse.json({ error: 'Login required' }, { status: 401 });

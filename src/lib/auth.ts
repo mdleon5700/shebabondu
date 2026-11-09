@@ -146,7 +146,18 @@ export function getServerSession(req?: Request): { candidateId: string; role: 'c
         if (sess) return sess;
       }
     }
-    const cookieStore = cookies();
+    return null;
+  } catch {
+    return null;
+  }
+}
+
+export async function getServerSessionAsync(req?: Request): Promise<{ candidateId: string; role: 'candidate' | 'admin' } | null> {
+  const syncSess = getServerSession(req);
+  if (syncSess) return syncSess;
+
+  try {
+    const cookieStore = await cookies();
     const token = cookieStore.get(SESSION_COOKIE_NAME)?.value || cookieStore.get('session_token')?.value;
     if (!token) return null;
     if (isTestAuthEnabled() && token.startsWith('SYNTH-')) {

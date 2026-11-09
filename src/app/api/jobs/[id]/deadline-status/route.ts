@@ -6,7 +6,8 @@ import { getServerSession } from '@/lib/auth';
 
 export const dynamic = 'force-dynamic';
 
-export async function GET(req: Request, { params }: { params: { id: string } }) {
+export async function GET(req: Request, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   try {
     const job = serverDB.getPublicJobById(params.id);
     if (!job || job.id.startsWith('draft-') || (job as any).publicationStatus === 'UNPUBLISHED') {

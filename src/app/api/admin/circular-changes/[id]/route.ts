@@ -5,7 +5,8 @@ import { serverDB } from '@/lib/db';
 
 export const dynamic = 'force-dynamic';
 
-export async function GET(req: Request, { params }: { params: { id: string } }) {
+export async function GET(req: Request, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   const session = getServerSession(req);
   if (!session || session.role !== 'admin') {
     return NextResponse.json({ error: 'FORBIDDEN: Admin privileges required.' }, { status: 403 });
@@ -19,7 +20,8 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
   return NextResponse.json({ success: true, proposal });
 }
 
-export async function POST(req: Request, { params }: { params: { id: string } }) {
+export async function POST(req: Request, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   const session = getServerSession(req);
   if (!session || session.role !== 'admin') {
     return NextResponse.json({ error: 'FORBIDDEN: Admin privileges required.' }, { status: 403 });

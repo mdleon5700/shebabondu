@@ -10,7 +10,7 @@ import {
 } from '@/lib/content_studio';
 
 interface RouteContext {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 export async function POST(req: Request, context: RouteContext) {
@@ -19,7 +19,7 @@ export async function POST(req: Request, context: RouteContext) {
     return NextResponse.json({ error: 'FORBIDDEN: Admin access required.' }, { status: 403 });
   }
 
-  const draftId = context.params.id;
+  const draftId = (await context.params).id;
   const draft = serverDB.getCircularDraft ? serverDB.getCircularDraft(draftId) : null;
   if (!draft) {
     return NextResponse.json({ error: 'ড্রাফট পাওয়া যায়নি' }, { status: 404 });

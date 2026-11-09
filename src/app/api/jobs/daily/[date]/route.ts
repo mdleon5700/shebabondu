@@ -6,10 +6,8 @@ import { FeedQueryOptions } from '@/lib/feeds/types';
 
 export const dynamic = 'force-dynamic';
 
-export async function GET(
-  req: Request,
-  { params }: { params: { date: string } }
-) {
+export async function GET(req: Request, props: { params: Promise<{ date: string }> }) {
+  const params = await props.params;
   try {
     const rawDate = params.date;
     const parsedIso = BangladeshDateHelper.parseToIsoDate(rawDate);

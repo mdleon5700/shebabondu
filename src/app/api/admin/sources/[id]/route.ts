@@ -3,7 +3,7 @@ import { getServerSession } from '@/lib/auth';
 import { serverDB } from '@/lib/db';
 import { JobSource, SourceClassification, CollectionMethod } from '@/lib/types';
 
-export async function GET(req: Request, context: { params: Promise<{ id: string }> | { id: string } }) {
+export async function GET(req: Request, context: { params: Promise<Promise<{ id: string }> | { id: string }> }) {
   const session = getServerSession(req);
   if (!session) {
     return NextResponse.json({ error: 'UNAUTHORIZED: Authentication required.' }, { status: 401 });
@@ -12,7 +12,7 @@ export async function GET(req: Request, context: { params: Promise<{ id: string 
     return NextResponse.json({ error: 'FORBIDDEN: Admin privileges required.' }, { status: 403 });
   }
 
-  const { id } = await Promise.resolve(context.params);
+  const { id } = await Promise.resolve((await context.params));
   const source = serverDB.getJobSourceById(id);
   if (!source) {
     return NextResponse.json({ error: `NOT_FOUND: সোর্স "${id}" পাওয়া যায়নি।` }, { status: 404 });
@@ -21,7 +21,7 @@ export async function GET(req: Request, context: { params: Promise<{ id: string 
   return NextResponse.json({ success: true, source });
 }
 
-export async function PUT(req: Request, context: { params: Promise<{ id: string }> | { id: string } }) {
+export async function PUT(req: Request, context: { params: Promise<Promise<{ id: string }> | { id: string }> }) {
   const session = getServerSession(req);
   if (!session) {
     return NextResponse.json({ error: 'UNAUTHORIZED: Authentication required.' }, { status: 401 });
@@ -31,7 +31,7 @@ export async function PUT(req: Request, context: { params: Promise<{ id: string 
   }
 
   try {
-    const { id } = await Promise.resolve(context.params);
+    const { id } = await Promise.resolve((await context.params));
     const existing = serverDB.getJobSourceById(id);
     if (!existing) {
       return NextResponse.json({ error: `NOT_FOUND: সোর্স "${id}" পাওয়া যায়নি।` }, { status: 404 });
@@ -116,11 +116,11 @@ export async function PUT(req: Request, context: { params: Promise<{ id: string 
   }
 }
 
-export async function PATCH(req: Request, context: { params: Promise<{ id: string }> | { id: string } }) {
-  return PUT(req, context);
+export async function PATCH(req: Request, context: { params: Promise<{ id: string }> }) {
+  return PUT(req, context as any);
 }
 
-export async function DELETE(req: Request, context: { params: Promise<{ id: string }> | { id: string } }) {
+export async function DELETE(req: Request, context: { params: Promise<Promise<{ id: string }> | { id: string }> }) {
   const session = getServerSession(req);
   if (!session) {
     return NextResponse.json({ error: 'UNAUTHORIZED: Authentication required.' }, { status: 401 });
@@ -130,7 +130,7 @@ export async function DELETE(req: Request, context: { params: Promise<{ id: stri
   }
 
   try {
-    const { id } = await Promise.resolve(context.params);
+    const { id } = await Promise.resolve((await context.params));
     const existing = serverDB.getJobSourceById(id);
     if (!existing) {
       return NextResponse.json({ error: `NOT_FOUND: সোর্স "${id}" পাওয়া যায়নি।` }, { status: 404 });

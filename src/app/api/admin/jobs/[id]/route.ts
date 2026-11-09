@@ -9,10 +9,10 @@ export const dynamic = 'force-dynamic';
 function isValidUrlOrPath(url?: string): boolean {
   if (!url || typeof url !== 'string' || url.trim() === '') return true;
   const trimmed = url.trim().toLowerCase();
-  if (trimmed.startsWith('javascript:') || trimmed.startsWith('data:') || trimmed.startsWith('vbscript:')) {
+  if (trimmed.startsWith('javascript:') || (trimmed.startsWith('data:') && !trimmed.startsWith('data:image/')) || trimmed.startsWith('vbscript:')) {
     return false;
   }
-  return trimmed.startsWith('http://') || trimmed.startsWith('https://') || trimmed.startsWith('/');
+  return trimmed.startsWith('http://') || trimmed.startsWith('https://') || trimmed.startsWith('/') || trimmed.startsWith('data:image/');
 }
 
 export async function GET(

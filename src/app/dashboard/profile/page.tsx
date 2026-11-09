@@ -108,34 +108,19 @@ export default function ProfilePage() {
       .replace(/বাড়ি|বাড়ি|বাসা/gi, 'HOUSE')
       .replace(/রোড|রাস্তা/gi, 'ROAD')
       .replace(/ফ্ল্যাট/gi, 'FLAT')
-      .replace(/মিরপুর-১০/gi, 'MIRPUR-10')
-      .replace(/মিরপুর/gi, 'MIRPUR')
-      .replace(/ঢাকা-/gi, 'DHAKA-')
-      .replace(/ঢাকা/gi, 'DHAKA')
       .replace(/গ্রাম/gi, 'VILL')
       .replace(/পোস্ট|ডাকঘর/gi, 'PO')
       .replace(/থানা|উপজেলা/gi, 'THANA')
       .replace(/জেলা/gi, 'DIST');
     
-    if (/[ঀ-৿]/.test(res)) {
-      const houseMatch = res.match(/HOUSE\s*(\d+)/i);
-      const roadMatch = res.match(/ROAD\s*(\d+)/i);
-      const h = houseMatch ? houseMatch[1] : '12';
-      const r = roadMatch ? roadMatch[1] : '5';
-      res = `HOUSE ${h}, ROAD ${r}, MIRPUR-10`;
-    }
-    return res.toUpperCase().trim().replace(/,\s*$/, '');
+    return res.trim().replace(/,\s*$/, '');
   };
 
   const populateAddressFromProfile = (p: CandidateProfile) => {
     const pAddr = p.presentAddressDetails || {};
     const permAddr = p.permanentAddressDetails || {};
     
-    let rawCareOf = pAddr.careOf || p.fatherName || 'MD. RAFIQUL ISLAM';
-    if (/[ঀ-৿]/.test(rawCareOf)) {
-      rawCareOf = p.fatherName && !/[ঀ-৿]/.test(p.fatherName) ? p.fatherName : 'MD. RAFIQUL ISLAM';
-    }
-    const pCareOf = rawCareOf.toUpperCase();
+    const pCareOf = (pAddr.careOf || p.fatherName || (p as any).biodata?.fatherName || '').trim();
 
     const pDistrict = pAddr.district || p.district || 'DHAKA';
     const normDistrict = normalizeToEnglishDistrict(pDistrict);
@@ -144,48 +129,25 @@ export default function ProfilePage() {
     // Parse raw address if structured details not yet present
     const rawAddr = p.address || '';
     const postCodeMatch = rawAddr.match(/(\d{4}|[০-৯]{4})/);
-    let pCode = toEnDigits(pAddr.postCode || (postCodeMatch ? postCodeMatch[1] : '1216'));
-    if (!pCode || pCode === '১২১৬') pCode = '1216';
+    const pCode = toEnDigits(pAddr.postCode || (postCodeMatch ? postCodeMatch[1] : ''));
 
-    let rawVillage = pAddr.villageRoad || (rawAddr ? rawAddr.replace(/(\d{4}|[০-৯]{4})/, '').trim().replace(/,\s*$/, '') : 'HOUSE 12, ROAD 5, MIRPUR-10');
-    if (/[ঀ-৿]/.test(rawVillage)) {
-      rawVillage = convertBnAddressToEn(rawVillage);
-    }
-    const pVillage = (rawVillage || 'HOUSE 12, ROAD 5, MIRPUR-10').toUpperCase();
+    const rawVillage = pAddr.villageRoad || (rawAddr ? rawAddr.replace(/(\d{4}|[০-৯]{4})/, '').trim().replace(/,\s*$/, '') : '');
+    const pVillage = rawVillage.trim();
     
     let defaultThana = pAddr.upazilaThana || '';
     if (!defaultThana) {
-      const thanaMatches = ['মিরপুর', 'ধানমন্ডি', 'গুলশান', 'উত্তরা', 'মতিঝিল', 'মোহাম্মদপুর', 'বাড্ডা', 'খিলগাঁও', 'কোতোয়ালি', 'সাভার'];
-      for (const t of thanaMatches) {
-        if (rawAddr.includes(t)) {
-          defaultThana = t;
+      const upazilas = getUpazilasForDistrict(normDistrict);
+      for (const u of upazilas) {
+        if (rawAddr.toLowerCase().includes(u.toLowerCase())) {
+          defaultThana = u;
           break;
         }
       }
-      if (!defaultThana) defaultThana = normDistrict === 'DHAKA' ? 'MIRPUR' : 'SADAR';
+      if (!defaultThana) defaultThana = upazilas[0] || '';
     }
 
-    // Auto-normalize Upazila to English standard
-    let normThana = defaultThana.toUpperCase();
-    if (normThana.includes('মিরপুর') || normThana.includes('MIRPUR')) normThana = 'MIRPUR';
-    else if (normThana.includes('ধানমন্ডি')) normThana = 'DHANMONDI';
-    else if (normThana.includes('গুলশান')) normThana = 'GULSHAN';
-    else if (normThana.includes('উত্তরা')) normThana = 'UTTARA';
-    else if (normThana.includes('সাভার')) normThana = 'SAVAR';
-    else if (/[ঀ-৿]/.test(normThana)) normThana = 'MIRPUR';
-
-    const upazilas = getUpazilasForDistrict(normDistrict);
-    const matchUpz = upazilas.find(u => u === normThana || u.includes(normThana) || normThana.includes(u));
-    if (matchUpz) normThana = matchUpz;
-    else if (normDistrict === 'DHAKA' && (!normThana || normThana === 'SADAR')) normThana = 'MIRPUR';
-    else if (!normThana) normThana = upazilas[0] || 'SADAR';
-
-    // Normalize Post Office to English
-    let normPostOffice = (pAddr.postOffice || normThana).toUpperCase();
-    if (/[ঀ-৿]/.test(normPostOffice)) {
-      if (normPostOffice.includes('মিরপুর')) normPostOffice = 'MIRPUR';
-      else normPostOffice = normThana || 'MIRPUR';
-    }
+    const normThana = defaultThana.trim();
+    const normPostOffice = (pAddr.postOffice || normThana).trim();
 
     setPresentCareOf(pCareOf);
     setPresentVillageRoad(pVillage);
@@ -210,18 +172,16 @@ export default function ProfilePage() {
       setPermanentPostOffice(normPostOffice);
       setPermanentPostCode(pCode);
     } else {
-      let rawPermCare = permAddr.careOf || pCareOf;
-      if (/[ঀ-৿]/.test(rawPermCare)) rawPermCare = pCareOf;
-      setPermanentCareOf(rawPermCare.toUpperCase());
+      const rawPermCare = (permAddr.careOf || pCareOf).trim();
+      setPermanentCareOf(rawPermCare);
 
-      let rawPermVillage = permAddr.villageRoad || pVillage;
-      if (/[ঀ-৿]/.test(rawPermVillage)) rawPermVillage = convertBnAddressToEn(rawPermVillage);
-      setPermanentVillageRoad((rawPermVillage || pVillage).toUpperCase());
+      const rawPermVillage = (permAddr.villageRoad || pVillage).trim();
+      setPermanentVillageRoad(rawPermVillage);
 
       setPermanentDivision(permDiv);
       setPermanentDistrict(permDist);
-      setPermanentThana(permAddr.upazilaThana && !/[ঀ-৿]/.test(permAddr.upazilaThana) ? permAddr.upazilaThana.toUpperCase() : normThana);
-      setPermanentPostOffice(permAddr.postOffice && !/[ঀ-৿]/.test(permAddr.postOffice) ? permAddr.postOffice.toUpperCase() : normPostOffice);
+      setPermanentThana((permAddr.upazilaThana || normThana).trim());
+      setPermanentPostOffice((permAddr.postOffice || normPostOffice).trim());
       setPermanentPostCode(toEnDigits(permAddr.postCode || pCode));
     }
   };

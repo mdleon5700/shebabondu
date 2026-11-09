@@ -9,10 +9,11 @@ import JobFeedClient from '@/components/feeds/JobFeedClient';
 export const dynamic = 'force-dynamic';
 
 interface Props {
-  params: { date: string };
+  params: Promise<{ date: string }>;
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata(props: Props): Promise<Metadata> {
+  const params = await props.params;
   const parsedIso = BangladeshDateHelper.parseToIsoDate(params.date);
   if (!parsedIso) {
     return { title: 'তারিখ পাওয়া যায়নি | চাকরি সেবা' };
@@ -34,7 +35,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default function DailyJobDatePage({ params }: Props) {
+export default async function DailyJobDatePage(props: Props) {
+  const params = await props.params;
   const rawDate = (params.date || '').toLowerCase().trim();
   if (rawDate === 'today') {
     const today = new Date().toISOString().split('T')[0];

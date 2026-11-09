@@ -27,9 +27,11 @@ import {
   RefreshCw,
   CheckCircle2,
   ChevronRight,
-  LayoutTemplate
+  LayoutTemplate,
+  Globe
 } from 'lucide-react';
 import { JobCircular, JobPosition } from '@/lib/types';
+import { inferPositionGradeAndSalary } from '@/lib/shared/pay_scale';
 
 export interface UniversalJobWorkspaceProps {
   job: JobCircular | null;
@@ -57,7 +59,8 @@ const GRADE_OPTIONS = [
   '১ম গ্রেড', '২য় গ্রেড', '৩য় গ্রেড', '৪র্থ গ্রেড', '৫ম গ্রেড',
   '৬ষ্ঠ গ্রেড', '৭ম গ্রেড', '৮ম গ্রেড', '৯ম গ্রেড', '১০ম গ্রেড',
   '১১তম গ্রেড', '১২তম গ্রেড', '১৩তম গ্রেড', '১৪তম গ্রেড', '১৫তম গ্রেড',
-  '১৬তম গ্রেড', '১৭তম গ্রেড', '১৮তম গ্রেড', '১৯তম গ্রেড', '২০তম গ্রেড'
+  '১৬তম গ্রেড', '১৭তম গ্রেড', '১৮তম গ্রেড', '১৯তম গ্রেড', '২০তম গ্রেড',
+  '৯ম - ২০তম গ্রেড', '১০ম - ১৬তম গ্রেড', '১৩তম - ২০তম গ্রেড', '১৬তম - ২০তম গ্রেড'
 ];
 
 type BuilderTab = 'ai_auto' | 'basic' | 'content' | 'requirements' | 'application' | 'faqs' | 'seo';
@@ -80,8 +83,10 @@ export default function UniversalJobWorkspace({
   const [activeTab, setActiveTab] = useState<BuilderTab>(isNew ? 'ai_auto' : 'basic');
   const [previewMode, setPreviewMode] = useState<'card' | 'full_page'>('full_page');
 
-  // AI Auto-Fill State
+  // AI Auto-Fill Mode & Inputs
+  const [aiInputMode, setAiInputMode] = useState<'url' | 'text'>('url');
   const [aiInputUrl, setAiInputUrl] = useState('');
+  const [aiInputText, setAiInputText] = useState('');
   const [isAiGenerating, setIsAiGenerating] = useState(false);
   const [aiSuccessMessage, setAiSuccessMessage] = useState<string | null>(null);
 
@@ -93,17 +98,19 @@ export default function UniversalJobWorkspace({
   const [salary, setSalary] = useState('জাতীয় বেতন স্কেল ২০১৫ অনুযায়ী');
   const [minEducation, setMinEducation] = useState('স্নাতক বা সমমানের ডিগ্রি');
   const [minAge, setMinAge] = useState(18);
-  const [maxAge, setMaxAge] = useState(30);
+  const [maxAge, setMaxAge] = useState(32);
   const [ageCutOffDate, setAgeCutOffDate] = useState('');
-  const [districts, setDistricts] = useState('সকল জেলার প্রার্থীরা আবেদন করতে পারবেন');
+  const [districts, setDistricts] = useState('সকল জেলার যোগ্য প্রার্থীগণ আবেদন করতে পারবেন');
   const [deadline, setDeadline] = useState('');
   const [applicationStartDate, setApplicationStartDate] = useState('');
   const [govtFee, setGovtFee] = useState(200);
   const [serviceFee, setServiceFee] = useState(50);
-  const [feeRange, setFeeRange] = useState('৳২০০ - ৳৩০০');
-  const [officialLink, setOfficialLink] = useState('http://alljobs.teletalk.com.bd');
+  const [feeRange, setFeeRange] = useState('৳২০০');
+  const [officialLink, setOfficialLink] = useState('https://alljobs.teletalk.com.bd');
   const [circularPdfUrl, setCircularPdfUrl] = useState('');
+  const [circularImage, setCircularImage] = useState('');
   const [smsPrefix, setSmsPrefix] = useState('');
+  const [smsFormat, setSmsFormat] = useState('');
   
   // Rich Human-Grade Editorial Content
   const [bengaliDescription, setBengaliDescription] = useState('');
@@ -133,17 +140,19 @@ export default function UniversalJobWorkspace({
         setSalary(job.salary || 'জাতীয় বেতন স্কেল ২০১৫ অনুযায়ী');
         setMinEducation(job.minEducation || 'স্নাতক বা সমমানের ডিগ্রি');
         setMinAge(job.minAge || 18);
-        setMaxAge(job.maxAge || 30);
+        setMaxAge(job.maxAge || 32);
         setAgeCutOffDate(job.ageCutOffDate || '');
-        setDistricts(job.districts || 'সকল জেলার প্রার্থীরা আবেদন করতে পারবেন');
+        setDistricts(job.districts || 'সকল জেলার যোগ্য প্রার্থীগণ আবেদন করতে পারবেন');
         setDeadline(job.deadline || '');
         setApplicationStartDate(job.applicationStartDate || '');
         setGovtFee(job.govtFee ?? 200);
         setServiceFee(job.serviceFee ?? 50);
         setFeeRange(job.feeRange || `৳${job.govtFee ?? 200}`);
-        setOfficialLink(job.officialLink || 'http://alljobs.teletalk.com.bd');
+        setOfficialLink(job.officialLink || 'https://alljobs.teletalk.com.bd');
         setCircularPdfUrl(job.circularPdfUrl || job.pdfUrl || '');
+        setCircularImage(job.circularImage || '');
         setSmsPrefix(job.smsPrefix || '');
+        setSmsFormat((job as any).smsFormat || (job.smsPrefix ? `১ম এসএমএস: ${job.smsPrefix} <Space> User_ID পাঠিয়ে দিন 16222 নম্বরে।` : ''));
         setBengaliDescription(job.bengaliDescription || '');
         setPositions(Array.isArray(job.positions) && job.positions.length > 0 ? job.positions : [
           {
@@ -156,19 +165,20 @@ export default function UniversalJobWorkspace({
           }
         ]);
         setRequirements(Array.isArray(job.requirements) && job.requirements.length > 0 ? job.requirements : [
-          'স্বীকৃত বিশ্ববিদ্যালয় বা বোর্ড থেকে প্রয়োজনীয় শিক্ষাগত যোগ্যতা',
-          'বয়সসীমা ১৮ থেকে ৩০ বছরের মধ্যে হতে হবে (কোটাধারীদের ৩২ বছর)',
-          'কম্পিউটার পরিচালনায় ব্যবহারিক জ্ঞান থাকতে হবে'
+          'প্রার্থীকে অবশ্যই বাংলাদেশের স্থায়ী নাগরিক হতে হবে।',
+          'আবেদনের শেষ তারিখে প্রার্থীর বয়স ১৮ থেকে ৩২ বছরের মধ্যে হতে হবে।',
+          'অনলাইনে আবেদনের সময় সকল শিক্ষাগত যোগ্যতার তথ্য নির্ভুলভাবে প্রদান করতে হবে।'
         ]);
         setDocumentsRequired(Array.isArray(job.documentsRequired) && job.documentsRequired.length > 0 ? job.documentsRequired : [
           'সকল শিক্ষাগত যোগ্যতার মূল সনদপত্র ও একাডেমিক মার্কশিটের মূলকপি ও সত্যায়িত ফটোকপি',
           'ইউনিয়ন পরিষদ চেয়ারম্যান / পৌর মেয়র / কাউন্সিলর কর্তৃক নাগরিকত্ব সনদ',
           'জাতীয় পরিচয়পত্র (NID) অথবা অনলাইন জন্ম নিবন্ধন সনদের মূল ও সত্যায়িত কপি'
         ]);
-        setApplicationInstructions(job.applicationInstructions || '');
-        setSelectionProcess(job.selectionProcess || '');
+        setApplicationInstructions(job.applicationInstructions || '১. অনলাইনে নির্ধারিত পোর্টালে ফর্ম পূরণ করুন।\n২. ছবি (৩০০x৩০০) ও স্বাক্ষর (৩০০x৮০) আপলোড করুন।\n৩. ৭২ ঘণ্টার মধ্যে টেলিটক প্রিপেইড সিম থেকে দুটি এসএমএস পাঠিয়ে ফি পরিশোধ করুন।');
+        setSelectionProcess(job.selectionProcess || '১. প্রিলিমিনারি/লিখিত পরীক্ষা (এমসিকিউ/রচনামূলক), ২. ব্যবহারিক পরীক্ষা (প্রযোজ্য ক্ষেত্রে), এবং ৩. মৌখিক পরীক্ষা (ভাইভা)।');
         setFaqItems(Array.isArray(job.faqItems) && job.faqItems.length > 0 ? job.faqItems : [
-          { question: `${job.organization}-এ আবেদনের শেষ তারিখ কখন?`, answer: `অনলাইনে আবেদনের শেষ তারিখ ${job.deadline || 'বিজ্ঞপ্তি অনুযায়ী'}।` }
+          { question: `${job.organization}-এ আবেদনের শেষ তারিখ কখন?`, answer: `অনলাইনে আবেদনের শেষ তারিখ ${job.deadline || 'বিজ্ঞপ্তি অনুযায়ী'}।` },
+          { question: 'আবেদন ফি কত এবং কীভাবে পরিশোধ করতে হবে?', answer: 'নির্ধারিত পরীক্ষার ফি টেলিটক প্রিপেইড সিম থেকে এসএমএস পাঠিয়ে ৭২ ঘণ্টার মধ্যে পরিশোধ করতে হবে।' }
         ]);
         setSeoTitle(job.seoTitle || '');
         setSeoDescription(job.seoDescription || '');
@@ -183,17 +193,19 @@ export default function UniversalJobWorkspace({
         setSalary('জাতীয় বেতন স্কেল ২০১৫ অনুযায়ী');
         setMinEducation('স্নাতক বা সমমানের ডিগ্রি');
         setMinAge(18);
-        setMaxAge(30);
+        setMaxAge(32);
         setAgeCutOffDate('');
-        setDistricts('সকল জেলার প্রার্থীরা আবেদন করতে পারবেন');
+        setDistricts('সকল জেলার যোগ্য প্রার্থীগণ আবেদন করতে পারবেন');
         setDeadline('');
         setApplicationStartDate('');
         setGovtFee(200);
         setServiceFee(50);
         setFeeRange('৳২০০');
-        setOfficialLink('http://alljobs.teletalk.com.bd');
+        setOfficialLink('https://alljobs.teletalk.com.bd');
         setCircularPdfUrl('');
+        setCircularImage('');
         setSmsPrefix('');
+        setSmsFormat('');
         setBengaliDescription('');
         setPositions([
           {
@@ -206,10 +218,9 @@ export default function UniversalJobWorkspace({
           }
         ]);
         setRequirements([
-          'স্বীকৃত বিশ্ববিদ্যালয় বা শিক্ষা বোর্ড থেকে ন্যূনতম প্রয়োজনীয় শিক্ষাগত যোগ্যতা থাকতে হবে।',
-          'শিক্ষা জীবনের কোনো পর্যায়ে ৩য় বিভাগ বা শ্রেণি অথবা সমমানের সিজিপিএ গ্রহণযোগ্য হবে না।',
-          'প্রার্থীর বয়স ১৮ থেকে ৩০ বছরের মধ্যে হতে হবে (বীর মুক্তিযোদ্ধা কোটায় ৩২ বছর)।',
-          'কম্পিউটার পরিচালনায় সন্তোষজনক ব্যবহারিক জ্ঞান থাকতে হবে।'
+          'প্রার্থীকে অবশ্যই বাংলাদেশের স্থায়ী নাগরিক হতে হবে।',
+          'আবেদনের শেষ তারিখে প্রার্থীর বয়স ১৮ থেকে ৩২ বছরের মধ্যে হতে হবে (বীর মুক্তিযোদ্ধা কোটায় ৩২ বছর)।',
+          'অনলাইনে আবেদনের সময় সকল শিক্ষাগত যোগ্যতার তথ্য নির্ভুলভাবে প্রদান করতে হবে।'
         ]);
         setDocumentsRequired([
           'সকল শিক্ষাগত যোগ্যতার মূল সনদপত্র ও একাডেমিক মার্কশিটের মূলকপি এবং ১ সেট সত্যায়িত ফটোকপি।',
@@ -247,8 +258,11 @@ export default function UniversalJobWorkspace({
 
   // Handler: Call Gemini AI to Auto-Fill All Blocks
   const handleAiAutoFill = async () => {
-    if (!aiInputUrl.trim()) {
-      setFormError('অনুগ্রহ করে সার্কুলারের একটি PDF লিঙ্ক বা অফিশিয়াল ওয়েবসাইটের URL প্রদান করুন।');
+    const inputContent = aiInputMode === 'url' ? aiInputUrl.trim() : aiInputText.trim();
+    if (!inputContent) {
+      setFormError(aiInputMode === 'url' 
+        ? 'অনুগ্রহ করে সার্কুলারের একটি PDF লিঙ্ক বা অফিশিয়াল ওয়েবসাইটের URL প্রদান করুন।'
+        : 'অনুগ্রহ করে সার্কুলারের টেক্সট বা নোটিশের বিবরণ পেস্ট করুন।');
       return;
     }
 
@@ -260,6 +274,13 @@ export default function UniversalJobWorkspace({
     const adminSecret = savedPin && ['1234', '123456', 'admin', 'admin123', 'chakriseba2026', 'CHAKRISEBA_SECURE_ADMIN_2026'].includes(savedPin) ? savedPin : '1234';
 
     try {
+      const payload: any = { autoSave: false };
+      if (aiInputMode === 'url') {
+        payload.pdfUrl = inputContent;
+      } else {
+        payload.rawText = inputContent;
+      }
+
       const res = await fetch('/api/admin/gemini/parse-circular', {
         method: 'POST',
         headers: {
@@ -267,10 +288,7 @@ export default function UniversalJobWorkspace({
           'x-admin-secret': adminSecret
         },
         credentials: 'include',
-        body: JSON.stringify({
-          pdfUrl: aiInputUrl.trim(),
-          autoSave: false
-        })
+        body: JSON.stringify(payload)
       });
 
       const data = await res.json();
@@ -280,36 +298,59 @@ export default function UniversalJobWorkspace({
 
       const ext = data.extracted;
 
-      // Populate form fields
-      setTitle(ext.title || title);
-      setOrganization(ext.organization || organization);
-      setCategory(ext.category || category);
-      setGrade(ext.grade || grade);
-      setSalary(ext.salary || salary);
-      setMinEducation(ext.minEducation || minEducation);
-      setMinAge(ext.minAge || minAge);
-      setMaxAge(ext.maxAge || maxAge);
-      setAgeCutOffDate(ext.ageCutOffDate || ext.deadline || ageCutOffDate);
-      setDistricts(ext.districts || districts);
-      setDeadline(ext.deadline || deadline);
-      setGovtFee(ext.govtFee || govtFee);
-      setServiceFee(ext.serviceFee || 50);
-      setFeeRange(ext.feeRange || `৳${ext.govtFee || govtFee}`);
-      setOfficialLink(ext.officialLink || officialLink);
-      setCircularPdfUrl(ext.circularPdfUrl || aiInputUrl.trim());
-      setSmsPrefix(ext.smsPrefix || '');
+      // Populate Basic Identity
+      if (ext.title) setTitle(ext.title);
+      if (ext.organization) setOrganization(ext.organization);
+      if (ext.category) setCategory(ext.category);
+      if (ext.grade || (ext.positions && ext.positions[0]?.grade)) {
+        setGrade(ext.grade || ext.positions[0].grade);
+      }
+      if (ext.salary || (ext.positions && ext.positions[0]?.salary)) {
+        setSalary(ext.salary || ext.positions[0].salary);
+      }
+      if (ext.minEducation || (ext.positions && ext.positions[0]?.minEducation)) {
+        setMinEducation(ext.minEducation || ext.positions[0].minEducation);
+      }
+      if (ext.minAge) setMinAge(Number(ext.minAge) || 18);
+      if (ext.maxAge) setMaxAge(Number(ext.maxAge) || 32);
+      if (ext.ageCutOffDate || ext.deadline) setAgeCutOffDate(ext.ageCutOffDate || ext.deadline);
+      if (ext.districts) setDistricts(ext.districts);
+      if (ext.deadline) setDeadline(ext.deadline);
+      if (ext.applicationStartDate || ext.startDate) {
+        setApplicationStartDate(ext.applicationStartDate || ext.startDate);
+      }
+      if (ext.govtFee || (ext.positions && ext.positions[0]?.govtFee)) {
+        setGovtFee(Number(ext.govtFee || ext.positions[0].govtFee));
+      }
+      if (ext.serviceFee) setServiceFee(Number(ext.serviceFee) || 50);
+      if (ext.feeRange) setFeeRange(ext.feeRange);
+      if (ext.officialLink) setOfficialLink(ext.officialLink);
+      if (ext.circularPdfUrl || (aiInputMode === 'url' ? inputContent : '')) {
+        setCircularPdfUrl(ext.circularPdfUrl || inputContent);
+      }
+      if (ext.circularImage) setCircularImage(ext.circularImage);
+      if (ext.smsPrefix) setSmsPrefix(ext.smsPrefix);
+      if (ext.smsFormat) setSmsFormat(ext.smsFormat);
+      else if (ext.smsPrefix) {
+        setSmsFormat(`১ম এসএমএস: ${ext.smsPrefix} <Space> User_ID পাঠিয়ে দিন 16222 নম্বরে।`);
+      }
 
       // Content & Guidelines
-      if (ext.bengaliDescription) setBengaliDescription(ext.bengaliDescription);
+      if (ext.bengaliDescription || ext.editorialOverview) {
+        setBengaliDescription(ext.bengaliDescription || ext.editorialOverview);
+      }
       if (Array.isArray(ext.positions) && ext.positions.length > 0) {
-        setPositions(ext.positions.map((p: any) => ({
-          title: p.title || '',
-          grade: p.grade || '১০ম গ্রেড',
-          posts: Number(p.posts) || 1,
-          salary: p.salary || 'জাতীয় বেতন স্কেল ২০১৫ অনুযায়ী',
-          minEducation: p.minEducation || 'স্নাতক / সমমান',
-          govtFee: p.govtFee ?? ext.govtFee ?? 200
-        })));
+        setPositions(ext.positions.map((p: any) => {
+          const inf = inferPositionGradeAndSalary(p.title || '');
+          return {
+            title: p.title || '',
+            grade: p.grade || inf.grade,
+            posts: Number(p.posts) || 1,
+            salary: p.salary || inf.salary,
+            minEducation: p.minEducation || inf.minEducation,
+            govtFee: p.govtFee ?? inf.govtFee
+          };
+        }));
       }
       if (Array.isArray(ext.requirements) && ext.requirements.length > 0) {
         setRequirements(ext.requirements);
@@ -321,12 +362,21 @@ export default function UniversalJobWorkspace({
       if (ext.selectionProcess) setSelectionProcess(ext.selectionProcess);
       if (Array.isArray(ext.faqItems) && ext.faqItems.length > 0) {
         setFaqItems(ext.faqItems);
+      } else if (Array.isArray(ext.faqs) && ext.faqs.length > 0) {
+        setFaqItems(ext.faqs.map((f: any) => ({
+          question: f.q || f.question || '',
+          answer: f.a || f.answer || ''
+        })));
       }
       if (ext.seoTitle) setSeoTitle(ext.seoTitle);
       if (ext.seoDescription) setSeoDescription(ext.seoDescription);
-      if (Array.isArray(ext.seoKeywords)) setSeoKeywords(ext.seoKeywords.join(', '));
+      if (Array.isArray(ext.seoKeywords)) {
+        setSeoKeywords(ext.seoKeywords.join(', '));
+      } else if (typeof ext.seoKeywords === 'string') {
+        setSeoKeywords(ext.seoKeywords);
+      }
 
-      setAiSuccessMessage(`🎉 জেমিনি এআই সফলভাবে ${ext.positions?.length || 1}টি পদের ১০০% ইউনিক ও হিউম্যান কন্টেন্ট তৈরি করেছে! ডানপাশের লাইভ প্রিভিউতে ফলাফল দেখুন।`);
+      setAiSuccessMessage(`🎉 এআই সফলভাবে ${ext.positions?.length || 1}টি পদ, সম্পাদকীয় বিবরণ, শর্তাবলী, এসএমএস ও এসইও ডেটা পূরণ করেছে! প্রতিটি ট্যাব ও ডানপাশের লাইভ প্রিভিউ দেখুন।`);
       setActiveTab('basic');
     } catch (err: any) {
       setFormError(`এআই অটো-ফিল ব্যর্থ: ${err.message}`);
@@ -341,11 +391,11 @@ export default function UniversalJobWorkspace({
       ...prev,
       {
         title: '',
-        grade: '১১তম গ্রেড',
+        grade: '১৬তম গ্রেড',
         posts: 1,
-        salary: '১২,৫০০ - ৩০,২৩০ টাকা',
-        minEducation: 'স্নাতক বা সমমান',
-        govtFee: govtFee || 200
+        salary: '৯,৩০০ - ২২,৪৯০/- টাকা',
+        minEducation: 'উচ্চ মাধ্যমিক (এইচএসসি) বা সমমান পরীক্ষায় উত্তীর্ণ',
+        govtFee: 112
       }
     ]);
   };
@@ -359,7 +409,26 @@ export default function UniversalJobWorkspace({
   };
 
   const handleUpdatePosition = (index: number, field: keyof JobPosition, value: any) => {
-    setPositions(prev => prev.map((p, i) => i === index ? { ...p, [field]: value } : p));
+    setPositions(prev => prev.map((p, i) => {
+      if (i !== index) return p;
+      const updated = { ...p, [field]: value };
+      if (field === 'title' && typeof value === 'string' && value.trim().length >= 3) {
+        const inf = inferPositionGradeAndSalary(value);
+        if (!p.grade || p.grade === '১৬তম গ্রেড' || p.grade === '১০ম গ্রেড' || p.grade === '১১তম গ্রেড') {
+          updated.grade = inf.grade;
+        }
+        if (!p.salary || p.salary.includes('জাতীয় বেতন') || p.salary === '৯,৩০০ - ২২,৪৯০/- টাকা' || p.salary === '১২,৫০০ - ৩০,২৩০ টাকা') {
+          updated.salary = inf.salary;
+        }
+        if (!p.minEducation || p.minEducation === 'স্নাতক বা সমমান' || p.minEducation.includes('এইচএসসি')) {
+          updated.minEducation = inf.minEducation;
+        }
+        if (p.govtFee === undefined || p.govtFee === 200 || p.govtFee === 112) {
+          updated.govtFee = inf.govtFee;
+        }
+      }
+      return updated;
+    }));
   };
 
   // Requirements handlers
@@ -422,18 +491,19 @@ export default function UniversalJobWorkspace({
         salary: salary.trim() || 'জাতীয় বেতন স্কেল ২০১৫ অনুযায়ী',
         minEducation: minEducation.trim() || 'বিজ্ঞপ্তি অনুযায়ী',
         minAge: Number(minAge) || 18,
-        maxAge: Number(maxAge) || 30,
+        maxAge: Number(maxAge) || 32,
         ageCutOffDate: ageCutOffDate.trim() || deadline.trim(),
-        districts: districts.trim() || 'সকল জেলার প্রার্থীরা আবেদন করতে পারবেন',
+        districts: districts.trim() || 'সকল জেলার যোগ্য প্রার্থীগণ আবেদন করতে পারবেন',
         deadline: deadline.trim(),
         applicationStartDate: applicationStartDate.trim(),
         govtFee: Number(govtFee) || 200,
         serviceFee: Number(serviceFee) || 50,
         feeRange: feeRange.trim() || `৳${govtFee || 200}`,
-        officialLink: officialLink.trim() || 'http://alljobs.teletalk.com.bd',
+        officialLink: officialLink.trim() || 'https://alljobs.teletalk.com.bd',
         circularPdfUrl: circularPdfUrl.trim(),
-        circularImage: job?.circularImage || 'https://images.unsplash.com/photo-1586281380349-632531db7ed4?auto=format&fit=crop&w=600&q=80',
+        circularImage: circularImage.trim() || job?.circularImage || 'https://images.unsplash.com/photo-1586281380349-632531db7ed4?auto=format&fit=crop&w=600&q=80',
         smsPrefix: smsPrefix.trim(),
+        smsFormat: smsFormat.trim() || (smsPrefix.trim() ? `১ম এসএমএস: ${smsPrefix.trim()} <Space> User_ID পাঠিয়ে দিন 16222 নম্বরে।` : undefined),
         bengaliDescription: bengaliDescription.trim() || `${organization} নিয়োগ বিজ্ঞপ্তি ২০২৬।`,
         requirements: validRequirements.length > 0 ? validRequirements : ['বিজ্ঞপ্তি অনুযায়ী প্রয়োজনীয় শিক্ষাগত যোগ্যতা ও বয়সসীমা প্রযোজ্য।'],
         documentsRequired: validDocuments.length > 0 ? validDocuments : undefined,
@@ -492,7 +562,7 @@ export default function UniversalJobWorkspace({
     <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-slate-950/80 backdrop-blur-md animate-fadeIn">
       <div className="bg-white w-full max-w-7xl h-[95vh] rounded-3xl shadow-2xl flex flex-col overflow-hidden border border-slate-200">
         
-        {/* 1. TOP ELEMENTOR-STYLE HEADER BAR */}
+        {/* 1. TOP HEADER BAR */}
         <div className="px-5 py-3.5 bg-slate-900 text-white flex items-center justify-between border-b border-slate-800 shrink-0">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center text-white shadow-md shrink-0">
@@ -501,14 +571,14 @@ export default function UniversalJobWorkspace({
             <div>
               <div className="flex items-center gap-2">
                 <h2 className="text-sm sm:text-base font-black tracking-tight">
-                  {isNew ? 'স্মার্ট সার্কুলার পেজ বিল্ডার (Elementor Style)' : 'সার্কুলার এডিটর ও পেজ বিল্ডার'}
+                  {isNew ? 'স্মার্ট সার্কুলার পেজ বিল্ডার ও এডিটর' : 'সার্কুলার এডিটর ও পেজ বিল্ডার'}
                 </h2>
                 <span className="px-2 py-0.5 rounded-full text-[10px] font-black bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
                   {isNew ? 'NEW CIRCULAR' : (job?.id || 'EDIT')}
                 </span>
               </div>
               <p className="text-[11px] text-slate-400">
-                বামপাশের ব্লকগুলো দিয়ে সাজিয়ে ডানপাশে স্বয়ংক্রিয় রিয়েল-টাইম প্রিভিউ দেখুন
+                বামপাশের প্রতিটি ব্লকে তথ্য পূরণ করে ডানপাশে রিয়েল-টাইম প্রিভিউ দেখুন
               </p>
             </div>
           </div>
@@ -566,16 +636,16 @@ export default function UniversalJobWorkspace({
           </div>
         </div>
 
-        {/* 2. ELEMENTOR-STYLE BLOCK NAVIGATION PILL BAR */}
+        {/* 2. BLOCK NAVIGATION PILL BAR WITH LIVE DATA BADGES */}
         <div className="px-5 py-2 bg-slate-950/95 border-b border-slate-800 flex items-center gap-1.5 overflow-x-auto text-xs shrink-0 scrollbar-none">
           {[
-            { id: 'ai_auto', label: '⚡ AI অটো-ফিল', icon: Sparkles, color: 'text-amber-400' },
-            { id: 'basic', label: '📝 মৌলিক ও পদবি', icon: Building2, color: 'text-blue-400' },
-            { id: 'content', label: '📰 সম্পাদকীয় বিবরণ', icon: FileText, color: 'text-emerald-400' },
-            { id: 'requirements', label: '📋 শর্ত ও কাগজপত্র', icon: ShieldCheck, color: 'text-purple-400' },
-            { id: 'application', label: '📱 আবেদন ও এসএমএস', icon: Smartphone, color: 'text-teal-400' },
-            { id: 'faqs', label: '❓ এফএকিউ বিল্ডার', icon: HelpCircle, color: 'text-pink-400' },
-            { id: 'seo', label: '🔍 গুগল এসইও', icon: Search, color: 'text-indigo-400' },
+            { id: 'ai_auto', label: '⚡ AI অটো-ফিল', icon: Sparkles, color: 'text-amber-400', badge: null },
+            { id: 'basic', label: '📝 মৌলিক ও পদবি', icon: Building2, color: 'text-blue-400', badge: positions.length ? `${positions.length} পদবি` : null },
+            { id: 'content', label: '📰 সম্পাদকীয় বিবরণ', icon: FileText, color: 'text-emerald-400', badge: bengaliDescription ? 'রেডি' : null },
+            { id: 'requirements', label: '📋 শর্ত ও কাগজপত্র', icon: ShieldCheck, color: 'text-purple-400', badge: `${requirements.length + documentsRequired.length}` },
+            { id: 'application', label: '📱 আবেদন ও এসএমএস', icon: Smartphone, color: 'text-teal-400', badge: smsPrefix || null },
+            { id: 'faqs', label: '❓ এফএকিউ বিল্ডার', icon: HelpCircle, color: 'text-pink-400', badge: faqItems.length ? `${faqItems.length}` : null },
+            { id: 'seo', label: '🔍 গুগল এসইও', icon: Search, color: 'text-indigo-400', badge: seoTitle ? 'এসইও' : null },
           ].map(tab => {
             const Icon = tab.icon;
             const isActive = activeTab === tab.id;
@@ -592,6 +662,13 @@ export default function UniversalJobWorkspace({
               >
                 <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-white' : tab.color}`} />
                 <span>{tab.label}</span>
+                {tab.badge && (
+                  <span className={`px-1.5 py-0.2 rounded-full text-[9px] font-black ${
+                    isActive ? 'bg-white/20 text-white' : 'bg-slate-800 text-emerald-400 border border-emerald-500/30'
+                  }`}>
+                    {tab.badge}
+                  </span>
+                )}
               </button>
             );
           })}
@@ -617,7 +694,7 @@ export default function UniversalJobWorkspace({
           {/* LEFT COLUMN: ACTIVE BLOCK BUILDER */}
           <div className="lg:col-span-7 p-6 overflow-y-auto bg-white space-y-6">
 
-            {/* TAB 1: AI AUTO-FILL BLOCK */}
+            {/* TAB 1: AI AUTO-FILL BLOCK (DUAL MODE: URL OR RAW TEXT) */}
             {activeTab === 'ai_auto' && (
               <div className="space-y-5 animate-fadeIn">
                 <div className="p-5 bg-gradient-to-br from-amber-500/10 via-emerald-500/5 to-teal-500/10 rounded-3xl border border-amber-200/80 shadow-xs space-y-4">
@@ -630,59 +707,93 @@ export default function UniversalJobWorkspace({
                         জেমিনি এআই অটো-জেনারেটর (One-Click Auto Builder)
                       </h3>
                       <p className="text-xs text-slate-600 leading-relaxed mt-0.5">
-                        সার্কুলারের অফিশিয়াল PDF লিংক অথবা Alljobs লিংক দিন। জেমিনি এআই এক ক্লিকে পদবি, বেতন, হিউম্যান-রাইটিং সম্পাদকীয় বিবরণ, ৫টি এফএকিউ, আবেদন নিয়মাবলী এবং এসইও তৈরি করে স্বয়ংক্রিয়ভাবে সাজিয়ে দেবে!
+                        সার্কুলারের অফিশিয়াল PDF লিঙ্ক, Alljobs লিঙ্ক অথবা সার্কুলারের টেক্সট পেস্ট করুন। এআই এক ক্লিকে পদবি, বেতন স্কেল, সম্পাদকীয় বিবরণ, শর্তাবলী, এসএমএস নির্দেশিকা ও এসইও স্বয়ংক্রিয়ভাবে তৈরি করবে!
                       </p>
                     </div>
                   </div>
 
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between">
+                  {/* Mode Selector */}
+                  <div className="flex items-center gap-2 p-1 bg-amber-100/50 rounded-xl border border-amber-200/60 w-fit text-xs">
+                    <button
+                      type="button"
+                      onClick={() => setAiInputMode('url')}
+                      className={`px-3 py-1.5 rounded-lg font-bold transition-all ${
+                        aiInputMode === 'url' ? 'bg-amber-600 text-white shadow-xs' : 'text-amber-900 hover:text-amber-700'
+                      }`}
+                    >
+                      🌐 সার্কুলারের লিংক (URL / PDF)
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setAiInputMode('text')}
+                      className={`px-3 py-1.5 rounded-lg font-bold transition-all ${
+                        aiInputMode === 'text' ? 'bg-amber-600 text-white shadow-xs' : 'text-amber-900 hover:text-amber-700'
+                      }`}
+                    >
+                      📝 সার্কুলারের টেক্সট পেস্ট করুন (Raw Notice)
+                    </button>
+                  </div>
+
+                  {aiInputMode === 'url' ? (
+                    <div className="space-y-2">
                       <label className="text-xs font-bold text-slate-800">
                         সার্কুলার PDF লিঙ্ক বা টেলিটক URL দিন:
                       </label>
-                      <a
-                        href="/admin?tab=gemini-browser-spider"
-                        target="_blank"
-                        rel="noreferrer"
-                        className="inline-flex items-center gap-1.5 text-[11px] font-black text-amber-700 bg-amber-50 hover:bg-amber-100 border border-amber-200 px-2.5 py-1 rounded-lg transition-colors cursor-pointer shadow-sm"
-                        title="সার্ভারে ব্রাউজার এজেন্ট কীভাবে লাইভ কাজ করছে দেখুন"
-                      >
-                        <Sparkles className="w-3 h-3 text-amber-600 animate-pulse" />
-                        <span>🖥️ লাইভ ব্রাউজার এজেন্ট ভিউ</span>
-                      </a>
+                      <div className="flex gap-2">
+                        <input
+                          type="text"
+                          value={aiInputUrl}
+                          onChange={(e) => setAiInputUrl(e.target.value)}
+                          placeholder="যেমন: https://alljobs.teletalk.com.bd/... অথবা http://dcbagerhat.teletalk.com.bd"
+                          className="flex-1 px-3.5 py-2.5 text-xs rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-amber-500 bg-white font-mono"
+                        />
+                        <button
+                          type="button"
+                          onClick={handleAiAutoFill}
+                          disabled={isAiGenerating}
+                          className="px-5 py-2.5 bg-gradient-to-r from-amber-600 to-emerald-600 hover:from-amber-500 hover:to-emerald-500 text-white rounded-xl text-xs font-bold flex items-center gap-2 shadow-md transition-all cursor-pointer disabled:opacity-50 shrink-0"
+                        >
+                          <Sparkles className={`w-4 h-4 ${isAiGenerating ? 'animate-spin' : ''}`} />
+                          <span>{isAiGenerating ? 'বিশ্লেষণ হচ্ছে...' : '✨ সম্পূর্ণ পেজ বানান'}</span>
+                        </button>
+                      </div>
                     </div>
-                    <div className="flex gap-2">
-                      <input
-                        type="text"
-                        value={aiInputUrl}
-                        onChange={(e) => setAiInputUrl(e.target.value)}
-                        placeholder="যেমন: https://alljobs.teletalk.com.bd/...pdf অথবা http://breb.teletalk.com.bd"
-                        className="flex-1 px-3.5 py-2.5 text-xs rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-amber-500 bg-white font-mono"
+                  ) : (
+                    <div className="space-y-2">
+                      <label className="text-xs font-bold text-slate-800">
+                        সার্কুলার বা নোটিশের টেক্সট এখানে পেস্ট করুন:
+                      </label>
+                      <textarea
+                        rows={6}
+                        value={aiInputText}
+                        onChange={(e) => setAiInputText(e.target.value)}
+                        placeholder="ফেসবুক, পত্রিকা বা নোটিশ থেকে কপি করা সার্কুলারের লেখা এখানে পেস্ট করুন..."
+                        className="w-full p-3.5 text-xs rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-amber-500 bg-white font-normal"
                       />
                       <button
                         type="button"
                         onClick={handleAiAutoFill}
                         disabled={isAiGenerating}
-                        className="px-5 py-2.5 bg-gradient-to-r from-amber-600 to-emerald-600 hover:from-amber-500 hover:to-emerald-500 text-white rounded-xl text-xs font-bold flex items-center gap-2 shadow-md transition-all cursor-pointer disabled:opacity-50 shrink-0"
+                        className="w-full py-2.5 bg-gradient-to-r from-amber-600 to-emerald-600 hover:from-amber-500 hover:to-emerald-500 text-white rounded-xl text-xs font-bold flex items-center justify-center gap-2 shadow-md transition-all cursor-pointer disabled:opacity-50"
                       >
                         <Sparkles className={`w-4 h-4 ${isAiGenerating ? 'animate-spin' : ''}`} />
-                        <span>{isAiGenerating ? 'বিশ্লেষণ হচ্ছে...' : '✨ সম্পূর্ণ পেজ বানান'}</span>
+                        <span>{isAiGenerating ? 'এআই দিয়ে বিশ্লেষণ ও পেজ তৈরি হচ্ছে...' : '✨ টেক্সট দিয়ে সম্পূর্ণ পেজ বানান'}</span>
                       </button>
                     </div>
-                  </div>
+                  )}
                 </div>
 
                 <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200 text-xs text-slate-600 space-y-2">
                   <h4 className="font-bold text-slate-800 flex items-center gap-1.5">
                     <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                    <span>এআই অটো-বিল্ডারের সুবিধা:</span>
+                    <span>এআই অটো-ফিল যা যা স্বয়ংক্রিয়ভাবে সম্পন্ন করবে:</span>
                   </h4>
                   <ul className="list-disc list-inside space-y-1 text-slate-600 pl-1">
-                    <li>প্রতিটি পদের সঠিক বাংলা নাম, গ্রেড ও জাতীয় বেতন স্কেল ২০১৫ অনুযায়ী বেতন যুক্ত হবে।</li>
-                    <li>৩-৪ প্যারার প্রমিত বাংলা সম্পাদকীয় ওভারভিউ ও পটভূমি তৈরি হবে।</li>
-                    <li>পরীক্ষার আবেদন ফি ও ৭২ ঘণ্টার টেলিটক এসএমএস ফরম্যাট কোড তৈরি হবে।</li>
-                    <li>বয়স গণনার কাট-অফ ডেট স্বয়ংক্রিয়ভাবে চিহ্নিত হয়ে বয়স ক্যালকুলেটরে সেট হয়ে যাবে।</li>
-                    <li>৪-৬টি বাস্তবসম্মত প্রশ্ন-উত্তর (FAQs) তৈরি হবে।</li>
+                    <li>প্রতিটি পদের সঠিক বাংলা নাম, গ্রেড, শূন্যপদ সংখ্যা ও জাতীয় বেতন স্কেল ২০১৫ অনুযায়ী বেতন।</li>
+                    <li>৩-৪ প্যারার প্রমিত বাংলা সম্পাদকীয় ওভারভিউ ও নিয়োগের পটভূমি।</li>
+                    <li>আবেদন শুরু ও শেষ তারিখ, সরকারি ফি এবং ৭২ ঘণ্টার টেলিটক এসএমএস কোড ও ফরম্যাট।</li>
+                    <li>সাধারণ ও কোটা প্রার্থীদের বয়সসীমা ও বয়স গণনার কাট-অফ ডেট।</li>
+                    <li>প্রার্থীদের সাধারণ জিজ্ঞাসার এফএকিউ (FAQs) ও গুগল এসইও মেটাট্যাগ।</li>
                   </ul>
                 </div>
               </div>
@@ -695,7 +806,7 @@ export default function UniversalJobWorkspace({
                 <div className="space-y-3">
                   <h3 className="text-xs font-black uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
                     <Building2 className="w-4 h-4 text-emerald-700" />
-                    <span>১. প্রাথমিক পরিচিতি ও শিরোনাম</span>
+                    <span>১. প্রাথমিক পরিচিতি, সার্বিক গ্রেড ও বেতন স্কেল</span>
                   </h3>
                   
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
@@ -732,6 +843,39 @@ export default function UniversalJobWorkspace({
                           <option key={c.value} value={c.value}>{c.label}</option>
                         ))}
                       </select>
+                    </div>
+
+                    <div className="space-y-1">
+                      <label className="text-xs font-bold text-slate-700">সার্বিক গ্রেড (Overall Grade)</label>
+                      <input
+                        type="text"
+                        value={grade}
+                        onChange={(e) => setGrade(e.target.value)}
+                        placeholder="যেমন: ১০ম গ্রেড অথবা ১০ম - ১৬তম গ্রেড"
+                        className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-600 bg-slate-50/50 focus:bg-white font-semibold"
+                      />
+                    </div>
+
+                    <div className="space-y-1">
+                      <label className="text-xs font-bold text-slate-700">সার্বিক বেতন স্কেল</label>
+                      <input
+                        type="text"
+                        value={salary}
+                        onChange={(e) => setSalary(e.target.value)}
+                        placeholder="যেমন: ৯,৩০০ - ৫৩,০৬০/- টাকা"
+                        className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-600 bg-slate-50/50 focus:bg-white font-semibold"
+                      />
+                    </div>
+
+                    <div className="sm:col-span-2 space-y-1">
+                      <label className="text-xs font-bold text-slate-700">সার্বিক ন্যূনতম শিক্ষাগত যোগ্যতা</label>
+                      <input
+                        type="text"
+                        value={minEducation}
+                        onChange={(e) => setMinEducation(e.target.value)}
+                        placeholder="যেমন: উচ্চ মাধ্যমিক সার্টিফিকেট (এইচএসসি) বা স্নাতক বা সমমান পরীক্ষায় উত্তীর্ণ"
+                        className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-600 bg-slate-50/50 focus:bg-white font-medium"
+                      />
                     </div>
                   </div>
                 </div>
@@ -795,15 +939,13 @@ export default function UniversalJobWorkspace({
 
                           <div className="space-y-1">
                             <label className="text-[11px] font-bold text-slate-600">গ্রেড</label>
-                            <select
+                            <input
+                              type="text"
                               value={pos.grade || '১০ম গ্রেড'}
                               onChange={(e) => handleUpdatePosition(idx, 'grade', e.target.value)}
+                              placeholder="১০ম গ্রেড"
                               className="w-full px-3 py-1.5 text-xs rounded-lg border border-slate-300 bg-white font-semibold text-slate-700"
-                            >
-                              {GRADE_OPTIONS.map(g => (
-                                <option key={g} value={g}>{g}</option>
-                              ))}
-                            </select>
+                            />
                           </div>
 
                           <div className="space-y-1">
@@ -853,12 +995,23 @@ export default function UniversalJobWorkspace({
 
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
                     <div className="space-y-1">
+                      <label className="text-xs font-bold text-slate-700">আবেদন শুরুর তারিখ</label>
+                      <input
+                        type="text"
+                        value={applicationStartDate}
+                        onChange={(e) => setApplicationStartDate(e.target.value)}
+                        placeholder="যেমন: ০১ নভেম্বর ২০২৬"
+                        className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-600 font-semibold"
+                      />
+                    </div>
+
+                    <div className="space-y-1">
                       <label className="text-xs font-bold text-slate-700">আবেদনের শেষ তারিখ *</label>
                       <input
                         type="text"
                         value={deadline}
                         onChange={(e) => setDeadline(e.target.value)}
-                        placeholder="৩০ নভেম্বর ২০২৬"
+                        placeholder="যেমন: ৩০ নভেম্বর ২০২৬"
                         className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-600 font-semibold"
                       />
                     </div>
@@ -869,7 +1022,7 @@ export default function UniversalJobWorkspace({
                         type="text"
                         value={ageCutOffDate}
                         onChange={(e) => setAgeCutOffDate(e.target.value)}
-                        placeholder="০১ নভেম্বর ২০২৬"
+                        placeholder="যেমন: ০১ নভেম্বর ২০২৬"
                         className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-600 font-semibold"
                       />
                     </div>
@@ -889,7 +1042,7 @@ export default function UniversalJobWorkspace({
                           type="number"
                           value={maxAge}
                           onChange={(e) => setMaxAge(Number(e.target.value))}
-                          placeholder="৩০"
+                          placeholder="৩২"
                           className="w-16 px-2.5 py-2.5 text-xs rounded-xl border border-slate-300 text-center font-bold"
                         />
                         <span className="text-xs text-slate-500">বছর</span>
@@ -908,6 +1061,17 @@ export default function UniversalJobWorkspace({
                     </div>
 
                     <div className="space-y-1">
+                      <label className="text-xs font-bold text-slate-700">আবেদন ফি রেঞ্জ</label>
+                      <input
+                        type="text"
+                        value={feeRange}
+                        onChange={(e) => setFeeRange(e.target.value)}
+                        placeholder="যেমন: ৳১০০ - ৳২০০"
+                        className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-300 font-semibold"
+                      />
+                    </div>
+
+                    <div className="space-y-1">
                       <label className="text-xs font-bold text-slate-700">সার্ভিস ফি (টাকা)</label>
                       <input
                         type="number"
@@ -918,13 +1082,13 @@ export default function UniversalJobWorkspace({
                       />
                     </div>
 
-                    <div className="space-y-1">
+                    <div className="sm:col-span-2 space-y-1">
                       <label className="text-xs font-bold text-slate-700">প্রযোজ্য জেলা</label>
                       <input
                         type="text"
                         value={districts}
                         onChange={(e) => setDistricts(e.target.value)}
-                        placeholder="সকল জেলার প্রার্থীরা আবেদন করতে পারবেন"
+                        placeholder="সকল জেলার যোগ্য প্রার্থীগণ আবেদন করতে পারবেন"
                         className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-300 font-semibold"
                       />
                     </div>
@@ -940,7 +1104,7 @@ export default function UniversalJobWorkspace({
                   <div>
                     <h3 className="text-xs font-black uppercase tracking-wider text-slate-600 flex items-center gap-1.5">
                       <FileText className="w-4 h-4 text-emerald-700" />
-                      <span>সম্পাদকীয় বিবরণ ও পটভূমি (Job Overview)</span>
+                      <span>সম্পাদকীয় বিবরণ ও পটভূমি (Editorial Overview)</span>
                     </h3>
                     <p className="text-[11px] text-slate-500 mt-0.5">
                       প্রার্থীদের জন্য আকর্ষণীয় ও মার্জিত বাংলায় লেখা ৩-৪ প্যারার সারসংক্ষেপ
@@ -953,7 +1117,7 @@ export default function UniversalJobWorkspace({
                         alert('অনুগ্রহ করে আগে প্রতিষ্ঠানের নাম লিখুন।');
                         return;
                       }
-                      setBengaliDescription(`${organization} সম্প্রতি ২০২৬ সালের জন্য নতুন শূন্যপদে জনবল নিয়োগের লক্ষ্যে অফিশিয়াল নিয়োগ বিজ্ঞপ্তি প্রকাশ করেছে। উক্ত প্রতিষ্ঠানে দক্ষ, যোগ্য ও উদ্যমী বাংলাদেশি নাগরিকদের স্থায়ী ও রাজস্ব খাতে নিয়োগের নিমিত্তে এই বিজ্ঞপ্তি দেওয়া হয়েছে।\n\nবিজ্ঞপ্তি অনুযায়ী, ${grade} গ্রেডের আওতায় বিভিন্ন ক্যাটাগরিতে সর্বমোট ${toBn(totalPostsCount)} টি শূন্যপদে জনবল নিয়োগ দেওয়া হবে। চূড়ান্তভাবে মনোনীত প্রার্থীরা জাতীয় বেতন স্কেল ২০১৫ অনুযায়ী মাসিক ${salary} টাকা মূল বেতন স্কেল এবং সরকারি বিধি অনুযায়ী বাড়িভাড়া, চিকিৎসা ভাতা, যাতায়াত ভাতা ও উৎসব ভাতাসহ সকল সুযোগ-সুবিধা প্রাপ্য হবেন।\n\nআবেদনের জন্য প্রার্থীদের পদভেদে ন্যূনতম ${minEducation} থাকতে হবে। সাধারণ প্রার্থীদের বয়স ${toBn(minAge)} হতে ${toBn(maxAge)} বছরের মধ্যে হতে হবে, তবে বীর মুক্তিযোদ্ধা কোটা ও প্রতিবন্ধী প্রার্থীদের ক্ষেত্রে বয়স ৩২ বছর পর্যন্ত শিথিলযোগ্য। আগ্রহী প্রার্থীরা আগামী ${deadline} তারিখের মধ্যে নির্ধারিত অনলাইন পোর্টালে (${officialLink}) নির্ভুলভাবে ফরম পূরণ করে আবেদন সম্পন্ন করতে পারবেন।`);
+                      setBengaliDescription(`${organization} সম্প্রতি ২০২৬ সালের জন্য রাজস্ব খাতভুক্ত শূন্যপদে দক্ষ ও যোগ্য জনবল নিয়োগের লক্ষ্যে অফিশিয়াল নিয়োগ বিজ্ঞপ্তি প্রকাশ করেছে। উক্ত প্রতিষ্ঠানে বিভিন্ন ক্যাটাগরিতে মোট ${toBn(totalPostsCount)} টি শূন্যপদে দরখাস্ত আহ্বান করা হয়েছে। জাতীয় বেতন স্কেল ২০১৫ এর আওতায় আকর্ষণীয় বেতন কাঠামো ও সরকারি সুযোগ-সুবিধা সহ উক্ত পদে বাংলাদেশের স্থায়ী নাগরিকদের নিকট থেকে আবেদন আহ্বান করা যাচ্ছে।\n\nবিজ্ঞপ্তি অনুযায়ী আগ্রহী ও যোগ্য প্রার্থীদের অনলাইনের মাধ্যমে নির্ধারিত সময়ের মধ্যে আবেদন সম্পন্ন করতে হবে। পদভেদে ন্যূনতম শিক্ষাগত যোগ্যতা ${minEducation || 'এইচএসসি বা স্নাতক সমমান'} চাওয়া হয়েছে এবং বয়সসীমা ১৮ হতে ${toBn(maxAge)} বছরের মধ্যে হতে হবে (বীর মুক্তিযোদ্ধা কোটা ও অন্যান্য সংরক্ষিত কোটায় সরকারি বিধি অনুযায়ী শিথিলযোগ্য)।\n\nনির্বাচিত প্রার্থীরা সরকারি বিধি মোতাবেক মূল বেতনের পাশাপাশি বাড়িভাড়া ভাতা, চিকিৎসা ভাতা, যাতায়াত ভাতা ও উৎসব ভাতা প্রাপ্য হবেন। সকল জেলার যোগ্য প্রার্থীদের সময় থাকতে সতর্কতার সাথে অনলাইনে ফরম পূরণ করে নির্ধারিত টেলিটক ফি জমা দেওয়ার পরামর্শ প্রদান করা যাচ্ছে।`);
                     }}
                     className="px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 rounded-xl text-xs font-bold flex items-center gap-1 transition-colors cursor-pointer"
                   >
@@ -1078,7 +1242,13 @@ export default function UniversalJobWorkspace({
                     <input
                       type="text"
                       value={smsPrefix}
-                      onChange={(e) => setSmsPrefix(e.target.value.toUpperCase())}
+                      onChange={(e) => {
+                        const val = e.target.value.toUpperCase();
+                        setSmsPrefix(val);
+                        if (!smsFormat || smsFormat.includes('PREFIX') || smsFormat.includes(smsPrefix)) {
+                          setSmsFormat(`১ম এসএমএস: ${val || 'PREFIX'} <Space> User_ID পাঠিয়ে দিন 16222 নম্বরে।`);
+                        }
+                      }}
                       placeholder="যেমন: BREB বা BADC"
                       className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-300 font-mono font-bold text-emerald-700 uppercase"
                     />
@@ -1090,8 +1260,19 @@ export default function UniversalJobWorkspace({
                       type="text"
                       value={officialLink}
                       onChange={(e) => setOfficialLink(e.target.value)}
-                      placeholder="http://breb.teletalk.com.bd"
+                      placeholder="https://...teletalk.com.bd"
                       className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-300 font-mono"
+                    />
+                  </div>
+
+                  <div className="sm:col-span-2 space-y-1">
+                    <label className="text-xs font-bold text-slate-700">টেলিটক SMS ফরম্যাট নির্দেশিকা</label>
+                    <input
+                      type="text"
+                      value={smsFormat}
+                      onChange={(e) => setSmsFormat(e.target.value)}
+                      placeholder="১ম এসএমএস: PREFIX <Space> User_ID পাঠিয়ে দিন 16222 নম্বরে।"
+                      className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-300 font-medium"
                     />
                   </div>
 
@@ -1248,35 +1429,35 @@ export default function UniversalJobWorkspace({
             {previewMode === 'card' && (
               <div className="bg-white rounded-3xl p-5 border border-slate-200 shadow-md space-y-4">
                 <div className="flex items-start gap-3">
-                  <div className="w-12 h-12 rounded-2xl bg-emerald-50 border border-emerald-200 flex items-center justify-center font-bold text-emerald-800 shrink-0">
+                  <div className="w-12 h-12 rounded-2xl bg-emerald-50 border border-emerald-100 flex items-center justify-center shrink-0">
                     <Building2 className="w-6 h-6 text-emerald-700" />
                   </div>
-                  <div className="min-w-0 flex-1">
-                    <div className="flex items-center gap-2">
-                      <span className="px-2 py-0.5 rounded-full text-[10px] font-black bg-emerald-50 text-emerald-800 border border-emerald-200">
-                        {CATEGORY_OPTIONS.find(c => c.value === category)?.label || 'সরকারি চাকরি'}
-                      </span>
-                      <span className="text-[10px] text-slate-400 font-bold">
-                        {positions[0]?.grade || grade || '১০ম গ্রেড'}
-                      </span>
-                    </div>
-                    <h4 className="font-black text-sm text-slate-900 mt-1 line-clamp-2">
-                      {title.trim() || 'সার্কুলারের শিরোনাম এখানে প্রদর্শিত হবে'}
+                  <div className="flex-1 min-w-0">
+                    <span className="text-[11px] font-bold text-emerald-700 block truncate">
+                      {organization || 'প্রতিষ্ঠানের নাম'}
+                    </span>
+                    <h4 className="text-sm font-black text-slate-900 leading-snug line-clamp-2">
+                      {title || 'সার্কুলারের শিরোনাম'}
                     </h4>
-                    <p className="text-xs text-slate-500 font-bold mt-0.5">
-                      {organization.trim() || 'প্রতিষ্ঠানের নাম'}
-                    </p>
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-2 text-xs pt-1 border-t border-slate-100">
-                  <div className="p-2.5 bg-slate-50 rounded-xl">
-                    <span className="text-slate-400 block text-[10px] font-bold">মোট পদসংখ্যা</span>
-                    <span className="font-black text-emerald-700">{toBn(totalPostsCount)} টি পদ</span>
+                <div className="grid grid-cols-2 gap-2 text-[11px] py-2 border-y border-slate-100">
+                  <div className="flex items-center gap-1.5 text-slate-600">
+                    <Layers className="w-3.5 h-3.5 text-slate-400" />
+                    <span>পদসংখ্যা: <strong className="text-slate-900">{toBn(totalPostsCount)} টি</strong></span>
                   </div>
-                  <div className="p-2.5 bg-slate-50 rounded-xl">
-                    <span className="text-slate-400 block text-[10px] font-bold">বেতন স্কেল</span>
-                    <span className="font-bold text-slate-800 line-clamp-1">{positions[0]?.salary || salary}</span>
+                  <div className="flex items-center gap-1.5 text-slate-600">
+                    <DollarSign className="w-3.5 h-3.5 text-slate-400" />
+                    <span className="truncate">ফি: <strong className="text-slate-900">{feeRange || `৳${govtFee}`}</strong></span>
+                  </div>
+                  <div className="flex items-center gap-1.5 text-slate-600">
+                    <GraduationCap className="w-3.5 h-3.5 text-slate-400" />
+                    <span className="truncate">{grade || '১০ম গ্রেড'}</span>
+                  </div>
+                  <div className="flex items-center gap-1.5 text-slate-600">
+                    <MapPin className="w-3.5 h-3.5 text-slate-400" />
+                    <span className="truncate">{districts || 'সকল জেলা'}</span>
                   </div>
                 </div>
 
@@ -1309,7 +1490,7 @@ export default function UniversalJobWorkspace({
 
                   {/* Editorial Description Preview */}
                   <div className="text-xs text-slate-700 leading-relaxed bg-slate-50 p-3.5 rounded-2xl border border-slate-200 whitespace-pre-line font-normal">
-                    {bengaliDescription.trim() || 'এখানে জেমিনির লেখা ৩-৪ প্যারার প্রমিত বাংলা সম্পাদকীয় বিবরণ প্রদর্শিত হবে...'}
+                    {bengaliDescription.trim() || 'এখানে সম্পাদকীয় বিবরণ ও পটভূমি প্রদর্শিত হবে...'}
                   </div>
                 </div>
 
@@ -1317,16 +1498,16 @@ export default function UniversalJobWorkspace({
                 <div className="bg-white rounded-3xl p-4 border border-slate-200 shadow-sm space-y-2.5">
                   <span className="font-bold text-xs text-slate-800 flex items-center gap-1.5">
                     <Layers className="w-4 h-4 text-emerald-600" />
-                    <span>পদ ও শূন্যপদের ছক ({positions.length}টি পদ)</span>
+                    <span>পদ ও শূন্যপদের ছক ({positions.length}টি পদবি, মোট {toBn(totalPostsCount)}টি পদ)</span>
                   </span>
                   <div className="divide-y divide-slate-100 text-xs">
                     {positions.map((p, idx) => (
                       <div key={idx} className="py-2 flex items-center justify-between">
                         <div>
                           <span className="font-bold text-slate-900 block">{p.title || `পদ #${idx + 1}`}</span>
-                          <span className="text-[11px] text-slate-500">{p.grade} • {p.salary}</span>
+                          <span className="text-[11px] text-slate-500">{p.grade || grade} • {p.salary || salary}</span>
                         </div>
-                        <span className="px-2 py-0.5 bg-emerald-50 text-emerald-800 font-bold rounded-lg border border-emerald-200">
+                        <span className="px-2 py-0.5 bg-emerald-50 text-emerald-800 font-bold rounded-lg border border-emerald-200 shrink-0">
                           {toBn(p.posts)} টি
                         </span>
                       </div>
@@ -1334,40 +1515,81 @@ export default function UniversalJobWorkspace({
                   </div>
                 </div>
 
-                {/* 3. Live Age Checker Simulation */}
+                {/* 3. Timeline & Dates */}
+                <div className="bg-white rounded-3xl p-4 border border-slate-200 shadow-sm space-y-2 text-xs">
+                  <span className="font-bold text-slate-800 flex items-center gap-1.5">
+                    <Calendar className="w-4 h-4 text-indigo-600" />
+                    <span>আবেদনের সময়সূচি ও ডেডলাইন</span>
+                  </span>
+                  <div className="grid grid-cols-2 gap-2 text-slate-700">
+                    <div className="p-2.5 bg-slate-50 rounded-xl border border-slate-100">
+                      <span className="text-[10px] text-slate-500 block font-semibold">আবেদন শুরু:</span>
+                      <strong className="text-slate-900">{applicationStartDate || 'চলমান / বিজ্ঞপ্তি দেখুন'}</strong>
+                    </div>
+                    <div className="p-2.5 bg-rose-50 rounded-xl border border-rose-100">
+                      <span className="text-[10px] text-rose-600 block font-semibold">আবেদনের শেষ তারিখ:</span>
+                      <strong className="text-rose-900">{deadline || 'শীঘ্রই'}</strong>
+                    </div>
+                  </div>
+                </div>
+
+                {/* 4. Live Age Checker Simulation */}
                 <div className="bg-amber-50/70 border border-amber-200/90 rounded-3xl p-4 space-y-2 text-xs">
                   <div className="flex items-center justify-between">
                     <span className="font-bold text-slate-900 flex items-center gap-1">
                       <span>🧮</span>
-                      <span>লাইভ বয়স ক্যালকুলেটর প্রিভিউ</span>
+                      <span>বয়সসীমা ও কাট-অফ ডেট</span>
                     </span>
                     <span className="text-[10px] font-semibold text-amber-800 bg-amber-100 px-2 py-0.5 rounded-full">
-                      কাট-অফ: {ageCutOffDate || deadline}
+                      কাট-অফ: {ageCutOffDate || deadline || 'বিজ্ঞপ্তি দেখুন'}
                     </span>
                   </div>
                   <div className="p-2.5 bg-white rounded-xl border border-amber-200 text-emerald-800 font-bold flex items-center justify-between">
-                    <span>সাধারণ প্রার্থীদের বয়সসীমা: {toBn(minAge)} - {toBn(maxAge)} বছর</span>
+                    <span>প্রার্থীদের বয়সসীমা: {toBn(minAge)} - {toBn(maxAge)} বছর</span>
                     <span className="text-emerald-700">যোগ্য</span>
                   </div>
                 </div>
 
-                {/* 4. Requirements & Documents Preview */}
+                {/* 5. Fees & SMS Guide */}
+                <div className="bg-white rounded-3xl p-4 border border-slate-200 shadow-sm space-y-2.5 text-xs">
+                  <span className="font-bold text-slate-800 flex items-center gap-1.5">
+                    <Smartphone className="w-4 h-4 text-teal-600" />
+                    <span>টেলিটক এসএমএস আবেদন ও ফি নির্দেশিকা</span>
+                  </span>
+                  <div className="p-2.5 bg-teal-50 rounded-xl border border-teal-100 space-y-1">
+                    <div className="flex items-center justify-between">
+                      <span className="font-bold text-teal-900">এসএমএস কোড: {smsPrefix || 'N/A'}</span>
+                      <span className="font-bold text-teal-800">ফি: {feeRange || `৳${govtFee}`}</span>
+                    </div>
+                    <p className="text-[11px] text-teal-700 font-mono font-medium">
+                      {smsFormat || (smsPrefix ? `১ম এসএমএস: ${smsPrefix} <Space> User_ID পাঠিয়ে দিন 16222 নম্বরে।` : 'টেলিটক প্রিপেইড সিমের মাধ্যমে এসএমএস করে ফি জমা দিন।')}
+                    </p>
+                  </div>
+                </div>
+
+                {/* 6. Requirements & Documents Preview */}
                 <div className="bg-white rounded-3xl p-4 border border-slate-200 shadow-sm space-y-2.5 text-xs">
                   <span className="font-bold text-slate-800 flex items-center gap-1.5">
                     <Award className="w-4 h-4 text-emerald-600" />
                     <span>আবশ্যিক শর্ত ও ভাইভার কাগজপত্র ({requirements.length + documentsRequired.length}টি)</span>
                   </span>
                   <div className="space-y-1.5">
-                    {requirements.slice(0, 3).map((r, i) => (
+                    {requirements.map((r, i) => (
                       <div key={i} className="flex items-start gap-1.5 text-slate-700">
                         <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
                         <span>{r}</span>
                       </div>
                     ))}
+                    {documentsRequired.slice(0, 3).map((d, i) => (
+                      <div key={`d-${i}`} className="flex items-start gap-1.5 text-slate-600">
+                        <Check className="w-3.5 h-3.5 text-slate-400 shrink-0 mt-0.5" />
+                        <span>{d}</span>
+                      </div>
+                    ))}
                   </div>
                 </div>
 
-                {/* 5. FAQs Preview */}
+                {/* 7. FAQs Preview */}
                 {faqItems.length > 0 && (
                   <div className="bg-white rounded-3xl p-4 border border-slate-200 shadow-sm space-y-2 text-xs">
                     <span className="font-bold text-slate-800 flex items-center gap-1.5">
@@ -1375,7 +1597,7 @@ export default function UniversalJobWorkspace({
                       <span>প্রার্থীদের এফএকিউ ({faqItems.length}টি প্রশ্ন)</span>
                     </span>
                     <div className="space-y-1.5">
-                      {faqItems.slice(0, 2).map((f, i) => (
+                      {faqItems.map((f, i) => (
                         <div key={i} className="p-2 bg-slate-50 rounded-xl border border-slate-100">
                           <span className="font-bold text-slate-900 block">প্রশ্ন: {f.question}</span>
                           <span className="text-slate-600 text-[11px]">{f.answer}</span>
@@ -1384,6 +1606,26 @@ export default function UniversalJobWorkspace({
                     </div>
                   </div>
                 )}
+
+                {/* 8. Google SEO Snippet Preview */}
+                <div className="bg-white rounded-3xl p-4 border border-slate-200 shadow-sm space-y-1.5 text-xs">
+                  <span className="font-bold text-slate-800 flex items-center gap-1.5">
+                    <Globe className="w-4 h-4 text-blue-600" />
+                    <span>গুগল সার্চ স্নsnippet প্রিভিউ</span>
+                  </span>
+                  <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-0.5 font-sans">
+                    <span className="text-[10px] text-slate-500 block truncate">
+                      https://chakrisheba.com/jobs/{(title || 'circular').toLowerCase().replace(/[^a-z0-9]/g, '')}
+                    </span>
+                    <span className="text-sm font-semibold text-blue-700 hover:underline block truncate cursor-pointer">
+                      {seoTitle || `${title || 'নিয়োগ বিজ্ঞপ্তি ২০২৬'} - ${organization || 'চাকরি সেবা'}`}
+                    </span>
+                    <p className="text-[11px] text-slate-600 line-clamp-2 leading-relaxed">
+                      {seoDescription || (bengaliDescription ? bengaliDescription.slice(0, 150) + '...' : `${organization}-এ নতুন নিয়োগ বিজ্ঞপ্তি প্রকাশ হয়েছে।`)}
+                    </p>
+                  </div>
+                </div>
+
               </div>
             )}
 

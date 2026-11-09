@@ -7,10 +7,11 @@ import CmsPageRenderer from '@/components/CmsPageRenderer';
 export const dynamic = 'force-dynamic';
 
 interface Props {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata(props: Props): Promise<Metadata> {
+  const params = await props.params;
   const rawSlug = params?.slug || '';
   const cleanSlug = rawSlug.replace(/^_/, '');
   const pages = serverDB.getPages().map(page => serverDB.getPublishedPageById(page.id)).filter((page): page is NonNullable<typeof page> => page !== null);
@@ -26,7 +27,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default function DynamicCmsPage({ params }: Props) {
+export default async function DynamicCmsPage(props: Props) {
+  const params = await props.params;
   const rawSlug = params?.slug || '';
   const cleanSlug = rawSlug.replace(/^_/, '');
   const pages = serverDB.getPages().map(page => serverDB.getPublishedPageById(page.id)).filter((page): page is NonNullable<typeof page> => page !== null);

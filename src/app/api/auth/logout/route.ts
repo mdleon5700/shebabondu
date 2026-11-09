@@ -5,7 +5,7 @@ import { clearSessionCookie } from '@/lib/auth';
 
 export async function POST() {
   try {
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const token = cookieStore.get('cs_session_token')?.value;
     if (token) {
       serverDB.revokeSession(token);

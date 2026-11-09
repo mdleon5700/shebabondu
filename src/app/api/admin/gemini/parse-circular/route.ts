@@ -21,7 +21,7 @@ function getSpiderSettings(): { autoPublish: boolean } {
     if (fs.existsSync(SETTINGS_PATH)) {
       return JSON.parse(fs.readFileSync(SETTINGS_PATH, 'utf-8'));
     }
-  } catch {}
+  } catch { }
   return { autoPublish: false };
 }
 
@@ -61,6 +61,9 @@ export async function POST(req: Request) {
       ? job.totalPosts
       : (parseInt(String(job.totalPosts || '1').replace(/\D/g, '')) || 1);
 
+    const firstPos = (job.positions && job.positions.length > 0) ? job.positions[0] : null;
+    const defaultFee = firstPos?.govtFee || 112;
+
     // Map extracted fields for Elementor Workspace & UI compatibility
     const extracted = {
       ...job,
@@ -68,14 +71,14 @@ export async function POST(req: Request) {
       organization: job.organization || 'বাংলাদেশ সরকারি প্রতিষ্ঠান',
       category: job.category || 'govt',
       categoryLabel: job.categoryLabel || 'সরকারি চাকরি',
-      grade: job.grade || '১০ম গ্রেড',
-      salary: job.salary || '৯,৩০০ - ৫৩,০৬০/- টাকা',
-      minEducation: job.minEducation || 'এসএসসি / এইচএসসি / স্নাতক পাস',
-      minAge: 18,
-      maxAge: 32,
+      grade: job.grade || firstPos?.grade || '১৬তম গ্রেড',
+      salary: job.salary || firstPos?.salary || 'জাতীয় বেতন স্কেল ২০১৫ অনুযায়ী',
+      minEducation: job.minEducation || firstPos?.minEducation || 'উচ্চ মাধ্যমিক (এইচএসসি) বা স্নাতক পাস',
+      minAge: job.minAge ?? 18,
+      maxAge: job.maxAge ?? 32,
       ageCutOffDate: job.ageCutOffDate || job.deadline,
-      districts: 'সকল জেলার প্রার্থীরা আবেদন করতে পারবেন',
-      deadline: job.deadline || '২৫ মার্চ ২০২৬',
+      districts: job.districts || 'সকল জেলার যোগ্য প্রার্থীগণ আবেদন করতে পারবেন',
+      deadline: job.deadline || '',
       totalPosts: totalPostsNum,
       officialLink: job.officialLink || pdfUrl || 'https://alljobs.teletalk.com.bd',
       bengaliDescription: job.bengaliDescription || `${job.organization}-এ নতুন নিয়োগ বিজ্ঞপ্তি।`,
@@ -83,21 +86,22 @@ export async function POST(req: Request) {
       documentsRequired: job.documentsRequired || [],
       applicationInstructions: job.applicationInstructions || '',
       smsPrefix: job.smsPrefix || '',
+      smsFormat: job.smsFormat || '',
       selectionProcess: job.selectionProcess || [],
       faqItems: job.faqItems || [],
-      seoTitle: job.title,
-      seoDescription: (job.bengaliDescription || '').slice(0, 160),
+      seoTitle: job.seoTitle || job.title,
+      seoDescription: job.seoDescription || (job.bengaliDescription || '').slice(0, 160),
       seoKeywords: job.seoKeywords || [],
-      govtFee: (job.positions && job.positions[0]?.govtFee) || 200,
-      serviceFee: 50,
-      feeRange: `৳${(job.positions && job.positions[0]?.govtFee) || 200}`,
+      govtFee: job.govtFee || defaultFee,
+      serviceFee: job.serviceFee || 50,
+      feeRange: job.feeRange || `৳${defaultFee}`,
       positions: (job.positions || []).map(p => ({
         title: p.title,
         grade: p.grade,
         posts: Number(p.posts) || 1,
         salary: p.salary,
         minEducation: p.minEducation,
-        govtFee: p.govtFee ?? 200
+        govtFee: p.govtFee ?? defaultFee
       }))
     };
 
@@ -110,7 +114,7 @@ export async function POST(req: Request) {
 
       const orgSlug = (extracted.organization || 'gov').toLowerCase().replace(/[^a-z0-9]/g, '').slice(0, 10) || 'gov';
       const jobId = `job-ai-${orgSlug}-${randomUUID().slice(0, 6)}`;
-      
+
       const newJob: JobCircular = {
         id: jobId,
         title: extracted.title,
@@ -153,6 +157,7 @@ export async function POST(req: Request) {
         positions: extracted.positions,
         bengaliDescription: extracted.bengaliDescription,
         smsPrefix: typeof extracted.smsPrefix === 'string' ? extracted.smsPrefix : '',
+        smsFormat: typeof extracted.smsFormat === 'string' ? extracted.smsFormat : '',
         verificationStatus: shouldPublish ? 'VERIFIED' : 'AI_EXTRACTED',
         verificationConfidence: 99,
         verifiedBy: 'GEMINI-STANDALONE-CHROMIUM',
@@ -167,13 +172,13 @@ export async function POST(req: Request) {
         revalidatePath('/jobs');
         revalidatePath('/');
         revalidatePath('/admin');
-      } catch {}
+      } catch { }
     }
 
     return NextResponse.json({
       success: true,
-      message: autoSave 
-        ? `জেমিনি ব্রাউজার এজেন্ট সফলভাবে ${extracted.positions?.length || 1}টি পদের ১০০% ইউনিক ও হিউম্যান-কোয়ালিটি কন্টেন্ট সহ সার্কুলার ${savedJob?.status === 'OPEN' ? 'লাইভ পাবলিশ' : 'ড্রাফটে সংরক্ষণ'} করেছে!` 
+      message: autoSave
+        ? `জেমিনি ব্রাউজার এজেন্ট সফলভাবে ${extracted.positions?.length || 1}টি পদের ১০০% ইউনিক ও হিউম্যান-কোয়ালিটি কন্টেন্ট সহ সার্কুলার ${savedJob?.status === 'OPEN' ? 'লাইভ পাবলিশ' : 'ড্রাফটে সংরক্ষণ'} করেছে!`
         : 'অভ্যন্তরীণ জেমিনি ব্রাউজার সফলভাবে সার্কুলারের সকল তথ্য ও হিউম্যান কন্টেন্ট তৈরি করেছে।',
       extracted,
       rawGeminiResponse,

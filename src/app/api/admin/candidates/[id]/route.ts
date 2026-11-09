@@ -5,7 +5,7 @@ import { serverDB } from '@/lib/db';
 export const dynamic = 'force-dynamic';
 
 interface RouteContext {
-  params: Promise<{ id: string }> | { id: string };
+  params: Promise<Promise<{ id: string }> | { id: string }>;
 }
 
 export async function GET(req: Request, context: RouteContext) {

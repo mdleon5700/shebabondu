@@ -20,10 +20,8 @@ function escapeXml(unsafe?: string): string {
     .replace(/'/g, '&apos;');
 }
 
-export async function GET(
-  req: NextRequest,
-  { params }: { params: { id: string; page: string } }
-) {
+export async function GET(req: NextRequest, props: { params: Promise<{ id: string; page: string }> }) {
+  const params = await props.params;
   const { id, page } = params;
   const isPage2 = page.includes('2');
 

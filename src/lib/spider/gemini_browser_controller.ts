@@ -15,7 +15,7 @@ const insecureHttpsAgent = new https.Agent({
   checkServerIdentity: () => undefined
 });
 import { JobCircular, JobPosition } from '@/lib/types';
-import { resolveCircularInput, ResolvedCircularData, repairTeletalkBengaliEncoding, parseDetailsFromPdfText } from '@/lib/collector/alljobs_smart_resolver';
+import { resolveCircularInput, ResolvedCircularData, repairTeletalkBengaliEncoding, parseDetailsFromPdfText, formatBnDate, inferPositionGradeAndSalary } from '@/lib/collector/alljobs_smart_resolver';
 
 export const PROFILE_DIR = path.join(process.cwd(), '.browser_profile', 'gemini_session');
 
@@ -407,7 +407,8 @@ export async function parseCircularWithGeminiBrowser(input: CircularExtractionIn
     : input.organization || 'বাংলাদেশ সরকারি প্রতিষ্ঠান';
 
   const effectiveTitle = resolved?.title || textParsed?.title || `${effectiveOrg} নতুন নিয়োগ বিজ্ঞপ্তি ২০২৬`;
-  const effectiveDeadline = resolved?.deadline || textParsed?.deadline || input.deadline || '২৫ নভেম্বর ২০২৬';
+  const defaultDeadlineDate = new Date(Date.now() + 21 * 86400000).toISOString();
+  const effectiveDeadline = resolved?.deadline || textParsed?.deadline || input.deadline || formatBnDate(defaultDeadlineDate);
   const effectivePosts = resolved?.totalPosts || textParsed?.totalPosts || 1;
   const effectiveOfficialLink = resolved?.officialLink || textParsed?.officialLink || input.pdfUrl || 'https://alljobs.teletalk.com.bd';
   const effectivePdfUrl = resolved?.circularPdfUrl || input.pdfUrl || '';
@@ -417,22 +418,25 @@ export async function parseCircularWithGeminiBrowser(input: CircularExtractionIn
   const excerpt = text ? text.substring(0, 5000) : `${effectiveOrg}-এর অফিশিয়াল নিয়োগ বিজ্ঞপ্তি।`;
 
   const positionsJson = (resolved?.positions && resolved.positions.length > 0)
-    ? JSON.stringify(resolved.positions.slice(0, 15).map(p => ({
-        title: p.title,
-        posts: p.posts || 1,
-        salary: p.salary || 'জাতীয় বেতন স্কেল ২০১৫ অনুযায়ী',
-        grade: p.grade || '১০ম - ১৬তম গ্রেড',
-        minEducation: p.minEducation || 'এইচএসসি / স্নাতক পাস',
-        govtFee: p.govtFee || 200
-      })), null, 2)
+    ? JSON.stringify(resolved.positions.slice(0, 15).map(p => {
+        const inf = inferPositionGradeAndSalary(p.title);
+        return {
+          title: p.title,
+          posts: p.posts || 1,
+          salary: p.salary || inf.salary,
+          grade: p.grade || inf.grade,
+          minEducation: p.minEducation || inf.minEducation,
+          govtFee: p.govtFee || inf.govtFee
+        };
+      }), null, 2)
     : `[
     {
-      "title": "${resolved?.positions?.[0]?.title || 'কম্পিউটার মুদ্রাক্ষরিক'}",
+      "title": "${resolved?.positions?.[0]?.title || 'অফিস সহকারী কাম-কম্পিউটার মুদ্রাক্ষরিক'}",
       "posts": ${resolved?.positions?.[0]?.posts || effectivePosts},
       "salary": "${resolved?.positions?.[0]?.salary || '৯,৩০০ - ২২,৪৯০/- টাকা'}",
       "grade": "${resolved?.positions?.[0]?.grade || '১৬তম গ্রেড'}",
-      "minEducation": "${resolved?.positions?.[0]?.minEducation || 'উচ্চ মাধ্যমিক (এইচএসসি) বা সমমান'}",
-      "govtFee": ${resolved?.positions?.[0]?.govtFee || 200}
+      "minEducation": "${resolved?.positions?.[0]?.minEducation || 'উচ্চ মাধ্যমিক (এইচএসসি) বা সমমান পরীক্ষায় উত্তীর্ণ'}",
+      "govtFee": ${resolved?.positions?.[0]?.govtFee || 112}
     }
   ]`;
 
@@ -462,9 +466,9 @@ You MUST respond ONLY with a valid JSON block inside \`\`\`json ... \`\`\` witho
   "deadline": "${effectiveDeadline}",
   "totalPosts": ${effectivePosts},
   "officialLink": "${effectiveOfficialLink}",
-  "salary": "৯,৩০০ - ৫৩,০৬০/- টাকা",
-  "grade": "১০ম থেকে ২০তম গ্রেড",
-  "education": "এইচএসসি / স্নাতক বা সমমান পাস",
+  "salary": "${resolved?.salary || 'জাতীয় বেতন স্কেল ২০১৫ অনুযায়ী'}",
+  "grade": "${resolved?.grade || 'পদভেদে নির্ধারিত গ্রেড'}",
+  "education": "${resolved?.positions?.[0]?.minEducation || 'পদ অনুযায়ী নির্ধারিত শিক্ষাগত যোগ্যতা'}",
   "editorialOverview": "৩ থেকে ৪ প্যারাগ্রাফের আকর্ষণীয় প্রমিত বাংলা সম্পাদকীয় ওভারভিউ।",
   "positions": ${positionsJson},
   "requirements": [
@@ -476,7 +480,7 @@ You MUST respond ONLY with a valid JSON block inside \`\`\`json ... \`\`\` witho
     "জাতীয় পরিচয়পত্র ও নাগরিকত্ব সনদ"
   ],
   "applicationInstructions": "টেলিটক অনলাইনের মাধ্যমে আবেদন করার নিয়মাবলী।",
-  "smsFormat": "১ম এসএমএস: PREFIX <Space> User_ID পাঠিয়ে দিন 16222 নম্বরে।",
+  "smsFormat": "${resolved?.smsFormat || `১ম এসএমএস: ${resolved?.smsPrefix || 'TELETALK'} <Space> User_ID পাঠিয়ে দিন 16222 নম্বরে।`}",
   "selectionProcess": [
     "১. লিখিত ও কম্পিউটার টাইপিং পরীক্ষা",
     "২. মৌখিক পরীক্ষা (ভাইভা) ও সনদপত্র যাচাই"
@@ -558,6 +562,31 @@ You MUST respond ONLY with a valid JSON block inside \`\`\`json ... \`\`\` witho
     }
   }
 
+  // 3b. Local Ollama Fallback (Fast, local offline AI engine)
+  if (!parsed) {
+    try {
+      const ollamaRes = await fetch('http://127.0.0.1:11434/api/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: 'qwen2.5:1.5b',
+          prompt: prompt + '\nRespond strictly with JSON.',
+          stream: false,
+          options: { temperature: 0.2 }
+        }),
+        signal: AbortSignal.timeout(8000)
+      });
+      if (ollamaRes.ok) {
+        const resJson = await ollamaRes.json();
+        rawResponse = resJson.response || '';
+        const jsonMatch = rawResponse.match(/```json\s*([\s\S]*?)\s*```/) || rawResponse.match(/\{[\s\S]*\}/);
+        if (jsonMatch) {
+          parsed = JSON.parse(jsonMatch[1] || jsonMatch[0]);
+        }
+      }
+    } catch {}
+  }
+
   // 4. Build 100% Robust Output (Guaranteed Complete & Crash-Free)
   const finalOrg = parsed?.organization || effectiveOrg;
   const finalTitle = parsed?.title || effectiveTitle;
@@ -575,21 +604,24 @@ You MUST respond ONLY with a valid JSON block inside \`\`\`json ... \`\`\` witho
   const positions: JobPosition[] = (deepPositions.length > 0)
     ? deepPositions
     : (Array.isArray(parsed?.positions) && parsed.positions.length > 0)
-    ? parsed.positions.map((p: any) => ({
-        title: p.title || 'পদবি',
-        posts: parseInt(String(p.posts || p.vacancies || '1').replace(/\D/g, '')) || 1,
-        salary: p.salary || '৯,৩০০ - ২২,৪৯০/- টাকা',
-        grade: p.grade || '১৬তম গ্রেড',
-        minEducation: p.minEducation || p.education || 'এইচএসসি / স্নাতক পাস',
-        govtFee: typeof p.govtFee === 'number' ? p.govtFee : 112
-      }))
+    ? parsed.positions.map((p: any) => {
+        const inf = inferPositionGradeAndSalary(p.title || '');
+        return {
+          title: p.title || 'পদবি',
+          posts: parseInt(String(p.posts || p.vacancies || '1').replace(/\D/g, '')) || 1,
+          salary: p.salary || inf.salary,
+          grade: p.grade || inf.grade,
+          minEducation: p.minEducation || p.education || inf.minEducation,
+          govtFee: typeof p.govtFee === 'number' ? p.govtFee : inf.govtFee
+        };
+      })
     : [
         {
-          title: 'অফিস সহকারী / সমমান পদ',
+          title: 'অফিস সহকারী কাম-কম্পিউটার মুদ্রাক্ষরিক',
           posts: effectivePosts,
           salary: '৯,৩০০ - ২২,৪৯০/- টাকা',
           grade: '১৬তম গ্রেড',
-          minEducation: 'উচ্চ মাধ্যমিক (এইচএসসি) বা সমমানের ডিগ্রি',
+          minEducation: 'উচ্চ মাধ্যমিক সার্টিফিকেট (এইচএসসি) বা সমমান পরীক্ষায় উত্তীর্ণ',
           govtFee: 112
         }
       ];
@@ -634,17 +666,22 @@ ${finalOrg} সম্প্রতি ২০২৬ সালের জন্য �
     categoryLabel: effectiveCategoryLabel,
     totalPosts: typeof finalPosts === 'number' ? finalPosts : 1,
     deadline: finalDeadline,
-    publishedDate: resolved?.publishedDate || '০৩ নভেম্বর ২০২৬',
+    applicationStartDate: resolved?.applicationStartDate || (resolved as any)?.startDate || parsed?.applicationStartDate || parsed?.startDate || '',
+    publishedDate: resolved?.publishedDate || formatBnDate(new Date().toISOString()),
     officialLink: effectiveOfficialLink,
     applicationUrl: effectiveOfficialLink,
     circularPdfUrl: effectivePdfUrl,
     pdfUrl: effectivePdfUrl,
-    salary: parsed?.salary || 'জাতীয় বেতন স্কেল ২০১৫ অনুযায়ী',
-    grade: parsed?.grade || '১০ম - ১৬তম গ্রেড',
-    minEducation: parsed?.education || 'উচ্চ মাধ্যমিক (এইচএসসি) বা সমমান পাস',
+    salary: resolved?.salary || parsed?.salary || (positions.length > 0 ? positions[0].salary : 'জাতীয় বেতন স্কেল ২০১৫ অনুযায়ী'),
+    grade: resolved?.grade || parsed?.grade || (positions.length > 0 ? positions[0].grade : 'জাতীয় বেতন স্কেল ২০১৫ অনুযায়ী'),
+    minEducation: resolved?.positions?.[0]?.minEducation || parsed?.education || 'উচ্চ মাধ্যমিক (এইচএসসি) বা সমমান পাস',
     minAge: resolved?.minAge || 18,
     maxAge: resolved?.maxAge || 32,
     ageCutOffDate: finalDeadline,
+    districts: resolved?.districts || 'সকল জেলার যোগ্য প্রার্থীগণ আবেদন করতে পারবেন',
+    govtFee: resolved?.govtFee || (positions.length > 0 ? positions[0].govtFee : 112),
+    serviceFee: resolved?.serviceFee || 50,
+    feeRange: resolved?.feeRange || (positions.length > 0 ? `৳${positions[0].govtFee}` : '৳১১২'),
     bengaliDescription: editorialOverview,
     requirements: Array.isArray(parsed?.requirements) && parsed.requirements.length > 0 ? parsed.requirements : [
       'প্রার্থীকে অবশ্যই বাংলাদেশের স্থায়ী নাগরিক হতে হবে।',
@@ -658,8 +695,8 @@ ${finalOrg} সম্প্রতি ২০২৬ সালের জন্য �
       'অনলাইনে পূরণকৃত Applicant\'s Copy ও প্রবেশপত্র'
     ],
     applicationInstructions: parsed?.applicationInstructions || `আগ্রহী প্রার্থীদের টেলিটক অনলাইন পোর্টাল (${effectiveOfficialLink}) ব্যবহার করে নির্ভুলভাবে আবেদন ফরম পূরণ করতে হবে।`,
-    smsPrefix: parsed?.smsPrefix || (finalOrg.slice(0, 4).toUpperCase()),
-    smsFormat: parsed?.smsFormat || `১ম এসএমএস: ${parsed?.smsPrefix || 'PREFIX'} <Space> User_ID পাঠিয়ে দিন 16222 নম্বরে।`,
+    smsPrefix: resolved?.smsPrefix || (typeof parsed?.smsPrefix === 'string' && /^[A-Z0-9]{3,10}$/.test(parsed.smsPrefix) ? parsed.smsPrefix : (finalOrg.replace(/[^a-zA-Z]/g, '') || 'TELETALK').toUpperCase().slice(0, 8)),
+    smsFormat: resolved?.smsFormat || parsed?.smsFormat || `১ম এসএমএস: ${resolved?.smsPrefix || (finalOrg.replace(/[^a-zA-Z]/g, '') || 'TELETALK').toUpperCase().slice(0, 8)} <Space> User_ID পাঠিয়ে দিন 16222 নম্বরে।`,
     selectionProcess: Array.isArray(parsed?.selectionProcess)
       ? parsed.selectionProcess.join('\n')
       : '১. লিখিত ও কম্পিউটার টাইপিং পরীক্ষা\n২. মৌখিক পরীক্ষা (ভাইভা) ও সনদপত্র যাচাই',

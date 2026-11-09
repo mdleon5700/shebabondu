@@ -5,7 +5,7 @@ import { serverDB } from '@/lib/db';
 import JobDetailClient from '@/components/JobDetailClient';
 
 interface Props {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 function parseBengaliDateToIso(dateStr?: string): string | undefined {
@@ -78,7 +78,8 @@ function parseSalaryRange(salaryStr?: string): { min?: number; max?: number } | 
   return null;
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata(props: Props): Promise<Metadata> {
+  const params = await props.params;
   const jobId = params?.id || '';
   const job = serverDB.getPublicJobById(jobId);
   const pubStatus = (job as any)?.publicationStatus;
@@ -166,7 +167,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default function SingleJobPage({ params }: Props) {
+export default async function SingleJobPage(props: Props) {
+  const params = await props.params;
   // 1. Check for active 301/308 redirects
   const redirectRecord = serverDB.findRedirectByPath ? serverDB.findRedirectByPath(`/jobs/${params.id}`) : null;
   if (redirectRecord && redirectRecord.isActive) {

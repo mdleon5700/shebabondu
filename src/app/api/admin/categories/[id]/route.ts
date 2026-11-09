@@ -7,7 +7,7 @@ import { JobTaxonomyClassifier } from '@/lib/taxonomy/classifier';
 
 export async function PATCH(
   req: Request,
-  context: { params: Promise<{ id: string }> | { id: string } }
+  context: { params: Promise<Promise<{ id: string }> | { id: string }> }
 ) {
   try {
     const session = getServerSession(req);
@@ -15,7 +15,7 @@ export async function PATCH(
       return NextResponse.json({ error: 'FORBIDDEN: Admin privileges required.' }, { status: 403 });
     }
 
-    const { id: categoryId } = await Promise.resolve(context.params);
+    const { id: categoryId } = await Promise.resolve((await context.params));
     const existingCat = serverDB.getCategoryById(categoryId);
     if (!existingCat) {
       return NextResponse.json({ success: false, error: 'ক্যাটাগরি পাওয়া যায়নি' }, { status: 404 });
@@ -79,7 +79,7 @@ export const PUT = PATCH;
 
 export async function DELETE(
   req: Request,
-  context: { params: Promise<{ id: string }> | { id: string } }
+  context: { params: Promise<Promise<{ id: string }> | { id: string }> }
 ) {
   try {
     const session = getServerSession(req);
@@ -87,7 +87,7 @@ export async function DELETE(
       return NextResponse.json({ error: 'FORBIDDEN: Admin privileges required.' }, { status: 403 });
     }
 
-    const { id: categoryId } = await Promise.resolve(context.params);
+    const { id: categoryId } = await Promise.resolve((await context.params));
     const { searchParams } = new URL(req.url);
     const reassignmentCategoryId = searchParams.get('reassignTo') || undefined;
 

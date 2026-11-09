@@ -4,7 +4,8 @@ import { serverDB } from '@/lib/db';
 import { RaffleCampaign, DiscountType, CampaignStatus } from '@/lib/types';
 import { validateMoneyAmount } from '@/lib/discounts';
 
-export async function GET(req: Request, { params }: { params: { id: string } }) {
+export async function GET(req: Request, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   const session = getServerSession(req);
   if (!session) {
     return NextResponse.json({ error: 'UNAUTHORIZED: Authentication required.' }, { status: 401 });
@@ -21,7 +22,8 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
   return NextResponse.json({ success: true, campaign });
 }
 
-export async function PATCH(req: Request, { params }: { params: { id: string } }) {
+export async function PATCH(req: Request, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   const session = getServerSession(req);
   if (!session) {
     return NextResponse.json({ error: 'UNAUTHORIZED: Authentication required.' }, { status: 401 });

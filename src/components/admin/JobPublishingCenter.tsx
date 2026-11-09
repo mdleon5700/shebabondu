@@ -471,6 +471,7 @@ export default function JobPublishingCenter() {
               >
                 <option value="all">সকল ক্যাটাগরি</option>
                 <option value="govt">সরকারি চাকরি</option>
+                <option value="company">কোম্পানি ও স্বায়ত্তশাসিত</option>
                 <option value="bank">ব্যাংক জব</option>
                 <option value="teacher">শিক্ষক নিয়োগ</option>
                 <option value="ngo">এনজিও</option>

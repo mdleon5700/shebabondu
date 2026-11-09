@@ -17,11 +17,12 @@ import { SearchEngine } from '@/lib/search/engine';
 import CategoryJobsClient from './CategoryJobsClient';
 
 interface Props {
-  params: { slug: string };
-  searchParams: { [key: string]: string | string[] | undefined };
+  params: Promise<{ slug: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata(props: Props): Promise<Metadata> {
+  const params = await props.params;
   const slug = (params?.slug || '').toLowerCase().trim();
   const category = slug ? serverDB.getCategoryBySlug(slug) : null;
   if (!category) {
@@ -45,7 +46,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function CategoryLandingPage({ params, searchParams }: Props) {
+export default async function CategoryLandingPage(props: Props) {
+  const params = await props.params;
   const slug = (params?.slug || '').toLowerCase().trim();
   const category = slug ? serverDB.getCategoryBySlug(slug) : null;
 

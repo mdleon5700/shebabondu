@@ -341,6 +341,33 @@ export default function JobFeedClient({
                 ))}
               </select>
               <select
+                value={selectedEducation}
+                onChange={(e) => setSelectedEducation(e.target.value)}
+                className="w-full p-2 text-sm border border-slate-200 rounded-lg"
+              >
+                <option value="all">সকল শিক্ষাগত যোগ্যতা</option>
+                <option value="এসএসসি">এসএসসি / সমমান</option>
+                <option value="এইচএসসি">এইচএসসি / সমমান</option>
+                <option value="স্নাতক">স্নাতক / ডিগ্রি / অনার্স</option>
+                <option value="স্নাতকোত্তর">স্নাতকোত্তর / মাস্টার্স</option>
+                <option value="ডিপ্লোমা">ডিপ্লোমা ইঞ্জিনিয়ারিং</option>
+              </select>
+              <select
+                value={selectedDivision}
+                onChange={(e) => setSelectedDivision(e.target.value)}
+                className="w-full p-2 text-sm border border-slate-200 rounded-lg"
+              >
+                <option value="all">সমগ্র বাংলাদেশ</option>
+                <option value="ঢাকা">ঢাকা বিভাগ</option>
+                <option value="চট্টগ্রাম">চট্টগ্রাম বিভাগ</option>
+                <option value="রাজশাহী">রাজশাহী বিভাগ</option>
+                <option value="খুলনা">খুলনা বিভাগ</option>
+                <option value="বরিশাল">বরিশাল বিভাগ</option>
+                <option value="সিলেট">সিলেট বিভাগ</option>
+                <option value="রংপুর">রংপুর বিভাগ</option>
+                <option value="ময়মনসিংহ">ময়মনসিংহ বিভাগ</option>
+              </select>
+              <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
                 className="w-full p-2 text-sm border border-slate-200 rounded-lg"

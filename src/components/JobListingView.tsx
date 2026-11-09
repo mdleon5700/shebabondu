@@ -540,7 +540,17 @@ function JobListingViewContent({
               <span className="font-bold text-slate-700">সক্রিয় ফিল্টার:</span>
               {selectedCategory !== 'all' && (
                 <span className="inline-flex items-center gap-1 px-2.5 py-0.5 bg-emerald-50 text-emerald-800 border border-emerald-200 rounded-md font-medium text-[11px]">
-                  ক্যাটাগরি: {selectedCategory}
+                  ক্যাটাগরি: {
+                    selectedCategory === 'govt' ? 'সরকারি চাকরি' :
+                    selectedCategory === 'company' ? 'কোম্পানি ও স্বায়ত্তশাসিত' :
+                    selectedCategory === 'defense' ? 'প্রতিরক্ষা ও পুলিশ' :
+                    selectedCategory === 'bank' ? 'ব্যাংক ও আর্থিক' :
+                    selectedCategory === 'health' ? 'স্বাস্থ্য ও চিকিৎসা' :
+                    selectedCategory === 'engineer' ? 'প্রকৌশল' :
+                    selectedCategory === 'teacher' ? 'শিক্ষক নিয়োগ' :
+                    selectedCategory === 'railway' ? 'বাংলাদেশ রেলওয়ে' :
+                    selectedCategory === 'ngo' ? 'এনজিও' : selectedCategory
+                  }
                   <button onClick={() => setSelectedCategory('all')} className="hover:text-rose-600 font-bold ml-0.5">×</button>
                 </span>
               )}

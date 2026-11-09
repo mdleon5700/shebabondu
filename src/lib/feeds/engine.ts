@@ -1,4 +1,5 @@
 import { isPublicJob } from '../job-visibility';
+import { matchJobQuery } from '../search-helper';
 /**
  * Chakri Sheba - Centralized Job Feed Engine
  * Step 07: Single Authoritative Feed Provider for All Time-based & Curated Feeds
@@ -16,6 +17,39 @@ import {
 import { BangladeshDateHelper } from './timezone';
 import { FeaturedManager } from './featured';
 import { DEFAULT_FEED_CONFIG } from './config';
+
+export function normalizeCategorySlug(cat?: string): string {
+  if (!cat) return 'all';
+  const clean = cat.toLowerCase().trim().replace(/^cat-/, '');
+  if (['government-jobs', 'govt', 'bcs', 'ministry-jobs', 'directorate-jobs', 'autonomous-jobs'].includes(clean)) {
+    return 'govt';
+  }
+  if (['bank-jobs', 'bank', 'bangladesh-bank', 'state-owned-banks', 'private-bank-jobs'].includes(clean)) {
+    return 'bank';
+  }
+  if (['defense-jobs', 'defense', 'police'].includes(clean)) {
+    return 'defense';
+  }
+  if (['company', 'private-jobs', 'private'].includes(clean)) {
+    return 'company';
+  }
+  if (['engineering-jobs', 'engineer'].includes(clean)) {
+    return 'engineer';
+  }
+  if (['medical-jobs', 'health'].includes(clean)) {
+    return 'health';
+  }
+  if (['it-jobs', 'it'].includes(clean)) {
+    return 'it';
+  }
+  if (['teacher-jobs', 'teacher', 'school-college-jobs', 'university-jobs'].includes(clean)) {
+    return 'teacher';
+  }
+  if (['ngo-jobs', 'ngo'].includes(clean)) {
+    return 'ngo';
+  }
+  return clean;
+}
 
 export class JobFeedEngine {
   /**
@@ -171,26 +205,57 @@ export class JobFeedEngine {
     }
 
     // 3. Apply Multi-Facet Filtering Options
-    if (options.category && feedType !== 'category') {
-      const targetCat = options.category.toLowerCase().replace('cat-', '');
+    if (options.category && options.category !== 'all' && feedType !== 'category') {
+      const normalizedCat = normalizeCategorySlug(options.category);
       filtered = filtered.filter((j) => {
-        const jCat = (j.category || '').toLowerCase().replace('cat-', '');
-        if (targetCat === 'govt') {
-          return ['govt', 'railway', 'defense', 'teacher'].includes(jCat);
-        } else if (targetCat === 'private') {
-          return ['private', 'ngo'].includes(jCat);
+        const jCat = (j.category || '').toLowerCase().replace(/^cat-/, '');
+        if (normalizedCat === 'govt') {
+          return ['govt', 'railway', 'defense', 'teacher'].includes(jCat) || j.categoryLabel?.includes('সরকারি') || j.categoryLabel?.includes('বিসিএস');
         }
-        return jCat === targetCat;
+        if (normalizedCat === 'company') {
+          return ['company', 'private'].includes(jCat) || j.categoryLabel?.includes('কোম্পানি') || j.categoryLabel?.includes('স্বায়ত্তশাসিত');
+        }
+        if (normalizedCat === 'defense') {
+          return jCat === 'defense' || j.categoryLabel?.includes('প্রতিরক্ষা') || j.categoryLabel?.includes('পুলিশ') || j.organization?.includes('পুলিশ');
+        }
+        if (normalizedCat === 'bank') {
+          return jCat === 'bank' || j.categoryLabel?.includes('ব্যাংক') || j.organization?.includes('ব্যাংক');
+        }
+        if (normalizedCat === 'health') {
+          return jCat === 'health' || j.categoryLabel?.includes('স্বাস্থ্য') || j.title?.includes('নার্স') || j.title?.includes('মেডিকেল');
+        }
+        if (normalizedCat === 'engineer') {
+          return jCat === 'engineer' || j.title?.includes('প্রকৌশলী') || j.title?.includes('ইঞ্জিনিয়ার') || (j.positions && j.positions.some(p => p.title?.includes('প্রকৌশলী') || p.title?.includes('ইঞ্জিনিয়ার')));
+        }
+        if (normalizedCat === 'it') {
+          return jCat === 'engineer' || j.title?.includes('কম্পিউটার') || j.title?.includes('আইটি') || j.title?.includes('ডাটা') || (j.positions && j.positions.some(p => p.title?.includes('কম্পিউটার') || p.title?.includes('আইটি')));
+        }
+        if (normalizedCat === 'teacher') {
+          return jCat === 'teacher' || j.categoryLabel?.includes('শিক্ষক') || j.title?.includes('শিক্ষক') || (j.positions && j.positions.some(p => p.title?.includes('শিক্ষক')));
+        }
+        if (normalizedCat === 'ngo') {
+          return jCat === 'ngo' || j.categoryLabel?.includes('এনজিও');
+        }
+        return jCat === normalizedCat;
       });
     }
 
     if (options.district && options.district !== 'all') {
-      filtered = filtered.filter((j) => j.districts?.includes(options.district!));
+      const dist = options.district.trim();
+      filtered = filtered.filter((j) => {
+        const d = j.districts || '';
+        const org = j.organization || '';
+        return d.includes('সকল জেলা') || d.includes(dist) || org.includes(dist);
+      });
     }
 
     if (options.education && options.education !== 'all') {
-      const eduQuery = options.education.toLowerCase();
-      filtered = filtered.filter((j) => j.minEducation?.toLowerCase().includes(eduQuery));
+      const eduQuery = options.education.toLowerCase().trim();
+      filtered = filtered.filter((j) => {
+        const minEdu = (j.minEducation || '').toLowerCase();
+        const hasPosEdu = j.positions && j.positions.some(p => (p.minEducation || (p as any).education || '').toLowerCase().includes(eduQuery));
+        return minEdu.includes(eduQuery) || hasPosEdu;
+      });
     }
 
     if (options.status && options.status !== 'all') {
@@ -201,13 +266,8 @@ export class JobFeedEngine {
       }
     }
 
-    if (options.q) {
-      const query = options.q.toLowerCase().trim();
-      filtered = filtered.filter((j) => 
-        j.title?.toLowerCase().includes(query) ||
-        j.organization?.toLowerCase().includes(query) ||
-        j.minEducation?.toLowerCase().includes(query)
-      );
+    if (options.q && options.q.trim()) {
+      filtered = filtered.filter((j) => matchJobQuery(j, options.q!));
     }
 
     // 4. Apply Sorting
@@ -229,18 +289,18 @@ export class JobFeedEngine {
       }
 
       if (sortBy === 'oldest') {
-        const dateA = BangladeshDateHelper.parseToIsoDate(a.publishedDate || a.createdAt) || '1970-01-01';
-        const dateB = BangladeshDateHelper.parseToIsoDate(b.publishedDate || b.createdAt) || '1970-01-01';
+        const dateA = BangladeshDateHelper.parseToIsoDate(a.publishedDate || (a as any).publishedAt || a.createdAt) || '1970-01-01';
+        const dateB = BangladeshDateHelper.parseToIsoDate(b.publishedDate || (b as any).publishedAt || b.createdAt) || '1970-01-01';
         return dateA.localeCompare(dateB);
       }
 
-      // Default: 'latest' (newest publication timestamp/date first, preserving publishedAt)
-      const pubTimeA = (a as any).publishedAt 
-        ? new Date((a as any).publishedAt).getTime() 
-        : (a.createdAt ? new Date(a.createdAt).getTime() : (BangladeshDateHelper.parseToIsoDate(a.publishedDate) ? new Date(BangladeshDateHelper.parseToIsoDate(a.publishedDate)!).getTime() : 0));
-      const pubTimeB = (b as any).publishedAt 
-        ? new Date((b as any).publishedAt).getTime() 
-        : (b.createdAt ? new Date(b.createdAt).getTime() : (BangladeshDateHelper.parseToIsoDate(b.publishedDate) ? new Date(BangladeshDateHelper.parseToIsoDate(b.publishedDate)!).getTime() : 0));
+      // Default: 'latest' (newest publication date first, strictly based on publishedDate / publishedAt)
+      const isoA = BangladeshDateHelper.parseToIsoDate((a as any).publishedAt || a.publishedDate);
+      const isoB = BangladeshDateHelper.parseToIsoDate((b as any).publishedAt || b.publishedDate);
+      
+      const pubTimeA = isoA ? new Date(isoA).getTime() : 0;
+      const pubTimeB = isoB ? new Date(isoB).getTime() : 0;
+      
       if (pubTimeB !== pubTimeA) {
         return pubTimeB - pubTimeA;
       }
@@ -248,7 +308,11 @@ export class JobFeedEngine {
       // Tie breaker: compare createdAt if available
       const timeA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
       const timeB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
-      return timeB - timeA;
+      if (timeB !== timeA) {
+        return timeB - timeA;
+      }
+
+      return (b.id > a.id ? 1 : -1);
     });
 
     // 5. Server-side Pagination

@@ -18,7 +18,7 @@
       "permanentAddress": "বাড়ি ৪২, রোড ৭, ব্লক সি, মিরপুর-১০, ঢাকা-, MIRPUR, DHAKA-1216",
       "photoUrl": "/api/uploads/candidate-documents/USR-01712345678_photo_1794227364755.jpg",
       "signatureUrl": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=400&q=80",
-      "walletBalance": 950,
+      "walletBalance": 404,
       "maritalStatus": "single",
       "quota": "freedom_fighter",
       "education": [
@@ -535,6 +535,357 @@
   "applications": {
     "USR-01712345678": [
       {
+        "jobId": "job-alljobs-15178",
+        "jobTitle": "বৈজ্ঞানিক কর্মকর্তা পদে নিয়োগ বিজ্ঞপ্তি ২০২৬ - বাংলাদেশ মৎস্য গবেষণা ইনস্টিটিউট",
+        "organization": "বাংলাদেশ মৎস্য গবেষণা ইনস্টিটিউট",
+        "postName": "বৈজ্ঞানিক কর্মকর্তা (৯ম গ্রেড)",
+        "candidateName": "মোঃ তানভীর হাসান",
+        "candidatePhone": "01712-345678",
+        "candidateDistrict": "DHAKA",
+        "totalAmount": 273,
+        "paymentMethod": "Wallet",
+        "trxId": "WALLET-AUTO-DEBIT",
+        "status": "completed",
+        "senderPhone": "01712-345678",
+        "walletDeduction": 273,
+        "cashPaid": 0,
+        "governmentFee": 223,
+        "serviceCharge": 50,
+        "couponDiscount": 0,
+        "raffleDiscount": 0,
+        "submittedEducation": [
+          {
+            "id": "EDU-mw97qtjn-v4ps",
+            "level": "স্নাতক (অনার্স)",
+            "degree": "এমএসসি (সফটওয়্যার ইঞ্জিনিয়ারিং)",
+            "boardOrUni": "ঢাকা বিশ্ববিদ্যালয়",
+            "roll": "N/A",
+            "reg": "N/A",
+            "year": "2021",
+            "result": "CGPA 3.85"
+          },
+          {
+            "id": "EDU-mw97ph46-lqzp",
+            "level": "স্নাতক (অনার্স)",
+            "degree": "এমএসসি (সফটওয়্যার ইঞ্জিনিয়ারিং)",
+            "boardOrUni": "ঢাকা বিশ্ববিদ্যালয়",
+            "roll": "N/A",
+            "reg": "N/A",
+            "year": "2021",
+            "result": "CGPA 3.85"
+          },
+          {
+            "id": "EDU-mw97mr9t-e8yc",
+            "level": "স্নাতক (অনার্স)",
+            "degree": "এমএসসি (সফটওয়্যার ইঞ্জিনিয়ারিং)",
+            "boardOrUni": "ঢাকা বিশ্ববিদ্যালয়",
+            "roll": "N/A",
+            "reg": "N/A",
+            "year": "2021",
+            "result": "CGPA 3.85"
+          },
+          {
+            "id": "EDU-mw97m2k9-3wtw",
+            "level": "স্নাতক (অনার্স)",
+            "degree": "এমএসসি (সফটওয়্যার ইঞ্জিনিয়ারিং)",
+            "boardOrUni": "ঢাকা বিশ্ববিদ্যালয়",
+            "roll": "N/A",
+            "reg": "N/A",
+            "year": "2021",
+            "result": "CGPA 3.85"
+          },
+          {
+            "id": "EDU-mw97kj2p-b1ke",
+            "level": "স্নাতক (অনার্স)",
+            "degree": "এমএসসি (সফটওয়্যার ইঞ্জিনিয়ারিং)",
+            "boardOrUni": "ঢাকা বিশ্ববিদ্যালয়",
+            "roll": "N/A",
+            "reg": "N/A",
+            "year": "2021",
+            "result": "CGPA 3.85"
+          },
+          {
+            "id": "edu-1",
+            "level": "SSC",
+            "degree": "দাখিল/এসএসসি",
+            "boardOrUni": "ঢাকা",
+            "roll": "184920",
+            "reg": "1512948291",
+            "year": "2014",
+            "result": "GPA 5.00",
+            "majorSubject": "বিজ্ঞান"
+          },
+          {
+            "id": "edu-2",
+            "level": "HSC",
+            "degree": "আলিম/এইচএসসি",
+            "boardOrUni": "ঢাকা",
+            "roll": "109283",
+            "reg": "1512948291",
+            "year": "2016",
+            "result": "GPA 4.92",
+            "majorSubject": "বিজ্ঞান"
+          },
+          {
+            "id": "edu-3",
+            "level": "Honours",
+            "degree": "বিএসসি (ইঞ্জিনিয়ারিং)",
+            "boardOrUni": "ঢাকা বিশ্ববিদ্যালয়",
+            "roll": "160293",
+            "reg": "1612948291",
+            "year": "2021",
+            "result": "CGPA 3.68",
+            "majorSubject": "কম্পিউটার সায়েন্স অ্যান্ড ইঞ্জিনিয়ারিং"
+          }
+        ],
+        "submittedEducationLevels": [
+          "স্নাতক (অনার্স)",
+          "স্নাতক (অনার্স)",
+          "স্নাতক (অনার্স)",
+          "স্নাতক (অনার্স)",
+          "স্নাতক (অনার্স)",
+          "SSC",
+          "HSC",
+          "Honours"
+        ],
+        "attachedDocuments": [
+          {
+            "id": "CS-DOC-2611-378",
+            "title": "প্রার্থীর ছবি",
+            "type": "photo",
+            "url": "/api/uploads/candidate-documents/USR-01712345678_photo_1794227364755.jpg",
+            "uploadDate": "৯/১১/২০২৬",
+            "fileSize": "1 KB"
+          },
+          {
+            "id": "CS-DOC-2611-789",
+            "title": "প্রার্থীর ছবি",
+            "type": "photo",
+            "url": "/api/uploads/candidate-documents/USR-01712345678_photo_1794227314194.jpg",
+            "uploadDate": "৯/১১/২০২৬",
+            "fileSize": "1 KB"
+          },
+          {
+            "id": "DOC-02",
+            "title": "ডিজিটাল স্বাক্ষর (স্বচ্ছ ব্যাকগ্রাউন্ড)",
+            "type": "signature",
+            "url": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=400&q=80",
+            "uploadDate": "২৪ অক্টোবর ২০২৬",
+            "fileSize": "৩৮ KB"
+          },
+          {
+            "id": "DOC-03",
+            "title": "জাতীয় পরিচয়পত্র (NID স্মার্ট কার্ড)",
+            "type": "nid",
+            "url": "",
+            "uploadDate": "২৫ অক্টোবর ২০২৬",
+            "fileSize": "৩৪০ KB"
+          },
+          {
+            "id": "DOC-04",
+            "title": "এসএসসি মূল সনদপত্র ও ট্রান্সক্রিপ্ট",
+            "type": "ssc_cert",
+            "url": "",
+            "uploadDate": "২৫ অক্টোবর ২০২৬",
+            "fileSize": "৫১২ KB"
+          },
+          {
+            "id": "DOC-05",
+            "title": "বিএসসি (সম্মান) সার্টিফিকেট ও মার্কশিট",
+            "type": "grad_cert",
+            "url": "",
+            "uploadDate": "২৫ অক্টোবর ২০২৬",
+            "fileSize": "৬২০ KB"
+          }
+        ],
+        "id": "CS2611-23300",
+        "candidateId": "USR-01712345678",
+        "financialSnapshot": {
+          "governmentApplicationFee": 223,
+          "serviceCharge": 50,
+          "raffleBonusDiscount": 0,
+          "couponDiscount": 0,
+          "finalServiceCharge": 50,
+          "totalPayable": 273,
+          "paymentStatus": "pending",
+          "currency": "BDT",
+          "hasPrizeDrawEntry": false,
+          "snapshotCreatedAt": "2026-11-09T13:19:55.158Z",
+          "isImmutable": false
+        },
+        "verificationType": "officially_verified",
+        "date": "৯/১১/২০২৬",
+        "createdAt": "2026-11-09T13:19:55.158Z",
+        "statusHistory": [
+          {
+            "status": "processing",
+            "date": "2026-11-09T13:19:55.158Z",
+            "notes": "ডিজিটাল ওয়ালেট দিয়ে ফি পরিশোধ সম্পন্ন হয়েছে। আবেদনটি টেলিটক প্রসেসিং কিউতে যুক্ত হলো।"
+          },
+          {
+            "status": "completed",
+            "date": "2026-11-09T13:19:59.795Z",
+            "notes": "টেলিটক সার্ভারে আবেদন সফল হয়েছে এবং ফি প্রাপ্তি কনফার্ম।",
+            "updatedBy": "Admin (ADMIN-SUPER)"
+          }
+        ],
+        "notes": "টেলিটক সার্ভারে আবেদন সফল হয়েছে এবং ফি প্রাপ্তি কনফার্ম।",
+        "applicantCopyPdfUrl": "https://alljobs.teletalk.com.bd/media/public/uploads/governments/jobs/advertisement-1794128565411.pdf",
+        "teleTalkTrackingId": "BFRI-AD-98214",
+        "teleTalkPassword": "PASS-BFRI-98214"
+      },
+      {
+        "jobId": "job-alljobs-15178",
+        "jobTitle": "বৈজ্ঞানিক কর্মকর্তা পদে নিয়োগ বিজ্ঞপ্তি ২০২৬ - বাংলাদেশ মৎস্য গবেষণা ইনস্টিটিউট",
+        "organization": "বাংলাদেশ মৎস্য গবেষণা ইনস্টিটিউট",
+        "postName": "বৈজ্ঞানিক কর্মকর্তা (৯ম গ্রেড)",
+        "candidateName": "মোঃ তানভীর হাসান",
+        "candidatePhone": "01712-345678",
+        "candidateDistrict": "DHAKA",
+        "totalAmount": 273,
+        "paymentMethod": "Wallet",
+        "trxId": "WALLET-AUTO-DEBIT",
+        "status": "completed",
+        "senderPhone": "01712-345678",
+        "walletDeduction": 273,
+        "cashPaid": 0,
+        "governmentFee": 223,
+        "serviceCharge": 50,
+        "couponDiscount": 0,
+        "raffleDiscount": 0,
+        "submittedEducation": [
+          {
+            "id": "EDU-mw97qtjn-v4ps",
+            "level": "স্নাতক (অনার্স)",
+            "degree": "এমএসসি (সফটওয়্যার ইঞ্জিনিয়ারিং)",
+            "boardOrUni": "ঢাকা বিশ্ববিদ্যালয়",
+            "roll": "N/A",
+            "reg": "N/A",
+            "year": "2021",
+            "result": "CGPA 3.85"
+          },
+          {
+            "id": "EDU-mw97ph46-lqzp",
+            "level": "স্নাতক (অনার্স)",
+            "degree": "এমএসসি (সফটওয়্যার ইঞ্জিনিয়ারিং)",
+            "boardOrUni": "ঢাকা বিশ্ববিদ্যালয়",
+            "roll": "N/A",
+            "reg": "N/A",
+            "year": "2021",
+            "result": "CGPA 3.85"
+          },
+          {
+            "id": "EDU-mw97mr9t-e8yc",
+            "level": "স্নাতক (অনার্স)",
+            "degree": "এমএসসি (সফটওয়্যার ইঞ্জিনিয়ারিং)",
+            "boardOrUni": "ঢাকা বিশ্ববিদ্যালয়",
+            "roll": "N/A",
+            "reg": "N/A",
+            "year": "2021",
+            "result": "CGPA 3.85"
+          },
+          {
+            "id": "EDU-mw97m2k9-3wtw",
+            "level": "স্নাতক (অনার্স)",
+            "degree": "এমএসসি (সফটওয়্যার ইঞ্জিনিয়ারিং)",
+            "boardOrUni": "ঢাকা বিশ্ববিদ্যালয়",
+            "roll": "N/A",
+            "reg": "N/A",
+            "year": "2021",
+            "result": "CGPA 3.85"
+          },
+          {
+            "id": "EDU-mw97kj2p-b1ke",
+            "level": "স্নাতক (অনার্স)",
+            "degree": "এমএসসি (সফটওয়্যার ইঞ্জিনিয়ারিং)",
+            "boardOrUni": "ঢাকা বিশ্ববিদ্যালয়",
+            "roll": "N/A",
+            "reg": "N/A",
+            "year": "2021",
+            "result": "CGPA 3.85"
+          },
+          {
+            "id": "edu-1",
+            "level": "SSC",
+            "degree": "দাখিল/এসএসসি",
+            "boardOrUni": "ঢাকা",
+            "roll": "184920",
+            "reg": "1512948291",
+            "year": "2014",
+            "result": "GPA 5.00",
+            "majorSubject": "বিজ্ঞান"
+          },
+          {
+            "id": "edu-2",
+            "level": "HSC",
+            "degree": "আলিম/এইচএসসি",
+            "boardOrUni": "ঢাকা",
+            "roll": "109283",
+            "reg": "1512948291",
+            "year": "2016",
+            "result": "GPA 4.92",
+            "majorSubject": "বিজ্ঞান"
+          },
+          {
+            "id": "edu-3",
+            "level": "Honours",
+            "degree": "বিএসসি (ইঞ্জিনিয়ারিং)",
+            "boardOrUni": "ঢাকা বিশ্ববিদ্যালয়",
+            "roll": "160293",
+            "reg": "1612948291",
+            "year": "2021",
+            "result": "CGPA 3.68",
+            "majorSubject": "কম্পিউটার সায়েন্স অ্যান্ড ইঞ্জিনিয়ারিং"
+          }
+        ],
+        "submittedEducationLevels": [
+          "স্নাতক (অনার্স)",
+          "স্নাতক (অনার্স)",
+          "স্নাতক (অনার্স)",
+          "স্নাতক (অনার্স)",
+          "স্নাতক (অনার্স)",
+          "SSC",
+          "HSC",
+          "Honours"
+        ],
+        "attachedDocuments": [],
+        "id": "CS2611-27285",
+        "candidateId": "USR-01712345678",
+        "financialSnapshot": {
+          "governmentApplicationFee": 223,
+          "serviceCharge": 50,
+          "raffleBonusDiscount": 0,
+          "couponDiscount": 0,
+          "finalServiceCharge": 50,
+          "totalPayable": 273,
+          "paymentStatus": "pending",
+          "currency": "BDT",
+          "hasPrizeDrawEntry": false,
+          "snapshotCreatedAt": "2026-11-09T13:18:44.865Z",
+          "isImmutable": false
+        },
+        "verificationType": "officially_verified",
+        "date": "৯/১১/২০২৬",
+        "createdAt": "2026-11-09T13:18:44.865Z",
+        "statusHistory": [
+          {
+            "status": "processing",
+            "date": "2026-11-09T13:18:44.865Z",
+            "notes": "ডিজিটাল ওয়ালেট দিয়ে ফি পরিশোধ সম্পন্ন হয়েছে। আবেদনটি টেলিটক প্রসেসিং কিউতে যুক্ত হলো।"
+          },
+          {
+            "status": "completed",
+            "date": "2026-11-09T13:19:15.555Z",
+            "notes": "টেলিটক সার্ভারে আবেদন সফল হয়েছে এবং ফি প্রাপ্তি কনফার্ম।",
+            "updatedBy": "Admin (ADMIN-SUPER)"
+          }
+        ],
+        "notes": "টেলিটক সার্ভারে আবেদন সফল হয়েছে এবং ফি প্রাপ্তি কনফার্ম।",
+        "applicantCopyPdfUrl": "https://alljobs.teletalk.com.bd/media/public/uploads/governments/jobs/advertisement-1794128565411.pdf",
+        "teleTalkTrackingId": "BFRI-AD-98214",
+        "teleTalkPassword": "PASS-BFRI-98214"
+      },
+      {
         "id": "APP-2026-BB-001",
         "candidateId": "USR-01712345678",
         "candidateName": "মোঃ তানভীর হাসান",
@@ -613,6 +964,26 @@
   },
   "transactions": {
     "USR-01712345678": [
+      {
+        "id": "CS-TXN-2611-2793",
+        "date": "2026-11-09T13:19:55.159Z",
+        "amount": 273,
+        "type": "fee_deduction",
+        "description": "বৈজ্ঞানিক কর্মকর্তা পদে নিয়োগ বিজ্ঞপ্তি ২০২৬ - বাংলাদেশ মৎস্য গবেষণা ইনস্টিটিউট - বৈজ্ঞানিক কর্মকর্তা (৯ম গ্রেড)",
+        "method": "Wallet",
+        "trxId": "WALLET-CS2611-23300",
+        "status": "completed"
+      },
+      {
+        "id": "CS-TXN-2611-2651",
+        "date": "2026-11-09T13:18:44.866Z",
+        "amount": 273,
+        "type": "fee_deduction",
+        "description": "বৈজ্ঞানিক কর্মকর্তা পদে নিয়োগ বিজ্ঞপ্তি ২০২৬ - বাংলাদেশ মৎস্য গবেষণা ইনস্টিটিউট - বৈজ্ঞানিক কর্মকর্তা (৯ম গ্রেড)",
+        "method": "Wallet",
+        "trxId": "WALLET-CS2611-27285",
+        "status": "completed"
+      },
       {
         "id": "CS-TXN-2611-2985",
         "date": "৯/১১/২০২৬, ৬:৪৩:০৪ PM",
@@ -717,6 +1088,24 @@
       }
     ],
     "USR-01712345678": [
+      {
+        "title": "আবেদন স্ট্যাটাস: সম্পন্ন",
+        "message": "বৈজ্ঞানিক কর্মকর্তা পদে নিয়োগ বিজ্ঞপ্তি ২০২৬ - বাংলাদেশ মৎস্য গবেষণা ইনস্টিটিউট: আপনার আবেদনটি সম্পন্ন হয়েছে এবং প্রাপ্তি স্বীকারপত্র তৈরি হয়েছে।",
+        "type": "application",
+        "link": "/dashboard/applications",
+        "id": "CS-NOTIF-2611-763",
+        "date": "2026-11-09T13:19:59.836Z",
+        "read": false
+      },
+      {
+        "title": "আবেদন স্ট্যাটাস: সম্পন্ন",
+        "message": "বৈজ্ঞানিক কর্মকর্তা পদে নিয়োগ বিজ্ঞপ্তি ২০২৬ - বাংলাদেশ মৎস্য গবেষণা ইনস্টিটিউট: আপনার আবেদনটি সম্পন্ন হয়েছে এবং প্রাপ্তি স্বীকারপত্র তৈরি হয়েছে।",
+        "type": "application",
+        "link": "/dashboard/applications",
+        "id": "CS-NOTIF-2611-486",
+        "date": "2026-11-09T13:19:15.586Z",
+        "read": false
+      },
       {
         "id": "NOTIF-CS-TXN-2611-2985",
         "title": "ওয়ালেট রিচার্জ সফল হয়েছে",
@@ -1188,6 +1577,51 @@
       "candidateId": "USR-01712345678",
       "role": "candidate",
       "expiresAt": "2026-11-16T12:42:55.827Z"
+    },
+    "cluster6_audit_session_1794229216282": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T13:00:16.282Z"
+    },
+    "cluster6_audit_session_1794229303667": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T13:01:43.667Z"
+    },
+    "cluster6_audit_session_1794229590652": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T13:06:30.652Z"
+    },
+    "cluster6_audit_session_1794229749843": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T13:09:09.843Z"
+    },
+    "cluster6_audit_session_1794229929875": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T13:12:09.875Z"
+    },
+    "cluster6_audit_session_1794230050284": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T13:14:10.284Z"
+    },
+    "cluster6_audit_session_1794230205144": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T13:16:45.144Z"
+    },
+    "cluster6_audit_session_1794230291419": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T13:18:11.419Z"
+    },
+    "cluster6_audit_session_1794230383155": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T13:19:43.155Z"
     }
   },
   "coupons": {},
@@ -1195,6 +1629,34 @@
   "couponRedemptions": {},
   "raffleEntries": {},
   "adminAuditLogs": [
+    {
+      "adminId": "ADMIN-SUPER",
+      "action": "status_change",
+      "targetId": "CS2611-23300",
+      "targetType": "order",
+      "changes": {
+        "status": {
+          "new": "completed"
+        }
+      },
+      "notes": "টেলিটক সার্ভারে আবেদন সফল হয়েছে এবং ফি প্রাপ্তি কনফার্ম।",
+      "id": "AUDIT-1794230399867-G9VPS",
+      "timestamp": "2026-11-09T13:19:59.867Z"
+    },
+    {
+      "adminId": "ADMIN-SUPER",
+      "action": "status_change",
+      "targetId": "CS2611-27285",
+      "targetType": "order",
+      "changes": {
+        "status": {
+          "new": "completed"
+        }
+      },
+      "notes": "টেলিটক সার্ভারে আবেদন সফল হয়েছে এবং ফি প্রাপ্তি কনফার্ম।",
+      "id": "AUDIT-1794230355618-I2015",
+      "timestamp": "2026-11-09T13:19:15.618Z"
+    },
     {
       "id": "AUDIT-WALLET-CS-TXN-2611-2985",
       "adminId": "ADMIN-SUPER",

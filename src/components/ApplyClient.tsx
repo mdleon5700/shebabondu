@@ -229,7 +229,11 @@ function ApplyFormContent({ initialJob }: ApplyClientProps) {
         }
       }
 
-      fetch('/api/profile')
+      const token = typeof window !== 'undefined' ? localStorage.getItem('cs_session_token') : null;
+      const authHeaders: Record<string, string> = { 'Cache-Control': 'no-cache' };
+      if (token) authHeaders['Authorization'] = `Bearer ${token}`;
+
+      fetch('/api/profile', { headers: authHeaders, cache: 'no-store' })
         .then(r => r.json())
         .then(d => {
           if (d.success && d.user) {
@@ -249,7 +253,7 @@ function ApplyFormContent({ initialJob }: ApplyClientProps) {
         setSelectedDocIds(localDocs.map(d => d.id));
       }
 
-      fetch('/api/documents')
+      fetch('/api/documents', { headers: authHeaders, cache: 'no-store' })
         .then(r => r.json())
         .then(d => {
           if (d.success && Array.isArray(d.documents) && d.documents.length > 0) {
@@ -429,6 +433,7 @@ function ApplyFormContent({ initialJob }: ApplyClientProps) {
 
   const handleSubmitOrder = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log('>>> [handleSubmitOrder] triggered, paymentMethod:', paymentMethod, 'totalFee:', totalFee);
     if (paymentMethod !== 'Wallet' && !trxId.trim()) {
       alert('দয়া করে বিকাশ বা নগদের ট্রানজ্যাকশন আইডি (TrxID) প্রদান করুন।');
       return;
@@ -436,15 +441,22 @@ function ApplyFormContent({ initialJob }: ApplyClientProps) {
 
     setIsSubmitting(true);
     try {
-      const me = await fetch('/api/auth/me', { cache: 'no-store' });
+      const token = typeof window !== 'undefined' ? localStorage.getItem('cs_session_token') : null;
+      const authHeaders: Record<string, string> = { 'Cache-Control': 'no-cache' };
+      if (token) authHeaders['Authorization'] = `Bearer ${token}`;
+
+      const me = await fetch('/api/auth/me', { cache: 'no-store', headers: authHeaders });
       const meData = await me.json().catch(() => ({}));
       if (!me.ok || !meData.isLoggedIn) {
         router.push('/login?redirect=' + encodeURIComponent(window.location.pathname + window.location.search));
         return;
       }
+      const appHeaders: Record<string, string> = { 'Content-Type': 'application/json' };
+      if (token) appHeaders['Authorization'] = `Bearer ${token}`;
+
       const res = await fetch('/api/applications', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: appHeaders,
         body: JSON.stringify({
           jobId: job.id,
           jobTitle: job.title,
@@ -610,7 +622,7 @@ function ApplyFormContent({ initialJob }: ApplyClientProps) {
 
           <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
             <Link
-              href="/applications"
+              href="/dashboard/applications"
               className="inline-flex items-center gap-2 px-6 py-3 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-sm rounded-xl shadow-md transition-all hover:scale-105"
             >
               <UserCheck className="w-4 h-4" />
@@ -1268,9 +1280,11 @@ function ApplyFormContent({ initialJob }: ApplyClientProps) {
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 {/* bKash */}
-                <div
+                <button
+                  type="button"
+                  data-testid="payment-method-bkash"
                   onClick={() => setPaymentMethod('bKash')}
-                  className={`p-4 rounded-2xl border-2 cursor-pointer transition-all flex items-center gap-3 ${
+                  className={`text-left p-4 rounded-2xl border-2 cursor-pointer transition-all flex items-center gap-3 ${
                     paymentMethod === 'bKash'
                       ? 'border-pink-600 bg-pink-50/50 shadow-sm'
                       : 'border-slate-200 hover:border-slate-300'
@@ -1283,12 +1297,14 @@ function ApplyFormContent({ initialJob }: ApplyClientProps) {
                     <div className="text-xs font-bold text-slate-900">bKash পেমেন্ট</div>
                     <div className="text-[11px] text-slate-500">Send Money / TrxID</div>
                   </div>
-                </div>
+                </button>
 
                 {/* Nagad */}
-                <div
+                <button
+                  type="button"
+                  data-testid="payment-method-nagad"
                   onClick={() => setPaymentMethod('Nagad')}
-                  className={`p-4 rounded-2xl border-2 cursor-pointer transition-all flex items-center gap-3 ${
+                  className={`text-left p-4 rounded-2xl border-2 cursor-pointer transition-all flex items-center gap-3 ${
                     paymentMethod === 'Nagad'
                       ? 'border-orange-600 bg-orange-50/50 shadow-sm'
                       : 'border-slate-200 hover:border-slate-300'
@@ -1301,26 +1317,30 @@ function ApplyFormContent({ initialJob }: ApplyClientProps) {
                     <div className="text-xs font-bold text-slate-900">Nagad পেমেন্ট</div>
                     <div className="text-[11px] text-slate-500">Send Money / TrxID</div>
                   </div>
-                </div>
+                </button>
 
                 {/* Wallet Balance */}
                 {(() => {
                   const userBal = userProfile?.walletBalance ?? 0;
                   const isInsufficient = userBal < totalFee;
                   return (
-                    <div
+                    <button
+                      type="button"
+                      data-testid="payment-method-wallet"
+                      disabled={isInsufficient}
                       onClick={() => {
+                        console.log('>>> [walletOption onClick] clicked, userBal:', userBal, 'totalFee:', totalFee);
                         if (isInsufficient) {
-                          alert(`আপনার ওয়ালেট ব্যালেন্স (৳${userBal}) অপর্যাপ্ত। মোট আবেদন ফি ৳${totalFee}। অনুগ্রহ করে বিকাশ অথবা নগদ দিয়ে আবেদন করুন।`);
+                          alert(`আপনার ওয়ালেট ব্যালেন্স (৳${userBal}) অপর্যাপ্ত। মোট আবেদন ফি ৳${totalFee}।`);
                           return;
                         }
                         setPaymentMethod('Wallet');
                       }}
-                      className={`p-4 rounded-2xl border-2 transition-all flex items-center gap-3 ${
+                      className={`text-left p-4 rounded-2xl border-2 transition-all flex items-center gap-3 ${
                         isInsufficient
                           ? 'opacity-60 bg-slate-50 border-slate-200 cursor-not-allowed'
                           : paymentMethod === 'Wallet'
-                            ? 'border-emerald-600 bg-emerald-50/50 shadow-sm cursor-pointer'
+                            ? 'border-emerald-600 bg-emerald-50/50 shadow-sm cursor-pointer ring-2 ring-emerald-500/20'
                             : 'border-slate-200 hover:border-slate-300 cursor-pointer'
                       }`}
                     >
@@ -1335,7 +1355,7 @@ function ApplyFormContent({ initialJob }: ApplyClientProps) {
                           ব্যালেন্স: ৳{userBal} {isInsufficient && '(অপর্যাপ্ত)'}
                         </div>
                       </div>
-                    </div>
+                    </button>
                   );
                 })()}
               </div>
@@ -1495,7 +1515,9 @@ function ApplyFormContent({ initialJob }: ApplyClientProps) {
             {/* Submit Button */}
             <button
               type="submit"
+              data-testid="submit-application-btn"
               disabled={isSubmitting}
+              onClick={() => console.log('>>> [submitBtn onClick] button clicked, isSubmitting:', isSubmitting)}
               className="w-full py-4 bg-gradient-to-r from-emerald-600 via-teal-700 to-emerald-700 hover:from-emerald-700 hover:to-teal-800 text-white font-black text-sm rounded-2xl shadow-lg shadow-emerald-900/20 flex items-center justify-center gap-2 transition-all disabled:opacity-50 hover:scale-[1.01]"
             >
               {isSubmitting ? (

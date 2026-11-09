@@ -69,3 +69,4 @@ for (const [key, fn] of Object.entries(sectorMatchers)) {
   const matches = jobs.filter(fn);
   console.log(`- ${key}: ${matches.length} circulars`);
 }
+

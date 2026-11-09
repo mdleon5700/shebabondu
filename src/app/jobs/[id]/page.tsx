@@ -368,15 +368,20 @@ export default async function SingleJobPage(props: Props) {
     }
   };
 
-  // 5. Semantic Internal Related Jobs (Topic Clusters)
+  // 5. Semantic Internal Related Jobs (Topic Clusters) - Top 3 Scored
   const allJobs = serverDB.getJobs();
   const activeJobs = allJobs.filter(j => j.id !== job.id && (j.status === 'OPEN' || j.status === 'PUBLISHED' || (j as any).publicationStatus === 'PUBLISHED'));
-  let relatedJobs = activeJobs.filter(j => j.category === job.category || j.organization === job.organization || j.minEducation === job.minEducation);
-  if (relatedJobs.length === 0 && activeJobs.length > 0) {
-    relatedJobs = activeJobs.slice(0, 4);
-  } else {
-    relatedJobs = relatedJobs.slice(0, 4);
-  }
+
+  const scoredJobs = activeJobs.map(other => {
+    let score = 0;
+    if (other.organization === job.organization) score += 4;
+    if (other.category === job.category) score += 2;
+    if (other.minEducation === job.minEducation) score += 1;
+    return { job: other, score };
+  });
+
+  scoredJobs.sort((a, b) => b.score - a.score);
+  const relatedJobs = (scoredJobs.length > 0 ? scoredJobs.slice(0, 3).map(item => item.job) : activeJobs.slice(0, 3));
 
   return (
     <>

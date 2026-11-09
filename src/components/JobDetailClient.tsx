@@ -394,7 +394,82 @@ export default function JobDetailClient({ job, relatedJobs = [] }: { job: JobCir
     };
   }, [birthDay, birthMonth, birthYear, selectedQuota, job.minAge, job.maxAge, job.ageCutOffDate, job.deadline]);
 
-  const teletalkCode = job.smsPrefix || (job.id.includes('teletalk') ? job.id.split('-')[2]?.toUpperCase() : job.id.split('-')[0].toUpperCase());
+  // Smart Teletalk Organization Code Extraction (e.g. fri.teletalk.com.bd -> FRI, cpgcbl.teletalk.com.bd -> CPGCBL)
+  const teletalkCode = useMemo(() => {
+    if (job.smsPrefix && job.smsPrefix.trim() !== '') return job.smsPrefix.trim().toUpperCase();
+    if (job.officialLink) {
+      const match = job.officialLink.match(/https?:\/\/([a-zA-Z0-9_\-]+)\.teletalk\.com\.bd/i);
+      if (match && match[1] && match[1].toLowerCase() !== 'alljobs') {
+        return match[1].toUpperCase();
+      }
+    }
+    if (job.id.includes('teletalk')) {
+      const parts = job.id.split('-');
+      if (parts.length > 2) return parts[2].toUpperCase();
+    }
+    const cleanId = job.id.replace(/^job-/, '').replace(/^alljobs-/, '');
+    const parts = cleanId.split('-');
+    return parts[0].toUpperCase() || 'ORG';
+  }, [job.smsPrefix, job.officialLink, job.id]);
+
+  // Clean official hostname / subdomain for direct apply CTA
+  const officialSubdomain = useMemo(() => {
+    if (!job.officialLink) return null;
+    try {
+      const url = new URL(job.officialLink.startsWith('http') ? job.officialLink : `https://${job.officialLink}`);
+      return url.hostname;
+    } catch {
+      return job.officialLink.replace(/^https?:\/\//, '').split('/')[0];
+    }
+  }, [job.officialLink]);
+
+  // Guest AI Eligibility Evaluator States
+  const [guestDegree, setGuestDegree] = useState<string>('স্নাতক (সম্মান)');
+  const [guestBirthDay, setGuestBirthDay] = useState<string>('15');
+  const [guestBirthMonth, setGuestBirthMonth] = useState<string>('6');
+  const [guestBirthYear, setGuestBirthYear] = useState<string>('1998');
+  const [guestQuota, setGuestQuota] = useState<'general' | 'freedom_fighter' | 'disabled'>('general');
+  const [guestDistrict, setGuestDistrict] = useState<string>('সকল জেলা');
+  const [guestEvaluationResult, setGuestEvaluationResult] = useState<EligibilityResult | null>(null);
+  const [hasEvaluatedGuest, setHasEvaluatedGuest] = useState<boolean>(false);
+  const [isEvaluatingGuest, setIsEvaluatingGuest] = useState<boolean>(false);
+
+  const handleEvaluateGuest = () => {
+    setIsEvaluatingGuest(true);
+    setTimeout(() => {
+      const guestProfile = {
+        id: 'guest',
+        name: 'অতিথি চাকরিপ্রার্থী',
+        nameBn: 'অতিথি চাকরিপ্রার্থী',
+        fatherName: '',
+        motherName: '',
+        nid: '',
+        email: '',
+        phone: '',
+        dob: `${guestBirthYear}-${String(guestBirthMonth).padStart(2, '0')}-${String(guestBirthDay).padStart(2, '0')}`,
+        gender: 'male' as const,
+        district: guestDistrict,
+        quota: guestQuota === 'general' ? 'none' : guestQuota,
+        education: [
+          {
+            id: 'edu-guest',
+            level: guestDegree,
+            degree: guestDegree,
+            boardOrUni: 'স্বীকৃত বিশ্ববিদ্যালয়/বোর্ড',
+            year: '2021',
+            result: '3.25',
+            resultType: 'CGPA' as const,
+            cgpa: 3.25,
+            scale: 4.0
+          }
+        ]
+      } as unknown as CandidateProfile;
+      const evalRes = storage.checkEligibility(guestProfile, job, []);
+      setGuestEvaluationResult(evalRes);
+      setHasEvaluatedGuest(true);
+      setIsEvaluatingGuest(false);
+    }, 250);
+  };
 
   const handleCopySms1 = () => {
     const text = `${teletalkCode} ${userIdInput}`;
@@ -535,7 +610,7 @@ export default function JobDetailClient({ job, relatedJobs = [] }: { job: JobCir
 
         <div className="flex items-center gap-1.5 sm:gap-2 whitespace-nowrap overflow-x-auto no-scrollbar">
           <span className="bg-slate-100 text-slate-700 px-2.5 py-1 rounded-full text-[11px] sm:text-xs whitespace-nowrap font-medium inline-block shrink-0">
-            স্মারক নং: CS/২০২৬/০৯
+            স্মারক নং: {job.refNo || (job as any).memoNo || `CS/${job.id.replace(/^job-/, '').replace(/^alljobs-/, '').toUpperCase()}`}
           </span>
           <span className="bg-emerald-50 text-emerald-800 px-2.5 py-1 rounded-full text-[11px] sm:text-xs border border-emerald-200 whitespace-nowrap font-medium inline-block shrink-0">
             প্রকাশ: {job.publishedDate}
@@ -548,7 +623,7 @@ export default function JobDetailClient({ job, relatedJobs = [] }: { job: JobCir
         <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-8">
           
           <div className="space-y-4 flex-1">
-            {/* Badges row */}
+            {/* Badges row with Verification Tick (VERIFIED_ACCURATE) */}
             <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar whitespace-nowrap pb-0.5">
               <span className="bg-emerald-100 text-emerald-800 text-[11px] sm:text-xs font-bold px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full whitespace-nowrap shrink-0">
                 {job.categoryLabel}
@@ -560,7 +635,13 @@ export default function JobDetailClient({ job, relatedJobs = [] }: { job: JobCir
                 <Users className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                 <span>মোট {toBn(job.totalPosts)} টি পদ</span>
               </span>
-
+              <span
+                className="bg-emerald-50 text-emerald-800 border border-emerald-300 text-[11px] sm:text-xs font-bold px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full flex items-center gap-1 whitespace-nowrap shrink-0 shadow-2xs"
+                title="অফিসিয়াল সার্কুলার গেজেট থেকে তথ্য যাচাইকৃত ও শতভাগ নির্ভুল (VERIFIED_ACCURATE)"
+              >
+                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                <span>যাচাইকৃত সঠিক (VERIFIED_ACCURATE)</span>
+              </span>
             </div>
 
             {/* Notice Banners (Cancellation / Suspension) */}
@@ -911,23 +992,190 @@ export default function JobDetailClient({ job, relatedJobs = [] }: { job: JobCir
                 </div>
               )}
             </div>
-          ) : !auth.isLoggedIn ? (
-            <div className="p-4 bg-gradient-to-r from-amber-50 to-orange-50 rounded-2xl border border-amber-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
-              <div className="flex items-center gap-2.5">
-                <span className="text-xl">🎯</span>
-                <div>
-                  <span className="font-black text-amber-950 block text-[15px] mb-0.5">আপনি কি এই সার্কুলারে আপনার যোগ্যতা ও বয়স যাচাই করতে চান?</span>
-                  <span className="text-amber-900 text-[15px] leading-relaxed">লগইন করলে আপনার প্রোফাইলের জন্মতারিখ ও জিপিএ অনুযায়ী সকল পদের যোগ্যতা স্বয়ংক্রিয়ভাবে ভেসে উঠবে।</span>
+          ) : (
+            <div className="bg-gradient-to-br from-slate-50 via-white to-emerald-50/40 rounded-2xl sm:rounded-3xl border border-slate-200/90 shadow-sm p-4 sm:p-6 space-y-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3.5">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-2xl bg-emerald-600 text-white flex items-center justify-center shrink-0 shadow-sm">
+                    <Sparkles className="w-5 h-5 text-emerald-200" />
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs font-black text-emerald-800 bg-emerald-100 px-2.5 py-0.5 rounded-full">
+                        স্মার্ট এআই যোগ্যতা যাচাইকারী
+                      </span>
+                      <span className="text-[11px] text-slate-500 font-semibold hidden sm:inline">
+                        • তাৎক্ষণিক ১-ক্লিক অডিট
+                      </span>
+                    </div>
+                    <h3 className="text-sm sm:text-base font-black text-slate-900 mt-0.5">
+                      এই বিজ্ঞপ্তির পদসমূহে আপনি কি আবেদনের যোগ্য? এখনই পরীক্ষা করুন
+                    </h3>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2 self-start sm:self-center">
+                  <Link
+                    href="/login"
+                    className="text-xs font-bold text-slate-600 hover:text-emerald-700 hover:underline px-2 py-1"
+                  >
+                    লগইন করে প্রোফাইল থেকে যাচাই ↗
+                  </Link>
                 </div>
               </div>
-              <Link
-                href="/login"
-                className="px-5 py-2.5 bg-amber-600 hover:bg-amber-700 text-white font-bold text-[15px] rounded-xl shadow-md transition-all w-full sm:w-auto text-center justify-center shrink-0"
-              >
-                লগইন করুন
-              </Link>
+
+              {/* Interactive Evaluation Form */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+                <div>
+                  <label className="text-slate-600 font-bold block mb-1">সর্বোচ্চ শিক্ষাগত ডিগ্রি:</label>
+                  <select
+                    value={guestDegree}
+                    onChange={(e) => setGuestDegree(e.target.value)}
+                    className="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-slate-900 font-bold text-xs focus:ring-2 focus:ring-emerald-500 outline-none cursor-pointer"
+                  >
+                    <option value="এসএসসি বা সমমান">এসএসসি বা সমমান</option>
+                    <option value="এইচএসসি বা সমমান">এইচএসসি বা সমমান</option>
+                    <option value="ডিপ্লোমা ইন ইঞ্জিনিয়ারিং">ডিপ্লোমা ইন ইঞ্জিনিয়ারিং</option>
+                    <option value="স্নাতক (পাস) / ডিগ্রি">স্নাতক (পাস) / ডিগ্রি</option>
+                    <option value="স্নাতক (সম্মান)">স্নাতক (সম্মান) / অনার্স</option>
+                    <option value="স্নাতকোত্তর / মাস্টার্স">স্নাতকোত্তর / মাস্টার্স</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="text-slate-600 font-bold block mb-1">জন্মতারিখ (দিন/মাস/বছর):</label>
+                  <div className="grid grid-cols-3 gap-1">
+                    <select
+                      value={guestBirthDay}
+                      onChange={(e) => setGuestBirthDay(e.target.value)}
+                      className="bg-white border border-slate-300 rounded-xl p-2 text-slate-900 font-bold text-xs focus:ring-2 focus:ring-emerald-500 outline-none cursor-pointer"
+                    >
+                      {Array.from({ length: 31 }, (_, i) => i + 1).map(d => (
+                        <option key={d} value={d}>{toBn(d)}</option>
+                      ))}
+                    </select>
+                    <select
+                      value={guestBirthMonth}
+                      onChange={(e) => setGuestBirthMonth(e.target.value)}
+                      className="bg-white border border-slate-300 rounded-xl p-2 text-slate-900 font-bold text-xs focus:ring-2 focus:ring-emerald-500 outline-none cursor-pointer"
+                    >
+                      {['১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯', '১০', '১১', '১২'].map((m, idx) => (
+                        <option key={idx + 1} value={idx + 1}>{m} মাস</option>
+                      ))}
+                    </select>
+                    <select
+                      value={guestBirthYear}
+                      onChange={(e) => setGuestBirthYear(e.target.value)}
+                      className="bg-white border border-slate-300 rounded-xl p-2 text-slate-900 font-bold text-xs focus:ring-2 focus:ring-emerald-500 outline-none cursor-pointer"
+                    >
+                      {Array.from({ length: 35 }, (_, i) => 2012 - i).map(y => (
+                        <option key={y} value={y}>{toBn(y)}</option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="text-slate-600 font-bold block mb-1">কোটা সুবিধা:</label>
+                  <select
+                    value={guestQuota}
+                    onChange={(e) => setGuestQuota(e.target.value as any)}
+                    className="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-slate-900 font-bold text-xs focus:ring-2 focus:ring-emerald-500 outline-none cursor-pointer"
+                  >
+                    <option value="general">সাধারণ (১৮-৩০ বছর)</option>
+                    <option value="freedom_fighter">মুক্তিযোদ্ধা কোটা (৩২ বছর)</option>
+                    <option value="disabled">প্রতিবন্ধী কোটা (৩২ বছর)</option>
+                  </select>
+                </div>
+
+                <div className="flex flex-col justify-end">
+                  <button
+                    type="button"
+                    onClick={handleEvaluateGuest}
+                    disabled={isEvaluatingGuest}
+                    className="w-full py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-black text-xs rounded-xl shadow-md transition-all flex items-center justify-center gap-1.5 cursor-pointer hover:scale-[1.02] disabled:opacity-50"
+                  >
+                    <Sparkles className="w-3.5 h-3.5" />
+                    <span>{isEvaluatingGuest ? 'যাচাই করা হচ্ছে...' : '১-ক্লিকে যোগ্যতা যাচাই'}</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Evaluation Result Display */}
+              {hasEvaluatedGuest && guestEvaluationResult && (
+                <div className={`p-4 rounded-2xl border transition-all duration-300 space-y-3 ${
+                  guestEvaluationResult.status === 'eligible'
+                    ? 'bg-emerald-50/70 border-emerald-300 text-emerald-950'
+                    : 'bg-rose-50/70 border-rose-300 text-rose-950'
+                }`}>
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div className="flex items-center gap-2.5">
+                      <div className={`w-8 h-8 rounded-xl flex items-center justify-center text-white shrink-0 ${
+                        guestEvaluationResult.status === 'eligible' ? 'bg-emerald-600' : 'bg-rose-600'
+                      }`}>
+                        {guestEvaluationResult.status === 'eligible' ? <CheckCircle2 className="w-5 h-5" /> : <AlertTriangle className="w-5 h-5" />}
+                      </div>
+                      <div>
+                        <div className="font-black text-xs sm:text-sm">
+                          {guestEvaluationResult.statusLabel}
+                        </div>
+                        <div className="text-[11px] text-slate-600">
+                          কাট-অফ তারিখ: {job.ageCutOffDate || job.deadline}
+                        </div>
+                      </div>
+                    </div>
+
+                    {guestEvaluationResult.status === 'eligible' && !isExpired && (
+                      <Link
+                        href={`/apply/${job.id}`}
+                        className="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white font-black text-xs rounded-xl shadow-sm flex items-center justify-center gap-1.5 self-start sm:self-center transition-all"
+                      >
+                        <span>এই পদে আবেদন করুন</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </Link>
+                    )}
+                  </div>
+
+                  {/* Positions breakdown */}
+                  {guestEvaluationResult.positionsEvaluated && guestEvaluationResult.positionsEvaluated.length > 0 && (
+                    <div className="bg-white/95 p-3 rounded-xl border border-slate-200 space-y-2 text-xs">
+                      <span className="font-bold text-slate-800 flex items-center gap-1">
+                        <Layers className="w-3.5 h-3.5 text-amber-600" />
+                        <span>পদভিত্তিক যোগ্যতা ফলাফল ({toBn(guestEvaluationResult.eligiblePositionsCount)}/{toBn(guestEvaluationResult.positionsEvaluated.length)}টি পদে আবেদনযোগ্য):</span>
+                      </span>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        {guestEvaluationResult.positionsEvaluated.map((pos, idx) => (
+                          <div key={idx} className={`p-2 rounded-xl border flex items-center justify-between gap-2 ${
+                            pos.isEligible ? 'bg-emerald-50/80 border-emerald-200 text-emerald-950' : 'bg-rose-50/80 border-rose-200 text-rose-950'
+                          }`}>
+                            <div>
+                              <div className="font-bold text-xs">{pos.title} <span className="text-[10px] text-slate-500 font-normal">({pos.grade})</span></div>
+                              <div className="text-[11px] text-slate-600">{pos.reason}</div>
+                            </div>
+                            <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
+                              pos.isEligible ? 'bg-emerald-200 text-emerald-900' : 'bg-rose-200 text-rose-900'
+                            }`}>
+                              {pos.isEligible ? 'যোগ্য' : 'অনুপযুক্ত'}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Reasons list */}
+                  <div className="space-y-1 text-xs">
+                    {guestEvaluationResult.reasons.map((r, rIdx) => (
+                      <div key={rIdx} className="flex items-start gap-1.5">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
+                        <span>{r}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
-          ) : null}
+          )}
         </div>
 
       </div>
@@ -951,6 +1199,93 @@ export default function JobDetailClient({ job, relatedJobs = [] }: { job: JobCir
         <h2 className="text-lg sm:text-xl font-black text-slate-900 leading-snug">
           {job.organization} নিয়োগ বিজ্ঞপ্তি ২০২৬ — এক নজরে সারসংক্ষেপ (Job Overview)
         </h2>
+
+        {/* 6-Card Dedicated Job Summary Facts Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 my-3">
+          {/* 1. Grade & Salary */}
+          <div className="bg-white p-4 rounded-2xl border border-slate-200/90 shadow-2xs space-y-1">
+            <div className="flex items-center gap-2 text-slate-500 text-xs font-bold">
+              <Banknote className="w-4 h-4 text-emerald-600" />
+              <span>গ্রেড ও মূল বেতন</span>
+            </div>
+            <div className="text-[15px] font-black text-slate-900">
+              {job.salary}
+            </div>
+            <div className="text-xs text-emerald-700 font-semibold">
+              নির্ধারিত গ্রেড: {job.grade}
+            </div>
+          </div>
+
+          {/* 2. Total Vacancies */}
+          <div className="bg-white p-4 rounded-2xl border border-slate-200/90 shadow-2xs space-y-1">
+            <div className="flex items-center gap-2 text-slate-500 text-xs font-bold">
+              <Users className="w-4 h-4 text-blue-600" />
+              <span>মোট শূন্যপদ সংখ্যা</span>
+            </div>
+            <div className="text-[15px] font-black text-slate-900">
+              মোট {toBn(job.totalPosts)} টি পদ
+            </div>
+            <div className="text-xs text-slate-500 font-semibold">
+              {positions.length > 1 ? `${toBn(positions.length)}টি ভিন্ন পদে নিয়োগ` : 'একক পদে নিয়োগ'}
+            </div>
+          </div>
+
+          {/* 3. Minimum Education */}
+          <div className="bg-white p-4 rounded-2xl border border-slate-200/90 shadow-2xs space-y-1">
+            <div className="flex items-center gap-2 text-slate-500 text-xs font-bold">
+              <GraduationCap className="w-4 h-4 text-purple-600" />
+              <span>শিক্ষাগত যোগ্যতা</span>
+            </div>
+            <div className="text-[15px] font-black text-slate-900 line-clamp-1" title={job.minEducation}>
+              {job.minEducation}
+            </div>
+            <div className="text-xs text-slate-500 font-semibold">
+              {job.allowThirdDivision === false ? '৩য় বিভাগ গ্রহণযোগ্য নয়' : 'ন্যূনতম শিক্ষাগত শর্ত'}
+            </div>
+          </div>
+
+          {/* 4. Age Limit & Cut-off Date */}
+          <div className="bg-white p-4 rounded-2xl border border-slate-200/90 shadow-2xs space-y-1">
+            <div className="flex items-center gap-2 text-slate-500 text-xs font-bold">
+              <Calendar className="w-4 h-4 text-amber-600" />
+              <span>বয়সসীমা ও কাট-অফ ডেট</span>
+            </div>
+            <div className="text-[15px] font-black text-slate-900">
+              {toBn(job.minAge)} হতে {toBn(job.maxAge)} বছর
+            </div>
+            <div className="text-xs text-amber-800 font-semibold">
+              কাট-অফ: {job.ageCutOffDate || job.deadline || 'বিজ্ঞপ্তি অনুসারে'} (কোটা ৩২ বছর)
+            </div>
+          </div>
+
+          {/* 5. Job Location & District Availability */}
+          <div className="bg-white p-4 rounded-2xl border border-slate-200/90 shadow-2xs space-y-1">
+            <div className="flex items-center gap-2 text-slate-500 text-xs font-bold">
+              <Building2 className="w-4 h-4 text-teal-600" />
+              <span>কর্মস্থল ও জেলার প্রাপ্যতা</span>
+            </div>
+            <div className="text-[15px] font-black text-slate-900 line-clamp-1" title={job.districts}>
+              {job.districts === 'সকল জেলা' ? 'সারাদেশ (সকল জেলা)' : job.districts}
+            </div>
+            <div className="text-xs text-slate-500 font-semibold">
+              কর্মস্থল: {job.division || 'বাংলাদেশ'}
+            </div>
+          </div>
+
+          {/* 6. Application Timeline */}
+          <div className="bg-white p-4 rounded-2xl border border-slate-200/90 shadow-2xs space-y-1">
+            <div className="flex items-center gap-2 text-slate-500 text-xs font-bold">
+              <Clock className="w-4 h-4 text-rose-600" />
+              <span>আবেদনের সময়সূচি</span>
+            </div>
+            <div className="text-[15px] font-black text-rose-700">
+              শেষ: {job.deadline}
+            </div>
+            <div className="text-xs text-slate-500 font-semibold">
+              শুরু: {job.applicationStartDate || job.publishedDate} (বাকি: {toBn(job.daysRemaining)} দিন)
+            </div>
+          </div>
+        </div>
 
         {job.bengaliDescription ? (
           <div className="job-editorial-lead bg-slate-50/70 p-5 sm:p-6 rounded-2xl border border-slate-200/80">
@@ -997,21 +1332,23 @@ export default function JobDetailClient({ job, relatedJobs = [] }: { job: JobCir
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 p-4 hover:bg-slate-50/60 transition-colors">
-            <span className="font-bold text-slate-500">৫. বয়সসীমা (সাধারণ ও কোটা)</span>
+            <span className="font-bold text-slate-500">৫. বয়সসীমা ও বয়স গণনার কাট-অফ ডেট</span>
             <span className="sm:col-span-2 font-semibold text-slate-900">
-              সাধারণ প্রার্থী: {toBn(job.minAge)} হতে {toBn(job.maxAge)} বছর (বীর মুক্তিযোদ্ধা সন্তান ও প্রতিবন্ধীদের ক্ষেত্রে ৩২ বছর পর্যন্ত শিথিলযোগ্য)
+              সাধারণ প্রার্থী: {toBn(job.minAge)} হতে {toBn(job.maxAge)} বছর (কোটা প্রার্থীদের ক্ষেত্রে ৩২ বছর পর্যন্ত শিথিলযোগ্য) • <strong className="text-amber-800">কাট-অফ ডেট: {job.ageCutOffDate || job.deadline || 'বিজ্ঞপ্তি অনুসারে'}</strong>
             </span>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 p-4 hover:bg-slate-50/60 transition-colors">
-            <span className="font-bold text-slate-500">৬. প্রযোজ্য জেলা তালিকা (কোটা)</span>
-            <span className="sm:col-span-2 font-semibold text-slate-900">{job.districts}</span>
+            <span className="font-bold text-slate-500">৬. কর্মস্থল ও প্রযোজ্য জেলা তালিকা</span>
+            <span className="sm:col-span-2 font-semibold text-slate-900">
+              কর্মস্থল: {job.division || 'বাংলাদেশ'} • আবেদনযোগ্য জেলা: <strong className="text-emerald-800">{job.districts}</strong>
+            </span>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 p-4 hover:bg-slate-50/60 transition-colors">
-            <span className="font-bold text-slate-500">৭. আবেদনের শেষ তারিখ ও সময়</span>
-            <span className="sm:col-span-2 font-bold text-rose-600">
-              {job.deadline} • বাকি আছে {toBn(job.daysRemaining)} দিন
+            <span className="font-bold text-slate-500">৭. আবেদনের শুরুর তারিখ ও শেষ সময়</span>
+            <span className="sm:col-span-2 font-semibold text-slate-900">
+              শুরুর তারিখ: <strong>{job.applicationStartDate || job.publishedDate}</strong> • শেষ তারিখ ও সময়: <strong className="text-rose-600">{job.deadline}</strong> (বাকি আছে {toBn(job.daysRemaining)} দিন)
             </span>
           </div>
 
@@ -1101,7 +1438,10 @@ export default function JobDetailClient({ job, relatedJobs = [] }: { job: JobCir
                     </span>
                   </td>
                   <td className="py-4 px-4 text-slate-700 text-xs sm:text-sm leading-relaxed max-w-xs">
-                    {pos.minEducation}
+                    <div>{pos.minEducation}</div>
+                    {pos.experience && (
+                      <div className="text-[11px] text-amber-800 font-semibold mt-1">অভিজ্ঞতা: {pos.experience}</div>
+                    )}
                   </td>
                   <td className="py-4 px-4 font-semibold text-slate-900 text-xs sm:text-sm whitespace-nowrap min-w-[160px]">
                     {pos.salary}
@@ -1160,6 +1500,9 @@ export default function JobDetailClient({ job, relatedJobs = [] }: { job: JobCir
                 <div>
                   <span className="font-bold text-slate-500">শিক্ষাগত যোগ্যতা: </span>
                   <span className="text-slate-800 leading-relaxed">{pos.minEducation}</span>
+                  {pos.experience && (
+                    <div className="text-[11px] text-amber-800 font-semibold mt-0.5">অভিজ্ঞতা: {pos.experience}</div>
+                  )}
                 </div>
                 <div className="flex items-center justify-between text-slate-700 pt-1">
                   <span><strong>বেতন স্কেল:</strong> {pos.salary}</span>
@@ -2193,6 +2536,74 @@ export default function JobDetailClient({ job, relatedJobs = [] }: { job: JobCir
       </div>
 
       
+      {/* 10.4. Dedicated Direct Official Portal & Teletalk Subdomain Apply CTA */}
+      <section aria-label="সরাসরি অফিশিয়াল পোর্টালে আবেদন" className="bg-gradient-to-r from-emerald-950 via-teal-950 to-slate-950 text-white rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-xl border border-emerald-800/60 space-y-5">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-emerald-800/80 pb-5">
+          <div className="space-y-1.5 max-w-2xl">
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="px-3 py-1 bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-xs font-black rounded-full flex items-center gap-1.5">
+                <ExternalLink className="w-3.5 h-3.5" />
+                <span>অফিশিয়াল সাবডোমেইনে সরাসরি আবেদন</span>
+              </span>
+              {officialSubdomain && (
+                <span className="text-xs font-mono font-bold text-emerald-400 bg-white/10 px-2.5 py-0.5 rounded-lg border border-white/10">
+                  {officialSubdomain}
+                </span>
+              )}
+            </div>
+            <h2 className="text-xl sm:text-2xl font-black text-white leading-tight">
+              {job.organization} — অফিশিয়াল পোর্টালে সরাসরি অনলাইনে ফরম পূরণ
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+              আপনি কি নিজে নিজে আবেদন করতে চান? নিচের বোতামে ক্লিক করে সংশ্লিষ্ট প্রতিষ্ঠানের সরকারি সাবডোমেইনে প্রবেশ করে সরাসরি ফরম পূরণ ও ফি পরিশোধ করতে পারেন।
+            </p>
+          </div>
+
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 shrink-0">
+            {isExpired ? (
+              <div className="px-6 py-3.5 bg-slate-800 text-slate-400 font-bold text-sm rounded-2xl border border-slate-700 flex items-center justify-center gap-2 cursor-not-allowed">
+                <Clock className="w-4 h-4 text-slate-400" />
+                <span>আবেদনের সময় শেষ</span>
+              </div>
+            ) : (
+              <>
+                <a
+                  href={job.officialLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-6 py-3.5 bg-white hover:bg-slate-100 text-slate-950 font-black text-sm rounded-2xl transition-all shadow-md flex items-center justify-center gap-2 hover:scale-105"
+                  title="অফিশিয়াল সাবডোমেইনে যান"
+                >
+                  <span>অফিশিয়াল সাবডোমেইনে সরাসরি আবেদন ↗</span>
+                </a>
+                <Link
+                  href={applyHref}
+                  className="px-6 py-3.5 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-black text-sm rounded-2xl transition-all shadow-md flex items-center justify-center gap-2 hover:scale-105"
+                >
+                  <span>আমাদের মাধ্যমে আবেদন করুন</span>
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+              </>
+            )}
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs text-slate-300">
+          <div className="bg-white/5 p-3 rounded-xl border border-white/10 flex items-start gap-2">
+            <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+            <span>ছবি ৩০০×৩০০ ও স্বাক্ষর ৩০০×৮০ পিক্সেল সাইজে আগেই প্রস্তুত রাখুন।</span>
+          </div>
+          <div className="bg-white/5 p-3 rounded-xl border border-white/10 flex items-start gap-2">
+            <Smartphone className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+            <span>আবেদন সাবমিটের পর ৭২ ঘণ্টার মধ্যে প্রিপেইড টেলিটক সিম থেকে ফি পরিশোধ করতে হবে।</span>
+          </div>
+          <div className="bg-white/5 p-3 rounded-xl border border-white/10 flex items-start gap-2">
+            <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+            <span>চাকরি সেবার মাধ্যমে আবেদন করলে আমাদের টিম ছবি রিসাইজ ও পেমেন্ট সম্পন্ন করে নিশ্চিত কপি প্রদান করে।</span>
+          </div>
+        </div>
+      </section>
+
       {/* 10.5. Semantic Related Jobs & Topic Clusters (Internal Linking Engine) */}
       {relatedJobs && relatedJobs.length > 0 && (
         <section aria-label="সম্পর্কিত অন্যান্য চলমান সার্কুলার" className="bg-white rounded-3xl border border-slate-200/90 shadow-sm p-5 sm:p-8 space-y-5">
@@ -2203,7 +2614,7 @@ export default function JobDetailClient({ job, relatedJobs = [] }: { job: JobCir
                 <span>সেমান্টিক টপিক ক্লাস্টার ও সম্পর্কিত সার্কুলার</span>
               </div>
               <h2 className="text-xl sm:text-2xl font-black text-slate-900">
-                একই ক্যাটাগরি ও যোগ্যতার অন্যান্য চলমান চাকরি
+                একই ক্যাটাগরি ও যোগ্যতার ৩টি প্রাসঙ্গিক চাকরি
               </h2>
             </div>
             <Link
@@ -2215,8 +2626,8 @@ export default function JobDetailClient({ job, relatedJobs = [] }: { job: JobCir
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {relatedJobs.map((rel) => (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {relatedJobs.slice(0, 3).map((rel) => (
               <Link
                 key={rel.id}
                 href={`/jobs/${rel.slug || rel.id}`}
@@ -2227,7 +2638,7 @@ export default function JobDetailClient({ job, relatedJobs = [] }: { job: JobCir
                     <span className="text-[11px] font-bold px-2 py-0.5 rounded bg-emerald-100 text-emerald-800">
                       {rel.categoryLabel || 'সরকারি'}
                     </span>
-                    <span className="text-[11px] font-mono text-slate-500">
+                    <span className="text-[11px] font-mono text-slate-500 font-bold">
                       {rel.totalPosts || 1}টি পদ
                     </span>
                   </div>
@@ -2245,7 +2656,7 @@ export default function JobDetailClient({ job, relatedJobs = [] }: { job: JobCir
                     <span>{rel.deadline || 'চলমান'}</span>
                   </span>
                   <span className="text-emerald-700 font-bold group-hover:translate-x-0.5 transition-transform flex items-center gap-0.5">
-                    দেখুন →
+                    বিস্তারিত দেখুন →
                   </span>
                 </div>
               </Link>

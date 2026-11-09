@@ -303,7 +303,377 @@ flowchart TD
 
 ---
 
-## ১২. ক্লাস্টার ১০: সম্পূর্ণ অ্যান্ড-টু-অ্যান্ড অডিট ও ভেরিফিকেশন রোডম্যাপ (Cluster-by-Cluster Deep Audit Roadmap)
+## ১৩. সম্পূর্ণ প্ল্যাটফর্মের ৮টি কোর পাইপলাইন ও গভীর ডেটা প্রবাহ (The 8 End-to-End Architectural Pipelines)
+
+অ্যাডমিন প্যানেলটি কেবল একটি বিচ্ছিন্ন UI নয়, বরং এটি প্ল্যাটফর্মের সকল ফ্রন্টএন্ড, ব্যাকএন্ড ওয়ার্কার এবং ডেটাবেজের সাথে একাধিক স্বয়ংক্রিয় পাইপলাইনে সংযুক্ত। নিচে ৮টি প্রধান পাইপলাইনের উৎস থেকে গন্তব্য পর্যন্ত পূর্ণাঙ্গ জীবনচক্র (Life-cycle) বিশ্লেষিত হলো:
+
+---
+
+### পাইপলাইন ১: অটোমেটেড সার্কুলার স্ক্র্যাপিং, এআই পার্সিং ও ইনজেশন পাইপলাইন
+**Auto Scraping, Gemini AI Extraction & Isomorphic Pay Scale Pipeline**
+
+এই পাইপলাইনের মাধ্যমে অলজবস টেলিটক ও বিভিন্ন সরকারি পোর্টাল থেকে বিজ্ঞপ্তি স্বয়ংক্রিয়ভাবে সংগৃহীত হয়ে লাইভ সাইটে প্রকাশিত হয়।
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Admin as অ্যাডমিন / ব্যাকগ্রাউন্ড ক্রন
+    participant Spider as লাইভ ব্রাউজার স্পাইডার (Playwright / Daemon)
+    participant Resolver as Alljobs Smart Resolver (Regex Matcher)
+    participant Gemini as Gemini 2.5 Flash / Ollama AI API
+    participant PayScale as Isomorphic Pay Scale Engine 2015
+    participant DB as ServerDB (local_store.json)
+    participant Feed as পাবলিক হোমপেজ ও সার্কুলার ফিড
+
+    Admin->>Spider: ট্রিগার ক্রলিং (URL / সার্কুলার আইডি)
+    Spider->>Resolver: normalizeBnDigits(url) & পেজিনেশন স্ক্র্যাপ
+    Spider->>Gemini: টেক্সট ও স্ক্যানড পিডিএফ ইমেজ প্রেরণ
+    Gemini-->>Spider: স্ট্রাকচার্ড JSON এক্সট্রাকশন (পদ, শূন্যপদ, ডেডলাইন)
+    Spider->>PayScale: পদবি অনুযায়ী গ্রেড ও মূল বেতন যাচাই
+    PayScale-->>Spider: বিশুদ্ধ একক গ্রেড ও বেতন স্কেল ২০১৫ নিশ্চিতকরণ
+    Spider->>DB: serverDB.saveJobDraft() (ডুপ্লিকেট হ্যাশ ফিল্টার)
+    Note over Admin,DB: খসড়া সার্কুলার 'imported-drafts' কিউতে জমা হয়
+    Admin->>DB: POST /api/admin/verification/[id]/approve (১-ক্লিক অনুমোদন)
+    DB->>Feed: serverDB.publishJob() -> লাইভ পাবলিক ফিডে দৃশ্যমান
+```
+
+* **উৎস ও ট্রিগার:**
+  - `automation-hub` থেকে শিডিউলড ব্যাকগ্রাউন্ড ক্রন অথবা অ্যাডমিন ম্যানুয়াল ট্রিগার (`/admin?tab=gemini-browser-spider` বা `testing-spider`)।
+* **কোড পাথ ও হ্যান্ডলার:**
+  - ইউআরএল ফিল্টারিং: [`src/lib/collector/alljobs_smart_resolver.ts`](file:///C:/Users/Leon%20Rahman/.gemini/antigravity/scratch/chakri-sheba-workspace/src/lib/collector/alljobs_smart_resolver.ts)
+  - ব্রাউজার সেশন ও এআই পার্সিং: [`src/app/api/admin/spider/gemini-browser/route.ts`](file:///C:/Users/Leon%20Rahman/.gemini/antigravity/scratch/chakri-sheba-workspace/src/app/api/admin/spider/gemini-browser/route.ts) ও [`src/app/api/admin/gemini/parse-circular/route.ts`](file:///C:/Users/Leon%20Rahman/.gemini/antigravity/scratch/chakri-sheba-workspace/src/app/api/admin/gemini/parse-circular/route.ts)
+  - পে-স্কেল ম্যাপিং: [`src/lib/payscale_engine.ts`](file:///C:/Users/Leon%20Rahman/.gemini/antigravity/scratch/chakri-sheba-workspace/src/lib/payscale_engine.ts)
+  - ডেটাবেজ সেভ: [`serverDB.saveJobDraft()`](file:///C:/Users/Leon%20Rahman/.gemini/antigravity/scratch/chakri-sheba-workspace/src/lib/db.ts#L4500) ➜ `local_store.json` এর `drafts` কালেকশনে।
+* **গন্তব্য ও ফলাফল:**
+  - অ্যাডমিন প্যানেলের [`/admin?tab=imported-drafts`](file:///C:/Users/Leon%20Rahman/.gemini/antigravity/scratch/chakri-sheba-workspace/src/app/admin/page.tsx) ট্যাবে খসড়া প্রদর্শিত হয়। অ্যাডমিন এক ক্লিকে অনুমোদন দিলে মুহূর্তের মধ্যে পাবলিক হোমপেজ (`/`) এবং সার্কুলার তালিকায় লাইভ হয়ে যায়।
+
+---
+
+### পাইপলাইন ২: প্রার্থীর আবেদন, পেমেন্ট ট্রানজেকশন ভেরিফিকেশন ও টেলিটক প্রসেসিং কিউ
+**Candidate Application, Payment Audit & Teletalk Queue Pipeline**
+
+চাকরিপ্রার্থীর আবেদন দাখিল থেকে শুরু করে টেলিটক ইউজার আইডি ও প্রবেশপত্র বরাদ্দ পর্যন্ত পূর্ণাঙ্গ প্রশাসনিক পাইপলাইন।
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Candidate as চাকরিপ্রার্থী
+    participant ApplyUI as আবেদন পোর্টাল (/apply/[id])
+    participant CandAPI as POST /api/candidate/applications
+    actor Staff as অ্যাডমিন কর্মী
+    participant AdminApp as অ্যাডমিন প্যানেল (/admin?tab=all-applications)
+    participant TeletalkGov as সরকারি টেলিটক সার্ভার
+    participant CandPortal as ৫-ধাপের লাইভ আবেদন ট্র্যাকার
+
+    Candidate->>ApplyUI: ভল্ট থেকে ছবি, স্বাক্ষর ও তথ্য সহ ফর্ম সাবমিট
+    ApplyUI->>CandAPI: ট্র্যাকিং কোড জেনারেট (APP-2026-XXXX)
+    CandAPI-->>CandPortal: স্ট্যাটাস: 'নতুন আবেদন (Payment Pending)'
+    Note over Candidate,AdminApp: প্রার্থী বিকাশ/নগদে টাকা পাঠিয়ে TRX ID সাবমিট করেন
+    AdminApp->>Staff: 'payment-verification' কিউতে TRX ID ও রেফারেন্স পপ-আপ
+    Staff->>AdminApp: ১-ক্লিক অনুমোদন (Approve Payment)
+    AdminApp-->>CandPortal: স্ট্যাটাস: 'পেমেন্ট যাচাইকৃত (Payment Verified)'
+    Note over Staff,TeletalkGov: আবেদনটি অ্যাডমিনের 'processing-queue'-তে চলে আসে
+    Staff->>AdminApp: ১-ক্লিকে প্রার্থীর সকল বায়োডাটা ক্লিপবোর্ডে কপি
+    Staff->>TeletalkGov: টেলিটকে আবেদন ও সরকারি ফি সাবমিশন
+    TeletalkGov-->>Staff: অফিসিয়াল অ্যাপ্লিক্যান্ট কপি (PDF) ও ইউজার আইডি/পাসওয়ার্ড
+    Staff->>AdminApp: ইউজার আইডি/পাসওয়ার্ড ইনপুট ও PDF কপি আপলোড
+    AdminApp-->>CandPortal: স্ট্যাটাস: 'টেলিটক আবেদন সম্পন্ন' -> ১-ক্লিকে ডাউনলোড প্রস্তুত!
+```
+
+* **উৎস ও ট্রিগার:**
+  - চাকরিপ্রার্থী যখন কোনো সার্কুলারের বিস্তারিত পেজ থেকে আবেদন সাবমিট করেন (`/apply/[id]`)।
+* **কোড পাথ ও হ্যান্ডলার:**
+  - আবেদন গ্রহণ: [`src/components/ApplyClient.tsx`](file:///C:/Users/Leon%20Rahman/.gemini/antigravity/scratch/chakri-sheba-workspace/src/components/ApplyClient.tsx)
+  - ব্যাকএন্ড এপিআই: `POST /api/candidate/applications` ➜ [`serverDB.submitApplication()`](file:///C:/Users/Leon%20Rahman/.gemini/antigravity/scratch/chakri-sheba-workspace/src/lib/db.ts#L3029)
+  - পেমেন্ট অনুমোদন: `POST /api/admin/wallet-transactions` ➜ [`serverDB.reviewWalletRecharge()`](file:///C:/Users/Leon%20Rahman/.gemini/antigravity/scratch/chakri-sheba-workspace/src/lib/db.ts#L3236)
+  - টেলিটক ডকুমেন্ট আপলোড: `POST /api/admin/upload-applicant-copy` ➜ [`serverDB.updateAppStatus()`](file:///C:/Users/Leon%20Rahman/.gemini/antigravity/scratch/chakri-sheba-workspace/src/lib/db.ts#L3079)
+* **গন্তব্য ও ফলাফল:**
+  - প্রার্থীর ড্যাশবোর্ডের [`/applications`](file:///C:/Users/Leon%20Rahman/.gemini/antigravity/scratch/chakri-sheba-workspace/src/app/applications/page.tsx) এবং [`/dashboard/applications`](file:///C:/Users/Leon%20Rahman/.gemini/antigravity/scratch/chakri-sheba-workspace/src/app/dashboard/applications/page.tsx)-এ লাইভ ৫-ধাপের প্রগ্রেস বারে স্বয়ংক্রিয়ভাবে 'ধাপ ৪: টেলিটক আবেদন সম্পন্ন' ও 'ধাপ ৫: প্রবেশপত্র প্রস্তুত' হয়ে যায়।
+
+---
+
+### পাইপলাইন ৩: অ্যাডমিন ১-ক্লিক সাপোর্ট ইমপারসোনেশন ও ক্যান্ডিডেট ডাটা সিঙ্ক পাইপলাইন
+**Admin 1-Click Support Impersonation & Real-Time Sync Pipeline**
+
+প্রার্থীকে টেকনিক্যাল সাপোর্ট দেওয়ার স্বার্থে অ্যাডমিন কর্তৃক প্রার্থীর অ্যাকাউন্টে নিরাপদ প্রবেশ ও প্রস্থান।
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Admin as অ্যাডমিন
+    participant AdminUI as প্রার্থী ডিরেক্টরি (/admin?tab=candidate-directory)
+    participant ImpersonateAPI as POST /api/admin/impersonate
+    participant SessionStore as Browser Session (localStorage & Cookie)
+    participant DashLayout as ড্যাশবোর্ড লেআউট (/dashboard/layout.tsx)
+    participant CandDash as প্রার্থীর ব্যক্তিগত ড্যাশবোর্ড (/dashboard)
+
+    Admin->>AdminUI: প্রার্থীর পাশে সোনালী 'লগইন মোড' বাটনে ক্লিক
+    AdminUI->>ImpersonateAPI: candidateId ও অ্যাডমিন সিক্রেট টোকেন প্রেরণ
+    ImpersonateAPI->>ImpersonateAPI: পারমিশন ভ্যালিডেশন ও অডিট লগ সংরক্ষণ
+    ImpersonateAPI-->>SessionStore: cs_session_token (ইমপারসোনেশন মোড ফ্ল্যাগ সহ)
+    ImpersonateAPI-->>AdminUI: 302 Redirect ➜ /dashboard
+    DashLayout->>DashLayout: টোকেন রিড করে ইমপারসোনেশন শনাক্তকরণ
+    DashLayout-->>CandDash: শীর্ষে সোনালী সতর্কবার্তা ব্যানার ফুটিয়ে তোলা
+    Note over Admin,CandDash: অ্যাডমিন প্রার্থীর সমস্যা সমাধান বা প্রিভিউ করেন
+    Admin->>DashLayout: সোনালী ব্যানারের 'অ্যাডমিন প্যানেলে ফিরুন ↗' বাটনে ক্লিক
+    DashLayout->>SessionStore: ইমপারসোনেশন টোকেন ক্লিয়ার ও মূল অ্যাডমিন রিভার্ট
+    DashLayout-->>AdminUI: 302 Redirect ➜ /admin?tab=candidate-directory
+```
+
+* **উৎস ও ট্রিগার:**
+  - অ্যাডমিন কর্তৃক প্রার্থী ডিরেক্টরিতে (`/admin?tab=candidate-directory`) থাকা `লগইন মোড (Impersonate)` বাটনে ক্লিক।
+* **কোড পাথ ও হ্যান্ডলার:**
+  - UI ট্রিগার: [`src/components/admin/CandidateManagementHub.tsx`](file:///C:/Users/Leon%20Rahman/.gemini/antigravity/scratch/chakri-sheba-workspace/src/components/admin/CandidateManagementHub.tsx)
+  - ব্যাকএন্ড এপিআই: [`src/app/api/admin/impersonate/route.ts`](file:///C:/Users/Leon%20Rahman/.gemini/antigravity/scratch/chakri-sheba-workspace/src/app/api/admin/impersonate/route.ts)
+  - সেশন ও ব্যানার গার্ড: [`src/app/dashboard/layout.tsx`](file:///C:/Users/Leon%20Rahman/.gemini/antigravity/scratch/chakri-sheba-workspace/src/app/dashboard/layout.tsx)
+* **গন্তব্য ও ফলাফল:**
+  - কোনো পাসওয়ার্ড ছাড়াই অ্যাডমিন প্রার্থীর দৃষ্টিতে পুরো পোর্টাল পর্যবেক্ষণ করতে পারেন। শীর্ষে সর্বদা রিয়েল-টাইম সোনালী এক্সিট ব্যানার দৃশ্যমান থাকে এবং এক ক্লিকে অ্যাডমিন প্যানেলে প্রত্যাবর্তন নিশ্চিত করে।
+
+---
+
+### পাইপলাইন ৪: ডিজিটাল ওয়ালেট, ক্যাশ-ইন রসিদ ও রিফান্ড লেজার পাইপলাইন
+**Digital Wallet, Cash-In Audit, Debit & Refund Ledger Pipeline**
+
+প্রার্থীর অ্যাকাউন্ট ব্যালেন্স রিচার্জ, আবেদন ফি স্বয়ংক্রিয় কর্তন এবং অডিট ট্রেইল সংরক্ষণ।
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Candidate as প্রার্থী
+    participant WalletUI as ওয়ালেট পোর্টাল (/dashboard/wallet)
+    participant WalletAPI as POST /api/candidate/wallet/recharge
+    actor FinanceAdmin as ফিন্যান্স অ্যাডমিন
+    participant LedgerUI as আর্থিক লেজার (/admin?tab=transactions)
+    participant DB as ServerDB (Wallet Transactions Collection)
+
+    Candidate->>WalletUI: বিকাশ/নগদে ক্যাশ-ইন করে TRX ID ইনপুট
+    WalletUI->>WalletAPI: ক্যাশ-ইন রিকোয়েস্ট জমা (Status: pending)
+    WalletAPI->>DB: serverDB.addTransaction()
+    DB-->>LedgerUI: পেন্ডিং ট্রানজেকশন টেবিলে নতুন সারি যুক্ত
+    FinanceAdmin->>LedgerUI: ব্যাংক স্টেটমেন্টের সাথে TRX ID যাচাই
+    FinanceAdmin->>LedgerUI: ১-ক্লিক অনুমোদন (Approve)
+    LedgerUI->>DB: serverDB.reviewWalletRecharge(id, 'approve')
+    DB->>DB: প্রার্থীর ব্যালেন্স বৃদ্ধি (balance += amount)
+    DB-->>WalletUI: ওয়ালেটে ব্যালেন্স আপডেট ও ডিজিটাল ভাউচার স্লিপ জেনারেট
+```
+
+* **উৎস ও ট্রিগার:**
+  - প্রার্থী যখন ওয়ালেট রিচার্জ রিকোয়েস্ট পাঠান অথবা ওয়ালেটের মাধ্যমে চাকরির আবেদন ফি পরিশোধ করেন।
+* **কোড পাথ ও হ্যান্ডলার:**
+  - ক্যান্ডিডেট ওয়ালেট এপিআই: `POST /api/candidate/wallet/recharge`
+  - অ্যাডমিন লেজার ভিউয়ার: [`src/components/admin/FinancialTransactionsLedger.tsx`](file:///C:/Users/Leon%20Rahman/.gemini/antigravity/scratch/chakri-sheba-workspace/src/components/admin/FinancialTransactionsLedger.tsx)
+  - অনুমোদন হ্যান্ডলার: [`serverDB.reviewWalletRecharge()`](file:///C:/Users/Leon%20Rahman/.gemini/antigravity/scratch/chakri-sheba-workspace/src/lib/db.ts#L3236)
+* **গন্তব্য ও ফলাফল:**
+  - অপরিবর্তনযোগ্য আর্থিক লেজার সংরক্ষিত হয়। প্রার্থীর অ্যাকাউন্টে স্বয়ংক্রিয়ভাবে ডাউনলোডযোগ্য ইনভয়েস রসিদ তৈরি হয়।
+
+---
+
+### পাইপলাইন ৫: ভিজ্যুয়াল ড্র্যাগ-অ্যান্ড-ড্রপ পেইজ বিল্ডার ও ডায়নামিক CMS রেন্ডারিং পাইপলাইন
+**Visual Drag-and-Drop Page Builder & Dynamic CMS Rendering Pipeline**
+
+কোডিং ছাড়াই অ্যাডমিন কর্তৃক নতুন ওয়েব পেইজ বা ল্যান্ডিং সেকশন তৈরি ও প্রকাশের সম্পূর্ণ সাইকেল।
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Admin as অ্যাডমিন / কন্টেন্ট ম্যানেজার
+    participant BuilderUI as ভিজ্যুয়াল পেইজ বিল্ডার (/admin?tab=builder)
+    participant Inspector as রাইট ইন্সপেক্টর ও স্টাইল কন্ট্রোলার
+    participant PageAPI as POST /api/admin/pages
+    participant DB as ServerDB (pages Collection)
+    participant PublicSSR as পাবলিক ডায়নামিক রাউট (/[slug])
+
+    Admin->>BuilderUI: বাম সাইডবার থেকে ব্লক ড্র্যাগ করে ক্যানভাসে ড্রপ
+    BuilderUI->>Inspector: ব্লকে ক্লিক করে টেক্সট, রং, মার্জিন ও প্যাডিং টিউনিং
+    Admin->>BuilderUI: রেসপনসিভ প্রিভিউ যাচাই (Desktop/Tablet/Mobile)
+    Admin->>BuilderUI: 'প্রকাশ করুন (Publish)' বাটনে ক্লিক (Slug: /career-guide)
+    BuilderUI->>PageAPI: JSON স্কিমা সহ পেজ ডেটা পোস্ট
+    PageAPI->>DB: serverDB.savePage() (Schema Version 3.0)
+    Note over PublicSSR: সাধারণ ভিজিটর chakrisheba.com/career-guide ব্রাউজ করেন
+    PublicSSR->>DB: serverDB.getPageBySlug('career-guide')
+    DB-->>PublicSSR: সংজ্ঞায়িত ব্লক ও স্টাইল স্কিমা রিটার্ন
+    PublicSSR-->>Admin: সার্ভার-সাইডে দ্রুতগতির HTML পেজ রেন্ডার!
+```
+
+* **উৎস ও ট্রিগার:**
+  - অ্যাডমিন কর্তৃক `/admin?tab=builder` এ গিয়ে ব্লক ড্র্যাগ-অ্যান্ড-ড্রপ করে নতুন পেজ তৈরি।
+* **কোড পাথ ও হ্যান্ডলার:**
+  - কোর বিল্ডার কম্পোনেন্ট: [`src/components/admin/WebsiteBuilder.tsx`](file:///C:/Users/Leon%20Rahman/.gemini/antigravity/scratch/chakri-sheba-workspace/src/components/admin/WebsiteBuilder.tsx)
+  - ব্লক ও ইন্সপেক্টর: [`BuilderLeftSidebar.tsx`](file:///C:/Users/Leon%20Rahman/.gemini/antigravity/scratch/chakri-sheba-workspace/src/components/admin/builder/BuilderLeftSidebar.tsx) ও [`BuilderRightInspector.tsx`](file:///C:/Users/Leon%20Rahman/.gemini/antigravity/scratch/chakri-sheba-workspace/src/components/admin/builder/BuilderRightInspector.tsx)
+  - ব্যাকএন্ড এপিআই: `POST /api/admin/pages` ➜ [`serverDB.savePage()`](file:///C:/Users/Leon%20Rahman/.gemini/antigravity/scratch/chakri-sheba-workspace/src/lib/db.ts)
+* **গন্তব্য ও ফলাফল:**
+  - সম্পূর্ণ কোডিংহীনভাবে নতুন পেজ তৈরি হয় এবং Next.js এর ডাইনামিক রাউট `/[slug]` দিয়ে ভিজিটরদের কাছে লাইভ হয়ে যায়।
+
+---
+
+### পাইপলাইন ৬: ভুয়া সার্কুলার ও নাগরিক অভিযোগ নিষ্পত্তি সেল পাইপলাইন
+**Fraud Job Reports, Investigation & Corrigendum Resolution Pipeline**
+
+সাধারণ নাগরিক বা চাকরিপ্রার্থীদের পাঠানো ভুয়া সার্কুলারের অভিযোগ গ্রহণ, তদন্ত ও নিষ্পত্তি।
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor User as চাকরিপ্রার্থী / পাঠক
+    participant ReportUI as অভিযোগ দাখিল পোর্টাল (/report-a-job)
+    participant ReportAPI as POST /api/jobs/report
+    actor Admin as অডিট অ্যাডমিন
+    participant AdminHub as অভিযোগ সেল (/admin?tab=job-reports)
+    participant DB as ServerDB (jobReports Collection)
+    participant PublicFeed as পাবলিক সার্কুলার নোটিস বোর্ড
+
+    User->>ReportUI: ভুয়া সার্কুলারের বিরুদ্ধে প্রমাণ ও অভিযোগ সাবমিট
+    ReportUI->>ReportAPI: অভিযোগ ডেটা পোস্ট
+    ReportAPI->>DB: serverDB.createJobReport()
+    ReportAPI-->>User: ইউনিক ট্র্যাকিং কোড জেনারেট (REP-2026-XXXX)
+    DB-->>AdminHub: অ্যাডমিন প্যানেলে রেড অ্যালার্ট সহ অভিযোগ দৃশ্যমান
+    Admin->>AdminHub: তদন্ত শুরু (Status: investigating)
+    Admin->>AdminHub: অফিসিয়াল গেজেট ও সার্কুলার ক্রস-চেক
+    Note over Admin,PublicFeed: অভিযোগ সত্য হলে সার্কুলারে সংশোধনী যোগ করা হয়
+    Admin->>AdminHub: নিষ্পত্তি অনুমোদন (Status: resolved + রেজোলিউশন নোট)
+    AdminHub->>DB: serverDB.updateJobReportStatus(id, 'resolved', note)
+    PublicFeed-->>User: সার্কুলারের উপরে 'সংশোধিত বিজ্ঞপ্তি' সোনালী রিবন দৃশ্যমান
+    User->>ReportUI: ট্র্যাকিং কোড REP-2026-XXXX দিয়ে রেজোলিউশন স্ট্যাটাস চেক!
+```
+
+* **উৎস ও ট্রিগার:**
+  - পাবলিক পেজ [`/report-a-job`](file:///C:/Users/Leon%20Rahman/.gemini/antigravity/scratch/chakri-sheba-workspace/src/app/report-a-job/page.tsx) থেকে নাগরিক বা প্রার্থীর অভিযোগ সাবমিশন।
+* **কোড পাথ ও হ্যান্ডলার:**
+  - অভিযোগ এপিআই: [`src/app/api/jobs/report/route.ts`](file:///C:/Users/Leon%20Rahman/.gemini/antigravity/scratch/chakri-sheba-workspace/src/app/api/jobs/report/route.ts)
+  - অ্যাডমিন অডিট হাব: [`src/components/admin/JobReportsManagement.tsx`](file:///C:/Users/Leon%20Rahman/.gemini/antigravity/scratch/chakri-sheba-workspace/src/components/admin/JobReportsManagement.tsx)
+  - ডাটাবেজ মেথড: [`serverDB.createJobReport()`](file:///C:/Users/Leon%20Rahman/.gemini/antigravity/scratch/chakri-sheba-workspace/src/lib/db.ts#L2460) ও [`serverDB.updateJobReportStatus()`](file:///C:/Users/Leon%20Rahman/.gemini/antigravity/scratch/chakri-sheba-workspace/src/lib/db.ts#L2484)
+* **গন্তব্য ও ফলাফল:**
+  - ভুল বা প্রতারণামূলক সার্কুলার চিহ্নিত করে তৎক্ষণাৎ পাবলিক সাইটে সংশোধনী নোটিশ জারী করা হয়।
+
+---
+
+### পাইপলাইন ৭: হেল্পডেস্ক সাপোর্ট টিকেট ও রিয়েল-টাইম ট্র্যাকিং পাইপলাইন
+**Support Ticket, Live Helpdesk & Multi-Channel Response Pipeline**
+
+প্রার্থীদের সাধারণ জিজ্ঞাসা, আবেদন সংক্রান্ত টেকনিক্যাল সমস্যা ও পেমেন্ট অভিযোগের সমাধান।
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Candidate as চাকরিপ্রার্থী
+    participant ContactUI as হেল্পডেস্ক পোর্টাল (/contact)
+    participant ContactAPI as POST /api/contact
+    actor Support as সাপোর্ট স্পেশালিস্ট
+    participant TicketHub as সাপোর্ট টিকেট প্যানেল (/admin?tab=support-tickets)
+    participant DB as ServerDB (contactMessages Collection)
+
+    Candidate->>ContactUI: সাহায্য চেয়ে বার্তা ও মোবাইল নম্বর সাবমিট
+    ContactUI->>ContactAPI: সাপোর্ট টিকেট ডেটা পোস্ট
+    ContactAPI->>DB: serverDB.createContactMessage()
+    ContactAPI-->>Candidate: ইউনিক টিকেট ট্র্যাকিং আইডি (TCK-2026-XXXX)
+    DB-->>TicketHub: টিকেট ড্যাশবোর্ডে নতুন ব্যাজ (Badge: New)
+    Support->>TicketHub: টিকেট পর্যালোচনা ও উত্তর টাইপ (Status: replied)
+    TicketHub->>DB: serverDB.updateContactMessageStatus(id, 'replied', notes)
+    Candidate->>ContactUI: /contact?tab=track&ticketId=TCK-2026-XXXX ওপেন
+    ContactUI-->>Candidate: সাপোর্ট টিমের অফিসিয়াল উত্তর ও সবুজ 'সমাধানকৃত' সিল প্রদর্শন!
+```
+
+* **উৎস ও ট্রিগার:**
+  - পাবলিক পেজ [`/contact`](file:///C:/Users/Leon%20Rahman/.gemini/antigravity/scratch/chakri-sheba-workspace/src/app/contact/page.tsx) বা ক্যান্ডিডেট ড্যাশবোর্ড সাপোর্ট উইন্ডো।
+* **কোড পাথ ও হ্যান্ডলার:**
+  - কন্টাক্ট এপিআই: [`src/app/api/contact/route.ts`](file:///C:/Users/Leon%20Rahman/.gemini/antigravity/scratch/chakri-sheba-workspace/src/app/api/contact/route.ts)
+  - অ্যাডমিন সাপোর্ট হাব: [`src/components/admin/SupportTicketsManagement.tsx`](file:///C:/Users/Leon%20Rahman/.gemini/antigravity/scratch/chakri-sheba-workspace/src/components/admin/SupportTicketsManagement.tsx)
+  - ডাটাবেজ মেথড: [`serverDB.createContactMessage()`](file:///C:/Users/Leon%20Rahman/.gemini/antigravity/scratch/chakri-sheba-workspace/src/lib/db.ts#L2543) ও [`serverDB.updateContactMessageStatus()`](file:///C:/Users/Leon%20Rahman/.gemini/antigravity/scratch/chakri-sheba-workspace/src/lib/db.ts#L2565)
+* **গন্তব্য ও ফলাফল:**
+  - প্রার্থীর যেকোনো সমস্যা সর্বোচ্চ স্বচ্ছতার সাথে সমাধান হয় এবং প্রার্থী সরাসরি লাইভ লিংকে তার টিকেটের অগ্রগতি ট্র্যাক করতে পারেন।
+
+---
+
+### পাইপলাইন ৮: সিস্টেম হেলথ, লোকাল ব্রাউজার ডেমন ও হার্টবিট পাইপলাইন
+**System Health, Local Worker Daemon & Live Heartbeat Monitoring Pipeline**
+
+সার্ভার আপটাইম, ব্যাকগ্রাউন্ড ব্রাউজার ডেমন এবং এআই এপিআই রেসপন্সিভনেসের স্বয়ংক্রিয় স্বাস্থ্য পরীক্ষা।
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant Daemon as লোকাল ব্রাউজার ওয়ার্কার (scripts/local_worker_daemon.js)
+    participant TaskAPI as /api/worker/tasks/acquire
+    participant StateMachine as টাস্ক স্টেট মেশিন (Atomic Lease 10m)
+    participant HealthAPI as /api/admin/monitoring
+    participant HealthUI as সিস্টেম স্বাস্থ্য হাব (/admin?tab=system-health)
+
+    loop প্রতি ৩০ সেকেন্ড অন্তর পোলিং
+        Daemon->>TaskAPI: আউটবাউন্ড HTTPS পোলিং (পেন্ডিং ক্রল টাস্ক আছে কি?)
+        TaskAPI-->>Daemon: টাস্ক থাকলে ১০ মিনিটের লিজে ডেলিভারি
+    end
+    loop প্রতি ৩ মিনিট অন্তর হার্টবিট
+        Daemon->>StateMachine: POST /api/worker/tasks/[id]/heartbeat
+        StateMachine-->>Daemon: লিজ এক্সটেনশন নিশ্চিতকরণ
+    end
+    HealthUI->>HealthAPI: সার্ভার, ডাটাবেজ, জেমিনি ও ওয়ার্কার পিং
+    HealthAPI-->>HealthUI: লাইভ স্ট্যাটাস (Latency ms, Memory, Worker Live)
+    HealthUI-->>HealthUI: গ্রিন ডট পালস ও সচল ইন্ডিকেটর রেন্ডার
+```
+
+* **উৎস ও ট্রিগার:**
+  - লোকাল মেশিনের ব্যাকগ্রাউন্ড ডেমন [`scripts/local_worker_daemon.js`](file:///C:/Users/Leon%20Rahman/.gemini/antigravity/scratch/chakri-sheba-workspace/scripts/local_worker_daemon.js) এবং অ্যাডমিনের লাইভ পিং পোলিং।
+* **কোড পাথ ও হ্যান্ডলার:**
+  - টাস্ক স্টেট মেশিন: [`src/app/api/admin/engineering/tasks/route.ts`](file:///C:/Users/Leon%20Rahman/.gemini/antigravity/scratch/chakri-sheba-workspace/src/app/api/admin/engineering/tasks/route.ts)
+  - মনিটরিং এপিআই: [`src/app/api/admin/monitoring/route.ts`](file:///C:/Users/Leon%20Rahman/.gemini/antigravity/scratch/chakri-sheba-workspace/src/app/api/admin/monitoring/route.ts)
+  - হেলথ ড্যাশবোর্ড উইজেট: [`AdminDashboardOverview.tsx`](file:///C:/Users/Leon%20Rahman/.gemini/antigravity/scratch/chakri-sheba-workspace/src/components/admin/dashboard/AdminDashboardOverview.tsx)
+* **গন্তব্য ও ফলাফল:**
+  - কোনো সার্ভিস বা স্ক্র্যাপার ক্র্যাশ করলে অ্যাডমিন তাৎক্ষণিকভাবে স্ক্রিনে সতর্কবার্তা দেখতে পান এবং স্বয়ংক্রিয় ব্যাকআপ ও রিকভারি ট্রিগার করতে পারেন।
+
+---
+
+## ১৪. প্রতিটি সাব-ট্যাবের ইনপুট, স্টেট ও আউটপুট গভীর নিরীক্ষা ম্যাট্রিক্স (Exhaustive 50 Sub-Tabs Data Matrix)
+
+| সাব-ট্যাব আইডি (`tab=...`) | ফ্রন্টএন্ড সোর্স ফাইল | ব্যাকএন্ড এপিআই হ্যান্ডলার | ডাটাবেজ মেথড ও কালেকশন (`serverDB`) | ইনপুট ও স্টেট পরিবর্তন | চূড়ান্ত আউটপুট ও গন্তব্য |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| `dashboard` | `AdminDashboardOverview.tsx` | `GET /api/admin/stats` | `serverDB.getJobs()`, `getAllCandidates()` | রিয়েল-টাইম মেট্রিক ফেচ | ৫টি KPI কার্ড, বার চার্ট, ডোনাট চার্ট |
+| `analytics-center` | `AnalyticsIntelligenceHub.tsx` | `GET /api/admin/analytics/overview` | `serverDB.getAnalyticsMetrics()` | ট্রাফিক ডেটা ও কনভার্সন রেঞ্জ | ক্যাটাগরি হিটম্যাপ ও ব্রাউজার গ্রাফ |
+| `report-builder` | `AnalyticsIntelligenceHub.tsx` | `POST /api/admin/reports/generate` | `serverDB.getAllApplications()` | তারিখ ফিল্টার (Date Range) | ডাউনলোডযোগ্য CSV / JSON রিপোর্ট |
+| `data-quality-inspector` | `AnalyticsIntelligenceHub.tsx` | `GET /api/admin/analytics/data-quality` | `serverDB.getJobs()`, `serverDB.getCandidates()` | ইনভ্যালিড ফিল্ড ডিটেকশন | ডাটা অডিট ফ্ল্যাগ ও ওয়ার্নিং লিস্ট |
+| `all-applications` | `src/app/admin/page.tsx` | `GET /api/admin/applications` | `serverDB.getAllApplications()` | নাম/ফোন/ট্র্যাকিং কোড ফিল্টার | মাস্টার অ্যাপ্লিকেশন টেবিল |
+| `payment-verification` | `src/app/admin/page.tsx` | `POST /api/admin/wallet-transactions` | `serverDB.reviewWalletRecharge()` | এক-ক্লিক Approve / Reject | ট্রানজেকশন অনুমোদন ও প্রসেসিংয়ে স্থানান্তর |
+| `processing-queue` | `src/app/admin/page.tsx` | `POST /api/admin/upload-applicant-copy` | `serverDB.updateAppStatus()` | টেলিটক User ID, Pass, PDF আপলোড | প্রার্থীর পোর্টালে ৫-ধাপের স্ট্যাটাস সিঙ্ক |
+| `completed-rejected` | `src/app/admin/page.tsx` | `GET /api/admin/applications` | `serverDB.getAllApplications()` | আর্কাইভ হিস্ট্রি কুয়েরি | সম্পন্ন ও প্রত্যাখ্যাত আবেদনের টেবিল |
+| `documents` | `CertificateVerificationQueue.tsx`| `POST /api/admin/certificates/verify` | `serverDB.updateDocumentVerification()`| ৩০০x৩০০ ছবি ও স্বাক্ষর ভিউয়ার | প্রার্থীর ডকুমেন্টে ভেরিফাইড সিল |
+| `circulars` | `src/app/admin/page.tsx` | `GET /api/admin/jobs` | `serverDB.getJobs()` | ক্যাটাগরি ও স্ট্যাটাস টগল | সকল নিয়োগ বিজ্ঞপ্তির মাস্টার টেবিল |
+| `create-circular` | `UniversalJobWorkspace.tsx` | `POST /api/admin/jobs` | `serverDB.saveJob()` | পদবি, গ্রেড, ফি, জেলা কোটা ইনপুট | নতুন সরকারি/ব্যাংক সার্কুলার পোস্টিং |
+| `publishing-center` | `JobPublishingCenter.tsx` | `POST /api/admin/publishing/schedule`| `serverDB.saveJob()` | প্রকাশের সময়সূচি নির্ধারণ | শিডিউলড লাইভ সাইট প্রকাশ |
+| `category-search-manager`| `JobCategorySearchManager.tsx`| `POST /api/admin/categories` | `serverDB.saveCategory()` | নতুন ক্যাটাগরি ও সার্চ কিওয়ার্ড | সার্চ ফিল্টার ও মেনু সিঙ্ক |
+| `job-reports` | `JobReportsManagement.tsx` | `POST /api/admin/job-reports` | `serverDB.updateJobReportStatus()` | অভিযোগ কোড, তদন্ত নোট | ভুয়া সার্কুলার প্রত্যাহার / সংশোধনী |
+| `support-tickets` | `SupportTicketsManagement.tsx` | `POST /api/admin/support-tickets` | `serverDB.updateContactMessageStatus()`| উত্তর প্রদান ও স্ট্যাটাস বন্ধ | প্রার্থীর হেল্পডেস্কে লাইভ সমাধান |
+| `gemini-browser-spider` | `GeminiBrowserSpiderHub.tsx` | `POST /api/admin/spider/gemini-browser`| `serverDB.saveJobDraft()` | লাইভ ব্রাউজার স্ক্রিন ও ক্রলিং | খসড়া সার্কুলার ইনজেশন |
+| `source-monitoring` | `SourceRegistryManagement.tsx` | `GET /api/admin/sources/logs` | `serverDB.getJobSources()` | স্ক্র্যাপার স্ট্যাটাস ও এরর অডিট | সোর্স অ্যাক্টিভেশন ও হার্টবিট |
+| `imported-drafts` | `JobVerificationCenter.tsx` | `POST /api/admin/verification/[id]/approve` | `serverDB.publishJob()` | ড্রাফট রিভিউ ও বেতন-স্কেল ফিক্স | ১-ক্লিকে পাবলিক ফিডে প্রকাশ |
+| `candidate-directory` | `CandidateManagementHub.tsx` | `GET /api/admin/candidates` | `serverDB.getAllCandidates()` | প্রার্থীর তালিকা ও প্রোফাইল স্কোর | প্রার্থী টেবিল ও ইমপারসোনেশন বাটন |
+| `candidate-details` | `UniversalUserWorkspace.tsx` | `PUT /api/admin/candidates/[id]` | `serverDB.updateCandidate()` | প্রার্থীর বায়োডাটা ও তথ্য এডিট | প্রোফাইল আপডেট ও ভল্ট হিস্ট্রি |
+| `company-directory` | `OrganizationManagementHub.tsx`| `POST /api/admin/companies` | `serverDB.createCompany()` | সংস্থা নাম, লোগো ও ওয়েবসাইট | সরকারি নিয়োগকারী সংস্থার ডিরেক্টরি |
+| `transactions` | `FinancialTransactionsLedger.tsx`| `GET /api/admin/wallet-transactions` | `serverDB.getTransactions()` | ক্যাশ-ইন, ডেবিট ও রিফান্ড ফিল্টার | আর্থিক লেজার ও ভাউচার স্লিপ |
+| `coupons-discounts` | `CouponsRaffleManagement.tsx` | `POST /api/admin/coupons` | `serverDB.saveCoupon()` | কুপন কোড, ডিসকাউন্ট %, মেয়াদ | প্রমোশনাল ডিসকাউন্ট সক্রিয়করণ |
+| `builder` | `WebsiteBuilder.tsx` | `POST /api/admin/pages` | `serverDB.savePage()` | ড্র্যাগ-অ্যান্ড-ড্রপ ক্যানভাস এডিটিং | ডায়নামিক ল্যান্ডিং পেজ পাবলিশিং |
+| `header-footer` | `WebsiteCmsSeoManagement.tsx` | `POST /api/admin/settings` | `serverDB.updatePlatformSettings()` | মেনু লিংক ও সোশ্যাল লিংক কনফিগ | গ্লোবাল হেডার ও ফুটার রি-রেন্ডার |
+| `media-library` | `MediaLibraryManager.tsx` | `POST /api/admin/upload-file` | `serverDB.saveMediaItem()` | ফাইল ড্রপজোন ও ইমেজ আপলোড | ক্লাউড মিডিয়া গ্যালারি ও কপি ইউআরএল |
+| `system-health` | `AdminDashboardOverview.tsx` | `GET /api/admin/monitoring` | `serverDB.getPlatformSettings()` | পিং টেস্ট ও সার্ভার মেমরি রিড | রিয়েল-টাইম সিস্টেম হেলথ ডোনাট |
+| `audit-logs` | `PlatformGovernanceOverview.tsx` | `GET /api/admin/audit-logs` | `serverDB.getAuditLogs()` | অপরিবর্তনীয় টাইমস্ট্যাম্পড লগ | প্রশাসনিক অ্যাক্টিভিটি ট্রেইল |
+| `settings` | `SystemSettingsDiagnostics.tsx`| `POST /api/admin/settings` | `serverDB.updatePlatformSettings()` | সাইটের নাম, লোগো, হেল্পলাইন, মোড | প্ল্যাটফর্ম কনফিগারেশন আপডেট |
+
+---
+
+## ১৫. ত্রুটি প্রতিরোধ, ফলব্যাক ও সিকিউরিটি বাউন্ডারি প্রোটোকল (Defensive Engineering)
+
+অ্যাডমিন প্যানেলের প্রতিটি অপারেশনকে বুলেটপ্রুফ রাখতে নিচের ৪টি আর্কিটেকচারাল সেফগার্ড প্রয়োগ করা হয়েছে:
+
+1. **Strict Admin Middleware & Authorization Gate:**
+   - প্রতিটি `/api/admin/*` রুটে সার্ভার-সাইড সেশন টোকেন এবং স্পেশাল হেডার `x-admin-secret` ভ্যালিডেশন বাধ্যতামূলক। প্রার্থীর সাধারণ টোকেন দিয়ে অ্যাডমিন এপিআই কল করলে সাথে সাথে `403 Forbidden` রিটার্ন করে।
+2. **Defensive Property Access & Zero Unhandled Exceptions:**
+   - ডাটাবেজের যেকোনো অবজেক্ট রিড করার সময় অপশনাল চেইনিং ও ফলব্যাক ভ্যালু ব্যবহার করা হয়েছে (`item?.slug || item?.id || 'default'`), যাতে কোনো মিসিং ফিল্ডের জন্য পুরো ড্যাশবোর্ড ক্র্যাশ না করে।
+3. **Idempotent Financial Transactions:**
+   - ওয়ালেট রিচার্জ ও আবেদন ফি কর্তনে `idempotencyKey` ব্যবহার করা হয়, যাতে নেটওয়ার্ক ড্রপের কারণে ব্যবহারকারী একাধিকবার ক্লিক করলেও একই ট্রানজেকশন দুইবার চার্জ না হয়।
+4. **Automated Quality Gate Integration:**
+   - প্রতিটি কোড পরিবর্তন এবং গিট কমিটের পূর্বে `npm run typecheck` (`tsc --noEmit`) চালনা বাধ্যতামূলক। শূন্য টাইপস্ক্রিপ্ট ত্রুটি ব্যতিরেকে কোনো কোড কমিট বা পুশ করা সম্ভব নয়।
+
+---
+
+## ১৬. ক্লাস্টার ১০: সম্পূর্ণ অ্যান্ড-টু-অ্যান্ড অডিট ও ভেরিফিকেশন রোডম্যাপ (Cluster-by-Cluster Deep Audit Roadmap)
 
 প্রার্থী পোর্টালের মতোই অ্যাডমিন পোর্টালের প্রতিটি ক্লাস্টারকে সর্বোচ্চ নিখুঁত ও বাগ-মুক্ত করার জন্য নিচের **১০টি ধাপে গভীর অডিট (Deep Audit)** পরিচালিত হবে:
 
@@ -330,3 +700,5 @@ flowchart LR
 ---
 
 > **পরবর্তী অ্যাকশন:** ব্যবহারকারীর অনুমোদন সাপেক্ষে **ধাপ ১: ড্যাশবোর্ড ও কেপিআই হাব (`/admin?tab=dashboard`)** থেকে গভীর অডিট ও আধুনিকায়ন শুরু করা হবে।
+
+

@@ -1686,25 +1686,30 @@ function AdminContent() {
           icon: Briefcase, 
           badge: drafts.length ? drafts.length + ' খসড়া' : (jobs.length || stats.totalJobs || 0),
           badgeColor: drafts.length ? 'bg-blue-600 text-white' : undefined,
-          keywords: ['সার্কুলার', 'চাকরি', 'খসড়া', 'draft', 'alljobs', 'জব'],
+          keywords: ['সার্কুলার', 'চাকরি', 'খসড়া', 'draft', 'alljobs', 'জব', 'ক্যাটাগরি', 'পাবলিশিং'],
           subTabs: [
-            { id: 'circulars', label: 'সব সার্কুলার' },
-            { id: 'gemini-browser-spider', label: '🤖 লাইভ ব্রাউজার ও এআই এজেন্ট হাব' },
-            { id: 'imported-drafts', label: 'খসড়া ও অনুমোদন' },
-            { id: 'job-reports', label: '🚨 ভুয়া সার্কুলার ও অভিযোগ সেল' },
-            { id: 'category-search-manager', label: 'ক্যাটাগরি' }
+            { id: 'circulars', label: 'সব সার্কুলার তালিকা' },
+            { id: 'create-circular', label: 'নতুন চাকরি যোগ ও এডিট' },
+            { id: 'publishing-center', label: 'পাবলিশিং সেন্টার' },
+            { id: 'category-search-manager', label: 'ক্যাটাগরি ও সার্চ ট্যাগ' },
+            { id: 'job-feed-manager', label: 'জব ফিড ও RSS' },
+            { id: 'deadline-alert-manager', label: 'ডেডলাইন অ্যালার্ট' },
+            { id: 'smart-job-matching', label: 'স্মার্ট জব ম্যাচিং' }
           ]
         },
         { 
           id: 'gemini-browser-spider', 
-          label: 'লাইভ ব্রাউজার এজেন্ট', 
+          label: 'অটোমেশন ও লাইভ এজেন্ট', 
           icon: Globe, 
           badge: 'LIVE VIEW',
           badgeColor: 'bg-amber-500 text-slate-900',
-          keywords: ['ব্রাউজার', 'browser', 'agent', 'gemini', 'লাইভ', 'chrome', 'ক্রোম', 'spider', 'স্টুডিও'],
+          keywords: ['ব্রাউজার', 'browser', 'agent', 'gemini', 'লাইভ', 'chrome', 'ক্রোম', 'spider', 'অটোমেশন'],
           subTabs: [
             { id: 'gemini-browser-spider', label: 'লাইভ ব্রাউজার স্ক্রিন ও অটোমেশন' },
-            { id: 'source-monitoring', label: 'সোর্স স্ক্র্যাপার মনিটরিং' }
+            { id: 'source-monitoring', label: 'সোর্স স্ক্র্যাপার মনিটরিং' },
+            { id: 'imported-drafts', label: 'খসড়া ও অনুমোদন কিউ' },
+            { id: 'automation-hub', label: 'সেন্ট্রাল অটোমেশন ম্যানেজার' },
+            { id: 'testing-spider', label: 'টেস্টিং স্পাইডার স্যান্ডবক্স' }
           ]
         },
         { 
@@ -1715,13 +1720,17 @@ function AdminContent() {
           keywords: ['প্রার্থী', 'candidate', 'user', 'প্রতিষ্ঠান', 'company', 'যোগ্যতা', 'eligibility'],
           subTabs: [
             { id: 'candidate-directory', label: 'প্রার্থী ডিরেক্টরি' },
-            { id: 'company-directory', label: 'প্রতিষ্ঠান হাব' },
-            { id: 'eligibility-rules', label: 'যোগ্যতা ফিল্টার' }
+            { id: 'candidate-details', label: 'প্রার্থীর প্রোফাইল' },
+            { id: 'account-status', label: 'অ্যাকাউন্ট স্ট্যাটাস ও নিয়ন্ত্রণ' },
+            { id: 'eligibility-rules', label: 'যোগ্যতা ফিল্টার রুলস' },
+            { id: 'company-directory', label: 'প্রতিষ্ঠান ডিরেক্টরি' },
+            { id: 'employer-verification', label: 'নিয়োগকারী যাচাইকরণ' },
+            { id: 'company-jobs', label: 'প্রতিষ্ঠানভিত্তিক চাকরি' }
           ]
         },
         { 
           id: 'content-studio', 
-          label: 'ওয়েবসাইট ও কন্টেন্ট সিএমএস', 
+          label: 'ওয়েবসাইট CMS ও এসইও', 
           icon: Globe, 
           badge: 'Studio',
           badgeColor: 'bg-indigo-600 text-white',
@@ -1731,7 +1740,9 @@ function AdminContent() {
             { id: 'builder', label: 'ভিজ্যুয়াল পেইজ বিল্ডার' },
             { id: 'pages-sections', label: 'পেইজ ও সেকশন ম্যানেজমেন্ট' },
             { id: 'header-footer', label: 'হেডার ও ফুটার থিম কাস্টমাইজার' },
-            { id: 'media-library', label: 'মিডিয়া লাইব্রেরি' }
+            { id: 'media-library', label: 'মিডিয়া লাইব্রেরি ও ফাইল ম্যানেজার' },
+            { id: 'seo-meta', label: 'মেটা ও স্কিমা মার্কআপ' },
+            { id: 'revisions', label: 'রিভিশন ও হিস্ট্রি ট্র্যাকিং' }
           ]
         },
         { 
@@ -1739,12 +1750,14 @@ function AdminContent() {
           label: 'ফিন্যান্স ও ডিসকাউন্ট', 
           icon: CreditCard, 
           badge: stats.activeCoupons ? stats.activeCoupons + ' কুপন' : null,
-          keywords: ['টাকা', 'finance', 'লেনদেন', 'কুপন', 'coupon', 'raffle', 'র‍্যাফেল', 'খরচ'],
+          keywords: ['টাকা', 'finance', 'লেনদেন', 'কুপন', 'coupon', 'raffle', 'র‍্যাফেল', 'ইনভয়েস', 'সার্ভিস ফি'],
           subTabs: [
-            { id: 'transactions', label: 'ট্রানজেকশন তালিকা' },
-            { id: 'coupons-discounts', label: 'কুপন ও ডিসকাউন্ট' },
-            { id: 'raffle-campaigns', label: 'র‍্যাফেল ড্র ক্যাম্পেইন' },
-            { id: 'platform-operations', label: 'অপারেশনাল খরচ ও অপটিমাইজেশন' }
+            { id: 'transactions', label: 'ট্রানজেকশন তালিকা ও লেজার' },
+            { id: 'invoices', label: 'ইনভয়েস ভাউচার' },
+            { id: 'service-fees', label: 'সার্ভিস ফি কনফিগারেশন' },
+            { id: 'coupons-discounts', label: 'কুপন ও ডিসকাউন্ট কোড' },
+            { id: 'raffle-campaigns', label: 'র্যাফেল ড্র ক্যাম্পেইন' },
+            { id: 'platform-operations', label: 'অপারেশনাল খরচ অপটিমাইজেশন' }
           ]
         },
         { 
@@ -1753,12 +1766,13 @@ function AdminContent() {
           icon: Bell, 
           badge: 'সক্রিয়',
           badgeColor: 'bg-emerald-600 text-white',
-          keywords: ['এসএমএস', 'sms', 'notification', 'মেসেজ', 'ব্রডকাস্ট', 'টেমপ্লেট'],
+          keywords: ['এসএমএস', 'sms', 'notification', 'মেসেজ', 'ব্রডকাস্ট', 'টেমপ্লেট', 'অভিযোগ', 'সাপোর্ট'],
           subTabs: [
-            { id: 'notifications', label: 'নোটিফিকেশন ও ব্রডকাস্ট' },
+            { id: 'job-reports', label: '🚨 ভুয়া সার্কুলার ও অভিযোগ সেল' },
             { id: 'support-tickets', label: '🎧 সাপোর্ট টিকেট ও হেল্পডেস্ক' },
+            { id: 'notifications', label: 'নোটিফিকেশন ও ব্রডকাস্ট' },
             { id: 'sms-status', label: 'এসএমএস গেটওয়ে ও ব্যালেন্স' },
-            { id: 'templates-delivery', label: 'টেমপ্লেট ও হিস্ট্রি' }
+            { id: 'templates-delivery', label: 'মেসেজ টেমপ্লেট ও ডেলিভারি লগ' }
           ]
         },
         { 
@@ -1766,14 +1780,13 @@ function AdminContent() {
           label: 'সিস্টেম ও সিকিউরিটি', 
           icon: Settings, 
           badge: null,
-          keywords: ['সেটিংস', 'rbac', 'staff', 'অডিট', 'audit', 'automation', 'অটোমেশন', 'backup'],
+          keywords: ['সেটিংস', 'rbac', 'staff', 'অডিট', 'audit', 'automation', 'অটোমেশন', 'backup', 'স্বাস্থ্য'],
           subTabs: [
-            { id: 'settings', label: 'প্ল্যাটফর্ম সেটিংস' },
+            { id: 'system-health', label: 'সিস্টেম স্বাস্থ্য ও লাইভ পিং' },
+            { id: 'settings', label: 'প্ল্যাটফর্ম গ্লোবাল সেটিংস' },
             { id: 'staff-roles', label: 'স্টাফ ও RBAC রোলস' },
             { id: 'audit-logs', label: 'অডিট ও অ্যাক্টিভিটি লগ' },
-            { id: 'automation-hub', label: 'সেন্ট্রাল অটোমেশন' },
-            { id: 'testing-spider', label: 'টেস্টিং স্পাইডার' },
-            { id: 'backup-diagnostics', label: 'ব্যাকআপ ও রিকভারি' }
+            { id: 'backup-diagnostics', label: 'ব্যাকআপ ও স্ন্যাপশট রিস্টোর' }
           ]
         }
       ]
@@ -1791,6 +1804,47 @@ function AdminContent() {
 
     // Comprehensive alias & child tab mapping to keep sidebar & sub-hub pills firmly anchored
     const TAB_TO_HUB_MAP: Record<string, string> = {
+      // 01. ড্যাশবোর্ড ও ওভারভিউ
+      'dashboard': 'dashboard',
+      'analytics-center': 'dashboard',
+      'report-builder': 'dashboard',
+      'data-quality-inspector': 'dashboard',
+      'automation-center': 'dashboard',
+      'duplicate-detection': 'dashboard',
+      
+      // 02. আবেদন ও অর্ডার হাব
+      'all-applications': 'all-applications',
+      'payment-verification': 'all-applications',
+      'processing-queue': 'all-applications',
+      'completed-rejected': 'all-applications',
+      'documents': 'all-applications',
+      'application-history': 'all-applications',
+      
+      // 03. সার্কুলার ও নিয়োগ হাব
+      'circulars': 'circulars',
+      'create-circular': 'circulars',
+      'publishing-center': 'circulars',
+      'category-search-manager': 'circulars',
+      'job-feed-manager': 'circulars',
+      'deadline-alert-manager': 'circulars',
+      'smart-job-matching': 'circulars',
+      'published-jobs': 'circulars',
+      'archived-jobs': 'circulars',
+      'job-locations': 'circulars',
+      
+      // 04. অটোমেশন ও লাইভ এজেন্ট
+      'gemini-browser-spider': 'gemini-browser-spider',
+      'source-monitoring': 'gemini-browser-spider',
+      'imported-drafts': 'gemini-browser-spider',
+      'automation-hub': 'gemini-browser-spider',
+      'testing-spider': 'gemini-browser-spider',
+      'pending-approval': 'gemini-browser-spider',
+      'scraping-jobs': 'gemini-browser-spider',
+      'pdf-processing': 'gemini-browser-spider',
+      'failed-jobs': 'gemini-browser-spider',
+      
+      // 05. প্রার্থী ও প্রতিষ্ঠান হাব
+      'candidate-directory': 'candidate-directory',
       'candidate-details': 'candidate-directory',
       'account-status': 'candidate-directory',
       'eligibility-rules': 'candidate-directory',
@@ -1801,39 +1855,38 @@ function AdminContent() {
       'candidate-cv': 'candidate-directory',
       'suspended-accounts': 'candidate-directory',
       
-      'seo-meta': 'content-studio',
-      'header-footer': 'content-studio',
-      'revisions': 'content-studio',
-      'pages-sections': 'content-studio',
+      // 06. ফিন্যান্স ও ডিসকাউন্ট
+      'transactions': 'transactions',
+      'invoices': 'transactions',
+      'service-fees': 'transactions',
+      'coupons-discounts': 'transactions',
+      'raffle-campaigns': 'transactions',
+      'platform-operations': 'transactions',
+      
+      // 07. ওয়েবসাইট CMS ও এসইও
+      'content-studio': 'content-studio',
       'builder': 'content-studio',
+      'pages-sections': 'content-studio',
+      'header-footer': 'content-studio',
       'media-library': 'content-studio',
+      'seo-meta': 'content-studio',
+      'revisions': 'content-studio',
       'schema-markup': 'content-studio',
       'sitemap-settings': 'content-studio',
       
-      'deadline-alert-manager': 'circulars',
-      'create-circular': 'circulars',
-      'published-jobs': 'circulars',
-      'pending-approval': 'circulars',
-      'archived-jobs': 'circulars',
-      'job-locations': 'circulars',
-      'job-reports': 'circulars',
-      
-      'gemini-browser-spider': 'gemini-browser-spider',
-      'source-monitoring': 'gemini-browser-spider',
-      'scraping-jobs': 'gemini-browser-spider',
-      'pdf-processing': 'gemini-browser-spider',
-      'duplicate-detection': 'gemini-browser-spider',
-      'failed-jobs': 'gemini-browser-spider',
-      
-      'application-history': 'all-applications',
-      
-      'invoices': 'transactions',
-      'service-fees': 'transactions',
-      
+      // 08. যোগাযোগ ও মেসেজিং
+      'job-reports': 'notifications',
       'support-tickets': 'notifications',
+      'notifications': 'notifications',
+      'sms-status': 'notifications',
+      'templates-delivery': 'notifications',
       
+      // 09. সিস্টেম ও সিকিউরিটি
       'system-health': 'settings',
-      'automation-center': 'dashboard',
+      'settings': 'settings',
+      'staff-roles': 'settings',
+      'audit-logs': 'settings',
+      'backup-diagnostics': 'settings',
     };
 
     const targetHubId = TAB_TO_HUB_MAP[activeTab];
@@ -1856,7 +1909,7 @@ function AdminContent() {
       'pending-approval': { group: 'সার্কুলার ও নিয়োগ হাব', label: 'অনুমোদনের অপেক্ষায়' },
       'archived-jobs': { group: 'সার্কুলার ও নিয়োগ হাব', label: 'সংরক্ষিত চাকরি' },
       'job-locations': { group: 'সার্কুলার ও নিয়োগ হাব', label: 'চাকরির অবস্থান ও জেলা' },
-      'job-reports': { group: 'সার্কুলার ও নিয়োগ হাব', label: '🚨 ভুয়া সার্কুলার ও অভিযোগ সেল' },
+      'job-reports': { group: 'যোগাযোগ ও মেসেজিং', label: '🚨 ভুয়া সার্কুলার ও অভিযোগ সেল' },
       'new-candidates': { group: 'প্রার্থী ও প্রতিষ্ঠান হাব', label: 'নতুন নিবন্ধিত প্রার্থী' },
       'candidate-cv': { group: 'প্রার্থী ও প্রতিষ্ঠান হাব', label: 'সিভি ও ডকুমেন্ট ভল্ট' },
       'suspended-accounts': { group: 'প্রার্থী ও প্রতিষ্ঠান হাব', label: 'স্থগিত অ্যাকাউন্ট' },
@@ -5743,7 +5796,7 @@ function AdminContent() {
           {/* TAB 9: EMPLOYERS & ORGANIZATIONS HUB */}
           {(activeTab === 'company-directory' || activeTab === 'employer-verification' || activeTab === 'company-jobs') && (
             <div className="space-y-4">
-              <OrganizationManagementHub onRefreshData={fetchAllAdminData} />
+              <OrganizationManagementHub activeTab={activeTab} onRefreshData={fetchAllAdminData} />
             </div>
           )}
 

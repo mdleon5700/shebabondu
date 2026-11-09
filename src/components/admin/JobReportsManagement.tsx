@@ -39,13 +39,24 @@ export default function JobReportsManagement() {
     dismissed: 0
   });
 
+  const getAdminHeaders = (): HeadersInit => {
+    const pin = typeof window !== 'undefined' ? (localStorage.getItem('cs_admin_pin') || '') : '';
+    const token = typeof window !== 'undefined' ? (localStorage.getItem('cs_session_token') || '') : '';
+    const headers: Record<string, string> = {
+      'Content-Type': 'application/json'
+    };
+    if (pin) headers['x-admin-secret'] = pin;
+    if (token) headers['authorization'] = `Bearer ${token}`;
+    return headers;
+  };
+
   const fetchReports = async () => {
     setIsLoading(true);
     try {
       const url = statusFilter && statusFilter !== 'all' 
         ? `/api/admin/job-reports?status=${statusFilter}` 
         : '/api/admin/job-reports';
-      const res = await fetch(url);
+      const res = await fetch(url, { headers: getAdminHeaders() });
       if (res.ok) {
         const data = await res.json();
         if (data.success && Array.isArray(data.reports)) {
@@ -70,7 +81,7 @@ export default function JobReportsManagement() {
     try {
       const res = await fetch('/api/admin/job-reports', {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
+        headers: getAdminHeaders(),
         body: JSON.stringify({
           id,
           status: newStatus,

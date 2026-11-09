@@ -37,9 +37,10 @@ const getAdminHeaders = (): HeadersInit => {
 
 interface OrganizationManagementHubProps {
   onRefreshData?: () => void;
+  activeTab?: string;
 }
 
-export default function OrganizationManagementHub({ onRefreshData }: OrganizationManagementHubProps) {
+export default function OrganizationManagementHub({ onRefreshData, activeTab }: OrganizationManagementHubProps) {
   const [companies, setCompanies] = useState<CompanyProfile[]>([]);
   const [allJobs, setAllJobs] = useState<JobCircular[]>([]);
   const [loading, setLoading] = useState(true);
@@ -47,6 +48,14 @@ export default function OrganizationManagementHub({ onRefreshData }: Organizatio
   const [typeFilter, setTypeFilter] = useState('all');
   const [statusFilter, setStatusFilter] = useState('all');
   const [districtFilter, setDistrictFilter] = useState('all');
+
+  useEffect(() => {
+    if (activeTab === 'employer-verification') {
+      setStatusFilter('pending_verification');
+    } else if (activeTab === 'company-jobs') {
+      setTypeFilter('all');
+    }
+  }, [activeTab]);
 
   // Associated Jobs Drawer
   const [inspectingOrg, setInspectingOrg] = useState<CompanyProfile | null>(null);

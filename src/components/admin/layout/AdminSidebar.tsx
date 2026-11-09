@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import {
   LayoutDashboard,
@@ -9,6 +9,7 @@ import {
   Users,
   FileText,
   Layout,
+  CreditCard,
   Search,
   Bell,
   BarChart3,
@@ -51,9 +52,10 @@ interface AdminSidebarProps {
 }
 
 export const ADMIN_NAV_ITEMS: NavMainItem[] = [
+  // ০১. ড্যাশবোর্ড ও ওভারভিউ (৪টি সাব-ট্যাব)
   {
     id: 'dashboard',
-    label: 'ড্যাশবোর্ড',
+    label: 'ড্যাশবোর্ড ও ওভারভিউ',
     icon: LayoutDashboard,
     subItems: [
       { id: 'dashboard', label: 'মূল ড্যাশবোর্ড ও KPI' },
@@ -62,145 +64,121 @@ export const ADMIN_NAV_ITEMS: NavMainItem[] = [
       { id: 'data-quality-inspector', label: 'ডাটা কোয়ালিটি ও অডিট' }
     ]
   },
-  {
-    id: 'circulars',
-    label: 'চাকরি ব্যবস্থাপনা',
-    icon: Briefcase,
-    subItems: [
-      { id: 'circulars', label: 'সব চাকরি' },
-      { id: 'create-circular', label: 'নতুন চাকরি যোগ করুন' },
-      { id: 'published-jobs', label: 'প্রকাশিত চাকরি' },
-      { id: 'imported-drafts', label: 'খসড়া চাকরি' },
-      { id: 'pending-approval', label: 'অনুমোদনের অপেক্ষায়' },
-      { id: 'job-reports', label: '🚨 ভুয়া সার্কুলার ও অভিযোগ সেল', badge: 'অভিযোগ' },
-      { id: 'deadline-alert-manager', label: 'মেয়াদোত্তীর্ণ চাকরি' },
-      { id: 'archived-jobs', label: 'সংরক্ষিত চাকরি' },
-      { id: 'job-feed-manager', label: 'সংশোধনী ও নতুন বিজ্ঞপ্তি' },
-      { id: 'category-search-manager', label: 'চাকরির ক্যাটাগরি' },
-      { id: 'company-directory', label: 'প্রতিষ্ঠান ব্যবস্থাপনা' },
-      { id: 'job-locations', label: 'চাকরির অবস্থান' }
-    ]
-  },
-  {
-    id: 'gemini-browser-spider',
-    label: 'চাকরি সংগ্রহ ও অটোমেশন',
-    icon: Bot,
-    subItems: [
-      { id: 'automation-hub', label: 'অটোমেশন ড্যাশবোর্ড' },
-      { id: 'gemini-browser-spider', label: 'লোকাল ব্রাউজার ওয়ার্কার' },
-      { id: 'testing-spider', label: 'ব্রাউজার স্পাইডার' },
-      { id: 'source-monitoring', label: 'সোর্স রেজিস্ট্রি ও মনিটরিং' },
-      { id: 'scraping-jobs', label: 'সংগ্রহের কাজ' },
-      { id: 'imported-drafts', label: 'সংগৃহীত চাকরি ও খসড়া' },
-      { id: 'pdf-processing', label: 'PDF প্রসেসিং' },
-      { id: 'data-quality-inspector', label: 'তথ্য যাচাই' },
-      { id: 'duplicate-detection', label: 'ডুপ্লিকেট শনাক্তকরণ' },
-      { id: 'failed-jobs', label: 'ব্যর্থ কাজ ও ইতিহাস' }
-    ]
-  },
-  {
-    id: 'candidate-directory',
-    label: 'প্রার্থীদের ব্যবস্থাপনা',
-    icon: Users,
-    subItems: [
-      { id: 'candidate-directory', label: 'সব প্রার্থী' },
-      { id: 'new-candidates', label: 'নতুন নিবন্ধিত প্রার্থী' },
-      { id: 'candidate-details', label: 'প্রার্থীর প্রোফাইল' },
-      { id: 'eligibility-rules', label: 'শিক্ষাগত তথ্য ও যোগ্যতা' },
-      { id: 'candidate-cv', label: 'সিভি ব্যবস্থাপনা' },
-      { id: 'documents', label: 'ডকুমেন্ট ভল্ট' },
-      { id: 'account-status', label: 'অ্যাকাউন্ট ব্যবস্থাপনা' },
-      { id: 'suspended-accounts', label: 'স্থগিত অ্যাকাউন্ট' }
-    ]
-  },
+  // ০২. আবেদন ও অর্ডার হাব (৫টি সাব-ট্যাব)
   {
     id: 'all-applications',
-    label: 'আবেদন ব্যবস্থাপনা',
+    label: 'আবেদন ও অর্ডার হাব',
     icon: FileText,
+    badge: 'আবেদন',
     subItems: [
-      { id: 'all-applications', label: 'সব আবেদন' },
-      { id: 'processing-queue', label: 'নতুন আবেদন ও কিউ' },
-      { id: 'payment-verification', label: 'আবেদন ট্র্যাকিং ও পেমেন্ট' },
-      { id: 'completed-rejected', label: 'আবেদনের অবস্থা' },
-      { id: 'application-history', label: 'আবেদন ইতিহাস' },
-      { id: 'report-builder', label: 'আবেদন রিপোর্ট' }
+      { id: 'all-applications', label: 'সকল আবেদন তালিকা' },
+      { id: 'payment-verification', label: 'পেমেন্ট ভেরিফিকেশন কিউ' },
+      { id: 'processing-queue', label: 'টেলিটক প্রসেসিং কিউ' },
+      { id: 'completed-rejected', label: 'সম্পন্ন ও বাতিল আবেদন' },
+      { id: 'documents', label: 'অ্যাপ্লিক্যান্ট ডকুমেন্টস ভল্ট' }
     ]
   },
+  // ০৩. সার্কুলার ও নিয়োগ হাব (৭টি সাব-ট্যাব)
+  {
+    id: 'circulars',
+    label: 'সার্কুলার ও নিয়োগ হাব',
+    icon: Briefcase,
+    subItems: [
+      { id: 'circulars', label: 'সব সার্কুলার তালিকা' },
+      { id: 'create-circular', label: 'নতুন চাকরি যোগ ও এডিট' },
+      { id: 'publishing-center', label: 'পাবলিশিং ও শিডিউলার সেন্টার' },
+      { id: 'category-search-manager', label: 'ক্যাটাগরি ও সার্চ ট্যাগ' },
+      { id: 'job-feed-manager', label: 'জব ফিড ও RSS সিন্ডিকেশন' },
+      { id: 'deadline-alert-manager', label: 'ডেডলাইন অ্যালার্ট ম্যানেজার' },
+      { id: 'smart-job-matching', label: 'স্মার্ট জব ম্যাচিং রুলস' }
+    ]
+  },
+  // ০৪. অটোমেশন ও লাইভ এজেন্ট (৫টি সাব-ট্যাব)
+  {
+    id: 'gemini-browser-spider',
+    label: 'অটোমেশন ও লাইভ এজেন্ট',
+    icon: Bot,
+    badge: 'LIVE',
+    badgeColor: 'bg-emerald-600 text-white',
+    subItems: [
+      { id: 'gemini-browser-spider', label: 'লাইভ ব্রাউজার স্ক্রিন ও অটোমেশন' },
+      { id: 'source-monitoring', label: 'সোর্স স্ক্র্যাপার মনিটরিং' },
+      { id: 'imported-drafts', label: 'খসড়া ও অনুমোদন কিউ' },
+      { id: 'automation-hub', label: 'সেন্ট্রাল অটোমেশন ম্যানেজার' },
+      { id: 'testing-spider', label: 'টেস্টিং স্পাইডার স্যান্ডবক্স' }
+    ]
+  },
+  // ০৫. প্রার্থী ও প্রতিষ্ঠান হাব (৭টি সাব-ট্যাব)
+  {
+    id: 'candidate-directory',
+    label: 'প্রার্থী ও প্রতিষ্ঠান হাব',
+    icon: Users,
+    subItems: [
+      { id: 'candidate-directory', label: 'প্রার্থী ডিরেক্টরি' },
+      { id: 'candidate-details', label: 'প্রার্থীর পূর্ণাঙ্গ প্রোফাইল' },
+      { id: 'account-status', label: 'অ্যাকাউন্ট স্ট্যাটাস ও নিয়ন্ত্রণ' },
+      { id: 'eligibility-rules', label: 'যোগ্যতা ফিল্টার রুলস' },
+      { id: 'company-directory', label: 'প্রতিষ্ঠান ডিরেক্টরি' },
+      { id: 'employer-verification', label: 'নিয়োগকারী যাচাইকরণ' },
+      { id: 'company-jobs', label: 'প্রতিষ্ঠানভিত্তিক চাকরি' }
+    ]
+  },
+  // ০৬. ফিন্যান্স ও ডিসকাউন্ট (৬টি সাব-ট্যাব)
+  {
+    id: 'transactions',
+    label: 'ফিন্যান্স ও ডিসকাউন্ট',
+    icon: CreditCard,
+    subItems: [
+      { id: 'transactions', label: 'ট্রানজেকশন তালিকা ও লেজার' },
+      { id: 'invoices', label: 'ইনভয়েস ভাউচার' },
+      { id: 'service-fees', label: 'সার্ভিস ফি কনফিগারেশন' },
+      { id: 'coupons-discounts', label: 'কুপন ও ডিসকাউন্ট কোড' },
+      { id: 'raffle-campaigns', label: 'র্যাফেল ড্র ক্যাম্পেইন' },
+      { id: 'platform-operations', label: 'অপারেশনাল খরচ অপটিমাইজেশন' }
+    ]
+  },
+  // ০৭. ওয়েবসাইট CMS ও এসইও (৭টি সাব-ট্যাব)
   {
     id: 'content-studio',
-    label: 'ওয়েবসাইট CMS',
+    label: 'ওয়েবসাইট CMS ও এসইও',
     icon: Layout,
     subItems: [
-      { id: 'pages-sections', label: 'সব পেজ ও সেকশন' },
-      { id: 'builder', label: 'ভিজ্যুয়াল পেজ বিল্ডার' },
-      { id: 'header-footer', label: 'হেডার ও ফুটার থিম' },
-      { id: 'media-library', label: 'মিডিয়া লাইব্রেরি' },
-      { id: 'revisions', label: 'পেজ রিভিশন ও হিস্ট্রি' }
+      { id: 'content-studio', label: 'কন্টেন্ট ও এসইও স্টুডিও' },
+      { id: 'builder', label: 'ভিজ্যুয়াল ড্র্যাগ-অ্যান্ড-ড্রপ বিল্ডার' },
+      { id: 'pages-sections', label: 'পেইজ ও সেকশন ম্যানেজমেন্ট' },
+      { id: 'header-footer', label: 'হেডার ও ফুটার থিম কাস্টমাইজার' },
+      { id: 'media-library', label: 'মিডিয়া লাইব্রেরি ও ফাইল ম্যানেজার' },
+      { id: 'seo-meta', label: 'মেটা ও স্কিমা মার্কআপ' },
+      { id: 'revisions', label: 'রিভিশন ও হিস্ট্রি ট্র্যাকিং' }
     ]
   },
-  {
-    id: 'seo-meta',
-    label: 'এসইও ব্যবস্থাপনা',
-    icon: Search,
-    subItems: [
-      { id: 'seo-meta', label: 'SEO ড্যাশবোর্ড' },
-      { id: 'pages-sections', label: 'পেজের SEO ও মেটা' },
-      { id: 'schema-markup', label: 'Schema Markup' },
-      { id: 'sitemap-settings', label: 'Sitemap ও Robots' }
-    ]
-  },
+  // ০৮. যোগাযোগ ও মেসেজিং (৫টি সাব-ট্যাব)
   {
     id: 'notifications',
-    label: 'নোটিফিকেশন ও সাপোর্ট',
+    label: 'যোগাযোগ ও মেসেজিং',
     icon: Bell,
-    badge: '৫',
+    badge: 'টিকেট',
     badgeColor: 'bg-rose-500 text-white',
     subItems: [
-      { id: 'notifications', label: 'সব নোটিফিকেশন' },
+      { id: 'job-reports', label: '🚨 ভুয়া সার্কুলার ও অভিযোগ সেল', badge: 'অভিযোগ' },
       { id: 'support-tickets', label: '🎧 সাপোর্ট টিকেট ও হেল্পডেস্ক', badge: 'টিকেট' },
-      { id: 'templates-delivery', label: 'ইমেইল ও মেসেজ টেমপ্লেট' },
-      { id: 'sms-status', label: 'এসএমএস গেটওয়ে ও লগ' }
+      { id: 'notifications', label: 'নোটিফিকেশন ও ব্রডকাস্ট' },
+      { id: 'sms-status', label: 'এসএমএস গেটওয়ে ও ব্যালেন্স' },
+      { id: 'templates-delivery', label: 'মেসেজ টেমপ্লেট ও ডেলিভারি লগ' }
     ]
   },
-  {
-    id: 'analytics-center',
-    label: 'রিপোর্ট ও বিশ্লেষণ',
-    icon: BarChart3,
-    subItems: [
-      { id: 'analytics-center', label: 'ওয়েবসাইট পরিসংখ্যান' },
-      { id: 'report-builder', label: 'চাকরি ও আবেদন রিপোর্ট' },
-      { id: 'data-quality-inspector', label: 'ডাটা কোয়ালিটি রিপোর্ট' }
-    ]
-  },
-  {
-    id: 'staff-roles',
-    label: 'অ্যাডমিন ও অ্যাক্সেস',
-    icon: ShieldCheck,
-    subItems: [
-      { id: 'staff-roles', label: 'অ্যাডমিন ব্যবহারকারী ও Role' },
-      { id: 'audit-logs', label: 'Activity Logs ও অডিট' }
-    ]
-  },
-  {
-    id: 'system-health',
-    label: 'সিস্টেম স্বাস্থ্য',
-    icon: Activity,
-    hasStatusDot: true,
-    subItems: [
-      { id: 'system-health', label: 'সার্ভার ও ডাটাবেস স্বাস্থ্য' },
-      { id: 'backup-diagnostics', label: 'ব্যাকআপ ও রিকভারি' }
-    ]
-  },
+  // ০৯. সিস্টেম ও সিকিউরিটি (৫টি সাব-ট্যাব)
   {
     id: 'settings',
-    label: 'সেটিংস',
+    label: 'সিস্টেম ও সিকিউরিটি',
     icon: Settings,
+    hasStatusDot: true,
     subItems: [
-      { id: 'settings', label: 'সাধারণ সেটিংস' },
-      { id: 'transactions', label: 'ফিন্যান্স ও লেনদেন' },
-      { id: 'coupons-discounts', label: 'কুপন ও ডিসকাউন্ট' },
-      { id: 'raffle-campaigns', label: 'র‍্যাফেল ড্র ক্যাম্পেইন' },
-      { id: 'platform-operations', label: 'অপারেশনাল খরচ ও অপটিমাইজেশন' }
+      { id: 'system-health', label: 'সিস্টেম স্বাস্থ্য ও লাইভ পিং' },
+      { id: 'settings', label: 'প্ল্যাটফর্ম গ্লোবাল সেটিংস' },
+      { id: 'staff-roles', label: 'স্টাফ ও RBAC রোলস' },
+      { id: 'audit-logs', label: 'অডিট ও অ্যাক্টিভিটি লগ' },
+      { id: 'backup-diagnostics', label: 'ব্যাকআপ ও স্ন্যাপশট রিস্টোর' }
     ]
   }
 ];
@@ -215,6 +193,23 @@ export default function AdminSidebar({
   adminEmail = 'admin@chakrisheba.com',
   adminName = 'সুপার অ্যাডমিন'
 }: AdminSidebarProps) {
+  const ALIAS_TO_MAIN: Record<string, string> = {
+    'published-jobs': 'circulars',
+    'pending-approval': 'gemini-browser-spider',
+    'archived-jobs': 'circulars',
+    'job-locations': 'circulars',
+    'new-candidates': 'candidate-directory',
+    'candidate-cv': 'all-applications',
+    'suspended-accounts': 'candidate-directory',
+    'application-history': 'all-applications',
+    'scraping-jobs': 'gemini-browser-spider',
+    'pdf-processing': 'gemini-browser-spider',
+    'duplicate-detection': 'dashboard',
+    'failed-jobs': 'gemini-browser-spider',
+    'schema-markup': 'content-studio',
+    'sitemap-settings': 'content-studio',
+  };
+
   // Find which main menu item currently contains the activeTab
   const getInitialOpenMenu = () => {
     for (const item of ADMIN_NAV_ITEMS) {
@@ -222,10 +217,26 @@ export default function AdminSidebar({
         return item.id;
       }
     }
+    const fallbackId = ALIAS_TO_MAIN[activeTab];
+    if (fallbackId) return fallbackId;
     return 'dashboard';
   };
 
   const [openMenu, setOpenMenu] = useState<string | null>(getInitialOpenMenu());
+
+  // Keep accordion in sync whenever activeTab changes
+  useEffect(() => {
+    for (const item of ADMIN_NAV_ITEMS) {
+      if (item.id === activeTab || item.subItems?.some(s => s.id === activeTab)) {
+        setOpenMenu(item.id);
+        return;
+      }
+    }
+    const fallbackId = ALIAS_TO_MAIN[activeTab];
+    if (fallbackId) {
+      setOpenMenu(fallbackId);
+    }
+  }, [activeTab]);
 
   const handleMainMenuClick = (item: NavMainItem) => {
     if (item.subItems && item.subItems.length > 0) {
@@ -243,6 +254,8 @@ export default function AdminSidebar({
   const isItemActive = (item: NavMainItem) => {
     if (activeTab === item.id) return true;
     if (item.subItems && item.subItems.some(s => s.id === activeTab)) return true;
+    const parentId = ALIAS_TO_MAIN[activeTab];
+    if (parentId && parentId === item.id) return true;
     return false;
   };
 

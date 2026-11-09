@@ -105,6 +105,7 @@ import GeminiBrowserSpiderHub from '@/components/admin/GeminiBrowserSpiderHub';
 import AdminLayout from '@/components/admin/layout/AdminLayout';
 import AdminDashboardOverview from '@/components/admin/dashboard/AdminDashboardOverview';
 import CertificateVerificationQueue from '@/components/admin/CertificateVerificationQueue';
+import { getAdminHeaders, ADMIN_REQ_HEADERS } from '@/lib/adminAuthClient';
 
 
 import { ApplicationRequest, JobCircular, JobSource, CircularDraft, CompanyProfile } from '@/lib/types';
@@ -125,24 +126,6 @@ const normalizePaymentMethod = (m?: string | null): 'bKash' | 'Nagad' | 'Wallet'
   return 'bKash';
 };
 
-const getAdminHeaders = (): Record<string, string> => {
-  const pin = typeof window !== 'undefined' ? (localStorage.getItem('cs_admin_pin') || '') : '';
-  const headers: Record<string, string> = { 'Content-Type': 'application/json' };
-  if (pin) headers['x-admin-secret'] = pin;
-  return headers;
-};
-
-const ADMIN_REQ_HEADERS: Record<string, string> = typeof Proxy !== 'undefined'
-  ? new Proxy({} as Record<string, string>, {
-      get: (_, prop: string) => getAdminHeaders()[prop],
-      ownKeys: () => Object.keys(getAdminHeaders()),
-      getOwnPropertyDescriptor: (_, prop: string) => ({
-        enumerable: true,
-        configurable: true,
-        value: getAdminHeaders()[prop]
-      })
-    })
-  : { 'Content-Type': 'application/json' };
 function AdminContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -163,6 +146,10 @@ function AdminContent() {
     const tabParam = searchParams.get('tab');
     if (tabParam && tabParam !== activeTab) {
       setActiveTab(tabParam);
+      if (tabParam === 'create-circular') {
+        setEditingJob(null);
+        setIsCreatingNewJob(true);
+      }
     }
   }, [searchParams]);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
@@ -332,7 +319,49 @@ function AdminContent() {
 
   // Edit Job Modal & Circulars Table States
   const [editingJob, setEditingJob] = useState<JobCircular | null>(null);
-  const [isCreatingNewJob, setIsCreatingNewJob] = useState(false);
+  const [isCreatingNewJob, setIsCreatingNewJob] = useState(initialTab === 'create-circular');
+
+  // Corrigendum States & Handler
+  const [corrigendumJob, setCorrigendumJob] = useState<JobCircular | null>(null);
+  const [corrigendumDate, setCorrigendumDate] = useState<string>('');
+  const [corrigendumNote, setCorrigendumNote] = useState<string>('');
+  const [isSavingCorrigendum, setIsSavingCorrigendum] = useState<boolean>(false);
+
+  const handleApplyCorrigendum = async () => {
+    if (!corrigendumJob || !corrigendumDate.trim()) {
+      alert('অনুগ্রহ করে নতুন বর্ধিত শেষ তারিখ প্রদান করুন');
+      return;
+    }
+    setIsSavingCorrigendum(true);
+    try {
+      const res = await fetch('/api/admin/jobs', {
+        method: 'PUT',
+        headers: ADMIN_REQ_HEADERS,
+        body: JSON.stringify({
+          ...corrigendumJob,
+          id: corrigendumJob.id,
+          deadline: corrigendumDate.trim(),
+          daysRemaining: 30,
+          status: 'OPEN',
+          corrigendumNote: corrigendumNote || 'বিজ্ঞপ্তির সময়সীমা বর্ধিত করা হলো'
+        })
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        alert(`"${corrigendumJob.title}"-এর আবেদনের সময়সীমা সফলভাবে বৃদ্ধি করা হয়েছে!`);
+        setCorrigendumJob(null);
+        setCorrigendumDate('');
+        setCorrigendumNote('');
+        fetchAllAdminData();
+      } else {
+        alert(data.error || 'মেয়াদ বৃদ্ধি ব্যর্থ হয়েছে');
+      }
+    } catch (err: any) {
+      alert(err.message || 'নেটওয়ার্ক সমস্যা');
+    } finally {
+      setIsSavingCorrigendum(false);
+    }
+  };
 
   const handleOpenCreateJob = () => {
     setEditingJob(null);
@@ -5259,6 +5288,21 @@ function AdminContent() {
                                     <span>এডিট</span>
                                   </button>
 
+                                  {/* Corrigendum (মেয়াদ বাড়ান) Button */}
+                                  <button
+                                    type="button"
+                                    onClick={() => {
+                                      setCorrigendumJob(job);
+                                      setCorrigendumDate(job.deadline || "");
+                                      setCorrigendumNote("");
+                                    }}
+                                    className="px-3.5 py-1.5 bg-purple-50 hover:bg-purple-100 text-purple-800 rounded-xl text-xs sm:text-sm font-bold transition-all border border-purple-200/80 inline-flex items-center gap-1.5 cursor-pointer shadow-2xs"
+                                    title="মেয়াদ বৃদ্ধি বা সংশোধনী বিজ্ঞপ্তি (Corrigendum) জারি করুন"
+                                  >
+                                    <Clock className="w-3 h-3 text-purple-700" />
+                                    <span>মেয়াদ বাড়ান</span>
+                                  </button>
+
                                   {/* Visual Content Studio Quick Bridge */}
                                   <button
                                     type="button"
@@ -7105,7 +7149,92 @@ function AdminContent() {
           </div>
         </div>
       )}
-                {/* Universal Job Workspace (Unified Creator & Editor for All Tabs) */}
+                {/* CORRIGENDUM / EXTEND DEADLINE MODAL */}
+      {corrigendumJob && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl max-w-lg w-full p-6 space-y-4 shadow-2xl border border-slate-100 animate-in fade-in zoom-in-95">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+              <div className="flex items-center gap-2.5">
+                <div className="w-10 h-10 rounded-2xl bg-purple-50 text-purple-700 flex items-center justify-center font-bold text-lg">
+                  <Clock className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="font-black text-sm sm:text-base text-slate-900">
+                    মেয়াদ বৃদ্ধি ও সংশোধনী বিজ্ঞপ্তি (Corrigendum Notice)
+                  </h3>
+                  <p className="text-[11px] text-slate-500 font-medium line-clamp-1">
+                    {corrigendumJob.title}
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setCorrigendumJob(null)}
+                className="p-1 text-slate-400 hover:text-slate-600 rounded-lg hover:bg-slate-100 cursor-pointer"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="space-y-3.5">
+              <div className="p-3 bg-purple-50/70 rounded-2xl border border-purple-200/60 text-xs text-purple-900 space-y-1">
+                <div className="font-bold flex items-center justify-between">
+                  <span>বর্তমান শেষ তারিখ:</span>
+                  <span className="font-mono text-purple-800 bg-white px-2 py-0.5 rounded-lg border border-purple-200">
+                    {corrigendumJob.deadline || "নির্ধারিত নেই"}
+                  </span>
+                </div>
+                <p className="text-[11px] text-purple-700">
+                  নতুন তারিখ সংরক্ষণ করলে স্বয়ংক্রিয়ভাবে প্রার্থীর হোমপেজ ও ফিল্টারে চাকরিটি সক্রিয় থাকবে।
+                </p>
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-xs font-bold text-slate-700">নতুন বর্ধিত শেষ তারিখ *</label>
+                <input
+                  type="text"
+                  value={corrigendumDate}
+                  onChange={(e) => setCorrigendumDate(e.target.value)}
+                  placeholder="যেমন: ১৫ ডিসেম্বর ২০২৬ অথবা 2026-12-15"
+                  className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-300 font-semibold focus:outline-none focus:ring-2 focus:ring-purple-600"
+                />
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-xs font-bold text-slate-700">সংশোধনী স্মারক বা নোট (Corrigendum Memo)</label>
+                <textarea
+                  rows={3}
+                  value={corrigendumNote}
+                  onChange={(e) => setCorrigendumNote(e.target.value)}
+                  placeholder="যেমন: মন্ত্রণালয়ের স্মারক নং ৪৬.০২.০০০০... অনুযায়ী আবেদনের শেষ সময় বৃদ্ধি করা হলো।"
+                  className="w-full p-3 text-xs rounded-xl border border-slate-300 font-medium focus:outline-none focus:ring-2 focus:ring-purple-600"
+                />
+              </div>
+            </div>
+
+            <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-100">
+              <button
+                type="button"
+                onClick={() => setCorrigendumJob(null)}
+                className="px-4 py-2 text-xs font-bold text-slate-600 hover:bg-slate-100 rounded-xl cursor-pointer"
+              >
+                বাতিল
+              </button>
+              <button
+                type="button"
+                onClick={handleApplyCorrigendum}
+                disabled={isSavingCorrigendum || !corrigendumDate.trim()}
+                className="px-5 py-2.5 text-xs font-bold text-white bg-purple-700 hover:bg-purple-800 disabled:opacity-50 rounded-xl shadow-md cursor-pointer transition-all flex items-center gap-1.5"
+              >
+                <Check className="w-4 h-4" />
+                <span>{isSavingCorrigendum ? "সংরক্ষণ হচ্ছে..." : "মেয়াদ বৃদ্ধি নিশ্চিত করুন"}</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Universal Job Workspace (Unified Creator & Editor for All Tabs) */}
         <UniversalJobWorkspace
           job={editingJob}
           isOpen={!!editingJob || isCreatingNewJob}

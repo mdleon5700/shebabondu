@@ -27,6 +27,7 @@ import {
 } from 'lucide-react';
 import { CategoryRecord } from '@/lib/taxonomy/types';
 import { SearchAnalyticsSummary } from '@/lib/search/types';
+import { ADMIN_REQ_HEADERS } from '@/lib/adminAuthClient';
 
 export default function JobCategorySearchManager() {
   const [activeTab, setActiveTab] = useState<'dashboard' | 'categories' | 'job-mapping' | 'analytics' | 'diagnostics'>('dashboard');
@@ -70,7 +71,7 @@ export default function JobCategorySearchManager() {
     setCategoryError(null);
     try {
       const res = await fetch('/api/admin/categories', {
-        headers: { }
+        headers: ADMIN_REQ_HEADERS
       });
       if (res.ok) {
         const data = await res.json();
@@ -107,7 +108,7 @@ export default function JobCategorySearchManager() {
     setIsLoadingAnalytics(true);
     try {
       const res = await fetch('/api/admin/search/analytics', {
-        headers: { }
+        headers: ADMIN_REQ_HEADERS
       });
       if (res.ok) {
         const data = await res.json();
@@ -144,9 +145,7 @@ export default function JobCategorySearchManager() {
 
       const res = await fetch(url, {
         method,
-        headers: {
-          'Content-Type': 'application/json',
-          },
+        headers: ADMIN_REQ_HEADERS,
         body: JSON.stringify(editingCategory)
       });
 
@@ -177,7 +176,7 @@ export default function JobCategorySearchManager() {
 
       const res = await fetch(`/api/admin/categories/${deletingCategory.id}?${sp.toString()}`, {
         method: 'DELETE',
-        headers: { }
+        headers: ADMIN_REQ_HEADERS
       });
 
       const data = await res.json();
@@ -204,9 +203,7 @@ export default function JobCategorySearchManager() {
     try {
       const res = await fetch('/api/admin/categories/bulk-assign', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          },
+        headers: ADMIN_REQ_HEADERS,
         body: JSON.stringify({
           jobIds: selectedJobIds,
           targetCategoryId: bulkTargetCategory

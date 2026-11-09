@@ -32,6 +32,7 @@ import {
 } from 'lucide-react';
 import { JobCircular, JobPosition } from '@/lib/types';
 import { inferPositionGradeAndSalary } from '@/lib/shared/pay_scale';
+import { ADMIN_REQ_HEADERS } from '@/lib/adminAuthClient';
 
 export interface UniversalJobWorkspaceProps {
   job: JobCircular | null;
@@ -535,10 +536,7 @@ export default function UniversalJobWorkspace({
 
       const res = await fetch(url, {
         method,
-        headers: {
-          'Content-Type': 'application/json',
-          'x-admin-secret': '1234'
-        },
+        headers: ADMIN_REQ_HEADERS,
         body: JSON.stringify(payload)
       });
 

@@ -21,6 +21,7 @@ import {
   Check,
   X
 } from 'lucide-react';
+import { ADMIN_REQ_HEADERS } from '@/lib/adminAuthClient';
 
 export default function DeadlineAlertManager() {
   const [activeSubTab, setActiveSubTab] = useState<'proposals' | 'deadlines' | 'monitoring' | 'deliveries' | 'rules'>('proposals');
@@ -33,10 +34,6 @@ export default function DeadlineAlertManager() {
   const [isActionRunning, setIsActionRunning] = useState<boolean>(false);
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState<string>('');
-
-  const ADMIN_REQ_HEADERS = {
-    'Content-Type': 'application/json',
-    };
 
   const fetchAllData = async () => {
     setIsLoading(true);

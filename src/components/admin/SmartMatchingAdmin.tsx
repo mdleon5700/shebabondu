@@ -23,6 +23,7 @@ import {
 } from 'lucide-react';
 import { MatchingEngineConfig, MatchingWeightsConfig } from '@/lib/matching/types';
 import { CANONICAL_SKILLS } from '@/lib/matching/skills-taxonomy';
+import { ADMIN_REQ_HEADERS } from '@/lib/adminAuthClient';
 
 export default function SmartMatchingAdmin() {
   const [config, setConfig] = useState<MatchingEngineConfig | null>(null);
@@ -49,8 +50,8 @@ export default function SmartMatchingAdmin() {
     try {
       setLoading(true);
       const [resConfig, resHealth] = await Promise.all([
-        fetch('/api/admin/job-matching/config'),
-        fetch('/api/admin/job-matching/health')
+        fetch('/api/admin/job-matching/config', { headers: ADMIN_REQ_HEADERS }),
+        fetch('/api/admin/job-matching/health', { headers: ADMIN_REQ_HEADERS })
       ]);
 
       if (resConfig.ok) {
@@ -105,7 +106,7 @@ export default function SmartMatchingAdmin() {
       setSaving(true);
       const res = await fetch('/api/admin/job-matching/config', {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
+        headers: ADMIN_REQ_HEADERS,
         body: JSON.stringify({
           weights,
           minScoreToRecommend: config?.minScoreToRecommend ?? 40,
@@ -136,7 +137,7 @@ export default function SmartMatchingAdmin() {
       setRebuilding(true);
       const res = await fetch('/api/admin/job-matching/rebuild', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: ADMIN_REQ_HEADERS,
         body: JSON.stringify({ adminId: 'admin_master' })
       });
 

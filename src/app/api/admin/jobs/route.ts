@@ -269,3 +269,47 @@ export async function PATCH(req: Request) {
     return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }
+
+export async function PUT(req: Request) {
+  const session = getServerSession(req);
+  if (!session || session.role !== 'admin') {
+    return NextResponse.json({ error: 'FORBIDDEN: Admin privileges required.' }, { status: 403 });
+  }
+
+  try {
+    const body = await req.json().catch(() => ({}));
+    const id = body.id;
+    if (!id) {
+      return NextResponse.json({ error: 'সার্কুলার আইডি আবশ্যক।' }, { status: 400 });
+    }
+
+    const existing = serverDB.getJobById(id);
+    if (!existing) {
+      return NextResponse.json({ error: 'সংশ্লিষ্ট সার্কুলারটি পাওয়া যায়নি।' }, { status: 404 });
+    }
+
+    const updated = {
+      ...existing,
+      ...body,
+      id: existing.id,
+      updatedAt: new Date().toISOString()
+    };
+
+    serverDB.saveJob(updated, session.candidateId || 'ADMIN');
+
+    try {
+      revalidatePath('/jobs');
+      revalidatePath(`/jobs/${id}`);
+      revalidatePath('/');
+      revalidatePath('/admin');
+    } catch {}
+
+    return NextResponse.json({
+      success: true,
+      message: 'সার্কুলার সফলভাবে আপডেট করা হয়েছে।',
+      job: updated
+    });
+  } catch (err: any) {
+    return NextResponse.json({ error: err.message }, { status: 500 });
+  }
+}

@@ -24,6 +24,7 @@ import {
 } from 'lucide-react';
 import { FeedMetricsSummary, GlobalFeedConfig } from '@/lib/feeds/types';
 import { JobCircular } from '@/lib/types';
+import { ADMIN_REQ_HEADERS } from '@/lib/adminAuthClient';
 
 const toBn = (n: number | string) => String(n).replace(/\d/g, d => '০১২৩৪৫৬৭৮৯'[+d]);
 
@@ -57,10 +58,10 @@ export default function JobFeedManager() {
     setIsLoading(true);
     try {
       const [feedRes, featRes, jobsRes, auditRes] = await Promise.all([
-        fetch('/api/admin/job-feeds', { headers: { } }),
-        fetch('/api/admin/featured-jobs', { headers: { } }),
+        fetch('/api/admin/job-feeds', { headers: ADMIN_REQ_HEADERS }),
+        fetch('/api/admin/featured-jobs', { headers: ADMIN_REQ_HEADERS }),
         fetch('/api/jobs?limit=200'),
-        fetch('/api/admin/audit-logs', { headers: { } }).catch(() => null)
+        fetch('/api/admin/audit-logs', { headers: ADMIN_REQ_HEADERS }).catch(() => null)
       ]);
 
       if (feedRes.ok) {
@@ -119,7 +120,7 @@ export default function JobFeedManager() {
     try {
       const res = await fetch('/api/admin/job-feeds/revalidate', {
         method: 'POST',
-        headers: { }
+        headers: ADMIN_REQ_HEADERS
       });
       const data = await res.json();
       if (data.success) {
@@ -145,9 +146,7 @@ export default function JobFeedManager() {
       if (editingPlacement) {
         const res = await fetch(`/api/admin/featured-jobs/${editingPlacement.id}`, {
           method: 'PATCH',
-          headers: {
-            'Content-Type': 'application/json',
-            },
+          headers: ADMIN_REQ_HEADERS,
           body: JSON.stringify({
             placement: selectedPlacementTarget,
             priority: priorityVal,
@@ -165,9 +164,7 @@ export default function JobFeedManager() {
       } else {
         const res = await fetch('/api/admin/featured-jobs', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            },
+          headers: ADMIN_REQ_HEADERS,
           body: JSON.stringify({
             jobId: selectedJobId,
             placement: selectedPlacementTarget,
@@ -199,7 +196,7 @@ export default function JobFeedManager() {
     try {
       const res = await fetch(`/api/admin/featured-jobs/${id}`, {
         method: 'DELETE',
-        headers: { }
+        headers: ADMIN_REQ_HEADERS
       });
       const data = await res.json();
       if (data.success) {
@@ -216,9 +213,7 @@ export default function JobFeedManager() {
     try {
       const res = await fetch('/api/admin/job-feeds/config', {
         method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          },
+        headers: ADMIN_REQ_HEADERS,
         body: JSON.stringify(config)
       });
       const data = await res.json();

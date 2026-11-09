@@ -14,7 +14,8 @@ interface Props {
 
 export async function generateMetadata(props: Props): Promise<Metadata> {
   const params = await props.params;
-  const parsedIso = BangladeshDateHelper.parseToIsoDate(params.date);
+  const decodedDate = decodeURIComponent(params.date || '');
+  const parsedIso = BangladeshDateHelper.parseToIsoDate(decodedDate);
   if (!parsedIso) {
     return { title: 'তারিখ পাওয়া যায়নি | চাকরি সেবা' };
   }
@@ -37,20 +38,24 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 
 export default async function DailyJobDatePage(props: Props) {
   const params = await props.params;
-  const rawDate = (params.date || '').toLowerCase().trim();
+  const decodedDate = decodeURIComponent(params.date || '');
+  const rawDate = decodedDate.toLowerCase().trim();
+
+  const todayInfo = BangladeshDateHelper.getBangladeshTodayDate();
+
   if (rawDate === 'today') {
-    const today = new Date().toISOString().split('T')[0];
-    redirect(`/daily-jobs/${today}`);
+    redirect(`/daily-jobs/${todayInfo.isoDate}`);
   }
   if (rawDate === 'yesterday') {
-    const yesterday = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString().split('T')[0];
-    redirect(`/daily-jobs/${yesterday}`);
+    const tDate = new Date(`${todayInfo.isoDate}T00:00:00Z`);
+    const yDate = new Date(tDate.getTime() - 24 * 60 * 60 * 1000);
+    redirect(`/daily-jobs/${yDate.toISOString().split('T')[0]}`);
   }
   if (/^\d{4}-\d{2}$/.test(rawDate)) {
     redirect('/daily-jobs');
   }
 
-  const parsedIso = BangladeshDateHelper.parseToIsoDate(params.date);
+  const parsedIso = BangladeshDateHelper.parseToIsoDate(decodedDate);
   if (!parsedIso) {
     redirect('/daily-jobs');
   }

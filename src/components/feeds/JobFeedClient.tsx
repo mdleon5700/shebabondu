@@ -394,11 +394,15 @@ export default function JobFeedClient({
                 <h3 className="text-lg font-bold text-slate-800">
                   {feedType === 'today'
                     ? `আজ (${dateBn || 'আজকের তারিখে'}) এখনও নতুন সার্কুলার আসেনি`
+                    : feedType === 'daily'
+                    ? `${dateBn || date || 'উক্ত'} তারিখে কোনো নতুন সার্কুলার প্রকাশিত হয়নি`
                     : 'কোনো সার্কুলার পাওয়া যায়নি'}
                 </h3>
                 <p className="text-slate-500 text-xs sm:text-sm leading-relaxed">
                   {feedType === 'today'
                     ? 'সরকারি ও ব্যাংক নিয়োগের বিজ্ঞপ্তি সাধারণত অফিসিয়াল গেজেট অনুযায়ী সকাল ১০টা থেকে বিকাল ৫টার মধ্যে প্রকাশিত হয়। আপনার সুবিধার জন্য সর্বশেষ প্রকাশিত সার্কুলারগুলো দেখতে পারেন।'
+                    : feedType === 'daily'
+                    ? 'সাধারণত সাপ্তাহিক ছুটির দিন (শুক্র ও শনিবার) অথবা সরকারি ছুটির দিনগুলোতে নতুন গেজেট প্রকাশিত হয় না। অন্য কোনো তারিখের আর্কাইভ অথবা সর্বশেষ সার্কুলার দেখতে পারেন।'
                     : 'আপনার নির্বাচিত ফিল্টার বা শর্তানুযায়ী কোনো সক্রিয় চাকরির বিজ্ঞপ্তি খুঁজে পাওয়া যায়নি। ফিল্টার রিসেট করে আবার চেষ্টা করুন।'}
                 </p>
               </div>
@@ -419,6 +423,23 @@ export default function JobFeedClient({
                     >
                       <Building2 className="w-4 h-4" />
                       <span>সকল চাকরির আর্কাইভ</span>
+                    </Link>
+                  </>
+                ) : feedType === 'daily' ? (
+                  <>
+                    <Link
+                      href="/daily-jobs"
+                      className="px-4 py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs sm:text-sm font-semibold transition-all inline-flex items-center gap-2 shadow-sm"
+                    >
+                      <Calendar className="w-4 h-4" />
+                      <span>সকল আর্কাইভ ক্যালেন্ডার</span>
+                    </Link>
+                    <Link
+                      href="/latest-jobs"
+                      className="px-4 py-2.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-xl text-xs sm:text-sm font-semibold transition-all inline-flex items-center gap-1.5"
+                    >
+                      <Sparkles className="w-4 h-4 text-emerald-700" />
+                      <span>সর্বশেষ সার্কুলার</span>
                     </Link>
                   </>
                 ) : hasActiveFilters ? (

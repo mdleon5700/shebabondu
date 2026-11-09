@@ -9,7 +9,7 @@ export const dynamic = 'force-dynamic';
 export async function GET(req: Request, props: { params: Promise<{ date: string }> }) {
   const params = await props.params;
   try {
-    const rawDate = params.date;
+    const rawDate = decodeURIComponent(params.date || '');
     const parsedIso = BangladeshDateHelper.parseToIsoDate(rawDate);
 
     if (!parsedIso) {
@@ -20,9 +20,12 @@ export async function GET(req: Request, props: { params: Promise<{ date: string 
     }
 
     const { searchParams } = new URL(req.url);
+    const q = searchParams.get('q') || undefined;
     const category = searchParams.get('category') || undefined;
     const district = searchParams.get('district') || undefined;
     const education = searchParams.get('education') || undefined;
+    const status = (searchParams.get('status') as any) || undefined;
+    const sortBy = (searchParams.get('sortBy') as any) || undefined;
     const page = parseInt(searchParams.get('page') || '1', 10);
     const limit = parseInt(searchParams.get('limit') || '9', 10);
 
@@ -32,9 +35,12 @@ export async function GET(req: Request, props: { params: Promise<{ date: string 
     const options: FeedQueryOptions = {
       feedType: 'daily',
       date: parsedIso,
+      q,
       category,
       district,
       education,
+      status,
+      sortBy,
       page,
       limit
     };
@@ -58,7 +64,7 @@ export async function GET(req: Request, props: { params: Promise<{ date: string 
       }
     }, {
       headers: {
-        'Cache-Control': 'public, s-maxage=120, stale-while-revalidate=300'
+        'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate'
       }
     });
   } catch (error: any) {

@@ -1,10 +1,11 @@
 import React from 'react';
 import { Metadata } from 'next';
 import Link from 'next/link';
-import { Calendar, ChevronRight, Sparkles, Clock, ArrowRight, Layers } from 'lucide-react';
+import { Calendar, ChevronRight, Sparkles, Clock, ArrowRight, Layers, Database } from 'lucide-react';
 import { serverDB } from '@/lib/db';
 import { JobFeedEngine } from '@/lib/feeds/engine';
 import { BangladeshDateHelper } from '@/lib/feeds/timezone';
+import DailyDateJumpPicker from '@/components/feeds/DailyDateJumpPicker';
 
 export const dynamic = 'force-dynamic';
 
@@ -13,6 +14,12 @@ export const metadata: Metadata = {
   description: 'তারিখভিত্তিক সকল সরকারি, ব্যাংক ও বেসরকারি চাকরির অতীত ও বর্তমান সার্কুলার আর্কাইভ। যে কোনো দিনের প্রকাশিত সার্কুলার এক নজরে দেখুন।',
   alternates: {
     canonical: 'https://chakrisheba.com/daily-jobs'
+  },
+  openGraph: {
+    title: 'দৈনিক চাকরির আর্কাইভ ক্যালেন্ডার | চাকরি সেবা',
+    description: 'তারিখভিত্তিক সকল সরকারি, ব্যাংক ও বেসরকারি চাকরির অতীত ও বর্তমান সার্কুলার আর্কাইভ।',
+    url: 'https://chakrisheba.com/daily-jobs',
+    type: 'website'
   }
 };
 
@@ -23,8 +30,73 @@ export default function DailyJobsDirectoryPage() {
   const archives = JobFeedEngine.getDailyArchiveDates(jobs, 30);
   const todayInfo = BangladeshDateHelper.getBangladeshTodayDate();
 
+  // Compute yesterday
+  const todayDate = new Date(`${todayInfo.isoDate}T00:00:00Z`);
+  const yesterdayDate = new Date(todayDate.getTime() - 24 * 60 * 60 * 1000);
+  const yesterdayIso = yesterdayDate.toISOString().split('T')[0];
+  const yesterdayBn = BangladeshDateHelper.formatBengaliFullDate(yesterdayIso);
+
+  // Quick dates for popular dates with jobs
+  const topPopulatedDates = archives
+    .filter(a => a.jobCount > 0 && a.date !== todayInfo.isoDate)
+    .slice(0, 5)
+    .map(a => ({
+      date: a.date,
+      label: a.date_bn,
+      count: a.jobCount
+    }));
+
+  const quickDates = [
+    { date: todayInfo.isoDate, label: `আজ (${todayInfo.dateBn})` },
+    { date: yesterdayIso, label: `গতকাল (${yesterdayBn})` },
+    ...topPopulatedDates
+  ];
+
+  const totalArchivedJobs = archives.reduce((acc, curr) => acc + curr.jobCount, 0);
+
+  const collectionSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: 'দৈনিক চাকরির আর্কাইভ ক্যালেন্ডার | চাকরি সেবা',
+    description: 'তারিখভিত্তিক সকল সরকারি, ব্যাংক ও বেসরকারি চাকরির অতীত ও বর্তমান সার্কুলার আর্কাইভ।',
+    url: 'https://chakrisheba.com/daily-jobs',
+    isPartOf: {
+      '@type': 'WebSite',
+      name: 'চাকরি সেবা (Chakri Sheba)',
+      url: 'https://chakrisheba.com'
+    }
+  };
+
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'হোম',
+        item: 'https://chakrisheba.com'
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'দৈনিক আর্কাইভ',
+        item: 'https://chakrisheba.com/daily-jobs'
+      }
+    ]
+  };
+
   return (
     <div className="min-h-screen bg-slate-50 py-8 px-4 sm:px-6 lg:px-8">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+
       <div className="max-w-5xl mx-auto space-y-6">
         {/* Header Banner */}
         <div className="bg-gradient-to-br from-slate-900 via-teal-950 to-emerald-950 text-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-10 shadow-xl border border-emerald-900/40 relative overflow-hidden">
@@ -39,7 +111,7 @@ export default function DailyJobsDirectoryPage() {
             <p className="text-slate-300 text-sm sm:text-base mt-2.5 leading-relaxed">
               নির্দিষ্ট ক্যালেন্ডার তারিখ অনুযায়ী প্রকাশিত সকল সরকারি গেজেট ও বেসরকারি চাকরির সার্কুলার ব্রাউজ করুন। গত ৩০ দিনের সম্পূর্ণ আর্কাইভ এখানে সংরক্ষিত রয়েছে।
             </p>
-            <div className="mt-5">
+            <div className="mt-5 flex flex-wrap items-center gap-3">
               <Link
                 href="/todays-jobs"
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm shadow-md transition-all"
@@ -48,20 +120,35 @@ export default function DailyJobsDirectoryPage() {
                 <span>আজকের চাকরির খবর ({todayInfo.dateBn})</span>
                 <ArrowRight className="w-4 h-4" />
               </Link>
+              <Link
+                href="/latest-jobs"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-slate-200 border border-white/15 font-bold text-sm transition-all"
+              >
+                <span>সর্বশেষ প্রকাশিত সার্কুলার</span>
+              </Link>
             </div>
           </div>
         </div>
 
+        {/* Interactive Calendar Date Picker Card */}
+        <DailyDateJumpPicker
+          todayIso={todayInfo.isoDate}
+          todayBn={todayInfo.dateBn}
+          quickDates={quickDates}
+        />
+
         {/* Date Tiles Grid */}
         <div className="bg-white rounded-2xl p-6 border border-slate-200/80 shadow-xs space-y-4">
-          <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-slate-100 gap-2">
             <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2">
               <Clock className="w-5 h-5 text-emerald-700" />
               <span>সাম্প্রতিক প্রকাশিত তারিখসমূহ</span>
             </h2>
-            <span className="text-xs text-slate-500 font-medium">
-              মোট {toBn(archives.length)}টি তারিখ তালিকাভুক্ত
-            </span>
+            <div className="flex items-center gap-3 text-xs text-slate-500 font-medium">
+              <span>মোট {toBn(archives.length)}টি তারিখ</span>
+              <span className="w-1 h-1 rounded-full bg-slate-300" />
+              <span className="text-emerald-700 font-bold">{toBn(totalArchivedJobs)}টি সার্কুলার আর্কাইভড</span>
+            </div>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">

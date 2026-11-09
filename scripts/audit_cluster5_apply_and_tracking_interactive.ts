@@ -170,7 +170,21 @@ async function main() {
   const detailsPanel = await page.locator('text=ভেরিফাইড আবেদন বিবরণী').isVisible();
   const userIdDisplay = await page.locator('text=টেলিটক ইউজার আইডি (User ID):').isVisible();
   const downloadPdfBtn = await page.locator('text=Applicant\'s Copy ডাউনলোড (PDF)').isVisible();
-  console.log(`✅ Details Panel: ${detailsPanel}, User ID Display: ${userIdDisplay}, Download PDF CTA: ${downloadPdfBtn}`);
+  const timelineVisible = await page.locator('text=আবেদন অগ্রগতি টাইমলাইন:').isVisible();
+  console.log(`✅ Details Panel: ${detailsPanel}, User ID Display: ${userIdDisplay}, Download PDF CTA: ${downloadPdfBtn}, Timeline: ${timelineVisible}`);
+
+  // Test Money Receipt Voucher Modal
+  console.log('👉 Testing Printable Money Receipt Modal...');
+  const receiptBtn = page.locator('button:has-text("অফিসিয়াল মানি রিসিট ও ভাউচার")');
+  await receiptBtn.click();
+  await page.waitForTimeout(400);
+
+  const receiptModalVisible = await page.locator('h3:has-text("অফিসিয়াল মানি রিসিট ও ভাউচার")').isVisible();
+  console.log(`✅ Money Receipt Modal Opened: ${receiptModalVisible}`);
+
+  const closeReceiptBtn = page.locator('button:has-text("বন্ধ করুন")');
+  await closeReceiptBtn.click();
+  await page.waitForTimeout(400);
 
   // 3. Verify Tab 2: Saved Circulars (সংরক্ষিত সার্কুলার)
   console.log('\n--- 3. Testing Tab 2: Saved Circulars (সংরক্ষিত সার্কুলার) ---');

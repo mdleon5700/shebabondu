@@ -608,14 +608,20 @@ function ApplyFormContent({ initialJob }: ApplyClientProps) {
             </div>
           </div>
 
-          <div className="pt-2">
+          <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
             <Link
-              href="/dashboard"
+              href="/applications"
               className="inline-flex items-center gap-2 px-6 py-3 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-sm rounded-xl shadow-md transition-all hover:scale-105"
             >
               <UserCheck className="w-4 h-4" />
-              <span>ড্যাশবোর্ডে লাইভ স্ট্যাটাস ট্র্যাক করুন</span>
+              <span>আমার আবেদনে লাইভ অগ্রগতি ট্র্যাক করুন</span>
               <ArrowRight className="w-4 h-4" />
+            </Link>
+            <Link
+              href="/dashboard"
+              className="inline-flex items-center gap-2 px-5 py-3 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 font-bold text-sm rounded-xl transition-all"
+            >
+              <span>প্রার্থী ড্যাশবোর্ড</span>
             </Link>
           </div>
         </div>

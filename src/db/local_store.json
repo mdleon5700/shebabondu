@@ -12,16 +12,66 @@
       "dob": "1998-05-14",
       "gender": "male",
       "nid": "5512345678901",
-      "division": "ঢাকা",
-      "district": "ঢাকা",
-      "address": "বাড়ি ৪২, রোড ৭, ব্লক সি, মিরপুর-১০, ঢাকা-১২১৬",
-      "permanentAddress": "গ্রাম: উত্তরপাড়া, ডাকঘর: টাঙ্গাইল সদর, জেলা: টাঙ্গাইল",
+      "division": "DHAKA",
+      "district": "DHAKA",
+      "address": "বাড়ি ৪২, রোড ৭, ব্লক সি, মিরপুর-১০, ঢাকা-, MIRPUR, DHAKA-1216",
+      "permanentAddress": "বাড়ি ৪২, রোড ৭, ব্লক সি, মিরপুর-১০, ঢাকা-, MIRPUR, DHAKA-1216",
       "photoUrl": "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=400&q=80",
       "signatureUrl": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=400&q=80",
       "walletBalance": 450,
       "maritalStatus": "single",
-      "quota": "none",
+      "quota": "freedom_fighter",
       "education": [
+        {
+          "id": "EDU-mw97qtjn-v4ps",
+          "level": "স্নাতক (অনার্স)",
+          "degree": "এমএসসি (সফটওয়্যার ইঞ্জিনিয়ারিং)",
+          "boardOrUni": "ঢাকা বিশ্ববিদ্যালয়",
+          "roll": "N/A",
+          "reg": "N/A",
+          "year": "2021",
+          "result": "CGPA 3.85"
+        },
+        {
+          "id": "EDU-mw97ph46-lqzp",
+          "level": "স্নাতক (অনার্স)",
+          "degree": "এমএসসি (সফটওয়্যার ইঞ্জিনিয়ারিং)",
+          "boardOrUni": "ঢাকা বিশ্ববিদ্যালয়",
+          "roll": "N/A",
+          "reg": "N/A",
+          "year": "2021",
+          "result": "CGPA 3.85"
+        },
+        {
+          "id": "EDU-mw97mr9t-e8yc",
+          "level": "স্নাতক (অনার্স)",
+          "degree": "এমএসসি (সফটওয়্যার ইঞ্জিনিয়ারিং)",
+          "boardOrUni": "ঢাকা বিশ্ববিদ্যালয়",
+          "roll": "N/A",
+          "reg": "N/A",
+          "year": "2021",
+          "result": "CGPA 3.85"
+        },
+        {
+          "id": "EDU-mw97m2k9-3wtw",
+          "level": "স্নাতক (অনার্স)",
+          "degree": "এমএসসি (সফটওয়্যার ইঞ্জিনিয়ারিং)",
+          "boardOrUni": "ঢাকা বিশ্ববিদ্যালয়",
+          "roll": "N/A",
+          "reg": "N/A",
+          "year": "2021",
+          "result": "CGPA 3.85"
+        },
+        {
+          "id": "EDU-mw97kj2p-b1ke",
+          "level": "স্নাতক (অনার্স)",
+          "degree": "এমএসসি (সফটওয়্যার ইঞ্জিনিয়ারিং)",
+          "boardOrUni": "ঢাকা বিশ্ববিদ্যালয়",
+          "roll": "N/A",
+          "reg": "N/A",
+          "year": "2021",
+          "result": "CGPA 3.85"
+        },
         {
           "id": "edu-1",
           "level": "SSC",
@@ -59,8 +109,116 @@
       "passwordHash": "scrypt$7f0dbe454364311f385721e371fe8e72$567fd7111794abf23d0c2c24418b5ff5674c867887be01da80bcfb6f7f32ee3f63ef31b447255b10db0735cf094a2338c845281864f8ce8c61fb2a26877a3ac9",
       "role": "candidate",
       "createdAt": "2026-11-09T07:17:05.082Z",
-      "updatedAt": "2026-11-09T10:24:16.055Z",
+      "updatedAt": "2026-11-09T12:04:20.695Z",
       "adminAuditHistory": [
+        {
+          "timestamp": "2026-11-09T12:04:09.290Z",
+          "adminId": "ADMIN",
+          "action": "candidate_profile_update",
+          "changedFields": [
+            "education"
+          ],
+          "notes": "1টি ফিল্ড পরিবর্তিত হয়েছে (education)",
+          "reason": "1টি ফিল্ড পরিবর্তিত হয়েছে (education)"
+        },
+        {
+          "timestamp": "2026-11-09T12:04:06.219Z",
+          "adminId": "ADMIN",
+          "action": "candidate_profile_update",
+          "changedFields": [],
+          "notes": "প্রোফাইল তথ্য হালনাগাদ",
+          "reason": "প্রোফাইল তথ্য হালনাগাদ"
+        },
+        {
+          "timestamp": "2026-11-09T12:03:06.565Z",
+          "adminId": "ADMIN",
+          "action": "candidate_profile_update",
+          "changedFields": [
+            "education"
+          ],
+          "notes": "1টি ফিল্ড পরিবর্তিত হয়েছে (education)",
+          "reason": "1টি ফিল্ড পরিবর্তিত হয়েছে (education)"
+        },
+        {
+          "timestamp": "2026-11-09T12:03:03.527Z",
+          "adminId": "ADMIN",
+          "action": "candidate_profile_update",
+          "changedFields": [],
+          "notes": "প্রোফাইল তথ্য হালনাগাদ",
+          "reason": "প্রোফাইল তথ্য হালনাগাদ"
+        },
+        {
+          "timestamp": "2026-11-09T12:00:59.668Z",
+          "adminId": "ADMIN",
+          "action": "candidate_profile_update",
+          "changedFields": [
+            "education"
+          ],
+          "notes": "1টি ফিল্ড পরিবর্তিত হয়েছে (education)",
+          "reason": "1টি ফিল্ড পরিবর্তিত হয়েছে (education)"
+        },
+        {
+          "timestamp": "2026-11-09T12:00:56.749Z",
+          "adminId": "ADMIN",
+          "action": "candidate_profile_update",
+          "changedFields": [],
+          "notes": "প্রোফাইল তথ্য হালনাগাদ",
+          "reason": "প্রোফাইল তথ্য হালনাগাদ"
+        },
+        {
+          "timestamp": "2026-11-09T12:00:28.134Z",
+          "adminId": "ADMIN",
+          "action": "candidate_profile_update",
+          "changedFields": [
+            "education"
+          ],
+          "notes": "1টি ফিল্ড পরিবর্তিত হয়েছে (education)",
+          "reason": "1টি ফিল্ড পরিবর্তিত হয়েছে (education)"
+        },
+        {
+          "timestamp": "2026-11-09T12:00:24.486Z",
+          "adminId": "ADMIN",
+          "action": "candidate_profile_update",
+          "changedFields": [],
+          "notes": "প্রোফাইল তথ্য হালনাগাদ",
+          "reason": "প্রোফাইল তথ্য হালনাগাদ"
+        },
+        {
+          "timestamp": "2026-11-09T11:59:17.811Z",
+          "adminId": "ADMIN",
+          "action": "candidate_profile_update",
+          "changedFields": [
+            "quota"
+          ],
+          "notes": "1টি ফিল্ড পরিবর্তিত হয়েছে (quota)",
+          "reason": "1টি ফিল্ড পরিবর্তিত হয়েছে (quota)"
+        },
+        {
+          "timestamp": "2026-11-09T11:59:15.735Z",
+          "adminId": "ADMIN",
+          "action": "candidate_profile_update",
+          "changedFields": [
+            "education"
+          ],
+          "notes": "1টি ফিল্ড পরিবর্তিত হয়েছে (education)",
+          "reason": "1টি ফিল্ড পরিবর্তিত হয়েছে (education)"
+        },
+        {
+          "timestamp": "2026-11-09T11:59:12.756Z",
+          "adminId": "ADMIN",
+          "action": "candidate_profile_update",
+          "changedFields": [
+            "division",
+            "district",
+            "address",
+            "permanentAddress",
+            "sameAsPresentAddress",
+            "presentAddressDetails",
+            "permanentAddressDetails"
+          ],
+          "notes": "7টি ফিল্ড পরিবর্তিত হয়েছে (division, district, address...)",
+          "reason": "7টি ফিল্ড পরিবর্তিত হয়েছে (division, district, address...)"
+        },
         {
           "timestamp": "2026-11-09T10:24:16.054Z",
           "adminId": "ADMIN",
@@ -137,7 +295,69 @@
           "notes": "1টি ফিল্ড পরিবর্তিত হয়েছে (passwordHash)",
           "reason": "1টি ফিল্ড পরিবর্তিত হয়েছে (passwordHash)"
         }
-      ]
+      ],
+      "sameAsPresentAddress": true,
+      "presentAddressDetails": {
+        "careOf": "Md. Rafiqul Islam",
+        "villageRoad": "বাড়ি ৪২, রোড ৭, ব্লক সি, মিরপুর-১০, ঢাকা-",
+        "division": "DHAKA",
+        "district": "DHAKA",
+        "upazilaThana": "MIRPUR",
+        "postOffice": "MIRPUR",
+        "postCode": "1216"
+      },
+      "permanentAddressDetails": {
+        "careOf": "Md. Rafiqul Islam",
+        "villageRoad": "বাড়ি ৪২, রোড ৭, ব্লক সি, মিরপুর-১০, ঢাকা-",
+        "division": "DHAKA",
+        "district": "DHAKA",
+        "upazilaThana": "MIRPUR",
+        "postOffice": "MIRPUR",
+        "postCode": "1216"
+      },
+      "skills": [
+        {
+          "id": "javascript",
+          "name": "Next.js ও TypeScript ফুলস্ট্যাক",
+          "normalizedId": "javascript",
+          "category": "technical",
+          "proficiency": "INTERMEDIATE",
+          "yearsExperience": 0,
+          "isUserConfirmed": true
+        }
+      ],
+      "experiences": [
+        {
+          "designation": "সফটওয়্যার আর্কিটেক্ট",
+          "organization": "টেক সল্যুশনস বাংলাদেশ",
+          "startDate": "",
+          "endDate": "",
+          "isCurrent": false,
+          "responsibilities": "",
+          "id": "exp_1794225802721_5nzo"
+        },
+        {
+          "designation": "সফটওয়্যার আর্কিটেক্ট",
+          "organization": "টেক সল্যুশনস বাংলাদেশ",
+          "startDate": "2022-01-01",
+          "isCurrent": true,
+          "id": "exp_1794225816194_pn4r"
+        },
+        {
+          "designation": "সফটওয়্যার আর্কিটেক্ট",
+          "organization": "টেক সল্যুশনস বাংলাদেশ",
+          "startDate": "",
+          "endDate": "",
+          "isCurrent": false,
+          "responsibilities": "",
+          "id": "exp_1794225855901_6sdy"
+        }
+      ],
+      "careerPreferences": {
+        "preferredCategories": [],
+        "preferredOrgTypes": [],
+        "preferredDivisions": []
+      }
     },
     "CS-USR-26-609104": {
       "id": "CS-USR-26-609104",
@@ -728,6 +948,51 @@
       "candidateId": "USR-01712345678",
       "role": "candidate",
       "expiresAt": "2026-11-16T11:45:03.611Z"
+    },
+    "cluster3_profile_audit_session_1794225185300": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T11:53:05.300Z"
+    },
+    "cluster3_profile_audit_session_1794225249201": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T11:54:09.201Z"
+    },
+    "cluster3_profile_audit_session_1794225349060": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T11:55:49.060Z"
+    },
+    "cluster3_profile_audit_session_1794225461760": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T11:57:41.760Z"
+    },
+    "cluster3_profile_audit_session_1794225545204": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T11:59:05.204Z"
+    },
+    "cluster3_profile_audit_session_1794225616827": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T12:00:16.827Z"
+    },
+    "cluster3_profile_audit_session_1794225649717": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T12:00:49.717Z"
+    },
+    "cluster3_profile_audit_session_1794225776838": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T12:02:56.838Z"
+    },
+    "cluster3_profile_audit_session_1794225835812": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T12:03:55.812Z"
     }
   },
   "coupons": {},

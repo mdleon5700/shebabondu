@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { 
   User, 
   Zap, 
@@ -100,6 +101,25 @@ export default function ProfilePage() {
 
   // Transliterate / Normalize Bengali Address data to English Standard
   const toEnDigits = (str: string) => str.replace(/[০-৯]/g, (d) => String.fromCharCode(d.charCodeAt(0) - 0x09E6 + 0x30));
+
+  const calculateAge = (dobString: string): string => {
+    if (!dobString) return '';
+    const birthDate = new Date(dobString);
+    if (isNaN(birthDate.getTime())) return '';
+    const today = new Date();
+    let years = today.getFullYear() - birthDate.getFullYear();
+    let months = today.getMonth() - birthDate.getMonth();
+    let days = today.getDate() - birthDate.getDate();
+    if (days < 0) {
+      months--;
+      days += new Date(today.getFullYear(), today.getMonth(), 0).getDate();
+    }
+    if (months < 0) {
+      years--;
+      months += 12;
+    }
+    return `${years} বছর ${months} মাস`;
+  };
 
   const convertBnAddressToEn = (str: string): string => {
     if (!str) return '';
@@ -384,14 +404,19 @@ export default function ProfilePage() {
     if (!newSkillName.trim()) return;
     setIsSavingSkill(true);
     try {
+      const token = typeof window !== 'undefined' ? localStorage.getItem('cs_session_token') : null;
+      const headers: Record<string, string> = {
+        'Content-Type': 'application/json',
+        ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+      };
       const res = await fetch('/api/user/skills', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers,
         body: JSON.stringify({ name: newSkillName.trim(), proficiency: newSkillProficiency })
       });
       if (res.ok) {
         const d = await res.json();
-        const updatedSkills = d.data || [...(profile.skills || []), { id: 'sk_' + Date.now(), name: newSkillName.trim(), proficiency: newSkillProficiency }];
+        const updatedSkills = d.skills || d.data || [...(profile.skills || []), { id: 'sk_' + Date.now(), name: newSkillName.trim(), proficiency: newSkillProficiency }];
         const updated = { ...profile, skills: updatedSkills };
         setProfile(updated);
         storage.updateUser(updated);
@@ -409,9 +434,12 @@ export default function ProfilePage() {
 
   const handleDeleteSkill = async (skillId: string) => {
     try {
-      const response = await fetch('/api/user/skills/' + encodeURIComponent(skillId), { method: 'DELETE' });
+      const token = typeof window !== 'undefined' ? localStorage.getItem('cs_session_token') : null;
+      const headers: Record<string, string> = token ? { 'Authorization': `Bearer ${token}` } : {};
+      const response = await fetch('/api/user/skills/' + encodeURIComponent(skillId), { method: 'DELETE', headers });
       if (!response.ok) throw new Error('Skill deletion failed');
-      const updatedSkills = (profile.skills || []).filter((s: any) => (typeof s === 'string' ? s !== skillId : s.id !== skillId && s.name !== skillId));
+      const d = await response.json();
+      const updatedSkills = d.skills || (profile.skills || []).filter((s: any) => (typeof s === 'string' ? s !== skillId : s.id !== skillId && s.name !== skillId));
       const updated = { ...profile, skills: updatedSkills };
       setProfile(updated);
       storage.updateUser(updated);
@@ -426,9 +454,14 @@ export default function ProfilePage() {
     if (!newExpDesignation.trim() || !newExpOrg.trim()) return;
     setIsSavingExp(true);
     try {
+      const token = typeof window !== 'undefined' ? localStorage.getItem('cs_session_token') : null;
+      const headers: Record<string, string> = {
+        'Content-Type': 'application/json',
+        ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+      };
       const res = await fetch('/api/user/experience', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers,
         body: JSON.stringify({
           designation: newExpDesignation.trim(),
           organization: newExpOrg.trim(),
@@ -440,7 +473,7 @@ export default function ProfilePage() {
       });
       if (res.ok) {
         const d = await res.json();
-        const updatedExp = d.data || [...(profile.experiences || []), {
+        const updatedExp = d.experiences || d.data || [...(profile.experiences || []), {
           id: 'exp_' + Date.now(),
           designation: newExpDesignation.trim(),
           organization: newExpOrg.trim(),
@@ -470,9 +503,12 @@ export default function ProfilePage() {
 
   const handleDeleteExperience = async (expId: string) => {
     try {
-      const response = await fetch('/api/user/experience/' + encodeURIComponent(expId), { method: 'DELETE' });
+      const token = typeof window !== 'undefined' ? localStorage.getItem('cs_session_token') : null;
+      const headers: Record<string, string> = token ? { 'Authorization': `Bearer ${token}` } : {};
+      const response = await fetch('/api/user/experience/' + encodeURIComponent(expId), { method: 'DELETE', headers });
       if (!response.ok) throw new Error('Experience deletion failed');
-      const updatedExp = (profile.experiences || []).filter((e: any) => e.id !== expId);
+      const d = await response.json();
+      const updatedExp = d.experiences || (profile.experiences || []).filter((e: any) => e.id !== expId);
       const updated = { ...profile, experiences: updatedExp };
       setProfile(updated);
       storage.updateUser(updated);
@@ -486,6 +522,11 @@ export default function ProfilePage() {
     e.preventDefault();
     setIsSavingPrefs(true);
     try {
+      const token = typeof window !== 'undefined' ? localStorage.getItem('cs_session_token') : null;
+      const headers: Record<string, string> = {
+        'Content-Type': 'application/json',
+        ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+      };
       const payload = {
         preferredCategories: prefCategories,
         preferredOrgTypes: prefOrgTypes,
@@ -494,7 +535,7 @@ export default function ProfilePage() {
       };
       const res = await fetch('/api/user/career-preferences', {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
+        headers,
         body: JSON.stringify(payload)
       });
       if (res.ok) {
@@ -730,7 +771,14 @@ export default function ProfilePage() {
             </div>
 
             <div className="space-y-1.5">
-              <label className="font-bold text-slate-700">জন্ম তারিখ (YYYY-MM-DD)</label>
+              <div className="flex items-center justify-between">
+                <label className="font-bold text-slate-700">জন্ম তারিখ (YYYY-MM-DD)</label>
+                {profile.dob && (
+                  <span className="text-[10px] font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
+                    বয়স: {calculateAge(profile.dob)}
+                  </span>
+                )}
+              </div>
               <input
                 type="date"
                 value={profile.dob}
@@ -1681,6 +1729,26 @@ export default function ProfilePage() {
               </div>
             </label>
           </div>
+
+          {profile.quota && profile.quota !== 'none' && (
+            <div className="p-4 bg-emerald-50/90 rounded-2xl border border-emerald-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs mt-4">
+              <div className="flex items-start gap-2.5">
+                <ShieldCheck className="w-5 h-5 text-emerald-700 shrink-0 mt-0.5" />
+                <div>
+                  <strong className="text-emerald-950 block font-bold">কোটা প্রমাণক সনদ সংযুক্তির নিয়মাবলী</strong>
+                  <span className="text-emerald-800">
+                    নির্বাচিত কোটার সুবিধা পাওয়ার জন্য স্মার্ট ডকুমেন্ট ভল্টে কোটা প্রমাণক বা প্রত্যয়নপত্র আপলোড থাকা বাধ্যতামূলক।
+                  </span>
+                </div>
+              </div>
+              <Link
+                href="/dashboard/vault"
+                className="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl font-bold transition-all shadow-sm shrink-0 flex items-center justify-center gap-1.5"
+              >
+                <span>ডকুমেন্ট ভল্টে সনদ আপলোড করুন</span>
+              </Link>
+            </div>
+          )}
         </div>
       )}
 

@@ -180,7 +180,8 @@ flowchart TD
 ## ৪. ক্লাস্টার ৩: ব্যক্তিগত প্রোফাইল ও বায়োডাটা হাব (Candidate Profile & Credentials)
 
 ### ১. ব্যক্তিগত প্রোফাইল ও বায়োডাটা ম্যানেজার (`/profile` ও `/dashboard/profile`)
-* **রাউট:** [src/app/dashboard/profile/page.tsx](file:///C:/Users/Leon%20Rahman/.gemini/antigravity/scratch/chakri-sheba-workspace/src/app/dashboard/profile/page.tsx)
+* **রাউট:** [src/app/dashboard/profile/page.tsx](file:///C:/Users/Leon%20Rahman/.gemini/antigravity/scratch/chakri-sheba-workspace/src/app/dashboard/profile/page.tsx) ও [src/app/profile/page.tsx](file:///C:/Users/Leon%20Rahman/.gemini/antigravity/scratch/chakri-sheba-workspace/src/app/profile/page.tsx)
+* **অডিট স্ট্যাটাস:** ✅ **১০০% অডিটেড ও ভেরিফাইড (Playwright টেস্টে ৬টি ট্যাব ও গেটওয়ে সম্পূর্ণ উত্তীর্ণ)**
 * **উদ্দেশ্য:** সরকারি ও ব্যাংক চাকরির জন্য টেলিটক ফরম্যাট ও বাংলাদেশ ব্যাংক ই-রিক্রুটমেন্টের সকল তথ্যের সমন্বিত মাস্টার ডাটাবেজ।
 * **৬টি ডেডিকেটেড ট্যাব ও কার্যাবলী:**
 

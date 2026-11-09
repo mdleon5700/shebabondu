@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
@@ -386,23 +386,51 @@ export default function JobFeedClient({
               ))}
             </div>
           ) : (
-            <div className="bg-white rounded-2xl p-12 text-center border border-slate-200/80 shadow-xs space-y-4">
-              <div className="w-16 h-16 mx-auto rounded-full bg-slate-100 flex items-center justify-center text-slate-400">
-                <AlertCircle className="w-8 h-8" />
+            <div className="bg-white rounded-2xl p-8 sm:p-14 text-center border border-slate-200/80 shadow-xs space-y-4">
+              <div className="w-16 h-16 mx-auto rounded-2xl bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-600">
+                <Calendar className="w-8 h-8" />
               </div>
-              <h3 className="text-lg font-bold text-slate-800">কোনো সার্কুলার পাওয়া যায়নি</h3>
-              <p className="text-slate-500 text-sm max-w-md mx-auto">
-                আপনার নির্বাচিত ফিল্টার বা শর্তানুযায়ী কোনো সক্রিয় চাকরির বিজ্ঞপ্তি খুঁজে পাওয়া যায়নি। অন্য ফিল্টার বেছে নিন বা রিসেট করুন।
-              </p>
-              {hasActiveFilters && (
-                <button
-                  onClick={handleResetFilters}
-                  className="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-sm font-semibold transition-all inline-flex items-center gap-1.5 shadow-sm"
-                >
-                  <RotateCcw className="w-4 h-4" />
-                  <span>ফিল্টার রিসেট করুন</span>
-                </button>
-              )}
+              <div className="space-y-1.5 max-w-lg mx-auto">
+                <h3 className="text-lg font-bold text-slate-800">
+                  {feedType === 'today'
+                    ? `আজ (${dateBn || 'আজকের তারিখে'}) এখনও নতুন সার্কুলার আসেনি`
+                    : 'কোনো সার্কুলার পাওয়া যায়নি'}
+                </h3>
+                <p className="text-slate-500 text-xs sm:text-sm leading-relaxed">
+                  {feedType === 'today'
+                    ? 'সরকারি ও ব্যাংক নিয়োগের বিজ্ঞপ্তি সাধারণত অফিসিয়াল গেজেট অনুযায়ী সকাল ১০টা থেকে বিকাল ৫টার মধ্যে প্রকাশিত হয়। আপনার সুবিধার জন্য সর্বশেষ প্রকাশিত সার্কুলারগুলো দেখতে পারেন।'
+                    : 'আপনার নির্বাচিত ফিল্টার বা শর্তানুযায়ী কোনো সক্রিয় চাকরির বিজ্ঞপ্তি খুঁজে পাওয়া যায়নি। ফিল্টার রিসেট করে আবার চেষ্টা করুন।'}
+                </p>
+              </div>
+
+              <div className="pt-2 flex flex-wrap items-center justify-center gap-3">
+                {feedType === 'today' ? (
+                  <>
+                    <Link
+                      href="/latest-jobs"
+                      className="px-4 py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs sm:text-sm font-semibold transition-all inline-flex items-center gap-2 shadow-sm"
+                    >
+                      <Sparkles className="w-4 h-4" />
+                      <span>সর্বশেষ প্রকাশিত সার্কুলার দেখুন</span>
+                    </Link>
+                    <Link
+                      href="/jobs"
+                      className="px-4 py-2.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-xl text-xs sm:text-sm font-semibold transition-all inline-flex items-center gap-1.5"
+                    >
+                      <Building2 className="w-4 h-4" />
+                      <span>সকল চাকরির আর্কাইভ</span>
+                    </Link>
+                  </>
+                ) : hasActiveFilters ? (
+                  <button
+                    onClick={handleResetFilters}
+                    className="px-4 py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-sm font-semibold transition-all inline-flex items-center gap-1.5 shadow-sm cursor-pointer"
+                  >
+                    <RotateCcw className="w-4 h-4" />
+                    <span>ফিল্টার রিসেট করুন</span>
+                  </button>
+                ) : null}
+              </div>
             </div>
           )}
 

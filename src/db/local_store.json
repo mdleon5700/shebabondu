@@ -56,10 +56,22 @@
           "majorSubject": "কম্পিউটার সায়েন্স অ্যান্ড ইঞ্জিনিয়ারিং"
         }
       ],
-      "passwordHash": "scrypt$a2de26eea38ba63391590a040c76a52c$dd0feb30f50950555136c2bb58e8698ad5c606ed6f7ae9fbdb0e28d5beab098b39a3f1e3ea97529d56738c6189086c019a0ef79ae3046f892d2a87845a44ff45",
+      "passwordHash": "scrypt$14e9af0e79e02ce09e73a61c922d0cdb$c044e99eca45201092fb569c1615b15e445541c4e1e1a6163261e0380dbfb917abe28787fac8d2af689d72699d085a52c57d0438f4e2755a77c12b837d4d9ae6",
       "role": "candidate",
       "createdAt": "2026-11-09T07:17:05.082Z",
-      "updatedAt": "2026-11-09T07:17:05.082Z"
+      "updatedAt": "2026-11-09T08:46:57.846Z",
+      "adminAuditHistory": [
+        {
+          "timestamp": "2026-11-09T08:46:57.846Z",
+          "adminId": "ADMIN",
+          "action": "candidate_profile_update",
+          "changedFields": [
+            "passwordHash"
+          ],
+          "notes": "1টি ফিল্ড পরিবর্তিত হয়েছে (passwordHash)",
+          "reason": "1টি ফিল্ড পরিবর্তিত হয়েছে (passwordHash)"
+        }
+      ]
     }
   },
   "documents": {
@@ -189,6 +201,76 @@
       "candidateId": "ADMIN-SUPER",
       "role": "admin",
       "expiresAt": "2026-11-16T07:37:32.840Z"
+    },
+    "fdf72501809a3bb0bf8db2255b8c8f76ca4a6a4c3765ceed3519a28088d2c450": {
+      "candidateId": "ADMIN-SUPER",
+      "role": "admin",
+      "expiresAt": "2026-11-16T08:36:25.583Z"
+    },
+    "d7ecb30640ab1fef44e6366a304e0fe25b77f029cdeb0bb0045abce057b6ef4e": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T08:36:26.280Z"
+    },
+    "59be8ab17f84310c716a7e12e0300878c8d4ad9a705064a09dffa4097888f7e9": {
+      "candidateId": "SYNTH-USR-1794213393025",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T08:36:33.170Z"
+    },
+    "c1f170eb81d884832ec35b847b72fa10b114b58f5f0e65832c3b746ba0d810ba": {
+      "candidateId": "ADMIN-SUPER",
+      "role": "admin",
+      "expiresAt": "2026-11-16T08:37:49.359Z"
+    },
+    "f66093c63b7bbd63fe2c302f928ae928ad961f64073e5dfcacdd67d71a4451cd": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T08:37:49.622Z"
+    },
+    "1dcebbf38b57c46dde3e3b53fa9e6cbee87b3e55945db3cd6d8fb9ff4414637e": {
+      "candidateId": "SYNTH-USR-1794213470549",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T08:37:50.632Z"
+    },
+    "16966fc05b93603f27215c6f291dd8ef5f1691749ef2e00ef050ae5d475597ae": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T08:37:53.321Z"
+    },
+    "4abb5913480a4cdcd3faefe65443112defc92fa912110e01dcd058a5d9ca967d": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T08:40:54.852Z"
+    },
+    "ea1b4e8d7845753b71fe85b43188cdf258fecdd4d20d7b383950b71ffc1ea2e9": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T08:42:35.802Z"
+    },
+    "fcfd714fb7335eaa2c790e9d87bfd5c61d2972e5477ed464c5e25e6cfe888a12": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T08:44:59.892Z"
+    },
+    "dec0b4108d423d61ecd5ab01edb599c3ae9a8728ae9adfc3a18e3854b8ee47d2": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T08:45:11.675Z"
+    },
+    "8b8681c591fd51a39841a17f695721a2e380d26a1d447e89715110a0929107b4": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T08:46:29.288Z"
+    },
+    "674f457e490273b0b3f8a2aaec76d01fb0fddc2cd85d9274fcd87fe7f53467db": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T08:46:36.543Z"
+    },
+    "3cefca6d77703c3bb3cd3c172ffdc19db4a1fbe09bd45ad33f00d0099b673d44": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T08:46:57.872Z"
     }
   },
   "coupons": {},

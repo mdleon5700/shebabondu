@@ -36,9 +36,16 @@ function LoginForm() {
   const [loginIdentifier, setLoginIdentifier] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
+
+  // Helper for safe deep-link redirecting
+  const getRedirectTarget = () => {
+    const target = searchParams.get('redirect');
+    return target && /^\/(?!\/)/.test(target) ? target : '/dashboard';
+  };
 
   // Register Form States
   const [regName, setRegName] = useState('');
@@ -145,7 +152,8 @@ function LoginForm() {
       });
 
       if (data.token && typeof document !== 'undefined') {
-        document.cookie = `cs_session_token=${encodeURIComponent(data.token)}; path=/; max-age=2592000; SameSite=Lax`;
+        const maxAge = rememberMe ? 2592000 : 86400;
+        document.cookie = `cs_session_token=${encodeURIComponent(data.token)}; path=/; max-age=${maxAge}; SameSite=Lax`;
         localStorage.setItem('cs_session_token', data.token);
       }
 
@@ -156,8 +164,7 @@ function LoginForm() {
 
       setSuccessMsg('লগইন সফল হয়েছে! ড্যাশবোর্ডে প্রবেশ করা হচ্ছে...');
       setTimeout(() => {
-        const target = searchParams.get('redirect');
-        router.push(target && /^\/(?!\/)/.test(target) ? target : '/dashboard');
+        router.push(getRedirectTarget());
       }, 700);
     } catch {
       setError('সার্ভার সংযোগে সমস্যা হয়েছে। অনুগ্রহ করে পুনরায় চেষ্টা করুন।');
@@ -200,7 +207,7 @@ function LoginForm() {
           storage.updateUser({ ...u, ...data.user });
         }
         setSuccessMsg('ডেমো অ্যাকাউন্টে সফলভাবে প্রবেশ করা হয়েছে!');
-        setTimeout(() => router.push('/dashboard'), 600);
+        setTimeout(() => router.push(getRedirectTarget()), 600);
       } else {
         setError(data.error || 'ডেমো লগইন ব্যর্থ হয়েছে');
         setIsSubmitting(false);
@@ -266,7 +273,7 @@ function LoginForm() {
       }
 
       setSuccessMsg('অ্যাকাউন্ট সফলভাবে তৈরি হয়েছে! স্বাগতম...');
-      setTimeout(() => router.push('/dashboard'), 800);
+      setTimeout(() => router.push(getRedirectTarget()), 800);
     } catch {
       setError('সার্ভার সংযোগে সমস্যা হয়েছে।');
       setIsSubmitting(false);
@@ -310,7 +317,7 @@ function LoginForm() {
 
       setSocialModal({ open: false, provider: null });
       setSuccessMsg(`${provider === 'google' ? 'Google' : 'Facebook'} দিয়ে সফলভাবে প্রবেশ করা হয়েছে!`);
-      setTimeout(() => router.push('/dashboard'), 700);
+      setTimeout(() => router.push(getRedirectTarget()), 700);
     } catch {
       setError('সোশ্যাল লগইন প্রক্রিয়াকরণে সমস্যা হয়েছে।');
       setIsSubmitting(false);
@@ -429,8 +436,7 @@ function LoginForm() {
       setForgotMessage('পাসওয়ার্ড সফলভাবে পরিবর্তিত হয়েছে! ড্যাশবোর্ডে প্রবেশ করা হচ্ছে...');
       setTimeout(() => {
         setShowForgotModal(false);
-        const target = searchParams.get('redirect');
-        router.push(target && /^\/(?!\/)/.test(target) ? target : '/dashboard');
+        router.push(getRedirectTarget());
       }, 900);
     } catch {
       setForgotError('পাসওয়ার্ড পরিবর্তনের সময় সমস্যা হয়েছে।');
@@ -454,28 +460,39 @@ function LoginForm() {
         </p>
       </div>
 
-      {/* Mode Switcher Tabs (Login & Register) */}
-      <div className="grid grid-cols-2 p-1.5 bg-slate-100 rounded-2xl text-xs font-bold gap-1.5 shadow-2xs">
+      {/* Mode Switcher Tabs (Login, Register & Admin PIN) */}
+      <div className="grid grid-cols-3 p-1.5 bg-slate-100 rounded-2xl text-xs font-bold gap-1 shadow-2xs">
         <button
           type="button"
           onClick={() => { setActiveTab('login'); setError(''); setSuccessMsg(''); }}
-          className={`py-2.5 rounded-xl transition-all flex items-center justify-center gap-1.5 text-xs sm:text-sm font-black ${
+          className={`py-2 rounded-xl transition-all flex items-center justify-center gap-1.5 text-xs font-black ${
             activeTab === 'login' ? 'bg-white text-emerald-800 shadow-sm' : 'text-slate-600 hover:text-slate-900'
           }`}
         >
-          <UserCheck className="w-4 h-4" />
+          <UserCheck className="w-3.5 h-3.5" />
           <span>লগইন</span>
         </button>
 
         <button
           type="button"
           onClick={() => { setActiveTab('register'); setError(''); setSuccessMsg(''); }}
-          className={`py-2.5 rounded-xl transition-all flex items-center justify-center gap-1.5 text-xs sm:text-sm font-black ${
+          className={`py-2 rounded-xl transition-all flex items-center justify-center gap-1.5 text-xs font-black ${
             activeTab === 'register' ? 'bg-white text-emerald-800 shadow-sm' : 'text-slate-600 hover:text-slate-900'
           }`}
         >
-          <Sparkles className="w-4 h-4 text-amber-500" />
-          <span>রেজিস্ট্রেশন</span>
+          <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+          <span>নিবন্ধন</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => { setActiveTab('admin'); setError(''); setSuccessMsg(''); }}
+          className={`py-2 rounded-xl transition-all flex items-center justify-center gap-1.5 text-xs font-black ${
+            activeTab === 'admin' ? 'bg-slate-900 text-white shadow-sm' : 'text-slate-600 hover:text-slate-900'
+          }`}
+        >
+          <KeyRound className="w-3.5 h-3.5 text-emerald-400" />
+          <span>অ্যাডমিন</span>
         </button>
       </div>
 
@@ -520,19 +537,6 @@ function LoginForm() {
           <div>
             <div className="flex items-center justify-between mb-1">
               <label className="text-xs font-bold text-slate-700">পাসওয়ার্ড</label>
-              <button
-                type="button"
-                onClick={() => {
-                  setShowForgotModal(true);
-                  setForgotStep(1);
-                  setForgotId(loginIdentifier || '');
-                  setForgotError('');
-                  setForgotMessage('');
-                }}
-                className="text-[11px] font-bold text-emerald-700 hover:text-emerald-900 hover:underline"
-              >
-                পাসওয়ার্ড ভুলে গেছেন?
-              </button>
             </div>
             <div className="relative">
               <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
@@ -552,6 +556,33 @@ function LoginForm() {
                 {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
               </button>
             </div>
+          </div>
+
+          {/* Remember Me & Forgot Password Controls */}
+          <div className="flex items-center justify-between text-xs pt-0.5">
+            <label className="flex items-center gap-2 cursor-pointer select-none text-slate-600 font-semibold text-[11px]">
+              <input
+                type="checkbox"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
+                className="w-4 h-4 rounded border-slate-300 text-emerald-700 focus:ring-emerald-500 accent-emerald-700 cursor-pointer"
+              />
+              <span>আমাকে মনে রাখুন (৩০ দিন)</span>
+            </label>
+
+            <button
+              type="button"
+              onClick={() => {
+                setShowForgotModal(true);
+                setForgotStep(1);
+                setForgotId(loginIdentifier || '');
+                setForgotError('');
+                setForgotMessage('');
+              }}
+              className="text-[11px] font-bold text-emerald-700 hover:text-emerald-900 hover:underline"
+            >
+              পাসওয়ার্ড ভুলে গেছেন?
+            </button>
           </div>
 
           {/* Submit Button */}

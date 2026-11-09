@@ -14,7 +14,6 @@ interface ResetRecord {
 const otpStore = new Map<string, ResetRecord>();
 
 export async function POST(req: Request) {
-  if (!isTestAuthEnabled()) return NextResponse.json({ error: 'পাসওয়ার্ড পুনরুদ্ধারের এসএমএস বা ইমেইল সেবা এখনো কনফিগার করা হয়নি। সাপোর্টে যোগাযোগ করুন।' }, { status: 503 });
   try {
     const body = await req.json();
     const { action, identifier, otp, newPassword } = body;

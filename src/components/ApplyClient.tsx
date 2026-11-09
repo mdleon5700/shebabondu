@@ -31,7 +31,12 @@ import {
   FolderCheck,
   FileText,
   Award,
-  ExternalLink
+  ExternalLink,
+  Camera,
+  Edit3,
+  Download,
+  HelpCircle,
+  Info
 } from 'lucide-react';
 
 import { storage } from '@/lib/store';
@@ -113,6 +118,103 @@ function ApplyFormContent({ initialJob }: ApplyClientProps) {
   const [useWalletSplit, setUseWalletSplit] = useState(false);
   const [paymentScreenshotUrl, setPaymentScreenshotUrl] = useState<string | null>(null);
   const [isUploadingScreenshot, setIsUploadingScreenshot] = useState(false);
+
+  // Photo & Signature Interactive Resizer States
+  const [isResizerOpen, setIsResizerOpen] = useState(false);
+  const [resizerMode, setResizerMode] = useState<'photo' | 'signature'>('photo');
+  const [rawImagePreview, setRawImagePreview] = useState<string | null>(null);
+  const [resizedImage, setResizedImage] = useState<string | null>(null);
+  const [resizedDimensions, setResizedDimensions] = useState<{ width: number; height: number; sizeKb: number } | null>(null);
+  const [isProcessingImage, setIsProcessingImage] = useState(false);
+  const [resizerSuccessMsg, setResizerSuccessMsg] = useState<string | null>(null);
+
+  const handleOpenResizer = (mode: 'photo' | 'signature') => {
+    setResizerMode(mode);
+    setRawImagePreview(null);
+    setResizedImage(null);
+    setResizedDimensions(null);
+    setResizerSuccessMsg(null);
+    setIsResizerOpen(true);
+  };
+
+  const handleProcessImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setIsProcessingImage(true);
+    setResizerSuccessMsg(null);
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const img = new Image();
+      img.onload = () => {
+        const targetWidth = 300;
+        const targetHeight = resizerMode === 'photo' ? 300 : 80;
+        const maxKb = resizerMode === 'photo' ? 100 : 60;
+
+        const canvas = document.createElement('canvas');
+        canvas.width = targetWidth;
+        canvas.height = targetHeight;
+        const ctx = canvas.getContext('2d');
+
+        if (ctx) {
+          ctx.fillStyle = '#FFFFFF';
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          ctx.drawImage(img, 0, 0, targetWidth, targetHeight);
+
+          let quality = 0.92;
+          let dataUrl = canvas.toDataURL('image/jpeg', quality);
+          let kb = Math.round((dataUrl.length * 3) / 4 / 1024);
+
+          while (kb > maxKb && quality > 0.4) {
+            quality -= 0.08;
+            dataUrl = canvas.toDataURL('image/jpeg', quality);
+            kb = Math.round((dataUrl.length * 3) / 4 / 1024);
+          }
+
+          setRawImagePreview(event.target?.result as string);
+          setResizedImage(dataUrl);
+          setResizedDimensions({ width: targetWidth, height: targetHeight, sizeKb: kb });
+          setIsProcessingImage(false);
+        }
+      };
+      img.src = event.target?.result as string;
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleApplyResizedToProfile = () => {
+    if (!resizedImage) return;
+    if (resizerMode === 'photo') {
+      setUserProfile((prev: any) => ({ ...prev, photoUrl: resizedImage }));
+      const user = storage.getUser();
+      user.photoUrl = resizedImage;
+      storage.updateUser(user);
+      setResizerSuccessMsg('✓ ছবি সফলভাবে আপনার আবেদন ও প্রোফাইলে সেট করা হয়েছে!');
+    } else {
+      setUserProfile((prev: any) => ({ ...prev, signatureUrl: resizedImage }));
+      const user = storage.getUser();
+      user.signatureUrl = resizedImage;
+      storage.updateUser(user);
+      setResizerSuccessMsg('✓ ডিজিটাল স্বাক্ষর সফলভাবে আপনার আবেদন ও প্রোফাইলে সেট করা হয়েছে!');
+    }
+    setTimeout(() => {
+      setIsResizerOpen(false);
+      setResizerSuccessMsg(null);
+    }, 1500);
+  };
+
+  const [isGuideExpanded, setIsGuideExpanded] = useState(false);
+
+  const handleDownloadResized = (dataUrl: string | null | undefined, defaultFilename: string) => {
+    if (!dataUrl) return;
+    const link = document.createElement('a');
+    link.href = dataUrl;
+    link.download = defaultFilename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -577,6 +679,100 @@ function ApplyFormContent({ initialJob }: ApplyClientProps) {
         /* Application & Payment Form */
         <form onSubmit={handleSubmitOrder} className="space-y-8">
 
+          {/* Step-by-Step Application Workflow Indicator & Guidance */}
+          <div className="bg-white rounded-3xl border border-slate-200/90 p-5 sm:p-6 shadow-sm space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
+              <div>
+                <h2 className="text-sm sm:text-base font-black text-slate-900 flex items-center gap-2">
+                  <Sparkles className="w-4 h-4 text-emerald-600" />
+                  <span>অনলাইন আবেদন ও টেলিটক সহায়িকা (৪টি ধাপ)</span>
+                </h2>
+                <p className="text-xs text-slate-500">
+                  নিচে প্রতিটি ধাপ সঠিকভাবে সম্পন্ন করে আপনার সরকারি চাকরির আবেদন কনফার্ম করুন
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsGuideExpanded(!isGuideExpanded)}
+                className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-full border border-emerald-200 hover:bg-emerald-100 transition-colors self-start sm:self-auto cursor-pointer"
+              >
+                <HelpCircle className="w-3.5 h-3.5" />
+                <span>{isGuideExpanded ? 'নির্দেশিকা লুকান' : 'টেলিটক নির্দেশিকা ও রুলস'}</span>
+              </button>
+            </div>
+
+            {/* 4 Steps Indicator Grid */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5">
+              <div className="p-3 bg-emerald-50/70 border border-emerald-200 rounded-2xl flex items-center gap-2.5">
+                <div className="w-7 h-7 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-black text-xs shrink-0">
+                  ১
+                </div>
+                <div className="min-w-0">
+                  <div className="text-xs font-bold text-slate-900 truncate">পদ নির্বাচন</div>
+                  <div className="text-[10px] text-emerald-800">কাঙ্ক্ষিত পদ ও ফি</div>
+                </div>
+              </div>
+
+              <div className="p-3 bg-emerald-50/70 border border-emerald-200 rounded-2xl flex items-center gap-2.5">
+                <div className="w-7 h-7 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-black text-xs shrink-0">
+                  ২
+                </div>
+                <div className="min-w-0">
+                  <div className="text-xs font-bold text-slate-900 truncate">প্রোফাইল ও ভল্ট</div>
+                  <div className="text-[10px] text-emerald-800">তথ্য ও সনদ সংযুক্তি</div>
+                </div>
+              </div>
+
+              <div className="p-3 bg-emerald-50/70 border border-emerald-200 rounded-2xl flex items-center gap-2.5">
+                <div className="w-7 h-7 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-black text-xs shrink-0">
+                  ৩
+                </div>
+                <div className="min-w-0">
+                  <div className="text-xs font-bold text-slate-900 truncate">ছবি ও স্বাক্ষর</div>
+                  <div className="text-[10px] text-emerald-800">৩০০×৩০০ ও ৩০০×৮০</div>
+                </div>
+              </div>
+
+              <div className="p-3 bg-emerald-50/70 border border-emerald-200 rounded-2xl flex items-center gap-2.5">
+                <div className="w-7 h-7 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-black text-xs shrink-0">
+                  ৪
+                </div>
+                <div className="min-w-0">
+                  <div className="text-xs font-bold text-slate-900 truncate">পেমেন্ট ও ট্র্যাকিং</div>
+                  <div className="text-[10px] text-emerald-800">স্লিপ ও ইউজার আইডি</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Collapsible Teletalk Guidelines */}
+            {isGuideExpanded && (
+              <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-3 text-xs text-slate-700 animate-in fade-in duration-150">
+                <div className="font-bold text-slate-900 flex items-center gap-1.5">
+                  <Info className="w-4 h-4 text-emerald-700" />
+                  <span>টেলিটক ও সরকারি চাকরি আবেদনের আবশ্যকীয় কারিগরি শর্তাবলী:</span>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-[11px] leading-relaxed">
+                  <div className="p-3 bg-white rounded-xl border border-slate-200/80 space-y-1">
+                    <span className="font-bold text-emerald-800 block">📷 ছবি (Photo) সংক্রান্ত নিয়ম:</span>
+                    <p>সাইজ অবশ্যই ৩০০ × ৩০০ পিক্সেল হতে হবে। ফাইল সাইজ অনূর্ধ্ব ১০০ KB। রঙিন ছবি, স্পষ্ট মুখমণ্ডল ও সাদা ব্যাকগ্রাউন্ড বাঞ্ছনীয়। কোনো সানগ্লাস বা টুপি পরা যাবে না।</p>
+                  </div>
+                  <div className="p-3 bg-white rounded-xl border border-slate-200/80 space-y-1">
+                    <span className="font-bold text-emerald-800 block">✍️ স্বাক্ষর (Signature) সংক্রান্ত নিয়ম:</span>
+                    <p>সাইজ অবশ্যই ৩০০ × ৮০ পিক্সেল হতে হবে। ফাইল সাইজ অনূর্ধ্ব ৬০ KB। সাদা কাগজের উপর কালো বলপেন কালিতে স্পষ্ট স্বাক্ষর করে স্ক্যান বা পরিষ্কার ছবি তুলে রিসাইজ করতে হবে।</p>
+                  </div>
+                  <div className="p-3 bg-white rounded-xl border border-slate-200/80 space-y-1">
+                    <span className="font-bold text-emerald-800 block">💳 ফি পরিশোধের সময়সীমা:</span>
+                    <p>টেলিটক পোর্টালে অনলাইন সাবমিটের পর প্রাপ্ত User ID দিয়ে পরবর্তী ৭২ ঘণ্টার মধ্যে যেকোনো টেলিটক প্রিপেইড সিম থেকে ২টি এসএমএস পাঠিয়ে ফি প্রদান সম্পন্ন করতে হয়।</p>
+                  </div>
+                  <div className="p-3 bg-white rounded-xl border border-slate-200/80 space-y-1">
+                    <span className="font-bold text-emerald-800 block">📄 অ্যাপ্লিক্যান্ট কপি (Applicant Copy):</span>
+                    <p>ফি প্রদানের পর নিশ্চিতকরণ এসএমএস এবং পাসওয়ার্ড প্রাপ্তি সাপেক্ষে রঙিন অ্যাপ্লিক্যান্ট কপি ডাউনলোড করে অ্যাডমিট কার্ড আসা পর্যন্ত যত্নসহকারে সংরক্ষণ করতে হয়।</p>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+
           {/* 1. Applied Position & Grade Selection Step */}
           <div className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 space-y-5 shadow-sm">
             <div className="flex items-center justify-between pb-4 border-b border-slate-100">
@@ -676,34 +872,123 @@ function ApplyFormContent({ initialJob }: ApplyClientProps) {
               </Link>
             </div>
 
-            {/* Photo & Signature Preview */}
-            <div className="flex flex-wrap items-center gap-6 p-4 bg-slate-50 rounded-2xl border border-slate-200/80">
-              <div className="flex items-center gap-3">
-                <img
-                  src={(userProfile?.photoUrl && !userProfile.photoUrl.includes('/apply/')) ? userProfile.photoUrl : (userProfile?.documents?.find((d: any) => d.type === "photo")?.dataUrl || emptyCandidateProfile.photoUrl)}
-                  onError={(e) => { (e.currentTarget as any).src = emptyCandidateProfile.photoUrl; }}
-                  alt="Candidate Photo"
-                  className="w-16 h-16 object-cover rounded-xl border border-slate-300 bg-white"
-                />
+            {/* Interactive Photo & Signature Resizer Assistant (300x300 and 300x80) */}
+            <div className="space-y-3">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                 <div>
-                  <div className="text-xs font-bold text-slate-900">পাসপোর্ট সাইজ ছবি</div>
-                  <div className="text-[10px] text-emerald-700 font-semibold bg-emerald-100 px-1.5 py-0.5 rounded inline-block mt-0.5">
-                    ৩০০ x ৩০০ পিক্সেল (রেডি)
-                  </div>
+                  <h4 className="text-xs font-black text-slate-900 flex items-center gap-1.5">
+                    <Camera className="w-4 h-4 text-emerald-700" />
+                    <span>ছবি ও ডিজিটাল স্বাক্ষর সাইজিং সহকারী (টেলিটক স্ট্যান্ডার্ড)</span>
+                  </h4>
+                  <p className="text-[11px] text-slate-500">
+                    সরকারি ও স্বায়ত্তশাসিত সব চাকরির জন্য ছবি ৩০০×৩০০ পিক্সেল (সর্বোচ্চ ১০০ KB) এবং স্বাক্ষর ৩০০×৮০ পিক্সেল (সর্বোচ্চ ৬০ KB) হওয়া বাধ্যতামূলক।
+                  </p>
+                </div>
+                <div className="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200 shrink-0">
+                  ইন-ব্রাউজার অটো রিসাইজার
                 </div>
               </div>
 
-              <div className="flex items-center gap-3 pl-0 sm:pl-6 sm:border-l border-slate-200">
-                <img
-                  src={(userProfile?.signatureUrl && !userProfile.signatureUrl.includes('/apply/')) ? userProfile.signatureUrl : (userProfile?.documents?.find((d: any) => d.type === "signature")?.dataUrl || emptyCandidateProfile.signatureUrl)}
-                  onError={(e) => { (e.currentTarget as any).src = emptyCandidateProfile.signatureUrl; }}
-                  alt="Candidate Signature"
-                  className="w-24 h-10 object-cover border border-slate-300 rounded bg-white"
-                />
-                <div>
-                  <div className="text-xs font-bold text-slate-900">ডিজিটাল স্বাক্ষর</div>
-                  <div className="text-[10px] text-emerald-700 font-semibold bg-emerald-100 px-1.5 py-0.5 rounded inline-block mt-0.5">
-                    ৩০০ x ৮০ পিক্সেল (রেডি)
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* Photo Card */}
+                <div className="p-4 bg-slate-50/80 rounded-2xl border border-slate-200/90 flex flex-col justify-between gap-3 shadow-xs">
+                  <div className="flex items-start gap-3">
+                    <img
+                      src={(userProfile?.photoUrl && !userProfile.photoUrl.includes('/apply/')) ? userProfile.photoUrl : (userProfile?.documents?.find((d: any) => d.type === "photo")?.dataUrl || emptyCandidateProfile.photoUrl)}
+                      onError={(e) => { (e.currentTarget as any).src = emptyCandidateProfile.photoUrl; }}
+                      alt="Candidate Photo"
+                      className="w-16 h-16 object-cover rounded-xl border-2 border-emerald-500 bg-white shadow-xs shrink-0"
+                    />
+                    <div className="space-y-1">
+                      <div className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
+                        <span>পাসপোর্ট সাইজ ছবি</span>
+                        <span className="text-[10px] text-emerald-700 font-bold bg-emerald-100 px-1.5 py-0.5 rounded">
+                          ৩০০ × ৩০০ px
+                        </span>
+                      </div>
+                      <p className="text-[11px] text-slate-500">
+                        সাদা বা হালকা ব্যাকগ্রাউন্ড, সর্বোচ্চ ১০০ KB সাইজ
+                      </p>
+                      <div className="flex items-center gap-1 text-[11px] text-emerald-700 font-semibold">
+                        <CheckCircle2 className="w-3.5 h-3.5" />
+                        <span>টেলিটক ফরম্যাটে প্রস্তুত</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-2 pt-2 border-t border-slate-200/70">
+                    <button
+                      type="button"
+                      onClick={() => handleOpenResizer('photo')}
+                      className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-bold shadow-xs transition-colors cursor-pointer"
+                    >
+                      <Camera className="w-3.5 h-3.5" />
+                      <span>ছবি রিসাইজ / ক্রপ করুন</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleDownloadResized(
+                        (userProfile?.photoUrl && !userProfile.photoUrl.includes('/apply/')) ? userProfile.photoUrl : (userProfile?.documents?.find((d: any) => d.type === "photo")?.dataUrl || emptyCandidateProfile.photoUrl),
+                        'teletalk_photo_300x300.jpg'
+                      )}
+                      title="৩০০×৩০০ ছবি ডাউনলোড করুন"
+                      className="px-3 py-2 bg-white hover:bg-slate-100 border border-slate-300 text-slate-700 rounded-xl text-xs font-semibold flex items-center gap-1 transition-colors cursor-pointer"
+                    >
+                      <Download className="w-3.5 h-3.5" />
+                      <span>ডাউনলোড</span>
+                    </button>
+                  </div>
+                </div>
+
+                {/* Signature Card */}
+                <div className="p-4 bg-slate-50/80 rounded-2xl border border-slate-200/90 flex flex-col justify-between gap-3 shadow-xs">
+                  <div className="flex items-start gap-3">
+                    <div className="w-24 h-16 flex items-center justify-center bg-white border-2 border-emerald-500 rounded-xl p-1 shadow-xs shrink-0">
+                      <img
+                        src={(userProfile?.signatureUrl && !userProfile.signatureUrl.includes('/apply/')) ? userProfile.signatureUrl : (userProfile?.documents?.find((d: any) => d.type === "signature")?.dataUrl || emptyCandidateProfile.signatureUrl)}
+                        onError={(e) => { (e.currentTarget as any).src = emptyCandidateProfile.signatureUrl; }}
+                        alt="Candidate Signature"
+                        className="max-w-full max-h-full object-contain"
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <div className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
+                        <span>ডিজিটাল স্বাক্ষর</span>
+                        <span className="text-[10px] text-emerald-700 font-bold bg-emerald-100 px-1.5 py-0.5 rounded">
+                          ৩০০ × ৮০ px
+                        </span>
+                      </div>
+                      <p className="text-[11px] text-slate-500">
+                        সাদা কাগজের উপর স্পষ্ট স্বাক্ষর, সর্বোচ্চ ৬০ KB
+                      </p>
+                      <div className="flex items-center gap-1 text-[11px] text-emerald-700 font-semibold">
+                        <CheckCircle2 className="w-3.5 h-3.5" />
+                        <span>টেলিটক ফরম্যাটে প্রস্তুত</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-2 pt-2 border-t border-slate-200/70">
+                    <button
+                      type="button"
+                      onClick={() => handleOpenResizer('signature')}
+                      className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-bold shadow-xs transition-colors cursor-pointer"
+                    >
+                      <Edit3 className="w-3.5 h-3.5" />
+                      <span>স্বাক্ষর রিসাইজ করুন</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleDownloadResized(
+                        (userProfile?.signatureUrl && !userProfile.signatureUrl.includes('/apply/')) ? userProfile.signatureUrl : (userProfile?.documents?.find((d: any) => d.type === "signature")?.dataUrl || emptyCandidateProfile.signatureUrl),
+                        'teletalk_signature_300x80.jpg'
+                      )}
+                      title="৩০০×৮০ স্বাক্ষর ডাউনলোড করুন"
+                      className="px-3 py-2 bg-white hover:bg-slate-100 border border-slate-300 text-slate-700 rounded-xl text-xs font-semibold flex items-center gap-1 transition-colors cursor-pointer"
+                    >
+                      <Download className="w-3.5 h-3.5" />
+                      <span>ডাউনলোড</span>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -1150,6 +1435,57 @@ function ApplyFormContent({ initialJob }: ApplyClientProps) {
               </div>
             )}
 
+            {/* Self Apply Direct Teletalk Assistant Box */}
+            <div className="bg-gradient-to-br from-slate-50 to-emerald-50/30 p-5 sm:p-6 rounded-3xl border border-slate-200 space-y-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div className="space-y-1">
+                  <span className="text-[10px] font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded-full inline-block">
+                    স্বতন্ত্র আবেদন সহকারী
+                  </span>
+                  <h4 className="text-sm font-black text-slate-900">
+                    অফিশিয়াল পোর্টালে নিজে সরাসরি আবেদন করতে চান?
+                  </h4>
+                  <p className="text-xs text-slate-600">
+                    আপনি চাইলে আমাদের ইন-ব্রাউজার রিসাইজারে ছবি ও স্বাক্ষর প্রস্তুত করে নিজেই সরকারি পোর্টালে ফরম পূরণ করতে পারেন।
+                  </p>
+                </div>
+
+                {job?.sourceUrl ? (
+                  <a
+                    href={job.sourceUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 bg-white hover:bg-slate-50 border border-slate-300 text-slate-800 rounded-xl text-xs font-bold shadow-xs transition-colors shrink-0"
+                  >
+                    <span>অফিশিয়াল আবেদনের লিংক</span>
+                    <ExternalLink className="w-3.5 h-3.5 text-slate-500" />
+                  </a>
+                ) : (
+                  <a
+                    href="https://alljobs.teletalk.com.bd"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 bg-white hover:bg-slate-50 border border-slate-300 text-slate-800 rounded-xl text-xs font-bold shadow-xs transition-colors shrink-0"
+                  >
+                    <span>Teletalk AllJobs পোর্টাল</span>
+                    <ExternalLink className="w-3.5 h-3.5 text-slate-500" />
+                  </a>
+                )}
+              </div>
+
+              <div className="p-3 bg-white/80 rounded-2xl border border-slate-200/80 text-[11px] text-slate-600 space-y-1.5">
+                <div className="font-bold text-slate-800 flex items-center gap-1">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                  <span>নিজে আবেদনের জন্য ৩টি সহজ ধাপ:</span>
+                </div>
+                <ol className="list-decimal list-inside space-y-1 pl-1 text-slate-600">
+                  <li>উপরের <strong>&quot;ছবি রিসাইজ / ক্রপ করুন&quot;</strong> এবং <strong>&quot;স্বাক্ষর রিসাইজ করুন&quot;</strong> টুল দিয়ে ফাইলগুলো ডাউনলোড করে নিন।</li>
+                  <li>অফিশিয়াল আবেদন লিংকে গিয়ে কাঙ্ক্ষিত পদ সিলেক্ট করে আপনার যাবতীয় তথ্য ফরমটিতে লিখুন।</li>
+                  <li>ডাউনলোড করা ৩০০×৩০০ ছবি ও ৩০০×৮০ স্বাক্ষর আপলোড করে সাবমিট করুন এবং এসএমএসে ফি দিন।</li>
+                </ol>
+              </div>
+            </div>
+
             {/* Submit Button */}
             <button
               type="submit"
@@ -1184,6 +1520,178 @@ function ApplyFormContent({ initialJob }: ApplyClientProps) {
           </div>
 
         </form>
+      )}
+
+      {/* Interactive Photo & Signature Resizer Modal */}
+      {isResizerOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/70 backdrop-blur-sm p-4 overflow-y-auto">
+          <div className="bg-white rounded-3xl max-w-xl w-full p-6 sm:p-8 space-y-6 shadow-2xl border border-slate-200 animate-in fade-in zoom-in-95 duration-200">
+            {/* Modal Header */}
+            <div className="flex items-center justify-between pb-4 border-b border-slate-100">
+              <div className="flex items-center gap-2.5">
+                <div className="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold">
+                  {resizerMode === 'photo' ? <Camera className="w-5 h-5" /> : <Edit3 className="w-5 h-5" />}
+                </div>
+                <div>
+                  <h3 className="text-base font-black text-slate-900">
+                    {resizerMode === 'photo' ? 'পাসপোর্ট ছবি রিসাইজার (৩০০ × ৩০০ px)' : 'ডিজিটাল স্বাক্ষর রিসাইজার (৩০০ × ৮০ px)'}
+                  </h3>
+                  <p className="text-xs text-slate-500">
+                    {resizerMode === 'photo' 
+                      ? 'টেলিটক ও সরকারি রুলস: ৩০০×৩০০ পিক্সেল, সর্বোচ্চ ১০০ KB' 
+                      : 'টেলিটক ও সরকারি রুলস: ৩০০×৮০ পিক্সেল, সর্বোচ্চ ৬০ KB'}
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsResizerOpen(false)}
+                className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition-colors cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Success Message Banner */}
+            {resizerSuccessMsg && (
+              <div className="p-3.5 bg-emerald-50 text-emerald-800 rounded-xl border border-emerald-200 text-xs font-bold flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                <span>{resizerSuccessMsg}</span>
+              </div>
+            )}
+
+            {/* Upload Area */}
+            <div className="space-y-2">
+              <label className="block text-xs font-bold text-slate-700">
+                {resizerMode === 'photo' ? 'আপনার যেকোনো ছবি আপলোড করুন:' : 'আপনার স্বাক্ষরের যেকোনো ছবি আপলোড করুন:'}
+              </label>
+              <div className="border-2 border-dashed border-slate-300 hover:border-emerald-500 rounded-2xl p-6 text-center bg-slate-50/60 hover:bg-emerald-50/20 transition-all cursor-pointer relative">
+                <input
+                  data-testid="resizer-file-input"
+                  type="file"
+                  accept="image/png,image/jpeg,image/jpg,image/webp"
+                  onChange={handleProcessImage}
+                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                />
+                <div className="space-y-1.5 pointer-events-none">
+                  <div className="w-12 h-12 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center mx-auto">
+                    {resizerMode === 'photo' ? <Camera className="w-6 h-6" /> : <Edit3 className="w-6 h-6" />}
+                  </div>
+                  <div className="text-xs font-bold text-slate-800">
+                    কম্পিউটার বা ফোন থেকে ফাইল নির্বাচন করুন
+                  </div>
+                  <div className="text-[11px] text-slate-500">
+                    JPG, PNG, JPEG বা WEBP ফরম্যাট সমর্থিত (স্বয়ংক্রিয়ভাবে ক্যানভাসে সাইজ হবে)
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Processing Spinner */}
+            {isProcessingImage && (
+              <div className="p-4 text-center space-y-2">
+                <div className="w-8 h-8 border-3 border-emerald-600 border-t-transparent rounded-full animate-spin mx-auto" />
+                <p className="text-xs text-slate-600 font-medium">ক্যানভাসে {resizerMode === 'photo' ? '৩০০×৩০০' : '৩০০×৮০'} পিক্সেল প্রসেস করা হচ্ছে...</p>
+              </div>
+            )}
+
+            {/* Resized Result Preview */}
+            {resizedImage && resizedDimensions && !isProcessingImage && (
+              <div className="p-4 bg-emerald-50/50 rounded-2xl border border-emerald-200/80 space-y-4">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-black text-slate-900 flex items-center gap-1.5">
+                    <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
+                    <span>রিসাইজ সম্পন্ন প্রিভিউ:</span>
+                  </span>
+                  <span className="text-[11px] font-bold text-emerald-800 bg-emerald-100 px-2.5 py-0.5 rounded-full">
+                    ✓ সরকারি স্পেসিফিকেশন ১০০% সঠিক
+                  </span>
+                </div>
+
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-6 p-3 bg-white rounded-xl border border-slate-200">
+                  <div className="text-center space-y-1">
+                    <div className="text-[10px] text-slate-400 font-semibold">আউটপুট প্রিভিউ</div>
+                    <div className="flex items-center justify-center bg-slate-50 p-2 rounded-lg border border-slate-200 inline-block">
+                      <img
+                        src={resizedImage}
+                        alt="Resized Output"
+                        style={{
+                          width: resizerMode === 'photo' ? '120px' : '200px',
+                          height: resizerMode === 'photo' ? '120px' : '53px'
+                        }}
+                        className="object-contain border border-slate-300 rounded shadow-xs bg-white"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-1.5 text-xs text-slate-600">
+                    <div className="flex items-center gap-2">
+                      <span className="text-slate-400">রেজোলিউশন:</span>
+                      <span className="font-mono font-bold text-slate-900">
+                        {resizedDimensions.width} × {resizedDimensions.height} px
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-slate-400">ফাইল সাইজ:</span>
+                      <span className="font-mono font-bold text-emerald-700">
+                        {resizedDimensions.sizeKb} KB
+                      </span>
+                      <span className="text-[10px] text-slate-400">
+                        (সর্বোচ্চ {resizerMode === 'photo' ? '১০০' : '৬০'} KB)
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-slate-400">ফরম্যাট:</span>
+                      <span className="font-mono font-bold text-slate-900">JPEG/JPG</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-slate-400">ব্যাকগ্রাউন্ড:</span>
+                      <span className="font-semibold text-slate-900">সলিড হোয়াইট (#FFFFFF)</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Resizer Actions */}
+                <div className="flex flex-col sm:flex-row items-center gap-3 pt-2">
+                  <button
+                    type="button"
+                    onClick={handleApplyResizedToProfile}
+                    className="w-full sm:flex-1 py-3 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs rounded-xl shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
+                  >
+                    <Check className="w-4 h-4" />
+                    <span>আমার আবেদন ও প্রোফাইলে সেট করুন</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleDownloadResized(
+                      resizedImage,
+                      resizerMode === 'photo' ? 'teletalk_photo_300x300.jpg' : 'teletalk_signature_300x80.jpg'
+                    )}
+                    className="w-full sm:w-auto px-4 py-3 bg-white hover:bg-slate-100 border border-slate-300 text-slate-800 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-2 cursor-pointer"
+                  >
+                    <Download className="w-4 h-4" />
+                    <span>ফাইল ডাউনলোড করুন</span>
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* Modal Footer Guidance */}
+            <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
+              <span className="flex items-center gap-1">
+                <Info className="w-3.5 h-3.5 text-slate-400" />
+                আপনার ছবি ব্রাউজারেই প্রসেস হচ্ছে, কোনো সার্ভারে আপলোড হচ্ছে না।
+              </span>
+              <button
+                type="button"
+                onClick={() => setIsResizerOpen(false)}
+                className="text-slate-600 font-semibold hover:underline cursor-pointer"
+              >
+                বাতিল
+              </button>
+            </div>
+          </div>
+        </div>
       )}
 
     </div>

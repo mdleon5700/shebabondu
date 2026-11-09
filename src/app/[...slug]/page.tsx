@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { notFound, redirect, RedirectType } from 'next/navigation';
 import { serverDB } from '@/lib/db';
-import PublishedPage from '@/components/PublishedPage';
+import CmsPageRenderer from '@/components/CmsPageRenderer';
 
 export const dynamic = 'force-dynamic';
 
@@ -18,7 +18,18 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
   }
   const fullPath = '/' + params.slug.join('/');
   const page = serverDB.getPublishedPageBySlug(fullPath);
-  return page ? { title: page.metaTitle || page.title, description: page.metaDescription } : { robots: { index: false } };
+  if (page) {
+    return { 
+      title: page.metaTitle || `${page.title} | চাকরি সেবা`, 
+      description: page.metaDescription || `${page.title} — চাকরি সেবা প্ল্যাটফর্মের অফিসিয়াল পেজ।`,
+      openGraph: {
+        title: page.metaTitle || page.title,
+        description: page.metaDescription,
+        type: 'website'
+      }
+    };
+  }
+  return { robots: { index: false } };
 }
 
 export default async function CustomPage(props: Props) {
@@ -39,10 +50,10 @@ export default async function CustomPage(props: Props) {
   // 1. Direct CMS Page
   const page = serverDB.getPublishedPageBySlug(fullPath);
   if (page) {
-    return <PublishedPage page={page} />;
+    return <CmsPageRenderer page={page as any} initialJobs={serverDB.getPublicJobs()} />;
   }
 
-  // 2. High-frequency URL Aliases
+  // 2. High-frequency URL Aliases (Guard against redirecting to itself)
   const ROOT_REDIRECTS: Record<string, string> = {
     'privacy': '/privacy-policy',
     'privacy-policy': '/privacy-policy',
@@ -68,7 +79,7 @@ export default async function CustomPage(props: Props) {
     'railway': '/categories/railway-jobs'
   };
 
-  if (params.slug.length === 1 && ROOT_REDIRECTS[first]) {
+  if (params.slug.length === 1 && ROOT_REDIRECTS[first] && ROOT_REDIRECTS[first] !== fullPath) {
     redirect(ROOT_REDIRECTS[first]);
   }
 
@@ -89,25 +100,35 @@ export default async function CustomPage(props: Props) {
   // 5. Category alias match
   const matchedCat = serverDB.getCategoryBySlug(rawPath) || (params.slug.length === 1 ? serverDB.getCategoryBySlug(first) : null);
   if (matchedCat) {
-    redirect(`/categories/${matchedCat.slug}`);
+    const catTarget = `/categories/${matchedCat.slug}`;
+    if (catTarget !== fullPath) {
+      redirect(catTarget);
+    }
   }
 
   // 6. Organization match
   if (params.slug.length === 1) {
     const org = serverDB.getCompanies ? serverDB.getCompanies().find((c: any) => c.slug === first || c.id === first) : null;
     if (org) {
-      redirect(`/organizations/${(org as any).slug || (org as any).id || first}`);
+      const orgTarget = `/organizations/${(org as any).slug || (org as any).id || first}`;
+      if (orgTarget !== fullPath) {
+        redirect(orgTarget);
+      }
     }
   }
 
   // 7. Dynamic redirects configured in admin
   if (serverDB.findRedirectByPath) {
     const rec = serverDB.findRedirectByPath(fullPath);
-    if (rec && rec.isActive) {
+    if (rec && rec.isActive && rec.targetPath && rec.targetPath !== fullPath) {
       redirect(rec.targetPath, RedirectType.replace);
     }
   }
 
   // 8. Graceful fallback to jobs search instead of hard 404
-  redirect(`/jobs?search=${encodeURIComponent(rawPath.replace(/[/-]/g, ' '))}`);
+  const searchQuery = rawPath.replace(/[/-]/g, ' ').trim();
+  if (!searchQuery || first === 'jobs') {
+    redirect('/jobs');
+  }
+  redirect(`/jobs?search=${encodeURIComponent(searchQuery)}`);
 }

@@ -1,50 +1,125 @@
 import React from 'react';
 import { Metadata } from 'next';
-import { serverDB } from '@/lib/db';
-import { PageRecord } from '@/lib/types';
-import CmsPageRenderer from '@/components/CmsPageRenderer';
+import PolicyLayout, { PolicySection } from '@/components/PolicyLayout';
 
 export const dynamic = 'force-dynamic';
 
-export async function generateMetadata(): Promise<Metadata> {
-  const page = serverDB.getPublishedPageById('terms-and-conditions') as unknown as PageRecord;
-  return {
-    title: page?.metaTitle || page?.title || 'ব্যবহারের শর্তাবলী (Terms & Conditions) | চাকরি সেবা',
-    description: page?.metaDescription || 'চাকরি সেবা ওয়েবসাইট ব্যবহারের সাধারণ নিয়মাবলী ও শর্তাবলী।',
-  };
-}
+export const metadata: Metadata = {
+  title: 'ব্যবহারের শর্তাবলী (Terms & Conditions) | চাকরি সেবা',
+  description: 'চাকরি সেবা প্ল্যাটফর্মের ব্যবহারের সাধারণ নিয়মাবলী, প্রার্থীর দায়দায়িত্ব ও আইনি শর্তসমূহ।',
+};
 
 export default function TermsPage() {
-  const page = serverDB.getPublishedPageById('terms-and-conditions') as unknown as PageRecord || { id: 'terms-and-conditions', slug: '/terms-and-conditions', title: 'terms-and-conditions', metaTitle: '', metaDescription: '', status: 'published', version: 1, sections: [], updatedAt: '', publishedAt: '' } as unknown as PageRecord;
+  const sections: PolicySection[] = [
+    {
+      id: 'service-scope',
+      title: '১. সেবার প্রকৃতি ও প্ল্যাটফর্মের আইনি অবস্থান (Scope of Platform)',
+      content: (
+        <>
+          <p>
+            চাকরি সেবা (ChakriSheba.com) একটি স্বাধীন এডটেক, ক্যারিয়ার তথ্য ও ডিজিটাল আবেদন সহায়তা কেন্দ্র। আমাদের ওয়েবসাইট ব্যবহার, নোটিফিকেশন সাবস্ক্রিপশন বা ডিজিটাল ভল্ট সেবা গ্রহণের মাধ্যমে আপনি এই শর্তাবলীতে সম্পূর্ণ সম্মতি প্রকাশ করছেন।
+          </p>
+          <p>
+            চাকরি সেবা কোনো চাকরি প্রদানকারী সংস্থা নয় এবং কোনো চাকরি পাওয়ার নিশ্চয়তা প্রদান করে না। প্রার্থীর মেধা, পরীক্ষার ফলাফল এবং সংশ্লিষ্ট নিয়োগকারী কর্তৃপক্ষের সিদ্ধান্তের ওপর চাকরি চূড়ান্ত হয়।
+          </p>
+        </>
+      )
+    },
+    {
+      id: 'candidate-liability',
+      title: '২. প্রার্থীর সত্য তথ্য প্রদানের দায়বদ্ধতা (Candidate Information Accuracy)',
+      content: (
+        <>
+          <p>
+            আবেদনের সময় প্রার্থী কর্তৃক প্রদত্ত নাম, জন্মতারিখ, বয়স, শিক্ষাগত ফলাফল (সিজিপিএ), কোটা সনদ এবং ছবি-স্বাক্ষরের সত্যতা প্রার্থীর সম্পূর্ণ নিজস্ব দায়িত্ব।
+          </p>
+          <div className="bg-rose-50 border border-rose-200 p-4 rounded-xl text-rose-950 font-medium">
+            <strong>সতর্কবার্তা:</strong> কোনো প্রার্থী যদি জাল শিক্ষাগত সনদ, ভুল কোটা বা মিথ্যা তথ্য প্রদান করেন, তবে নিয়োগকারী সরকারি কর্তৃপক্ষ কর্তৃক আবেদন বাতিল বা আইনগত ব্যবস্থার মুখোমুখি হলে চাকরি সেবা কর্তৃপক্ষ তার কোনো দায় গ্রহণ করবে না।
+          </div>
+        </>
+      )
+    },
+    {
+      id: 'account-security',
+      title: '৩. ডিজিটাল ভল্ট ও অ্যাকাউন্ট সুরক্ষা (Account & Vault Security)',
+      content: (
+        <>
+          <p>
+            প্রার্থীর অ্যাকাউন্টের ওটিপি (OTP), পাসওয়ার্ড ও পিন কোডের গোপনীয়তা বজায় রাখা ব্যবহারকারীর একক দায়িত্ব। আপনার অ্যাকাউন্ট থেকে কোনো অননুমোদিত প্রবেশাধিকার পরিলক্ষিত হলে অবিলম্বে আমাদের হেল্পডেস্কে অবগত করতে হবে।
+          </p>
+        </>
+      )
+    },
+    {
+      id: 'application-flow',
+      title: '৪. টেলিটক ও সরকারি আবেদন সহকারী প্রক্রিয়া (Application Processing)',
+      content: (
+        <>
+          <p>
+            প্রার্থী যখন আমাদের অনলাইন আবেদন সহায়তার মাধ্যমে আবেদন করতে অনুরোধ জানান, তখন আমাদের পেশাদার ডাটা এন্ট্রি টিম প্রার্থীর ডিজিটাল ভল্টের তথ্য অনুযায়ী সংশ্লিষ্ট সরকারি পোর্টালে (যেমন: টেলিটক alljobs / bpsc.teletalk.com.bd) নির্ধারিত ফরম পূরণ করে সরকারি ফি ট্রেজারি চালানের মাধ্যমে পরিশোধ করে।
+          </p>
+          <p>
+            আবেদন সম্পন্ন হওয়ামাত্রই সরকারি সিস্টেম কর্তৃক প্রস্তুতকৃত অফিসিয়াল বারকোডযুক্ত <strong>Applicant Copy PDF</strong> প্রার্থীর ড্যাশবোর্ডে ডাউনলোড ও ট্র্যাকিংয়ের জন্য উন্মুক্ত করে দেওয়া হয়।
+          </p>
+        </>
+      )
+    },
+    {
+      id: 'wallet-terms',
+      title: '৫. ওয়ালেট লেনদেন ও স্বচ্ছতা (Wallet & Payment Terms)',
+      content: (
+        <>
+          <p>
+            আমাদের ওয়েবসাইটে প্রকাশিত সকল সরকারি ফি ও ট্রেজারি চালান চার্জ শতভাগ স্বচ্ছতার সাথে সরকারি নিয়োগ বিজ্ঞপ্তি অনুযায়ী নির্ধারণ করা হয়।
+          </p>
+          <p>
+            প্রার্থী বিকাশ, নগদ বা ডিজিটাল ওয়ালেটের মাধ্যমে ফি পরিশোধ করতে পারেন। কোনো সরকারি পোর্টালে সার্ভার সমস্যার কারণে আবেদন সাবমিট করা ব্যর্থ হলে প্রার্থীর সম্পূর্ণ অর্থ আমাদের <a href="/refund-policy" className="text-emerald-700 underline font-semibold">রিফান্ড নীতিমালা</a> অনুযায়ী ১০০% ফেরত দেওয়া হয়।
+          </p>
+        </>
+      )
+    },
+    {
+      id: 'prohibited-actions',
+      title: '৬. নিষিদ্ধ কার্যক্রম ও অ্যাকাউন্ট বাতিল (Prohibited Conduct)',
+      content: (
+        <>
+          <p>ওয়েবসাইট ব্যবহারের ক্ষেত্রে নিম্নোক্ত কার্যক্রমসমূহ কঠোরভাবে নিষিদ্ধ:</p>
+          <ul className="list-disc pl-5 space-y-1 text-slate-700">
+            <li>অননুমোদিত বট বা অটোমেটেড স্ক্র্যাপার চালিয়ে ডেটা চুরি করার চেষ্টা করা।</li>
+            <li>ওয়েবসাইটে কোনো ম্যালওয়্যার, স্পাইওয়্যার বা ক্ষতিকর কোড ইনজেক্ট করা।</li>
+            <li>ভুয়া সার্কুলার আপলোড বা মিথ্যা অভিযোগ দাখিল করে সিস্টেম বিভ্রান্ত করা।</li>
+          </ul>
+        </>
+      )
+    },
+    {
+      id: 'governing-law',
+      title: '৭. দেশের প্রচলিত আইন ও আইনি এখতিয়ার (Governing Law)',
+      content: (
+        <>
+          <p>
+            এই ব্যবহারের শর্তাবলী গণপ্রজাতন্ত্রী বাংলাদেশ সরকারের প্রচলিত ডিজিটাল নিরাপত্তা ও আইসিটি আইন অনুযায়ী পরিচালিত ও ব্যাখ্যাত হবে। প্ল্যাটফর্ম ব্যবহার সংক্রান্ত যেকোনো আইনি বিরোধ ঢাকার এখতিয়ারভুক্ত উপযুক্ত আদালতের মাধ্যমে নিষ্পত্তি হবে।
+          </p>
+        </>
+      )
+    }
+  ];
 
-  const fallback = (
-    <div className="space-y-6">
-      <div className="space-y-2">
-        <h2 className="text-lg font-bold text-slate-900 border-l-4 border-emerald-600 pl-3">
-          ১. প্ল্যাটফর্ম ব্যবহারের মূল নীতিমালা
-        </h2>
-        <p className="text-sm sm:text-base text-slate-700 leading-relaxed pl-4">
-          চাকরি সেবা একটি স্বনামধন্য চাকরি তথ্য ও ডিজিটাল আবেদন সহায়তা কেন্দ্র। আমাদের ওয়েবসাইট ভিজিট বা সেবা গ্রহণের মাধ্যমে ব্যবহারকারী এই শর্তাবলী মেনে নিতে সম্মত হন।
-        </p>
-      </div>
-      <div className="space-y-2">
-        <h2 className="text-lg font-bold text-slate-900 border-l-4 border-emerald-600 pl-3">
-          ২. তথ্যের নির্ভুলতা ও প্রার্থীর দায়িত্ব
-        </h2>
-        <p className="text-sm sm:text-base text-slate-700 leading-relaxed pl-4">
-          আবেদনের সময় প্রার্থী কর্তৃক প্রদত্ত নাম, জন্মতারিখ, বয়স, শিক্ষাগত ফলাফল ও কোটা সম্পর্কিত তথ্যের সত্যতা প্রার্থীর নিজের দায়িত্ব। প্রার্থী অসত্য বা জাল তথ্য প্রদান করলে তার আবেদন যেকোনো পর্যায়ে বাতিল হতে পারে।
-        </p>
-      </div>
-      <div className="space-y-2">
-        <h2 className="text-lg font-bold text-slate-900 border-l-4 border-emerald-600 pl-3">
-          ৩. ফি ও ক্যাশব্যাক নিশ্চয়তা
-        </h2>
-        <p className="text-sm sm:text-base text-slate-700 leading-relaxed pl-4">
-          আমাদের প্ল্যাটফর্মে সকল সরকারি ফি সম্পূর্ণ স্বচ্ছতার সাথে গ্রহণ করা হয়। কোনো কারণে আমাদের প্রযুক্তিগত ত্রুটির কারণে আবেদন জমা হতে ব্যর্থ হলে প্রার্থীর প্রদত্ত সম্পূর্ণ অর্থ ১০০% রিফান্ড করা হয়।
-        </p>
-      </div>
+  const notice = (
+    <div>
+      <span className="font-bold text-amber-900">আইনি সম্মতি: </span>
+      চাকরি সেবা ওয়েবসাইট ব্রাউজিং ও ডিজিটাল আবেদন সহকারী ব্যবহারের মাধ্যমে আপনি উক্ত শর্তাবলীতে নীতিগতভাবে সম্মতি প্রদান করছেন।
     </div>
   );
 
-  return <CmsPageRenderer page={page} fallbackContent={fallback} />;
+  return (
+    <PolicyLayout
+      currentPath="/terms-and-conditions"
+      badge="ব্যবহারের আইনি শর্তাবলী ও অনুশাসন"
+      title="প্ল্যাটফর্মের ব্যবহারের শর্তাবলী ও নিয়মনীতি"
+      subtitle="চাকরি সেবা প্ল্যাটফর্মে সরকারি ও ব্যাংক চাকরির আবেদন সেবা গ্রহণ, ডিজিটাল ভল্ট ব্যবহার এবং তথ্যের সত্যতা সম্পর্কিত বাধ্যবাধকতার বিশদ বিবরণ।"
+      sections={sections}
+      importantNotice={notice}
+    />
+  );
 }

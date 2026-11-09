@@ -9,27 +9,27 @@ import path from 'path';
 
 
 
-import { 
+import {
 
 
 
-  CandidateProfile, 
+  CandidateProfile,
 
 
 
-  EducationRecord, 
+  EducationRecord,
 
 
 
-  CandidateDocument, 
+  CandidateDocument,
 
 
 
-  ApplicationRequest, 
+  ApplicationRequest,
 
 
 
-  WalletTransaction, 
+  WalletTransaction,
 
 
 
@@ -1043,7 +1043,7 @@ function getInitialState(): DatabaseState {
 
 
 
-  
+
 
 
 
@@ -2104,7 +2104,7 @@ function saveDB(state: DatabaseState) {
 
 
 
-      try { fs.copyFileSync(DB_FILE, bakFile); } catch {}
+      try { fs.copyFileSync(DB_FILE, bakFile); } catch { }
 
 
 
@@ -2269,7 +2269,7 @@ export function parseBengaliDateScore(dateStr?: string): number {
 
   if (!dateStr || typeof dateStr !== 'string') return 0;
 
-  
+
 
   const bnDigits: Record<string, string> = {
 
@@ -2367,8 +2367,8 @@ export function sortJobsChronologically(jobs: JobCircular[]): JobCircular[] {
       if (d.includes('সমাপ্ত') || d.includes('শেষ') || d.toLowerCase().includes('expired') || d.toLowerCase().includes('closed')) return true;
       // Convert to ISO if possible
       let s = d.trim();
-      const bn = ['০','১','২','৩','৪','৫','৬','৭','৮','৯'];
-      const en = ['0','1','2','3','4','5','6','7','8','9'];
+      const bn = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
+      const en = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
       bn.forEach((digit, idx) => { s = s.split(digit).join(en[idx]); });
       const slash = s.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/);
       let iso: string | null = null;
@@ -2824,7 +2824,7 @@ export const serverDB = {
 
     try {
       SyntheticUserManager.deleteSyntheticUser(id);
-    } catch {}
+    } catch { }
 
     return true;
   },
@@ -2942,7 +2942,7 @@ export const serverDB = {
 
 
 
-    getDocuments(candidateId: string): CandidateDocument[] {
+  getDocuments(candidateId: string): CandidateDocument[] {
     if (candidateId && candidateId.startsWith('SYNTH-')) {
       return SyntheticUserManager.getDocuments(candidateId);
     }
@@ -2997,7 +2997,7 @@ export const serverDB = {
     }
     const db = loadDB();
     const map = new Map<string, ApplicationRequest>();
-    
+
     // 1. Direct candidateId bucket
     const directList = db.applications[candidateId] || [];
     for (const app of directList) {
@@ -3077,11 +3077,11 @@ export const serverDB = {
   },
 
   updateAppStatus(
-    candidateId: string, 
-    appId: string, 
-    status: ApplicationRequest['status'], 
-    verificationType?: ApplicationRequest['verificationType'], 
-    notes?: string, 
+    candidateId: string,
+    appId: string,
+    status: ApplicationRequest['status'],
+    verificationType?: ApplicationRequest['verificationType'],
+    notes?: string,
     isAdmin?: boolean,
     extra?: Partial<ApplicationRequest>
   ): ApplicationRequest | null {
@@ -3254,8 +3254,8 @@ export const serverDB = {
     db.notifications[candidateId] = [{
       id: 'NOTIF-' + transaction.id,
       title: decision === 'approve' ? 'ওয়ালেট রিচার্জ সফল হয়েছে' : 'ওয়ালেট রিচার্জ প্রত্যাখ্যাত',
-      message: decision === 'approve' 
-        ? `TrxID: ${transaction.trxId} - ৳${transaction.amount} সফলভাবে আপনার ওয়ালেটে জমা হয়েছে।` 
+      message: decision === 'approve'
+        ? `TrxID: ${transaction.trxId} - ৳${transaction.amount} সফলভাবে আপনার ওয়ালেটে জমা হয়েছে।`
         : `TrxID: ${transaction.trxId} - ৳${transaction.amount} রিচার্জ তথ্যের অমিলের কারণে বাতিল করা হয়েছে।`,
       type: 'system',
       read: false,
@@ -4404,7 +4404,7 @@ export const serverDB = {
 
 
 
-  
+
 
 
 
@@ -4684,7 +4684,7 @@ export const serverDB = {
       adminId,
       action: exists ? (changedFields.length > 0 ? 'update' : 'no_change') : 'create',
       changedFields,
-      summary: exists 
+      summary: exists
         ? (changedFields.length > 0 ? `${changedFields.length}টি ফিল্ড পরিবর্তিত হয়েছে (${changedFields.slice(0, 3).join(', ')}${changedFields.length > 3 ? '...' : ''})` : 'কোনো পরিবর্তন হয়নি')
         : 'সার্কুলার সফলভাবে তৈরি হয়েছে'
     };
@@ -4707,7 +4707,7 @@ export const serverDB = {
 
         triggerAutoPdfConversion(job.id, pdfTarget);
 
-      } catch (e) {}
+      } catch (e) { }
 
     }
 
@@ -4745,7 +4745,7 @@ export const serverDB = {
 
 
 
-    
+
     // Automated Candidate Notification & Job Alerts Dispatch Engine
     try {
       const isJobActive = merged.status === 'published' || merged.status === 'active' || (merged as any).publicationStatus === 'PUBLISHED';
@@ -4772,7 +4772,7 @@ export const serverDB = {
                 const deg = String(edu.degree || edu.level || '').trim();
                 const res = String(edu.result || edu.cgpa || '').trim();
                 const degLower = deg.toLowerCase();
-                
+
                 let degMatches = false;
                 if (reqEdu.includes('master') || reqEdu.includes('মাস্টার্স') || reqEdu.includes('স্নাতকোত্তর')) {
                   if (degLower.includes('master') || degLower.includes('মাস্টার্স') || degLower.includes('স্নাতকোত্তর')) degMatches = true;
@@ -4806,8 +4806,8 @@ export const serverDB = {
             // Check category match if preferences exist
             const prefCats = (cand as any).preferredCategories || (cand as any).jobPreferences?.categories;
             if (Array.isArray(prefCats) && prefCats.length > 0) {
-              const matches = prefCats.some((c: string) => 
-                c.toLowerCase() === (merged.category || '').toLowerCase() || 
+              const matches = prefCats.some((c: string) =>
+                c.toLowerCase() === (merged.category || '').toLowerCase() ||
                 c.toLowerCase() === 'all'
               );
               if (!matches) continue;
@@ -6448,7 +6448,7 @@ export const serverDB = {
 
 
 
-    
+
 
 
 
@@ -6460,7 +6460,7 @@ export const serverDB = {
 
 
 
-    try { sourceHost = new URL(current.sourceUrl).hostname.toLowerCase(); } catch {}
+    try { sourceHost = new URL(current.sourceUrl).hostname.toLowerCase(); } catch { }
 
 
 
@@ -6476,7 +6476,7 @@ export const serverDB = {
 
 
 
-           (d.sourceName && current.name && d.sourceName.includes(current.name))
+        (d.sourceName && current.name && d.sourceName.includes(current.name))
 
 
 
@@ -6742,7 +6742,7 @@ export const serverDB = {
 
 
 
-  
+
 
   getVerificationQueue(): any[] {
 
@@ -6812,7 +6812,7 @@ export const serverDB = {
 
 
 
-  
+
 
   addAdminNotification(title: string, message: string): void {
 
@@ -7416,7 +7416,7 @@ export const serverDB = {
 
 
 
-    const existing = Object.values(db.jobs).find(j => 
+    const existing = Object.values(db.jobs).find(j =>
 
 
 
@@ -7568,7 +7568,7 @@ export const serverDB = {
 
         triggerAutoPdfConversion(newJobId, pdfSource);
 
-      } catch (e) {}
+      } catch (e) { }
 
     }
 
@@ -9130,9 +9130,9 @@ export const serverDB = {
 
     };
 
-    const existingIdx = candidate.skills.findIndex((s: any) => 
+    const existingIdx = candidate.skills.findIndex((s: any) =>
 
-      (typeof s === 'string' && s.toLowerCase() === skillItem.name.toLowerCase()) || 
+      (typeof s === 'string' && s.toLowerCase() === skillItem.name.toLowerCase()) ||
 
       (typeof s === 'object' && (s.id === skillItem.id || s.name?.toLowerCase() === skillItem.name.toLowerCase()))
 
@@ -9258,14 +9258,14 @@ export const serverDB = {
   // -------------------------------------------------------------------------
 
   updateDocumentVerification(
-    candidateId: string, 
-    docId: string, 
-    updates: { 
-      isVerified: boolean; 
-      verificationStatus?: any; 
-      verificationRemarks?: string; 
-      verifiedBy?: string; 
-      verifiedAt?: string; 
+    candidateId: string,
+    docId: string,
+    updates: {
+      isVerified: boolean;
+      verificationStatus?: any;
+      verificationRemarks?: string;
+      verifiedBy?: string;
+      verifiedAt?: string;
     }
   ): boolean {
     if (candidateId && candidateId.startsWith('SYNTH-')) {
@@ -9303,8 +9303,8 @@ export const serverDB = {
   },
 
   updateCandidateTraining(
-    candidateId: string, 
-    trainingId: string, 
+    candidateId: string,
+    trainingId: string,
     updates: Partial<import('./types').TrainingRecord>
   ): CandidateRecord | null {
     const db = loadDB();
@@ -9428,7 +9428,7 @@ export const serverDB = {
         notes: 'নতুন প্রতিষ্ঠান এন্ট্রি তৈরি: ' + newCompany.name,
         changes: { company: { new: newCompany } } as any
       });
-    } catch {}
+    } catch { }
 
     return newCompany;
   },
@@ -9455,7 +9455,7 @@ export const serverDB = {
         notes: 'প্রতিষ্ঠান তথ্য হালনাগাদ: ' + updated.name,
         changes: { updates: { new: updates } } as any
       });
-    } catch {}
+    } catch { }
 
     return updated;
   },
@@ -9476,7 +9476,7 @@ export const serverDB = {
         notes: 'প্রতিষ্ঠান মুছে ফেলা হয়েছে: ' + deletedName,
         changes: { company: { old: deletedName } } as any
       });
-    } catch {}
+    } catch { }
 
     return true;
   },
@@ -9512,7 +9512,7 @@ export const serverDB = {
         notes: 'নতুন মিডিয়া ফাইল আপলোড: ' + item.originalName,
         changes: { media: { new: item } } as any
       });
-    } catch {}
+    } catch { }
 
     return db.mediaItems[item.id];
   },
@@ -9627,7 +9627,7 @@ export const serverDB = {
         notes: 'প্ল্যাটফর্মের কেন্দ্রীয় সেটিংস ও কনফিগারেশন হালনাগাদ করা হয়েছে',
         changes: { settings: { new: updates } }
       });
-    } catch {}
+    } catch { }
 
     return merged;
   },
@@ -9669,7 +9669,7 @@ export const serverDB = {
     if (!db.engineeringTasks) db.engineeringTasks = {};
 
     const idempotencyKey = taskData.idempotencyKey || (taskData.workstream + '_' + taskData.taskType + '_' + Buffer.from(taskData.title).toString('base64').substring(0, 16));
-    
+
     // Check if task with identical idempotencyKey already exists and is active
     const existing = Object.values(db.engineeringTasks).find(t => t.idempotencyKey === idempotencyKey && !['VERIFIED', 'DEPLOYED'].includes(t.status));
     if (existing) {

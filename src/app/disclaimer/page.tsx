@@ -1,42 +1,97 @@
 import React from 'react';
 import { Metadata } from 'next';
-import { serverDB } from '@/lib/db';
-import { PageRecord } from '@/lib/types';
-import CmsPageRenderer from '@/components/CmsPageRenderer';
+import PolicyLayout, { PolicySection } from '@/components/PolicyLayout';
 
 export const dynamic = 'force-dynamic';
 
-export async function generateMetadata(): Promise<Metadata> {
-  const page = serverDB.getPublishedPageById('disclaimer') as unknown as PageRecord;
-  return {
-    title: page?.metaTitle || page?.title || 'আইনি বার্তা ও দায়-অস্বীকার (Disclaimer) | চাকরি সেবা',
-    description: page?.metaDescription || 'চাকরি সেবার আইনগত অবস্থান ও সরকারি অনুমোদনের দায়মুক্তি বার্তা।',
-  };
-}
+export const metadata: Metadata = {
+  title: 'আইনি তথ্য দায়মুক্তি (Disclaimer) | চাকরি সেবা',
+  description: 'চাকরি সেবার আইনগত অবস্থান, সরকারি অনুমোদনের দায়মুক্তি এবং অফিশিয়াল গেজেট সম্পর্কিত প্রকাশ্য ঘোষণা।',
+};
 
-export default function PolicyPage() {
-  const page = serverDB.getPublishedPageById('disclaimer') as unknown as PageRecord || { id: 'disclaimer', slug: '/disclaimer', title: 'disclaimer', metaTitle: '', metaDescription: '', status: 'published', version: 1, sections: [], updatedAt: '', publishedAt: '' } as unknown as PageRecord;
+export default function DisclaimerPage() {
+  const sections: PolicySection[] = [
+    {
+      id: 'govt-disclaimer',
+      title: '১. সরকারি বা প্রাতিষ্ঠানিক সম্পর্কহীনতার সুস্পষ্ট ঘোষণা (Non-Government Entity)',
+      content: (
+        <>
+          <p>
+            <strong>চাকরি সেবা (ChakriSheba.com)</strong> গণপ্রজাতন্ত্রী বাংলাদেশ সরকার, বাংলাদেশ সরকারি কর্ম কমিশন (BPSC), বাংলাদেশ ব্যাংক বা কোনো মন্ত্রণালয়, অধিদপ্তর কিংবা রাষ্ট্রায়ত্ত ব্যাংকের সরকারি মুখপাত্র, প্রতিনিধি বা অঙ্গসংগঠন নয়।
+          </p>
+          <div className="bg-slate-100 border border-slate-300 p-4 rounded-xl text-slate-800">
+            আমরা একটি সম্পূর্ণ বেসরকারি ও স্বাধীন ডিজিটাল তথ্য ও আবেদন সহকারী প্ল্যাটফর্ম। চাকরিপ্রার্থীদের সুবিধার্থে ইন্টারনেটে উন্মুক্ত সরকারি গেজেট, দৈনিক পত্রিকার বিজ্ঞাপন এবং অফিশিয়াল নোটিশবোর্ডসমূহ থেকে তথ্য সংগ্রহ ও পরিবেশন করা হয়।
+          </div>
+        </>
+      )
+    },
+    {
+      id: 'source-gazette',
+      title: '২. তথ্যের উৎস ও মূল গেজেট অনুসরণ (Official Gazette & Source Reference)',
+      content: (
+        <>
+          <p>
+            আমাদের প্ল্যাটফর্মে প্রদর্শিত প্রতিটি নিয়োগ বিজ্ঞপ্তির সাথে সংশ্লিষ্ট নিয়োগকারী প্রতিষ্ঠানের স্মারক নম্বর, প্রকাশের তারিখ এবং মূল বিজ্ঞপ্তির পিডিএফ লিংক সংযুক্ত থাকে।
+          </p>
+          <p>
+            যদিও আমাদের রিসার্চ সেল প্রতিটি বিজ্ঞপ্তির শতভাগ সত্যতা যাচাই করে প্রকাশ করে, তবুও প্রার্থীদের যেকোনো পদে আবেদনের পূর্বে সংশ্লিষ্ট মন্ত্রণালয় বা অধিদপ্তরের মূল ওয়েবসাইট এবং বাংলাদেশ গেজেট প্রেস (BG Press) থেকে প্রকাশিত অফিশিয়াল বিজ্ঞপ্তিটি মনোযোগ দিয়ে পড়ে নেওয়ার বিশেষ পরামর্শ দেওয়া হয়।
+          </p>
+        </>
+      )
+    },
+    {
+      id: 'no-guarantee',
+      title: '৩. নিয়োগ, পরীক্ষা ও ফলাফলের কোনো গ্যারান্টি নেই (No Guarantee of Employment)',
+      content: (
+        <>
+          <p>
+            চাকরি পাওয়া বা নিয়োগ পরীক্ষায় উত্তীর্ণ হওয়া সম্পূর্ণভাবে প্রার্থীর নিজস্ব মেধা, প্রস্তুতি এবং সরকারি নিয়োগকারী কমিটির স্বাধীন মূল্যায়নের ওপর নির্ভরশীল।
+          </p>
+          <div className="bg-amber-50 border border-amber-200 p-4 rounded-xl text-amber-950 font-medium">
+            <strong>অনড় অবস্থান:</strong> চাকরি সেবা কোনো প্রার্থীকে চাকরি পাইয়ে দেওয়ার মিথ্যা প্রতিশ্রুতি দেয় না এবং কোনো প্রকার আর্থিক ঘুষ, তদবির বা অনিয়মকে কখনোই সমর্থন করে না। কেউ চাকরি সেবার নাম ব্যবহার করে কোনো চাকরির নিশ্চয়তা দিলে তা সম্পূর্ণ প্রতারণা বলে গণ্য হবে।
+          </div>
+        </>
+      )
+    },
+    {
+      id: 'third-party-servers',
+      title: '৪. সরকারি ওয়েবসাইট ও টেলিটক সার্ভার ডাউনটাইম (Third-Party Server Downtime)',
+      content: (
+        <>
+          <p>
+            টেলিটক (Teletalk) বা সরকারি পোর্টালসমূহের নিজস্ব টেকনিক্যাল ত্রুটি, সার্ভার ক্র্যাশ বা ইন্টারনেট সংযোগ বিচ্ছিন্নতার কারণে যদি আবেদন দাখিলে সাময়িক বিঘ্ন ঘটে, তার জন্য চাকরি সেবা কর্তৃপক্ষ প্রত্যক্ষ বা পরোক্ষভাবে দায়ী থাকবে না। তবে আমাদের টিম যথাসম্ভব দ্রুত বিকল্প উপায়ে প্রার্থীর আবেদন সম্পন্ন করার সার্বক্ষণিক চেষ্টা করে থাকে।
+          </p>
+        </>
+      )
+    },
+    {
+      id: 'financial-scam-alert',
+      title: '৫. আর্থিক প্রতারণা ও অনৈতিক লেনদেন সতর্কতা (Scam Prevention Alert)',
+      content: (
+        <>
+          <p>
+            আমাদের প্ল্যাটফর্মে শুধুমাত্র সরকারি নির্ধারিত আবেদন ফি এবং আমাদের ডাটা এন্ট্রি সেবা চার্জ ছাড়া অন্য কোনো অর্থ নেওয়া হয় না। কোনো সার্কুলারে যদি অনানুষ্ঠানিক বিকাশ/নগদ একাউন্টে ঘুষ চাওয়ার তথ্য পরিলক্ষিত হয়, তবে সঙ্গে সঙ্গে আমাদের <a href="/report-a-job" className="text-emerald-700 underline font-semibold">অভিযোগ সেলে (/report-a-job)</a> অবহিত করুন।
+          </p>
+        </>
+      )
+    }
+  ];
 
-  const fallback = (
-    <div className="space-y-6">
-      <div className="space-y-2">
-        <h2 className="text-lg font-bold text-slate-900 border-l-4 border-emerald-600 pl-3">
-          সরকারি দায়মুক্তি
-        </h2>
-        <p className="text-sm sm:text-base text-slate-700 leading-relaxed pl-4">
-          চাকরি সেবা গণপ্রজাতন্ত্রী বাংলাদেশ সরকার বা কোনো সরকারি ব্যাংকের অঙ্গপ্রতিষ্ঠান নয়। আমরা বিভিন্ন প্রকাশ্য অফিশিয়াল ওয়েবসাইট ও জাতীয় পত্রিকা থেকে তথ্য সংগ্রহ করে চাকরিপ্রার্থীদের সুবিধার জন্য পরিবেশন করি।
-        </p>
-      </div>
-      <div className="space-y-2">
-        <h2 className="text-lg font-bold text-slate-900 border-l-4 border-emerald-600 pl-3">
-          আবেদনের ফলাফল
-        </h2>
-        <p className="text-sm sm:text-base text-slate-700 leading-relaxed pl-4">
-          পরীক্ষায় উত্তীর্ণ হওয়া বা চাকরি পাওয়া সম্পূর্ণভাবে প্রার্থীর মেধা ও সরকারি কর্তৃপক্ষের সিদ্ধান্তের ওপর নির্ভরশীল। এতে চাকরি সেবার কোনো প্রভাব বা সংশ্লিষ্টতা নেই।
-        </p>
-      </div>
+  const notice = (
+    <div>
+      <span className="font-bold text-amber-900">আইনি সতর্কতা: </span>
+      চাকরি সেবা একটি তথ্যসেবা ও আবেদন সহায়ক মাধ্যম। মেধা ও সরকারি প্রক্রিয়াই চাকরি পাওয়ার একমাত্র বৈধ পথ।
     </div>
   );
 
-  return <CmsPageRenderer page={page} fallbackContent={fallback} />;
+  return (
+    <PolicyLayout
+      currentPath="/disclaimer"
+      badge="আইনি দায়মুক্তি ও স্বচ্ছতা ঘোষণা"
+      title="আইনি তথ্য দায়মুক্তি ও অফিসিয়াল গেজেট সম্পর্কিত ঘোষণা"
+      subtitle="চাকরি সেবার আইনগত অবস্থান, অ-সরকারি সত্তা হিসেবে দায়িত্বের সীমাবদ্ধতা এবং অফিশিয়াল গেজেট অনুসরণের প্রাতিষ্ঠানিক ঘোষণা।"
+      sections={sections}
+      importantNotice={notice}
+    />
+  );
 }

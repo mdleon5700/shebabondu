@@ -1,52 +1,102 @@
 import React from 'react';
-import Link from 'next/link';
 import { Metadata } from 'next';
-import { ShieldCheck, ChevronLeft } from 'lucide-react';
+import PolicyLayout, { PolicySection } from '@/components/PolicyLayout';
+
+export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'সম্পাদকীয় নীতিমালা (Editorial Policy) | চাকরি সেবা',
-  description: 'বিজ্ঞপ্তি সংগ্রহ, মান নিয়ন্ত্রণ ও বস্তুনিষ্ঠতা বজায় রাখার সম্পাদকীয় নির্দেশিকা।',
+  description: 'চাকরি বিজ্ঞপ্তির সম্পাদকীয় মানদণ্ড, তথ্যের বস্তুনিষ্ঠতা ও ফ্যাক্ট-চেকিংয়ের প্রাতিষ্ঠানিক নির্দেশিকা।',
 };
 
-export default function PolicyPage() {
-  return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 text-slate-800">
-      <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-500">
-        <Link href="/" className="hover:text-emerald-700 transition-colors">হোম</Link>
-        <span>/</span>
-        <span className="text-slate-900 font-bold">সম্পাদকীয় নীতিমালা (Editorial Policy)</span>
-      </div>
-
-      <div className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-10 space-y-6 shadow-sm">
-        <div className="space-y-2 border-b border-slate-100 pb-4">
-          <span className="bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-bold px-3 py-1 rounded-full inline-block">
-            অফিশিয়াল ডকুমেন্ট ও নীতিমালা
-          </span>
-          <h1 className="text-2xl sm:text-3xl font-black text-slate-900">
-            সম্পাদকীয় ও কন্টেন্ট প্রকাশনা নীতিমালা
-          </h1>
-          <p className="text-xs text-slate-500">সর্বশেষ সংস্করণ: অক্টোবর ২০২৬ • চাকরি সেবা কমপ্লায়েন্স টিম</p>
-        </div>
-
-        <div className="space-y-6">
-        <div className="space-y-2">
-          <h2 className="text-lg font-bold text-slate-900 border-l-4 border-emerald-600 pl-3">
-            তথ্যের নির্ভরযোগ্য উৎস
-          </h2>
-          <p className="text-sm sm:text-base text-slate-700 leading-relaxed pl-4">
-            চাকরি সেবা কোনো ভুয়া বা অননুমোদিত গুজবের বিজ্ঞপ্তি প্রকাশ করে না। প্রতিটি তথ্য সরকারি গেজেট, বাংলাদেশ গেজেট প্রেস (BG Press), মন্ত্রণালয় ও অধিদপ্তরের মূল ওয়েবসাইট এবং জাতীয় দৈনিকের অফিশিয়াল প্রকাশনা থেকে সংগ্রহ করা হয়।
+export default function EditorialPolicyPage() {
+  const sections: PolicySection[] = [
+    {
+      id: 'principles',
+      title: '১. সম্পাদকীয় দর্শন ও বস্তুনিষ্ঠতার অঙ্গীকার (Editorial Principles)',
+      content: (
+        <>
+          <p>
+            চাকরি সেবা সম্পাদকীয় টিমের মূল লক্ষ্য হলো—বাংলাদেশের প্রতিটি চাকরিপ্রার্থীর কাছে শতভাগ নির্ভুল, পক্ষপাতহীন এবং যাচাইকৃত চাকরির তথ্য পৌঁছে দেওয়া।
           </p>
-        </div>
-        <div className="space-y-2">
-          <h2 className="text-lg font-bold text-slate-900 border-l-4 border-emerald-600 pl-3">
-            বস্তুনিষ্ঠতা ও স্বচ্ছতা
-          </h2>
-          <p className="text-sm sm:text-base text-slate-700 leading-relaxed pl-4">
-            আমরা নিয়োগের ক্ষেত্রে কোনো মধ্যস্থতাকারী নই এবং কোনো নিয়োগ পরীক্ষায় অনৈতিক হস্তক্ষেপ সমর্থন করি না। আমাদের সকল কন্টেন্ট শিক্ষামূলক ও পরীক্ষার্থীদের সুবিধার্থে প্রকাশিত হয়।
+          <p>
+            আমরা ক্লিকবেইট (Clickbait) শিরোনাম, অসত্য শূন্যপদ বা মেয়াদোত্তীর্ণ বিজ্ঞপ্তির মাধ্যমে চাকরিপ্রার্থীদের বিভ্রান্ত করার ঘোর বিরোধী। প্রতিটি খবরের শিরোনামে পদের নাম, সংস্থা এবং আবেদনের শেষ তারিখ স্পষ্টভাবে উল্লেখ করা আমাদের সম্পাদকীয় নীতি।
           </p>
-        </div>
-        </div>
-      </div>
+        </>
+      )
+    },
+    {
+      id: 'sources',
+      title: '২. তথ্যের অনুমোদিত উৎসসমূহ (Approved Information Sources)',
+      content: (
+        <>
+          <p>আমাদের সম্পাদকীয় টিম শুধুমাত্র নিম্নলিখিত অফিশিয়াল ও বিশ্বস্ত উৎসসমূহ থেকে সার্কুলার সংগ্রহ করে:</p>
+          <ul className="list-disc pl-5 space-y-1.5 text-slate-700">
+            <li><strong>বাংলাদেশ গেজেট ও বিজি প্রেস:</strong> গণপ্রজাতন্ত্রী বাংলাদেশ সরকারের মুদ্রিত গেজেট ও নিয়োগ আদেশ।</li>
+            <li><strong>মন্ত্রণালয় ও সরকারি অধিদপ্তরের অফিশিয়াল পোর্টাল:</strong> যেমন bpsc.gov.bd, mopa.gov.bd, bb.org.bd ইত্যাদি।</li>
+            <li><strong>প্রথম শ্রেণির জাতীয় দৈনিক পত্রিকা:</strong> প্রথম আলো, দ্য ডেইলি স্টার, ইত্তেফাক, যুগান্তর, জনকণ্ঠসহ শীর্ষস্থানীয় জাতীয় সংবাদপত্রের প্রকাশিত মূল নিয়োগ বিজ্ঞপ্তি।</li>
+          </ul>
+        </>
+      )
+    },
+    {
+      id: 'sponsored-content',
+      title: '৩. বাণিজ্যিক বিজ্ঞাপন বনাম সরকারি বিজ্ঞপ্তি পৃথকীকরণ (Sponsored vs Organic Jobs)',
+      content: (
+        <>
+          <p>
+            আমাদের প্ল্যাটফর্মে সরকারি চাকরি এবং বেসরকারি বাণিজ্যিক প্রতিষ্ঠানের নিয়োগ বিজ্ঞপ্তি কখনোই মিশ্রিত করা হয় না।
+          </p>
+          <div className="bg-slate-50 border border-slate-200 p-4 rounded-xl text-slate-800">
+            যদি কোনো বেসরকারি প্রতিষ্ঠান বা কোম্পানি আমাদের প্ল্যাটফর্মে চাকরির বিজ্ঞাপন প্রকাশ করে, তবে তা স্পষ্টভাবে <strong>"স্পনসর্ড (Sponsored)"</strong> অথবা <strong>"বেসরকারি চাকরি (Private Job)"</strong> ব্যাজের মাধ্যমে আলাদা করা থাকে, যাতে প্রার্থীরা স্বচ্ছতার সাথে সিদ্ধান্ত নিতে পারেন।
+          </div>
+        </>
+      )
+    },
+    {
+      id: 'clarity',
+      title: '৪. সহজবোধ্য বাংলা ভাষা ও শর্তাবলীর উপস্থাপন (Clarity & Readability)',
+      content: (
+        <>
+          <p>
+            সরকারি সার্কুলারের জটিল আইনি শর্তাবলী ও পদভিত্তিক প্রয়োজনীয় শিক্ষাগত যোগ্যতা ও বয়সসীমা আমরা সহজ ও প্রাঞ্জল বাংলা ভাষায় উপস্থাপন করি, যাতে প্রত্যন্ত অঞ্চলের প্রার্থীরাও কোনো সাইবার ক্যাফের সাহায্য ছাড়াই তাদের যোগ্যতা সহজে বুঝতে পারেন।
+          </p>
+        </>
+      )
+    },
+    {
+      id: 'editorial-contact',
+      title: '৫. সম্পাদকীয় সেল ও পরামর্শের ঠিকানা (Editorial Board Contact)',
+      content: (
+        <>
+          <p>
+            সম্পাদকীয় বিষয়াদি, কোনো তথ্য বিষয়ক প্রশ্ন বা সার্কুলার নিয়ে সুনির্দিষ্ট পরামর্শ থাকলে সম্পাদকীয় টিমের সাথে যোগাযোগ করতে পারেন:
+          </p>
+          <div className="bg-slate-50 border border-slate-200 p-4 rounded-xl space-y-1 font-mono text-xs text-slate-800">
+            <div><strong>সম্পাদকীয় ইমেইল:</strong> editorial@chakrisheba.com</div>
+            <div><strong>হেড অব রিসার্চ ও এডিটর:</strong> মুহাম্মদ রেজাউল করিম</div>
+            <div><strong>ঠিকানা:</strong> সম্পাদকীয় সেল, লেভেল ৪, সফটওয়্যার টেকনোলজি ভবন, পান্থপথ, ঢাকা।</div>
+          </div>
+        </>
+      )
+    }
+  ];
+
+  const notice = (
+    <div>
+      <span className="font-bold text-amber-900">সম্পাদকীয় প্রতিশ্রুতি: </span>
+      আমরা কোনো গুজবী বা ভুয়া বিজ্ঞপ্তি প্রকাশ করি না। প্রতিটি সার্কুলার সরকারি গেজেট ও দৈনিকের প্রকাশিত তথ্যের সাথে পুঙ্খানুপুঙ্খ মেলানোর পরেই প্রকাশিত হয়।
     </div>
+  );
+
+  return (
+    <PolicyLayout
+      currentPath="/editorial-policy"
+      badge="সম্পাদকীয় সততা ও বস্তুনিষ্ঠতা সনদ"
+      title="সম্পাদকীয় নীতিমালা এবং নির্ভুল তথ্য উপস্থাপনের প্রতিশ্রুতি"
+      subtitle="বিজ্ঞপ্তি সংগ্রহ, তথ্যের মান নিয়ন্ত্রণ, বিভ্রান্তিকর তথ্য প্রতিরোধ এবং বস্তুনিষ্ঠ সাংবাদিকতার সুনির্দিষ্ট সম্পাদকীয় নির্দেশিকা।"
+      sections={sections}
+      importantNotice={notice}
+    />
   );
 }

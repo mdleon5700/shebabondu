@@ -279,6 +279,10 @@ export default function Footer({ initialSettings }: { initialSettings?: any } = 
           <span className="text-slate-700">•</span>
           <Link href="/corrections-policy" className="hover:text-emerald-400 transition-colors">ভুল সংশোধন</Link>
           <span className="text-slate-700">•</span>
+          <Link href="/job-verification-policy" className="hover:text-emerald-400 transition-colors">সার্কুলার যাচাই নীতি</Link>
+          <span className="text-slate-700">•</span>
+          <Link href="/refund-policy" className="hover:text-emerald-400 transition-colors">রিফান্ড পলিসি</Link>
+          <span className="text-slate-700">•</span>
           <Link href="/report-a-job" className="hover:text-rose-400 transition-colors">রিপোর্ট করুন</Link>
           <span className="text-slate-700">•</span>
           <a href="/sitemap.xml" target="_blank" rel="noopener noreferrer" className="hover:text-emerald-400 transition-colors">XML সাইটম্যাপ</a>

@@ -81,3 +81,4 @@ export async function GET(req: Request) {
     return NextResponse.json({ error: error.message || 'টিকেট তথ্য আনতে সমস্যা হয়েছে।' }, { status: 500 });
   }
 }
+

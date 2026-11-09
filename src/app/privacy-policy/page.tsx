@@ -1,50 +1,122 @@
 import React from 'react';
 import { Metadata } from 'next';
-import { serverDB } from '@/lib/db';
-import { PageRecord } from '@/lib/types';
-import CmsPageRenderer from '@/components/CmsPageRenderer';
+import PolicyLayout, { PolicySection } from '@/components/PolicyLayout';
 
 export const dynamic = 'force-dynamic';
 
-export async function generateMetadata(): Promise<Metadata> {
-  const page = serverDB.getPublishedPageById('privacy-policy') as unknown as PageRecord;
-  return {
-    title: page?.metaTitle || page?.title || 'গোপনীয়তা নীতিমালা (Privacy Policy) | চাকরি সেবা',
-    description: page?.metaDescription || 'প্রার্থীদের এনআইডি, ছবি ও ব্যক্তিগত তথ্যের সর্বোচ্চ ব্যাংকিং গ্রেড নিরাপত্তা।',
-  };
-}
+export const metadata: Metadata = {
+  title: 'গোপনীয়তা নীতিমালা (Privacy Policy) | চাকরি সেবা',
+  description: 'ব্যবহারকারীর তথ্যের সর্বোচ্চ গোপনীয়তা রক্ষা, এনআইডি ও সনদ ব্যাংকিং গ্রেড এনক্রিপশন এবং আন্তর্জাতিক ডেটা সুরক্ষা নীতি।',
+};
 
 export default function PrivacyPolicyPage() {
-  const page = serverDB.getPublishedPageById('privacy-policy') as unknown as PageRecord || { id: 'privacy-policy', slug: '/privacy-policy', title: 'privacy-policy', metaTitle: '', metaDescription: '', status: 'published', version: 1, sections: [], updatedAt: '', publishedAt: '' } as unknown as PageRecord;
+  const sections: PolicySection[] = [
+    {
+      id: 'collection',
+      title: '১. আমরা যেসকল তথ্য সংগ্রহ করি (Information We Collect)',
+      content: (
+        <>
+          <p>
+            চাকরি সেবা প্ল্যাটফর্মে সরকারি ও ব্যাংক চাকরির আবেদন সহায়তা, নোটিফিকেশন প্রদান এবং ডিজিটাল ভল্ট সেবা নির্বিঘ্ন করার জন্য আমরা সুনির্দিষ্ট কিছু তথ্য সংগ্রহ করি:
+          </p>
+          <ul className="list-disc pl-5 space-y-1.5 pt-1 text-slate-700">
+            <li><strong>ব্যক্তিগত পরিচিতি:</strong> প্রার্থীর পূর্ণ নাম (বাংলা ও ইংরেজি), পিতা ও মাতার নাম, স্থায়ী ও বর্তমান ঠিকানা।</li>
+            <li><strong>যোগাযোগের তথ্য:</strong> সচল মোবাইল নম্বর, ইমেইল ঠিকানা।</li>
+            <li><strong>সনাক্তকরণ তথ্য:</strong> জাতীয় পরিচয়পত্র (NID) নম্বর অথবা জন্ম নিবন্ধন সনদ নম্বর।</li>
+            <li><strong>শিক্ষাগত ও কোটা বিবরণ:</strong> এসএসসি, এইচএসসি, স্নাতক ও স্নাতকোত্তর পরীক্ষার পাসের সাল, বোর্ড/বিশ্ববিদ্যালয়, অর্জিত জিপিএ/সিজিপিএ এবং মুক্তিযোদ্ধা, প্রতিবন্ধী বা উপজাতি কোটা সনদ (যদি প্রযোজ্য হয়)।</li>
+            <li><strong>আবেদন মিডিয়া ফাইল:</strong> টেলিটক ও সরকারি পোর্টালে গ্রহণযোগ্য ৩০০×৩০০ পিক্সেল রঙিন ছবি ও ৩০০×৮০ পিক্সেল স্ক্যান করা স্বাক্ষর।</li>
+          </ul>
+        </>
+      )
+    },
+    {
+      id: 'purpose',
+      title: '২. তথ্য ব্যবহারের উদ্দেশ্য ও সীমাবদ্ধতা (Purpose Limitation)',
+      content: (
+        <>
+          <p>
+            সংগৃহীত তথ্য কেবল এবং কেবলমাত্র চাকরিপ্রার্থীর নিজ অনুরোধ অনুযায়ী সরকারি ও স্বায়ত্তশাসিত প্রতিষ্ঠানে অনলাইন আবেদন দাখিলের কাজে ব্যবহার করা হয়।
+          </p>
+          <div className="bg-emerald-50 border border-emerald-200 p-4 rounded-xl text-emerald-950 font-medium">
+            <strong>কঠোর অঙ্গীকার:</strong> চাকরি সেবা কোনো অবস্থাতেই কোনো প্রার্থীর ব্যক্তিগত তথ্য, ফোন নম্বর বা শিক্ষাগত সনদ কোনো তৃতীয় পক্ষের কাছে বাণিজ্যিক বিজ্ঞাপনী উদ্দেশ্যে বিক্রয়, হস্তান্তর বা বিনিময় করে না।
+          </div>
+        </>
+      )
+    },
+    {
+      id: 'security',
+      title: '৩. ব্যাংকিং গ্রেড ডেটা নিরাপত্তা ও এনক্রিপশন (Data Security)',
+      content: (
+        <>
+          <p>
+            প্রার্থীদের তথ্যের সর্বোচ্চ নিরাপত্তা বজায় রাখতে আমরা ইন্ডাস্ট্রি-স্ট্যান্ডার্ড সিকিউরিটি প্রোটোকল মেনে চলি:
+          </p>
+          <ul className="list-disc pl-5 space-y-1 text-slate-700">
+            <li><strong>স্টোরেজ এনক্রিপশন:</strong> সার্ভারে সংরক্ষিত সকল নথিপত্র এবং এনআইডি ডাটা AES-256 বিট শক্তিশালী এনক্রিপশনে সুরক্ষিত থাকে।</li>
+            <li><strong>ট্রানজিট সিকিউরিটি:</strong> আপনার ব্রাউজার ও আমাদের সার্ভারের মধ্যে ডেটা আদান-প্রদান TLS 1.3 ও আধুনিক SSL প্রোটোকলের মাধ্যমে পরিচালিত হয়।</li>
+            <li><strong>নিয়ন্ত্রিত প্রবেশাধিকার (RBAC):</strong> প্রার্থীর ব্যক্তিগত ফাইল শুধুমাত্র প্রার্থীর অনুমতিপ্রাপ্ত ফর্ম পূরণকারী স্পেশালিস্ট ছাড়া অন্য কোনো কর্মীর কাছে দৃশ্যমান থাকে না।</li>
+          </ul>
+        </>
+      )
+    },
+    {
+      id: 'right-to-delete',
+      title: '৪. তথ্য মুছে ফেলার অধিকার (Right to be Forgotten)',
+      content: (
+        <>
+          <p>
+            আন্তর্জাতিক ডেটা সুরক্ষা আইন (GDPR) ও বাংলাদেশের প্রস্তাবিত ডেটা সুরক্ষা আইনের নীতিমালার আলোকে প্রতিটি প্রার্থীর তার তথ্য নিয়ন্ত্রণ করার সম্পূর্ণ অধিকার রয়েছে:
+          </p>
+          <p>
+            প্রার্থী যেকোনো সময় তার নিজস্ব <a href="/vault" className="text-emerald-700 underline font-semibold">ডিজিটাল ভল্ট (/vault)</a> থেকে আপলোড করা সনদ, ছবি বা স্বাক্ষর তাৎক্ষণিকভাবে মুছে ফেলতে পারেন। এছাড়া একাউন্ট সম্পূর্ণ স্থায়ীভাবে অপসারণ করতে চাইলে আমাদের হেল্পডেস্কে অনুরোধ পাঠালে ২৪ ঘণ্টার মধ্যে প্রার্থীর সমস্ত সার্ভার রেকর্ড永久ভাবে ডিলিট করা হয়।
+          </p>
+        </>
+      )
+    },
+    {
+      id: 'cookies',
+      title: '৫. কুকিজ ও সেশন ট্র্যাকিং (Cookies & Session Policy)',
+      content: (
+        <>
+          <p>
+            আমাদের ওয়েবসাইটে ব্যবহারকারীর লগইন সেশন নিরাপদ রাখা, ওয়ালেট ট্রানজেকশন সুরক্ষিত রাখা এবং ইউজার এক্সপেরিয়েন্স উন্নয়নের জন্য প্রয়োজনীয় কুকিজ ব্যবহৃত হয়। আমরা কোনো প্রকার অননুমোদিত ক্রস-সাইট ট্র্যাকার বা থার্ড পার্টি অ্যাড-নেটওয়ার্ক ট্র্যাকার ব্যবহার করি না।
+          </p>
+        </>
+      )
+    },
+    {
+      id: 'dpo',
+      title: '৬. ডেটা প্রটেকশন অফিসার ও যোগাযোগ (DPO Contact)',
+      content: (
+        <>
+          <p>
+            গোপনীয়তা নীতিমালা সম্পর্কিত যেকোনো জিজ্ঞাসা, উদ্বেগ বা ডাটা মুছে ফেলার অনুরোধের জন্য আমাদের ডেটা প্রটেকশন অফিসার (DPO) এর সাথে সরাসরি যোগাযোগ করা যাবে:
+          </p>
+          <div className="bg-slate-50 border border-slate-200 p-4 rounded-xl space-y-1 text-slate-800 font-mono text-xs">
+            <div><strong>ইমেইল:</strong> privacy@chakrisheba.com</div>
+            <div><strong>জরুরি হেল্পলাইন:</strong> +৮৮০ ১৭৭৪-৩৬৬৬৪৩</div>
+            <div><strong>অফিস:</strong> সফটওয়্যার টেকনোলজি ভবন, পান্থপথ, ঢাকা-১২০৫।</div>
+          </div>
+        </>
+      )
+    }
+  ];
 
-  const fallback = (
-    <div className="space-y-6">
-      <div className="space-y-2">
-        <h2 className="text-lg font-bold text-slate-900 border-l-4 border-emerald-600 pl-3">
-          ১. তথ্য সংগ্রহ ও ব্যবহার
-        </h2>
-        <p className="text-sm sm:text-base text-slate-700 leading-relaxed pl-4">
-          চাকরি সেবা প্ল্যাটফর্মে অনলাইন আবেদন সেবার প্রয়োজনে প্রার্থীদের জীবনবৃত্তান্ত, শিক্ষাগত যোগ্যতার সনদ, জাতীয় পরিচয়পত্র (NID) নম্বর ও ছবি নিরাপদে সংরক্ষণ করা হয়। এই তথ্য তৃতীয় কোনো অননুমোদিত পক্ষের সাথে বাণিজ্যিক উদ্দেশ্যে শেয়ার বা বিক্রি করা হয় না।
-        </p>
-      </div>
-      <div className="space-y-2">
-        <h2 className="text-lg font-bold text-slate-900 border-l-4 border-emerald-600 pl-3">
-          ২. তথ্যের নিরাপত্তা ও এনক্রিপশন
-        </h2>
-        <p className="text-sm sm:text-base text-slate-700 leading-relaxed pl-4">
-          আমাদের সার্ভারে প্রার্থীদের সকল তথ্য ব্যাংকিং গ্রেড AES-256 বিট এনক্রিপশনে সংরক্ষিত থাকে। প্রার্থীর সুস্পষ্ট সম্মতি ছাড়া শুধুমাত্র সংশ্লিষ্ট নিয়োগকারী প্রতিষ্ঠান বা সরকারি পোর্টালের নির্ধারিত ফরম পূরণে এই তথ্য ব্যবহার করা হয়।
-        </p>
-      </div>
-      <div className="space-y-2">
-        <h2 className="text-lg font-bold text-slate-900 border-l-4 border-emerald-600 pl-3">
-          ৩. তথ্য মুছে ফেলার অধিকার (Right to be Forgotten)
-        </h2>
-        <p className="text-sm sm:text-base text-slate-700 leading-relaxed pl-4">
-          যেকোনো প্রার্থী চাইলে তাদের প্রোফাইল সেটিংস থেকে আপলোডকৃত যেকোনো ডকুমেন্ট তাৎক্ষণিকভাবে মুছে ফেলতে পারেন। আমাদের হেল্পলাইনে অনুরোধের ভিত্তিতে প্রার্থীর সকল ডাটা সম্পূর্ণভাবে স্থায়ীভাবে অপসারিত করা হয়।
-        </p>
-      </div>
+  const notice = (
+    <div>
+      <span className="font-bold text-amber-900">গোপনীয়তা অগ্রাধিকার: </span>
+      আপনার জাতীয় পরিচয়পত্র এবং শিক্ষাগত সনদের সর্বোচ্চ ব্যাংকিং-গ্রেড সুরক্ষা প্রদান আমাদের আইনি অঙ্গীকার।
     </div>
   );
 
-  return <CmsPageRenderer page={page} fallbackContent={fallback} />;
+  return (
+    <PolicyLayout
+      currentPath="/privacy-policy"
+      badge="ডাটা সুরক্ষা ও গোপনীয়তা সনদ"
+      title="ব্যবহারকারীর তথ্যের সর্বোচ্চ গোপনীয়তা রক্ষা নীতি"
+      subtitle="চাকরি সেবা প্ল্যাটফর্মে চাকরিপ্রার্থীদের জীবনবৃত্তান্ত, এনআইডি, ছবি ও সনদের ১০০% ব্যাংকিং গ্রেড নিরাপত্তা ও গোপনীয়তা রক্ষার প্রাতিষ্ঠানিক নির্দেশিকা।"
+      sections={sections}
+      importantNotice={notice}
+    />
+  );
 }

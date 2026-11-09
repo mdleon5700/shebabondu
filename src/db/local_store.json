@@ -109,8 +109,42 @@
       "passwordHash": "scrypt$7f0dbe454364311f385721e371fe8e72$567fd7111794abf23d0c2c24418b5ff5674c867887be01da80bcfb6f7f32ee3f63ef31b447255b10db0735cf094a2338c845281864f8ce8c61fb2a26877a3ac9",
       "role": "candidate",
       "createdAt": "2026-11-09T07:17:05.082Z",
-      "updatedAt": "2026-11-09T12:29:24.758Z",
+      "updatedAt": "2026-11-09T14:55:47.128Z",
       "adminAuditHistory": [
+        {
+          "timestamp": "2026-11-09T14:55:47.128Z",
+          "adminId": "ADMIN",
+          "action": "candidate_profile_update",
+          "changedFields": [],
+          "notes": "প্রোফাইল তথ্য হালনাগাদ",
+          "reason": "প্রোফাইল তথ্য হালনাগাদ"
+        },
+        {
+          "timestamp": "2026-11-09T14:55:46.511Z",
+          "adminId": "ADMIN",
+          "action": "candidate_profile_update",
+          "changedFields": [],
+          "notes": "প্রোফাইল তথ্য হালনাগাদ",
+          "reason": "প্রোফাইল তথ্য হালনাগাদ"
+        },
+        {
+          "timestamp": "2026-11-09T14:52:15.035Z",
+          "adminId": "ADMIN",
+          "action": "candidate_profile_update",
+          "changedFields": [],
+          "notes": "প্রোফাইল তথ্য হালনাগাদ",
+          "reason": "প্রোফাইল তথ্য হালনাগাদ"
+        },
+        {
+          "timestamp": "2026-11-09T14:52:14.538Z",
+          "adminId": "ADMIN",
+          "action": "candidate_profile_update",
+          "changedFields": [
+            "alertPreferences"
+          ],
+          "notes": "1টি ফিল্ড পরিবর্তিত হয়েছে (alertPreferences)",
+          "reason": "1টি ফিল্ড পরিবর্তিত হয়েছে (alertPreferences)"
+        },
         {
           "timestamp": "2026-11-09T12:29:24.758Z",
           "adminId": "ADMIN",
@@ -397,6 +431,23 @@
         "preferredCategories": [],
         "preferredOrgTypes": [],
         "preferredDivisions": []
+      },
+      "alertPreferences": {
+        "categories": [
+          "বিসিএস ও সরকারি চাকরি",
+          "ব্যাংক ও আর্থিক প্রতিষ্ঠান"
+        ],
+        "districts": [
+          "চট্টগ্রাম"
+        ],
+        "grades": [
+          "৯ম গ্রেড",
+          "১০ম গ্রেড"
+        ],
+        "emailAlert": true,
+        "smsAlert": true,
+        "whatsappAlert": true,
+        "frequency": "instant"
       }
     },
     "CS-USR-26-609104": {
@@ -1129,7 +1180,8 @@
   },
   "savedJobs": {
     "USR-01712345678": [
-      "job-alljobs-15178"
+      "job-alljobs-15178",
+      "job-alljobs-15184"
     ],
     "CS-USR-26-609104": [],
     "CS-USR-26-174774": []
@@ -1271,13 +1323,31 @@
     ],
     "USR-01712345678": [
       {
+        "title": "🔔 টেস্ট জব অ্যালার্ট (সফল)",
+        "message": "আপনার নোটিফিকেশন অ্যালার্ট সফলভাবে সক্রিয় আছে। চ্যানেল: হোয়াটসঅ্যাপ, এসএমএস, ইমেইল। নির্বাচিত ক্যাটাগরি: বিসিএস ও সরকারি চাকরি, ব্যাংক ও আর্থিক প্রতিষ্ঠান।",
+        "type": "system",
+        "link": "/dashboard/alerts",
+        "id": "CS-NOTIF-2611-391",
+        "date": "2026-11-09T14:55:47.163Z",
+        "read": true
+      },
+      {
+        "title": "🔔 টেস্ট জব অ্যালার্ট (সফল)",
+        "message": "আপনার নোটিফিকেশন অ্যালার্ট সফলভাবে সক্রিয় আছে। চ্যানেল: হোয়াটসঅ্যাপ, এসএমএস, ইমেইল। নির্বাচিত ক্যাটাগরি: বিসিএস ও সরকারি চাকরি, ব্যাংক ও আর্থিক প্রতিষ্ঠান।",
+        "type": "system",
+        "link": "/dashboard/alerts",
+        "id": "CS-NOTIF-2611-481",
+        "date": "2026-11-09T14:52:15.061Z",
+        "read": true
+      },
+      {
         "title": "আবেদন স্ট্যাটাস: সম্পন্ন",
         "message": "বৈজ্ঞানিক কর্মকর্তা পদে নিয়োগ বিজ্ঞপ্তি ২০২৬ - বাংলাদেশ মৎস্য গবেষণা ইনস্টিটিউট: আপনার আবেদনটি সম্পন্ন হয়েছে এবং প্রাপ্তি স্বীকারপত্র তৈরি হয়েছে।",
         "type": "application",
         "link": "/dashboard/applications",
         "id": "CS-NOTIF-2611-506",
         "date": "2026-11-09T13:37:28.112Z",
-        "read": false
+        "read": true
       },
       {
         "title": "আবেদন স্ট্যাটাস: সম্পন্ন",
@@ -1286,7 +1356,7 @@
         "link": "/dashboard/applications",
         "id": "CS-NOTIF-2611-763",
         "date": "2026-11-09T13:19:59.836Z",
-        "read": false
+        "read": true
       },
       {
         "title": "আবেদন স্ট্যাটাস: সম্পন্ন",
@@ -1295,14 +1365,14 @@
         "link": "/dashboard/applications",
         "id": "CS-NOTIF-2611-486",
         "date": "2026-11-09T13:19:15.586Z",
-        "read": false
+        "read": true
       },
       {
         "id": "NOTIF-CS-TXN-2611-2985",
         "title": "ওয়ালেট রিচার্জ সফল হয়েছে",
         "message": "TrxID: TRX8184307 - ৳500 সফলভাবে আপনার ওয়ালেটে জমা হয়েছে।",
         "type": "system",
-        "read": false,
+        "read": true,
         "date": "2026-11-09T12:43:15.805Z",
         "link": "/dashboard/wallet"
       },
@@ -1312,7 +1382,7 @@
         "type": "system",
         "id": "CS-NOTIF-2611-831",
         "date": "2026-11-09T12:29:26.471Z",
-        "read": false
+        "read": true
       },
       {
         "title": "ডকুমেন্ট আপলোড সম্পন্ন",
@@ -1320,7 +1390,7 @@
         "type": "system",
         "id": "CS-NOTIF-2611-365",
         "date": "2026-11-09T12:29:24.811Z",
-        "read": false
+        "read": true
       },
       {
         "title": "ডকুমেন্ট আপলোড সম্পন্ন",
@@ -1328,7 +1398,7 @@
         "type": "system",
         "id": "CS-NOTIF-2611-166",
         "date": "2026-11-09T12:28:34.245Z",
-        "read": false
+        "read": true
       },
       {
         "title": "ডকুমেন্ট আপলোড সম্পন্ন",
@@ -1336,7 +1406,7 @@
         "type": "system",
         "id": "CS-NOTIF-2611-295",
         "date": "2026-11-09T12:22:17.221Z",
-        "read": false
+        "read": true
       },
       {
         "title": "ডকুমেন্ট প্রতিস্থাপন সম্পন্ন",
@@ -1344,7 +1414,7 @@
         "type": "system",
         "id": "CS-NOTIF-2611-295",
         "date": "2026-11-09T12:22:15.900Z",
-        "read": false
+        "read": true
       },
       {
         "title": "ডকুমেন্ট আপলোড সম্পন্ন",
@@ -1352,7 +1422,7 @@
         "type": "system",
         "id": "CS-NOTIF-2611-708",
         "date": "2026-11-09T12:21:03.712Z",
-        "read": false
+        "read": true
       },
       {
         "title": "ডকুমেন্ট প্রতিস্থাপন সম্পন্ন",
@@ -1360,7 +1430,7 @@
         "type": "system",
         "id": "CS-NOTIF-2611-230",
         "date": "2026-11-09T12:20:53.084Z",
-        "read": false
+        "read": true
       },
       {
         "title": "আবেদন স্ট্যাটাস: প্রক্রিয়াধীন",
@@ -1369,7 +1439,7 @@
         "link": "/dashboard/applications",
         "id": "CS-NOTIF-2611-419",
         "date": "2026-11-09T11:16:31.712Z",
-        "read": false
+        "read": true
       },
       {
         "title": "আবেদন স্ট্যাটাস: সম্পন্ন",
@@ -1378,7 +1448,7 @@
         "link": "/dashboard/applications",
         "id": "CS-NOTIF-2611-640",
         "date": "2026-11-09T11:16:26.011Z",
-        "read": false
+        "read": true
       },
       {
         "title": "আবেদন স্ট্যাটাস: সম্পন্ন",
@@ -1387,7 +1457,7 @@
         "link": "/dashboard/applications",
         "id": "CS-NOTIF-2611-675",
         "date": "2026-11-09T11:14:30.257Z",
-        "read": false
+        "read": true
       }
     ],
     "CS-USR-26-609104": [],
@@ -1868,6 +1938,16 @@
       "candidateId": "USR-01712345678",
       "role": "candidate",
       "expiresAt": "2026-11-16T14:26:47.438Z"
+    },
+    "cluster9_audit_session_1794235895433": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T14:51:35.433Z"
+    },
+    "cluster9_audit_session_1794236119516": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T14:55:19.516Z"
     }
   },
   "coupons": {},
@@ -20925,7 +21005,9 @@
     ]
   },
   "circularChangeProposals": [],
-  "userJobReminders": {},
+  "userJobReminders": {
+    "USR-01712345678": []
+  },
   "notificationDeliveries": [],
   "monitoringRuns": [
     {
@@ -22530,6 +22612,26 @@
     }
   ],
   "jobAlertSubscriptions": [
+    {
+      "id": "SUB-2026-1159",
+      "phone": "01799887766",
+      "email": "audit_alert@example.com",
+      "channels": [
+        "whatsapp",
+        "sms"
+      ],
+      "categories": [
+        "বিসিএস ও সরকারি চাকরি",
+        "ব্যাংক ও আর্থিক প্রতিষ্ঠান"
+      ],
+      "divisions": [
+        "সারা বাংলাদেশ (সকল জেলা)"
+      ],
+      "frequency": "instant",
+      "status": "active",
+      "createdAt": "2026-11-09T14:55:25.981Z",
+      "updatedAt": "2026-11-09T14:55:25.981Z"
+    },
     {
       "id": "SUB-2026-2227",
       "phone": "01899-776655",

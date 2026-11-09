@@ -18,6 +18,8 @@ export default function JobAlertsPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
+  const [isTestingAlert, setIsTestingAlert] = useState(false);
+  const [testSuccess, setTestSuccess] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const allCategories = [
@@ -39,7 +41,11 @@ export default function JobAlertsPage() {
     const fetchPrefs = async () => {
       setIsLoading(true);
       try {
-        const res = await fetch('/api/candidate/alerts');
+        const token = storage.getToken();
+        const headers: Record<string, string> = {};
+        if (token) headers['Authorization'] = `Bearer ${token}`;
+
+        const res = await fetch('/api/candidate/alerts', { headers });
         if (res.ok) {
           const data = await res.json();
           if (data.success && data.alertPreferences && isMounted) {
@@ -90,9 +96,13 @@ export default function JobAlertsPage() {
         frequency
       };
 
+      const token = storage.getToken();
+      const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+      if (token) headers['Authorization'] = `Bearer ${token}`;
+
       const res = await fetch('/api/candidate/alerts', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers,
         body: JSON.stringify(payload)
       });
 
@@ -110,8 +120,50 @@ export default function JobAlertsPage() {
     }
   };
 
+  const handleSendTestAlert = async () => {
+    setIsTestingAlert(true);
+    setTestSuccess(false);
+    setErrorMessage(null);
+
+    try {
+      const payload = {
+        categories,
+        districts: [district],
+        district,
+        whatsappAlert,
+        smsAlert,
+        emailAlert,
+        frequency,
+        sendTestAlert: true
+      };
+
+      const token = storage.getToken();
+      const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+      if (token) headers['Authorization'] = `Bearer ${token}`;
+
+      const res = await fetch('/api/candidate/alerts', {
+        method: 'POST',
+        headers,
+        body: JSON.stringify(payload)
+      });
+
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setTestSuccess(true);
+        window.dispatchEvent(new Event('cs_notifications_changed'));
+        setTimeout(() => setTestSuccess(false), 5000);
+      } else {
+        setErrorMessage(data.error || 'টেস্ট অ্যালার্ট পাঠানো যায়নি।');
+      }
+    } catch (err: any) {
+      setErrorMessage(err.message || 'টেস্ট অ্যালার্টে সমস্যা হয়েছে।');
+    } finally {
+      setIsTestingAlert(false);
+    }
+  };
+
   return (
-    <div className="space-y-6 max-w-4xl">
+    <div data-testid="job-alerts-page" className="space-y-6 max-w-4xl">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-black text-slate-900 flex items-center gap-2">
@@ -123,12 +175,21 @@ export default function JobAlertsPage() {
           </p>
         </div>
 
-        {saveSuccess && (
-          <span className="px-3.5 py-1.5 bg-emerald-100 text-emerald-800 text-xs font-bold rounded-full flex items-center gap-1.5 border border-emerald-200 animate-fade-in self-start">
-            <Check className="w-4 h-4 text-emerald-600" />
-            <span>অ্যালার্ট সংরক্ষিত হয়েছে!</span>
-          </span>
-        )}
+        <div className="flex items-center gap-2 flex-wrap">
+          {saveSuccess && (
+            <span data-testid="alert-success-badge" className="px-3.5 py-1.5 bg-emerald-100 text-emerald-800 text-xs font-bold rounded-full flex items-center gap-1.5 border border-emerald-200 animate-fade-in self-start">
+              <Check className="w-4 h-4 text-emerald-600" />
+              <span>অ্যালার্ট সংরক্ষিত হয়েছে!</span>
+            </span>
+          )}
+
+          {testSuccess && (
+            <span data-testid="test-alert-success-badge" className="px-3.5 py-1.5 bg-blue-100 text-blue-800 text-xs font-bold rounded-full flex items-center gap-1.5 border border-blue-200 animate-fade-in self-start">
+              <Bell className="w-4 h-4 text-blue-600" />
+              <span>টেস্ট অ্যালার্ট পাঠানো হয়েছে! নোটিফিকেশন চেক করুন।</span>
+            </span>
+          )}
+        </div>
       </div>
 
       {errorMessage && (
@@ -138,7 +199,7 @@ export default function JobAlertsPage() {
         </div>
       )}
 
-      <form onSubmit={handleSave} className="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6">
+      <form data-testid="job-alerts-form" onSubmit={handleSave} className="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6">
         {/* Categories */}
         <div className="space-y-2">
           <div className="flex items-center justify-between">
@@ -153,6 +214,7 @@ export default function JobAlertsPage() {
                 <button
                   type="button"
                   key={idx}
+                  data-testid={`category-btn-${idx}`}
                   onClick={() => toggleCategory(cat)}
                   className={`p-3 rounded-xl border text-xs font-semibold cursor-pointer transition-all flex items-center justify-between text-left ${
                     isChecked ? 'bg-emerald-50 border-emerald-400 text-emerald-950 font-bold shadow-2xs' : 'bg-slate-50/70 border-slate-200 text-slate-600 hover:bg-slate-100'
@@ -175,6 +237,7 @@ export default function JobAlertsPage() {
             </label>
             <input
               type="text"
+              data-testid="district-input"
               value={district}
               onChange={(e) => setDistrict(e.target.value)}
               placeholder="যেমন: ঢাকা, চট্টগ্রাম, রাজশাহী..."
@@ -186,6 +249,7 @@ export default function JobAlertsPage() {
                 <button
                   key={d}
                   type="button"
+                  data-testid={`district-pill-${d}`}
                   onClick={() => setDistrict(d)}
                   className={`px-2 py-0.5 rounded-md text-[10px] font-bold transition-colors ${
                     district === d ? 'bg-emerald-700 text-white' : 'bg-slate-100 hover:bg-slate-200 text-slate-600'
@@ -203,6 +267,7 @@ export default function JobAlertsPage() {
               <span>অ্যালার্ট পাঠানোর ফ্রিকোয়েন্সি:</span>
             </label>
             <select
+              data-testid="frequency-select"
               value={frequency}
               onChange={(e) => setFrequency(e.target.value)}
               className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-emerald-600 focus:bg-white transition-all text-xs font-medium text-slate-800 cursor-pointer"
@@ -229,6 +294,7 @@ export default function JobAlertsPage() {
             }`}>
               <input
                 type="checkbox"
+                data-testid="whatsapp-checkbox"
                 checked={whatsappAlert}
                 onChange={(e) => setWhatsappAlert(e.target.checked)}
                 className="mt-0.5 rounded text-emerald-700 focus:ring-emerald-500"
@@ -248,6 +314,7 @@ export default function JobAlertsPage() {
             }`}>
               <input
                 type="checkbox"
+                data-testid="sms-checkbox"
                 checked={smsAlert}
                 onChange={(e) => setSmsAlert(e.target.checked)}
                 className="mt-0.5 rounded text-emerald-700 focus:ring-emerald-500"
@@ -267,6 +334,7 @@ export default function JobAlertsPage() {
             }`}>
               <input
                 type="checkbox"
+                data-testid="email-checkbox"
                 checked={emailAlert}
                 onChange={(e) => setEmailAlert(e.target.checked)}
                 className="mt-0.5 rounded text-emerald-700 focus:ring-emerald-500"
@@ -282,30 +350,53 @@ export default function JobAlertsPage() {
           </div>
         </div>
 
-        {/* Footer / Save Action */}
+        {/* Footer / Save Action & Test Alert Button */}
         <div className="pt-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="text-xs text-slate-500 flex items-center gap-1.5">
             <Sparkles className="w-4 h-4 text-emerald-600" />
             <span>প্রার্থীরা যেকোনো সময় তাদের অ্যালার্ট পছন্দ পরিবর্তন বা বন্ধ করতে পারেন।</span>
           </div>
 
-          <button
-            type="submit"
-            disabled={isSaving}
-            className="w-full sm:w-auto px-6 py-2.5 bg-emerald-700 hover:bg-emerald-800 active:scale-[0.99] disabled:opacity-50 text-white rounded-xl text-xs font-bold shadow-sm transition-all flex items-center justify-center gap-2 cursor-pointer"
-          >
-            {isSaving ? (
-              <>
-                <RefreshCw className="w-4 h-4 animate-spin" />
-                <span>সংরক্ষণ করা হচ্ছে...</span>
-              </>
-            ) : (
-              <>
-                <Save className="w-4 h-4" />
-                <span>সেটিংস সেভ করুন</span>
-              </>
-            )}
-          </button>
+          <div className="flex items-center gap-2 w-full sm:w-auto">
+            <button
+              type="button"
+              data-testid="send-test-alert-btn"
+              onClick={handleSendTestAlert}
+              disabled={isTestingAlert || isSaving}
+              className="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50"
+            >
+              {isTestingAlert ? (
+                <>
+                  <RefreshCw className="w-4 h-4 animate-spin" />
+                  <span>পাঠানো হচ্ছে...</span>
+                </>
+              ) : (
+                <>
+                  <Bell className="w-4 h-4 text-emerald-700" />
+                  <span>টেস্ট অ্যালার্ট পাঠান</span>
+                </>
+              )}
+            </button>
+
+            <button
+              type="submit"
+              data-testid="save-alerts-btn"
+              disabled={isSaving}
+              className="w-full sm:w-auto px-6 py-2.5 bg-emerald-700 hover:bg-emerald-800 active:scale-[0.99] disabled:opacity-50 text-white rounded-xl text-xs font-bold shadow-sm transition-all flex items-center justify-center gap-2 cursor-pointer"
+            >
+              {isSaving ? (
+                <>
+                  <RefreshCw className="w-4 h-4 animate-spin" />
+                  <span>সংরক্ষণ করা হচ্ছে...</span>
+                </>
+              ) : (
+                <>
+                  <Save className="w-4 h-4" />
+                  <span>সেটিংস সেভ করুন</span>
+                </>
+              )}
+            </button>
+          </div>
         </div>
       </form>
     </div>

@@ -39,8 +39,12 @@ export default function SavedJobsPage() {
     const syncWithServer = async () => {
       setIsSyncing(true);
       try {
+        const token = storage.getToken();
+        const headers: Record<string, string> = {};
+        if (token) headers['Authorization'] = `Bearer ${token}`;
+
         // Fetch server saved jobs
-        const res = await fetch('/api/candidate/saved-jobs');
+        const res = await fetch('/api/candidate/saved-jobs', { headers });
         if (res.ok) {
           const data = await res.json();
           if (data.success && Array.isArray(data.savedJobs)) {
@@ -63,10 +67,14 @@ export default function SavedJobsPage() {
     };
 
     syncWithServer();
-        // 3. Fetch candidate active reminders from Step 08 API
+    // 3. Fetch candidate active reminders from Step 08 API
     const fetchReminders = async () => {
       try {
-        const rRes = await fetch('/api/candidate/job-reminders');
+        const token = storage.getToken();
+        const headers: Record<string, string> = {};
+        if (token) headers['Authorization'] = `Bearer ${token}`;
+
+        const rRes = await fetch('/api/candidate/job-reminders', { headers });
         if (rRes.ok) {
           const rData = await rRes.json();
           if (rData.success && Array.isArray(rData.reminders)) {
@@ -101,9 +109,14 @@ export default function SavedJobsPage() {
   const handleToggleReminder = async (jobId: string, jobTitle: string) => {
     const isSubscribed = activeReminderJobIds.has(jobId);
     try {
+      const token = storage.getToken();
+      const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+      if (token) headers['Authorization'] = `Bearer ${token}`;
+
       if (isSubscribed) {
         const res = await fetch(`/api/candidate/job-reminders?jobId=${encodeURIComponent(jobId)}`, {
-          method: 'DELETE'
+          method: 'DELETE',
+          headers
         });
         if (res.ok) {
           setActiveReminderJobIds(prev => {
@@ -117,7 +130,7 @@ export default function SavedJobsPage() {
       } else {
         const res = await fetch('/api/candidate/job-reminders', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers,
           body: JSON.stringify({
             jobId,
             daysBefore: [7, 3, 1, 0],
@@ -138,21 +151,27 @@ export default function SavedJobsPage() {
 
   const handleRemove = async (id: string) => {
     try {
+      const token = storage.getToken();
+      const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+      if (token) headers['Authorization'] = `Bearer ${token}`;
+
       const response = await fetch('/api/candidate/saved-jobs', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        method: 'POST',
+        headers,
         body: JSON.stringify({ jobId: id, action: 'unsave' })
       });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || 'সংরক্ষিত চাকরি সরানো যায়নি');
       storage.replaceSavedJobIds(data.savedJobs);
       setSavedIds(data.savedJobs);
+      window.dispatchEvent(new Event('cs_saved_changed'));
     } catch (error) {
       setReminderToast(error instanceof Error ? error.message : 'সংরক্ষিত চাকরি সরানো যায়নি');
     }
   };
 
   return (
-    <div className="space-y-6 max-w-5xl">
+    <div data-testid="saved-jobs-page" className="space-y-6 max-w-5xl">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-black text-slate-900 flex items-center gap-2">
@@ -170,7 +189,7 @@ export default function SavedJobsPage() {
 
       {/* Step 08 Deadline Urgency Filter Pills & Toast */}
       {reminderToast && (
-        <div className="p-3 bg-emerald-50 border border-emerald-300 text-emerald-800 rounded-xl text-xs font-bold flex items-center gap-2">
+        <div data-testid="saved-jobs-toast" className="p-3 bg-emerald-50 border border-emerald-300 text-emerald-800 rounded-xl text-xs font-bold flex items-center gap-2">
           <CheckCircle2 className="w-4 h-4 text-emerald-600" />
           <span>{reminderToast}</span>
         </div>
@@ -179,8 +198,9 @@ export default function SavedJobsPage() {
       {savedJobs.length > 0 && (
         <div className="flex flex-wrap items-center gap-2 border-b border-slate-200 pb-3">
           <button
+            data-testid="urgency-filter-all"
             onClick={() => setActiveUrgencyFilter('all')}
-            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
+            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
               activeUrgencyFilter === 'all'
                 ? 'bg-emerald-700 text-white shadow-xs'
                 : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'
@@ -189,8 +209,9 @@ export default function SavedJobsPage() {
             সকল সংরক্ষিত ({savedJobs.length})
           </button>
           <button
+            data-testid="urgency-filter-closing-today"
             onClick={() => setActiveUrgencyFilter('closing_today')}
-            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
+            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
               activeUrgencyFilter === 'closing_today'
                 ? 'bg-rose-600 text-white shadow-xs'
                 : 'bg-white text-rose-700 hover:bg-rose-50 border border-rose-200'
@@ -199,8 +220,9 @@ export default function SavedJobsPage() {
             আজই শেষ ({savedJobs.filter(j => j.daysRemaining === 0).length})
           </button>
           <button
+            data-testid="urgency-filter-closing-soon"
             onClick={() => setActiveUrgencyFilter('closing_soon')}
-            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
+            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
               activeUrgencyFilter === 'closing_soon'
                 ? 'bg-amber-600 text-white shadow-xs'
                 : 'bg-white text-amber-700 hover:bg-amber-50 border border-amber-200'
@@ -209,8 +231,9 @@ export default function SavedJobsPage() {
             শীঘ্রই শেষ ({savedJobs.filter(j => (j.daysRemaining || 0) > 0 && (j.daysRemaining || 0) <= 3).length})
           </button>
           <button
+            data-testid="urgency-filter-active"
             onClick={() => setActiveUrgencyFilter('active')}
-            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
+            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
               activeUrgencyFilter === 'active'
                 ? 'bg-emerald-700 text-white shadow-xs'
                 : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'
@@ -219,8 +242,9 @@ export default function SavedJobsPage() {
             চলমান ({savedJobs.filter(j => (j.daysRemaining || 0) >= 0).length})
           </button>
           <button
+            data-testid="urgency-filter-expired"
             onClick={() => setActiveUrgencyFilter('expired')}
-            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
+            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
               activeUrgencyFilter === 'expired'
                 ? 'bg-slate-700 text-white shadow-xs'
                 : 'bg-white text-slate-500 hover:bg-slate-100 border border-slate-200'
@@ -233,47 +257,66 @@ export default function SavedJobsPage() {
 
       {filteredSavedJobs.length > 0 ? (
         <div className="space-y-3">
-          {filteredSavedJobs.map((job) => { const isReminded = activeReminderJobIds.has(job.id); const isExpired = (job.daysRemaining || 0) < 0; return (
-            <div
-              key={job.id}
-              className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:border-emerald-300 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4"
-            >
-              <div className="space-y-1.5">
-                <div className="flex items-center gap-2">
-                  <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200">
-                    {job.categoryLabel}
-                  </span>
-                  <span className="text-xs text-slate-500 font-semibold">{job.grade}</span>
+          {filteredSavedJobs.map((job) => {
+            const isReminded = activeReminderJobIds.has(job.id);
+            const isExpired = (job.daysRemaining || 0) < 0;
+            return (
+              <div
+                key={job.id}
+                data-testid="saved-job-card"
+                className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:border-emerald-300 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+              >
+                <div className="space-y-1.5">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200">
+                      {job.categoryLabel}
+                    </span>
+                    <span className="text-xs text-slate-500 font-semibold">{job.grade}</span>
+                  </div>
+                  <h3 className="font-bold text-base text-slate-900 hover:text-emerald-700 transition-colors">
+                    <Link href={`/jobs/${job.id}`}>{job.title}</Link>
+                  </h3>
+                  <div className="text-xs text-slate-500 flex flex-wrap items-center gap-3">
+                    <span>{job.organization}</span>
+                    <span>•</span>
+                    <span>পদসংখ্যা: {job.totalPosts} টি</span>
+                    <span>•</span>
+                    <DeadlineCountdown jobId={job.id} deadlineText={job.deadline} initialDaysRemaining={job.daysRemaining} compact={true} />
+                  </div>
                 </div>
-                <h3 className="font-bold text-base text-slate-900 hover:text-emerald-700 transition-colors">
-                  <Link href={`/jobs/${job.id}`}>{job.title}</Link>
-                </h3>
-                <div className="text-xs text-slate-500 flex flex-wrap items-center gap-3">
-                  <span>{job.organization}</span>
-                  <span>•</span>
-                  <span>পদসংখ্যা: {job.totalPosts} টি</span>
-                  <span>•</span>
-                  <DeadlineCountdown jobId={job.id} deadlineText={job.deadline} initialDaysRemaining={job.daysRemaining} compact={true} />
-                </div>
-              </div>
 
-              <div className="flex items-center gap-2 flex-shrink-0 self-end sm:self-center">
-                <button
-                  onClick={() => handleRemove(job.id)}
-                  className="p-2 text-slate-400 hover:text-rose-600 rounded-xl hover:bg-rose-50 transition-colors"
-                  title="তালিকা থেকে সরান"
-                >
-                  <Trash2 className="w-4 h-4" />
-                </button>
-                <Link
-                  href={`/apply/${job.id}`}
-                  className="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-bold shadow-sm transition-colors"
-                >
-                  ১-ক্লিক আবেদন
-                </Link>
+                <div className="flex items-center gap-2 flex-shrink-0 self-end sm:self-center">
+                  <button
+                    data-testid="toggle-reminder-btn"
+                    onClick={() => handleToggleReminder(job.id, job.title)}
+                    className={`p-2 rounded-xl transition-colors cursor-pointer ${
+                      isReminded
+                        ? 'bg-amber-50 text-amber-600 hover:bg-amber-100'
+                        : 'text-slate-400 hover:text-amber-600 hover:bg-slate-100'
+                    }`}
+                    title={isReminded ? 'রিমাইন্ডার বন্ধ করুন' : 'ডেডলাইন রিমাইন্ডার চালু করুন'}
+                  >
+                    {isReminded ? <BellRing className="w-4 h-4 text-amber-600" /> : <Bell className="w-4 h-4" />}
+                  </button>
+                  <button
+                    data-testid="unsave-job-btn"
+                    onClick={() => handleRemove(job.id)}
+                    className="p-2 text-slate-400 hover:text-rose-600 rounded-xl hover:bg-rose-50 transition-colors cursor-pointer"
+                    title="তালিকা থেকে সরান"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                  <Link
+                    data-testid="apply-now-btn"
+                    href={`/jobs/${job.id}`}
+                    className="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-bold shadow-sm transition-colors cursor-pointer"
+                  >
+                    ১-ক্লিক আবেদন
+                  </Link>
+                </div>
               </div>
-            </div>
-          ); })}
+            );
+          })}
         </div>
       ) : (
         <div className="bg-white rounded-3xl border border-slate-200 p-12 text-center space-y-3">
@@ -284,7 +327,7 @@ export default function SavedJobsPage() {
           </p>
           <Link
             href="/jobs"
-            className="inline-block px-4 py-2 bg-emerald-700 text-white rounded-xl text-xs font-bold mt-2 hover:bg-emerald-800"
+            className="inline-block px-4 py-2 bg-emerald-700 text-white rounded-xl text-xs font-bold mt-2 hover:bg-emerald-800 cursor-pointer"
           >
             সার্কুলার ব্রাউজ করুন
           </Link>

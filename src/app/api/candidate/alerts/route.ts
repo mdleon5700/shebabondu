@@ -86,9 +86,19 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Failed to update preferences' }, { status: 404 });
     }
 
+    if (body.sendTestAlert) {
+      serverDB.addCandidateNotification(targetId, {
+        title: '🔔 টেস্ট জব অ্যালার্ট (সফল)',
+        message: `আপনার নোটিফিকেশন অ্যালার্ট সফলভাবে সক্রিয় আছে। চ্যানেল: ${[alertPreferences.whatsappAlert && 'হোয়াটসঅ্যাপ', alertPreferences.smsAlert && 'এসএমএস', alertPreferences.emailAlert && 'ইমেইল'].filter(Boolean).join(', ') || 'ইন-অ্যাপ'}। নির্বাচিত ক্যাটাগরি: ${alertPreferences.categories.slice(0, 2).join(', ')}।`,
+        type: 'system',
+        link: '/dashboard/alerts'
+      });
+    }
+
     return NextResponse.json({
       success: true,
-      alertPreferences: updated.alertPreferences
+      alertPreferences: updated.alertPreferences,
+      testAlertSent: Boolean(body.sendTestAlert)
     });
   } catch (err: any) {
     return NextResponse.json({ error: err.message }, { status: 500 });

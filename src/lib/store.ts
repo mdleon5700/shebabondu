@@ -267,6 +267,10 @@ export const storage = {
       window.dispatchEvent(new Event('cs_auth_changed'));
     }
   },
+  getToken(): string | null {
+    if (typeof window === 'undefined') return null;
+    return localStorage.getItem('cs_session_token');
+  },
   logout() {
     if (typeof window !== 'undefined') {
       localStorage.removeItem(AUTH_KEY);

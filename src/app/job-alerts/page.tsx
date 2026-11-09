@@ -175,7 +175,7 @@ export default function JobAlertsPage() {
 
       {subscribedData ? (
         /* Confirmation Screen */
-        <div className="bg-white rounded-3xl border border-emerald-200 p-8 shadow-lg text-center space-y-5 animate-scaleUp">
+        <div data-testid="public-alert-confirmation" className="bg-white rounded-3xl border border-emerald-200 p-8 shadow-lg text-center space-y-5 animate-scaleUp">
           <div className="w-16 h-16 bg-emerald-100 text-emerald-700 rounded-3xl flex items-center justify-center mx-auto shadow-sm">
             <CheckCircle2 className="w-10 h-10" />
           </div>
@@ -354,6 +354,7 @@ export default function JobAlertsPage() {
                   <input
                     type="tel"
                     required
+                    data-testid="public-alert-phone-input"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     placeholder="017XXXXXXXX"
@@ -367,6 +368,7 @@ export default function JobAlertsPage() {
                   </label>
                   <input
                     type="email"
+                    data-testid="public-alert-email-input"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="name@gmail.com"
@@ -378,6 +380,7 @@ export default function JobAlertsPage() {
               {/* Submit Button */}
               <button
                 type="submit"
+                data-testid="public-alert-submit-btn"
                 disabled={isSubmitting}
                 className="w-full py-4 bg-emerald-700 hover:bg-emerald-800 disabled:bg-emerald-400 text-white rounded-2xl font-black text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer hover:scale-[1.01]"
               >

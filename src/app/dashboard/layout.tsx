@@ -92,7 +92,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const router = useRouter();
   const [profile, setProfile] = useState<CandidateProfile>(mockUserProfile);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
-  const [completion, setCompletion] = useState(85);
+  const [completion, setCompletion] = useState(0);
   const [isMounted, setIsMounted] = useState(false);
   const [sessionChecked, setSessionChecked] = useState(false);
   const [impersonatingName, setImpersonatingName] = useState<string | null>(null);
@@ -111,8 +111,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     const currentAuth = storage.getAuth();
     if (currentAuth.isLoggedIn && currentAuth.role === 'candidate') {
       const cachedUser = storage.getUser();
+      const cachedDocs = storage.getDocuments();
       setProfile(cachedUser);
-      setCompletion(storage.calculateProfileCompletion(cachedUser));
+      setCompletion(storage.calculateProfileCompletion(cachedUser, cachedDocs));
       setSessionChecked(true);
     }
 
@@ -133,7 +134,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           storage.setAuth({ isLoggedIn: true, role: 'candidate', userId: data.user.id, name: data.user.name, phone: data.user.phone });
           storage.updateUser(data.user);
           setProfile(data.user);
-          setCompletion(storage.calculateProfileCompletion(data.user));
+          setCompletion(storage.calculateProfileCompletion(data.user, storage.getDocuments()));
         } else if (!storage.getAuth().isLoggedIn) {
           router.replace('/login?redirect=' + encodeURIComponent(pathname));
         }
@@ -148,11 +149,15 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     const handleUserChange = () => {
       const u = storage.getUser();
       setProfile(u);
-      setCompletion(storage.calculateProfileCompletion(u));
+      setCompletion(storage.calculateProfileCompletion(u, storage.getDocuments()));
     };
 
     window.addEventListener('cs_user_changed', handleUserChange);
-    return () => window.removeEventListener('cs_user_changed', handleUserChange);
+    window.addEventListener('cs_documents_changed', handleUserChange);
+    return () => {
+      window.removeEventListener('cs_user_changed', handleUserChange);
+      window.removeEventListener('cs_documents_changed', handleUserChange);
+    };
   }, [router]);
 
   const handleLogout = async () => {

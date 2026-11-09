@@ -409,6 +409,12 @@ export const storage = {
     }
     return updated;
   },
+  replaceApplications(apps: ApplicationRequest[], targetUserId?: string) {
+    if (typeof window !== 'undefined') {
+      const key = getScopedKey('cs_apps_data', targetUserId);
+      localStorage.setItem(key, JSON.stringify(apps));
+    }
+  },
 
   // Saved Jobs (Scoped)
   getSavedJobIds(targetUserId?: string): string[] {
@@ -563,23 +569,47 @@ export const storage = {
     return updated;
   },
 
-  // Smart Engine: Profile Completion Calculator
-  calculateProfileCompletion(profile: CandidateProfile): number {
+  // Smart Engine: Profile Completion Calculator (5 Core Pillars - 20% each)
+  calculateProfileCompletion(profile: CandidateProfile, documents?: CandidateDocument[]): number {
     if (!profile) return 0;
     let score = 0;
-    const hasPersonal = Boolean(profile.name && (profile.dob || (profile as any).dateOfBirth) && (profile.phone || profile.email));
-    if (hasPersonal) score += 25;
 
-    if (profile.education && profile.education.length > 0) score += 25;
-    if (profile.skills && profile.skills.length > 0) score += 20;
+    // Pillar 1: Basic Identity & Personal Info (20%)
+    const hasBasic = Boolean(
+      (profile.name?.trim() || profile.nameBn?.trim()) &&
+      (profile.phone?.trim() || profile.email?.trim()) &&
+      (profile.dob || (profile as any).dateOfBirth)
+    );
+    if (hasBasic) score += 20;
 
-    const hasExp = Boolean((profile.experiences && profile.experiences.length > 0) || ((profile as any).experience && (profile as any).experience.length > 0));
-    if (hasExp) score += 10;
+    // Pillar 2: Candidate Photo (20%)
+    const hasPhoto = Boolean(
+      (profile.photoUrl && !profile.photoUrl.includes('data:image/svg+xml') && !profile.photoUrl.includes('avatar-placeholder') && profile.photoUrl.length > 20) ||
+      (documents && documents.some(d => d.type === 'photo')) ||
+      (typeof window !== 'undefined' && this.getDocuments().some(d => d.type === 'photo'))
+    );
+    if (hasPhoto) score += 20;
 
-    const hasPrefs = Boolean(profile.careerPreferences?.preferredCategories && profile.careerPreferences.preferredCategories.length > 0);
-    if (hasPrefs) score += 10;
+    // Pillar 3: Digital Signature (20%)
+    const hasSignature = Boolean(
+      (profile.signatureUrl && !profile.signatureUrl.includes('data:image/svg+xml') && !profile.signatureUrl.includes('signature-placeholder') && profile.signatureUrl.length > 20) ||
+      (documents && documents.some(d => d.type === 'signature')) ||
+      (typeof window !== 'undefined' && this.getDocuments().some(d => d.type === 'signature'))
+    );
+    if (hasSignature) score += 20;
 
-    if (profile.district || profile.division || profile.address) score += 10;
+    // Pillar 4: Educational Qualifications (20%)
+    const hasEdu = Boolean(profile.education && profile.education.length > 0);
+    if (hasEdu) score += 20;
+
+    // Pillar 5: National ID Card (20%)
+    const hasNid = Boolean(
+      (profile.nid && profile.nid.trim().length >= 10) ||
+      (profile as any).nidUrl ||
+      (documents && documents.some(d => d.type === 'nid')) ||
+      (typeof window !== 'undefined' && this.getDocuments().some(d => d.type === 'nid'))
+    );
+    if (hasNid) score += 20;
 
     return Math.min(100, Math.max(0, score));
   },

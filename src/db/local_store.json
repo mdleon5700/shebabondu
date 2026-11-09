@@ -16,8 +16,8 @@
       "district": "ঢাকা",
       "address": "বাড়ি ৪২, রোড ৭, ব্লক সি, মিরপুর-১০, ঢাকা-১২১৬",
       "permanentAddress": "গ্রাম: উত্তরপাড়া, ডাকঘর: টাঙ্গাইল সদর, জেলা: টাঙ্গাইল",
-      "photoUrl": "/images/avatar-placeholder.png",
-      "signatureUrl": "/images/signature-placeholder.png",
+      "photoUrl": "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=400&q=80",
+      "signatureUrl": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=400&q=80",
       "walletBalance": 450,
       "maritalStatus": "single",
       "quota": "none",
@@ -195,17 +195,136 @@
     }
   },
   "documents": {
-    "USR-01712345678": [],
+    "USR-01712345678": [
+      {
+        "id": "DOC-01",
+        "type": "photo",
+        "title": "প্রার্থীর ছবি (টেলিটক স্ট্যান্ডার্ড)",
+        "fileName": "candidate-photo-300x300.jpg",
+        "fileSize": "৭২ KB",
+        "dimensions": "300 × 300 px",
+        "uploadDate": "২৪ অক্টোবর ২০২৬",
+        "dataUrl": "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=400&q=80",
+        "isVerified": true
+      },
+      {
+        "id": "DOC-02",
+        "type": "signature",
+        "title": "ডিজিটাল স্বাক্ষর (স্বচ্ছ ব্যাকগ্রাউন্ড)",
+        "fileName": "candidate-signature-300x80.png",
+        "fileSize": "৩৮ KB",
+        "dimensions": "300 × 80 px",
+        "uploadDate": "২৪ অক্টোবর ২০২৬",
+        "dataUrl": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=400&q=80",
+        "isVerified": true
+      },
+      {
+        "id": "DOC-03",
+        "type": "nid",
+        "title": "জাতীয় পরিচয়পত্র (NID স্মার্ট কার্ড)",
+        "fileName": "smart-nid-card.pdf",
+        "fileSize": "৩৪০ KB",
+        "uploadDate": "২৫ অক্টোবর ২০২৬",
+        "isVerified": true
+      },
+      {
+        "id": "DOC-04",
+        "type": "ssc_cert",
+        "title": "এসএসসি মূল সনদপত্র ও ট্রান্সক্রিপ্ট",
+        "fileName": "ssc-certificate-dhaka-board.pdf",
+        "fileSize": "৫১২ KB",
+        "uploadDate": "২৫ অক্টোবর ২০২৬",
+        "isVerified": true
+      },
+      {
+        "id": "DOC-05",
+        "type": "grad_cert",
+        "title": "বিএসসি (সম্মান) সার্টিফিকেট ও মার্কশিট",
+        "fileName": "du-cse-certificate.pdf",
+        "fileSize": "৬২০ KB",
+        "uploadDate": "২৫ অক্টোবর ২০২৬",
+        "isVerified": true
+      }
+    ],
     "CS-USR-26-609104": [],
     "CS-USR-26-174774": []
   },
   "applications": {
-    "USR-01712345678": [],
+    "USR-01712345678": [
+      {
+        "id": "APP-2026-BB-001",
+        "candidateId": "USR-01712345678",
+        "candidateName": "মোঃ তানভীর হাসান",
+        "candidatePhone": "01712-345678",
+        "candidateDistrict": "ঢাকা",
+        "jobId": "bangladesh-bank-ad-2026",
+        "jobTitle": "সহকারী পরিচালক (জেনারেল)",
+        "organization": "বাংলাদেশ ব্যাংক",
+        "postName": "সহকারী পরিচালক",
+        "status": "processing",
+        "statusLabel": "প্রক্রিয়াধীন রয়েছে",
+        "totalAmount": 280,
+        "paymentMethod": "bKash",
+        "trxId": "BKL89921471",
+        "submittedAt": "2026-11-01T10:00:00.000Z",
+        "date": "১ নভেম্বর ২০২৬",
+        "verificationType": "officially_verified",
+        "teleTalkTrackingId": "BB-2026-VERIFIED",
+        "teleTalkPassword": "PASS-VERIFIED",
+        "notes": "টেলিটক সার্ভারে সাবমিশন চলমান।",
+        "adminNotes": "টেলিটক সার্ভারে সাবমিশন চলমান।",
+        "statusHistory": [
+          {
+            "status": "completed",
+            "date": "2026-11-09T11:14:30.220Z",
+            "notes": "অ্যাডমিন কর্তৃক আবেদন যাচাই ও সম্পন্ন করা হয়েছে।",
+            "updatedBy": "Admin (ADMIN-SUPER)"
+          },
+          {
+            "status": "completed",
+            "date": "2026-11-09T11:16:25.986Z",
+            "notes": "অ্যাডমিন কর্তৃক আবেদন যাচাই ও সম্পন্ন করা হয়েছে।",
+            "updatedBy": "Admin (ADMIN-SUPER)"
+          },
+          {
+            "status": "processing",
+            "date": "2026-11-09T11:16:31.671Z",
+            "notes": "টেলিটক সার্ভারে সাবমিশন চলমান।",
+            "updatedBy": "Admin (ADMIN-SUPER)"
+          }
+        ]
+      },
+      {
+        "id": "APP-2026-PB-002",
+        "candidateId": "USR-01712345678",
+        "candidateName": "মোঃ তানভীর হাসান",
+        "candidatePhone": "01712-345678",
+        "candidateDistrict": "ঢাকা",
+        "jobId": "petrobangla-assistant-manager-2026",
+        "jobTitle": "সহকারী ব্যবস্থাপক (প্রকৌশল)",
+        "organization": "পেট্রোবাংলা",
+        "postName": "সহকারী ব্যবস্থাপক",
+        "status": "completed",
+        "statusLabel": "আবেদন সফলভাবে সম্পন্ন",
+        "totalAmount": 550,
+        "paymentMethod": "bKash",
+        "trxId": "BKL77123992",
+        "submittedAt": "2026-10-25T14:30:00.000Z",
+        "date": "২৫ অক্টোবর ২০২৬",
+        "examDate": "2026-11-28T09:00:00.000Z",
+        "verificationType": "officially_verified",
+        "teleTalkTrackingId": "PB-2026-89104",
+        "teleTalkPassword": "PASS-9104",
+        "notes": "আবেদন সফলভাবে সম্পন্ন হয়েছে এবং অ্যাপ্লিকেশন কপি ইস্যু হয়েছে।"
+      }
+    ],
     "CS-USR-26-609104": [],
     "CS-USR-26-174774": []
   },
   "savedJobs": {
-    "USR-01712345678": [],
+    "USR-01712345678": [
+      "job-alljobs-15178"
+    ],
     "CS-USR-26-609104": [],
     "CS-USR-26-174774": []
   },
@@ -292,7 +411,35 @@
         "link": "/jobs/test-daily-job-reactive-audit"
       }
     ],
-    "USR-01712345678": [],
+    "USR-01712345678": [
+      {
+        "title": "আবেদন স্ট্যাটাস: প্রক্রিয়াধীন",
+        "message": "সহকারী পরিচালক (জেনারেল): আপনার আবেদনটি যাচাইকরণ প্রক্রিয়ায় রয়েছে।",
+        "type": "application",
+        "link": "/dashboard/applications",
+        "id": "CS-NOTIF-2611-419",
+        "date": "2026-11-09T11:16:31.712Z",
+        "read": false
+      },
+      {
+        "title": "আবেদন স্ট্যাটাস: সম্পন্ন",
+        "message": "সহকারী পরিচালক (জেনারেল): আপনার আবেদনটি সম্পন্ন হয়েছে এবং প্রাপ্তি স্বীকারপত্র তৈরি হয়েছে।",
+        "type": "application",
+        "link": "/dashboard/applications",
+        "id": "CS-NOTIF-2611-640",
+        "date": "2026-11-09T11:16:26.011Z",
+        "read": false
+      },
+      {
+        "title": "আবেদন স্ট্যাটাস: সম্পন্ন",
+        "message": "সহকারী পরিচালক (জেনারেল): আপনার আবেদনটি সম্পন্ন হয়েছে এবং প্রাপ্তি স্বীকারপত্র তৈরি হয়েছে।",
+        "type": "application",
+        "link": "/dashboard/applications",
+        "id": "CS-NOTIF-2611-675",
+        "date": "2026-11-09T11:14:30.257Z",
+        "read": false
+      }
+    ],
     "CS-USR-26-609104": [],
     "CS-USR-26-174774": []
   },
@@ -506,6 +653,51 @@
       "candidateId": "USR-01712345678",
       "role": "candidate",
       "expiresAt": "2026-11-16T10:24:16.086Z"
+    },
+    "9baa3e1415d70f419de92cff7d848b3dec8f413a33b1a36ae86e08cc6cf320ea": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T10:59:10.106Z"
+    },
+    "73bb2a6f8a2609b93f2559f4522177bb15b089fcfdb5fcb45f17c06e6abcc234": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T11:05:07.561Z"
+    },
+    "9d45867e51a4f2f2f28a198ed03400629d73c53ce16293147d0dded557872faf": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T11:06:31.658Z"
+    },
+    "5668740a26683c5c992f0b58ab795834048c560af57cd5925106cef64211dbc5": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T11:07:33.243Z"
+    },
+    "b8f474af94adfb4add5df21f68aa5b42cb063b8049f110ddbc8881516b969703": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T11:08:17.283Z"
+    },
+    "cluster2_audit_session_token_1794222781274": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T11:13:01.274Z"
+    },
+    "cluster2_audit_session_token_1794222850316": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T11:14:10.316Z"
+    },
+    "cluster2_audit_session_token_1794222936565": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T11:15:36.565Z"
+    },
+    "cluster2_audit_session_token_1794222975511": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T11:16:15.511Z"
     }
   },
   "coupons": {},
@@ -513,6 +705,48 @@
   "couponRedemptions": {},
   "raffleEntries": {},
   "adminAuditLogs": [
+    {
+      "adminId": "ADMIN-SUPER",
+      "action": "status_change",
+      "targetId": "APP-2026-BB-001",
+      "targetType": "order",
+      "changes": {
+        "status": {
+          "new": "processing"
+        }
+      },
+      "notes": "Application APP-2026-BB-001 transitioned to processing",
+      "id": "AUDIT-1794222991751-QIO2V",
+      "timestamp": "2026-11-09T11:16:31.751Z"
+    },
+    {
+      "adminId": "ADMIN-SUPER",
+      "action": "status_change",
+      "targetId": "APP-2026-BB-001",
+      "targetType": "order",
+      "changes": {
+        "status": {
+          "new": "completed"
+        }
+      },
+      "notes": "Application APP-2026-BB-001 transitioned to completed",
+      "id": "AUDIT-1794222986037-XC4GY",
+      "timestamp": "2026-11-09T11:16:26.038Z"
+    },
+    {
+      "adminId": "ADMIN-SUPER",
+      "action": "status_change",
+      "targetId": "APP-2026-BB-001",
+      "targetType": "order",
+      "changes": {
+        "status": {
+          "new": "completed"
+        }
+      },
+      "notes": "Application APP-2026-BB-001 transitioned to completed",
+      "id": "AUDIT-1794222870294-68EUX",
+      "timestamp": "2026-11-09T11:14:30.294Z"
+    },
     {
       "id": "AUDIT-1794208915076-X7ABZ",
       "adminId": "ADMIN-SUPER",
@@ -1083,7 +1317,7 @@
       "maxAge": 32,
       "ageCutOffDate": "2026-11-01",
       "districts": "সকল জেলা",
-      "deadline": "১০ ডিসেম্বর ২০২৬",
+      "deadline": "১১ নভেম্বর ২০২৬",
       "applicationStartDate": "১০ নভেম্বর ২০২৬",
       "publishedDate": "১০ নভেম্বর ২০২৬",
       "officialLink": "https://fri.teletalk.com.bd/",
@@ -1120,7 +1354,8 @@
       "seoTitle": "হিসাবরক্ষক নিয়োগ বিজ্ঞপ্তি ২০২৬ - বাংলাদেশ মৎস্য গবেষণা ইনস্টিটিউট (২ জন)",
       "seoDescription": "বাংলাদেশ মৎস্য গবেষণা ইনস্টিটিউট-এ হিসাবরক্ষক পদে ২ জন নিয়োগের বিজ্ঞপ্তি ২০২৬। গ্রেড: ১১তম গ্রেড, বেতন: ১২,৫০০ - ৩২,২৪০/- টাকা। বিস্তারিত ও অনলাইন আবেদন নিয়ম।",
       "bengaliDescription": "বাংলাদেশ মৎস্য গবেষণা ইনস্টিটিউট-এ হিসাবরক্ষক পদে সর্বমোট ২ জনকে নিয়োগের জন্য বিজ্ঞপ্তি প্রকাশ করা হয়েছে। আগ্রহী প্রার্থীরা অনলাইনে আবেদন করতে পারবেন।",
-      "verificationNotes": "AllJobs Teletalk Public API (Job ID: GJOB15183) & Gazette Pay Scale 2015 Verified"
+      "verificationNotes": "AllJobs Teletalk Public API (Job ID: GJOB15183) & Gazette Pay Scale 2015 Verified",
+      "daysRemaining": 2
     },
     "job-alljobs-15182": {
       "id": "job-alljobs-15182",
@@ -1139,7 +1374,7 @@
       "maxAge": 32,
       "ageCutOffDate": "2026-11-01",
       "districts": "সকল জেলা",
-      "deadline": "১০ ডিসেম্বর ২০২৬",
+      "deadline": "১০ নভেম্বর ২০২৬",
       "applicationStartDate": "১০ নভেম্বর ২০২৬",
       "publishedDate": "১০ নভেম্বর ২০২৬",
       "officialLink": "https://fri.teletalk.com.bd/",
@@ -1176,7 +1411,8 @@
       "seoTitle": "কম্পিউটার অপারেটর নিয়োগ বিজ্ঞপ্তি ২০২৬ - বাংলাদেশ মৎস্য গবেষণা ইনস্টিটিউট (৫ জন)",
       "seoDescription": "বাংলাদেশ মৎস্য গবেষণা ইনস্টিটিউট-এ কম্পিউটার অপারেটর পদে ৫ জন নিয়োগের বিজ্ঞপ্তি ২০২৬। গ্রেড: ১৪তম গ্রেড, বেতন: ১০,২০০ - ২৪,৬৮০/- টাকা। বিস্তারিত ও অনলাইন আবেদন নিয়ম।",
       "bengaliDescription": "বাংলাদেশ মৎস্য গবেষণা ইনস্টিটিউট-এ কম্পিউটার অপারেটর পদে সর্বমোট ৫ জনকে নিয়োগের জন্য বিজ্ঞপ্তি প্রকাশ করা হয়েছে। আগ্রহী প্রার্থীরা অনলাইনে আবেদন করতে পারবেন।",
-      "verificationNotes": "AllJobs Teletalk Public API (Job ID: GJOB15182) & Gazette Pay Scale 2015 Verified"
+      "verificationNotes": "AllJobs Teletalk Public API (Job ID: GJOB15182) & Gazette Pay Scale 2015 Verified",
+      "daysRemaining": 1
     },
     "job-alljobs-15184": {
       "id": "job-alljobs-15184",
@@ -1195,7 +1431,7 @@
       "maxAge": 32,
       "ageCutOffDate": "2026-11-01",
       "districts": "সকল জেলা",
-      "deadline": "১০ ডিসেম্বর ২০২৬",
+      "deadline": "১৩ নভেম্বর ২০২৬",
       "applicationStartDate": "১০ নভেম্বর ২০২৬",
       "publishedDate": "১০ নভেম্বর ২০২৬",
       "officialLink": "https://fri.teletalk.com.bd/",
@@ -1232,7 +1468,8 @@
       "seoTitle": "ক্যাশিয়ার নিয়োগ বিজ্ঞপ্তি ২০২৬ - বাংলাদেশ মৎস্য গবেষণা ইনস্টিটিউট (১ জন)",
       "seoDescription": "বাংলাদেশ মৎস্য গবেষণা ইনস্টিটিউট-এ ক্যাশিয়ার পদে ১ জন নিয়োগের বিজ্ঞপ্তি ২০২৬। গ্রেড: ১৫তম গ্রেড, বেতন: ৯,৭০০ - ২৩,৪৯০/- টাকা। বিস্তারিত ও অনলাইন আবেদন নিয়ম।",
       "bengaliDescription": "বাংলাদেশ মৎস্য গবেষণা ইনস্টিটিউট-এ ক্যাশিয়ার পদে সর্বমোট ১ জনকে নিয়োগের জন্য বিজ্ঞপ্তি প্রকাশ করা হয়েছে। আগ্রহী প্রার্থীরা অনলাইনে আবেদন করতে পারবেন।",
-      "verificationNotes": "AllJobs Teletalk Public API (Job ID: GJOB15184) & Gazette Pay Scale 2015 Verified"
+      "verificationNotes": "AllJobs Teletalk Public API (Job ID: GJOB15184) & Gazette Pay Scale 2015 Verified",
+      "daysRemaining": 4
     },
     "job-alljobs-15185": {
       "id": "job-alljobs-15185",

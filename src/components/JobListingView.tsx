@@ -1,9 +1,8 @@
 'use client';
-import { matchJobQuery, matchGradeComprehensive, toBn } from '@/lib/search-helper';
-import { fetchPublicJobs } from '@/lib/public-jobs-client';
 
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, Suspense } from 'react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import { 
   Briefcase,
   AlertCircle,
@@ -12,21 +11,26 @@ import {
   Filter, 
   ChevronLeft, 
   ChevronRight, 
-  Calendar, 
   Sparkles, 
   CheckCircle2, 
   Building2, 
-  Users, 
   Clock, 
   BookOpen,
   ArrowRight,
   Flame,
   Layers,
-  GraduationCap
+  GraduationCap,
+  Award,
+  SlidersHorizontal,
+  RotateCcw,
+  Banknote,
+  MapPin
 } from 'lucide-react';
 import { JobCircular } from '@/lib/types';
 import { storage } from '@/lib/store';
 import JobCard from './JobCard';
+import { matchJobQuery, matchGradeComprehensive, parseSalaryRange, toBn } from '@/lib/search-helper';
+import { fetchPublicJobs } from '@/lib/public-jobs-client';
 
 interface BreadcrumbItem {
   label: string;
@@ -50,7 +54,7 @@ interface JobListingViewProps {
 
 const JOBS_PER_PAGE = 9;
 
-export default function JobListingView({
+function JobListingViewContent({
   title,
   subtitle,
   badge = 'চলমান নিয়োগ',
@@ -60,9 +64,19 @@ export default function JobListingView({
   seoTextContent,
   canonicalUrl
 }: JobListingViewProps) {
+  const searchParams = useSearchParams();
+  const initialQ = searchParams?.get('q') || searchParams?.get('search') || '';
+  const initialCat = searchParams?.get('category') || 'all';
+  const initialGrade = searchParams?.get('grade') || 'all';
+  const initialDistrict = searchParams?.get('district') || 'all';
+  const initialSalary = searchParams?.get('salary') || 'all';
+
   const [jobs, setJobs] = useState<JobCircular[]>([]);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedGrade, setSelectedGrade] = useState('all');
+  const [searchQuery, setSearchQuery] = useState(initialQ);
+  const [selectedCategory, setSelectedCategory] = useState(initialCat);
+  const [selectedGrade, setSelectedGrade] = useState(initialGrade);
+  const [selectedDistrict, setSelectedDistrict] = useState(initialDistrict);
+  const [selectedSalary, setSelectedSalary] = useState(initialSalary);
   const [sortBy, setSortBy] = useState<'deadline' | 'recent' | 'posts'>('deadline');
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -107,14 +121,16 @@ export default function JobListingView({
     return () => window.removeEventListener('cs_jobs_changed', handleJobsChanged);
   }, []);
 
-  // Filter jobs based on filterType
+  // Filter jobs based on filterType and active interactive selectors
   const filteredJobs = useMemo(() => {
     return jobs.filter((job) => {
-      // Custom filter based on type string
+      // 1. Initial Page-level FilterType (e.g. ssc, hsc, bachelor, etc.)
       switch (filterType) {
-        case 'latest':
-          const isRecent = !job.publishedDate || job.publishedDate.includes('নভেম্বর') || job.publishedDate.includes('অক্টোবর') || (job.daysRemaining && job.daysRemaining > 0); if (!(job.featured || isRecent || (job.daysRemaining && job.daysRemaining > 15))) return false;
+        case 'latest': {
+          const isRecent = !job.publishedDate || job.publishedDate.includes('নভেম্বর') || job.publishedDate.includes('অক্টোবর') || (job.daysRemaining && job.daysRemaining > 0);
+          if (!(job.featured || isRecent || (job.daysRemaining && job.daysRemaining > 15))) return false;
           break;
+        }
         case 'deadline':
           if (job.daysRemaining > 5) return false;
           break;
@@ -122,7 +138,7 @@ export default function JobListingView({
           if (!['govt', 'railway', 'defense', 'teacher'].includes(job.category)) return false;
           break;
         case 'private':
-          if (!['private', 'ngo'].includes(job.category)) return false;
+          if (!['private', 'ngo', 'company'].includes(job.category)) return false;
           break;
         case 'bank':
           if (job.category !== 'bank') return false;
@@ -239,10 +255,38 @@ export default function JobListingView({
           break;
       }
 
-      // Grade filter (using robust comprehensive multi-grade range evaluator)
+      // 2. Interactive Category Filter
+      if (selectedCategory !== 'all') {
+        if (selectedCategory === 'govt' && !(job.category === 'govt' || job.category === 'railway' || job.categoryLabel?.includes('সরকারি') || job.categoryLabel?.includes('বিসিএস'))) return false;
+        if (selectedCategory === 'company' && !(job.category === 'company' || job.category === 'private' || job.categoryLabel?.includes('কোম্পানি') || job.categoryLabel?.includes('স্বায়ত্তশাসিত'))) return false;
+        if (selectedCategory === 'bank' && !(job.category === 'bank' || job.categoryLabel?.includes('ব্যাংক'))) return false;
+        if (selectedCategory === 'defense' && !(job.category === 'defense' || job.categoryLabel?.includes('প্রতিরক্ষা') || job.categoryLabel?.includes('নিরাপত্তা') || job.categoryLabel?.includes('পুলিশ'))) return false;
+        if (selectedCategory === 'health' && !(job.category === 'health' || job.categoryLabel?.includes('স্বাস্থ্য') || job.title.includes('নার্স') || job.title.includes('মেডিকেল'))) return false;
+        if (selectedCategory === 'railway' && !(job.category === 'railway' || job.categoryLabel?.includes('রেলওয়ে') || job.organization.includes('রেলওয়ে'))) return false;
+        if (selectedCategory === 'teacher' && !(job.category === 'teacher' || job.categoryLabel?.includes('শিক্ষক') || job.title.includes('শিক্ষক'))) return false;
+        if (selectedCategory === 'engineer' && !(job.category === 'engineer' || job.title.includes('প্রকৌশলী') || job.title.includes('ইঞ্জিনিয়ার'))) return false;
+        if (selectedCategory === 'ngo' && !(job.category === 'ngo' || job.categoryLabel?.includes('এনজিও'))) return false;
+      }
+
+      // 3. Interactive Grade Filter
       if (selectedGrade !== 'all' && !matchGradeComprehensive(job.grade, selectedGrade)) return false;
 
-      // Search query (smart bilingual & position-level matching)
+      // 4. Interactive District Filter
+      if (selectedDistrict !== 'all') {
+        const d = job.districts || '';
+        const org = job.organization || '';
+        if (!d.includes('সকল জেলা') && !d.includes(selectedDistrict) && !org.includes(selectedDistrict)) return false;
+      }
+
+      // 5. Interactive Salary Range Filter
+      if (selectedSalary !== 'all') {
+        const { min, max } = parseSalaryRange(job.salary);
+        if (selectedSalary === 'under_25k' && (min === 0 || min > 25000)) return false;
+        if (selectedSalary === '25k_50k' && (max < 25000 || min > 50000)) return false;
+        if (selectedSalary === 'above_35k' && max < 35000) return false;
+      }
+
+      // 6. Interactive Search Query (Bilingual, Unicode & Position matching)
       if (searchQuery.trim()) {
         if (!matchJobQuery(job, searchQuery)) return false;
       }
@@ -259,12 +303,29 @@ export default function JobListingView({
       if (sortBy === 'posts') return b.totalPosts - a.totalPosts;
       return (b.id > a.id ? 1 : -1);
     });
-  }, [jobs, filterType, selectedGrade, searchQuery, sortBy]);
+  }, [jobs, filterType, selectedCategory, selectedGrade, selectedDistrict, selectedSalary, searchQuery, sortBy]);
 
-  // Reset pagination on search
+  // Reset pagination on any filter change
   useEffect(() => {
     setCurrentPage(1);
-  }, [searchQuery, selectedGrade, sortBy]);
+  }, [searchQuery, selectedCategory, selectedGrade, selectedDistrict, selectedSalary, sortBy]);
+
+  const hasActiveFilters = Boolean(
+    searchQuery.trim() !== '' ||
+    selectedCategory !== 'all' ||
+    selectedGrade !== 'all' ||
+    selectedDistrict !== 'all' ||
+    selectedSalary !== 'all'
+  );
+
+  const handleResetAllFilters = () => {
+    setSearchQuery('');
+    setSelectedCategory('all');
+    setSelectedGrade('all');
+    setSelectedDistrict('all');
+    setSelectedSalary('all');
+    setCurrentPage(1);
+  };
 
   const totalPages = Math.ceil(filteredJobs.length / JOBS_PER_PAGE);
   const paginatedJobs = useMemo(() => {
@@ -336,44 +397,189 @@ export default function JobListingView({
         </div>
       </div>
 
-      {/* 3. Search & Filter Bar */}
-      <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row items-center justify-between gap-3">
-        {/* Search Input */}
-        <div className="relative w-full md:w-96">
-          <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
-          <input
-            type="text"
-            placeholder="পদ, প্রতিষ্ঠান বা শিক্ষাগত যোগ্যতা দিয়ে খুঁজুন..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600/30 focus:border-emerald-600 transition-all placeholder:text-slate-400"
-          />
+      {/* 3. Search & Multi-Level Filter Panel */}
+      <div className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+        {/* Top Row: Search Input + Sorting */}
+        <div className="flex flex-col md:flex-row items-center justify-between gap-3">
+          {/* Real-time Bilingual Search Input */}
+          <div className="relative w-full md:flex-1">
+            <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+            <input
+              type="text"
+              placeholder="পদ, প্রতিষ্ঠান, জেলা বা শিক্ষাগত যোগ্যতা দিয়ে খুঁজুন..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-10 pr-8 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600/30 focus:border-emerald-600 transition-all placeholder:text-slate-400 font-medium"
+            />
+            {searchQuery && (
+              <button
+                type="button"
+                onClick={() => setSearchQuery('')}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs p-1"
+                title="সার্চ মুছুন"
+              >
+                ✕
+              </button>
+            )}
+          </div>
+
+          {/* Sort By Dropdown */}
+          <div className="flex items-center gap-2 w-full md:w-auto justify-end">
+            <span className="text-xs font-semibold text-slate-500 whitespace-nowrap hidden sm:inline">সর্টিং:</span>
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value as any)}
+              className="w-full sm:w-auto px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-600/30 cursor-pointer"
+            >
+              <option value="deadline">আবেদনের শেষ সময় (নিকটবর্তী)</option>
+              <option value="recent">সর্বশেষ প্রকাশিত</option>
+              <option value="posts">সর্বোচ্চ পদসংখ্যা</option>
+            </select>
+          </div>
         </div>
 
-        {/* Grade & Sort Controls */}
-        <div className="flex items-center gap-2 w-full md:w-auto justify-end">
-          <select
-            value={selectedGrade}
-            onChange={(e) => setSelectedGrade(e.target.value)}
-            className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-600/30"
-          >
-            <option value="all">সকল গ্রেড</option>
-            <option value="৯ম গ্রেড">৯ম গ্রেড</option>
-            <option value="১০ম গ্রেড">১০ম গ্রেড</option>
-            <option value="১১তম - ১৬তম">১১তম - ১৬তম গ্রেড</option>
-            <option value="১৭তম - ২০তম">১৭তম - ২০তম গ্রেড</option>
-          </select>
+        {/* Multi-Level Filter Controls (Category, Grade, District, Salary) */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-3 border-t border-slate-100 text-xs">
+          {/* 1. Category */}
+          <div>
+            <label className="block text-[11px] font-bold text-slate-600 mb-1 flex items-center gap-1">
+              <Briefcase className="w-3 h-3 text-emerald-600" />
+              <span>ক্যাটাগরি</span>
+            </label>
+            <select
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+              className="w-full px-2.5 py-2 bg-slate-50 border border-slate-200 rounded-xl font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-600/30 cursor-pointer text-xs"
+            >
+              <option value="all">সকল ক্যাটাগরি</option>
+              <option value="govt">সরকারি চাকরি</option>
+              <option value="company">কোম্পানি ও স্বায়ত্তশাসিত</option>
+              <option value="defense">প্রতিরক্ষা ও পুলিশ</option>
+              <option value="bank">ব্যাংক ও আর্থিক</option>
+              <option value="health">স্বাস্থ্য ও চিকিৎসা</option>
+              <option value="engineer">প্রকৌশল ও টেকনিক্যাল</option>
+              <option value="teacher">শিক্ষক নিয়োগ</option>
+              <option value="railway">বাংলাদেশ রেলওয়ে</option>
+            </select>
+          </div>
 
-          <select
-            value={sortBy}
-            onChange={(e) => setSortBy(e.target.value as any)}
-            className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-600/30"
-          >
-            <option value="deadline">আবেদনের শেষ সময় (নিকটবর্তী)</option>
-            <option value="recent">সর্বশেষ প্রকাশিত</option>
-            <option value="posts">সর্বোচ্চ পদসংখ্যা</option>
-          </select>
+          {/* 2. Grade */}
+          <div>
+            <label className="block text-[11px] font-bold text-slate-600 mb-1 flex items-center gap-1">
+              <Award className="w-3 h-3 text-emerald-600" />
+              <span>বেতন স্কেল গ্রেড</span>
+            </label>
+            <select
+              value={selectedGrade}
+              onChange={(e) => setSelectedGrade(e.target.value)}
+              className="w-full px-2.5 py-2 bg-slate-50 border border-slate-200 rounded-xl font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-600/30 cursor-pointer text-xs"
+            >
+              <option value="all">সকল গ্রেড</option>
+              <option value="৯ম গ্রেড">৯ম গ্রেড (১ম শ্রেণি)</option>
+              <option value="১০ম গ্রেড">১০ম গ্রেড (২য় শ্রেণি)</option>
+              <option value="১১তম - ১৬তম">১১তম - ১৬তম গ্রেড</option>
+              <option value="১৭তম - ২০তম">১৭তম - ২০তম গ্রেড</option>
+            </select>
+          </div>
+
+          {/* 3. District */}
+          <div>
+            <label className="block text-[11px] font-bold text-slate-600 mb-1 flex items-center gap-1">
+              <MapPin className="w-3 h-3 text-emerald-600" />
+              <span>কর্মস্থল / জেলা</span>
+            </label>
+            <select
+              value={selectedDistrict}
+              onChange={(e) => setSelectedDistrict(e.target.value)}
+              className="w-full px-2.5 py-2 bg-slate-50 border border-slate-200 rounded-xl font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-600/30 cursor-pointer text-xs"
+            >
+              <option value="all">সকল জেলা</option>
+              <option value="ঢাকা">ঢাকা</option>
+              <option value="চট্টগ্রাম">চট্টগ্রাম</option>
+              <option value="রাজশাহী">রাজশাহী</option>
+              <option value="খুলনা">খুলনা</option>
+              <option value="বরিশাল">বরিশাল</option>
+              <option value="সিলেট">সিলেট</option>
+              <option value="রংপুর">রংপুর</option>
+              <option value="ময়মনসিংহ">ময়মনসিংহ</option>
+              <option value="কুমিল্লা">কুমিল্লা</option>
+              <option value="বগুড়া">বগুড়া</option>
+              <option value="নোয়াখালী">নোয়াখালী</option>
+              <option value="বাগেরহাট">বাগেরহাট</option>
+              <option value="জামালপুর">জামালপুর</option>
+              <option value="ঝিনাইদহ">ঝিনাইদহ</option>
+              <option value="চুয়াডাঙ্গা">চুয়াডাঙ্গা</option>
+              <option value="শেরপুর">শেরপুর</option>
+              <option value="দিনাজপুর">দিনাজপুর</option>
+            </select>
+          </div>
+
+          {/* 4. Salary */}
+          <div>
+            <label className="block text-[11px] font-bold text-slate-600 mb-1 flex items-center gap-1">
+              <Banknote className="w-3 h-3 text-emerald-600" />
+              <span>বেতন পরিসীমা</span>
+            </label>
+            <select
+              value={selectedSalary}
+              onChange={(e) => setSelectedSalary(e.target.value)}
+              className="w-full px-2.5 py-2 bg-slate-50 border border-slate-200 rounded-xl font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-600/30 cursor-pointer text-xs"
+            >
+              <option value="all">সকল বেতন স্কেল</option>
+              <option value="under_25k">২৫,০০০ টাকার নিচে</option>
+              <option value="25k_50k">২৫,০০০ - ৫০,০০০ টাকা</option>
+              <option value="above_35k">৩৫,০০০ টাকার উপরে</option>
+            </select>
+          </div>
         </div>
+
+        {/* Active Filters Pill Bar & One-Click Reset */}
+        {hasActiveFilters && (
+          <div className="flex flex-wrap items-center justify-between gap-2 pt-2.5 border-t border-slate-100 text-xs animate-in fade-in duration-150">
+            <div className="flex flex-wrap items-center gap-1.5 text-slate-600">
+              <span className="font-bold text-slate-700">সক্রিয় ফিল্টার:</span>
+              {selectedCategory !== 'all' && (
+                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 bg-emerald-50 text-emerald-800 border border-emerald-200 rounded-md font-medium text-[11px]">
+                  ক্যাটাগরি: {selectedCategory}
+                  <button onClick={() => setSelectedCategory('all')} className="hover:text-rose-600 font-bold ml-0.5">×</button>
+                </span>
+              )}
+              {selectedGrade !== 'all' && (
+                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 bg-emerald-50 text-emerald-800 border border-emerald-200 rounded-md font-medium text-[11px]">
+                  {selectedGrade}
+                  <button onClick={() => setSelectedGrade('all')} className="hover:text-rose-600 font-bold ml-0.5">×</button>
+                </span>
+              )}
+              {selectedDistrict !== 'all' && (
+                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 bg-emerald-50 text-emerald-800 border border-emerald-200 rounded-md font-medium text-[11px]">
+                  জেলা: {selectedDistrict}
+                  <button onClick={() => setSelectedDistrict('all')} className="hover:text-rose-600 font-bold ml-0.5">×</button>
+                </span>
+              )}
+              {selectedSalary !== 'all' && (
+                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 bg-emerald-50 text-emerald-800 border border-emerald-200 rounded-md font-medium text-[11px]">
+                  বেতন: {selectedSalary === 'under_25k' ? '<২৫k' : selectedSalary === '25k_50k' ? '২৫k-৫০k' : '>৩৫k'}
+                  <button onClick={() => setSelectedSalary('all')} className="hover:text-rose-600 font-bold ml-0.5">×</button>
+                </span>
+              )}
+              {searchQuery.trim() !== '' && (
+                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 bg-emerald-50 text-emerald-800 border border-emerald-200 rounded-md font-medium text-[11px]">
+                  অনুসন্ধান: &quot;{searchQuery}&quot;
+                  <button onClick={() => setSearchQuery('')} className="hover:text-rose-600 font-bold ml-0.5">×</button>
+                </span>
+              )}
+            </div>
+
+            <button
+              type="button"
+              onClick={handleResetAllFilters}
+              className="px-2.5 py-1 text-rose-600 hover:bg-rose-50 border border-rose-200 rounded-lg font-bold transition-colors inline-flex items-center gap-1 cursor-pointer text-[11px]"
+            >
+              <RotateCcw className="w-3 h-3" />
+              <span>সকল ফিল্টার রিসেট</span>
+            </button>
+          </div>
+        )}
       </div>
 
       {/* 4. Active Results Counter */}
@@ -420,7 +626,7 @@ export default function JobListingView({
           </div>
           <button
             onClick={() => fetchCanonicalJobs()}
-            className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition-colors inline-flex items-center gap-1.5"
+            className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition-colors inline-flex items-center gap-1.5 cursor-pointer"
           >
             <RefreshCw className="w-4 h-4" />
             <span>পুনরায় চেষ্টা করুন</span>
@@ -440,12 +646,13 @@ export default function JobListingView({
           <div className="space-y-1">
             <h3 className="text-lg font-bold text-slate-900">কোনো চাকরি পাওয়া যায়নি</h3>
             <p className="text-xs text-slate-500 max-w-md mx-auto">
-              আপনার সার্চ কোয়েরির সাথে মিল পাওয়া যায়নি। বানান পরীক্ষা করুন অথবা ফিল্টার পরিবর্তন করে আবার চেষ্টা করুন।
+              আপনার নির্বাচিত ফিল্টার বা সার্চ কোয়েরির সাথে কোনো বিজ্ঞপ্তির মিল পাওয়া যায়নি। ফিল্টার পরিবর্তন করে পুনরায় চেষ্টা করুন।
             </p>
           </div>
           <button
-            onClick={() => { setSearchQuery(''); setSelectedGrade('all'); }}
-            className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition-colors"
+            type="button"
+            onClick={handleResetAllFilters}
+            className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition-colors cursor-pointer"
           >
             ফিল্টার রিসেট করুন
           </button>
@@ -465,7 +672,7 @@ export default function JobListingView({
           
           {Array.from({ length: totalPages }, (_, index) => index + 1).filter(page => page === 1 || page === totalPages || Math.abs(page - currentPage) <= 1).map((pageNumber, index, pages) => (
             <React.Fragment key={pageNumber}>
-            {index > 0 && pageNumber - pages[index - 1] > 1 && <span aria-hidden="true">…</span>}
+            {index > 0 && pageNumber - pages[index - 1] > 1 && <span aria-hidden="true" className="text-slate-400">…</span>}
             <button
               onClick={() => setCurrentPage(pageNumber)}
               aria-label={'পৃষ্ঠা ' + toBn(pageNumber)}
@@ -526,5 +733,18 @@ export default function JobListingView({
       )}
 
     </div>
+  );
+}
+
+export default function JobListingView(props: JobListingViewProps) {
+  return (
+    <Suspense fallback={
+      <div className="max-w-7xl mx-auto px-4 py-20 text-center space-y-4">
+        <div className="w-10 h-10 border-4 border-emerald-600 border-t-transparent rounded-full animate-spin mx-auto" />
+        <p className="text-slate-500 text-xs font-medium">চাকরির তালিকা প্রস্তুত হচ্ছে...</p>
+      </div>
+    }>
+      <JobListingViewContent {...props} />
+    </Suspense>
   );
 }

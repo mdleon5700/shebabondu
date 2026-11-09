@@ -65,7 +65,7 @@ export default function ApplicationCheckPage() {
     const list = [];
 
     // 1. Photo 300x300
-    const hasPhoto = Boolean(profile.photoUrl);
+    const hasPhoto = Boolean(profile.photoUrl) || vaultDocs.some(d => d.type === 'photo' && Boolean(d.fileUrl));
     list.push({
       id: 'photo',
       title: 'প্রার্থীর ছবি (টেলিটক ৩০০×৩০০ পিক্সেল ও <১০০ KB)',
@@ -76,7 +76,7 @@ export default function ApplicationCheckPage() {
     });
 
     // 2. Signature 300x80
-    const hasSig = Boolean(profile.signatureUrl);
+    const hasSig = Boolean(profile.signatureUrl) || vaultDocs.some(d => d.type === 'signature' && Boolean(d.fileUrl));
     list.push({
       id: 'signature',
       title: 'ডিজিটাল স্বাক্ষর (৩০০×৮০ পিক্সেল ও <৬০ KB)',

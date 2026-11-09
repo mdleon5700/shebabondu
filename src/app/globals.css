@@ -259,4 +259,22 @@ a[class*="rounded"][class*="bg-"],
   #official-printable-receipt * {
     visibility: visible !important;
   }
+
+  /* Isolate official printable CV / Resume */
+  .printable-cv {
+    display: block !important;
+    visibility: visible !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+    background: #ffffff !important;
+    color: #0f172a !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+
+  .printable-cv * {
+    visibility: visible !important;
+  }
 }

@@ -42,10 +42,18 @@ export default function RecommendedJobsPage() {
   const [savedJobIds, setSavedJobIds] = useState<string[]>([]);
   const [feedbackSuccess, setFeedbackSuccess] = useState<string | null>(null);
 
+  const getAuthHeaders = (): Record<string, string> => {
+    const token = typeof window !== 'undefined' ? localStorage.getItem('cs_session_token') : null;
+    const headers: Record<string, string> = {};
+    if (token) headers['Authorization'] = `Bearer ${token}`;
+    return headers;
+  };
+
   const fetchRecommendations = async () => {
     try {
       setLoading(true);
-      const res = await fetch('/api/user/recommendations?minScore=20&limit=100');
+      const headers = getAuthHeaders();
+      const res = await fetch('/api/user/recommendations?minScore=20&limit=100', { headers, cache: 'no-store' });
       if (res.ok) {
         const data = await res.json();
         if (data.success && data.data) {
@@ -66,7 +74,8 @@ export default function RecommendedJobsPage() {
     }
     const saved = storage.getSavedJobIds();
     setSavedJobIds(saved || []);
-    fetch('/api/candidate/saved-jobs', { cache: 'no-store' }).then(res => res.ok ? res.json() : null).then(data => {
+    const headers = getAuthHeaders();
+    fetch('/api/candidate/saved-jobs', { headers, cache: 'no-store' }).then(res => res.ok ? res.json() : null).then(data => {
       if (Array.isArray(data?.savedJobs)) { storage.replaceSavedJobIds(data.savedJobs); setSavedJobIds(data.savedJobs); }
     }).catch(() => {});
     fetchRecommendations();
@@ -74,8 +83,10 @@ export default function RecommendedJobsPage() {
 
   const handleToggleSave = async (jobId: string) => {
     try {
+      const headers = { 'Content-Type': 'application/json', ...getAuthHeaders() };
       const response = await fetch('/api/candidate/saved-jobs', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        method: 'POST', 
+        headers,
         body: JSON.stringify({ jobId, action: savedJobIds.includes(jobId) ? 'unsave' : 'save' })
       });
       const data = await response.json();
@@ -89,9 +100,10 @@ export default function RecommendedJobsPage() {
 
   const handleFeedback = async (jobId: string, action: 'RELEVANT' | 'NOT_RELEVANT' | 'HIDDEN') => {
     try {
+      const headers = { 'Content-Type': 'application/json', ...getAuthHeaders() };
       const res = await fetch('/api/user/recommendations/feedback', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers,
         body: JSON.stringify({ jobId, action })
       });
       if (res.ok) {
@@ -154,7 +166,7 @@ export default function RecommendedJobsPage() {
   const locationMatchesCount = feeds?.locationMatches?.length || 0;
 
   return (
-    <div className="space-y-6 max-w-7xl mx-auto pb-16">
+    <div className="space-y-6 max-w-7xl mx-auto pb-16" data-testid="recommended-jobs-page">
       {/* Header and Banner */}
       <div className="bg-gradient-to-r from-emerald-900 via-teal-900 to-slate-900 text-white rounded-3xl p-6 sm:p-8 shadow-xl relative overflow-hidden">
         <div className="absolute -right-10 -bottom-10 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
@@ -176,7 +188,7 @@ export default function RecommendedJobsPage() {
           <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/20 w-full sm:w-auto min-w-[280px]">
             <div className="flex items-center justify-between mb-2">
               <span className="text-xs text-slate-300 font-semibold">প্রোফাইল সম্পূর্ণতা</span>
-              <span className="text-sm font-black text-emerald-300">{completeness}%</span>
+              <span className="text-sm font-black text-emerald-300" data-testid="profile-completeness-percentage">{completeness}%</span>
             </div>
             <div className="w-full bg-slate-800/80 rounded-full h-2.5 overflow-hidden">
               <div 
@@ -212,7 +224,7 @@ export default function RecommendedJobsPage() {
 
       {/* KPI Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm flex items-center gap-4">
+        <div data-testid="kpi-total-matches" className="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm flex items-center gap-4">
           <div className="w-12 h-12 rounded-xl bg-slate-100 text-slate-700 flex items-center justify-center font-black">
             <Briefcase className="w-6 h-6 text-slate-600" />
           </div>
@@ -222,7 +234,7 @@ export default function RecommendedJobsPage() {
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl p-4 border border-emerald-200 shadow-sm flex items-center gap-4">
+        <div data-testid="kpi-excellent-matches" className="bg-white rounded-2xl p-4 border border-emerald-200 shadow-sm flex items-center gap-4">
           <div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-black">
             <Award className="w-6 h-6 text-emerald-600" />
           </div>
@@ -232,7 +244,7 @@ export default function RecommendedJobsPage() {
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl p-4 border border-blue-200 shadow-sm flex items-center gap-4">
+        <div data-testid="kpi-strong-matches" className="bg-white rounded-2xl p-4 border border-blue-200 shadow-sm flex items-center gap-4">
           <div className="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center font-black">
             <Zap className="w-6 h-6 text-blue-600" />
           </div>
@@ -242,7 +254,7 @@ export default function RecommendedJobsPage() {
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl p-4 border border-teal-200 shadow-sm flex items-center gap-4">
+        <div data-testid="kpi-location-matches" className="bg-white rounded-2xl p-4 border border-teal-200 shadow-sm flex items-center gap-4">
           <div className="w-12 h-12 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center font-black">
             <MapPin className="w-6 h-6 text-teal-600" />
           </div>
@@ -265,6 +277,7 @@ export default function RecommendedJobsPage() {
       <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 space-y-4">
         <div className="flex flex-wrap items-center gap-2 border-b border-slate-100 pb-3">
           <button
+            data-testid="tab-best"
             onClick={() => setActiveTab('best')}
             className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
               activeTab === 'best'
@@ -277,6 +290,7 @@ export default function RecommendedJobsPage() {
           </button>
 
           <button
+            data-testid="tab-skills"
             onClick={() => setActiveTab('skills')}
             className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
               activeTab === 'skills'
@@ -289,6 +303,7 @@ export default function RecommendedJobsPage() {
           </button>
 
           <button
+            data-testid="tab-education"
             onClick={() => setActiveTab('education')}
             className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
               activeTab === 'education'
@@ -301,6 +316,7 @@ export default function RecommendedJobsPage() {
           </button>
 
           <button
+            data-testid="tab-location"
             onClick={() => setActiveTab('location')}
             className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
               activeTab === 'location'
@@ -313,6 +329,7 @@ export default function RecommendedJobsPage() {
           </button>
 
           <button
+            data-testid="tab-closingSoon"
             onClick={() => setActiveTab('closingSoon')}
             className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
               activeTab === 'closingSoon'
@@ -325,6 +342,7 @@ export default function RecommendedJobsPage() {
           </button>
 
           <button
+            data-testid="tab-recent"
             onClick={() => setActiveTab('recent')}
             className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
               activeTab === 'recent'
@@ -340,6 +358,7 @@ export default function RecommendedJobsPage() {
           <div className="relative w-full sm:w-80">
             <Search className="w-4 h-4 absolute left-3 top-3 text-slate-400" />
             <input
+              data-testid="recommendations-search-input"
               type="text"
               placeholder="পদবী, প্রতিষ্ঠান বা জেলা দিয়ে ফিল্টার..."
               value={searchQuery}
@@ -350,6 +369,7 @@ export default function RecommendedJobsPage() {
 
           <div className="flex items-center gap-3 w-full sm:w-auto">
             <select
+              data-testid="recommendations-category-select"
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
               className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-700 outline-none w-full sm:w-auto"
@@ -366,6 +386,7 @@ export default function RecommendedJobsPage() {
             </select>
 
             <button
+              data-testid="refresh-recommendations-btn"
               onClick={fetchRecommendations}
               disabled={loading}
               className="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold flex items-center gap-1.5 shrink-0 transition-colors"
@@ -419,6 +440,7 @@ export default function RecommendedJobsPage() {
             return (
               <div 
                 key={job.id} 
+                data-testid="recommendation-card"
                 className="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm hover:shadow-md hover:border-emerald-200 transition-all flex flex-col justify-between space-y-4 group"
               >
                 <div className="flex items-start justify-between gap-4">
@@ -506,6 +528,7 @@ export default function RecommendedJobsPage() {
 
                 <div className="flex items-center justify-between gap-2 border-t border-slate-100 pt-3">
                   <button
+                    data-testid="btn-match-breakdown"
                     onClick={() => setSelectedJobForModal(rec)}
                     className="inline-flex items-center gap-1 px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 rounded-xl text-xs font-bold transition-colors"
                   >
@@ -515,6 +538,7 @@ export default function RecommendedJobsPage() {
 
                   <div className="flex items-center gap-1.5">
                     <button
+                      data-testid="btn-feedback-relevant"
                       onClick={() => handleFeedback(job.id, 'RELEVANT')}
                       title="প্রাসঙ্গিক সুপারিশ"
                       className="p-1.5 rounded-lg text-slate-400 hover:text-emerald-600 hover:bg-emerald-50 transition-colors"
@@ -522,6 +546,7 @@ export default function RecommendedJobsPage() {
                       <ThumbsUp className="w-3.5 h-3.5" />
                     </button>
                     <button
+                      data-testid="btn-feedback-not-relevant"
                       onClick={() => handleFeedback(job.id, 'NOT_RELEVANT')}
                       title="অপ্রাসঙ্গিক সুপারিশ"
                       className="p-1.5 rounded-lg text-slate-400 hover:text-amber-600 hover:bg-amber-50 transition-colors"
@@ -529,6 +554,7 @@ export default function RecommendedJobsPage() {
                       <ThumbsDown className="w-3.5 h-3.5" />
                     </button>
                     <button
+                      data-testid="btn-feedback-hide"
                       onClick={() => handleFeedback(job.id, 'HIDDEN')}
                       title="এই সার্কুলার লুকান"
                       className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors"
@@ -537,6 +563,7 @@ export default function RecommendedJobsPage() {
                     </button>
 
                     <button
+                      data-testid="btn-toggle-save"
                       onClick={() => handleToggleSave(job.id)}
                       title={isSaved ? 'সংরক্ষিত তালিকা থেকে মুছুন' : 'সার্কুলার সংরক্ষণ করুন'}
                       className={`p-1.5 rounded-lg transition-colors ${
@@ -547,6 +574,7 @@ export default function RecommendedJobsPage() {
                     </button>
 
                     <Link
+                      data-testid="btn-apply-job"
                       href={`/jobs/${job.slug || job.id}`}
                       className="inline-flex items-center gap-1 px-3 py-1.5 bg-slate-900 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition-all shadow-sm"
                     >

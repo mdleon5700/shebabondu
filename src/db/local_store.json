@@ -1807,6 +1807,21 @@
       "candidateId": "USR-01712345678",
       "role": "candidate",
       "expiresAt": "2026-11-16T13:36:12.446Z"
+    },
+    "cluster7_audit_session_1794233045274": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T14:04:05.274Z"
+    },
+    "cluster7_audit_session_1794233171231": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T14:06:11.231Z"
+    },
+    "cluster7_audit_session_1794233321800": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T14:08:41.800Z"
     }
   },
   "coupons": {},
@@ -20950,7 +20965,17 @@
       "isEnabled": true
     }
   ],
-  "recommendationFeedback": {},
+  "recommendationFeedback": {
+    "USR-01712345678": [
+      {
+        "id": "fb_USR-01712345678_job-alljobs-15183_1794233336129",
+        "candidateId": "USR-01712345678",
+        "jobId": "job-alljobs-15183",
+        "action": "RELEVANT",
+        "createdAt": "2026-11-09T14:08:56.129Z"
+      }
+    ]
+  },
   "matchingConfig": {
     "version": "v1.0.0",
     "enabled": true,

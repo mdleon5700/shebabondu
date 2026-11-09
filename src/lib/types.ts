@@ -737,6 +737,8 @@ export interface ExperienceRecord {
 
 
   responsibilities: string;
+  company?: string;
+  duration?: string;
 
 
 
@@ -1102,6 +1104,7 @@ export interface CandidateProfile {
 
 
   maritalStatus?: 'single' | 'married' | 'other';
+  religion?: string;
 
 
 

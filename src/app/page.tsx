@@ -56,6 +56,25 @@ import { JobCircular } from '@/lib/types';
 
 // Bengali numeral converter helper
 const toBn = (n: number | string) => String(n).replace(/\d/g, d => '০১২৩৪৫৬৭৮৯'[+d]);
+const toEnDigits = (s: string) => String(s || '').replace(/[০-৯]/g, d => '0123456789'['০১২৩৪৫৬৭৮৯'.indexOf(d)]);
+
+const parseSalaryRange = (salary: string): { min: number; max: number } => {
+  if (!salary) return { min: 0, max: 0 };
+  const en = toEnDigits(salary);
+  const nums = en.match(/\d[\d,]*/g);
+  if (!nums || nums.length === 0) return { min: 0, max: 0 };
+  const cleanNums = nums.map(n => parseInt(n.replace(/,/g, ''), 10)).filter(n => n >= 5000 && n <= 200000);
+  if (cleanNums.length === 0) return { min: 0, max: 0 };
+  return { min: cleanNums[0], max: cleanNums[cleanNums.length - 1] };
+};
+
+const matchGrade = (jobGrade: string, selectedGrade: string) => {
+  if (selectedGrade === 'all') return true;
+  if (!jobGrade) return false;
+  if (jobGrade === selectedGrade) return true;
+  const gradeKey = selectedGrade.replace(' গ্রেড', '').trim();
+  return jobGrade.includes(gradeKey);
+};
 
 const candidateReviews = [
   {
@@ -306,7 +325,10 @@ export default function HomePage() {
   const handleCategoryClick = (catId: string, e: React.MouseEvent<HTMLButtonElement>) => {
     setSelectedCategory(catId);
     
-    // Reset conflicting status filters so the category jobs display
+    // Reset conflicting search filters so category jobs display cleanly
+    if (selectedJobType !== 'all') {
+      setSelectedJobType('all');
+    }
     if (statusFilter !== 'all') {
       setStatusFilter('all');
     }
@@ -344,12 +366,12 @@ export default function HomePage() {
 
     jobsList.forEach(job => {
       const days = job.daysRemaining ?? 15;
-      const isExpired = job.status === 'EXPIRED' || days <= 0;
+      const isExpired = job.status === 'EXPIRED' || days <= 0 || CentralDeadlineEngine.evaluateDeadline(job).isClosed;
       
       if (!isExpired) {
         ongoing++;
         const pub = job.publishedDate || '';
-        if (job.featured || job.isHot || pub.includes('আজ') || pub.includes('নভেম্বর') || pub.includes('০১') || pub.includes('০২') || pub.includes('২৯') || pub.includes('৩০') || pub.includes('৩১')) {
+        if (job.featured || job.isHot || pub.includes('আজ') || pub.includes('নভেম্বর') || days >= 14) {
           newToday++;
         }
         if (days > 0 && days <= 7) {
@@ -362,10 +384,10 @@ export default function HomePage() {
     });
 
     return {
-      newToday: Math.max(1, newToday),
-      ongoing: Math.max(1, ongoing),
-      endingSoon: endingSoon,
-      endingToday: endingToday
+      newToday,
+      ongoing,
+      endingSoon,
+      endingToday
     };
   }, [jobsList]);
 
@@ -402,8 +424,10 @@ export default function HomePage() {
     setSelectedGrade('all');
     setSelectedSalary('all');
     setSelectedCategory('all');
+    setSelectedDistrict('all');
     setStatusFilter('all');
     setOnlyUrgent(false);
+    setMatcherActive(false);
   };
 
   const handleSelectStatusFilter = (target: 'new_today' | 'ongoing' | 'ending_soon' | 'ending_today') => {
@@ -423,7 +447,8 @@ export default function HomePage() {
 
   const activeFilterCount = (selectedOrg !== 'all' ? 1 : 0) + 
                             (selectedGrade !== 'all' ? 1 : 0) + 
-                            (selectedSalary !== 'all' ? 1 : 0);
+                            (selectedSalary !== 'all' ? 1 : 0) +
+                            (selectedDistrict !== 'all' ? 1 : 0);
 
   const filteredJobs = useMemo(() => {
     return jobsList.filter((job) => {
@@ -450,29 +475,39 @@ export default function HomePage() {
       // Organization filter
       if (selectedOrg !== 'all' && !job.organization.includes(selectedOrg)) return false;
 
-      // Grade filter
-      if (selectedGrade !== 'all' && job.grade !== selectedGrade) return false;
+      // Grade filter (supports single or composite grade matching)
+      if (!matchGrade(job.grade, selectedGrade)) return false;
 
-      // Salary filter
+      // Salary range filter (dynamically parsed for all 20 national pay grades)
       if (selectedSalary !== 'all') {
-        if (selectedSalary === 'under_25k' && !job.salary.includes('৯,৭০০') && !job.salary.includes('১১,০০০')) return false;
-        if (selectedSalary === '25k_50k' && !job.salary.includes('২২,০০০') && !job.salary.includes('৫৩,০৬০')) return false;
-        if (selectedSalary === 'above_35k' && !job.salary.includes('৩৫,০০০') && !job.salary.includes('২২,০০০')) return false;
+        const { min, max } = parseSalaryRange(job.salary);
+        if (selectedSalary === 'under_25k' && (min === 0 || min > 25000)) return false;
+        if (selectedSalary === '25k_50k' && (max < 25000 || min > 50000)) return false;
+        if (selectedSalary === 'above_35k' && max < 35000) return false;
       }
 
-      if (onlyUrgent && job.daysRemaining > 3) return false;
+      // District quota/eligibility filter
+      if (selectedDistrict !== 'all') {
+        const d = job.districts || '';
+        if (d && !d.includes('সকল জেলা') && !d.includes(selectedDistrict)) return false;
+      }
+
+      if (onlyUrgent && (job.daysRemaining ?? 15) > 3) return false;
 
       // Status Metric Card Filtering
       if (statusFilter === 'new_today') {
+        const days = job.daysRemaining ?? 15;
+        const isExpired = job.status === 'EXPIRED' || days <= 0 || CentralDeadlineEngine.evaluateDeadline(job).isClosed;
+        if (isExpired) return false;
         const pub = job.publishedDate || '';
-        const isNew = job.featured || job.isHot || pub.includes('আজ') || pub.includes('নভেম্বর') || pub.includes('০১') || pub.includes('০২') || pub.includes('২৯') || pub.includes('৩০') || pub.includes('৩১');
+        const isNew = job.featured || job.isHot || pub.includes('আজ') || pub.includes('নভেম্বর') || days >= 14;
         if (!isNew) return false;
       } else if (statusFilter === 'ongoing') {
-        if (job.status === 'EXPIRED' || CentralDeadlineEngine.evaluateDeadline(job).isClosed) return false;
+        if (job.status === 'EXPIRED' || (job.daysRemaining ?? 15) <= 0 || CentralDeadlineEngine.evaluateDeadline(job).isClosed) return false;
       } else if (statusFilter === 'ending_soon') {
-        if (job.daysRemaining === undefined || job.daysRemaining > 7 || CentralDeadlineEngine.evaluateDeadline(job).isClosed) return false;
+        if (job.daysRemaining === undefined || job.daysRemaining > 7 || job.daysRemaining <= 0 || CentralDeadlineEngine.evaluateDeadline(job).isClosed) return false;
       } else if (statusFilter === 'ending_today') {
-        if (job.daysRemaining === undefined || job.daysRemaining > 1) return false;
+        if (job.daysRemaining === undefined || job.daysRemaining > 1 || job.daysRemaining < 0 || CentralDeadlineEngine.evaluateDeadline(job).isClosed) return false;
       }
 
       // Keyword search input (smart bilingual, multi-field & position-level matching)
@@ -551,8 +586,12 @@ export default function HomePage() {
           setSelectedGrade={setSelectedGrade}
           selectedSalary={selectedSalary}
           setSelectedSalary={setSelectedSalary}
+          selectedDistrict={selectedDistrict}
+          setSelectedDistrict={setSelectedDistrict}
+          districtsList={districtsList}
           onSearch={handleSearch}
           onReset={handleResetFilters}
+          onCategoryReset={() => setSelectedCategory('all')}
           activeFilterCount={activeFilterCount}
         />
       )}
@@ -878,6 +917,98 @@ export default function HomePage() {
               <span>জরুরি ডেডলাইন (৩ দিনের মধ্যে শেষ)</span>
             </button>
           </div>
+        </div>
+
+        {/* 6. ELIGIBILITY & AGE MATCHER TOOL CARD */}
+        <div className="bg-gradient-to-r from-emerald-50/70 via-white to-teal-50/70 rounded-2xl border border-emerald-200/80 p-4 sm:p-5 shadow-xs transition-all">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
+            <div className="flex items-center gap-2.5">
+              <div className="w-9 h-9 rounded-xl bg-emerald-600 text-white flex items-center justify-center flex-shrink-0 shadow-sm">
+                <GraduationCap className="w-5 h-5" />
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <h3 className="font-extrabold text-[15px] sm:text-[16px] text-slate-900">
+                    বয়স ও শিক্ষাগত যোগ্যতা ম্যাচিং টুল
+                  </h3>
+                  <span className="bg-emerald-100 text-emerald-800 text-[11px] font-black px-2 py-0.5 rounded-full uppercase">
+                    ক্যালকুলেটর
+                  </span>
+                </div>
+                <p className="text-[12px] sm:text-[13px] text-slate-500">
+                  আপনার বর্তমান বয়স ও সনদ অনুযায়ী আপনি কোন কোন বিজ্ঞপ্তিতে আবেদনের যোগ্য তা নিমেষেই দেখুন
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => setMatcherActive(!matcherActive)}
+                className={`px-3.5 py-2 rounded-xl text-[13px] sm:text-[14px] font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+                  matcherActive
+                    ? 'bg-emerald-600 text-white shadow-sm'
+                    : 'bg-white border border-slate-300 text-slate-700 hover:border-emerald-500 hover:text-emerald-700'
+                }`}
+              >
+                <Filter className="w-3.5 h-3.5" />
+                <span>{matcherActive ? '✓ ফিল্টার সক্রিয় (বন্ধ করুন)' : 'যোগ্যতা ফিল্টার চালু করুন'}</span>
+              </button>
+            </div>
+          </div>
+
+          {matcherActive && (
+            <div className="mt-4 pt-3.5 border-t border-emerald-100 grid grid-cols-1 md:grid-cols-12 gap-3 sm:gap-4 items-center animate-in fade-in duration-200">
+              <div className="md:col-span-6 space-y-1.5">
+                <div className="flex items-center justify-between text-[13px] font-bold text-slate-700">
+                  <span>আপনার বর্তমান বয়স:</span>
+                  <span className="text-emerald-800 bg-emerald-100 px-2.5 py-0.5 rounded-lg font-black text-[14px]">
+                    {toBn(calcAge)} বছর
+                  </span>
+                </div>
+                <input
+                  type="range"
+                  min={18}
+                  max={40}
+                  value={calcAge}
+                  onChange={(e) => setCalcAge(Number(e.target.value))}
+                  className="w-full accent-emerald-600 cursor-pointer"
+                />
+                <div className="flex justify-between text-[11px] text-slate-400 font-semibold">
+                  <span>১৮ বছর</span>
+                  <span>৩০ বছর (সাধারণ)</span>
+                  <span>৩২ বছর (কোটা)</span>
+                  <span>৪০ বছর</span>
+                </div>
+              </div>
+
+              <div className="md:col-span-6 space-y-1.5">
+                <label className="block text-[13px] font-bold text-slate-700">
+                  সর্বোচ্চ শিক্ষাগত সনদ:
+                </label>
+                <div className="grid grid-cols-3 gap-2">
+                  {[
+                    { id: 'any', label: 'যেকোনো' },
+                    { id: 'hsc', label: 'এইচএসসি' },
+                    { id: 'graduate', label: 'স্নাতক+' }
+                  ].map((edu) => (
+                    <button
+                      key={edu.id}
+                      type="button"
+                      onClick={() => setCalcEducation(edu.id)}
+                      className={`py-2 px-2.5 rounded-xl text-[13px] font-bold text-center transition-all cursor-pointer ${
+                        calcEducation === edu.id
+                          ? 'bg-emerald-700 text-white shadow-xs'
+                          : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50'
+                      }`}
+                    >
+                      {edu.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
         

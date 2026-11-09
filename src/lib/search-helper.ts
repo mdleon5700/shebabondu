@@ -69,11 +69,24 @@ const BILINGUAL_MAP: Record<string, string[]> = {
   'teacher': ['শিক্ষক']
 };
 
+/**
+ * Normalizes Bengali Unicode characters to resolve Avro / Bijoy / Gboard character variances
+ * (e.g. Nukta + Ja vs Ya, Da + Nukta vs Dda, etc.)
+ */
+export function normalizeBangla(text: string): string {
+  if (!text) return '';
+  return text
+    .normalize('NFC')
+    .replace(/\u09af\u09bc/g, '\u09df') // য় (Letter Ya)
+    .replace(/\u09a1\u09bc/g, '\u09dc') // ড় (Letter Rra)
+    .replace(/\u09a2\u09bc/g, '\u09dd'); // ঢ় (Letter Rrha)
+}
+
 export function matchJobQuery(job: JobCircular, rawQuery: string): boolean {
   if (!rawQuery || !rawQuery.trim()) return true;
 
-  const query = rawQuery.toLowerCase().trim();
-  const searchTerms = query.split(/\s+/).filter(Boolean);
+  const normalizedQuery = normalizeBangla(rawQuery.toLowerCase().trim());
+  const searchTerms = normalizedQuery.split(/\s+/).filter(Boolean);
 
   // Build a searchable corpus for this job
   const corpusParts: string[] = [
@@ -103,7 +116,7 @@ export function matchJobQuery(job: JobCircular, rawQuery: string): boolean {
     corpusParts.push(...job.requirements);
   }
 
-  const fullCorpus = corpusParts.join(' ').toLowerCase();
+  const fullCorpus = normalizeBangla(corpusParts.join(' ').toLowerCase());
 
   // Every word term in the query must match (either directly or via bilingual synonyms)
   return searchTerms.every(term => {
@@ -111,7 +124,8 @@ export function matchJobQuery(job: JobCircular, rawQuery: string): boolean {
     if (fullCorpus.includes(term)) return true;
 
     // 2. Bilingual / Synonym match
-    const synonyms = BILINGUAL_MAP[term] || [];
+    const rawSynonyms = BILINGUAL_MAP[term] || [];
+    const synonyms = rawSynonyms.map(s => normalizeBangla(s));
     for (const syn of synonyms) {
       if (fullCorpus.includes(syn)) return true;
     }

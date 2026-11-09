@@ -132,18 +132,18 @@ export default function HeroSection({ initialData }: { initialData?: HeroCmsData
               {heroSubtitle}
             </p>
 
-            <div className="hidden sm:flex flex-wrap items-center justify-center lg:justify-start gap-3 pt-1 font-hind">
-              <a href={cta1Url} className="px-4 py-2.5 sm:px-6 sm:py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-bold text-[17px] shadow-xl shadow-emerald-950/60 flex items-center gap-2 transition-all hover:scale-[1.02]">
+            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3 pt-1 font-hind">
+              <a href={cta1Url} className="px-4 py-2.5 sm:px-6 sm:py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-bold text-[15px] sm:text-[17px] shadow-xl shadow-emerald-950/60 flex items-center gap-2 transition-all hover:scale-[1.02]">
                 <FileText className="w-4 h-4" />
                 <span>{cta1Text}</span>
                 <ArrowRight className="w-4 h-4" />
               </a>
-              <a href={cta2Url} className="px-3.5 py-2.5 sm:px-5 sm:py-3.5 rounded-xl bg-white/5 hover:bg-white/10 text-white font-bold text-[17px] border border-white/40 transition-all flex items-center gap-2">
+              <a href={cta2Url} className="px-3.5 py-2.5 sm:px-5 sm:py-3.5 rounded-xl bg-white/5 hover:bg-white/10 text-white font-bold text-[15px] sm:text-[17px] border border-white/40 transition-all flex items-center gap-2">
                 <BookOpen className="w-4 h-4 text-emerald-300" />
                 <span>{cta2Text}</span>
               </a>
             </div>
-            <div className="hidden sm:grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-4 pt-3 sm:pt-4 border-t border-emerald-900/40 text-left">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-4 pt-3 sm:pt-4 border-t border-emerald-900/40 text-left">
               <div className="flex items-center gap-2.5">
                 <div className="w-9 h-9 rounded-full bg-emerald-500 text-slate-950 flex items-center justify-center flex-shrink-0 shadow-sm">
                   <ShieldCheck className="w-5 h-5 text-slate-950" />

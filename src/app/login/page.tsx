@@ -22,6 +22,7 @@ import {
   HelpCircle
 } from 'lucide-react';
 import { storage } from '@/lib/store';
+import { BD_DIVISIONS_MAP } from '@/lib/constants';
 
 function LoginForm() {
   const router = useRouter();
@@ -56,11 +57,14 @@ function LoginForm() {
 
   // Register Form States
   const [regName, setRegName] = useState('');
+  const [regNameBn, setRegNameBn] = useState('');
   const [regPhone, setRegPhone] = useState('');
   const [regEmail, setRegEmail] = useState('');
   const [regDistrict, setRegDistrict] = useState('ঢাকা');
   const [regPassword, setRegPassword] = useState('');
+  const [regConfirmPassword, setRegConfirmPassword] = useState('');
   const [showRegPassword, setShowRegPassword] = useState(false);
+  const [showRegConfirmPassword, setShowRegConfirmPassword] = useState(false);
 
 
   // Forgot Password Modal States
@@ -206,6 +210,21 @@ function LoginForm() {
       return;
     }
 
+    if (regConfirmPassword && regPassword !== regConfirmPassword) {
+      setError('পাসওয়ার্ড ও কনফার্ম পাসওয়ার্ড দুটি হুবহু মিলতে হবে।');
+      return;
+    }
+
+    const cleanRegPhone = regPhone
+      .replace(/[০-৯]/g, digit => String('০১২৩৪৫৬৭৮৯'.indexOf(digit)))
+      .replace(/\D/g, '')
+      .replace(/^880/, '0');
+
+    if (!/^01[3-9]\d{8}$/.test(cleanRegPhone)) {
+      setError('সঠিক ১১-সংখ্যার বাংলাদেশি মোবাইল নম্বর দিন (যেমন: 01XXXXXXXXX)।');
+      return;
+    }
+
     setIsSubmitting(true);
     try {
       const res = await fetch('/api/auth/register', {
@@ -213,7 +232,8 @@ function LoginForm() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           name: regName.trim(),
-          phone: regPhone.trim(),
+          nameBn: regNameBn.trim() || regName.trim(),
+          phone: cleanRegPhone,
           email: regEmail.trim(),
           district: regDistrict,
           password: regPassword
@@ -672,39 +692,71 @@ function LoginForm() {
             </div>
 
             <div>
-              <label className="text-xs font-bold text-slate-700 block mb-1">নিজ জেলা</label>
+              <label className="text-xs font-bold text-slate-700 block mb-1">নিজ জেলা *</label>
               <div className="relative">
                 <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400" />
-                <input
-                  type="text"
+                <select
                   value={regDistrict}
                   onChange={(e) => setRegDistrict(e.target.value)}
-                  placeholder="যেমন: ঢাকা, রাজশাহী"
-                  className="w-full pl-8 pr-2.5 py-2 rounded-xl border border-slate-300 text-xs text-slate-900 font-medium focus:ring-2 focus:ring-emerald-500 focus:outline-none"
-                />
+                  className="w-full pl-8 pr-2.5 py-2 rounded-xl border border-slate-300 text-xs text-slate-900 font-bold focus:ring-2 focus:ring-emerald-500 focus:outline-none bg-white"
+                >
+                  {Object.entries(BD_DIVISIONS_MAP).map(([divKey, divData]) => (
+                    <optgroup key={divKey} label={`${divData.bn} বিভাগ`}>
+                      {divData.districts.map((d) => (
+                        <option key={d.en} value={d.bn}>
+                          {d.bn} ({d.en})
+                        </option>
+                      ))}
+                    </optgroup>
+                  ))}
+                </select>
               </div>
             </div>
           </div>
 
-          <div>
-            <label className="text-xs font-bold text-slate-700 block mb-1">পাসওয়ার্ড নির্ধারণ করুন (কমপক্ষে ৬ অক্ষর) *</label>
-            <div className="relative">
-              <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-              <input
-                type={showRegPassword ? 'text' : 'password'}
-                required
-                value={regPassword}
-                onChange={(e) => setRegPassword(e.target.value)}
-                placeholder="নতুন পাসওয়ার্ড দিন"
-                className="w-full pl-10 pr-10 py-2 rounded-xl border border-slate-300 text-xs text-slate-900 font-medium focus:ring-2 focus:ring-emerald-500 focus:outline-none"
-              />
-              <button
-                type="button"
-                onClick={() => setShowRegPassword(!showRegPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
-              >
-                {showRegPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-              </button>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <div>
+              <label className="text-xs font-bold text-slate-700 block mb-1">পাসওয়ার্ড *</label>
+              <div className="relative">
+                <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                <input
+                  type={showRegPassword ? 'text' : 'password'}
+                  required
+                  value={regPassword}
+                  onChange={(e) => setRegPassword(e.target.value)}
+                  placeholder="কমপক্ষে ৬ অক্ষর"
+                  className="w-full pl-10 pr-9 py-2 rounded-xl border border-slate-300 text-xs text-slate-900 font-medium focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowRegPassword(!showRegPassword)}
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                >
+                  {showRegPassword ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+                </button>
+              </div>
+            </div>
+
+            <div>
+              <label className="text-xs font-bold text-slate-700 block mb-1">কনফার্ম পাসওয়ার্ড *</label>
+              <div className="relative">
+                <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                <input
+                  type={showRegConfirmPassword ? 'text' : 'password'}
+                  required
+                  value={regConfirmPassword}
+                  onChange={(e) => setRegConfirmPassword(e.target.value)}
+                  placeholder="পুনরায় পাসওয়ার্ড"
+                  className="w-full pl-10 pr-9 py-2 rounded-xl border border-slate-300 text-xs text-slate-900 font-medium focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowRegConfirmPassword(!showRegConfirmPassword)}
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                >
+                  {showRegConfirmPassword ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+                </button>
+              </div>
             </div>
           </div>
 

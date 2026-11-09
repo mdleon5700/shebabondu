@@ -56,11 +56,29 @@
           "majorSubject": "কম্পিউটার সায়েন্স অ্যান্ড ইঞ্জিনিয়ারিং"
         }
       ],
-      "passwordHash": "scrypt$e0995a8502001572813f200442760d6a$1b2b0de27d5b910cdfecdb1a0f09449126d65de3de943e80120d09794d78b097a91bf83faa5e7a0e212a83aa9a706c102a2327fcfe7afc1b6af4ad134bfa6191",
+      "passwordHash": "scrypt$b76884f0f519e0ff89e5822e3ff8686c$474dd174726af3049001b741fb9c9f2b2389eff98cfb35fd0fa85c4321c822699c1ecf76d1309deb8b0684f29668526be4281f766f7f1a46a68d4285f5116a36",
       "role": "candidate",
       "createdAt": "2026-11-09T07:17:05.082Z",
-      "updatedAt": "2026-11-09T09:53:11.224Z",
+      "updatedAt": "2026-11-09T10:04:45.809Z",
       "adminAuditHistory": [
+        {
+          "timestamp": "2026-11-09T10:04:45.809Z",
+          "adminId": "ADMIN",
+          "action": "candidate_profile_update",
+          "changedFields": [
+            "passwordHash"
+          ],
+          "notes": "1টি ফিল্ড পরিবর্তিত হয়েছে (passwordHash)",
+          "reason": "1টি ফিল্ড পরিবর্তিত হয়েছে (passwordHash)"
+        },
+        {
+          "timestamp": "2026-11-09T10:03:59.003Z",
+          "adminId": "ADMIN",
+          "action": "candidate_profile_update",
+          "changedFields": [],
+          "notes": "প্রোফাইল তথ্য হালনাগাদ",
+          "reason": "প্রোফাইল তথ্য হালনাগাদ"
+        },
         {
           "timestamp": "2026-11-09T09:53:11.223Z",
           "adminId": "ADMIN",
@@ -117,19 +135,49 @@
       "role": "candidate",
       "createdAt": "2026-11-09T09:02:15.879Z",
       "updatedAt": "2026-11-09T09:02:15.879Z"
+    },
+    "CS-USR-26-174774": {
+      "id": "CS-USR-26-174774",
+      "name": "MD. ROKIBUL ISLAM",
+      "nameBn": "মোঃ রকিবুল ইসলাম",
+      "fatherName": "",
+      "motherName": "",
+      "email": "",
+      "phone": "01799174774",
+      "username": "md.rokibul.islam.4774",
+      "dob": "",
+      "gender": "male",
+      "nid": "",
+      "division": "চট্টগ্রাম",
+      "district": "চট্টগ্রাম",
+      "address": "",
+      "permanentAddress": "",
+      "photoUrl": "data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"120\" height=\"120\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"%2394a3b8\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect width=\"100%\" height=\"100%\" fill=\"%23f1f5f9\"/><path d=\"M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2\"></path><circle cx=\"12\" cy=\"7\" r=\"4\"></circle></svg>",
+      "signatureUrl": "data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"200\" height=\"60\" viewBox=\"0 0 200 60\"><rect width=\"200\" height=\"60\" fill=\"%23f8fafc\" rx=\"6\"/><text x=\"100\" y=\"35\" font-family=\"sans-serif\" font-size=\"12\" fill=\"%2394a3b8\" text-anchor=\"middle\">স্বাক্ষর যুক্ত করুন</text></svg>",
+      "walletBalance": 0,
+      "maritalStatus": "single",
+      "quota": "none",
+      "education": [],
+      "passwordHash": "scrypt$d65a2df8f628b5f5cc2f4d8c23f6c549$2a9d777a4cebc21bb4a714e733873fc2b324af84fa3d5f7287ded4c92b80b78e58cb154716b6e51303ab6a843e7c395160490f1418520e3aad03ae19449b455e",
+      "role": "candidate",
+      "createdAt": "2026-11-09T10:03:21.603Z",
+      "updatedAt": "2026-11-09T10:03:21.603Z"
     }
   },
   "documents": {
     "USR-01712345678": [],
-    "CS-USR-26-609104": []
+    "CS-USR-26-609104": [],
+    "CS-USR-26-174774": []
   },
   "applications": {
     "USR-01712345678": [],
-    "CS-USR-26-609104": []
+    "CS-USR-26-609104": [],
+    "CS-USR-26-174774": []
   },
   "savedJobs": {
     "USR-01712345678": [],
-    "CS-USR-26-609104": []
+    "CS-USR-26-609104": [],
+    "CS-USR-26-174774": []
   },
   "transactions": {
     "USR-01712345678": [
@@ -154,7 +202,8 @@
         "status": "pending"
       }
     ],
-    "CS-USR-26-609104": []
+    "CS-USR-26-609104": [],
+    "CS-USR-26-174774": []
   },
   "notifications": {
     "admin": [
@@ -214,7 +263,8 @@
       }
     ],
     "USR-01712345678": [],
-    "CS-USR-26-609104": []
+    "CS-USR-26-609104": [],
+    "CS-USR-26-174774": []
   },
   "sessions": {
     "ef5e5470fc6b3fd8ce03eaaab017d1e688ea904819b2a7f16d95304572d43514": {
@@ -391,6 +441,26 @@
       "candidateId": "USR-01712345678",
       "role": "candidate",
       "expiresAt": "2026-11-16T09:53:11.278Z"
+    },
+    "71014a7a7f78abd2919ee7eed96b02bfbddf21672e4d9ee3b9ca54cad49192ba": {
+      "candidateId": "CS-USR-26-174774",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T10:03:21.653Z"
+    },
+    "4af3778d824ea0e4b0859d78f3791943ad3df786958269e28fa2f66c465ee9f2": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T10:03:59.036Z"
+    },
+    "66464ae9533190287256bd2059ba1cd921ad067afc27e969ad0dbde7e9ec1ed0": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T10:04:34.966Z"
+    },
+    "a2781b872ee04d88b14ef0b1a5fb018abb3d20a38fb2901397be525664addc6e": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T10:04:45.850Z"
     }
   },
   "coupons": {},

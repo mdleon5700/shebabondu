@@ -72,6 +72,7 @@ export const ADMIN_NAV_ITEMS: NavMainItem[] = [
       { id: 'published-jobs', label: 'প্রকাশিত চাকরি' },
       { id: 'imported-drafts', label: 'খসড়া চাকরি' },
       { id: 'pending-approval', label: 'অনুমোদনের অপেক্ষায়' },
+      { id: 'job-reports', label: '🚨 ভুয়া সার্কুলার ও অভিযোগ সেল', badge: 'অভিযোগ' },
       { id: 'deadline-alert-manager', label: 'মেয়াদোত্তীর্ণ চাকরি' },
       { id: 'archived-jobs', label: 'সংরক্ষিত চাকরি' },
       { id: 'job-feed-manager', label: 'সংশোধনী ও নতুন বিজ্ঞপ্তি' },
@@ -150,12 +151,13 @@ export const ADMIN_NAV_ITEMS: NavMainItem[] = [
   },
   {
     id: 'notifications',
-    label: 'নোটিফিকেশন',
+    label: 'নোটিফিকেশন ও সাপোর্ট',
     icon: Bell,
     badge: '৫',
     badgeColor: 'bg-rose-500 text-white',
     subItems: [
       { id: 'notifications', label: 'সব নোটিফিকেশন' },
+      { id: 'support-tickets', label: '🎧 সাপোর্ট টিকেট ও হেল্পডেস্ক', badge: 'টিকেট' },
       { id: 'templates-delivery', label: 'ইমেইল ও মেসেজ টেমপ্লেট' },
       { id: 'sms-status', label: 'এসএমএস গেটওয়ে ও লগ' }
     ]

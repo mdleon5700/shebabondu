@@ -764,7 +764,8 @@ function AdminContent() {
   useEffect(() => {
     const checkAdminAuth = async () => {
       const isVerified = typeof window !== 'undefined' && localStorage.getItem('cs_admin_auth') === 'verified';
-      if (isVerified) {
+      const pin = typeof window !== 'undefined' ? (localStorage.getItem('cs_admin_pin') || '') : '';
+      if (isVerified && pin) {
         setIsAdminAuthenticated(true);
         await fetchAllAdminData();
       } else {
@@ -1606,7 +1607,7 @@ function AdminContent() {
           return chA.localeCompare(chB);
         });
       }
-    } else if (activeTab === 'completed-rejected') {
+    } else if (activeTab === 'completed-rejected' || activeTab === 'application-history') {
       list = list.filter(a => a.status === 'completed' || a.status === 'rejected');
       if (completedSubFilter === 'completed') {
         list = list.filter(a => a.status === 'completed');
@@ -1796,6 +1797,9 @@ function AdminContent() {
       'company-directory': 'candidate-directory',
       'employer-verification': 'candidate-directory',
       'company-jobs': 'candidate-directory',
+      'new-candidates': 'candidate-directory',
+      'candidate-cv': 'candidate-directory',
+      'suspended-accounts': 'candidate-directory',
       
       'seo-meta': 'content-studio',
       'header-footer': 'content-studio',
@@ -1803,14 +1807,30 @@ function AdminContent() {
       'pages-sections': 'content-studio',
       'builder': 'content-studio',
       'media-library': 'content-studio',
+      'schema-markup': 'content-studio',
+      'sitemap-settings': 'content-studio',
       
       'deadline-alert-manager': 'circulars',
       'create-circular': 'circulars',
+      'published-jobs': 'circulars',
+      'pending-approval': 'circulars',
+      'archived-jobs': 'circulars',
+      'job-locations': 'circulars',
+      'job-reports': 'circulars',
+      
       'gemini-browser-spider': 'gemini-browser-spider',
       'source-monitoring': 'gemini-browser-spider',
+      'scraping-jobs': 'gemini-browser-spider',
+      'pdf-processing': 'gemini-browser-spider',
+      'duplicate-detection': 'gemini-browser-spider',
+      'failed-jobs': 'gemini-browser-spider',
+      
+      'application-history': 'all-applications',
       
       'invoices': 'transactions',
       'service-fees': 'transactions',
+      
+      'support-tickets': 'notifications',
       
       'system-health': 'settings',
       'automation-center': 'dashboard',
@@ -1831,6 +1851,29 @@ function AdminContent() {
   }, [activeTab, navGroups]);
 
   const currentNav = useMemo(() => {
+    const SUB_TAB_TITLES: Record<string, { group: string; label: string }> = {
+      'published-jobs': { group: 'সার্কুলার ও নিয়োগ হাব', label: 'প্রকাশিত চাকরি' },
+      'pending-approval': { group: 'সার্কুলার ও নিয়োগ হাব', label: 'অনুমোদনের অপেক্ষায়' },
+      'archived-jobs': { group: 'সার্কুলার ও নিয়োগ হাব', label: 'সংরক্ষিত চাকরি' },
+      'job-locations': { group: 'সার্কুলার ও নিয়োগ হাব', label: 'চাকরির অবস্থান ও জেলা' },
+      'job-reports': { group: 'সার্কুলার ও নিয়োগ হাব', label: '🚨 ভুয়া সার্কুলার ও অভিযোগ সেল' },
+      'new-candidates': { group: 'প্রার্থী ও প্রতিষ্ঠান হাব', label: 'নতুন নিবন্ধিত প্রার্থী' },
+      'candidate-cv': { group: 'প্রার্থী ও প্রতিষ্ঠান হাব', label: 'সিভি ও ডকুমেন্ট ভল্ট' },
+      'suspended-accounts': { group: 'প্রার্থী ও প্রতিষ্ঠান হাব', label: 'স্থগিত অ্যাকাউন্ট' },
+      'application-history': { group: 'আবেদন ও অর্ডার হাব', label: 'আবেদন ইতিহাস ও আর্কাইভ' },
+      'scraping-jobs': { group: 'অটোমেশন ও লাইভ এজেন্ট', label: 'চাকরি সংগ্রহের কাজ' },
+      'pdf-processing': { group: 'অটোমেশন ও লাইভ এজেন্ট', label: 'PDF প্রসেসিং হাব' },
+      'duplicate-detection': { group: 'অটোমেশন ও লাইভ এজেন্ট', label: 'ডুপ্লিকেট শনাক্তকরণ' },
+      'failed-jobs': { group: 'অটোমেশন ও লাইভ এজেন্ট', label: 'ব্যর্থ কাজ ও এরর লগ' },
+      'schema-markup': { group: 'ওয়েবসাইট ও কন্টেন্ট সিএমএস', label: 'JobPosting Schema Markup' },
+      'sitemap-settings': { group: 'ওয়েবসাইট ও কন্টেন্ট সিএমএস', label: 'Sitemap ও Robots সেটিংস' },
+      'support-tickets': { group: 'যোগাযোগ ও মেসেজিং', label: '🎧 সাপোর্ট টিকেট ও হেল্পডেস্ক' }
+    };
+
+    if (SUB_TAB_TITLES[activeTab]) {
+      return { groupName: SUB_TAB_TITLES[activeTab].group, itemName: SUB_TAB_TITLES[activeTab].label };
+    }
+
     for (const group of navGroups) {
       for (const item of group.items) {
         if (item.id === activeTab) {
@@ -2174,7 +2217,7 @@ function AdminContent() {
           )}
 
           {/* TAB 3: APPLICATIONS -> ALL APPLICATIONS, PAYMENT VERIFICATION, PROCESSING QUEUE, COMPLETED/REJECTED */}
-          {(activeTab === 'all-applications' || activeTab === 'payment-verification' || activeTab === 'processing-queue' || activeTab === 'completed-rejected') && (
+          {(activeTab === 'all-applications' || activeTab === 'payment-verification' || activeTab === 'processing-queue' || activeTab === 'completed-rejected' || activeTab === 'application-history') && (
             <div className="bg-white rounded-2xl border border-slate-200/90 shadow-2xs p-5 space-y-4">
               
               {/* Header Title & Summary */}
@@ -2187,7 +2230,7 @@ function AdminContent() {
                     <h2 className="font-black text-base text-slate-900">
                       {activeTab === 'payment-verification' ? 'পেমেন্ট ভেরিফিকেশন কিউ' :
                        activeTab === 'processing-queue' ? 'টেলিটক প্রসেসিং কিউ' :
-                       activeTab === 'completed-rejected' ? 'সম্পন্ন ও বাতিল আবেদনসমূহ' : 'সকল আবেদন তালিকা (Master Applications Table)'}
+                       (activeTab === 'completed-rejected' || activeTab === 'application-history') ? 'সম্পন্ন ও বাতিল আবেদনসমূহ' : 'সকল আবেদন তালিকা (Master Applications Table)'}
                     </h2>
                     <p className="text-xs text-slate-500 font-medium">
                       প্রার্থীদের সকল সরকারি ও ব্যাংক চাকরির আবেদন অডিট, পেমেন্ট ট্র্যাকিং ও প্রসেসিং
@@ -2470,7 +2513,7 @@ function AdminContent() {
               )}
 
               {/* STEP 2.4: COMPLETED & REJECTED QUEUE TOOLBAR & AUDIT METRICS */}
-              {activeTab === 'completed-rejected' && (
+              {(activeTab === 'completed-rejected' || activeTab === 'application-history') && (
                 <div className="space-y-3 pt-1 pb-1">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 bg-slate-50/90 rounded-2xl border border-slate-200 shadow-2xs">
                     
@@ -4142,7 +4185,7 @@ function AdminContent() {
             </div>
           )}
           {/* TAB 4: APPLICATIONS -> DOCUMENTS REPOSITORY (STEP 2.5 - ALL 7 ENTERPRISE FEATURES) */}
-          {activeTab === 'documents' && (() => {
+          {(activeTab === 'documents' || activeTab === 'candidate-cv') && (() => {
             const allAppsWithPdf = applications.filter(a => a.applicantCopyPdfUrl || a.pdfUrl);
             const completedMissingPdf = applications.filter(a => a.status === 'completed' && !a.applicantCopyPdfUrl && !a.pdfUrl);
 
@@ -4731,7 +4774,7 @@ function AdminContent() {
           )}
 
           {/* TAB 5: JOBS -> CIRCULARS */}
-          {activeTab === 'circulars' && (
+          {(activeTab === 'circulars' || activeTab === 'published-jobs' || activeTab === 'archived-jobs') && (
             <div className="space-y-5">
               {/* Top 5 KPI Summary Cards */}
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
@@ -5207,7 +5250,7 @@ function AdminContent() {
             </div>
           )}
 
-          {activeTab === 'gemini-browser-spider' && (
+          {(activeTab === 'gemini-browser-spider' || activeTab === 'scraping-jobs' || activeTab === 'pdf-processing') && (
             <GeminiBrowserSpiderHub
               jobs={jobs}
               onRefreshData={fetchAllAdminData}
@@ -5216,7 +5259,7 @@ function AdminContent() {
             />
           )}
 
-          {activeTab === 'source-monitoring' && (
+          {(activeTab === 'source-monitoring' || activeTab === 'failed-jobs') && (
             <div className="space-y-6">
               <GeminiBrowserSpiderHub
                 jobs={jobs}
@@ -5244,7 +5287,7 @@ function AdminContent() {
           )}
 
           {/* TAB: CATEGORY & SEARCH MANAGER (STEP 06) */}
-          {activeTab === 'category-search-manager' && (
+          {(activeTab === 'category-search-manager' || activeTab === 'job-locations') && (
             <div className="space-y-6">
               <JobCategorySearchManager />
             </div>
@@ -5285,7 +5328,7 @@ function AdminContent() {
             </div>
           )}
 
-          {activeTab === 'imported-drafts' && (
+          {(activeTab === 'imported-drafts' || activeTab === 'pending-approval') && (
             <div className="space-y-6">
               <JobVerificationCenter
                 drafts={drafts}
@@ -5684,7 +5727,7 @@ function AdminContent() {
           )}
 
           {/* TAB 8: CANDIDATES -> CANDIDATE DIRECTORY, DETAILS, ACCOUNT STATUS */}
-          {(activeTab === 'candidate-directory' || activeTab === 'candidate-details' || activeTab === 'account-status' || activeTab === 'eligibility-rules') && (
+          {(activeTab === 'candidate-directory' || activeTab === 'candidate-details' || activeTab === 'account-status' || activeTab === 'eligibility-rules' || activeTab === 'new-candidates' || activeTab === 'suspended-accounts') && (
             <div className="space-y-4">
               <CandidateManagementHub
                 activeTab={activeTab}
@@ -5712,9 +5755,9 @@ function AdminContent() {
           )}
 
                     {/* TAB: BUSINESS INTELLIGENCE & ANALYTICS (PHASE 05) */}
-          {(activeTab === 'analytics-center' || activeTab === 'report-builder' || activeTab === 'data-quality-inspector' || activeTab === 'automation-center') && (
+          {(activeTab === 'analytics-center' || activeTab === 'report-builder' || activeTab === 'data-quality-inspector' || activeTab === 'automation-center' || activeTab === 'duplicate-detection') && (
             <div className="space-y-4">
-              <AnalyticsIntelligenceHub activeTab={activeTab === 'data-quality-inspector' ? 'data-quality-inspector' : activeTab === 'report-builder' ? 'report-builder' : 'analytics-center'} />
+              <AnalyticsIntelligenceHub activeTab={(activeTab === 'data-quality-inspector' || activeTab === 'duplicate-detection') ? 'data-quality-inspector' : activeTab === 'report-builder' ? 'report-builder' : 'analytics-center'} />
             </div>
           )}
 
@@ -5769,7 +5812,7 @@ function AdminContent() {
           )}
 
           {/* TAB 11.1: WEBSITE CMS & SEO MANAGEMENT */}
-          {(activeTab === 'pages-sections' || activeTab === 'seo-meta' || activeTab === 'header-footer' || activeTab === 'revisions') && (
+          {(activeTab === 'pages-sections' || activeTab === 'seo-meta' || activeTab === 'header-footer' || activeTab === 'revisions' || activeTab === 'schema-markup' || activeTab === 'sitemap-settings') && (
             <div className="space-y-4">
               <WebsiteCmsSeoManagement 
                 activeTab={activeTab} 
@@ -7005,12 +7048,6 @@ function AdminContent() {
             setContentStudioDraftId(id);
             setActiveTab('content-studio');
           }}
-        />
-
-        <AdminGlobalSearchModal
-          isOpen={isGlobalSearchOpen}
-          onClose={() => setIsGlobalSearchOpen(false)}
-          onNavigate={handleTabChange}
         />
       </div>
     </AdminLayout>

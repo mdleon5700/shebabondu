@@ -41,9 +41,14 @@ export default function AdminGlobalSearchModal({
     const timer = setTimeout(async () => {
       setIsLoading(true);
       try {
+        const pin = typeof window !== 'undefined' ? (localStorage.getItem('cs_admin_pin') || '') : '';
+        const token = typeof window !== 'undefined' ? (localStorage.getItem('cs_session_token') || '') : '';
+        const headers: Record<string, string> = {};
+        if (pin) headers['x-admin-secret'] = pin;
+        if (token) headers['authorization'] = `Bearer ${token}`;
+
         const res = await fetch(`/api/admin/governance/search?q=${encodeURIComponent(query.trim())}`, {
-          headers: {
-            }
+          headers
         });
         const data = await res.json();
         if (data.success && Array.isArray(data.results)) {
@@ -121,7 +126,12 @@ export default function AdminGlobalSearchModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-start justify-center pt-16 sm:pt-24 px-4 p-4 animate-fadeIn">
+    <div 
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+      className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-start justify-center pt-16 sm:pt-24 px-4 p-4 animate-fadeIn"
+    >
       <div className="bg-white w-full max-w-2xl rounded-2xl shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-[80vh]">
         {/* Search Input Bar */}
         <div className="p-4 border-b border-slate-100 flex items-center gap-3 bg-slate-50/50">
@@ -147,6 +157,14 @@ export default function AdminGlobalSearchModal({
           <kbd className="hidden sm:inline-block px-2 py-0.5 text-[10px] font-mono font-bold text-slate-400 bg-slate-200/60 rounded border border-slate-300">
             ESC
           </kbd>
+          <button
+            type="button"
+            onClick={onClose}
+            className="p-1 text-slate-400 hover:text-slate-700 hover:bg-slate-200/50 rounded-lg transition-colors"
+            title="সার্চ বন্ধ করুন"
+          >
+            <X className="w-4 h-4" />
+          </button>
         </div>
 
         {/* Results List */}

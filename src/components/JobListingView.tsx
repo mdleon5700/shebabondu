@@ -31,6 +31,7 @@ import { storage } from '@/lib/store';
 import JobCard from './JobCard';
 import { matchJobQuery, matchGradeComprehensive, parseSalaryRange, toBn } from '@/lib/search-helper';
 import { fetchPublicJobs } from '@/lib/public-jobs-client';
+import { CentralDeadlineEngine } from '@/lib/deadlines/engine';
 
 interface BreadcrumbItem {
   label: string;
@@ -131,9 +132,12 @@ function JobListingViewContent({
           if (!(job.featured || isRecent || (job.daysRemaining && job.daysRemaining > 15))) return false;
           break;
         }
-        case 'deadline':
-          if (job.daysRemaining > 5) return false;
+        case 'deadline': {
+          const evalRes = CentralDeadlineEngine.evaluateDeadline(job);
+          if (evalRes.isClosed) return false;
+          if (evalRes.daysRemaining > 5 || evalRes.daysRemaining < 0) return false;
           break;
+        }
         case 'govt':
           if (!['govt', 'railway', 'defense', 'teacher'].includes(job.category)) return false;
           break;
@@ -294,12 +298,18 @@ function JobListingViewContent({
       return true;
     }).sort((a, b) => {
       // Prioritize active/open jobs over closed/expired jobs
-      const aClosed = a.status === 'CLOSED' || a.daysRemaining <= 0;
-      const bClosed = b.status === 'CLOSED' || b.daysRemaining <= 0;
+      const aEval = CentralDeadlineEngine.evaluateDeadline(a);
+      const bEval = CentralDeadlineEngine.evaluateDeadline(b);
+      const aClosed = aEval.isClosed;
+      const bClosed = bEval.isClosed;
       if (aClosed && !bClosed) return 1;
       if (!aClosed && bClosed) return -1;
 
-      if (sortBy === 'deadline') return a.daysRemaining - b.daysRemaining;
+      if (sortBy === 'deadline') {
+        const aDays = aEval.daysRemaining ?? a.daysRemaining ?? 999;
+        const bDays = bEval.daysRemaining ?? b.daysRemaining ?? 999;
+        return aDays - bDays;
+      }
       if (sortBy === 'posts') return b.totalPosts - a.totalPosts;
       return (b.id > a.id ? 1 : -1);
     });
@@ -369,6 +379,31 @@ function JobListingViewContent({
           </React.Fragment>
         ))}
       </nav>
+
+      {/* Deadline Hub Navigator if on deadline view */}
+      {filterType === 'deadline' && (
+        <div className="flex flex-wrap items-center gap-2.5">
+          <Link
+            href="/deadline-today"
+            className="px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 transition-colors"
+          >
+            আজকের ডেডলাইন
+          </Link>
+          <Link
+            href="/closing-soon"
+            className="px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 transition-colors"
+          >
+            জরুরি ডেডলাইন (৪৮-৭২ ঘণ্টা)
+          </Link>
+          <Link
+            href="/deadline-approaching"
+            className="px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-rose-700 text-white shadow-xs flex items-center gap-1.5"
+          >
+            <Clock className="w-3.5 h-3.5" />
+            <span>সকল সমাগত ডেডলাইন</span>
+          </Link>
+        </div>
+      )}
 
       {/* 2. Hero Header */}
       <div className="bg-gradient-to-br from-emerald-900 via-teal-900 to-slate-900 rounded-3xl p-6 sm:p-10 text-white relative overflow-hidden shadow-xl">

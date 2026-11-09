@@ -1,7 +1,7 @@
 import React from 'react';
 import { Metadata } from 'next';
 import Link from 'next/link';
-import { Clock, AlertTriangle, ArrowRight, Building2, Calendar, MapPin, Banknote } from 'lucide-react';
+import { Clock, AlertTriangle, ArrowRight, Building2, Calendar, MapPin, Banknote, Sparkles } from 'lucide-react';
 import { serverDB } from '@/lib/db';
 import { CentralDeadlineEngine } from '@/lib/deadlines/engine';
 import { BangladeshDateHelper } from '@/lib/feeds/timezone';
@@ -11,7 +11,7 @@ export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'আজ শেষ ডেডলাইন — আজকের মধ্যে আবেদনের শেষ সময় যেসব চাকরির | চাকরি সেবা',
-  description: 'যেসব সরকারি ও ব্যাংক চাকরির আবেদনের শেষ তারিখ ও সময় আজ। শেষ মুহূর্তের সার্ভার জ্যাম বা পেমেন্ট জটিলতা এড়াতে দ্রুত ১-ক্লিকে আবেদন সম্পন্ন করুন।',
+  description: 'যেসব সরকারি ও ব্যাংক চাকরির আবেদনের শেষ তারিখ ও সময় আজ রাত ১১:৫৯ মিনিটে শেষ হবে। শেষ মুহূর্তের সার্ভার জ্যাম এড়াতে দ্রুত ১-ক্লিকে আবেদন সম্পন্ন করুন।',
   alternates: {
     canonical: 'https://chakrisheba.com/deadline-today'
   },
@@ -42,11 +42,75 @@ export default function DeadlineTodayPage() {
 
   const todayInfo = BangladeshDateHelper.getBangladeshTodayDate();
 
+  const collectionSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: 'আজ শেষ ডেডলাইনের চাকরির সার্কুলার | চাকরি সেবা',
+    description: 'আজকের মধ্যে অনলাইনে আবেদনের শেষ সময় যেসব নিয়োগ বিজ্ঞপ্তির।',
+    url: 'https://chakrisheba.com/deadline-today',
+    isPartOf: {
+      '@type': 'WebSite',
+      name: 'চাকরি সেবা (Chakri Sheba)',
+      url: 'https://chakrisheba.com'
+    }
+  };
+
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'হোম',
+        item: 'https://chakrisheba.com'
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'আজকের ডেডলাইন',
+        item: 'https://chakrisheba.com/deadline-today'
+      }
+    ]
+  };
+
   return (
     <div className="min-h-screen bg-slate-50 py-8 px-4 sm:px-6 lg:px-8">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+
       <div className="max-w-6xl mx-auto space-y-6">
+        {/* Hub Navigator Bar */}
+        <div className="flex flex-wrap items-center gap-2.5">
+          <Link
+            href="/deadline-today"
+            className="px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-rose-700 text-white shadow-xs flex items-center gap-1.5"
+          >
+            <Clock className="w-3.5 h-3.5" />
+            <span>আজকের ডেডলাইন ({todayInfo.dateBn})</span>
+          </Link>
+          <Link
+            href="/closing-soon"
+            className="px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 transition-colors"
+          >
+            জরুরি ডেডলাইন (৪৮-৭২ ঘণ্টা)
+          </Link>
+          <Link
+            href="/deadline-approaching"
+            className="px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 transition-colors"
+          >
+            সকল সমাগত ডেডলাইন
+          </Link>
+        </div>
+
         {/* Header Banner */}
-        <div className="bg-gradient-to-br from-rose-950 via-slate-900 to-rose-900 text-white rounded-3xl p-6 sm:p-8 shadow-xl border border-rose-800/40 relative overflow-hidden">
+        <div className="bg-gradient-to-br from-rose-950 via-slate-900 to-rose-900 text-white rounded-3xl p-6 sm:p-8 lg:p-10 shadow-xl border border-rose-800/40 relative overflow-hidden">
           <div className="max-w-3xl space-y-3 relative z-10">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-rose-500/20 border border-rose-400/40 text-rose-300 text-xs font-bold animate-pulse">
               <Clock className="w-4 h-4 text-rose-400" />
@@ -56,7 +120,7 @@ export default function DeadlineTodayPage() {
               আজকেই আবেদনের শেষ সময় ({CentralDeadlineEngine.toBn(todayJobs.length)}টি সার্কুলার)
             </h1>
             <p className="text-sm sm:text-base text-rose-100/90 leading-relaxed">
-              উক্ত সার্কুলারসমূহের অনলাইনে ফরম পূরণ ও এসএমএস ফি প্রদানের সময় আজ শেষ হবে। শেষ মুহূর্তের সার্ভার ট্রাফিক জ্যাম এড়াতে দ্রুত আবেদন সম্পন্ন করুন।
+              উক্ত সার্কুলারসমূহের অনলাইনে ফরম পূরণ ও এসএমএস ফি প্রদানের সময় আজ রাত ১১:৫৯ মিনিটে শেষ হবে। শেষ মুহূর্তের টেলিটক সার্ভার ট্রাফিক জ্যাম এড়াতে দ্রুত ১-ক্লিকে আবেদন সম্পন্ন করুন।
             </p>
           </div>
         </div>
@@ -115,7 +179,7 @@ export default function DeadlineTodayPage() {
                     href={`/apply/${job.id}`}
                     className="px-4 py-2 bg-rose-700 hover:bg-rose-800 text-white rounded-xl text-xs font-bold shadow-sm transition-colors flex items-center gap-1"
                   >
-                    <span>১-ক্লিকে আজই আবেদন</span>
+                    <span>১-ক্লিকে এখনই আবেদন</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </Link>
                 </div>
@@ -123,22 +187,26 @@ export default function DeadlineTodayPage() {
             ))}
           </div>
         ) : (
-          <div className="bg-white rounded-3xl border border-slate-200 p-12 text-center space-y-3">
-            <Clock className="w-12 h-12 text-slate-300 mx-auto" />
-            <h3 className="text-lg font-bold text-slate-800">আজ কোনো সার্কুলারের ডেডলাইন নেই</h3>
-            <p className="text-xs text-slate-500 max-w-sm mx-auto">
-              আজকের দিনে কোনো চাকরির আবেদনের সময় শেষ হচ্ছে না। চলমান অন্যান্য চাকরির সার্কুলার দেখতে নিচে ক্লিক করুন।
-            </p>
-            <div className="flex items-center justify-center gap-3 pt-2">
+          <div className="bg-white rounded-3xl border border-slate-200/90 p-8 sm:p-12 text-center space-y-4">
+            <div className="w-16 h-16 mx-auto rounded-2xl bg-rose-50 border border-rose-200 flex items-center justify-center text-rose-600">
+              <Clock className="w-8 h-8" />
+            </div>
+            <div className="space-y-1.5 max-w-md mx-auto">
+              <h3 className="text-lg font-bold text-slate-800">আজ কোনো সার্কুলারের ডেডলাইন নেই</h3>
+              <p className="text-xs sm:text-sm text-slate-500 leading-relaxed">
+                আজকের তারিখে ({todayInfo.dateBn}) কোনো চাকরির আবেদনের নির্ধারিত সময়সীমা শেষ হচ্ছে না। আগামী ৪৮ থেকে ৭২ ঘণ্টার মধ্যে শেষ হতে যাওয়া সার্কুলারগুলো দেখতে পারেন।
+              </p>
+            </div>
+            <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
               <Link
                 href="/closing-soon"
-                className="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-bold"
+                className="px-4 py-2.5 bg-rose-700 hover:bg-rose-800 text-white rounded-xl text-xs sm:text-sm font-semibold transition-all shadow-xs"
               >
-                জরুরি ডেডলাইন (৩ দিন বাকি)
+                জরুরি ডেডলাইন (৪৮-৭২ ঘণ্টা)
               </Link>
               <Link
                 href="/latest-jobs"
-                className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-xl text-xs font-bold"
+                className="px-4 py-2.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-xl text-xs sm:text-sm font-semibold transition-all"
               >
                 নতুন প্রকাশিত চাকরি
               </Link>

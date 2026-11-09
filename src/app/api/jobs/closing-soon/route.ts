@@ -1,64 +1,48 @@
 import { NextResponse } from 'next/server';
 import { serverDB } from '@/lib/db';
-import { CentralDeadlineEngine } from '@/lib/deadlines/engine';
+import { JobFeedEngine } from '@/lib/feeds/engine';
+import { FeedQueryOptions } from '@/lib/feeds/types';
 
 export const dynamic = 'force-dynamic';
 
 export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
-    const maxDays = Number(searchParams.get('days') || '3');
-    const category = searchParams.get('category');
-    const page = Math.max(1, Number(searchParams.get('page') || '1'));
-    const limit = Math.min(50, Math.max(1, Number(searchParams.get('limit') || '20')));
+    const category = searchParams.get('category') || undefined;
+    const district = searchParams.get('district') || undefined;
+    const education = searchParams.get('education') || undefined;
+    const status = (searchParams.get('status') as any) || undefined;
+    const q = searchParams.get('q') || searchParams.get('search') || undefined;
+    const page = parseInt(searchParams.get('page') || '1', 10);
+    const limit = parseInt(searchParams.get('limit') || '9', 10);
+    const sortBy = (searchParams.get('sortBy') as any) || 'deadline_soon';
 
-    const allJobs = serverDB.getPublicJobs();
-    const eligibleJobs: any[] = [];
+    const jobs = serverDB.getPublicJobs();
+    const placements = serverDB.getFeaturedPlacements();
 
-    for (const job of allJobs) {
-      // Strict Zero-Leakage: Exclude drafts & unpublished
-      if (job.id.startsWith('draft-') || (job as any).publicationStatus === 'UNPUBLISHED') {
-        continue;
-      }
-      if (category && job.category !== category) {
-        continue;
-      }
-
-      const evalResult = CentralDeadlineEngine.evaluateDeadline(job);
-      if (evalResult.isClosed || evalResult.status === 'CANCELLED' || evalResult.status === 'SUSPENDED') {
-        continue;
-      }
-
-      if (evalResult.daysRemaining >= 0 && evalResult.daysRemaining <= maxDays) {
-        eligibleJobs.push({
-          ...job,
-          deadlineStatus: evalResult.status,
-          deadlineLabelBn: evalResult.labelBn,
-          daysRemaining: evalResult.daysRemaining,
-          hoursRemaining: evalResult.hoursRemaining,
-          minutesRemaining: evalResult.minutesRemaining,
-          formattedCountdownBn: evalResult.formattedCountdownBn,
-          badgeColor: evalResult.badgeColor
-        });
-      }
-    }
-
-    // Sort by daysRemaining ascending (urgency first)
-    eligibleJobs.sort((a, b) => a.daysRemaining - b.daysRemaining);
-
-    const total = eligibleJobs.length;
-    const startIndex = (page - 1) * limit;
-    const paginated = eligibleJobs.slice(startIndex, startIndex + limit);
-
-    return NextResponse.json({
-      success: true,
-      total,
+    const options: FeedQueryOptions = {
+      feedType: 'closing_soon',
+      category,
+      district,
+      education,
+      status,
+      q,
       page,
       limit,
-      totalPages: Math.ceil(total / limit) || 1,
-      jobs: paginated
+      sortBy
+    };
+
+    const result = JobFeedEngine.getFeed(jobs, options, placements);
+
+    return NextResponse.json(result, {
+      headers: {
+        'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate'
+      }
     });
-  } catch (err: any) {
-    return NextResponse.json({ error: err.message || 'Internal error' }, { status: 500 });
+  } catch (error: any) {
+    return NextResponse.json(
+      { success: false, error: error.message || 'জরুরি ডেডলাইনের চাকরির তালিকা লোড করতে সমস্যা হয়েছে' },
+      { status: 500 }
+    );
   }
 }

@@ -1,5 +1,7 @@
 import React from 'react';
 import { Metadata } from 'next';
+import Link from 'next/link';
+import { Clock } from 'lucide-react';
 import { serverDB } from '@/lib/db';
 import { JobFeedEngine } from '@/lib/feeds/engine';
 import JobFeedClient from '@/components/feeds/JobFeedClient';
@@ -74,7 +76,30 @@ export default function ClosingSoonPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
 
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-7xl mx-auto space-y-6">
+        {/* Hub Navigator Bar */}
+        <div className="flex flex-wrap items-center gap-2.5">
+          <Link
+            href="/deadline-today"
+            className="px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 transition-colors"
+          >
+            আজকের ডেডলাইন
+          </Link>
+          <Link
+            href="/closing-soon"
+            className="px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-rose-700 text-white shadow-xs flex items-center gap-1.5"
+          >
+            <Clock className="w-3.5 h-3.5" />
+            <span>জরুরি ডেডলাইন (৪৮-৭২ ঘণ্টা)</span>
+          </Link>
+          <Link
+            href="/deadline-approaching"
+            className="px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 transition-colors"
+          >
+            সকল সমাগত ডেডলাইন
+          </Link>
+        </div>
+
         <JobFeedClient
           feedType="closing_soon"
           title="জরুরি ডেডলাইন — আবেদনের সময় শীঘ্রই শেষ"

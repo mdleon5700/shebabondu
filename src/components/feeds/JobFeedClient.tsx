@@ -74,7 +74,7 @@ export default function JobFeedClient({
       sp.set('page', String(pageNum));
       sp.set('limit', '9');
 
-      let endpoint = `/api/jobs/${feedType}`;
+      let endpoint = `/api/jobs/${feedType.replace('_', '-')}`;
       if (feedType === 'daily' && date) {
         endpoint = `/api/jobs/daily/${date}`;
       }

@@ -53,6 +53,8 @@ const CATEGORY_OPTIONS = [
   { value: 'health', label: 'স্বাস্থ্য ও পরিবার পরিকল্পনা' },
   { value: 'engineer', label: 'ইঞ্জিনিয়ারিং ও টেকনিক্যাল' },
   { value: 'private', label: 'বেসরকারি প্রতিষ্ঠান' },
+  { value: 'company', label: 'কোম্পানি ও স্বায়ত্তশাসিত' },
+  { value: 'international', label: 'প্রবাসী ও আন্তর্জাতিক চাকরি (Overseas)' },
 ];
 
 const GRADE_OPTIONS = [

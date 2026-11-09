@@ -87,7 +87,9 @@ const DEFAULT_NAV_ITEMS: NavMenuItem[] = [
       { label: 'সকল ক্যাটাগরি ব্রাউজ করুন', href: '/job-categories' },
       { label: 'শিক্ষক নিয়োগ', href: '/teacher-jobs' },
       { label: 'ইঞ্জিনিয়ারিং চাকরি', href: '/engineering-jobs' },
+      { label: 'হিসাব ও ফাইন্যান্স চাকরি', href: '/accounting-finance-jobs' },
       { label: 'মার্কেটিং ও সেলস', href: '/marketing-jobs' },
+      { label: 'প্রবাসী ও আন্তর্জাতিক চাকরি', href: '/international-jobs' },
       { label: 'ফ্রেশারদের চাকরি', href: '/fresher-jobs' },
       { label: 'পার্ট-টাইম ও ইন্টার্নশিপ', href: '/part-time-jobs' }
     ]

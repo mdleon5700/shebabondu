@@ -47,13 +47,7 @@ export interface JobPosition {
 
 
   govtFee?: number;
-
-
-
-
-
-
-
+  experience?: string;
 }
 
 
@@ -110,7 +104,7 @@ export interface JobCircular {
 
 
 
-  category: 'govt' | 'bank' | 'railway' | 'defense' | 'teacher' | 'ngo' | 'private' | 'company' | 'health' | 'engineer';
+  category: 'govt' | 'bank' | 'railway' | 'defense' | 'teacher' | 'ngo' | 'private' | 'company' | 'health' | 'engineer' | 'international' | 'overseas';
 
 
 
@@ -4022,7 +4016,7 @@ export interface CircularDraft {
 
 
 
-  category: 'govt' | 'bank' | 'railway' | 'defense' | 'teacher' | 'ngo' | 'private' | 'company' | 'health';
+  category: 'govt' | 'bank' | 'railway' | 'defense' | 'teacher' | 'ngo' | 'private' | 'company' | 'health' | 'engineer' | 'international' | 'overseas';
 
 
 

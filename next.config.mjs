@@ -54,6 +54,9 @@ const nextConfig = {
       { source: '/category/:slug', destination: '/categories/:slug', permanent: true },
       { source: '/daily-jobs/today', destination: '/daily-jobs', permanent: false },
       { source: '/daily-jobs/yesterday', destination: '/daily-jobs', permanent: false },
+      { source: '/overseas-jobs', destination: '/international-jobs', permanent: true },
+      { source: '/overseas', destination: '/international-jobs', permanent: true },
+      { source: '/probashi', destination: '/international-jobs', permanent: true },
     ];
   },
 };

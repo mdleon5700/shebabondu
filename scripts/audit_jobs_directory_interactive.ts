@@ -59,3 +59,4 @@ auditJobsDirectory().catch(err => {
   console.error('Jobs directory audit error:', err);
   process.exit(1);
 });
+

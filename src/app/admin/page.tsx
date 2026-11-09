@@ -572,7 +572,7 @@ function AdminContent() {
   // New Circular Form State
   const [newTitle, setNewTitle] = useState('');
   const [newOrg, setNewOrg] = useState('');
-  const [newCategory, setNewCategory] = useState<'govt' | 'bank' | 'railway' | 'defense' | 'teacher' | 'ngo' | 'private'>('govt');
+  const [newCategory, setNewCategory] = useState<'govt' | 'bank' | 'railway' | 'defense' | 'teacher' | 'ngo' | 'private' | 'company' | 'health' | 'engineer' | 'international' | 'overseas'>('govt');
   const [newGrade, setNewGrade] = useState('৯ম গ্রেড');
   const [newVacancies, setNewVacancies] = useState('১২৫');
   const [newSalary, setNewSalary] = useState('২২,০০০ - ৫৩,০৬০ টাকা');

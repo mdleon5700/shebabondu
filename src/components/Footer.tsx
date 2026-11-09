@@ -37,6 +37,7 @@ export const DEFAULT_FOOTER_COLUMNS: FooterColumnItem[] = [
       { label: 'সরকারি চাকরির বিজ্ঞপ্তি', url: '/government-jobs' },
       { label: 'বেসরকারি ও কোম্পানি জবস', url: '/private-jobs' },
       { label: 'ব্যাংক ও ফাইন্যান্স চাকরি', url: '/bank-jobs' },
+      { label: 'প্রবাসী ও আন্তর্জাতিক চাকরি', url: '/international-jobs' },
       { label: 'আবেদনের শেষ সময় কাছাকাছি', url: '/deadline-approaching' },
       { label: 'পরীক্ষার নোটিশ ও সময়সূচি', url: '/exam-notices' },
       { label: 'প্রবেশপত্র / অ্যাডমিট কার্ড', url: '/admit-cards' },

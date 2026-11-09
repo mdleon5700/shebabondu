@@ -4,22 +4,36 @@ import JobListingView from '@/components/JobListingView';
 
 export const metadata: Metadata = {
   title: 'সরকারি চাকরির সার্কুলার ২০২৬ (Govt Jobs BD) | চাকরি সেবা',
-  description: 'বিসিএস, বিভিন্ন মন্ত্রণালয়, অধিদপ্তর ও স্বায়ত্তশাসিত প্রতিষ্ঠানের চলমান সরকারি নিয়োগ।',
+  description: 'বিসিএস, বিভিন্ন মন্ত্রণালয়, অধিদপ্তর ও রাজস্ব খাতের চলমান সরকারি নিয়োগ।',
+  alternates: {
+    canonical: 'https://chakrisheba.com/government-jobs'
+  },
+  openGraph: {
+    title: 'সরকারি চাকরির সার্কুলার ২০২৬ (Govt Jobs BD)',
+    description: 'বিসিএস, বিভিন্ন মন্ত্রণালয়, অধিদপ্তর ও রাজস্ব খাতের চলমান সরকারি নিয়োগ।',
+    url: 'https://chakrisheba.com/government-jobs',
+    siteName: 'চাকরি সেবা (Chakri Sheba)',
+    locale: 'bn_BD',
+    type: 'website'
+  }
 };
 
-export default function Page() {
+export default function GovernmentJobsPage() {
   return (
     <JobListingView
       title="সরকারি চাকরির সার্কুলার ২০২৬ (Govt Jobs BD)"
       subtitle="বিসিএস, বিভিন্ন মন্ত্রণালয়, অধিদপ্তর ও স্বায়ত্তশাসিত প্রতিষ্ঠানের চলমান সরকারি নিয়োগ।"
       badge="সরকারি নিয়োগ"
       breadcrumbs={[
-        { label: "হোম", href: "/" }, { label: "সরকারি চাকরি", href: "/government-jobs" }
+        { label: "হোম", href: "/" }, 
+        { label: "সরকারি চাকরি", href: "/government-jobs" }
       ]}
       filterType="govt"
       seoTextContent={{
         heading: "সরকারি চাকরির প্রস্তুতি ও টেলিটক অনলাইন আবেদন নিয়মাবলী",
-        paragraphs: ['"সরকারি চাকরিতে আবেদনের ক্ষেত্রে টেলিটক প্রিপেইড সিম দিয়ে এসএমএস পাঠিয়ে ফি প্রদান করতে হয়। আমাদের প্ল্যাটফর্মে বিল্ট-ইন এসএমএস জেনারেটর রয়েছে যা দিয়ে সঠিক ইউজার আইডি ও পিন দিয়ে সহজেই এসএমএস তৈরি করা যায়।"'],
+        paragraphs: [
+          "সরকারি চাকরিতে আবেদনের ক্ষেত্রে টেলিটক প্রিপেইড সিম দিয়ে এসএমএস পাঠিয়ে ফি প্রদান করতে হয়। আমাদের প্ল্যাটফর্মে বিল্ট-ইন এসএমএস জেনারেটর রয়েছে যা দিয়ে সঠিক ইউজার আইডি ও পিন দিয়ে সহজেই এসএমএস তৈরি করা যায়।"
+        ],
         tips: [
           "আবেদনের পূর্বে মূল অফিসিয়াল গ্যাজেট নোটিশটি ভালোভাবে পড়ে নিন।",
           "৩০০×৩০০ ছবি এবং ৩০০×৮০ স্বাক্ষর সঠিকভাবে রিসাইজ করে প্রস্তুত রাখুন।",

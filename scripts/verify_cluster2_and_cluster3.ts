@@ -36,3 +36,4 @@ verify().catch(err => {
   console.error('Browser check failed:', err);
   process.exit(1);
 });
+

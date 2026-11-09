@@ -84,6 +84,12 @@ export class JobTaxonomyClassifier {
         }
         break;
 
+      case 'international':
+      case 'overseas':
+        primaryCategory = 'cat-international';
+        categorySlug = 'international-jobs';
+        break;
+
       case 'govt':
       default:
         primaryCategory = 'cat-govt';
@@ -127,6 +133,22 @@ export class JobTaxonomyClassifier {
     }
     if (org.includes('বীমা') || org.includes('ইনস্যুরেন্স') || org.includes('সিকিউরিটিজ') || title.includes('অডিট') || title.includes('হিসাব')) {
       subcategories.push('cat-finance');
+    }
+    if (
+      org.includes('বোয়েসেল') ||
+      org.includes('boesl') ||
+      org.includes('প্রবাসী') ||
+      org.includes('বৈদেশিক') ||
+      org.includes('ওভারসিজ') ||
+      org.includes('বিদেশের') ||
+      org.includes('বিদেশে') ||
+      title.includes('প্রবাসী') ||
+      title.includes('বোয়েসেল') ||
+      title.includes('বিদেশে')
+    ) {
+      if (!subcategories.includes('cat-international')) {
+        subcategories.push('cat-international');
+      }
     }
     if (
       title.includes('প্রকৌশলী') ||

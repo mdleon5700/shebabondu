@@ -138,54 +138,229 @@ function JobListingViewContent({
           if (evalRes.daysRemaining > 5 || evalRes.daysRemaining < 0) return false;
           break;
         }
-        case 'govt':
-          if (!['govt', 'railway', 'defense', 'teacher'].includes(job.category)) return false;
+        case 'govt': {
+          const org = (job.organization || '').toLowerCase();
+          const isGovt = ['govt', 'railway', 'defense'].includes(job.category) ||
+            org.includes('মন্ত্রণালয়') ||
+            org.includes('অধিদপ্তর') ||
+            org.includes('পরিদপ্তর') ||
+            org.includes('কমিশন') ||
+            org.includes('সচিবালয়') ||
+            org.includes('রেলওয়ে') ||
+            org.includes('জেলা প্রশাসক');
+          if (!isGovt) return false;
           break;
-        case 'private':
-          if (!['private', 'ngo', 'company'].includes(job.category)) return false;
+        }
+        case 'private': {
+          const texts = [job.title || '', job.organization || '', job.category || '', job.categoryLabel || ''];
+          if (job.positions) job.positions.forEach(p => texts.push(p.title || ''));
+          const str = texts.join(' ').toLowerCase();
+          const isPrivateOrCompany = ['private', 'company', 'ngo'].includes(job.category) ||
+            str.includes('কোম্পানি') ||
+            str.includes('লিমিটেড') ||
+            str.includes('লিঃ') ||
+            str.includes('কর্পোরেশন') ||
+            str.includes('বিদ্যুৎ') ||
+            str.includes('পাওয়ার') ||
+            str.includes('কোল') ||
+            str.includes('আশুগঞ্জ') ||
+            str.includes('কেবল শিল্প') ||
+            str.includes('পেট্রোবাংলা') ||
+            str.includes('ওয়াসা') ||
+            str.includes('রাজউক') ||
+            str.includes('কর্তৃপক্ষ');
+          if (!isPrivateOrCompany) return false;
           break;
-        case 'bank':
-          if (job.category !== 'bank') return false;
+        }
+        case 'bank': {
+          const texts = [job.title || '', job.organization || '', job.category || '', job.categoryLabel || ''];
+          if (job.positions) job.positions.forEach(p => texts.push(p.title || ''));
+          const str = texts.join(' ').toLowerCase();
+          const isBank = job.category === 'bank' ||
+            str.includes('ব্যাংক') ||
+            str.includes('bank') ||
+            str.includes('বিএসসিএস') ||
+            str.includes('bscs') ||
+            str.includes('ব্যাংকার্স সিলেকশন') ||
+            str.includes('বাংলাদেশ ব্যাংক');
+          if (!isBank) return false;
           break;
+        }
+        case 'engineering': {
+          const texts = [job.title || '', job.organization || '', job.eligibility || '', job.category || ''];
+          if (job.positions) job.positions.forEach(p => texts.push(p.title || '', p.minEducation || ''));
+          const str = texts.join(' ').toLowerCase();
+          const isEngineering = job.category === 'engineer' ||
+            str.includes('প্রকৌশলী') ||
+            str.includes('ইঞ্জিনিয়ার') ||
+            str.includes('ইঞ্জিনিয়ারিং') ||
+            str.includes('engineer') ||
+            str.includes('উপসহকারী') ||
+            str.includes('সহকারী প্রকৌশলী') ||
+            str.includes('উপ-সহকারী প্রকৌশলী') ||
+            str.includes('পুর') ||
+            str.includes('তড়িৎ') ||
+            str.includes('যান্ত্রিক') ||
+            str.includes('সিভিল') ||
+            str.includes('ইলেকট্রিক্যাল') ||
+            str.includes('মেকানিক্যাল');
+          if (!isEngineering) return false;
+          break;
+        }
+        case 'it': {
+          const texts = [job.title || '', job.organization || '', job.eligibility || ''];
+          if (job.positions) job.positions.forEach(p => texts.push(p.title || '', p.minEducation || ''));
+          const str = texts.join(' ').toLowerCase();
+          const isIt = str.includes('আইটি') ||
+            str.includes('কম্পিউটার') ||
+            str.includes('সফটওয়্যার') ||
+            str.includes('software') ||
+            str.includes('প্রোগ্রামার') ||
+            str.includes('programmer') ||
+            str.includes('ডাটা') ||
+            str.includes('data') ||
+            str.includes('নেটওয়ার্ক') ||
+            str.includes('network') ||
+            str.includes('ডাটাবেজ') ||
+            str.includes('database') ||
+            str.includes('সিস্টেম অ্যানালিস্ট') ||
+            str.includes('তথ্য প্রযুক্তি') ||
+            str.includes('মুদ্রাক্ষরিক') ||
+            str.includes('টাইপিস্ট') ||
+            str.includes('হার্ডওয়্যার');
+          if (!isIt) return false;
+          break;
+        }
+        case 'medical': {
+          const texts = [job.title || '', job.organization || '', job.eligibility || ''];
+          if (job.positions) job.positions.forEach(p => texts.push(p.title || '', p.minEducation || ''));
+          const str = texts.join(' ').toLowerCase();
+          const isMedical = job.category === 'health' ||
+            str.includes('মেডিকেল') ||
+            str.includes('medical') ||
+            str.includes('ডাক্তার') ||
+            str.includes('চিকিৎসক') ||
+            str.includes('নার্স') ||
+            str.includes('nurse') ||
+            str.includes('ফার্মাসিস্ট') ||
+            str.includes('স্বাস্থ্য সহকারী') ||
+            str.includes('স্বাস্থ্য') ||
+            str.includes('হাসপাতাল') ||
+            str.includes('স্বাস্থ্য অধিদপ্তর') ||
+            str.includes('dghs');
+          if (!isMedical) return false;
+          break;
+        }
         case 'teacher':
-          if (
-            job.category !== 'teacher' && 
-            !job.title.includes('শিক্ষক') && 
-            !job.title.includes('প্রভাষক') &&
-            !(job.positions && job.positions.some(p => p.title?.includes('শিক্ষক') || p.title?.includes('প্রভাষক')))
-          ) return false;
+        case 'tutoring': {
+          const texts = [job.title || '', job.organization || '', job.eligibility || ''];
+          if (job.positions) job.positions.forEach(p => texts.push(p.title || '', p.minEducation || ''));
+          const str = texts.join(' ').toLowerCase();
+          const isTeacher = job.category === 'teacher' ||
+            str.includes('শিক্ষক') ||
+            str.includes('প্রভাষক') ||
+            str.includes('অধ্যাপক') ||
+            str.includes('এনটিআরসিএ') ||
+            str.includes('ntrca') ||
+            str.includes('সহকারী শিক্ষক') ||
+            str.includes('টিউটর') ||
+            str.includes('টিউশন') ||
+            str.includes('প্রাথমিক বিদ্যালয়') ||
+            str.includes('মাদ্রাসা') ||
+            str.includes('কলেজ') ||
+            str.includes('বিশ্ববিদ্যালয়');
+          if (!isTeacher) return false;
           break;
-        case 'ngo':
-          if (job.category !== 'ngo') return false;
+        }
+        case 'ngo': {
+          const texts = [job.title || '', job.organization || '', job.eligibility || ''];
+          if (job.positions) job.positions.forEach(p => texts.push(p.title || ''));
+          const str = texts.join(' ').toLowerCase();
+          const isNgo = job.category === 'ngo' ||
+            str.includes('এনজিও') ||
+            str.includes('ngo') ||
+            str.includes('ব্র্যাক') ||
+            str.includes('brac') ||
+            str.includes('আশা') ||
+            str.includes('asa') ||
+            str.includes('টিএমএসএস') ||
+            str.includes('tmss') ||
+            str.includes('গ্রামীণ ব্যাংক') ||
+            str.includes('উন্নয়ন সংস্থা') ||
+            str.includes('ফাউন্ডেশন') ||
+            str.includes('foundation');
+          if (!isNgo) return false;
           break;
-        case 'it':
-          if (
-            job.category !== 'engineer' && 
-            !job.title.includes('কম্পিউটার') && 
-            !job.title.includes('আইটি') && 
-            !job.title.includes('ডাটা') && 
-            !job.title.includes('Data') && 
-            !job.title.includes('প্রোগ্রামার') &&
-            !(job.positions && job.positions.some(p => p.title?.includes('কম্পিউটার') || p.title?.includes('আইটি') || p.title?.includes('ডাটা') || p.title?.includes('প্রোগ্রামার')))
-          ) return false;
+        }
+        case 'accounting-finance': {
+          const texts = [job.title || '', job.organization || '', job.eligibility || ''];
+          if (job.positions) job.positions.forEach(p => texts.push(p.title || '', p.minEducation || ''));
+          const str = texts.join(' ').toLowerCase();
+          const isAccounting = str.includes('হিসাব') ||
+            str.includes('হিসাবরক্ষক') ||
+            str.includes('অডিটর') ||
+            str.includes('ক্যাশিয়ার') ||
+            str.includes('ফিন্যান্স') ||
+            str.includes('ফাইন্যান্স') ||
+            str.includes('অর্থ') ||
+            str.includes('একাউন্টস') ||
+            str.includes('accounts') ||
+            str.includes('audit') ||
+            str.includes('সঞ্চয়') ||
+            str.includes('জাতীয় সঞ্চয়') ||
+            str.includes('হিসাব মহানিয়ন্ত্রক') ||
+            str.includes('cag') ||
+            str.includes('ক্রেডিট চেকার');
+          if (!isAccounting) return false;
           break;
-        case 'medical':
-          if (
-            job.category !== 'health' && 
-            !job.title.includes('নার্স') && 
-            !job.title.includes('মেডিকেল') && 
-            !job.title.includes('স্বাস্থ্য') &&
-            !job.title.includes('ডাক্তার') &&
-            !(job.positions && job.positions.some(p => p.title?.includes('নার্স') || p.title?.includes('মেডিকেল') || p.title?.includes('স্বাস্থ্য')))
-          ) return false;
+        }
+        case 'marketing': {
+          const texts = [job.title || '', job.organization || '', job.eligibility || ''];
+          if (job.positions) job.positions.forEach(p => texts.push(p.title || '', p.minEducation || ''));
+          const str = texts.join(' ').toLowerCase();
+          const isMarketing = str.includes('মার্কেটিং') ||
+            str.includes('সেলস') ||
+            str.includes('sales') ||
+            str.includes('marketing') ||
+            str.includes('ব্র্যান্ড') ||
+            str.includes('টেরিটরি') ||
+            str.includes('বিজ্ঞাপন') ||
+            str.includes('জনসংযোগ') ||
+            str.includes('প্রচার') ||
+            str.includes('business development') ||
+            str.includes('ব্যবসা উন্নয়ন');
+          if (!isMarketing) return false;
           break;
-        case 'tutoring':
-          if (
-            job.category !== 'teacher' && 
-            !job.title.includes('শিক্ষক') && 
-            !job.title.includes('প্রভাষক')
-          ) return false;
+        }
+        case 'international':
+        case 'overseas': {
+          const texts = [job.title || '', job.organization || '', job.eligibility || '', job.districts || ''];
+          if (job.positions) job.positions.forEach(p => texts.push(p.title || '', p.minEducation || ''));
+          const str = texts.join(' ').toLowerCase();
+          const isOverseas = job.category === 'international' ||
+            str.includes('প্রবাসী') ||
+            str.includes('বৈদেশিক') ||
+            str.includes('আন্তর্জাতিক') ||
+            str.includes('বোয়েসেল') ||
+            str.includes('boesl') ||
+            str.includes('ওভারসিজ') ||
+            str.includes('overseas') ||
+            str.includes('বিদেশের চাকরি') ||
+            str.includes('বিদেশে') ||
+            str.includes('জর্ডান') ||
+            str.includes('জাপান') ||
+            str.includes('কোরিয়া') ||
+            str.includes('সৌদি') ||
+            str.includes('কাতার') ||
+            str.includes('কুয়েত') ||
+            str.includes('দুবাই') ||
+            str.includes('মালয়েশিয়া') ||
+            str.includes('কানাডা') ||
+            str.includes('জার্মানি') ||
+            str.includes('international');
+          if (!isOverseas) return false;
           break;
+        }
         case 'jsc': {
           const texts = [job.minEducation || '', job.title || '', job.eligibility || ''];
           if (job.positions) job.positions.forEach(p => { texts.push(p.minEducation || '', p.title || ''); });
@@ -576,6 +751,54 @@ function JobListingViewContent({
         </div>
       )}
 
+      {/* Sector & Industry Hub Navigator if on sector view */}
+      {['govt', 'bank', 'private', 'engineering', 'it', 'medical', 'teacher', 'tutoring', 'ngo', 'accounting-finance', 'marketing', 'international'].includes(filterType) && (
+        <div className="bg-white p-3.5 sm:p-4 rounded-2xl border border-slate-200 shadow-xs space-y-2.5">
+          <div className="flex items-center justify-between text-xs font-bold text-slate-500 uppercase tracking-wider px-1">
+            <span className="flex items-center gap-1.5 text-emerald-800">
+              <Layers className="w-4 h-4 text-emerald-600" />
+              <span>সেক্টর ও পেশাভিত্তিক চাকরির হাবসমূহ</span>
+            </span>
+            <Link href="/job-categories" className="text-emerald-700 hover:text-emerald-800 hover:underline flex items-center gap-1 normal-case font-bold">
+              <span>সকল ক্যাটাগরি</span>
+              <ChevronRight className="w-3 h-3" />
+            </Link>
+          </div>
+          <div className="flex flex-wrap items-center gap-2">
+            {[
+              { id: 'govt', label: 'সরকারি চাকরি', href: '/government-jobs' },
+              { id: 'bank', label: 'ব্যাংক চাকরি', href: '/bank-jobs' },
+              { id: 'private', label: 'বেসরকারি ও কোম্পানি', href: '/private-jobs' },
+              { id: 'engineering', label: 'ইঞ্জিনিয়ারিং', href: '/engineering-jobs' },
+              { id: 'it', label: 'আইটি ও সফটওয়্যার', href: '/it-jobs' },
+              { id: 'medical', label: 'মেডিকেল ও স্বাস্থ্য', href: '/medical-jobs' },
+              { id: 'teacher', label: 'শিক্ষক নিয়োগ', href: '/teacher-jobs' },
+              { id: 'tutoring', label: 'টিউশন ও পার্টটাইম', href: '/tutoring-jobs' },
+              { id: 'ngo', label: 'এনজিও চাকরি', href: '/ngo-jobs' },
+              { id: 'accounting-finance', label: 'হিসাব ও অর্থ', href: '/accounting-finance-jobs' },
+              { id: 'marketing', label: 'মার্কেটিং ও সেলস', href: '/marketing-jobs' },
+              { id: 'international', label: 'প্রবাসী ও আন্তর্জাতিক (Overseas)', href: '/international-jobs' },
+            ].map((tab) => {
+              const isActive = filterType === tab.id;
+              return (
+                <Link
+                  key={tab.id}
+                  href={tab.href}
+                  className={`px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 ${
+                    isActive
+                      ? 'bg-emerald-700 text-white shadow-xs'
+                      : 'bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200'
+                  }`}
+                >
+                  {isActive && <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />}
+                  <span>{tab.label}</span>
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
       {/* 2. Hero Header */}
       <div className="bg-gradient-to-br from-emerald-900 via-teal-900 to-slate-900 rounded-3xl p-6 sm:p-10 text-white relative overflow-hidden shadow-xl">
         <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none" />
@@ -907,23 +1130,48 @@ function JobListingViewContent({
           </div>
         </div>
       ) : (
-        <div className="bg-white rounded-3xl border border-slate-200 p-12 text-center space-y-4">
-          <div className="w-16 h-16 rounded-2xl bg-amber-50 text-amber-600 border border-amber-200 flex items-center justify-center mx-auto">
+        <div className="bg-white rounded-3xl border border-slate-200/90 p-10 sm:p-12 text-center space-y-4 shadow-xs">
+          <div className="w-16 h-16 rounded-2xl bg-amber-50 text-amber-600 border border-amber-200 flex items-center justify-center mx-auto shadow-inner">
             <Briefcase className="w-8 h-8" />
           </div>
-          <div className="space-y-1">
-            <h3 className="text-lg font-bold text-slate-900">কোনো চাকরি পাওয়া যায়নি</h3>
-            <p className="text-xs text-slate-500 max-w-md mx-auto">
-              আপনার নির্বাচিত ফিল্টার বা সার্চ কোয়েরির সাথে কোনো বিজ্ঞপ্তির মিল পাওয়া যায়নি। ফিল্টার পরিবর্তন করে পুনরায় চেষ্টা করুন।
+          <div className="space-y-1.5 max-w-md mx-auto">
+            <h3 className="text-lg font-bold text-slate-900">
+              {searchQuery || selectedCategory !== 'all' || selectedGrade !== 'all' || selectedDistrict !== 'all' || selectedSalary !== 'all'
+                ? 'কোনো বিজ্ঞপ্তি পাওয়া যায়নি'
+                : 'এই সেক্টরে এই মুহূর্তে কোনো সক্রিয় বিজ্ঞপ্তি নেই'}
+            </h3>
+            <p className="text-xs sm:text-sm text-slate-500 leading-relaxed">
+              {searchQuery || selectedCategory !== 'all' || selectedGrade !== 'all' || selectedDistrict !== 'all' || selectedSalary !== 'all'
+                ? 'আপনার নির্বাচিত ফিল্টার বা সার্চ কোয়েরির সাথে কোনো বিজ্ঞপ্তির মিল পাওয়া যায়নি। ফিল্টার পরিবর্তন করে পুনরায় চেষ্টা করুন।'
+                : 'এই ক্যাটাগরিতে নতুন সার্কুলার প্রকাশ হওয়া মাত্রই তাৎক্ষণিকভাবে এখানে স্বয়ংক্রিয়ভাবে তালিকাভুক্ত হবে। অন্যান্য সেক্টর বা সকল চাকরির তালিকা ঘুরে দেখতে পারেন।'}
             </p>
           </div>
-          <button
-            type="button"
-            onClick={handleResetAllFilters}
-            className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition-colors cursor-pointer"
-          >
-            ফিল্টার রিসেট করুন
-          </button>
+          <div className="flex flex-wrap items-center justify-center gap-2.5 pt-1">
+            {searchQuery || selectedCategory !== 'all' || selectedGrade !== 'all' || selectedDistrict !== 'all' || selectedSalary !== 'all' ? (
+              <button
+                type="button"
+                onClick={handleResetAllFilters}
+                className="px-5 py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-bold transition-colors cursor-pointer shadow-sm"
+              >
+                ফিল্টার রিসেট করুন
+              </button>
+            ) : (
+              <>
+                <Link
+                  href="/job-categories"
+                  className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition-colors"
+                >
+                  সকল ক্যাটাগরি
+                </Link>
+                <Link
+                  href="/jobs"
+                  className="px-5 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-bold transition-colors shadow-sm"
+                >
+                  চলমান সকল চাকরি
+                </Link>
+              </>
+            )}
+          </div>
         </div>
       )}
 

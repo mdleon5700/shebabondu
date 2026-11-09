@@ -74,8 +74,11 @@ export async function POST(req: Request) {
       teacher: 'শিক্ষক নিয়োগ',
       ngo: 'এনজিও',
       private: 'বেসরকারি',
+      company: 'কোম্পানি ও স্বায়ত্তশাসিত',
       health: 'স্বাস্থ্য ও চিকিৎসা',
-      engineer: 'প্রকৌশলী ও প্রযুক্তি'
+      engineer: 'প্রকৌশলী ও প্রযুক্তি',
+      international: 'প্রবাসী ও আন্তর্জাতিক চাকরি',
+      overseas: 'প্রবাসী ও আন্তর্জাতিক চাকরি'
     };
 
     const chosenCat = jobData.category || 'govt';

@@ -48,3 +48,4 @@ console.log({
   publishingQueue: store.publishingQueue.length,
   contentStudioArticles: Object.keys(store.contentStudioArticles).length
 });
+

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Chakri Sheba - Featured Jobs Management
  * Step 07: Administrative Placements, Scheduling & Expiration
  */

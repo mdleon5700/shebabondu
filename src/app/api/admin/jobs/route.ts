@@ -167,6 +167,8 @@ export async function POST(req: Request) {
       revalidatePath('/latest-jobs');
       revalidatePath('/todays-jobs');
       revalidatePath('/daily-jobs');
+      revalidatePath('/featured-jobs');
+      revalidatePath('/updated-circulars');
       revalidatePath('/admin');
     } catch {}
     return NextResponse.json({ success: true, job: saved });
@@ -205,6 +207,8 @@ export async function DELETE(req: Request) {
       revalidatePath('/latest-jobs');
       revalidatePath('/todays-jobs');
       revalidatePath('/daily-jobs');
+      revalidatePath('/featured-jobs');
+      revalidatePath('/updated-circulars');
       revalidatePath('/admin');
     } catch {}
 

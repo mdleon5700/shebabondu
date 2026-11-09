@@ -40,9 +40,15 @@ export async function GET(req: Request) {
   }
 
   const { passwordHash, ...safeCandidate } = candidate;
+  const cookieHeader = req.headers.get('cookie') || '';
+  const impMatch = cookieHeader.match(/(?:^|;\s*)cs_impersonating=([^;]+)/);
+  const impersonatingName = impMatch ? decodeURIComponent(impMatch[1]) : undefined;
+
   return NextResponse.json({ 
+    success: true,
     isLoggedIn: true,
     role: 'candidate',
-    user: safeCandidate 
+    user: safeCandidate,
+    impersonatingName
   }, { headers: NO_CACHE_HEADERS });
 }

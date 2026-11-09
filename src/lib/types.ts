@@ -993,6 +993,7 @@ export interface CandidateProfile {
 
 
   nidBackUrl?: string;
+  nidUrl?: string;
 
 
 

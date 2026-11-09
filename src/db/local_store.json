@@ -698,6 +698,36 @@
       "candidateId": "USR-01712345678",
       "role": "candidate",
       "expiresAt": "2026-11-16T11:16:15.511Z"
+    },
+    "cluster2_layout_audit_session_1794223710756": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T11:28:30.756Z"
+    },
+    "test_token_1794223907155": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-10T11:31:47.155Z"
+    },
+    "layout_test_token_1794224354210": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T11:39:14.210Z"
+    },
+    "cluster2_layout_audit_session_1794224557396": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T11:42:37.396Z"
+    },
+    "cluster2_layout_audit_session_1794224646924": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T11:44:06.924Z"
+    },
+    "cluster2_layout_audit_session_1794224703611": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T11:45:03.611Z"
     }
   },
   "coupons": {},

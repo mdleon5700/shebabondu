@@ -409,12 +409,6 @@ export const storage = {
     }
     return updated;
   },
-  replaceApplications(apps: ApplicationRequest[], targetUserId?: string) {
-    if (typeof window !== 'undefined') {
-      const key = getScopedKey('cs_apps_data', targetUserId);
-      localStorage.setItem(key, JSON.stringify(apps));
-    }
-  },
 
   // Saved Jobs (Scoped)
   getSavedJobIds(targetUserId?: string): string[] {
@@ -605,7 +599,8 @@ export const storage = {
     // Pillar 5: National ID Card (20%)
     const hasNid = Boolean(
       (profile.nid && profile.nid.trim().length >= 10) ||
-      (profile as any).nidUrl ||
+      profile.nidUrl ||
+      profile.nidFrontUrl ||
       (documents && documents.some(d => d.type === 'nid')) ||
       (typeof window !== 'undefined' && this.getDocuments().some(d => d.type === 'nid'))
     );

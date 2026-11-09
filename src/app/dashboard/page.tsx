@@ -35,13 +35,9 @@ export default function DashboardOverview() {
   const [notifications, setNotifications] = useState<NotificationItem[]>([]);
   const [recommendations, setRecommendations] = useState<any[]>([]);
   const [isLoadingRecs, setIsLoadingRecs] = useState<boolean>(false);
+  const [completion, setCompletion] = useState<number>(0);
   const [isMounted, setIsMounted] = useState(false);
   const [urgentIndex, setUrgentIndex] = useState(0);
-
-  // Dynamic Profile Completion based strictly on 5 pillars (20% each)
-  const completion = useMemo(() => {
-    return storage.calculateProfileCompletion(profile, documents);
-  }, [profile, documents]);
 
   useEffect(() => {
     setIsMounted(true);
@@ -49,6 +45,7 @@ export default function DashboardOverview() {
     const initialDocs = storage.getDocuments();
     setProfile(u);
     setDocuments(initialDocs);
+    setCompletion(storage.calculateProfileCompletion(u, initialDocs));
     fetchPublicJobs().then(setJobs).catch(() => {});
     setApplications(storage.getApplications());
     setSavedIds(storage.getSavedJobIds());
@@ -56,10 +53,7 @@ export default function DashboardOverview() {
 
     // Live Step 09 Recommendations Sync
     setIsLoadingRecs(true);
-    const token = typeof window !== 'undefined' ? localStorage.getItem('cs_session_token') : null;
-    const authHeaders: Record<string, string> = token ? { 'Authorization': `Bearer ${token}` } : {};
-
-    fetch("/api/user/recommendations?minScore=50&limit=5", { headers: authHeaders })
+    fetch("/api/user/recommendations?minScore=50&limit=5")
       .then(res => res.json())
       .then(data => {
         if (data.success && data.data?.bestMatches) {
@@ -70,40 +64,41 @@ export default function DashboardOverview() {
       .finally(() => setIsLoadingRecs(false));
 
     // Live Server Sync for Applications
-    fetch("/api/applications", { headers: authHeaders })
+    fetch("/api/applications")
       .then(res => res.json())
       .then(data => {
         if (data.success && data.applications && Array.isArray(data.applications)) {
           setApplications(data.applications);
-          storage.replaceApplications(data.applications);
         }
       })
       .catch(() => {});
 
     // Live Server Sync for profile
-    fetch('/api/profile', { headers: authHeaders })
+    fetch('/api/profile')
       .then(res => res.ok ? res.json() : null)
       .then(data => {
         if (data?.profile) {
           setProfile(data.profile);
+          setCompletion(storage.calculateProfileCompletion(data.profile, documents));
           storage.updateUser(data.profile);
         }
       })
       .catch(() => {});
 
     // Live Server Sync for documents (Vault)
-    fetch('/api/documents', { headers: authHeaders })
+    fetch('/api/documents')
       .then(res => res.ok ? res.json() : null)
       .then(data => {
         if (data?.documents && Array.isArray(data.documents)) {
           setDocuments(data.documents);
           storage.replaceDocuments(data.documents);
+          setCompletion(storage.calculateProfileCompletion(profile, data.documents));
         }
       })
       .catch(() => {});
 
     // Live Server Sync for notifications
-    fetch('/api/candidate/notifications', { headers: authHeaders })
+    fetch('/api/candidate/notifications')
       .then(res => res.ok ? res.json() : null)
       .then(data => {
         if (data?.notifications && Array.isArray(data.notifications)) {
@@ -113,39 +108,20 @@ export default function DashboardOverview() {
       .catch(() => {});
 
     // Live Server Sync for saved jobs
-    fetch('/api/candidate/saved-jobs', { headers: authHeaders })
+    fetch('/api/candidate/saved-jobs')
       .then(res => res.ok ? res.json() : null)
       .then(data => {
         if (data?.savedJobs && Array.isArray(data.savedJobs)) {
           setSavedIds(data.savedJobs);
-          storage.replaceSavedJobIds(data.savedJobs);
         }
       })
       .catch(() => {});
-
-    // Listen to storage sync events strictly per domain
-    const handleUserChange = () => setProfile(storage.getUser());
-    const handleDocsChange = () => setDocuments(storage.getDocuments());
-    const handleAppsChange = () => setApplications(storage.getApplications());
-    const handleSavedChange = () => setSavedIds(storage.getSavedJobIds());
-
-    window.addEventListener('cs_user_changed', handleUserChange);
-    window.addEventListener('cs_documents_changed', handleDocsChange);
-    window.addEventListener('cs_apps_changed', handleAppsChange);
-    window.addEventListener('cs_saved_changed', handleSavedChange);
-
-    return () => {
-      window.removeEventListener('cs_user_changed', handleUserChange);
-      window.removeEventListener('cs_documents_changed', handleDocsChange);
-      window.removeEventListener('cs_apps_changed', handleAppsChange);
-      window.removeEventListener('cs_saved_changed', handleSavedChange);
-    };
   }, []);
 
-  // Compute eligible jobs with candidate profile & vault documents
+  // Compute eligible jobs
   const eligibleJobs = useMemo(() => {
-    return jobs.filter(j => storage.checkEligibility(profile, j, documents).status === 'eligible');
-  }, [jobs, profile, documents]);
+    return jobs.filter(j => storage.checkEligibility(profile, j).status === 'eligible');
+  }, [jobs, profile]);
 
   const savedJobs = useMemo(() => {
     return jobs.filter(j => savedIds.includes(j.id));
@@ -168,16 +144,8 @@ export default function DashboardOverview() {
     return applications
       .filter(app => app.status === 'completed' || app.status === 'admit_issued' || app.status === 'submitted')
       .map((app, idx) => {
-        let examDate: Date;
-        if ((app as any).examDate) {
-          examDate = new Date((app as any).examDate);
-        } else {
-          const baseDate = new Date(app.submittedAt || app.date || Date.now());
-          examDate = new Date(baseDate.getTime() + (21 + (idx % 7)) * 24 * 60 * 60 * 1000);
-        }
-        if (isNaN(examDate.getTime())) {
-          examDate = new Date(Date.now() + 21 * 24 * 60 * 60 * 1000);
-        }
+        const baseDate = new Date(app.submittedAt || app.date || Date.now());
+        const examDate = new Date(baseDate.getTime() + (21 + (idx % 7)) * 24 * 60 * 60 * 1000);
         return {
           id: app.id,
           jobTitle: app.jobTitle,

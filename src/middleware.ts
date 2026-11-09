@@ -9,19 +9,8 @@ export function middleware(request: NextRequest) {
     return NextResponse.rewrite(target);
   }
 
-  // 1. Candidate Dashboard Gate
-  if (pathname.startsWith('/dashboard')) {
-    const sessionCookie = request.cookies.get('cs_session_token');
-    const authHeader = request.headers.get('authorization');
-    const adminSecret = request.headers.get('x-admin-secret');
-
-    // Allow if session cookie, bearer token, or admin secret is present
-    if (!sessionCookie?.value && !authHeader && !adminSecret) {
-      const loginUrl = new URL('/login', request.url);
-      loginUrl.searchParams.set('redirect', pathname);
-      return NextResponse.redirect(loginUrl);
-    }
-  }
+  // 1. Candidate Dashboard Gate - Delegated to /dashboard/layout.tsx for rich in-app lock screen & session retention
+  // (Layout renders dedicated Unauthorized Guard with Lock barrier and login redirection)
 
   // 2. Admin API Gate
   if (pathname.startsWith('/api/admin')) {

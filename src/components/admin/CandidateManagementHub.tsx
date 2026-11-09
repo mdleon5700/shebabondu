@@ -43,6 +43,7 @@ import {
 } from 'lucide-react';
 import { CandidateProfile, ApplicationRequest, CandidateDocument } from '@/lib/types';
 import { BD_DIVISIONS_EN } from '@/lib/constants';
+import { getAdminHeaders } from '@/lib/adminAuthClient';
 import UniversalUserWorkspace from '@/components/admin/UniversalUserWorkspace';
 
 interface CandidateManagementHubProps {
@@ -160,13 +161,9 @@ export default function CandidateManagementHub({
     }
     setIsCreatingCandidate(true);
     try {
-      const pin = typeof window !== 'undefined' ? (localStorage.getItem('cs_admin_pin') || '1234') : '1234';
       const res = await fetch('/api/admin/candidates', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-admin-secret': pin
-        },
+        headers: getAdminHeaders(),
         credentials: 'include',
         body: JSON.stringify(createForm)
       });
@@ -190,13 +187,9 @@ export default function CandidateManagementHub({
       return;
     }
     try {
-      const pin = typeof window !== 'undefined' ? (localStorage.getItem('cs_admin_pin') || '1234') : '1234';
       const res = await fetch(`/api/admin/candidates/${candidate.id}`, {
         method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-admin-secret': pin
-        },
+        headers: getAdminHeaders(),
         credentials: 'include'
       });
       const data = await res.json();
@@ -222,13 +215,9 @@ export default function CandidateManagementHub({
     }
     const newBalance = Math.max(0, current + delta);
     try {
-      const pin = typeof window !== 'undefined' ? (localStorage.getItem('cs_admin_pin') || '1234') : '1234';
       const res = await fetch(`/api/admin/candidates/${candidate.id}`, {
         method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-admin-secret': pin
-        },
+        headers: getAdminHeaders(),
         credentials: 'include',
         body: JSON.stringify({ walletBalance: newBalance, reason: `অ্যাডমিন ওয়ালেট এডজাস্টমেন্ট (${delta >= 0 ? '+' : ''}${delta} ৳)` })
       });
@@ -317,10 +306,7 @@ export default function CandidateManagementHub({
     try {
       const res = await fetch(`/api/admin/candidates/${candidate.id}`, {
         method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-admin-secret': typeof window !== 'undefined' ? (localStorage.getItem('cs_admin_pin') || '1234') : '1234'
-        },
+        headers: getAdminHeaders(),
         body: JSON.stringify({ isVerified: nextStatus, reason: `ভেরিফিকেশন স্ট্যাটাস পরিবর্তন: ${nextStatus ? 'অনুমোদিত' : 'প্রত্যাহার'}` })
       });
       if (res.ok) {
@@ -343,10 +329,7 @@ export default function CandidateManagementHub({
     try {
       const res = await fetch(`/api/admin/candidates/${candidate.id}`, {
         method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-admin-secret': typeof window !== 'undefined' ? (localStorage.getItem('cs_admin_pin') || '1234') : '1234'
-        },
+        headers: getAdminHeaders(),
         body: JSON.stringify({ status: nextStatus, reason: `অ্যাডমিন মডারেশন: ${nextStatus}` })
       });
       if (res.ok) {
@@ -369,10 +352,7 @@ export default function CandidateManagementHub({
     try {
       const res = await fetch(`/api/admin/candidates/${candidate.id}`, {
         method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-admin-secret': typeof window !== 'undefined' ? (localStorage.getItem('cs_admin_pin') || '1234') : '1234'
-        },
+        headers: getAdminHeaders(),
         body: JSON.stringify({ newPassword: tempPass, reason: 'অ্যাডমিন পাসওয়ার্ড রিসেট' })
       });
       if (res.ok) {
@@ -411,9 +391,8 @@ export default function CandidateManagementHub({
 
   useEffect(() => {
     if (currentCandidate?.id && !loadedCandidateDocs[currentCandidate.id]) {
-      const pin = typeof window !== 'undefined' ? (localStorage.getItem('cs_admin_pin') || 'CHAKRISEBA_SECURE_ADMIN_2026') : 'CHAKRISEBA_SECURE_ADMIN_2026';
       fetch(`/api/admin/candidates/${currentCandidate.id}`, {
-        headers: { 'x-admin-secret': pin }
+        headers: getAdminHeaders()
       })
       .then(r => r.ok ? r.json() : null)
       .then(d => {
@@ -434,13 +413,9 @@ export default function CandidateManagementHub({
   // Handle 1-Click Candidate Impersonation
   const handleImpersonateCandidate = async (candidateId: string) => {
     try {
-      const pin = typeof window !== 'undefined' ? (localStorage.getItem('cs_admin_pin') || '1234') : '1234';
       const res = await fetch('/api/admin/impersonate', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-admin-secret': pin
-        },
+        headers: getAdminHeaders(),
         body: JSON.stringify({ candidateId })
       });
       const data = await res.json();

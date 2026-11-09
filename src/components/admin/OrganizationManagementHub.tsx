@@ -27,13 +27,7 @@ import {
 import { CompanyProfile, JobCircular } from '@/lib/types';
 
 
-const getAdminHeaders = (): HeadersInit => {
-  const pin = typeof window !== 'undefined' ? (localStorage.getItem('cs_admin_pin') || '1234') : '1234';
-  return {
-    'Content-Type': 'application/json',
-    'x-admin-secret': pin
-  };
-};
+import { getAdminHeaders } from '@/lib/adminAuthClient';
 
 interface OrganizationManagementHubProps {
   onRefreshData?: () => void;

@@ -119,7 +119,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     if (typeof document !== 'undefined') {
       const match = document.cookie.match(/(?:^|;\s*)cs_impersonating=([^;]+)/);
       if (match) {
-        setImpersonatingName(decodeURIComponent(match[1]));
+        try {
+          let name = decodeURIComponent(match[1]);
+          if (name.includes('%')) name = decodeURIComponent(name);
+          setImpersonatingName(name);
+        } catch {
+          setImpersonatingName(match[1]);
+        }
       }
     }
 
@@ -266,20 +272,20 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     <div className="min-h-screen bg-slate-50 flex flex-col" suppressHydrationWarning>
       {/* Sticky Admin Impersonation Banner */}
       {impersonatingName && (
-        <div className="bg-gradient-to-r from-amber-500 via-amber-400 to-orange-500 text-slate-950 px-4 py-2.5 text-xs font-black flex items-center justify-between shadow-md sticky top-0 z-50 border-b border-amber-600">
+        <div className="bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 text-slate-950 px-4 py-2.5 text-xs font-black flex items-center justify-between shadow-md sticky top-0 z-50 border-b border-amber-600">
           <div className="flex items-center gap-2">
             <span className="p-1 bg-black text-amber-400 rounded-md">
               <ShieldAlert className="w-3.5 h-3.5" />
             </span>
             <span>
-              অ্যাডমিন ইমপারসোনেশন মোড সক্রিয়: আপনি বর্তমানে &ldquo;{impersonatingName}&rdquo; এর প্রার্থী পোর্টালে আছেন। যেকোনো পরিবর্তন লাইভ সেভ হবে।
+              ⚠️ সতর্কবার্তা: আপনি সাপোর্ট দেওয়ার জন্য এই প্রার্থীর অ্যাকাউন্টে অ্যাডমিন হিসেবে প্রবেশ করেছেন (&ldquo;{impersonatingName}&rdquo;)।
             </span>
           </div>
           <button
             onClick={handleExitImpersonation}
-            className="px-3 py-1 bg-slate-950 hover:bg-black text-white rounded-lg text-xs font-bold transition-all shadow-sm flex items-center gap-1 cursor-pointer shrink-0"
+            className="px-3.5 py-1.5 bg-slate-950 hover:bg-black text-amber-300 rounded-lg text-xs font-bold transition-all shadow-sm flex items-center gap-1 cursor-pointer shrink-0 border border-amber-500/30"
           >
-            <span>✕ অ্যাডমিন প্যানেলে ফিরুন</span>
+            <span>অ্যাডমিন প্যানেলে ফিরুন ↗</span>
           </button>
         </div>
       )}

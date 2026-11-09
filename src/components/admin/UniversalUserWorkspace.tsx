@@ -48,13 +48,7 @@ import {
 import { CandidateProfile, EducationRecord, ExperienceRecord, CandidateDocument } from '@/lib/types';
 import { BD_DIVISIONS_EN } from '@/lib/constants';
 
-const getAdminHeaders = (): HeadersInit => {
-  const pin = typeof window !== 'undefined' ? (localStorage.getItem('cs_admin_pin') || '1234') : '1234';
-  return {
-    'Content-Type': 'application/json',
-    'x-admin-secret': pin
-  };
-};
+import { getAdminHeaders } from '@/lib/adminAuthClient';
 
 export interface UniversalUserWorkspaceProps {
   candidateId: string | null;

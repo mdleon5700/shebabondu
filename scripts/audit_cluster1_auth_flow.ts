@@ -15,15 +15,19 @@ async function auditCluster1AuthFlow() {
     await page.goto('http://localhost:3000/login', { waitUntil: 'domcontentloaded', timeout: 25000 });
     await page.waitForTimeout(1000);
 
-    // Verify 3 tabs exist
+    // Verify strictly 2 Candidate tabs exist (Clean candidate portal separation)
     const loginTab = page.locator('button:has-text("লগইন")').first();
     const registerTab = page.locator('button:has-text("নিবন্ধন")').first();
-    const adminTab = page.locator('button:has-text("অ্যাডমিন")').first();
+    const adminTab = page.locator('button:has-text("অ্যাডমিন")');
 
-    if (!(await loginTab.isVisible()) || !(await registerTab.isVisible()) || !(await adminTab.isVisible())) {
-      throw new Error('Top 3 mode switcher tabs not fully visible!');
+    if (!(await loginTab.isVisible()) || !(await registerTab.isVisible())) {
+      throw new Error('Candidate mode switcher tabs (লগইন, নিবন্ধন) not fully visible!');
     }
-    console.log('✓ Verified 3 Mode Switcher tabs: লগইন, নিবন্ধন, অ্যাডমিন');
+    const adminCount = await adminTab.count();
+    if (adminCount > 0) {
+      throw new Error('Admin entry point should NOT be present on candidate /login portal!');
+    }
+    console.log('✓ Verified strictly 2 candidate switcher tabs: লগইন & নিবন্ধন (Admin correctly isolated)');
 
     // Verify Remember Me checkbox
     const rememberMeCheck = page.locator('input[type="checkbox"]');
@@ -39,18 +43,19 @@ async function auditCluster1AuthFlow() {
     }
     console.log('✓ Verified Register tab switches smoothly');
 
-    // Switch to Admin PIN Tab
-    await adminTab.click();
-    await page.waitForTimeout(400);
-    const pinInput = page.locator('input[placeholder*="পিন প্রদান করুন"]');
-    if (!(await pinInput.isVisible())) {
-      throw new Error('Admin PIN form not displayed on tab switch!');
+    // Test legacy /login?tab=admin forwarding to /admin
+    console.log('\n--- Testing legacy /login?tab=admin redirect to /admin ---');
+    await page.goto('http://localhost:3000/login?tab=admin', { waitUntil: 'domcontentloaded' });
+    await page.waitForURL(url => url.pathname.includes('/admin'), { timeout: 10000 });
+    const redirectedUrl = page.url();
+    if (!redirectedUrl.includes('/admin')) {
+      throw new Error(`Legacy admin tab failed to forward to /admin! Current URL: ${redirectedUrl}`);
     }
-    console.log('✓ Verified Admin PIN tab switches smoothly');
+    console.log(`✓ Verified legacy /login?tab=admin automatically forwards to dedicated Admin URL: ${redirectedUrl}`);
 
-    // Switch back to Login Tab
-    await loginTab.click();
-    await page.waitForTimeout(400);
+    // Switch back to Login Tab on /login
+    await page.goto('http://localhost:3000/login', { waitUntil: 'domcontentloaded' });
+    await page.waitForTimeout(600);
 
     // 2. Test Deep Linking / Redirect Handling
     console.log('\n--- Testing Deep Linking / Redirect Handling ---');
@@ -63,7 +68,7 @@ async function auditCluster1AuthFlow() {
     console.log('Clicked 1-Click Demo Login button...');
 
     // Wait for redirect to /dashboard/vault
-    await page.waitForFunction(() => window.location.pathname.includes('/dashboard/vault'), null, { timeout: 25000 });
+    await page.waitForURL(url => url.pathname.includes('/dashboard/vault'), { waitUntil: 'commit', timeout: 30000 });
     console.log('✓ Successfully deep-linked to redirect target: /dashboard/vault');
 
     // 3. Test Social Login Modal
@@ -87,11 +92,12 @@ async function auditCluster1AuthFlow() {
 
     // Click the candidate profile in modal
     const profileBtn = page.locator('button:has-text("মোঃ তানভীর হাসান (বিদ্যমান প্রার্থী)")');
+    await profileBtn.scrollIntoViewIfNeeded();
     await profileBtn.click();
     console.log('Clicked Google profile button in modal...');
 
     // Wait for redirect to /dashboard
-    await page.waitForFunction(() => window.location.pathname.startsWith('/dashboard'), null, { timeout: 25000 });
+    await page.waitForURL(url => url.pathname.startsWith('/dashboard'), { waitUntil: 'commit', timeout: 30000 });
     console.log('✓ Social login successful! Redirected to /dashboard');
 
     // 4. Test Forgot Password OTP 3-Step Flow

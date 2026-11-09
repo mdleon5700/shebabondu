@@ -61,6 +61,9 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
   return {
     title: page.metaTitle || `${page.title} | চাকরি সেবা`,
     description: page.metaDescription || `${page.title} — চাকরি সেবা প্ল্যাটফর্মের অফিসিয়াল পেজ।`,
+    alternates: {
+      canonical: page.slug || `/p/${rawSlug}`
+    },
     openGraph: {
       title: page.metaTitle || page.title,
       description: page.metaDescription,

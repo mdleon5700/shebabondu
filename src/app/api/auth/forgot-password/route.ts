@@ -133,6 +133,7 @@ export async function POST(req: Request) {
       const res = NextResponse.json({
         success: true,
         message: 'আপনার পাসওয়ার্ড সফলভাবে পরিবর্তিত হয়েছে! ড্যাশবোর্ডে প্রবেশ করা হচ্ছে...',
+        token,
         user: safeCandidate
       });
       const cookie = createSessionCookie(token);

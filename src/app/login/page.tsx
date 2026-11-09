@@ -12,6 +12,8 @@ import {
   Mail,
   User,
   ArrowRight, 
+  ArrowLeft,
+  RotateCcw,
   AlertCircle,
   Eye,
   EyeOff,
@@ -77,7 +79,38 @@ function LoginForm() {
   const [forgotMessage, setForgotMessage] = useState('');
   const [forgotError, setForgotError] = useState('');
   const [forgotTestOtp, setForgotTestOtp] = useState('');
+  const [forgotMaskedTarget, setForgotMaskedTarget] = useState('');
+  const [forgotCountdown, setForgotCountdown] = useState(60);
+  const [forgotCanResend, setForgotCanResend] = useState(false);
+  const [showForgotNewPass, setShowForgotNewPass] = useState(false);
+  const [showForgotConfirmPass, setShowForgotConfirmPass] = useState(false);
   const [isForgotLoading, setIsForgotLoading] = useState(false);
+
+  // Automatically open forgot password modal if navigated with ?tab=forgot or ?forgot=1
+  React.useEffect(() => {
+    if (searchParams.get('tab') === 'forgot' || searchParams.get('forgot') === '1') {
+      setShowForgotModal(true);
+      setForgotStep(1);
+    }
+  }, [searchParams]);
+
+  // 60-Second countdown timer for Step 2 of forgot modal
+  React.useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (showForgotModal && forgotStep === 2 && forgotCountdown > 0) {
+      setForgotCanResend(false);
+      timer = setInterval(() => {
+        setForgotCountdown((prev) => {
+          if (prev <= 1) {
+            setForgotCanResend(true);
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    }
+    return () => clearInterval(timer);
+  }, [showForgotModal, forgotStep, forgotCountdown]);
 
   // Social Login Picker Modal
   const [socialModal, setSocialModal] = useState<{ open: boolean; provider: 'google' | 'facebook' | null }>({
@@ -322,8 +355,8 @@ function LoginForm() {
   };
 
   // Forgot Password Step 1: Request OTP
-  const handleForgotRequestOtp = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleForgotRequestOtp = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
     setForgotError('');
     setForgotMessage('');
     if (!forgotId.trim()) {
@@ -338,13 +371,16 @@ function LoginForm() {
         body: JSON.stringify({ action: 'request_otp', identifier: forgotId.trim() })
       });
       const data = await res.json();
-      if (!res.ok) {
+      if (!res.ok || !data.success) {
         setForgotError(data.error || 'রিকোয়েস্ট ব্যর্থ হয়েছে।');
         setIsForgotLoading(false);
         return;
       }
-      setForgotMessage(data.message);
+      setForgotMessage(data.message || 'আপনার ঠিকানায় ৬-ডিজিটের ভেরিফিকেশন কোড পাঠানো হয়েছে।');
       setForgotTestOtp(data.testOtp || '');
+      setForgotMaskedTarget(data.maskedTarget || forgotId.trim());
+      setForgotCountdown(60);
+      setForgotCanResend(false);
       setForgotStep(2);
       setIsForgotLoading(false);
     } catch {
@@ -418,6 +454,11 @@ function LoginForm() {
         return;
       }
 
+      if (data.token && typeof document !== 'undefined') {
+        document.cookie = `cs_session_token=${encodeURIComponent(data.token)}; path=/; max-age=2592000; SameSite=Lax`;
+        localStorage.setItem('cs_session_token', data.token);
+      }
+
       if (data.user) {
         storage.setAuth({
           isLoggedIn: true,
@@ -432,8 +473,8 @@ function LoginForm() {
       setForgotMessage('পাসওয়ার্ড সফলভাবে পরিবর্তিত হয়েছে! ড্যাশবোর্ডে প্রবেশ করা হচ্ছে...');
       setTimeout(() => {
         setShowForgotModal(false);
-        router.push(getRedirectTarget());
-      }, 900);
+        window.location.href = getRedirectTarget();
+      }, 700);
     } catch {
       setForgotError('পাসওয়ার্ড পরিবর্তনের সময় সমস্যা হয়েছে।');
       setIsForgotLoading(false);
@@ -839,21 +880,38 @@ function LoginForm() {
               </div>
               <h3 className="text-lg font-black text-slate-900">পাসওয়ার্ড রিকভারি</h3>
               <p className="text-xs text-slate-500">
-                {forgotStep === 1 && 'মোবাইল বা ইমেইল দিয়ে ওটিপি পাঠান'}
-                {forgotStep === 2 && 'প্রাপ্ত ৬-ডিজিটের কোড দিন'}
-                {forgotStep === 3 && 'নতুন পাসওয়ার্ড নির্ধারণ করুন'}
+                ৩-স্টেপ ওটিপি ভেরিফিকেশন উইজার্ড
               </p>
             </div>
 
+            {/* 3-Step Progress Indicator */}
+            <div className="grid grid-cols-3 gap-1.5 text-center text-[10px] font-bold">
+              <div className={`p-1.5 rounded-xl transition-all ${
+                forgotStep === 1 ? 'bg-amber-100 text-amber-900 border border-amber-300' : 'bg-slate-100 text-slate-400'
+              }`}>
+                ১. তথ্য দিন
+              </div>
+              <div className={`p-1.5 rounded-xl transition-all ${
+                forgotStep === 2 ? 'bg-amber-100 text-amber-900 border border-amber-300' : 'bg-slate-100 text-slate-400'
+              }`}>
+                ২. ওটিপি যাচাই
+              </div>
+              <div className={`p-1.5 rounded-xl transition-all ${
+                forgotStep === 3 ? 'bg-emerald-100 text-emerald-900 border border-emerald-300' : 'bg-slate-100 text-slate-400'
+              }`}>
+                ৩. নতুন পাসওয়ার্ড
+              </div>
+            </div>
+
             {forgotError && (
-              <div className="p-2.5 bg-rose-50 border border-rose-200 rounded-xl text-xs text-rose-800 flex items-center gap-1.5">
+              <div className="p-2.5 bg-rose-50 border border-rose-200 rounded-xl text-xs text-rose-800 flex items-center gap-1.5 animate-in fade-in">
                 <AlertCircle className="w-3.5 h-3.5 text-rose-600 shrink-0" />
                 <span>{forgotError}</span>
               </div>
             )}
 
             {forgotMessage && (
-              <div className="p-2.5 bg-emerald-50 border border-emerald-200 rounded-xl text-xs text-emerald-900 flex items-center gap-1.5">
+              <div className="p-2.5 bg-emerald-50 border border-emerald-200 rounded-xl text-xs text-emerald-900 flex items-center gap-1.5 animate-in fade-in">
                 <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
                 <span>{forgotMessage}</span>
               </div>
@@ -878,17 +936,35 @@ function LoginForm() {
                 <button
                   type="submit"
                   disabled={isForgotLoading}
-                  className="w-full py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs rounded-xl shadow-md transition-all flex items-center justify-center gap-1.5"
+                  className="w-full py-2.5 bg-emerald-700 hover:bg-emerald-800 disabled:bg-emerald-400 text-white font-bold text-xs rounded-xl shadow-md transition-all flex items-center justify-center gap-1.5"
                 >
                   <span>{isForgotLoading ? 'পাঠানো হচ্ছে...' : 'ওটিপি কোড পাঠান'}</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </button>
+
+                <div className="pt-2 border-t border-slate-100 text-center">
+                  <Link
+                    href="/auth/forgot-password"
+                    onClick={() => setShowForgotModal(false)}
+                    className="text-[11px] text-amber-700 hover:text-amber-800 font-bold hover:underline inline-flex items-center gap-1"
+                  >
+                    <span>অথবা সম্পূর্ণ পেজ ভিউতে যেতে ক্লিক করুন</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </Link>
+                </div>
               </form>
             )}
 
             {/* STEP 2: Enter OTP */}
             {forgotStep === 2 && (
               <form onSubmit={handleForgotVerifyOtp} className="space-y-3">
+                {forgotMaskedTarget && (
+                  <div className="p-2 bg-slate-50 border border-slate-200 rounded-xl text-[11px] text-slate-600 flex items-center justify-between">
+                    <span>প্রেরিত গন্তব্য:</span>
+                    <strong className="font-mono text-slate-800">{forgotMaskedTarget}</strong>
+                  </div>
+                )}
+
                 {forgotTestOtp && (
                   <div className="p-2.5 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-900 flex items-center justify-between">
                     <span>টেস্টিং ওটিপি কোড:</span>
@@ -897,6 +973,7 @@ function LoginForm() {
                     </strong>
                   </div>
                 )}
+
                 <div>
                   <label className="text-xs font-bold text-slate-700 block mb-1">
                     ৬-ডিজিটের ভেরিফিকেশন কোড (OTP)
@@ -911,10 +988,42 @@ function LoginForm() {
                     className="w-full text-center tracking-widest font-mono text-base px-3 py-2 rounded-xl border border-slate-300 text-slate-900 font-bold focus:ring-2 focus:ring-emerald-500 focus:outline-none"
                   />
                 </div>
+
+                {/* Resend and Countdown Timer */}
+                <div className="flex items-center justify-between text-[11px] pt-1">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setForgotStep(1);
+                      setForgotOtp('');
+                    }}
+                    className="text-slate-500 hover:text-slate-700 font-semibold flex items-center gap-1"
+                  >
+                    <ArrowLeft className="w-3 h-3" />
+                    <span>নম্বর পরিবর্তন</span>
+                  </button>
+
+                  {forgotCountdown > 0 ? (
+                    <span className="text-slate-400 font-medium">
+                      পুনরায় পাঠান (০:{forgotCountdown < 10 ? `0${forgotCountdown}` : forgotCountdown})
+                    </span>
+                  ) : (
+                    <button
+                      type="button"
+                      disabled={isForgotLoading}
+                      onClick={() => handleForgotRequestOtp()}
+                      className="text-emerald-700 hover:text-emerald-800 font-bold flex items-center gap-1 hover:underline"
+                    >
+                      <RotateCcw className="w-3 h-3" />
+                      <span>পুনরায় ওটিপি পাঠান</span>
+                    </button>
+                  )}
+                </div>
+
                 <button
                   type="submit"
                   disabled={isForgotLoading}
-                  className="w-full py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs rounded-xl shadow-md transition-all flex items-center justify-center gap-1.5"
+                  className="w-full py-2.5 bg-emerald-700 hover:bg-emerald-800 disabled:bg-emerald-400 text-white font-bold text-xs rounded-xl shadow-md transition-all flex items-center justify-center gap-1.5"
                 >
                   <span>{isForgotLoading ? 'যাচাই হচ্ছে...' : 'কোড যাচাই করুন'}</span>
                   <ArrowRight className="w-3.5 h-3.5" />
@@ -927,30 +1036,59 @@ function LoginForm() {
               <form onSubmit={handleForgotResetPassword} className="space-y-3">
                 <div>
                   <label className="text-xs font-bold text-slate-700 block mb-1">নতুন পাসওয়ার্ড (কমপক্ষে ৬ অক্ষর)</label>
-                  <input
-                    type="password"
-                    required
-                    value={forgotNewPass}
-                    onChange={(e) => setForgotNewPass(e.target.value)}
-                    placeholder="নতুন পাসওয়ার্ড"
-                    className="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs text-slate-900 font-medium focus:ring-2 focus:ring-emerald-500 focus:outline-none"
-                  />
+                  <div className="relative">
+                    <input
+                      type={showForgotNewPass ? 'text' : 'password'}
+                      required
+                      value={forgotNewPass}
+                      onChange={(e) => setForgotNewPass(e.target.value)}
+                      placeholder="নতুন পাসওয়ার্ড"
+                      className="w-full pl-3 pr-9 py-2 rounded-xl border border-slate-300 text-xs text-slate-900 font-medium focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowForgotNewPass(!showForgotNewPass)}
+                      className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                    >
+                      {showForgotNewPass ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+                    </button>
+                  </div>
                 </div>
+
                 <div>
-                  <label className="text-xs font-bold text-slate-700 block mb-1">পাসওয়ার্ড নিশ্চিত করুন</label>
-                  <input
-                    type="password"
-                    required
-                    value={forgotConfirmPass}
-                    onChange={(e) => setForgotConfirmPass(e.target.value)}
-                    placeholder="পুনরায় পাসওয়ার্ড লিখুন"
-                    className="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs text-slate-900 font-medium focus:ring-2 focus:ring-emerald-500 focus:outline-none"
-                  />
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="text-xs font-bold text-slate-700 block">পাসওয়ার্ড নিশ্চিত করুন</label>
+                    {forgotConfirmPass && (
+                      <span className={`text-[10px] font-bold ${
+                        forgotNewPass === forgotConfirmPass ? 'text-emerald-600' : 'text-rose-500'
+                      }`}>
+                        {forgotNewPass === forgotConfirmPass ? '✓ মিল রয়েছে' : '× মিলছে না'}
+                      </span>
+                    )}
+                  </div>
+                  <div className="relative">
+                    <input
+                      type={showForgotConfirmPass ? 'text' : 'password'}
+                      required
+                      value={forgotConfirmPass}
+                      onChange={(e) => setForgotConfirmPass(e.target.value)}
+                      placeholder="পুনরায় পাসওয়ার্ড লিখুন"
+                      className="w-full pl-3 pr-9 py-2 rounded-xl border border-slate-300 text-xs text-slate-900 font-medium focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowForgotConfirmPass(!showForgotConfirmPass)}
+                      className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                    >
+                      {showForgotConfirmPass ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+                    </button>
+                  </div>
                 </div>
+
                 <button
                   type="submit"
                   disabled={isForgotLoading}
-                  className="w-full py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs rounded-xl shadow-md transition-all flex items-center justify-center gap-1.5"
+                  className="w-full py-2.5 bg-emerald-700 hover:bg-emerald-800 disabled:bg-emerald-400 text-white font-bold text-xs rounded-xl shadow-md transition-all flex items-center justify-center gap-1.5"
                 >
                   <span>{isForgotLoading ? 'সংরক্ষণ হচ্ছে...' : 'পাসওয়ার্ড পরিবর্তন ও লগইন'}</span>
                   <ArrowRight className="w-3.5 h-3.5" />

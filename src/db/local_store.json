@@ -56,11 +56,41 @@
           "majorSubject": "কম্পিউটার সায়েন্স অ্যান্ড ইঞ্জিনিয়ারিং"
         }
       ],
-      "passwordHash": "scrypt$b76884f0f519e0ff89e5822e3ff8686c$474dd174726af3049001b741fb9c9f2b2389eff98cfb35fd0fa85c4321c822699c1ecf76d1309deb8b0684f29668526be4281f766f7f1a46a68d4285f5116a36",
+      "passwordHash": "scrypt$7f0dbe454364311f385721e371fe8e72$567fd7111794abf23d0c2c24418b5ff5674c867887be01da80bcfb6f7f32ee3f63ef31b447255b10db0735cf094a2338c845281864f8ce8c61fb2a26877a3ac9",
       "role": "candidate",
       "createdAt": "2026-11-09T07:17:05.082Z",
-      "updatedAt": "2026-11-09T10:04:45.809Z",
+      "updatedAt": "2026-11-09T10:24:16.055Z",
       "adminAuditHistory": [
+        {
+          "timestamp": "2026-11-09T10:24:16.054Z",
+          "adminId": "ADMIN",
+          "action": "candidate_profile_update",
+          "changedFields": [
+            "passwordHash"
+          ],
+          "notes": "1টি ফিল্ড পরিবর্তিত হয়েছে (passwordHash)",
+          "reason": "1টি ফিল্ড পরিবর্তিত হয়েছে (passwordHash)"
+        },
+        {
+          "timestamp": "2026-11-09T10:24:08.146Z",
+          "adminId": "ADMIN",
+          "action": "candidate_profile_update",
+          "changedFields": [
+            "passwordHash"
+          ],
+          "notes": "1টি ফিল্ড পরিবর্তিত হয়েছে (passwordHash)",
+          "reason": "1টি ফিল্ড পরিবর্তিত হয়েছে (passwordHash)"
+        },
+        {
+          "timestamp": "2026-11-09T10:23:12.117Z",
+          "adminId": "ADMIN",
+          "action": "candidate_profile_update",
+          "changedFields": [
+            "passwordHash"
+          ],
+          "notes": "1টি ফিল্ড পরিবর্তিত হয়েছে (passwordHash)",
+          "reason": "1টি ফিল্ড পরিবর্তিত হয়েছে (passwordHash)"
+        },
         {
           "timestamp": "2026-11-09T10:04:45.809Z",
           "adminId": "ADMIN",
@@ -461,6 +491,21 @@
       "candidateId": "USR-01712345678",
       "role": "candidate",
       "expiresAt": "2026-11-16T10:04:45.850Z"
+    },
+    "b2f2e6bec8f80346df0abfb0c38b27fa6f2338f69bd1d3345f52c571166e579b": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T10:23:12.141Z"
+    },
+    "fb56661ac812a95610ad14de6c836ec0d7a96a7deb91628f7fbcc5cf0bf3a14e": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T10:24:08.201Z"
+    },
+    "d132ce4f10753c74953bad22ddab9a2c81b0d296bbb528022cd06a79a0228fe7": {
+      "candidateId": "USR-01712345678",
+      "role": "candidate",
+      "expiresAt": "2026-11-16T10:24:16.086Z"
     }
   },
   "coupons": {},

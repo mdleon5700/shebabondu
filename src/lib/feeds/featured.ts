@@ -44,11 +44,38 @@ export class FeaturedManager {
       return { isFeatured: false, priority: 0 };
     }
 
-    // Fallback: If legacy job.featured === true and job is published/open
+    // Fallback: If legacy job.featured === true or job.isHot === true
     if (job.featured === true) {
       return {
         isFeatured: true,
-        priority: 50
+        priority: 85
+      };
+    }
+
+    if (job.isHot === true) {
+      return {
+        isFeatured: true,
+        priority: 75
+      };
+    }
+
+    // Algorithmic curated featured jobs:
+    // 1. High-vacancy (>= 30 posts) in any public-eligible sector
+    const posts = job.totalPosts || 0;
+    if (posts >= 30) {
+      return {
+        isFeatured: true,
+        priority: 50 + Math.min(20, Math.floor(posts / 10))
+      };
+    }
+
+    // 2. A-grade / 9th-10th officer grade in govt/autonomous/bank/defense with active posts >= 5
+    const isOfficerGrade = job.grade?.includes('৯ম') || job.grade?.includes('১০ম') || job.grade?.includes('১ম') || job.grade?.includes('২য়');
+    const isGovtOrCorp = ['govt', 'company', 'defense', 'bank'].includes(job.category);
+    if (isGovtOrCorp && isOfficerGrade && posts >= 5) {
+      return {
+        isFeatured: true,
+        priority: 50 + (job.grade?.includes('৯ম') ? 10 : 5)
       };
     }
 

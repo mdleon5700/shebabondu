@@ -36,10 +36,10 @@ export default function JobCard({ job }: JobCardProps) {
     <div className="bg-white rounded-2xl border border-slate-200/90 hover:border-emerald-500/50 hover:shadow-xl hover:shadow-emerald-950/5 transition-all duration-300 p-5 sm:p-6 flex flex-col justify-between group relative overflow-hidden">
       
       {/* Top Banner Accent */}
-      {job.featured && (
+      {(job.featured || job.isHot) && (
         <div className="absolute top-0 right-0 bg-gradient-to-l from-amber-500 to-amber-600 text-white text-[13px] font-bold px-3.5 py-1 rounded-bl-xl shadow-sm flex items-center gap-1">
           <Sparkles className="w-3 h-3" />
-          <span>হট সার্কুলার</span>
+          <span>{job.featured ? 'ফিচার্ড সার্কুলার' : 'হট সার্কুলার'}</span>
         </div>
       )}
 

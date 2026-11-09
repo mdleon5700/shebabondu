@@ -186,16 +186,167 @@ function JobListingViewContent({
             !job.title.includes('প্রভাষক')
           ) return false;
           break;
-        case 'part-time':
-          if (job.category !== 'private' && job.totalPosts <= 50) return false;
+        case 'jsc': {
+          const texts = [job.minEducation || '', job.title || '', job.eligibility || ''];
+          if (job.positions) job.positions.forEach(p => { texts.push(p.minEducation || '', p.title || ''); });
+          const str = texts.join(' ').toLowerCase();
+          const matchesJsc = (
+            str.includes('জেএসসি') || 
+            str.includes('jsc') || 
+            str.includes('অষ্টম') || 
+            str.includes('৮ম') || 
+            str.includes('জুনিয়র স্কুল') ||
+            job.grade.includes('২০তম') || 
+            job.grade.includes('১৯তম') ||
+            job.title.includes('অফিস সহায়ক') ||
+            job.title.includes('নিরাপত্তা প্রহরী') ||
+            job.title.includes('পরিচ্ছন্নতাকর্মী') ||
+            job.title.includes('মালি')
+          );
+          if (!matchesJsc) return false;
           break;
-        case 'internship':
-          if (job.category !== 'bank' && job.category !== 'private') return false;
+        }
+        case 'ssc': {
+          const texts = [job.minEducation || '', job.title || '', job.eligibility || ''];
+          if (job.positions) job.positions.forEach(p => { texts.push(p.minEducation || '', p.title || ''); });
+          const str = texts.join(' ').toLowerCase();
+          const matchesSsc = (
+            str.includes('এসএসসি') || 
+            str.includes('ssc') || 
+            str.includes('দাখিল') || 
+            str.includes('মাধ্যমিক') || 
+            str.includes('ভোকেশনাল') ||
+            job.grade.includes('১৬তম') ||
+            job.grade.includes('১৭তম') ||
+            job.grade.includes('১৮তম')
+          );
+          if (!matchesSsc) return false;
           break;
+        }
+        case 'hsc': {
+          const texts = [job.minEducation || '', job.title || '', job.eligibility || ''];
+          if (job.positions) job.positions.forEach(p => { texts.push(p.minEducation || '', p.title || ''); });
+          const str = texts.join(' ').toLowerCase();
+          const matchesHsc = (
+            str.includes('এইচএসসি') || 
+            str.includes('hsc') || 
+            str.includes('উচ্চ মাধ্যমিক') || 
+            str.includes('উচ্চমাধ্যমিক') || 
+            str.includes('আলিম') ||
+            job.grade.includes('১১তম') ||
+            job.grade.includes('১২তম') ||
+            job.grade.includes('১৩তম') ||
+            job.grade.includes('১৪তম') ||
+            job.grade.includes('১৫তম')
+          );
+          if (!matchesHsc) return false;
+          break;
+        }
+        case 'diploma': {
+          const texts = [job.minEducation || '', job.title || '', job.eligibility || ''];
+          if (job.positions) job.positions.forEach(p => { texts.push(p.minEducation || '', p.title || ''); });
+          const str = texts.join(' ').toLowerCase();
+          const matchesDiploma = (
+            str.includes('ডিপ্লোমা') || 
+            str.includes('diploma') || 
+            str.includes('পলিটেকনিক') ||
+            str.includes('উপ-সহকারী প্রকৌশলী') ||
+            job.title.includes('উপ-সহকারী প্রকৌশলী') ||
+            job.title.includes('সার্ভেয়ার') ||
+            job.title.includes('ড্রাফটসম্যান')
+          );
+          if (!matchesDiploma) return false;
+          break;
+        }
+        case 'bachelor': {
+          const texts = [job.minEducation || '', job.title || '', job.eligibility || ''];
+          if (job.positions) job.positions.forEach(p => { texts.push(p.minEducation || '', p.title || ''); });
+          const str = texts.join(' ').toLowerCase();
+          const matchesBachelor = (
+            str.includes('স্নাতক') || 
+            str.includes('ডিগ্রি') || 
+            str.includes('অনার্স') || 
+            str.includes('bachelor') || 
+            str.includes('ফাজিল') || 
+            str.includes('বিএসসি') || 
+            str.includes('b.sc') || 
+            str.includes('bba') || 
+            str.includes('বাণিজ্য/বিজ্ঞান/মানবিক') ||
+            job.grade.includes('৯ম') ||
+            job.grade.includes('১০ম')
+          );
+          if (!matchesBachelor) return false;
+          break;
+        }
+        case 'masters': {
+          const texts = [job.minEducation || '', job.title || '', job.eligibility || ''];
+          if (job.positions) job.positions.forEach(p => { texts.push(p.minEducation || '', p.title || ''); });
+          const str = texts.join(' ').toLowerCase();
+          const matchesMasters = (
+            str.includes('স্নাতকোত্তর') || 
+            str.includes('মাস্টার্স') || 
+            str.includes('masters') || 
+            str.includes('কামিল') || 
+            str.includes('এমবিএ') || 
+            str.includes('mba') || 
+            str.includes('m.sc') ||
+            job.title.includes('প্রভাষক') ||
+            job.title.includes('সহকারী পরিচালক')
+          );
+          if (!matchesMasters) return false;
+          break;
+        }
         case 'fresher':
-        case 'no-experience':
-          if (job.minAge > 21) return false;
+        case 'no-experience': {
+          const texts = [job.minEducation || '', job.title || '', job.eligibility || ''];
+          if (job.requirements) texts.push(job.requirements.join(' '));
+          const str = texts.join(' ').toLowerCase();
+
+          // Exclude senior executive posts requiring extensive multi-year experience
+          const isSenior = (
+            str.includes('১০ বছরের বাস্তব অভিজ্ঞতা') ||
+            str.includes('১২ বছরের বাস্তব অভিজ্ঞতা') ||
+            str.includes('৮ বছরের বাস্তব অভিজ্ঞতা') ||
+            str.includes('৭ বছরের বাস্তব অভিজ্ঞতা') ||
+            str.includes('৫ বছরের বাস্তব অভিজ্ঞতা') ||
+            str.includes('মহাব্যবস্থাপক') ||
+            str.includes('প্রধান প্রকৌশলী') ||
+            str.includes('নির্বাহী প্রকৌশলী') ||
+            str.includes('উপ-মহাব্যবস্থাপক') ||
+            str.includes('প্রকল্প পরিচালক') ||
+            job.grade.includes('১ম গ্রেড') ||
+            job.grade.includes('২য় গ্রেড') ||
+            job.grade.includes('৩য় গ্রেড') ||
+            job.grade.includes('৪র্থ গ্রেড') ||
+            job.grade.includes('৫ম গ্রেড')
+          );
+
+          if (isSenior) return false;
           break;
+        }
+        case 'internship': {
+          const texts = [job.title || '', job.bengaliDescription || '', job.categoryLabel || ''];
+          const str = texts.join(' ').toLowerCase();
+          const isInternship = (
+            (job as any).employmentType === 'internship' ||
+            str.includes('ইন্টার্ন') ||
+            str.includes('intern')
+          );
+          if (!isInternship) return false;
+          break;
+        }
+        case 'part-time': {
+          const texts = [job.title || '', job.bengaliDescription || '', job.categoryLabel || ''];
+          const str = texts.join(' ').toLowerCase();
+          const isPartTime = (
+            (job as any).employmentType === 'part_time' ||
+            str.includes('পার্ট-টাইম') ||
+            str.includes('খণ্ডকালীন') ||
+            str.includes('part-time')
+          );
+          if (!isPartTime) return false;
+          break;
+        }
         case 'marketing':
           if (job.category !== 'private' && job.category !== 'bank') return false;
           break;
@@ -219,29 +370,6 @@ function JobListingViewContent({
             !(job.positions && job.positions.some(p => p.title?.includes('হিসাব') || p.title?.includes('অডিট') || p.title?.includes('ক্যাশ')))
           ) return false;
           break;
-        case 'ssc': {
-          const hasSscPos = job.positions?.some(p => (p.minEducation || (p as any).education || '').includes('এসএসসি'));
-          if (!job.minEducation.includes('এসএসসি') && !job.minEducation.includes('HSC') && !job.grade.includes('১৬') && !job.grade.includes('২০') && !hasSscPos) return false;
-          break;
-        }
-        case 'hsc': {
-          const hasHscPos = job.positions?.some(p => (p.minEducation || (p as any).education || '').includes('এইচএসসি') || (p.minEducation || (p as any).education || '').includes('HSC'));
-          if (!job.minEducation.includes('HSC') && !job.minEducation.includes('উচ্চ মাধ্যমিক') && !job.minEducation.includes('এইচএসসি') && !hasHscPos) return false;
-          break;
-        }
-        case 'diploma':
-          if (job.category !== 'engineer' && !job.grade.includes('১০ম') && !job.title.includes('উপ-সহকারী')) return false;
-          break;
-        case 'bachelor': {
-          const hasBachPos = job.positions?.some(p => (p.minEducation || (p as any).education || '').includes('স্নাতক') || (p.minEducation || (p as any).education || '').includes('ডিগ্রি'));
-          if (!job.minEducation.includes('স্নাতক') && !job.minEducation.includes('ডিগ্রি') && !hasBachPos) return false;
-          break;
-        }
-        case 'masters': {
-          const hasMastPos = job.positions?.some(p => (p.minEducation || (p as any).education || '').includes('স্নাতকোত্তর') || (p.minEducation || (p as any).education || '').includes('মাস্টার্স'));
-          if (!job.minEducation.includes('স্নাতকোত্তর') && !job.minEducation.includes('মাস্টার্স') && !job.grade.includes('৯ম') && !hasMastPos) return false;
-          break;
-        }
         case 'org-bb':
           if (!job.organization.includes('বাংলাদেশ ব্যাংক')) return false;
           break;
@@ -402,6 +530,49 @@ function JobListingViewContent({
             <Clock className="w-3.5 h-3.5" />
             <span>সকল সমাগত ডেডলাইন</span>
           </Link>
+        </div>
+      )}
+
+      {/* Education & Experience Hub Navigator if on education/experience view */}
+      {['jsc', 'ssc', 'hsc', 'diploma', 'bachelor', 'masters', 'no-experience', 'fresher', 'internship', 'part-time'].includes(filterType) && (
+        <div className="bg-white p-3.5 sm:p-4 rounded-2xl border border-slate-200 shadow-xs space-y-2.5">
+          <div className="flex items-center justify-between text-xs font-bold text-slate-500 uppercase tracking-wider px-1">
+            <span className="flex items-center gap-1.5 text-emerald-800">
+              <GraduationCap className="w-4 h-4 text-emerald-600" />
+              <span>শিক্ষাগত যোগ্যতা ও অভিজ্ঞতাকেন্দ্রিক হাব</span>
+            </span>
+            <span className="text-slate-400 font-normal hidden sm:inline">আপনার যোগ্যতা অনুযায়ী দ্রুত ফিল্টার করুন</span>
+          </div>
+          <div className="flex flex-wrap items-center gap-2">
+            {[
+              { id: 'jsc', label: 'জেএসসি / ৮ম শ্রেণি', href: '/jobs/jsc-pass' },
+              { id: 'ssc', label: 'এসএসসি পাস', href: '/jobs/ssc-pass' },
+              { id: 'hsc', label: 'এইচএসসি পাস', href: '/jobs/hsc-pass' },
+              { id: 'diploma', label: 'ডিপ্লোমা প্রকৌশলী', href: '/jobs/diploma-pass' },
+              { id: 'bachelor', label: 'স্নাতক পাস', href: '/jobs/bachelor-degree' },
+              { id: 'masters', label: 'স্নাতকোত্তর পাস', href: '/jobs/masters-degree' },
+              { id: 'no-experience', label: 'অভিজ্ঞতা ছাড়া', href: '/jobs/no-experience' },
+              { id: 'fresher', label: 'ফ্রেশার চাকরি', href: '/fresher-jobs' },
+              { id: 'internship', label: 'ইন্টার্নশিপ', href: '/internships' },
+              { id: 'part-time', label: 'পার্ট-টাইম', href: '/part-time-jobs' }
+            ].map((tab) => {
+              const isActive = filterType === tab.id;
+              return (
+                <Link
+                  key={tab.id}
+                  href={tab.href}
+                  className={`px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 ${
+                    isActive
+                      ? 'bg-emerald-700 text-white shadow-xs'
+                      : 'bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200'
+                  }`}
+                >
+                  {isActive && <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />}
+                  <span>{tab.label}</span>
+                </Link>
+              );
+            })}
+          </div>
         </div>
       )}
 
@@ -682,6 +853,58 @@ function JobListingViewContent({
           {paginatedJobs.map((job) => (
             <JobCard key={job.id} job={job} />
           ))}
+        </div>
+      ) : filterType === 'internship' ? (
+        <div className="bg-white rounded-3xl border border-slate-200 p-8 sm:p-12 text-center space-y-4 shadow-xs">
+          <div className="w-16 h-16 rounded-2xl bg-emerald-50 text-emerald-600 border border-emerald-200 flex items-center justify-center mx-auto">
+            <Briefcase className="w-8 h-8" />
+          </div>
+          <div className="space-y-1.5 max-w-lg mx-auto">
+            <h3 className="text-lg font-bold text-slate-900">বর্তমানে কোনো সক্রিয় পেইড ইন্টার্নশিপ নোটিশ নেই</h3>
+            <p className="text-xs sm:text-sm text-slate-500 leading-relaxed">
+              বাংলাদেশ ব্যাংক, বাণিজ্যিক ব্যাংক, জাতিসংঘ ও বহুজাতিক কর্পোরেট প্রতিষ্ঠানগুলো সাধারণত বিশ্ববিদ্যালয় সেমিস্টার শেষে (জানুয়ারি-মার্চ এবং জুলাই-সেপ্টেম্বর) ইন্টার্নশিপ আহ্বান করে থাকে। নতুন সার্কুলার আসা মাত্রই এখানে হালনাগাদ করা হবে।
+            </p>
+          </div>
+          <div className="pt-2 flex flex-wrap items-center justify-center gap-3">
+            <Link
+              href="/fresher-jobs"
+              className="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs sm:text-sm font-semibold transition-all shadow-xs"
+            >
+              ফ্রেশার চাকরি দেখুন
+            </Link>
+            <Link
+              href="/jobs/bachelor-degree"
+              className="px-4 py-2 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-xl text-xs sm:text-sm font-semibold transition-all"
+            >
+              স্নাতক পাসের সার্কুলার
+            </Link>
+          </div>
+        </div>
+      ) : filterType === 'part-time' ? (
+        <div className="bg-white rounded-3xl border border-slate-200 p-8 sm:p-12 text-center space-y-4 shadow-xs">
+          <div className="w-16 h-16 rounded-2xl bg-teal-50 text-teal-600 border border-teal-200 flex items-center justify-center mx-auto">
+            <Clock className="w-8 h-8" />
+          </div>
+          <div className="space-y-1.5 max-w-lg mx-auto">
+            <h3 className="text-lg font-bold text-slate-900">বর্তমানে কোনো খণ্ডকালীন সার্কুলার সক্রিয় নেই</h3>
+            <p className="text-xs sm:text-sm text-slate-500 leading-relaxed">
+              সরকারি ও স্বায়ত্তশাসিত সকল নিয়োগ মূলত স্থায়ী ও পূর্ণকালীন (Full-time) স্কেলের হয়ে থাকে। শিক্ষার্থীদের সুবিধাজনক শিফটের পার্ট-টাইম বা খণ্ডকালীন চাকরি আসা মাত্রই এখানে দেখতে পাবেন।
+            </p>
+          </div>
+          <div className="pt-2 flex flex-wrap items-center justify-center gap-3">
+            <Link
+              href="/jobs/ssc-pass"
+              className="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs sm:text-sm font-semibold transition-all shadow-xs"
+            >
+              এসএসসি পাস চাকরি
+            </Link>
+            <Link
+              href="/jobs/hsc-pass"
+              className="px-4 py-2 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-xl text-xs sm:text-sm font-semibold transition-all"
+            >
+              এইচএসসি পাস চাকরি
+            </Link>
+          </div>
         </div>
       ) : (
         <div className="bg-white rounded-3xl border border-slate-200 p-12 text-center space-y-4">

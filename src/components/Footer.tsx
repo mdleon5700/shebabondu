@@ -40,8 +40,21 @@ export const DEFAULT_FOOTER_COLUMNS: FooterColumnItem[] = [
       { label: 'আবেদনের শেষ সময় কাছাকাছি', url: '/deadline-approaching' },
       { label: 'পরীক্ষার নোটিশ ও সময়সূচি', url: '/exam-notices' },
       { label: 'প্রবেশপত্র / অ্যাডমিট কার্ড', url: '/admit-cards' },
-      { label: 'বিগত বছরের প্রশ্ন ও সমাধান', url: '/previous-year-questions' },
-      { label: 'অনলাইন মডেল টেস্ট', url: '/model-tests' }
+      { label: 'বিগত বছরের প্রশ্ন ও সমাধান', url: '/previous-year-questions' }
+    ]
+  },
+  {
+    id: 'col-education',
+    title: 'শিক্ষাগত যোগ্যতা ও অভিজ্ঞতা',
+    links: [
+      { label: 'জেএসসি / ৮ম শ্রেণি পাস চাকরি', url: '/jobs/jsc-pass' },
+      { label: 'এসএসসি পাস সরকারি চাকরি', url: '/jobs/ssc-pass' },
+      { label: 'এইচএসসি পাস চাকরি', url: '/jobs/hsc-pass' },
+      { label: 'ডিপ্লোমা প্রকৌশলী চাকরি', url: '/jobs/diploma-pass' },
+      { label: 'স্নাতক / ডিগ্রি পাস চাকরি', url: '/jobs/bachelor-degree' },
+      { label: 'স্নাতকোত্তর / মাস্টার্স চাকরি', url: '/jobs/masters-degree' },
+      { label: 'অভিজ্ঞতা ছাড়া চাকরি', url: '/jobs/no-experience' },
+      { label: 'ফ্রেশারদের চাকরি হাব', url: '/fresher-jobs' }
     ]
   },
   {

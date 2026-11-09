@@ -31,6 +31,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/marketing-jobs',
     '/engineering-jobs',
     '/accounting-finance-jobs',
+    '/jobs/jsc-pass',
     '/jobs/ssc-pass',
     '/jobs/hsc-pass',
     '/jobs/diploma-pass',

@@ -241,6 +241,8 @@ interface DatabaseState {
   mediaItems?: Record<string, import('./types').MediaItem>;
   platformSettings?: import('./types').PlatformSettings;
   engineeringTasks?: Record<string, import('./engineering/types').EngineeringTask>;
+  jobReports?: import('./types').JobReportItem[];
+  jobAlertSubscriptions?: import('./types').JobAlertSubscription[];
 
 }
 
@@ -1925,6 +1927,8 @@ function loadDB(): DatabaseState {
 
 
     if (!state.circularDrafts) state.circularDrafts = {};
+    if (!state.jobReports) state.jobReports = [];
+    if (!state.jobAlertSubscriptions) state.jobAlertSubscriptions = [];
 
 
 
@@ -2438,6 +2442,88 @@ function normalizeJob(job: JobCircular): JobCircular {
 }
 
 export const serverDB = {
+  // Job Reports & Complaints Engine
+  getJobReports(status?: string): import('./types').JobReportItem[] {
+    const db = loadDB();
+    const reports = db.jobReports || [];
+    if (!status || status === 'all') return reports;
+    return reports.filter(r => r.status === status);
+  },
+
+  getJobReportById(id: string): import('./types').JobReportItem | null {
+    const db = loadDB();
+    return (db.jobReports || []).find(r => r.id === id) || null;
+  },
+
+  createJobReport(payload: Partial<import('./types').JobReportItem>): import('./types').JobReportItem {
+    const db = loadDB();
+    if (!db.jobReports) db.jobReports = [];
+    const reportId = 'REP-2026-' + (Math.floor(1000 + Math.random() * 9000)).toString();
+    const newReport: import('./types').JobReportItem = {
+      id: reportId,
+      jobId: payload.jobId,
+      jobTitle: payload.jobTitle || 'সাধারণ বিজ্ঞপ্তি',
+      jobUrl: payload.jobUrl,
+      issueType: payload.issueType || 'other',
+      issueLabel: payload.issueLabel || 'সাধারণ অভিযোগ',
+      details: payload.details || '',
+      reporterName: payload.reporterName,
+      reporterPhone: payload.reporterPhone,
+      reporterEmail: payload.reporterEmail,
+      status: 'pending',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+    db.jobReports.unshift(newReport);
+    saveDB(db);
+    return newReport;
+  },
+
+  updateJobReportStatus(id: string, status: 'pending' | 'investigating' | 'resolved' | 'dismissed', adminNotes?: string): { success: boolean; report?: import('./types').JobReportItem } {
+    const db = loadDB();
+    if (!db.jobReports) return { success: false };
+    const report = db.jobReports.find(r => r.id === id);
+    if (!report) return { success: false };
+    report.status = status;
+    if (adminNotes !== undefined) report.adminNotes = adminNotes;
+    report.updatedAt = new Date().toISOString();
+    saveDB(db);
+    return { success: true, report };
+  },
+
+  // Job Alert Subscriptions Engine
+  getJobAlertSubscriptions(): import('./types').JobAlertSubscription[] {
+    const db = loadDB();
+    return db.jobAlertSubscriptions || [];
+  },
+
+  createJobAlertSubscription(data: Partial<import('./types').JobAlertSubscription>): import('./types').JobAlertSubscription {
+    const db = loadDB();
+    if (!db.jobAlertSubscriptions) db.jobAlertSubscriptions = [];
+    const subId = 'SUB-2026-' + (Math.floor(1000 + Math.random() * 9000)).toString();
+    const existingIndex = db.jobAlertSubscriptions.findIndex(s => s.phone === data.phone);
+    const newSub: import('./types').JobAlertSubscription = {
+      id: subId,
+      phone: data.phone || '',
+      email: data.email,
+      channels: data.channels || ['sms', 'whatsapp'],
+      categories: data.categories || ['বিসিএস ও সরকারি চাকরি'],
+      divisions: data.divisions || ['ঢাকা'],
+      frequency: data.frequency || 'instant',
+      status: 'active',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+    if (existingIndex >= 0) {
+      db.jobAlertSubscriptions[existingIndex] = { ...db.jobAlertSubscriptions[existingIndex], ...newSub, id: db.jobAlertSubscriptions[existingIndex].id };
+      saveDB(db);
+      return db.jobAlertSubscriptions[existingIndex];
+    } else {
+      db.jobAlertSubscriptions.unshift(newSub);
+      saveDB(db);
+      return newSub;
+    }
+  },
 
 
 

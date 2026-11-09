@@ -4922,3 +4922,34 @@ export interface PlatformSettings {
   updatedAt: string;
   updatedBy: string;
 }
+
+export interface JobReportItem {
+  id: string;
+  jobId?: string;
+  jobTitle: string;
+  jobUrl?: string;
+  issueType: 'fake_job' | 'wrong_deadline' | 'fee_issue' | 'broken_link' | 'scam_warning' | 'other';
+  issueLabel: string;
+  details: string;
+  reporterName?: string;
+  reporterPhone?: string;
+  reporterEmail?: string;
+  status: 'pending' | 'investigating' | 'resolved' | 'dismissed';
+  adminNotes?: string;
+  createdAt: string;
+  updatedAt?: string;
+}
+
+export interface JobAlertSubscription {
+  id: string;
+  phone: string;
+  email?: string;
+  channels: ('sms' | 'whatsapp' | 'email')[];
+  categories: string[];
+  divisions?: string[];
+  frequency: 'instant' | 'daily' | 'weekly';
+  status: 'active' | 'paused';
+  createdAt: string;
+  updatedAt?: string;
+}
+

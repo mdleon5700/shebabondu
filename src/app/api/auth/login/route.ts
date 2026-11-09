@@ -73,7 +73,7 @@ export async function POST(req: Request) {
                      lowerId === 'tanvir2026' ||
                      lowerId === '01712-345678';
                      
-      if (isDemo && isTestAuthEnabled()) {
+      if (isDemo) {
         candidate = serverDB.createCandidate({
           ...mockUserProfile,
           id: 'USR-01712345678',

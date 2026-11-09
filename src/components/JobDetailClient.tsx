@@ -873,6 +873,16 @@ export default function JobDetailClient({ job, relatedJobs = [] }: { job: JobCir
                   <ExternalLink className="w-3.5 h-3.5" />
                 </a>
               </div>
+
+              <div className="pt-2 border-t border-emerald-200/40 flex items-center justify-center">
+                <Link
+                  href={`/report-a-job?jobId=${encodeURIComponent(job.id)}&title=${encodeURIComponent(job.title)}`}
+                  className="text-[11px] font-bold text-rose-600 hover:text-rose-800 flex items-center gap-1 transition-colors"
+                >
+                  <AlertCircle className="w-3.5 h-3.5 text-rose-500" />
+                  <span>ভুল তথ্য বা ভুয়া নিয়োগ রিপোর্ট করুন</span>
+                </Link>
+              </div>
             </div>
 
           </div>

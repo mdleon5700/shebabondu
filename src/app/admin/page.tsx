@@ -84,6 +84,7 @@ import WebsiteCmsSeoManagement from '@/components/admin/WebsiteCmsSeoManagement'
 import FinancialTransactionsLedger from '@/components/admin/FinancialTransactionsLedger';
 import CandidateManagementHub from '@/components/admin/CandidateManagementHub';
 import JobVerificationCenter from '@/components/admin/JobVerificationCenter';
+import JobReportsManagement from '@/components/admin/JobReportsManagement';
 import JobContentStudio from '@/components/admin/JobContentStudio';
 import JobPublishingCenter from '@/components/admin/JobPublishingCenter';
 import JobCategorySearchManager from '@/components/admin/JobCategorySearchManager';
@@ -1688,6 +1689,7 @@ function AdminContent() {
             { id: 'circulars', label: 'সব সার্কুলার' },
             { id: 'gemini-browser-spider', label: '🤖 লাইভ ব্রাউজার ও এআই এজেন্ট হাব' },
             { id: 'imported-drafts', label: 'খসড়া ও অনুমোদন' },
+            { id: 'job-reports', label: '🚨 ভুয়া সার্কুলার ও অভিযোগ সেল' },
             { id: 'category-search-manager', label: 'ক্যাটাগরি' }
           ]
         },
@@ -5243,6 +5245,13 @@ function AdminContent() {
           {activeTab === 'category-search-manager' && (
             <div className="space-y-6">
               <JobCategorySearchManager />
+            </div>
+          )}
+
+          {/* TAB: JOB REPORTS & FAKE CIRCULARS MODERATION */}
+          {activeTab === 'job-reports' && (
+            <div className="space-y-6">
+              <JobReportsManagement />
             </div>
           )}
 

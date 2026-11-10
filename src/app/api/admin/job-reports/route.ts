@@ -1,12 +1,14 @@
 import { NextResponse } from 'next/server';
-import { getServerSession } from '@/lib/auth';
+import { getServerSession, verifyAdminSecret } from '@/lib/auth';
 import { serverDB } from '@/lib/db';
 
 export const dynamic = 'force-dynamic';
 
 export async function GET(req: Request) {
+  const adminSecret = req.headers.get('x-admin-secret') || req.headers.get('x-admin-key');
   const session = getServerSession(req);
-  if (!session || session.role !== 'admin') {
+  const hasAccess = Boolean((session && session.role === 'admin') || (adminSecret && verifyAdminSecret(adminSecret)));
+  if (!hasAccess) {
     return NextResponse.json({ error: 'FORBIDDEN: Admin privileges required.' }, { status: 403 });
   }
 
@@ -32,8 +34,10 @@ export async function GET(req: Request) {
 }
 
 export async function PATCH(req: Request) {
+  const adminSecret = req.headers.get('x-admin-secret') || req.headers.get('x-admin-key');
   const session = getServerSession(req);
-  if (!session || session.role !== 'admin') {
+  const hasAccess = Boolean((session && session.role === 'admin') || (adminSecret && verifyAdminSecret(adminSecret)));
+  if (!hasAccess) {
     return NextResponse.json({ error: 'FORBIDDEN: Admin privileges required.' }, { status: 403 });
   }
 
@@ -53,7 +57,7 @@ export async function PATCH(req: Request) {
     // Record admin audit log
     serverDB.addAuditLog({
       id: 'AUDIT-REP-' + Date.now().toString(36),
-      adminId: (session as any).adminPin || session.candidateId || 'ADMIN-SUPER',
+      adminId: (session as any)?.adminPin || session?.candidateId || 'ADMIN-SUPER',
       action: 'job_report_reviewed',
       targetId: id,
       targetType: 'circular',

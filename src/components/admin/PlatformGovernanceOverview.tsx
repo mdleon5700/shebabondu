@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { getAdminHeaders } from '@/lib/adminAuthClient';
 import { 
   ShieldCheck, 
   Users, 
@@ -42,10 +43,10 @@ export default function PlatformGovernanceOverview({ onNavigate }: PlatformGover
     try {
       const [overviewRes, healthRes] = await Promise.all([
         fetch(`/api/admin/governance/overview?timeframe=${selectedTimeframe}`, {
-          headers: { }
+          headers: getAdminHeaders()
         }),
         fetch('/api/admin/governance/health', {
-          headers: { }
+          headers: getAdminHeaders()
         })
       ]);
 

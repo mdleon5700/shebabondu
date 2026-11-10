@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { getAdminHeaders } from '@/lib/adminAuthClient';
 import { 
   MessageSquare, 
   Bell, 
@@ -215,7 +216,7 @@ export default function SmsNotificationsManagement({
     try {
       const res = await fetch('/api/admin/notifications/send', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', },
+        headers: getAdminHeaders(),
         body: JSON.stringify({
           recipientPhone: recipientNumber.trim(),
           message: messageBody.trim(),
@@ -257,7 +258,7 @@ export default function SmsNotificationsManagement({
     try {
       const res = await fetch('/api/admin/notifications/send', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', },
+        headers: getAdminHeaders(),
         body: JSON.stringify({
           title: broadcastTitle.trim(),
           message: broadcastBody.trim(),

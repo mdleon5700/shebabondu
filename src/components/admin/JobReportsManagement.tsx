@@ -20,6 +20,7 @@ import {
   Check
 } from 'lucide-react';
 import { JobReportItem } from '@/lib/types';
+import { getAdminHeaders } from '@/lib/adminAuthClient';
 
 export default function JobReportsManagement() {
   const [reports, setReports] = useState<JobReportItem[]>([]);
@@ -38,17 +39,6 @@ export default function JobReportsManagement() {
     resolved: 0,
     dismissed: 0
   });
-
-  const getAdminHeaders = (): HeadersInit => {
-    const pin = typeof window !== 'undefined' ? (localStorage.getItem('cs_admin_pin') || '') : '';
-    const token = typeof window !== 'undefined' ? (localStorage.getItem('cs_session_token') || '') : '';
-    const headers: Record<string, string> = {
-      'Content-Type': 'application/json'
-    };
-    if (pin) headers['x-admin-secret'] = pin;
-    if (token) headers['authorization'] = `Bearer ${token}`;
-    return headers;
-  };
 
   const fetchReports = async () => {
     setIsLoading(true);

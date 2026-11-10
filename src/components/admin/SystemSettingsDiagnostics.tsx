@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { getAdminHeaders } from '@/lib/adminAuthClient';
 import { 
   Settings, 
   HardDrive, 
@@ -119,7 +120,7 @@ export default function SystemSettingsDiagnostics({
     const fetchPlatformSettings = async () => {
       try {
         const res = await fetch('/api/admin/settings', {
-          headers: { 'Content-Type': 'application/json', }
+          headers: getAdminHeaders()
         });
         if (res.ok) {
           const d = await res.json();
@@ -240,7 +241,7 @@ export default function SystemSettingsDiagnostics({
     try {
       const res = await fetch('/api/admin/settings', {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json', },
+        headers: getAdminHeaders(),
         body: JSON.stringify({
           general: {
             siteName: platformName,

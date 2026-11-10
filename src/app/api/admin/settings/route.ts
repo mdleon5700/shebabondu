@@ -1,14 +1,16 @@
 import { NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
-import { getServerSession } from '@/lib/auth';
+import { getServerSession, verifyAdminSecret } from '@/lib/auth';
 import { serverDB } from '@/lib/db';
 import { AdminGovernanceRbac } from '@/lib/governance';
 
 export const dynamic = 'force-dynamic';
 
 export async function GET(req: Request) {
+  const adminSecret = req.headers.get('x-admin-secret') || req.headers.get('x-admin-key');
   const session = getServerSession(req);
-  if (!session || session.role !== 'admin') {
+  const hasAccess = Boolean((session && session.role === 'admin') || (adminSecret && verifyAdminSecret(adminSecret)));
+  if (!hasAccess) {
     return NextResponse.json({ error: 'FORBIDDEN: Admin privileges required.' }, { status: 403 });
   }
 
@@ -27,8 +29,10 @@ export async function GET(req: Request) {
 }
 
 export async function PATCH(req: Request) {
+  const adminSecret = req.headers.get('x-admin-secret') || req.headers.get('x-admin-key');
   const session = getServerSession(req);
-  if (!session || session.role !== 'admin') {
+  const hasAccess = Boolean((session && session.role === 'admin') || (adminSecret && verifyAdminSecret(adminSecret)));
+  if (!hasAccess) {
     return NextResponse.json({ error: 'FORBIDDEN: Admin privileges required.' }, { status: 403 });
   }
 
@@ -55,7 +59,7 @@ export async function PATCH(req: Request) {
       }
     }
 
-    const adminId = session.candidateId || 'ADMIN-SUPER';
+    const adminId = session?.candidateId || 'ADMIN-SUPER';
     const updated = serverDB.updatePlatformSettings(body, adminId);
 
     try {

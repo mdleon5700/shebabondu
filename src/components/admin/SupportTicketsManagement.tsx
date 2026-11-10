@@ -19,6 +19,7 @@ import {
   X
 } from 'lucide-react';
 import { ContactMessageItem } from '@/lib/types';
+import { getAdminHeaders } from '@/lib/adminAuthClient';
 
 export default function SupportTicketsManagement() {
   const [tickets, setTickets] = useState<ContactMessageItem[]>([]);
@@ -37,17 +38,6 @@ export default function SupportTicketsManagement() {
     replied: 0,
     closed: 0
   });
-
-  const getAdminHeaders = (): HeadersInit => {
-    const pin = typeof window !== 'undefined' ? (localStorage.getItem('cs_admin_pin') || '') : '';
-    const token = typeof window !== 'undefined' ? (localStorage.getItem('cs_session_token') || '') : '';
-    const headers: Record<string, string> = {
-      'Content-Type': 'application/json'
-    };
-    if (pin) headers['x-admin-secret'] = pin;
-    if (token) headers['authorization'] = `Bearer ${token}`;
-    return headers;
-  };
 
   const fetchTickets = async () => {
     setIsLoading(true);

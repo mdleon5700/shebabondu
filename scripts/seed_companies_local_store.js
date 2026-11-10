@@ -178,3 +178,4 @@ const seedCompanies = {
 db.companies = seedCompanies;
 fs.writeFileSync(dbPath, JSON.stringify(db, null, 2), 'utf8');
 console.log('Successfully seeded companies into local_store.json. Total count:', Object.keys(seedCompanies).length);
+

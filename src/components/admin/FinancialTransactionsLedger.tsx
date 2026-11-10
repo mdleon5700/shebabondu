@@ -20,6 +20,7 @@ import {
   ShieldCheck
 } from 'lucide-react';
 import { ApplicationRequest, JobCircular, WalletTransaction } from '@/lib/types';
+import { getAdminHeaders } from '@/lib/adminAuthClient';
 
 interface FinancialTransactionsLedgerProps {
   activeTab?: string;
@@ -80,14 +81,6 @@ export default function FinancialTransactionsLedger({
   const [walletTransactions, setWalletTransactions] = useState<Array<WalletTransaction & { candidateId: string; candidateName: string; candidatePhone: string }>>([]);
   const [reviewingId, setReviewingId] = useState<string | null>(null);
   const [ledgerError, setLedgerError] = useState<string | null>(null);
-
-  const getAdminHeaders = (): Record<string, string> => {
-    const pin = typeof window !== 'undefined' ? (localStorage.getItem('cs_admin_pin') || '1234') : '1234';
-    return {
-      'Content-Type': 'application/json',
-      'x-admin-secret': pin
-    };
-  };
 
   const loadWalletTransactions = async () => {
     try {

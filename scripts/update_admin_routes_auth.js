@@ -48,3 +48,4 @@ if (!set.includes('verifyAdminSecret')) {
   fs.writeFileSync(settingsPath, set, 'utf8');
   console.log('Updated settings/route.ts');
 }
+

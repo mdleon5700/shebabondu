@@ -5900,7 +5900,7 @@ function AdminContent() {
           {/* TAB 10: FINANCE -> COUPONS & RAFFLE CAMPAIGNS */}
           {(activeTab === 'coupons-discounts' || activeTab === 'raffle-campaigns') && (
             <div className="space-y-4">
-              <CouponsRaffleManagement />
+              <CouponsRaffleManagement initialTab={activeTab === 'raffle-campaigns' ? 'raffles' : 'coupons'} />
             </div>
           )}
 

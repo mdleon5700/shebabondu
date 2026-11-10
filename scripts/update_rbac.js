@@ -44,3 +44,4 @@ if (c.includes(targetAuth)) {
 
 fs.writeFileSync(filePath, c, 'utf8');
 console.log('Successfully updated rbac.ts with admin secret support');
+

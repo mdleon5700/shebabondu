@@ -20,9 +20,20 @@ import {
   ArrowRight
 } from 'lucide-react';
 import { Coupon, RaffleCampaign } from '@/lib/types';
+import { getAdminHeaders } from '@/lib/adminAuthClient';
 
-export default function CouponsRaffleManagement() {
-  const [couponsSubTab, setCouponsSubTab] = useState<'coupons' | 'raffles'>('coupons');
+interface CouponsRaffleManagementProps {
+  initialTab?: 'coupons' | 'raffles';
+}
+
+export default function CouponsRaffleManagement({ initialTab = 'coupons' }: CouponsRaffleManagementProps = {}) {
+  const [couponsSubTab, setCouponsSubTab] = useState<'coupons' | 'raffles'>(initialTab);
+
+  useEffect(() => {
+    if (initialTab) {
+      setCouponsSubTab(initialTab);
+    }
+  }, [initialTab]);
   const [authStatus, setAuthStatus] = useState<'checking' | 'authorized' | 'unauthorized' | 'forbidden'>('checking');
   const [authErrorMsg, setAuthErrorMsg] = useState<string | null>(null);
 
@@ -84,7 +95,7 @@ export default function CouponsRaffleManagement() {
     setIsLoadingCoupons(true);
     setCouponFetchError(null);
     try {
-      const res = await fetch('/api/admin/coupons');
+      const res = await fetch('/api/admin/coupons', { headers: getAdminHeaders() });
       if (res.status === 401) {
         setAuthStatus('unauthorized');
         setAuthErrorMsg('অ্যাডমিন সেশন পাওয়া যায়নি। অনুগ্রহ করে লগইন করুন।');
@@ -113,7 +124,7 @@ export default function CouponsRaffleManagement() {
     setIsLoadingCampaigns(true);
     setRaffleFetchError(null);
     try {
-      const res = await fetch('/api/admin/raffles');
+      const res = await fetch('/api/admin/raffles', { headers: getAdminHeaders() });
       if (res.status === 401) {
         setAuthStatus('unauthorized');
         return;
@@ -169,7 +180,7 @@ export default function CouponsRaffleManagement() {
 
       const res = await fetch('/api/admin/coupons', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: getAdminHeaders(),
         body: JSON.stringify(payload)
       });
 
@@ -247,7 +258,7 @@ export default function CouponsRaffleManagement() {
 
       const res = await fetch('/api/admin/raffles', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: getAdminHeaders(),
         body: JSON.stringify(payload)
       });
 

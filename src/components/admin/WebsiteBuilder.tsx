@@ -53,14 +53,7 @@ import BuilderRightInspector from './builder/BuilderRightInspector';
 import BuilderPublishModal from './builder/BuilderPublishModal';
 import { PRESET_PAGE_TEMPLATES } from './builder/templates/presetTemplates';
 import { RotateCcw, RotateCw } from 'lucide-react';
-
-const getAdminHeaders = (): HeadersInit => {
-  const pin = typeof window !== 'undefined' ? (localStorage.getItem('cs_admin_pin') || '1234') : '1234';
-  return {
-    'Content-Type': 'application/json',
-    'x-admin-secret': pin
-  };
-};
+import { getAdminHeaders } from '@/lib/adminAuthClient';
 
 interface WebsiteBuilderProps {
   initialPageId?: string;

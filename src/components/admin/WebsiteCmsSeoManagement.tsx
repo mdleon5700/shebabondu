@@ -38,6 +38,7 @@ import {
   Upload,
   Image as ImageIcon
 } from 'lucide-react';
+import { getAdminHeaders } from '@/lib/adminAuthClient';
 
 interface WebsiteCmsSeoManagementProps {
   activeTab?: string;
@@ -304,6 +305,14 @@ export default function WebsiteCmsSeoManagement({
   const [footerColumns, setFooterColumns] = useState<any[]>(DEFAULT_FOOTER_COLS);
   const [footerDisclaimer, setFooterDisclaimer] = useState('সতর্কতা: চাকরি সেবা কোনো সরকারি বা নিয়োগকারী প্রতিষ্ঠান নয়। আমরা বিভিন্ন অফিশিয়াল ওয়েবসাইট ও জাতীয় পত্রিকা থেকে সংগৃহীত চাকরির তথ্য ও সার্কুলার প্রকাশ করি এবং চাকরিপ্রার্থীদের সুবিধার্থে সঠিক নিয়মে ফর্ম পূরণে পেশাদার সহায়তা প্রদান করি।');
   const [copyrightText, setCopyrightText] = useState('© ২০২৬ চাকরিসেবা BD (ChakriSheba.com) • সর্বস্বত্ব সংরক্ষিত।');
+  const [schemaCopied, setSchemaCopied] = useState(false);
+  const [enableEmergencyHotlines, setEnableEmergencyHotlines] = useState(true);
+  const [emergencyHotlines, setEmergencyHotlines] = useState([
+    { id: '333', name: 'জাতীয় কল সেন্টার ও সরকারি তথ্য সেবা', number: '৩৩৩', desc: 'সরকারি সেবা ও সামাজিক সমাধান' },
+    { id: '999', name: 'জাতীয় জরুরি সেবা', number: '৯৯৯', desc: 'পুলিশ, অ্যাম্বুলেন্স ও ফায়ার সার্ভিস' },
+    { id: '109', name: 'নারী ও শিশু নির্যাতন প্রতিরোধ সেল', number: '১০৯', desc: 'টোল ফ্রি ২৪/৭ আইনি সহায়তা' },
+    { id: '105', name: 'জাতীয় পরিচয়পত্র (NID) হেল্পলাইন', number: '১০৫', desc: 'নির্বাচন কমিশন এনআইডি সেবা' }
+  ]);
   const [expandedDropdownId, setExpandedDropdownId] = useState<string | null>(null);
   const [previewViewport, setPreviewViewport] = useState<'desktop' | 'mobile'>('desktop');
   const [previewActiveDropdown, setPreviewActiveDropdown] = useState<string | null>(null);
@@ -316,10 +325,8 @@ export default function WebsiteCmsSeoManagement({
   // Function to load all pages from serverDB
   const loadPages = () => {
     setIsLoadingPages(true);
-    const pin = typeof window !== 'undefined' ? (localStorage.getItem('cs_admin_pin') || '1234') : '1234';
-    const reqHeaders: HeadersInit = { 'Content-Type': 'application/json', 'x-admin-secret': pin };
 
-    fetch('/api/admin/pages', { headers: reqHeaders })
+    fetch('/api/admin/pages', { headers: getAdminHeaders() })
       .then(res => res.json())
       .then(data => {
         if (data.success && Array.isArray(data.pages)) {
@@ -344,10 +351,7 @@ export default function WebsiteCmsSeoManagement({
   useEffect(() => {
     loadPages();
 
-    const pin = typeof window !== 'undefined' ? (localStorage.getItem('cs_admin_pin') || '1234') : '1234';
-    const reqHeaders: HeadersInit = { 'Content-Type': 'application/json', 'x-admin-secret': pin };
-
-    fetch('/api/admin/settings', { headers: reqHeaders })
+    fetch('/api/admin/settings', { headers: getAdminHeaders() })
       .then(res => res.json())
       .then(data => {
         if (data.success && data.settings) {
@@ -433,13 +437,9 @@ export default function WebsiteCmsSeoManagement({
         }
       };
 
-      const pin = typeof window !== 'undefined' ? (localStorage.getItem('cs_admin_pin') || '1234') : '1234';
       const res = await fetch('/api/admin/settings', {
         method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-admin-secret': pin
-        },
+        headers: getAdminHeaders(),
         body: JSON.stringify(payload)
       });
 
@@ -472,15 +472,11 @@ export default function WebsiteCmsSeoManagement({
     setPageCreateError(null);
 
     try {
-      const pin = typeof window !== 'undefined' ? (localStorage.getItem('cs_admin_pin') || '1234') : '1234';
       const cleanSlug = '/' + newPageSlug.replace(/^\/+|\/+$/g, '');
 
       const res = await fetch('/api/admin/pages', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-admin-secret': pin
-        },
+        headers: getAdminHeaders(),
         body: JSON.stringify({
           title: newPageTitle.trim(),
           slug: cleanSlug,
@@ -516,10 +512,9 @@ export default function WebsiteCmsSeoManagement({
     if (!window.confirm(`আপনি কি নিশ্চিতভাবে "${pageTitle}" পেজটি মুছে ফেলতে চান?`)) return;
 
     try {
-      const pin = typeof window !== 'undefined' ? (localStorage.getItem('cs_admin_pin') || '1234') : '1234';
       const res = await fetch(`/api/admin/pages/${pageId}`, {
         method: 'DELETE',
-        headers: { 'x-admin-secret': pin }
+        headers: getAdminHeaders()
       });
       const data = await res.json();
       if (!res.ok || !data.success) {
@@ -1502,6 +1497,44 @@ export default function WebsiteCmsSeoManagement({
                       placeholder="© ২০২৬ চাকরিসেবা BD (ChakriSheba.com) • সর্বস্বত্ব সংরক্ষিত।"
                     />
                   </div>
+
+                  {/* Government Emergency Hotlines (৩৩৩, ৯৯৯, ১০৯, ১০৫) */}
+                  <div className="pt-4 border-t border-slate-100 space-y-3">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <Phone className="w-4 h-4 text-emerald-600" />
+                        <div>
+                          <h4 className="font-bold text-xs text-slate-800">সরকারি জরুরি হটলাইন ও নাগরিক সেবা (৩৩৩, ৯৯৯)</h4>
+                          <p className="text-[10px] text-slate-500">ফুটারের নিম্নাংশে ও যোগাযোগ পেজে প্রদর্শিত জাতীয় হেল্পলাইন</p>
+                        </div>
+                      </div>
+                      <label className="relative inline-flex items-center cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={enableEmergencyHotlines}
+                          onChange={(e) => setEnableEmergencyHotlines(e.target.checked)}
+                          className="sr-only peer"
+                        />
+                        <div className="w-8 h-4 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-emerald-600"></div>
+                      </label>
+                    </div>
+
+                    {enableEmergencyHotlines && (
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
+                        {emergencyHotlines.map((hotline) => (
+                          <div key={hotline.id} className="p-2.5 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-between gap-2">
+                            <div>
+                              <div className="text-xs font-bold text-slate-800">{hotline.name}</div>
+                              <div className="text-[10px] text-slate-500">{hotline.desc}</div>
+                            </div>
+                            <span className="px-2.5 py-1 bg-red-100 text-red-800 font-black text-xs rounded-lg border border-red-200 shrink-0">
+                              {hotline.number}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 </div>
 
                 <div className="pt-3 flex justify-end">
@@ -1808,6 +1841,95 @@ export default function WebsiteCmsSeoManagement({
                 <div className="text-[11px] text-slate-500 font-mono truncate">https://chakrisheba.com</div>
                 <div className="text-sm font-bold text-blue-700 hover:underline cursor-pointer line-clamp-1">{siteTitle}</div>
                 <div className="text-xs text-slate-600 line-clamp-2 leading-relaxed">{siteDescription}</div>
+              </div>
+
+              {/* Google JobPosting Rich Snippet Schema (JSON-LD) Inspector */}
+              <div className="pt-2 border-t border-slate-100 space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-1.5">
+                    <Code2 className="w-4 h-4 text-emerald-700" />
+                    <h3 className="font-black text-xs uppercase tracking-wider text-slate-700">Google JobPosting স্কিমা মার্কআপ (JSON-LD)</h3>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const schemaStr = JSON.stringify({
+                        "@context": "https://schema.org/",
+                        "@type": "JobPosting",
+                        "title": "সহকারী পরিচালক (সাধারণ) পদে নিয়োগ বিজ্ঞপ্তি ২০২৬",
+                        "description": siteDescription,
+                        "datePosted": "2026-01-15",
+                        "validThrough": "2026-12-31T23:59:59+06:00",
+                        "employmentType": "FULL_TIME",
+                        "hiringOrganization": {
+                          "@type": "Organization",
+                          "name": "বাংলাদেশ ব্যাংক / রাষ্ট্রায়ত্ত সংস্থা",
+                          "sameAs": "https://chakrisheba.com",
+                          "logo": siteLogo || "https://chakrisheba.com/icons/icon-192x192.png"
+                        },
+                        "jobLocation": {
+                          "@type": "Place",
+                          "address": {
+                            "@type": "PostalAddress",
+                            "addressLocality": "ঢাকা",
+                            "addressCountry": "BD"
+                          }
+                        }
+                      }, null, 2);
+                      navigator.clipboard.writeText(schemaStr);
+                      setSchemaCopied(true);
+                      setTimeout(() => setSchemaCopied(false), 2500);
+                    }}
+                    className="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-[10px] font-bold flex items-center gap-1 transition-colors cursor-pointer"
+                  >
+                    {schemaCopied ? <Check className="w-3 h-3 text-emerald-600" /> : <Copy className="w-3 h-3" />}
+                    <span>{schemaCopied ? 'কপি হয়েছে!' : 'JSON-LD কপি'}</span>
+                  </button>
+                </div>
+
+                <div className="relative">
+                  <pre className="p-3 bg-slate-900 text-emerald-300 rounded-xl text-[10px] font-mono overflow-x-auto max-h-56 leading-relaxed border border-slate-800">
+{`{
+  "@context": "https://schema.org/",
+  "@type": "JobPosting",
+  "title": "সহকারী পরিচালক (সাধারণ) পদে নিয়োগ বিজ্ঞপ্তি ২০২৬",
+  "description": "${siteDescription.slice(0, 60)}...",
+  "datePosted": "2026-01-15",
+  "validThrough": "2026-12-31T23:59:59+06:00",
+  "employmentType": "FULL_TIME",
+  "hiringOrganization": {
+    "@type": "Organization",
+    "name": "বাংলাদেশ ব্যাংক",
+    "sameAs": "https://chakrisheba.com",
+    "logo": "${siteLogo || 'https://chakrisheba.com/logo.png'}"
+  },
+  "jobLocation": {
+    "@type": "Place",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "ঢাকা",
+      "addressCountry": "BD"
+    }
+  }
+}`}
+                  </pre>
+                </div>
+
+                <div className="flex items-center justify-between text-[10px] text-slate-500 pt-1">
+                  <span className="flex items-center gap-1 text-emerald-700 font-bold">
+                    <CheckCircle2 className="w-3 h-3" />
+                    Schema.org ও Google Rich Result প্রস্তুত
+                  </span>
+                  <a
+                    href="https://search.google.com/test/rich-results"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 hover:underline flex items-center gap-0.5 font-bold"
+                  >
+                    <span>গুগল টেস্ট টুল</span>
+                    <ExternalLink className="w-2.5 h-2.5" />
+                  </a>
+                </div>
               </div>
             </div>
           </div>

@@ -267,6 +267,28 @@ export default function Footer({ initialSettings }: { initialSettings?: any } = 
           </div>
         </div>
 
+        {/* National Citizen Helplines Strip */}
+        <div className="border-t border-slate-800/80 mt-6 pt-4 flex flex-wrap items-center justify-between gap-3 text-xs text-slate-400">
+          <div className="flex items-center gap-2 text-slate-300 font-bold">
+            <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+            <span>সরকারি জরুরি হেল্পলাইন:</span>
+          </div>
+          <div className="flex flex-wrap items-center gap-3 text-[13px]">
+            <span className="px-2.5 py-1 bg-slate-800/80 border border-slate-700 rounded-lg text-slate-300">
+              জাতীয় কল সেন্টার: <strong className="text-emerald-400 font-mono">৩৩৩</strong>
+            </span>
+            <span className="px-2.5 py-1 bg-slate-800/80 border border-slate-700 rounded-lg text-slate-300">
+              জাতীয় জরুরি সেবা: <strong className="text-red-400 font-mono">৯৯৯</strong>
+            </span>
+            <span className="px-2.5 py-1 bg-slate-800/80 border border-slate-700 rounded-lg text-slate-300">
+              নারী ও শিশু সহায়তা: <strong className="text-amber-400 font-mono">১০৯</strong>
+            </span>
+            <span className="px-2.5 py-1 bg-slate-800/80 border border-slate-700 rounded-lg text-slate-300">
+              এনআইডি তথ্য সেবা: <strong className="text-blue-400 font-mono">১০৫</strong>
+            </span>
+          </div>
+        </div>
+
         {/* Legal & Policy Navigation Row */}
         <div className="border-t border-slate-800/80 mt-6 pt-5 flex flex-wrap items-center justify-center gap-y-2 gap-x-4 text-xs text-slate-400">
           <Link href="/privacy-policy" className="hover:text-emerald-400 transition-colors">গোপনীয়তা নীতিমালা</Link>

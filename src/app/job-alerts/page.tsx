@@ -2,17 +2,17 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { 
-  Bell, 
-  CheckCircle2, 
-  Send, 
-  Sparkles, 
-  Smartphone, 
-  Mail, 
-  MessageSquare, 
-  ShieldCheck, 
-  MapPin, 
-  Clock, 
+import {
+  Bell,
+  CheckCircle2,
+  Send,
+  Sparkles,
+  Smartphone,
+  Mail,
+  MessageSquare,
+  ShieldCheck,
+  MapPin,
+  Clock,
   ArrowRight,
   RefreshCw,
   Sliders,
@@ -81,19 +81,19 @@ export default function JobAlertsPage() {
           setStats(data.stats);
         }
       })
-      .catch(() => {});
+      .catch(() => { });
   }, []);
 
   const toggleCategory = (cat: string) => {
-    setSelectedCats(prev => 
-      prev.includes(cat) 
-        ? (prev.length > 1 ? prev.filter(c => c !== cat) : prev) 
+    setSelectedCats(prev =>
+      prev.includes(cat)
+        ? (prev.length > 1 ? prev.filter(c => c !== cat) : prev)
         : [...prev, cat]
     );
   };
 
   const toggleChannel = (ch: string) => {
-    setChannels(prev => 
+    setChannels(prev =>
       prev.includes(ch)
         ? (prev.length > 1 ? prev.filter(c => c !== ch) : prev)
         : [...prev, ch]
@@ -225,10 +225,10 @@ export default function JobAlertsPage() {
       ) : (
         /* Form with Interactive Mobile Preview */
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          
+
           {/* Main Form (8 Cols) */}
           <div className="lg:col-span-7 bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 space-y-6 shadow-sm">
-            
+
             {errorMsg && (
               <div className="p-3 bg-rose-50 border border-rose-200 text-rose-800 rounded-2xl text-xs font-bold flex items-center gap-2">
                 <span>{errorMsg}</span>
@@ -236,7 +236,7 @@ export default function JobAlertsPage() {
             )}
 
             <form onSubmit={handleSubmit} className="space-y-6 text-sm">
-              
+
               {/* Category Checkboxes */}
               <div>
                 <label className="block text-xs font-bold text-slate-800 mb-2">
@@ -250,11 +250,10 @@ export default function JobAlertsPage() {
                         type="button"
                         key={c.id}
                         onClick={() => toggleCategory(c.id)}
-                        className={`p-3 rounded-2xl border text-left font-semibold transition-all flex items-center justify-between ${
-                          isSelected
-                            ? 'bg-emerald-50 border-emerald-600 text-emerald-950 font-bold shadow-2xs'
-                            : 'bg-slate-50/70 border-slate-200 text-slate-700 hover:border-slate-300'
-                        }`}
+                        className={`p-3 rounded-2xl border text-left font-semibold transition-all flex items-center justify-between ${isSelected
+                          ? 'bg-emerald-50 border-emerald-600 text-emerald-950 font-bold shadow-2xs'
+                          : 'bg-slate-50/70 border-slate-200 text-slate-700 hover:border-slate-300'
+                          }`}
                       >
                         <div className="flex items-center gap-2 min-w-0 truncate">
                           <span>{c.icon}</span>
@@ -301,11 +300,10 @@ export default function JobAlertsPage() {
                         type="button"
                         key={ch.id}
                         onClick={() => toggleChannel(ch.id)}
-                        className={`p-3 rounded-2xl border flex flex-col items-center justify-center gap-1.5 transition-all ${
-                          isChecked 
-                            ? 'bg-emerald-50 border-emerald-600 shadow-2xs' 
-                            : 'bg-slate-50/70 border-slate-200 hover:border-slate-300'
-                        }`}
+                        className={`p-3 rounded-2xl border flex flex-col items-center justify-center gap-1.5 transition-all ${isChecked
+                          ? 'bg-emerald-50 border-emerald-600 shadow-2xs'
+                          : 'bg-slate-50/70 border-slate-200 hover:border-slate-300'
+                          }`}
                       >
                         <Icon className={`w-5 h-5 ${isChecked ? 'text-emerald-700' : 'text-slate-400'}`} />
                         <span className={`text-xs font-bold ${isChecked ? 'text-emerald-950' : 'text-slate-600'}`}>
@@ -332,11 +330,10 @@ export default function JobAlertsPage() {
                       type="button"
                       key={f.id}
                       onClick={() => setFrequency(f.id as any)}
-                      className={`p-2.5 rounded-xl border text-center transition-all ${
-                        frequency === f.id
-                          ? 'bg-emerald-50 border-emerald-600 text-emerald-950 font-bold'
-                          : 'bg-slate-50 border-slate-200 text-slate-600'
-                      }`}
+                      className={`p-2.5 rounded-xl border text-center transition-all ${frequency === f.id
+                        ? 'bg-emerald-50 border-emerald-600 text-emerald-950 font-bold'
+                        : 'bg-slate-50 border-slate-200 text-slate-600'
+                        }`}
                     >
                       <span className="text-xs block font-bold">{f.title}</span>
                       <span className="text-[10px] text-slate-500 block mt-0.5">{f.sub}</span>
